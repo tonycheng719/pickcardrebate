@@ -80,9 +80,9 @@ export interface ComboStrategy {
   title: string;
   description: string;
   steps: {
-    type: "card" | "app" | "action";
-    name: string;
-    detail: string;
+    order: number;
+    action: string;
+    description: string;
   }[];
   totalReward: string;
   tags: string[];
