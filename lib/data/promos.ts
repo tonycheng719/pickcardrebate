@@ -1,0 +1,46 @@
+import { Promo } from "../types";
+
+export const PROMOS: Promo[] = [
+  {
+    id: "hsbc-red-promo-2024",
+    title: "HSBC Red 卡網上簽賬限時加碼",
+    merchant: "HSBC",
+    description: "於指定網上商戶簽賬可享額外 2% 獎賞錢，連同基本 4%，合共高達 6% 回贈。",
+    imageUrl: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop",
+    expiryDate: "2024-12-31",
+    relatedCardIds: ["hsbc-red"],
+    tags: ["網購", "限時優惠"],
+    url: "https://www.hsbc.com.hk",
+  },
+  {
+    id: "sc-smart-klook-promo",
+    title: "Klook 旅遊預訂 8% 回贈",
+    merchant: "Klook",
+    description: "憑 SC Smart 卡於 Klook 預訂旅遊活動滿 $1,000，即享 8% 現金回贈。",
+    imageUrl: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2021&auto=format&fit=crop",
+    expiryDate: "2024-10-31",
+    relatedCardIds: ["sc-smart"],
+    tags: ["旅遊", "Klook"],
+    url: "https://www.klook.com",
+  },
+  {
+    id: "foodpanda-promo",
+    title: "Foodpanda 週末半價",
+    merchant: "Foodpanda",
+    description: "逢星期六日，憑指定信用卡於 Foodpanda 訂購外賣滿 $300 即減 $150。",
+    imageUrl: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop",
+    expiryDate: "2024-09-30",
+    relatedCardIds: ["citi-rewards", "boc-chill"],
+    tags: ["餐飲", "外賣"],
+  },
+  {
+    id: "apple-store-promo",
+    title: "Apple Store 買機分期 0 息",
+    merchant: "Apple",
+    description: "於 Apple Store 購買 iPhone 16 系列，享 24 個月免息分期及額外 $200 回贈。",
+    imageUrl: "https://images.unsplash.com/photo-1511385348-a52b4a160dc2?q=80&w=2107&auto=format&fit=crop",
+    expiryDate: "2024-11-15",
+    relatedCardIds: ["sc-smart", "hsbc-red"],
+    tags: ["電子產品", "分期"],
+  },
+];
