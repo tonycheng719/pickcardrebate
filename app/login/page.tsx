@@ -3,25 +3,66 @@
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { DynamicIcon } from "@/components/dynamic-icon";
 import { useWallet } from "@/lib/store/wallet-context";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function LoginPage() {
-  const { login } = useWallet();
+  const { loginWithOAuth, requestSmsOtp, verifySmsOtp, user } = useWallet();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [smsCode, setSmsCode] = useState("");
+  const [smsStep, setSmsStep] = useState<"input" | "verify">("input");
+  const [isSmsLoading, setIsSmsLoading] = useState(false);
 
-  const handleLogin = (provider: string) => {
-    setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      login(provider);
+  useEffect(() => {
+    if (user) {
+      router.replace("/");
+    }
+  }, [user, router]);
+
+  const handleOAuthLogin = async (provider: "google" | "apple") => {
+    try {
+      setIsLoading(true);
+      await loginWithOAuth(provider);
+    } catch (error: any) {
+      toast.error(error.message || "登入失敗，請重試");
       setIsLoading(false);
-      router.push("/");
-    }, 800);
+    }
+  };
+
+  const handleSendSms = async () => {
+    const sanitized = phoneNumber.trim();
+    if (!sanitized) {
+      toast.error("請輸入手機號碼");
+      return;
+    }
+    try {
+      setIsSmsLoading(true);
+      await requestSmsOtp(sanitized);
+      toast.success("驗證碼已發送，請查收短信");
+      setSmsStep("verify");
+    } catch (error: any) {
+      toast.error(error.message || "無法傳送驗證碼，請稍後再試");
+    } finally {
+      setIsSmsLoading(false);
+    }
+  };
+
+  const handleVerifySms = async () => {
+    const sanitized = phoneNumber.trim();
+    try {
+      setIsSmsLoading(true);
+      await verifySmsOtp(sanitized, smsCode.trim());
+      toast.success("驗證成功，正在為您登入");
+      router.replace("/");
+    } catch (error: any) {
+      toast.error(error.message || "驗證失敗，請檢查驗證碼是否正確");
+    } finally {
+      setIsSmsLoading(false);
+    }
   };
 
     return (
@@ -40,7 +81,7 @@ export default function LoginPage() {
             <Button 
               variant="outline" 
               className="w-full h-12 text-base font-medium relative hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-transparent dark:text-gray-200 dark:border-gray-600"
-              onClick={() => handleLogin("google")}
+              onClick={() => handleOAuthLogin("google")}
               disabled={isLoading}
             >
               <svg className="w-5 h-5 absolute left-4" viewBox="0 0 24 24">
@@ -55,7 +96,7 @@ export default function LoginPage() {
             {/* Apple Login */}
             <Button 
               className="w-full h-12 text-base font-medium bg-black hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 text-white relative"
-              onClick={() => handleLogin("apple")}
+              onClick={() => handleOAuthLogin("apple")}
               disabled={isLoading}
             >
               <svg className="w-5 h-5 absolute left-4" viewBox="0 0 24 24" fill="currentColor">
@@ -87,13 +128,42 @@ export default function LoginPage() {
                   onChange={(e) => setPhoneNumber(e.target.value)}
                 />
               </div>
-              <Button 
-                className="w-full h-11 font-medium"
-                onClick={() => handleLogin("sms")}
-                disabled={!phoneNumber || isLoading}
-              >
-                發送驗證碼
-              </Button>
+              {smsStep === "input" ? (
+                <Button 
+                  className="w-full h-11 font-medium"
+                  onClick={handleSendSms}
+                  disabled={!phoneNumber || isSmsLoading}
+                >
+                  {isSmsLoading ? "傳送中..." : "發送驗證碼"}
+                </Button>
+              ) : (
+                <div className="space-y-2">
+                  <Input 
+                    type="text"
+                    maxLength={6}
+                    placeholder="輸入6位數驗證碼"
+                    className="h-11 text-lg tracking-widest text-center dark:bg-gray-900/50 dark:border-gray-700 dark:text-white"
+                    value={smsCode}
+                    onChange={(e) => setSmsCode(e.target.value)}
+                  />
+                  <Button 
+                    className="w-full h-11 font-medium"
+                    onClick={handleVerifySms}
+                    disabled={smsCode.length < 6 || isSmsLoading}
+                  >
+                    {isSmsLoading ? "驗證中..." : "確認登入"}
+                  </Button>
+                  <button
+                    className="text-xs text-gray-500 underline"
+                    onClick={() => {
+                      setSmsStep("input");
+                      setSmsCode("");
+                    }}
+                  >
+                    重新輸入手機號碼
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 

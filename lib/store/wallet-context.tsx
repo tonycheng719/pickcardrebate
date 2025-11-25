@@ -1,8 +1,10 @@
 "use client";
 
 // Context for managing user wallet and global state
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from "react";
 import { Transaction } from "../types";
+import { createClient } from "@/lib/supabase/client";
+import type { User } from "@supabase/supabase-js";
 
 export interface CardSettings {
   note?: string;
@@ -37,8 +39,10 @@ interface WalletContextType {
   updateCardSetting: (cardId: string, settings: Partial<CardSettings>) => void; // Renamed from updateCardSetting
   addAllCards: (cardIds: string[]) => void;
   user: UserProfile | null;
-  login: (provider: string) => void;
-  logout: () => void;
+  loginWithOAuth: (provider: "google" | "apple") => Promise<void>;
+  requestSmsOtp: (phone: string) => Promise<void>;
+  verifySmsOtp: (phone: string, token: string) => Promise<void>;
+  logout: () => Promise<void>;
   updateProfile: (profile: Partial<UserProfile>) => void;
   
   // Transactions
@@ -53,6 +57,11 @@ interface WalletContextType {
 }
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
+const DEFAULT_NOTIFICATIONS = {
+  promos: true,
+  bills: true,
+  community: true,
+};
 
 export function WalletProvider({ children }: { children: React.ReactNode }) {
   const [myCardIds, setMyCardIds] = useState<string[]>([]);
@@ -60,6 +69,52 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const supabase = useMemo(() => createClient(), []);
+
+  const buildUserFromSession = useCallback(
+    (sessionUser: User, profileData?: any): UserProfile => {
+      const fullName =
+        profileData?.name ||
+        sessionUser.user_metadata?.full_name ||
+        sessionUser.user_metadata?.name ||
+        sessionUser.email?.split("@")[0] ||
+        "PickCardRebate 會員";
+
+      return {
+        name: fullName,
+        email: sessionUser.email ?? undefined,
+        avatar: profileData?.avatar_url || sessionUser.user_metadata?.avatar_url,
+        rewardPreference: (profileData?.reward_preference as "cash" | "miles") || "cash",
+        notifications: profileData?.notifications || DEFAULT_NOTIFICATIONS,
+        followedPromoIds: profileData?.followed_promo_ids || [],
+      };
+    },
+    []
+  );
+
+  const hydrateSupabaseUser = useCallback(
+    async (sessionUser: User | null) => {
+      if (!sessionUser) {
+        setUser(null);
+        return;
+      }
+
+      try {
+        const { data } = await supabase
+          .from("profiles")
+          .select("name, avatar_url, reward_preference, notifications, followed_promo_ids")
+          .eq("id", sessionUser.id)
+          .maybeSingle();
+
+        const profile = buildUserFromSession(sessionUser, data);
+        setUser(profile);
+      } catch (error) {
+        console.error("Failed to load Supabase profile", error);
+        setUser(buildUserFromSession(sessionUser));
+      }
+    },
+    [buildUserFromSession, supabase]
+  );
 
   useEffect(() => {
     const savedCards = localStorage.getItem("pickcardrebate_wallet_cards");
@@ -114,6 +169,22 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
+    const syncSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      await hydrateSupabaseUser(data.session?.user ?? null);
+    };
+
+    syncSession();
+    const { data: listener } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      await hydrateSupabaseUser(session?.user ?? null);
+    });
+
+    return () => {
+      listener?.subscription.unsubscribe();
+    };
+  }, [supabase, hydrateSupabaseUser]);
+
+  useEffect(() => {
     if (isLoaded) {
       localStorage.setItem("pickcardrebate_wallet_cards", JSON.stringify(myCardIds));
       localStorage.setItem("pickcardrebate_wallet_settings", JSON.stringify(cardSettings));
@@ -148,22 +219,52 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     setMyCardIds(myCardIds.filter((id) => id !== cardId));
   };
 
-  const login = (provider: string) => {
-      setUser({
-          name: "PickCardRebate User",
-          email: "user@example.com",
-          rewardPreference: "cash",
-          notifications: {
-            promos: true,
-            bills: true,
-            community: true
-          },
-          followedPromoIds: []
-      });
+  const loginWithOAuth = async (provider: "google" | "apple") => {
+    const redirectUrl =
+      typeof window !== "undefined" ? `${window.location.origin}/auth/callback` : undefined;
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: redirectUrl,
+      },
+    });
+
+    if (error) {
+      throw error;
+    }
   };
 
-  const logout = () => {
-      setUser(null);
+  const requestSmsOtp = async (phone: string) => {
+    const formatted = phone.startsWith("+") ? phone : `+852${phone}`;
+    const { error } = await supabase.auth.signInWithOtp({
+      phone: formatted,
+      options: {
+        channel: "sms",
+        shouldCreateUser: true,
+      },
+    });
+
+    if (error) {
+      throw error;
+    }
+  };
+
+  const verifySmsOtp = async (phone: string, token: string) => {
+    const formatted = phone.startsWith("+") ? phone : `+852${phone}`;
+    const { error } = await supabase.auth.verifyOtp({
+      phone: formatted,
+      token,
+      type: "sms",
+    });
+
+    if (error) {
+      throw error;
+    }
+  };
+
+  const logout = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
   };
 
   const updateProfile = (profile: Partial<UserProfile>) => {
@@ -228,7 +329,9 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     updateCardSetting,
     addAllCards,
     user,
-    login,
+    loginWithOAuth,
+    requestSmsOtp,
+    verifySmsOtp,
     logout,
     updateProfile,
     transactions,
