@@ -4,7 +4,7 @@
 import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from "react";
 import { Transaction } from "../types";
 import { createClient } from "@/lib/supabase/client";
-import type { User } from "@supabase/supabase-js";
+import type { AuthChangeEvent, User } from "@supabase/supabase-js";
 
 export interface CardSettings {
   note?: string;
@@ -175,7 +175,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     };
 
     syncSession();
-    const { data: listener } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    const { data: listener } = supabase.auth.onAuthStateChange(async (_event: AuthChangeEvent, session) => {
       await hydrateSupabaseUser(session?.user ?? null);
     });
 
