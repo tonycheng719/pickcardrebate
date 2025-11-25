@@ -93,17 +93,10 @@ export default function LoginPage() {
               使用 Google 繼續
             </Button>
 
-            {/* Apple Login */}
-            <Button 
-              className="w-full h-12 text-base font-medium bg-black hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 text-white relative"
-              onClick={() => handleOAuthLogin("apple")}
-              disabled={isLoading}
-            >
-              <svg className="w-5 h-5 absolute left-4" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.74 1.18 0 2.48-1.23 3.93-1.14 1.31.08 2.51.69 3.29 1.49-3.02 1.86-2.46 5.92.72 7.37-.53 1.43-1.25 2.75-2.02 4.51M13 5.25a5.21 5.21 0 0 1 1.53-4.13c-1.5.06-3.05.88-3.9 1.87-.93 1.03-1.6 2.66-1.33 4.03 1.43.1 2.92-.68 3.7-1.77"/>
-              </svg>
-              使用 Apple 繼續
-            </Button>
+            {/* Apple Login Placeholder */}
+            <div className="w-full flex h-12 items-center justify-center rounded-xl border border-dashed border-gray-300 dark:border-gray-700 text-sm text-gray-400 dark:text-gray-500">
+              Apple 登入即將推出
+            </div>
 
             <div className="relative py-2">
               <div className="absolute inset-0 flex items-center">
