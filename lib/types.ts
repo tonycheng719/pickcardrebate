@@ -74,3 +74,16 @@ export interface Transaction {
   rewardAmount: number;
   category?: string;
 }
+
+export interface ComboStrategy {
+  id: string;
+  title: string;
+  description: string;
+  steps: {
+    type: "card" | "app" | "action";
+    name: string;
+    detail: string;
+  }[];
+  totalReward: string;
+  tags: string[];
+}
