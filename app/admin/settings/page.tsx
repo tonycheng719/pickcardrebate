@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { DEFAULT_SYSTEM_SETTINGS, SystemSetting } from "@/lib/admin/mock-data";
+import { useAdminDataStore } from "@/lib/admin/data-store";
+import { Database } from "lucide-react";
 
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState<SystemSetting[]>(DEFAULT_SYSTEM_SETTINGS);
   const [saved, setSaved] = useState(false);
+  const { uploadInitialData, isLoading } = useAdminDataStore();
 
   const toggleSetting = (id: string) => {
     setSettings((prev) =>
@@ -30,6 +32,35 @@ export default function AdminSettingsPage() {
         </div>
         <Button onClick={handleSave}>{saved ? "已儲存" : "儲存設定"}</Button>
       </div>
+
+      <Card className="dark:bg-gray-800 dark:border-gray-700">
+        <CardHeader>
+          <CardTitle className="text-lg dark:text-white flex items-center gap-2">
+            <Database className="h-5 w-5" /> 資料庫管理
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="font-medium text-gray-900 dark:text-white">初始化雲端資料庫</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                將本地的卡片、商戶預設資料上傳至 Supabase (僅在資料庫為空時使用)。
+              </p>
+            </div>
+            <Button 
+                variant="outline" 
+                onClick={() => {
+                    if (confirm("確定要上傳初始資料嗎？這將會寫入大量數據。")) {
+                        uploadInitialData();
+                    }
+                }}
+                disabled={isLoading}
+            >
+              {isLoading ? "處理中..." : "上傳初始資料"}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
 
       <Card className="dark:bg-gray-800 dark:border-gray-700">
         <CardHeader>
