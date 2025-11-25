@@ -1,0 +1,11 @@
+{
+    "service": {
+        "ports": [
+            {
+                "port": 3000,
+                "type": "HTTP"
+            }
+        ],
+        "command": "npm start"
+    }
+}
