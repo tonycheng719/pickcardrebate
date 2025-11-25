@@ -118,41 +118,54 @@ interface AdminDataStoreContextType {
 const AdminDataStoreContext = createContext<AdminDataStoreContextType | undefined>(undefined);
 
 export function DataStoreProvider({ children }: { children: React.ReactNode }) {
-  const [cards, setCards] = useState<CreditCard[]>(HK_CARDS); // Default to local first for instant load
+  // Start with local data IMMEDIATELY to avoid white screen
+  const [cards, setCards] = useState<CreditCard[]>(HK_CARDS); 
   const [merchants, setMerchants] = useState<Merchant[]>(POPULAR_MERCHANTS);
   const [promos, setPromos] = useState<Promo[]>(PROMOS);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); // Still track loading for admin/background sync
   
   const supabase = createClient();
   const categories = CATEGORIES;
 
   const refreshData = useCallback(async () => {
-    setIsLoading(true);
+    // Removed setIsLoading(true) here to prevent UI flickering if we already have data
     try {
+        // Set a timeout to avoid hanging forever
+        const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error("Timeout")), 5000)
+        );
+
         // 1. Cards
-        const { data: cardsData, error: cardsError } = await supabase.from('cards').select('*');
+        const cardsPromise = supabase.from('cards').select('*');
+        const { data: cardsData, error: cardsError } = await Promise.race([cardsPromise, timeoutPromise]) as any;
+        
         if (cardsError) throw cardsError;
         if (cardsData && cardsData.length > 0) {
             setCards(cardsData.map(mapCardFromDB));
         }
 
         // 2. Merchants
-        const { data: merchantsData, error: merchantsError } = await supabase.from('merchants').select('*');
+        const merchantsPromise = supabase.from('merchants').select('*');
+        const { data: merchantsData, error: merchantsError } = await Promise.race([merchantsPromise, timeoutPromise]) as any;
+        
         if (merchantsError) throw merchantsError;
         if (merchantsData && merchantsData.length > 0) {
             setMerchants(merchantsData.map(mapMerchantFromDB));
         }
 
         // 3. Promos
-        const { data: promosData, error: promosError } = await supabase.from('promos').select('*');
+        const promosPromise = supabase.from('promos').select('*');
+        const { data: promosData, error: promosError } = await Promise.race([promosPromise, timeoutPromise]) as any;
+        
         if (promosError) throw promosError;
         if (promosData && promosData.length > 0) {
             setPromos(promosData.map(mapPromoFromDB));
         }
+        
+        setIsLoading(false); // Data sync complete
     } catch (error) {
-        console.error("Error fetching data from Supabase:", error);
-        toast.error("無法從雲端加載數據，已切換至本地模式");
-    } finally {
+        console.warn("Supabase sync failed or timed out, using local data.", error);
+        // Don't show error toast to user, just silently fail to local data
         setIsLoading(false);
     }
   }, []);
