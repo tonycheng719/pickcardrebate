@@ -12,7 +12,7 @@ const COMBOS: ComboStrategy[] = [
         id: "citi-payme-insurance",
         title: "Citi Rewards x PayMe 繳費大法",
         description: "透過 PayMe 轉賬賺取 2% 回贈，再用 PayMe 餘額繳付保費或水電煤。",
-        totalReward: 2.0,
+        totalReward: "2.0%",
         tags: ["繳費", "電子錢包", "保費"],
         steps: [
             { order: 1, action: "Citi Rewards 增值 PayMe", description: "使用 Citi Rewards 信用卡增值 PayMe 餘額 (每月上限 $3000)。" },
@@ -24,7 +24,7 @@ const COMBOS: ComboStrategy[] = [
         id: "earnmore-oepay",
         title: "EarnMORE x O!ePay 自動增值",
         description: "設定八達通自動增值，任何八達通消費都變 2% 回贈。",
-        totalReward: 2.0,
+        totalReward: "2.0%",
         tags: ["八達通", "交通", "小額"],
         steps: [
             { order: 1, action: "申請自動增值", description: "為八達通申請自動增值，連結 EarnMORE 銀聯卡。" },
@@ -36,7 +36,7 @@ const COMBOS: ComboStrategy[] = [
         id: "sc-alipay-bill",
         title: "SC Smart x AlipayHK 繳費",
         description: "雖然 SC Smart 卡本身繳費無分，但連結 AlipayHK 繳費可能有推廣優惠。",
-        totalReward: 0.56,
+        totalReward: "0.56%",
         tags: ["繳費", "AlipayHK"],
         steps: [
             { order: 1, action: "連結信用卡", description: "將 SC Smart Card 加入 AlipayHK。" },
@@ -82,7 +82,7 @@ export default function CombosPage() {
                                     </div>
                                     <div className="flex flex-col items-end">
                                         <span className="text-sm text-gray-500 dark:text-gray-400">總回饋</span>
-                                        <span className="text-2xl font-bold text-green-600 dark:text-green-400">{combo.totalReward}%</span>
+                                        <span className="text-2xl font-bold text-green-600 dark:text-green-400">{combo.totalReward}</span>
                                     </div>
                                 </div>
                             </CardHeader>
