@@ -12,7 +12,7 @@ export const HK_CARDS: CreditCard[] = [
     rewardTimeline: "獎賞錢即時入賬",
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "最紅自主獎賞 (類別) 3.6%", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 3.6, cap: 100000 },
+      { description: "最紅自主獎賞 (類別) 3.6%", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 3.6, cap: 100000, capType: "spending" },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["餐飲神卡", "最紅自主獎賞", "5X積分"],
@@ -33,7 +33,7 @@ export const HK_CARDS: CreditCard[] = [
     rewardTimeline: "獎賞錢即時入賬",
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "網上簽賬 4%", matchType: "category", matchValue: "online", percentage: 4.0, cap: 12500 }, // Includes Alipay spending often, but NOT top-up usually. We should exclude ewallet category if it means top-up.
+      { description: "網上簽賬 4%", matchType: "category", matchValue: "online", percentage: 4.0, cap: 12500, capType: "spending" }, // Explicitly spending cap
       { description: "超市簽賬 2%", matchType: "category", matchValue: "supermarket", percentage: 2.0 },
       { description: "基本回饋 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "payme", "alipay", "wechat_pay"] }, 
       { description: "電子錢包/繳費 0.4%", matchType: "base", percentage: 0.4 },
@@ -103,7 +103,7 @@ export const HK_CARDS: CreditCard[] = [
     rewardTimeline: "現金回贈於下期賬單顯示",
     foreignCurrencyFee: 0,
     rules: [
-      { description: "指定商戶 5%", matchType: "merchant", matchValue: ["mcdonalds", "kfc", "hktvmall", "759", "parknshop", "watsons", "donki"], percentage: 5.0, cap: 60000 },
+      { description: "指定商戶 5%", matchType: "merchant", matchValue: ["mcdonalds", "kfc", "hktvmall", "759", "parknshop", "watsons", "donki"], percentage: 5.0, cap: 60000, capType: "spending" },
       { description: "基本回饋 0.56%", matchType: "base", percentage: 0.56, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["指定商戶5%", "永久免年費", "免手續費"],
@@ -152,8 +152,8 @@ export const HK_CARDS: CreditCard[] = [
     rewardTimeline: "積分",
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "影視娛樂 10%", matchType: "category", matchValue: "entertainment", percentage: 10.0, cap: 1500 },
-      { description: "手機支付 5%", matchType: "paymentMethod", matchValue: ["mobile", "boc_pay"], percentage: 5.0, cap: 3000, excludeCategories: ["ewallet"] }, // Exclude Top-up
+      { description: "影視娛樂 10%", matchType: "category", matchValue: "entertainment", percentage: 10.0, cap: 150, capType: "reward" }, // $150 reward cap (approx $1500 spending)
+      { description: "手機支付 5%", matchType: "paymentMethod", matchValue: ["mobile", "boc_pay"], percentage: 5.0, cap: 150, capType: "reward", excludeCategories: ["ewallet"] }, // $150 reward cap
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["娛樂10%", "BoC Pay"],
@@ -169,7 +169,7 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rules: [
       { description: "手機支付 5% (SOGO)", matchType: "merchant", matchValue: ["sogo"], percentage: 5.5 },
-      { description: "手機支付 5%", matchType: "paymentMethod", matchValue: "mobile", percentage: 5.0, cap: 2000, excludeCategories: ["ewallet"] }, // Exclude Top-up
+      { description: "手機支付 5%", matchType: "paymentMethod", matchValue: "mobile", percentage: 5.0, cap: 100, capType: "reward", excludeCategories: ["ewallet"] }, // $100 reward cap ($2000 spending)
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["手機支付5%", "SOGO"],
@@ -209,7 +209,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-blue-400 to-blue-600", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "手機支付/網購 10X (4%)", matchType: "category", matchValue: ["online", "paymentMethod"], percentage: 4.0, cap: 11111, excludeCategories: ["ewallet"] }, // Exclude Top-up
+      { description: "手機支付/網購 10X (4%)", matchType: "category", matchValue: ["online", "paymentMethod"], percentage: 4.0, cap: 11111, capType: "spending", excludeCategories: ["ewallet"] }, // Exclude Top-up
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["網購4%", "手機支付4%"],
@@ -227,9 +227,9 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://mhgprod.blob.core.windows.net/moneyhero/strapi-uploads/blt01c6ac63487924bd_21cb85603d.png",
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "網上簽賬 5%", matchType: "category", matchValue: "online", percentage: 5.0, minSpend: 5000, cap: 16000, excludeCategories: ["ewallet"] },
-      { description: "手機支付 5%", matchType: "paymentMethod", matchValue: "mobile", percentage: 5.0, minSpend: 5000, cap: 16000, excludeCategories: ["ewallet"] },
-      { description: "外幣簽賬 6%", matchType: "base", percentage: 6.0, minSpend: 5000, isForeignCurrency: true },
+      { description: "網上簽賬 5%", matchType: "category", matchValue: "online", percentage: 5.0, minSpend: 5000, cap: 500, capType: "reward", excludeCategories: ["ewallet"] }, // Max $500 +FUN Dollars
+      { description: "手機支付 5%", matchType: "paymentMethod", matchValue: "mobile", percentage: 5.0, minSpend: 5000, cap: 500, capType: "reward", excludeCategories: ["ewallet"] },
+      { description: "外幣簽賬 6%", matchType: "base", percentage: 6.0, minSpend: 5000, isForeignCurrency: true, cap: 500, capType: "reward" },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["網購5%", "手機支付5%", "必須登記"],
@@ -257,8 +257,8 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-sky-500 to-blue-600", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "外幣簽賬 7%", matchType: "base", percentage: 7.0, minSpend: 6000, isForeignCurrency: true },
-      { description: "本地餐飲/交通 5%", matchType: "category", matchValue: ["dining", "transport"], percentage: 5.0, minSpend: 6000 },
+      { description: "外幣簽賬 7%", matchType: "base", percentage: 7.0, minSpend: 6000, isForeignCurrency: true, cap: 500, capType: "reward" },
+      { description: "本地餐飲/交通 5%", matchType: "category", matchValue: ["dining", "transport"], percentage: 5.0, minSpend: 6000, cap: 500, capType: "reward" },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["旅遊7%", "餐飲5%"],
@@ -289,7 +289,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-r from-blue-400 to-cyan-500", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "流動支付 5X (2%)", matchType: "paymentMethod", matchValue: ["mobile"], percentage: 2.0, excludeCategories: ["ewallet"] }, // Exclude top-up
+      { description: "流動支付 5X (2%)", matchType: "paymentMethod", matchValue: ["mobile"], percentage: 2.0, cap: 50000, capType: "spending", excludeCategories: ["ewallet"] }, // Max 50,000 points = $333 or 3333 miles
       { description: "超市/百貨 5X", matchType: "category", matchValue: ["supermarket", "department_store"], percentage: 2.0 },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
@@ -317,7 +317,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-orange-400 to-orange-600", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "交通 15% (九巴)", matchType: "merchant", matchValue: ["kmb", "bus"], percentage: 15.0, minSpend: 1500 },
+      { description: "交通 15% (九巴)", matchType: "merchant", matchValue: ["kmb", "bus"], percentage: 15.0, minSpend: 1500, cap: 300, capType: "reward" },
       { description: "基本回饋 0.5%", matchType: "base", percentage: 0.5, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["交通15%", "八達通"],
@@ -347,9 +347,9 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-gray-600 to-gray-900", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "餐飲 5%", matchType: "category", matchValue: "dining", percentage: 5.0, minSpend: 300, cap: 8000 },
-      { description: "健身/運動 5%", matchType: "category", matchValue: ["sports", "gym"], percentage: 5.0, minSpend: 300, cap: 8000 },
-      { description: "醫療 5%", matchType: "category", matchValue: "medical", percentage: 5.0, minSpend: 300, cap: 8000 },
+      { description: "餐飲 5%", matchType: "category", matchValue: "dining", percentage: 5.0, minSpend: 300, cap: 8000, capType: "spending" },
+      { description: "健身/運動 5%", matchType: "category", matchValue: ["sports", "gym"], percentage: 5.0, minSpend: 300, cap: 8000, capType: "spending" },
+      { description: "醫療 5%", matchType: "category", matchValue: "medical", percentage: 5.0, minSpend: 300, cap: 8000, capType: "spending" },
       { description: "基本回饋 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["餐飲5%", "健身5%"],
@@ -376,7 +376,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-lime-300 to-lime-500", textColor: "text-black" },
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "自選類別 (網購) 6%", matchType: "category", matchValue: "online", percentage: 6.0, excludeCategories: ["ewallet"] }, // Exclude top-up
+      { description: "自選類別 (網購) 6%", matchType: "category", matchValue: "online", percentage: 6.0, excludeCategories: ["ewallet"], cap: 150, capType: "reward" }, // $150 reward cap for extra 5%
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["網購6%", "自選類別"],
@@ -389,11 +389,12 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-red-500 to-red-700", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "指定日子超市/淘寶 1%", matchType: "category", matchValue: ["supermarket", "online"], percentage: 1.0 },
+      { description: "星期三超市/淘寶 10%", matchType: "category", matchValue: ["supermarket", "online"], percentage: 10.0, validDays: [3] }, // Wednesday (0=Sun, 3=Wed)
+      { description: "指定日子超市/淘寶 1% (非週三)", matchType: "category", matchValue: ["supermarket", "online"], percentage: 1.0 },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
-    tags: ["超市", "淘寶"],
-    sellingPoints: ["逢星期三超市簽賬高達 8% 回贈", "淘寶天貓簽賬優惠"],
+    tags: ["超市10%", "淘寶"],
+    sellingPoints: ["逢星期三超市/淘寶 10% 回贈 (需登記)", "每月 2/12/22 日 Flexi-Shopping 免手續費"],
   },
 
   // ========================================================================
@@ -407,7 +408,7 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://mhgprod.blob.core.windows.net/moneyhero/strapi-uploads/blt6404429f0179dbba_0bc13b65f2.png", 
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "網上簽賬 6%", matchType: "category", matchValue: "online", percentage: 6.0, cap: 5000, excludeCategories: ["ewallet"] },
+      { description: "網上簽賬 6%", matchType: "category", matchValue: "online", percentage: 6.0, cap: 300, capType: "reward", excludeCategories: ["ewallet"] }, // $300 reward cap
       { description: "日本簽賬 3%", matchType: "base", percentage: 3.0, isForeignCurrency: true },
       { description: "基本回饋 0.5%", matchType: "base", percentage: 0.5, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
@@ -484,7 +485,7 @@ export const HK_CARDS: CreditCard[] = [
     rewardTimeline: "現金回贈即時入賬",
     foreignCurrencyFee: 0,
     rules: [
-      { description: "全方位 2%", matchType: "base", percentage: 2.0, cap: 150000, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] }, // EarnMORE excludes utilities/fps for 2%, usually 0% or low
+      { description: "全方位 2%", matchType: "base", percentage: 2.0, cap: 150000, capType: "spending", excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] }, // $150000 spending cap
       { description: "八達通自動增值 2%", matchType: "category", matchValue: ["ewallet"], percentage: 2.0 },
     ],
     tags: ["全方位2%", "懶人必備"],
@@ -498,7 +499,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-yellow-300 to-yellow-500", textColor: "text-black" },
     foreignCurrencyFee: 0,
     rules: [
-      { description: "旅遊/主題公園/戲院/卡拉OK 4%", matchType: "category", matchValue: ["travel", "entertainment"], percentage: 4.0 },
+      { description: "旅遊/主題公園/戲院/卡拉OK 4%", matchType: "category", matchValue: ["travel", "entertainment"], percentage: 4.0, cap: 2000, capType: "reward" }, // Cap $2000 per year? Or month? Usually tiered.
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["娛樂4%", "旅遊4%"],
@@ -544,7 +545,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-pink-300 to-pink-500", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "網購/PayWave 2%", matchType: "category", matchValue: ["online", "paymentMethod"], percentage: 2.0, cap: 300000, excludeCategories: ["ewallet"] },
+      { description: "網購/PayWave 2%", matchType: "category", matchValue: ["online", "paymentMethod"], percentage: 2.0, cap: 300000, capType: "spending", excludeCategories: ["ewallet"] }, // 300,000 points cap
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["網購", "感應式支付"],
@@ -599,7 +600,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-orange-500 to-red-600", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "餐飲/網上 6%", matchType: "category", matchValue: ["dining", "online"], percentage: 6.0, cap: 3600, excludeCategories: ["ewallet"] },
+      { description: "餐飲/網上 6%", matchType: "category", matchValue: ["dining", "online"], percentage: 6.0, cap: 3600, capType: "spending", excludeCategories: ["ewallet"] }, // $3600 spending cap
       { description: "基本回饋 0.5%", matchType: "base", percentage: 0.5, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["餐飲6%", "網購6%"],
@@ -714,7 +715,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-purple-800 to-purple-950", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "網購 8%", matchType: "category", matchValue: "online", percentage: 8.0, cap: 2500, excludeCategories: ["ewallet"] },
+      { description: "網購 8%", matchType: "category", matchValue: "online", percentage: 8.0, cap: 200, capType: "reward", excludeCategories: ["ewallet"] }, // $200 reward cap
       { description: "指定商戶 3%", matchType: "merchant", matchValue: ["mcdonalds", "adidas"], percentage: 3.0 },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
