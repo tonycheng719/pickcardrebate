@@ -47,8 +47,8 @@ export default function Home() {
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white">信用卡回贈計算機</h1>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
               選擇商戶與消費方式，即刻知道哪張卡最抵。
-            </p>
-          </div>
+          </p>
+        </div>
         </div>
 
         <section className="mb-12">

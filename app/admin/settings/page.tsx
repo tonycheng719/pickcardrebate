@@ -5,12 +5,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAdminDataStore } from "@/lib/admin/data-store";
 import { Database } from "lucide-react";
-import { DEFAULT_SYSTEM_SETTINGS, SystemSetting } from "@/lib/admin/mock-data";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState<SystemSetting[]>(DEFAULT_SYSTEM_SETTINGS);
   const [saved, setSaved] = useState(false);
   const { uploadInitialData, isLoading } = useAdminDataStore();
+  
+  // Local state for Analytics (simulated backend fields)
+  const [analytics, setAnalytics] = useState({
+    ga4Id: "G-XXXXXXXXXX",
+    metaPixelId: "XXXXXXXXXXXXXXX"
+  });
 
   const toggleSetting = (id: string) => {
     setSettings((prev) =>
@@ -60,6 +67,32 @@ export default function AdminSettingsPage() {
               {isLoading ? "處理中..." : "上傳初始資料"}
             </Button>
           </div>
+        </CardContent>
+      </Card>
+
+      <Card className="dark:bg-gray-800 dark:border-gray-700">
+        <CardHeader>
+          <CardTitle className="text-lg dark:text-white">數據追蹤 (Analytics)</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+            <div className="grid gap-2">
+                <Label>Google Analytics 4 (GA4) Measurement ID</Label>
+                <Input 
+                    placeholder="G-XXXXXXXXXX" 
+                    value={analytics.ga4Id}
+                    onChange={(e) => setAnalytics({...analytics, ga4Id: e.target.value})}
+                />
+                <p className="text-xs text-gray-500">輸入後將自動在全站頁面載入 GA4 追蹤碼。</p>
+            </div>
+            <div className="grid gap-2">
+                <Label>Meta (Facebook) Pixel ID</Label>
+                <Input 
+                    placeholder="XXXXXXXXXXXXXXX" 
+                    value={analytics.metaPixelId}
+                    onChange={(e) => setAnalytics({...analytics, metaPixelId: e.target.value})}
+                />
+                <p className="text-xs text-gray-500">輸入後將自動在全站頁面載入 Pixel 追蹤碼。</p>
+            </div>
         </CardContent>
       </Card>
 

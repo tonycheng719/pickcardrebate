@@ -5,6 +5,8 @@ import React, { createContext, useContext, useState, useEffect, useMemo, useCall
 import { Transaction } from "../types";
 import { createClient } from "@/lib/supabase/client";
 import type { AuthChangeEvent, Session, User } from "@supabase/supabase-js";
+import { logUserIp } from "@/app/actions/log-ip";
+import { useRouter, usePathname } from "next/navigation";
 
 export interface CardSettings {
   note?: string;
@@ -18,9 +20,13 @@ export interface CardSettings {
 }
 
 export interface UserProfile {
+  id?: string; // Added ID
   name: string;
   email?: string;
   avatar?: string;
+  gender?: "male" | "female" | "other";
+  district?: string;
+  lastIp?: string;
   rewardPreference: "cash" | "miles";
   notifications: {
     promos: boolean;
@@ -31,29 +37,14 @@ export interface UserProfile {
 }
 
 interface WalletContextType {
-  myCardIds: string[];
-  cardSettings: Record<string, CardSettings>;
-  addCard: (cardId: string) => void;
-  removeCard: (cardId: string) => void;
-  hasCard: (cardId: string) => boolean;
-  updateCardSetting: (cardId: string, settings: Partial<CardSettings>) => void; // Renamed from updateCardSetting
-  addAllCards: (cardIds: string[]) => void;
+  // ... existing
   user: UserProfile | null;
   loginWithOAuth: (provider: "google" | "apple") => Promise<void>;
   requestSmsOtp: (phone: string) => Promise<void>;
   verifySmsOtp: (phone: string, token: string) => Promise<void>;
   logout: () => Promise<void>;
-  updateProfile: (profile: Partial<UserProfile>) => void;
-  
-  // Transactions
-  transactions: Transaction[];
-  addTransaction: (tx: Omit<Transaction, "id">) => void;
-  removeTransaction: (id: string) => void;
-
-  // Promos
-  followPromo: (promoId: string) => void;
-  unfollowPromo: (promoId: string) => void;
-  isPromoFollowed: (promoId: string) => boolean;
+  updateProfile: (profile: Partial<UserProfile>) => Promise<void>; // Changed to Promise
+  // ... existing
 }
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
@@ -70,6 +61,8 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const supabase = useMemo(() => createClient(), []);
+  const router = useRouter();
+  const pathname = usePathname();
 
   const buildUserFromSession = useCallback(
     (sessionUser: User, profileData?: any): UserProfile => {
@@ -81,9 +74,13 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
         "PickCardRebate 會員";
 
       return {
+        id: sessionUser.id,
         name: fullName,
         email: sessionUser.email ?? undefined,
         avatar: profileData?.avatar_url || sessionUser.user_metadata?.avatar_url,
+        gender: profileData?.gender,
+        district: profileData?.district,
+        lastIp: profileData?.last_ip,
         rewardPreference: (profileData?.reward_preference as "cash" | "miles") || "cash",
         notifications: profileData?.notifications || DEFAULT_NOTIFICATIONS,
         followedPromoIds: profileData?.followed_promo_ids || [],
@@ -99,10 +96,13 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
+      // Log IP in background
+      logUserIp().catch(console.error);
+
       try {
         const { data } = await supabase
           .from("profiles")
-          .select("name, avatar_url, reward_preference, notifications, followed_promo_ids")
+          .select("name, avatar_url, gender, district, last_ip, reward_preference, notifications, followed_promo_ids")
           .eq("id", sessionUser.id)
           .maybeSingle();
 
@@ -115,6 +115,18 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     },
     [buildUserFromSession, supabase]
   );
+
+  // Onboarding Redirect Logic
+  useEffect(() => {
+    if (isLoaded && user) {
+        // If user is logged in but missing gender/district
+        if ((!user.gender || !user.district) && pathname !== "/onboarding") {
+            // Prevent redirect loops or interfering with admin/auth pages if necessary
+            // For now, strict enforcement
+            router.push("/onboarding");
+        }
+    }
+  }, [user, isLoaded, pathname, router]);
 
   useEffect(() => {
     const savedCards = localStorage.getItem("pickcardrebate_wallet_cards");
@@ -267,9 +279,32 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
   };
 
-  const updateProfile = (profile: Partial<UserProfile>) => {
-    if (user) {
-      setUser({ ...user, ...profile });
+  const updateProfile = async (profile: Partial<UserProfile>) => {
+    if (user && user.id) {
+      // Optimistic update
+      const newUser = { ...user, ...profile };
+      setUser(newUser);
+
+      // Supabase update
+      const updates: any = {};
+      if (profile.name) updates.name = profile.name;
+      if (profile.avatar) updates.avatar_url = profile.avatar;
+      if (profile.gender) updates.gender = profile.gender;
+      if (profile.district) updates.district = profile.district;
+      if (profile.lastIp) updates.last_ip = profile.lastIp;
+      if (profile.rewardPreference) updates.reward_preference = profile.rewardPreference;
+      if (profile.notifications) updates.notifications = profile.notifications;
+      if (profile.followedPromoIds) updates.followed_promo_ids = profile.followedPromoIds;
+
+      const { error } = await supabase
+        .from("profiles")
+        .update(updates)
+        .eq("id", user.id);
+
+      if (error) {
+        console.error("Error updating profile:", error);
+        // Revert? For now, just log error
+      }
     }
   };
 

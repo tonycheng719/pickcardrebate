@@ -98,7 +98,7 @@ export default function LoginPage() {
               Apple 登入即將推出
             </div>
 
-            <div className="relative py-2">
+            <div className="relative py-2 hidden">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t dark:border-gray-700" />
               </div>
@@ -107,8 +107,8 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* SMS Login */}
-            <div className="space-y-2">
+            {/* SMS Login - Hidden temporarily */}
+            <div className="space-y-2 hidden">
               <div className="flex gap-2">
                 <div className="flex h-11 w-20 items-center justify-center rounded-md border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-sm text-gray-500 dark:text-gray-400">
                   +852

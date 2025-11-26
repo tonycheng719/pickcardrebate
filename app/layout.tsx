@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="zh-HK" suppressHydrationWarning>
       <body className="antialiased bg-gray-50 dark:bg-gray-950 min-h-screen text-gray-900 dark:text-gray-100 transition-colors duration-300 pb-20 md:pb-0">
         <Providers>
-          {children}
+        {children}
           <div className="md:hidden">
             <BottomNav />
           </div>

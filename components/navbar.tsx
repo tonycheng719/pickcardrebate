@@ -5,11 +5,12 @@ import { CreditCard, Wallet, LogOut, Settings, Moon, Sun } from "lucide-react";
 import { Button } from "./ui/button";
 import { useWallet } from "@/lib/store/wallet-context";
 import { useTheme } from "./theme-provider";
-import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function Navbar() {
   const { user, logout } = useWallet();
+  const router = useRouter();
   const { theme, setTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -121,9 +122,11 @@ export function Navbar() {
                                   </button>
                               </Link>
                               <button 
-                                  onClick={() => {
-                                      logout();
+                                  onClick={async () => {
+                                      await logout();
                                       setIsMenuOpen(false);
+                                      router.push("/");
+                                      router.refresh();
                                   }}
                                   className="w-full text-left px-3 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl flex items-center gap-3 transition-colors"
                               >
