@@ -1,17 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerFooter } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { submitReport } from "@/app/actions/submit-report";
 import { CheckCircle2, Flag } from "lucide-react";
 import { toast } from "sonner";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { useWallet } from "@/lib/store/wallet-context"; // Add this import
+import { useWallet } from "@/lib/store/wallet-context";
 
 interface ReportErrorDialogProps {
   open: boolean;
@@ -34,28 +33,27 @@ export function ReportErrorDialog({
   cardId,
   cardName
 }: ReportErrorDialogProps) {
-  const { user } = useWallet(); // Get user status
-  const [description, setDescription] = useState("");
-  const [proposedReward, setProposedReward] = useState("");
+  const { user } = useWallet();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
-  // Reset state when dialog opens
+  // Use refs for uncontrolled inputs to prevent re-render lag
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const proposedRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     if (open) {
         setIsSuccess(false);
-        setDescription("");
-        setProposedReward("");
+        // Don't clear refs immediately to allow animation, or clear manually
+        if (descriptionRef.current) descriptionRef.current.value = "";
+        if (proposedRef.current) proposedRef.current.value = "";
     }
   }, [open]);
 
   const handleSubmitClick = async (e: React.MouseEvent) => {
-    // Prevent default if inside a form (though we moved button out of form context if possible or keep preventDefault)
     e.preventDefault(); 
     e.stopPropagation();
-
-    console.log("Submit clicked");
 
     if (!user) {
         toast.error("請先登入會員", {
@@ -68,6 +66,9 @@ export function ReportErrorDialog({
         return;
     }
 
+    const description = descriptionRef.current?.value || "";
+    const proposedReward = proposedRef.current?.value || "";
+
     if (!description.trim()) {
         toast.error("請填寫錯誤描述");
         return;
@@ -76,30 +77,35 @@ export function ReportErrorDialog({
     setIsSubmitting(true);
     const loadingToast = toast.loading("正在提交回報...");
 
-    const formData = new FormData();
-    if (merchantName) formData.append("merchant_name", merchantName);
-    if (categoryId) formData.append("category_id", categoryId);
-    if (amount) formData.append("amount", amount);
-    if (paymentMethod) formData.append("payment_method", paymentMethod);
-    if (cardId) formData.append("card_id", cardId);
-    if (cardName) formData.append("card_name", cardName);
-    formData.append("description", description);
-    if (proposedReward) formData.append("proposed_reward", proposedReward);
-
     try {
-        console.log("Calling server action...");
-        const result = await submitReport({ success: false }, formData);
-        console.log("Server action result:", result);
+        const response = await fetch("/api/report", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                merchant_name: merchantName,
+                category_id: categoryId,
+                amount,
+                payment_method: paymentMethod,
+                card_id: cardId,
+                card_name: cardName,
+                description,
+                proposed_reward: proposedReward,
+                user_id: user.id
+            }),
+        });
 
-        if (result.error) {
-          toast.error(result.error);
-        } else {
-          setIsSuccess(true);
-          toast.success("回報已提交！");
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "提交失敗");
         }
-    } catch (error) {
+
+        setIsSuccess(true);
+        toast.success("回報已提交！");
+    } catch (error: any) {
         console.error("Submission error:", error);
-        toast.error("提交失敗，請稍後再試");
+        toast.error(error.message || "提交失敗，請稍後再試");
     } finally {
         toast.dismiss(loadingToast);
         setIsSubmitting(false);
@@ -144,11 +150,11 @@ export function ReportErrorDialog({
             <Label htmlFor="description">錯誤描述 / 正確算法 <span className="text-red-500">*</span></Label>
             <Textarea
                 id="description"
+                ref={descriptionRef}
                 placeholder="例如：此卡在該商戶只有 0.4% 回贈，因為..."
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
                 required
                 rows={3}
+                className="resize-none"
             />
         </div>
 
@@ -156,15 +162,14 @@ export function ReportErrorDialog({
             <Label htmlFor="proposed">建議回贈 % (選填)</Label>
             <Input
                 id="proposed"
+                ref={proposedRef}
                 placeholder="例如：0.4"
-                value={proposedReward}
-                onChange={(e) => setProposedReward(e.target.value)}
             />
         </div>
 
         <div className="pt-2">
             <Button 
-                type="button" // Changed to button to prevent form submission issues
+                type="button"
                 onClick={handleSubmitClick} 
                 disabled={isSubmitting} 
                 className="w-full"
