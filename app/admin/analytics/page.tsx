@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart3, TrendingUp, Calculator, PieChart, Wallet, Smartphone, Loader2, AlertTriangle } from "lucide-react";
+import { TrendingUp, Calculator, PieChart, Smartphone, Loader2, AlertTriangle } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 
@@ -19,7 +19,6 @@ export default function AdminAnalyticsPage() {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   
-  // Move createClient outside render loop usually, but safe here if env vars stable
   const supabase = createClient();
 
   useEffect(() => {
@@ -27,7 +26,6 @@ export default function AdminAnalyticsPage() {
       setLoading(true);
       setErrorMsg(null);
 
-      // Check Env Vars explicitly for debugging
       if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
           setErrorMsg("環境變數未設定 (NEXT_PUBLIC_SUPABASE_URL)");
           setLoading(false);
@@ -35,16 +33,24 @@ export default function AdminAnalyticsPage() {
       }
 
       try {
-        const { data: rpcData, error } = await supabase.rpc("get_analytics_summary");
+        // Use Promise.race to enforce a timeout
+        const rpcPromise = supabase.rpc("get_analytics_summary");
+        const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error("連線逾時 (10s) - 請檢查網絡或 Supabase 狀態")), 10000)
+        );
+
+        const { data: rpcData, error } = await Promise.race([rpcPromise, timeoutPromise]) as any;
         
         if (error) {
           console.error("Failed to fetch analytics:", error);
-          setErrorMsg(error.message);
+          setErrorMsg(error.message || "無法獲取數據");
           return;
         }
 
         if (rpcData) {
              setData(rpcData as AnalyticsSummary);
+        } else {
+             setErrorMsg("回傳數據為空");
         }
       } catch (e: any) {
         console.error("Error fetching analytics:", e);
@@ -55,14 +61,13 @@ export default function AdminAnalyticsPage() {
     };
 
     fetchAnalytics();
-  }, []); // Empty dependency array is safer for single fetch
+  }, []);
 
   if (loading) {
       return (
           <div className="flex flex-col items-center justify-center h-96 gap-4">
               <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
               <p className="text-gray-500">正在載入分析數據...</p>
-              {/* Debug Info */}
               <p className="text-xs text-gray-400">Supabase URL: {process.env.NEXT_PUBLIC_SUPABASE_URL ? "Set" : "Missing"}</p>
           </div>
       );
