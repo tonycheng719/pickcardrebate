@@ -13,6 +13,7 @@ export function BottomNav() {
     { name: "計算", href: "/", icon: Repeat, active: pathname === "/" || pathname.startsWith("/calculator") },
     { name: "卡片", href: "/cards", icon: CreditCard, active: pathname.startsWith("/cards") },
     { name: "優惠", href: "/promos", icon: Compass, active: pathname.startsWith("/promos") },
+    { name: "錢包", href: "/wallet", icon: Wallet, active: pathname.startsWith("/wallet") },
   ];
 
   return (
