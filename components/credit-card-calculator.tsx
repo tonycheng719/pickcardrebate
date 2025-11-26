@@ -20,6 +20,7 @@ import { CheckCircle2, CreditCard, DollarSign, Sparkles } from "lucide-react";
 import { DynamicIcon } from "@/components/dynamic-icon";
 import { useDataset } from "@/lib/admin/data-store";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { ReportErrorDialog } from "@/components/report-error-dialog";
 
 const PAYMENT_OPTIONS = [
   { id: "physical_card", label: "實體卡" },
@@ -198,6 +199,17 @@ export function CreditCardCalculator({
                 </div>
               </div>
             ))}
+          </div>
+
+          <div className="pt-2 border-t border-gray-100 dark:border-gray-800 flex justify-center">
+             <ReportErrorDialog 
+                merchantName={selectedMerchant?.name}
+                categoryId={selectedMerchant?.categoryIds[0]}
+                amount={amount}
+                paymentMethod={PAYMENT_OPTIONS.find(p => p.id === paymentMethod)?.label}
+                cardName={best?.card.name}
+                cardId={best?.card.id}
+             />
           </div>
         </>
       )}
