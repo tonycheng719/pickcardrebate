@@ -8,6 +8,7 @@ import { useWallet } from "@/lib/store/wallet-context";
 import { User, Bell, Wallet, Save } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function SettingsPage() {
   const { user, updateProfile } = useWallet();
