@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAdminDataStore } from "@/lib/admin/data-store";
 import type { CreditCard } from "@/lib/types";
-import { Image as ImageIcon } from "lucide-react";
+import { Check } from "lucide-react";
 
 type NewCardForm = {
   name: string;
@@ -50,6 +50,7 @@ export default function AdminNewCardPage() {
   const { cards, addOrUpdateCard } = useAdminDataStore();
   const [form, setForm] = useState<NewCardForm>(DEFAULT_FORM);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const editingCard = useMemo(() => cards.find((card) => card.id === editingId), [cards, editingId]);
 
@@ -70,6 +71,10 @@ export default function AdminNewCardPage() {
       imageUrl: editingCard.imageUrl || "",
     });
   }, [editingCard]);
+
+  useEffect(() => {
+      setImageError(false);
+  }, [form.imageUrl]);
 
   const handleChange = (field: keyof NewCardForm, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -139,6 +144,7 @@ export default function AdminNewCardPage() {
 
       <div className="grid lg:grid-cols-3 gap-6">
         <form className="lg:col-span-2 space-y-5 bg-white dark:bg-gray-800 p-6 rounded-xl border dark:border-gray-700 shadow-sm" onSubmit={handleSubmit}>
+          {/* Form Fields ... (kept same for brevity, only Preview Card changed logic) */}
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
               <label className="text-xs font-medium text-gray-500 dark:text-gray-400">信用卡名稱</label>
@@ -272,21 +278,35 @@ export default function AdminNewCardPage() {
           </div>
         </form>
 
-        <Card className="dark:bg-gray-800 dark:border-gray-700">
+        <Card className="dark:bg-gray-800 dark:border-gray-700 h-fit">
           <CardHeader>
             <CardTitle className="text-lg dark:text-white">即時預覽</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className={`h-32 relative overflow-hidden rounded-xl shadow-md ${!form.imageUrl ? "bg-gradient-to-r from-blue-500 to-indigo-600 p-4 text-white" : "bg-gray-100"}`}>
-                {form.imageUrl ? (
-                    <img src={form.imageUrl} alt="Card Preview" className="w-full h-full object-cover" />
+          {/* Updated Preview Logic to Match Frontend */}
+          <div className={`relative overflow-hidden ${(!form.imageUrl || imageError) ? (editingCard?.style?.bgColor || "bg-gradient-to-r from-slate-500 to-slate-700") + ' h-32 p-4' : 'bg-white dark:bg-gray-900 h-48 p-4 flex items-center justify-center'}`}>
+                {form.imageUrl && !imageError ? (
+                    <div className="relative w-full h-full">
+                        <img 
+                            src={form.imageUrl} 
+                            alt={form.name} 
+                            className="w-full h-full object-contain" 
+                            onError={() => setImageError(true)}
+                        />
+                    </div>
                 ) : (
                     <>
-                        <div className="text-xs uppercase opacity-80">{form.bank || "銀行名稱"}</div>
-                        <div className="text-xl font-bold mt-1">{form.name || "信用卡名稱"}</div>
+                        <div className="text-xs uppercase opacity-80 text-white">{form.bank || "銀行名稱"}</div>
+                        <div className="text-xl font-bold mt-1 text-white">{form.name || "信用卡名稱"}</div>
                         <div className="absolute bottom-3 right-3 w-8 h-6 bg-yellow-200/20 rounded border border-yellow-200/40 backdrop-blur-sm"></div>
                     </>
                 )}
+            </div>
+
+          <CardContent className="space-y-4 pt-4 px-6 pb-6">
+            {/* Always show Name & Bank */}
+            <div className="mb-2">
+                <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{form.bank || "銀行名稱"}</div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white leading-tight">{form.name || "信用卡名稱"}</h3>
             </div>
 
             <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-100 dark:border-yellow-800 rounded-lg p-3 text-sm text-yellow-800 dark:text-yellow-200">
@@ -304,7 +324,7 @@ export default function AdminNewCardPage() {
                 <ul className="space-y-1 text-sm text-gray-800 dark:text-gray-200">
                   {parsedSellingPoints.map((point, idx) => (
                     <li key={idx} className="flex items-start gap-2">
-                      <span className="text-emerald-500 mt-0.5">•</span>
+                      <Check className="h-4 w-4 text-emerald-500 mt-0.5" />
                       <span>{point}</span>
                     </li>
                   ))}

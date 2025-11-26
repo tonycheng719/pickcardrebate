@@ -26,6 +26,7 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 
 function ReviewsDialog({ card, children }: { card: CreditCard; children: React.ReactNode }) {
+    // ... (existing code)
     const { user } = useWallet();
     const { getReviewsByCardId, addReview } = useReviews();
     const [reviewContent, setReviewContent] = useState("");
@@ -153,16 +154,20 @@ function CardItem({ card }: { card: CreditCard }) {
 
     return (
         <Card className="flex flex-col h-full hover:shadow-md transition-shadow group overflow-hidden border-0 ring-1 ring-gray-200 dark:ring-gray-700 dark:bg-gray-800">
-            {/* Card Visual Header */}
-            <div className={`h-32 relative overflow-hidden ${(!card.imageUrl || imageError) ? card.style.bgColor + ' p-4' : 'bg-gray-100'}`}>
+            {/* Card Visual Header - Improved Layout */}
+            <div className={`relative overflow-hidden ${(!card.imageUrl || imageError) ? card.style.bgColor + ' h-32 p-4' : 'bg-white dark:bg-gray-900 h-48 p-4 flex items-center justify-center'}`}>
                 {card.imageUrl && !imageError ? (
-                    <img 
-                        src={card.imageUrl} 
-                        alt={card.name} 
-                        className="w-full h-full object-cover" 
-                        onError={() => setImageError(true)}
-                    />
+                    <div className="relative w-full h-full">
+                         {/* Card Image - Contain mode to show full card, slightly scaled down to leave room */}
+                        <img 
+                            src={card.imageUrl} 
+                            alt={card.name} 
+                            className="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-300" 
+                            onError={() => setImageError(true)}
+                        />
+                    </div>
                 ) : (
+                    // Fallback Gradient Style
                     <>
                         <div className={`font-bold text-lg ${card.style.textColor} opacity-90`}>{card.bank}</div>
                         <div className={`text-2xl font-bold mt-1 ${card.style.textColor}`}>{card.name}</div>
@@ -171,7 +176,13 @@ function CardItem({ card }: { card: CreditCard }) {
                 )}
             </div>
 
-            <CardContent className="flex-1 flex flex-col pt-4">
+            <CardContent className="flex-1 flex flex-col pt-2 pb-6 px-6"> {/* Adjusted padding */}
+                {/* Always show Card Name & Bank below visual */}
+                <div className="mb-4">
+                    <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{card.bank}</div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white leading-tight">{card.name}</h3>
+                </div>
+
                 <div className="flex flex-wrap gap-2 mb-4">
                 {card.tags.map(tag => (
                     <span key={tag} className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded text-xs font-medium">
