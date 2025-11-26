@@ -16,7 +16,7 @@ import { CATEGORIES } from "@/lib/data/categories";
 import { HK_CARDS } from "@/lib/data/cards";
 import { findBestCards, CalculationResult } from "@/lib/logic/calculator";
 import { useWallet } from "@/lib/store/wallet-context";
-import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle, Lightbulb, Store, Globe } from "lucide-react";
+import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle, Lightbulb, Store, Globe, ChevronDown, ChevronUp } from "lucide-react";
 import { DynamicIcon } from "@/components/dynamic-icon";
 import { useDataset } from "@/lib/admin/data-store";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -78,6 +78,7 @@ export function CreditCardCalculator({
   const [isOnlineScenario, setIsOnlineScenario] = useState(false); // New state for online toggle
   const [results, setResults] = useState<CalculationResult[]>([]);
   const [open, setOpen] = useState(false);
+  const [showAllResults, setShowAllResults] = useState(false); // Toggle for showing all results
   
   // Separate state for report dialog
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
@@ -170,10 +171,26 @@ export function CreditCardCalculator({
 
     setResults(res);
     setOpen(true);
+    setShowAllResults(false); // Reset show all on new calculation
   };
 
   const best = results[0];
-  const others = results.slice(1);
+  
+  // Filter Logic for Display
+  const otherResults = results.slice(1);
+  
+  // 1. My Best Card (if 'best' is not owned)
+  // Find the first card in 'others' that is owned by user
+  const myBestCardIndex = otherResults.findIndex(r => myCardIds.includes(r.card.id));
+  const myBestCard = myBestCardIndex !== -1 ? otherResults[myBestCardIndex] : null;
+
+  // 2. My Other Cards (owned cards that are not 'best' and not 'myBestCard')
+  const myOtherCards = otherResults.filter((r, index) => 
+      myCardIds.includes(r.card.id) && index !== myBestCardIndex
+  );
+
+  // 3. The Rest (unowned cards, filtered out by default)
+  const unownedCards = otherResults.filter(r => !myCardIds.includes(r.card.id));
 
   const handleReportClick = () => {
     // Close the result dialog to avoid stacking issues
@@ -184,19 +201,75 @@ export function CreditCardCalculator({
     }, 100);
   };
 
+  const ResultRow = ({ result, isBest = false }: { result: CalculationResult, isBest?: boolean }) => (
+      <div
+        className={`rounded-xl border p-3 flex items-center justify-between relative ${isBest ? 'bg-emerald-50 border-emerald-200' : 'bg-white dark:bg-gray-900'}`}
+      >
+        {result.isCapped && (
+          <div className="absolute top-2 right-2 text-amber-500" title="已達上限">
+            <AlertCircle className="w-3 h-3" />
+          </div>
+        )}
+        <div>
+          <p className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              {result.card.name}
+              {isBest && <span className="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full font-bold">最抵</span>}
+          </p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">{result.matchedRule.description}</p>
+          
+          {/* Mini Condition Tags */}
+          <div className="flex flex-wrap gap-1 mt-1">
+              {result.matchedRule.validDays && (
+                <span className="text-[10px] text-blue-500 bg-blue-50 px-1 rounded">
+                    僅限 {result.matchedRule.validDays.map(d => DAYS_MAP[d]).join("/")}
+                </span>
+              )}
+               {result.matchedRule.cap && (
+                 <span className="text-[10px] text-gray-400">
+                   (上限 {result.matchedRule.capType === 'spending' ? '簽' : '回'} ${result.matchedRule.cap})
+                 </span>
+               )}
+          </div>
+
+          {/* Date Suggestion */}
+           {result.dateSuggestion && (
+               <div className="text-[10px] text-blue-500 mt-1 flex items-center gap-1">
+                   <Lightbulb className="w-3 h-3" />
+                   {result.dateSuggestion.validDays.map(d => DAYS_MAP[d]).join("/")} 可享 {result.dateSuggestion.newPercentage}%
+               </div>
+           )}
+
+          {myCardIds.includes(result.card.id) && (
+            <span className="text-xs text-emerald-500 inline-flex items-center gap-1 mt-1">
+              <CreditCard className="h-3 w-3" /> 你已持有
+            </span>
+          )}
+        </div>
+        <div className="text-right">
+          <div className={`text-lg font-bold ${isBest ? 'text-emerald-700' : 'text-gray-800 dark:text-gray-100'}`}>
+            {result.rewardAmount > 0 ? `+$${result.rewardAmount.toFixed(1)}` : `${result.percentage}%`}
+          </div>
+        </div>
+      </div>
+  );
+
   const ResultContent = () => (
     <div className="space-y-4 p-4 pb-8">
       {!best ? (
         <p className="text-gray-500 text-sm">請輸入金額並重新計算。</p>
       ) : (
         <>
-          <div className="rounded-2xl border-2 border-emerald-200 p-4 bg-emerald-50 relative overflow-hidden">
+          {/* 1. HERO CARD: The Absolute Best Option */}
+          <div className="rounded-2xl border-2 border-emerald-200 p-4 bg-emerald-50 relative overflow-hidden shadow-sm">
             {best.isCapped && (
               <div className="absolute top-0 right-0 bg-amber-100 text-amber-700 text-[10px] px-2 py-1 rounded-bl-lg font-medium flex items-center gap-1">
                 <AlertCircle className="w-3 h-3" /> 已達上限
               </div>
             )}
-            <div className="text-xs uppercase text-emerald-600 font-bold mb-1">本場最抵</div>
+            <div className="text-xs uppercase text-emerald-600 font-bold mb-1 flex justify-between">
+                <span>全場最抵</span>
+                {!myCardIds.includes(best.card.id) && <span className="text-orange-500">你未持有</span>}
+            </div>
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-sm text-gray-500">{best.card.bank}</p>
@@ -219,30 +292,22 @@ export function CreditCardCalculator({
                    )}
                 </div>
 
-                {myCardIds.includes(best.card.id) ? (
-                  <span className="inline-flex items-center gap-1 text-xs text-emerald-600 mt-2">
-                    <CheckCircle2 className="h-3 w-3" /> 你已持有
+                {myCardIds.includes(best.card.id) && (
+                  <span className="inline-flex items-center gap-1 text-xs text-emerald-600 mt-2 font-medium">
+                    <CheckCircle2 className="h-3 w-3" /> 你已持有，用這張！
                   </span>
-                ) : null}
+                )}
               </div>
               <div className="text-right">
-                <div className="text-2xl font-bold text-emerald-700">
+                <div className="text-3xl font-bold text-emerald-700 tracking-tight">
                   {best.rewardAmount > 0 ? `+$${best.rewardAmount.toFixed(1)}` : `${best.percentage}%`}
                 </div>
                 {best.card.welcomeOfferText && !myCardIds.includes(best.card.id) && (
-                  <div className="text-xs text-orange-500 mt-2">{best.card.welcomeOfferText}</div>
+                  <div className="text-xs text-orange-500 mt-2 font-medium">{best.card.welcomeOfferText}</div>
                 )}
               </div>
             </div>
-            {!myCardIds.includes(best.card.id) && best.card.applyUrl && (
-              <Button
-                className="w-full mt-3 bg-orange-500 hover:bg-orange-600"
-                onClick={() => window.open(best.card.applyUrl, "_blank")}
-              >
-                立即申請
-              </Button>
-            )}
-
+            
             {/* Date Suggestion Logic */}
             {best.dateSuggestion && (
                 <div className="mt-3 p-3 bg-blue-50 border border-blue-100 rounded-xl flex items-start gap-2 animate-in fade-in slide-in-from-bottom-2">
@@ -254,58 +319,62 @@ export function CreditCardCalculator({
                     </div>
                 </div>
             )}
+
+            {!myCardIds.includes(best.card.id) && best.card.applyUrl && (
+              <Button
+                className="w-full mt-3 bg-orange-500 hover:bg-orange-600 h-9 text-sm"
+                onClick={() => window.open(best.card.applyUrl, "_blank")}
+              >
+                立即申請
+              </Button>
+            )}
           </div>
 
           <div className="space-y-3 max-h-[40vh] overflow-y-auto pr-1">
-            {others.map((result) => (
-              <div
-                key={result.card.id}
-                className="rounded-xl border bg-white dark:bg-gray-900 p-3 flex items-center justify-between relative"
-              >
-                {result.isCapped && (
-                  <div className="absolute top-2 right-2 text-amber-500" title="已達上限">
-                    <AlertCircle className="w-3 h-3" />
-                  </div>
-                )}
-                <div>
-                  <p className="font-semibold text-gray-900 dark:text-white">{result.card.name}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{result.matchedRule.description}</p>
-                  
-                  {/* Mini Condition Tags for others */}
-                  <div className="flex flex-wrap gap-1 mt-1">
-                      {result.matchedRule.validDays && (
-                        <span className="text-[10px] text-blue-500 bg-blue-50 px-1 rounded">
-                            僅限 {result.matchedRule.validDays.map(d => DAYS_MAP[d]).join("/")}
-                        </span>
-                      )}
-                       {result.matchedRule.cap && (
-                         <span className="text-[10px] text-gray-400">
-                           (上限 {result.matchedRule.capType === 'spending' ? '簽' : '回'} ${result.matchedRule.cap})
-                         </span>
-                       )}
-                  </div>
-
-                  {/* Date Suggestion for Others */}
-                   {result.dateSuggestion && (
-                       <div className="text-[10px] text-blue-500 mt-1 flex items-center gap-1">
-                           <Lightbulb className="w-3 h-3" />
-                           {result.dateSuggestion.validDays.map(d => DAYS_MAP[d]).join("/")} 可享 {result.dateSuggestion.newPercentage}%
-                       </div>
-                   )}
-
-                  {myCardIds.includes(result.card.id) && (
-                    <span className="text-xs text-emerald-500 inline-flex items-center gap-1 mt-1">
-                      <CreditCard className="h-3 w-3" /> 你已持有
-                    </span>
-                  )}
+            
+            {/* 2. My Best Card (If the best card above is NOT owned) */}
+            {(!myCardIds.includes(best.card.id) && myBestCard) && (
+                <div className="space-y-1">
+                    <div className="text-xs text-gray-500 font-medium px-1">你的錢包中最抵：</div>
+                    <ResultRow result={myBestCard} isBest={false} />
                 </div>
-                <div className="text-right">
-                  <div className="text-lg font-bold text-gray-800 dark:text-gray-100">
-                    {result.rewardAmount > 0 ? `+$${result.rewardAmount.toFixed(1)}` : `${result.percentage}%`}
-                  </div>
+            )}
+
+            {/* 3. My Other Cards */}
+            {myOtherCards.length > 0 && (
+                <div className="space-y-1 pt-2">
+                    <div className="text-xs text-gray-500 font-medium px-1">你持有的其他卡：</div>
+                    {myOtherCards.map(card => (
+                        <ResultRow key={card.card.id} result={card} />
+                    ))}
                 </div>
-              </div>
-            ))}
+            )}
+
+            {/* 4. Toggle for Unowned Cards */}
+            {unownedCards.length > 0 && (
+                <div className="pt-2">
+                    <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="w-full text-xs text-gray-400 hover:text-gray-600 h-8"
+                        onClick={() => setShowAllResults(!showAllResults)}
+                    >
+                        {showAllResults ? (
+                            <span className="flex items-center gap-1">收起其他結果 <ChevronUp className="w-3 h-3"/></span>
+                        ) : (
+                            <span className="flex items-center gap-1">查看其他未持有的卡 ({unownedCards.length}) <ChevronDown className="w-3 h-3"/></span>
+                        )}
+                    </Button>
+                    
+                    {showAllResults && (
+                        <div className="space-y-2 mt-2 animate-in fade-in slide-in-from-top-2">
+                            {unownedCards.map(card => (
+                                <ResultRow key={card.card.id} result={card} />
+                            ))}
+                        </div>
+                    )}
+                </div>
+            )}
           </div>
 
           <div className="pt-2 border-t border-gray-100 dark:border-gray-800 flex justify-center">
