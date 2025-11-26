@@ -181,6 +181,10 @@ function calculateCardReward(
             isMatch = matchedMerchant.categoryIds.includes(rule.matchValue as string);
           }
         }
+        // SPECIAL LOGIC: If paymentMethod is 'online', also match category 'online'
+        if (paymentMethod === 'online' && rule.matchValue === 'online') {
+            isMatch = true;
+        }
       }
       else if (rule.matchType === "paymentMethod") {
         const pMethod = paymentMethod || "";
