@@ -12,6 +12,7 @@ export async function GET(request: Request) {
 
   // Force production URL for redirect to avoid localhost issues behind proxy
   const productionOrigin = "https://pickcardrebate-web.zeabur.app";
+  const redirectTo = searchParams.get("redirect") || "/";
   return NextResponse.redirect(`${productionOrigin}${redirectTo}`);
 }
 
