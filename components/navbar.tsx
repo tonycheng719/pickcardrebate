@@ -128,12 +128,11 @@ export function Navbar() {
                                       e.stopPropagation();
                                       try {
                                           await logout();
-                                          router.push("/");
-                                          router.refresh();
+                                          // Force hard reload to clear all states and cache
+                                          window.location.href = "/";
                                       } catch (error) {
                                           console.error("Logout failed", error);
-                                      } finally {
-                                          setIsMenuOpen(false);
+                                          window.location.href = "/";
                                       }
                                   }}
                                   className="w-full text-left px-3 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl flex items-center gap-3 transition-colors"
