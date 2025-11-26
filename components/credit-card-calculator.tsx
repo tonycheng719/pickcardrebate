@@ -56,7 +56,7 @@ type CreditCardCalculatorProps = {
 
 export function CreditCardCalculator({
   showIntro = true,
-  title = "信用卡回贈計算機",
+  title = "信用卡回贈計算機 (Beta)",
   subtitle = "選擇商戶與消費方式，即時計算最高回贈信用卡。",
 }: CreditCardCalculatorProps) {
   const { myCardIds, user } = useWallet(); // Get user from wallet context
