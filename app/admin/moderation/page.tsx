@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, X, Info, Loader2, Trash2 } from "lucide-react";
+import { Check, X, Info, Loader2, Trash2, AlertTriangle } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 
@@ -13,7 +13,7 @@ interface Report {
   category_id: string;
   amount: string;
   payment_method: string;
-  card_id: string; // Added card_id
+  card_id: string;
   card_name: string;
   description: string;
   proposed_reward: string;
@@ -25,22 +25,40 @@ interface Report {
 export default function AdminModerationPage() {
   const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const supabase = createClient();
 
   const fetchReports = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("reports")
-      .select("*")
-      .order("created_at", { ascending: false });
+    setErrorMsg(null);
+    try {
+        // Add timeout using Promise.race
+        const fetchPromise = supabase
+            .from("reports")
+            .select("*")
+            .order("created_at", { ascending: false });
+        
+        const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error("Request timed out")), 10000)
+        );
 
-    if (error) {
-      console.error("Failed to fetch reports:", error);
-      toast.error("載入回報失敗");
-    } else {
-      setReports(data as Report[]);
+        const result: any = await Promise.race([fetchPromise, timeoutPromise]);
+        
+        const { data, error } = result;
+
+        if (error) {
+            console.error("Supabase fetch error:", error);
+            throw error;
+        }
+
+        setReports(data as Report[]);
+    } catch (err: any) {
+        console.error("Fetch reports exception:", err);
+        setErrorMsg(err.message || "載入失敗，請檢查網絡或權限");
+        toast.error("載入回報失敗: " + (err.message || "未知錯誤"));
+    } finally {
+        setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -86,8 +104,20 @@ export default function AdminModerationPage() {
 
   if (loading) {
       return (
-          <div className="flex items-center justify-center h-96">
+          <div className="flex flex-col items-center justify-center h-96 gap-4">
               <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+              <p className="text-gray-500">正在載入回報資料...</p>
+          </div>
+      );
+  }
+
+  if (errorMsg) {
+      return (
+          <div className="flex flex-col items-center justify-center h-96 gap-4">
+              <AlertTriangle className="h-12 w-12 text-red-500" />
+              <h3 className="text-lg font-medium">載入失敗</h3>
+              <p className="text-gray-500">{errorMsg}</p>
+              <Button onClick={fetchReports}>重試</Button>
           </div>
       );
   }
