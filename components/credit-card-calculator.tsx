@@ -428,22 +428,25 @@ export function CreditCardCalculator({
 
             {/* Scenario Toggle for Ambiguous Payments */}
             {AMBIGUOUS_PAYMENT_METHODS.includes(paymentMethod) && (
-                <div className="mt-2 animate-in fade-in slide-in-from-top-2">
+                <div className="mt-3 p-3 bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 rounded-xl">
+                    <Label className="text-xs text-gray-500 dark:text-gray-400 mb-2 block">
+                        請問您的付款場景是？
+                    </Label>
                     <RadioGroup 
                         value={isOnlineScenario ? "online" : "offline"} 
                         onValueChange={(v) => setIsOnlineScenario(v === "online")}
-                        className="flex gap-4"
+                        className="flex flex-col sm:flex-row gap-3"
                     >
                         <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="offline" id="offline" />
-                            <Label htmlFor="offline" className="flex items-center gap-1.5 text-sm text-gray-600 cursor-pointer font-normal">
-                                <Store className="w-3.5 h-3.5" /> 門市付款
+                            <RadioGroupItem value="offline" id="offline" className="text-emerald-600 border-gray-300" />
+                            <Label htmlFor="offline" className="flex items-center gap-1.5 text-sm text-gray-700 dark:text-gray-300 cursor-pointer font-normal">
+                                <Store className="w-4 h-4 text-gray-500" /> 門市付款
                             </Label>
                         </div>
                         <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="online" id="online" />
-                            <Label htmlFor="online" className="flex items-center gap-1.5 text-sm text-gray-600 cursor-pointer font-normal">
-                                <Globe className="w-3.5 h-3.5" /> 網上 / App 內付款
+                            <RadioGroupItem value="online" id="online" className="text-emerald-600 border-gray-300" />
+                            <Label htmlFor="online" className="flex items-center gap-1.5 text-sm text-gray-700 dark:text-gray-300 cursor-pointer font-normal">
+                                <Globe className="w-4 h-4 text-gray-500" /> 網上 / App 內付款
                             </Label>
                         </div>
                     </RadioGroup>
