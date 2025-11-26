@@ -6,9 +6,10 @@ import { headers } from "next/headers";
 export async function logUserIp() {
   try {
     const supabase = await createClient();
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
 
-    if (!session || !session.user) {
+    if (userError || !user) {
+      // Silent fail if not logged in
       return { error: "Unauthorized" };
     }
 
@@ -29,7 +30,7 @@ export async function logUserIp() {
     const { error } = await supabase
       .from("profiles")
       .update({ last_ip: ip })
-      .eq("id", session.user.id);
+      .eq("id", user.id);
 
     if (error) {
       console.error("Failed to log IP:", error);

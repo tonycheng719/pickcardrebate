@@ -9,9 +9,9 @@ export type SubmitReportState = {
 
 export async function submitReport(prevState: SubmitReportState, formData: FormData): Promise<SubmitReportState> {
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
 
-  if (!session) {
+  if (userError || !user) {
     return { error: "請先登入會員" };
   }
 
@@ -29,7 +29,7 @@ export async function submitReport(prevState: SubmitReportState, formData: FormD
 
   try {
     const { error } = await supabase.from("reports").insert({
-      user_id: session.user.id,
+      user_id: user.id,
       merchant_name,
       category_id,
       amount,
