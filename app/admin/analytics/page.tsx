@@ -1,67 +1,117 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart3, TrendingUp, Calculator, PieChart, Wallet, Smartphone } from "lucide-react";
+import { BarChart3, TrendingUp, Calculator, PieChart, Wallet, Smartphone, Loader2 } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
+
+interface AnalyticsSummary {
+  total_searches: number;
+  avg_amount: number;
+  top_merchants: { merchant_name: string; count: number }[];
+  category_stats: { category_id: string; count: number }[];
+  payment_stats: { payment_method: string; count: number }[];
+}
 
 export default function AdminAnalyticsPage() {
-  // Mock Data for Calculation Analytics
-  const topMerchants = [
-    { name: "壽司郎 Sushiro", count: 2450, trend: "+15%" },
-    { name: "HKTVmall", count: 1890, trend: "+8%" },
-    { name: "Apple Store", count: 1200, trend: "+25%" },
-    { name: "Klook", count: 980, trend: "+12%" },
-    { name: "百佳 ParknShop", count: 850, trend: "-5%" },
-  ];
+  const [data, setData] = useState<AnalyticsSummary | null>(null);
+  const [loading, setLoading] = useState(true);
+  const supabase = createClient();
 
-  const categoryDistribution = [
-    { name: "餐飲美食", percentage: 35, color: "bg-orange-500" },
-    { name: "網上購物", percentage: 28, color: "bg-blue-500" },
-    { name: "超市百貨", percentage: 18, color: "bg-green-500" },
-    { name: "旅遊外幣", percentage: 12, color: "bg-purple-500" },
-    { name: "其他", percentage: 7, color: "bg-gray-400" },
-  ];
+  useEffect(() => {
+    const fetchAnalytics = async () => {
+      try {
+        const { data: rpcData, error } = await supabase.rpc("get_analytics_summary");
+        
+        if (error) {
+          console.error("Failed to fetch analytics:", error);
+          return;
+        }
 
-  const paymentMethods = [
-    { name: "Apple Pay / Google Pay", count: 4500, trend: "+10%" },
-    { name: "實體卡", count: 2100, trend: "-5%" },
-    { name: "網上輸入信用卡", count: 1800, trend: "+2%" },
-  ];
+        if (rpcData) {
+             // rpcData is technically 'any' or typed if we generated types
+             // The RPC returns a JSON object, so Supabase client might return it directly
+             setData(rpcData as AnalyticsSummary);
+        }
+      } catch (e) {
+        console.error("Error fetching analytics:", e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAnalytics();
+  }, [supabase]);
+
+  if (loading) {
+      return (
+          <div className="flex items-center justify-center h-96">
+              <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+          </div>
+      );
+  }
+
+  if (!data) {
+      return <div className="p-8 text-center text-gray-500">暫無數據</div>;
+  }
+
+  // Helper for colors
+  const getRankColor = (i: number) => {
+      if (i === 0) return "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400";
+      if (i === 1) return "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300";
+      if (i === 2) return "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400";
+      return "bg-gray-50 text-gray-500 dark:bg-gray-800/50 dark:text-gray-400";
+  };
+
+  const getCategoryName = (id: string) => {
+      const map: Record<string, string> = {
+          dining: "餐飲美食",
+          online: "網上購物",
+          supermarket: "超市百貨",
+          travel: "旅遊外幣",
+          general: "一般簽賬",
+          mobile: "手機支付",
+          apple_pay: "Apple Pay",
+          google_pay: "Google Pay"
+      };
+      return map[id] || id;
+  };
 
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">計算行為分析</h1>
-        <p className="text-gray-500 dark:text-gray-400">洞察用戶消費習慣，優化推廣策略與商戶合作。</p>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">數據分析儀表板</h1>
+        <p className="text-gray-500 dark:text-gray-400">基於真實搜尋紀錄 ({data.total_searches} 筆) 的用戶行為分析。</p>
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">
         <Card className="dark:bg-gray-800 dark:border-gray-700">
             <CardContent className="p-6">
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">今日計算次數</p>
+                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">總搜尋次數</p>
                 <div className="flex items-baseline gap-2 mt-1">
-                    <h3 className="text-3xl font-bold text-gray-900 dark:text-white">12,502</h3>
+                    <h3 className="text-3xl font-bold text-gray-900 dark:text-white">{data.total_searches.toLocaleString()}</h3>
                     <span className="text-xs font-medium text-green-600 flex items-center gap-0.5">
-                        <TrendingUp className="h-3 w-3" /> +8.4%
+                        <TrendingUp className="h-3 w-3" /> Live
                     </span>
                 </div>
             </CardContent>
         </Card>
         <Card className="dark:bg-gray-800 dark:border-gray-700">
             <CardContent className="p-6">
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">平均計算金額</p>
+                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">平均搜尋金額</p>
                 <div className="flex items-baseline gap-2 mt-1">
-                    <h3 className="text-3xl font-bold text-gray-900 dark:text-white">$840</h3>
+                    <h3 className="text-3xl font-bold text-gray-900 dark:text-white">${data.avg_amount.toLocaleString()}</h3>
                     <span className="text-xs font-medium text-gray-500">HKD</span>
                 </div>
             </CardContent>
         </Card>
         <Card className="dark:bg-gray-800 dark:border-gray-700">
             <CardContent className="p-6">
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">加入錢包轉換率</p>
+                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">熱門類別數</p>
                 <div className="flex items-baseline gap-2 mt-1">
-                    <h3 className="text-3xl font-bold text-gray-900 dark:text-white">15.2%</h3>
-                    <span className="text-xs font-medium text-green-600 flex items-center gap-0.5">
-                        <TrendingUp className="h-3 w-3" /> +2.1%
+                    <h3 className="text-3xl font-bold text-gray-900 dark:text-white">{data.category_stats.length}</h3>
+                    <span className="text-xs font-medium text-blue-600 flex items-center gap-0.5">
+                        Active
                     </span>
                 </div>
             </CardContent>
@@ -69,63 +119,65 @@ export default function AdminAnalyticsPage() {
       </div>
 
       <div className="grid lg:grid-cols-2 gap-8">
+        {/* Top Merchants */}
         <Card className="dark:bg-gray-800 dark:border-gray-700">
             <CardHeader>
                 <CardTitle className="text-lg dark:text-white flex items-center gap-2">
-                    <Calculator className="h-5 w-5 text-blue-600" /> 熱門計算商戶 Top 5
+                    <Calculator className="h-5 w-5 text-blue-600" /> 熱門商戶 Top 5
                 </CardTitle>
             </CardHeader>
             <CardContent>
                 <div className="space-y-5">
-                    {topMerchants.map((item, i) => (
-                        <div key={i} className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${
-                                    i === 0 ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400" : 
-                                    i === 1 ? "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300" :
-                                    i === 2 ? "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400" :
-                                    "bg-gray-50 text-gray-500 dark:bg-gray-800/50 dark:text-gray-400"
-                                }`}>
-                                    {i + 1}
+                    {data.top_merchants.length === 0 ? (
+                        <p className="text-center text-gray-500 py-4">暫無數據</p>
+                    ) : (
+                        data.top_merchants.map((item, i) => (
+                            <div key={i} className="flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${getRankColor(i)}`}>
+                                        {i + 1}
+                                    </div>
+                                    <span className="font-medium text-gray-900 dark:text-white truncate max-w-[180px]">{item.merchant_name}</span>
                                 </div>
-                                <span className="font-medium text-gray-900 dark:text-white">{item.name}</span>
+                                <div className="flex items-center gap-4">
+                                    <span className="text-sm text-gray-500 dark:text-gray-400 font-mono">{item.count} 次</span>
+                                </div>
                             </div>
-                            <div className="flex items-center gap-4">
-                                <span className="text-sm text-gray-500 dark:text-gray-400 font-mono">{item.count} 次</span>
-                                <span className={`text-xs font-medium ${item.trend.includes("-") ? "text-red-500" : "text-green-500"}`}>
-                                    {item.trend}
-                                </span>
-                            </div>
-                        </div>
-                    ))}
+                        ))
+                    )}
                 </div>
             </CardContent>
         </Card>
 
         <div className="space-y-8">
+             {/* Category Distribution */}
              <Card className="dark:bg-gray-800 dark:border-gray-700">
                 <CardHeader>
                     <CardTitle className="text-lg dark:text-white flex items-center gap-2">
-                        <PieChart className="h-5 w-5 text-purple-600" /> 消費類別分佈
+                        <PieChart className="h-5 w-5 text-purple-600" /> 類別分佈
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-4">
-                        {categoryDistribution.map((item, i) => (
-                            <div key={i} className="space-y-1">
-                                <div className="flex justify-between text-sm">
-                                    <span className="text-gray-700 dark:text-gray-300">{item.name}</span>
-                                    <span className="font-medium text-gray-900 dark:text-white">{item.percentage}%</span>
+                        {data.category_stats.slice(0, 6).map((item, i) => {
+                            const percentage = Math.round((item.count / data.total_searches) * 100);
+                            return (
+                                <div key={i} className="space-y-1">
+                                    <div className="flex justify-between text-sm">
+                                        <span className="text-gray-700 dark:text-gray-300">{getCategoryName(item.category_id)}</span>
+                                        <span className="font-medium text-gray-900 dark:text-white">{percentage}% ({item.count})</span>
+                                    </div>
+                                    <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                                        <div className="h-full bg-purple-500 rounded-full" style={{ width: `${percentage}%` }}></div>
+                                    </div>
                                 </div>
-                                <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                                    <div className={`h-full ${item.color} rounded-full`} style={{ width: `${item.percentage}%` }}></div>
-                                </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </CardContent>
             </Card>
 
+            {/* Payment Methods */}
             <Card className="dark:bg-gray-800 dark:border-gray-700">
                 <CardHeader>
                     <CardTitle className="text-lg dark:text-white flex items-center gap-2">
@@ -134,12 +186,11 @@ export default function AdminAnalyticsPage() {
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-3">
-                        {paymentMethods.map((item, i) => (
+                        {data.payment_stats.slice(0, 5).map((item, i) => (
                              <div key={i} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/30 rounded-lg border border-transparent hover:border-gray-200 dark:hover:border-gray-600 transition-colors">
-                                <span className="font-medium text-gray-900 dark:text-white text-sm">{item.name}</span>
+                                <span className="font-medium text-gray-900 dark:text-white text-sm">{item.payment_method || "未指定"}</span>
                                 <div className="text-right">
                                     <div className="text-sm font-bold text-gray-900 dark:text-white">{item.count}</div>
-                                    <div className={`text-[10px] ${item.trend.includes("-") ? "text-red-500" : "text-green-500"}`}>{item.trend}</div>
                                 </div>
                              </div>
                         ))}
