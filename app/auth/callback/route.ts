@@ -15,13 +15,9 @@ export async function GET(request: Request) {
     }
   }
 
-  // Force production URL for redirect to avoid localhost issues behind proxy
+  // Redirect to success page to handle profile creation and hard refresh
   const productionOrigin = "https://pickcardrebate-web.zeabur.app";
-  const redirectTo = searchParams.get("redirect") || "/";
-  
-  // Add a timestamp to bust Next.js router cache
-  const target = `${productionOrigin}${redirectTo}?refresh=${Date.now()}`;
-  
-  return NextResponse.redirect(target);
+  // We ignore the original redirect param for now to ensure consistent flow through success page
+  return NextResponse.redirect(`${productionOrigin}/auth/success`);
 }
 
