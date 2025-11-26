@@ -46,10 +46,7 @@ export default function OnboardingPage() {
   }, [user, router, isLoading]);
 
   const handleSubmit = async () => {
-    if (!district) {
-      toast.error("請選擇居住地區");
-      return;
-    }
+    if (!district) return;
 
     setIsLoading(true);
     try {
@@ -59,13 +56,18 @@ export default function OnboardingPage() {
       });
       toast.success("設定完成！");
       router.push("/");
+      router.refresh(); // Force refresh to update server components if any
     } catch (error) {
       toast.error("儲存失敗，請稍後再試");
       console.error(error);
     } finally {
-      setIsLoading(false);
+      // Don't set loading false immediately if successful, to prevent flicker
+      // But if error, we need to reset
+      // actually, just keep it true if pushing to home
     }
   };
+
+  const isFormValid = gender && district;
 
   if (!user) {
       return null; // Or loading spinner
@@ -91,7 +93,7 @@ export default function OnboardingPage() {
           <CardContent className="space-y-8">
             
             <div className="space-y-4">
-              <Label className="text-base">您的性別</Label>
+              <Label className="text-base">您的性別 <span className="text-red-500">*</span></Label>
               <RadioGroup 
                 defaultValue="male" 
                 value={gender} 
@@ -132,9 +134,9 @@ export default function OnboardingPage() {
             </div>
 
             <div className="space-y-4">
-              <Label className="text-base">居住地區</Label>
+              <Label className="text-base">居住地區 <span className="text-red-500">*</span></Label>
               <Select value={district} onValueChange={setDistrict}>
-                <SelectTrigger className="h-12 text-base">
+                <SelectTrigger className={`h-12 text-base ${!district ? "border-orange-300 ring-2 ring-orange-100 dark:ring-orange-900/20" : ""}`}>
                   <SelectValue placeholder="選擇您的居住區域" />
                 </SelectTrigger>
                 <SelectContent>
@@ -156,9 +158,9 @@ export default function OnboardingPage() {
             </div>
 
             <Button 
-                className="w-full h-12 text-lg font-bold bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-[1.02]"
+                className="w-full h-12 text-lg font-bold bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={handleSubmit}
-                disabled={isLoading}
+                disabled={isLoading || !isFormValid}
             >
               {isLoading ? "儲存中..." : "完成設定，開始探索"}
             </Button>
