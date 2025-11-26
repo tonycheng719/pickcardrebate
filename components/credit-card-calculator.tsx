@@ -16,12 +16,14 @@ import { CATEGORIES } from "@/lib/data/categories";
 import { HK_CARDS } from "@/lib/data/cards";
 import { findBestCards, CalculationResult } from "@/lib/logic/calculator";
 import { useWallet } from "@/lib/store/wallet-context";
-import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle, Lightbulb } from "lucide-react";
+import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle, Lightbulb, Store, Globe } from "lucide-react";
 import { DynamicIcon } from "@/components/dynamic-icon";
 import { useDataset } from "@/lib/admin/data-store";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { ReportErrorDialog } from "@/components/report-error-dialog";
 import { logSearch } from "@/app/actions/log-search";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 const PAYMENT_OPTIONS = [
   { id: "physical_card", label: "實體卡" },
@@ -35,6 +37,9 @@ const PAYMENT_OPTIONS = [
   { id: "boc_pay", label: "BoC Pay" },
   { id: "fps", label: "FPS" },
 ];
+
+// Payment methods that might be used online or offline
+const AMBIGUOUS_PAYMENT_METHODS = ["apple_pay", "google_pay", "alipay", "wechat_pay", "payme", "unionpay_qr", "boc_pay"];
 
 const categoryNameMap = Object.fromEntries(CATEGORIES.map((cat) => [cat.id, cat.name]));
 
@@ -70,6 +75,7 @@ export function CreditCardCalculator({
   const [selectedMerchantId, setSelectedMerchantId] = useState<string | null>(null);
   const [amount, setAmount] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("physical_card");
+  const [isOnlineScenario, setIsOnlineScenario] = useState(false); // New state for online toggle
   const [results, setResults] = useState<CalculationResult[]>([]);
   const [open, setOpen] = useState(false);
   
@@ -82,6 +88,20 @@ export function CreditCardCalculator({
   const merchantsRef = useRef<HTMLDivElement>(null);
   const inputSectionRef = useRef<HTMLDivElement>(null);
   const amountInputRef = useRef<HTMLInputElement>(null);
+
+  // Reset online scenario when payment method changes, but only if switching TO ambiguous method
+  // If switching FROM ambiguous TO explicit (e.g. "online"), we can auto-set.
+  useEffect(() => {
+      if (paymentMethod === "online") {
+          setIsOnlineScenario(true);
+      } else if (paymentMethod === "physical_card") {
+          setIsOnlineScenario(false);
+      } else {
+          // For ambiguous methods, reset to false (default to offline/store) unless user changes it
+          // But maybe we want to persist? Let's reset to be safe/clear.
+          setIsOnlineScenario(false);
+      }
+  }, [paymentMethod]);
 
   // Auto-scroll when category changes
   const handleCategorySelect = (catId: string) => {
@@ -129,6 +149,7 @@ export function CreditCardCalculator({
       {
         amount: parseFloat(amount),
         paymentMethod,
+        isOnlineScenario, // Pass the toggle state
       },
       cardList,
       merchantList,
@@ -369,8 +390,8 @@ export function CreditCardCalculator({
             <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">
               在 {selectedMerchant?.name || "商戶"} 消費
             </label>
-            <div className="flex gap-3 flex-col md:flex-row">
-              <div className="relative flex-1">
+            <div className="flex gap-3 flex-col md:flex-row items-start md:items-center">
+              <div className="relative flex-1 w-full">
                 <div className="absolute left-3 top-0 bottom-0 flex items-center justify-center pointer-events-none">
                   <DollarSign className="h-4 w-4 text-gray-400" />
                 </div>
@@ -385,7 +406,7 @@ export function CreditCardCalculator({
                 />
               </div>
               <select
-                className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm h-12"
+                className="w-full md:w-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm h-12"
                 value={paymentMethod}
                 onChange={(e) => setPaymentMethod(e.target.value)}
                 disabled={!selectedMerchant}
@@ -397,13 +418,37 @@ export function CreditCardCalculator({
                 ))}
               </select>
               <Button 
-                className="rounded-xl shrink-0 h-12 px-6 text-base font-medium shadow-emerald-100 dark:shadow-none active:scale-95 transition-transform" 
+                className="w-full md:w-auto rounded-xl shrink-0 h-12 px-6 text-base font-medium shadow-emerald-100 dark:shadow-none active:scale-95 transition-transform" 
                 onClick={handleCalculate} 
                 disabled={!amount || !selectedMerchant}
               >
                 即刻計回贈
               </Button>
             </div>
+
+            {/* Scenario Toggle for Ambiguous Payments */}
+            {AMBIGUOUS_PAYMENT_METHODS.includes(paymentMethod) && (
+                <div className="mt-2 animate-in fade-in slide-in-from-top-2">
+                    <RadioGroup 
+                        value={isOnlineScenario ? "online" : "offline"} 
+                        onValueChange={(v) => setIsOnlineScenario(v === "online")}
+                        className="flex gap-4"
+                    >
+                        <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="offline" id="offline" />
+                            <Label htmlFor="offline" className="flex items-center gap-1.5 text-sm text-gray-600 cursor-pointer font-normal">
+                                <Store className="w-3.5 h-3.5" /> 門市付款
+                            </Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="online" id="online" />
+                            <Label htmlFor="online" className="flex items-center gap-1.5 text-sm text-gray-600 cursor-pointer font-normal">
+                                <Globe className="w-3.5 h-3.5" /> 網上 / App 內付款
+                            </Label>
+                        </div>
+                    </RadioGroup>
+                </div>
+            )}
           </div>
         </div>
       </div>
