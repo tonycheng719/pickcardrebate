@@ -139,7 +139,8 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
         if ((!user.gender || !user.district) && pathname !== "/onboarding") {
             // Prevent redirect loops or interfering with admin/auth pages if necessary
             // For now, strict enforcement
-            router.push("/onboarding");
+            // router.push("/onboarding"); 
+            console.log("User missing onboarding info", user);
         }
     }
   }, [user, isLoaded, pathname, router]);
