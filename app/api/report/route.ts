@@ -1,21 +1,17 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 
-// Safely get env vars or fallback to empty string to prevent build crash
-// The runtime check will happen inside the handler or connection attempt
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 
-// Only create client if URL is present, otherwise create a dummy or let it fail at runtime usage
-// But for build time, top-level execution shouldn't crash.
 const supabase = supabaseUrl 
     ? createClient(supabaseUrl, serviceRoleKey || anonKey, { auth: { persistSession: false } })
     : null;
 
 export async function POST(request: Request) {
   if (!supabase) {
-      console.error("Supabase client not initialized (missing env vars)");
+      console.error("Supabase client not initialized");
       return NextResponse.json({ error: "Internal Server Configuration Error" }, { status: 500 });
   }
 
@@ -27,16 +23,20 @@ export async function POST(request: Request) {
         amount, 
         payment_method, 
         card_id, 
+        card_name,
         description, 
         proposed_reward,
-        user_id
+        user_id,
+        report_type, // New field
+        conditions   // New field
     } = body;
 
-    if (!description) {
+    // Basic validation
+    if (!description && report_type !== 'verification') {
       return NextResponse.json({ error: "請填寫描述" }, { status: 400 });
     }
 
-    // Insert report
+    // Insert report with new fields
     const { error } = await supabase.from("reports").insert({
       user_id: user_id || null,
       merchant_name,
@@ -44,8 +44,12 @@ export async function POST(request: Request) {
       amount,
       payment_method,
       card_id,
+      card_name, // Ensure card_name is saved
       description,
       proposed_reward,
+      report_type: report_type || 'error',
+      conditions: conditions || [],
+      status: 'pending'
     });
 
     if (error) {
