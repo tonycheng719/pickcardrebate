@@ -16,7 +16,7 @@ import { CATEGORIES } from "@/lib/data/categories";
 import { HK_CARDS } from "@/lib/data/cards";
 import { findBestCards, CalculationResult } from "@/lib/logic/calculator";
 import { useWallet } from "@/lib/store/wallet-context";
-import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle } from "lucide-react";
+import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle, Lightbulb } from "lucide-react";
 import { DynamicIcon } from "@/components/dynamic-icon";
 import { useDataset } from "@/lib/admin/data-store";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -221,6 +221,18 @@ export function CreditCardCalculator({
                 立即申請
               </Button>
             )}
+
+            {/* Date Suggestion Logic */}
+            {best.dateSuggestion && (
+                <div className="mt-3 p-3 bg-blue-50 border border-blue-100 rounded-xl flex items-start gap-2 animate-in fade-in slide-in-from-bottom-2">
+                    <Lightbulb className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
+                    <div className="text-xs text-blue-700">
+                        <span className="font-bold">小貼士：</span>
+                        如果在 <span className="font-bold">{best.dateSuggestion.validDays.map(d => DAYS_MAP[d]).join("/")}</span> 消費，
+                        回贈可達 <span className="font-bold">+${best.dateSuggestion.newRewardAmount.toFixed(1)} ({best.dateSuggestion.newPercentage}%)</span>！
+                    </div>
+                </div>
+            )}
           </div>
 
           <div className="space-y-3 max-h-[40vh] overflow-y-auto pr-1">
@@ -251,6 +263,14 @@ export function CreditCardCalculator({
                          </span>
                        )}
                   </div>
+
+                  {/* Date Suggestion for Others */}
+                   {result.dateSuggestion && (
+                       <div className="text-[10px] text-blue-500 mt-1 flex items-center gap-1">
+                           <Lightbulb className="w-3 h-3" />
+                           {result.dateSuggestion.validDays.map(d => DAYS_MAP[d]).join("/")} 可享 {result.dateSuggestion.newPercentage}%
+                       </div>
+                   )}
 
                   {myCardIds.includes(result.card.id) && (
                     <span className="text-xs text-emerald-500 inline-flex items-center gap-1 mt-1">

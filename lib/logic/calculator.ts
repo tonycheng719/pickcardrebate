@@ -18,6 +18,12 @@ export interface CalculationResult {
     newPercentage: number;
     newRewardAmount: number;
   } | null;
+  dateSuggestion?: {
+    validDays: number[];
+    ruleDescription: string;
+    newPercentage: number;
+    newRewardAmount: number;
+  } | null;
   netRewardAmount?: number; // After FX fee deduction
   netPercentage?: number;
   isForeignCurrency?: boolean;
@@ -44,6 +50,8 @@ function calculateCardReward(
     percentage: number, 
     rewardAmount: number,
     missedRule: RewardRule | null,
+    missedDateRule: RewardRule | null,
+    missedDateReward: number,
     isCapped: boolean
 } {
     let bestRule: RewardRule | null = null;
@@ -53,6 +61,10 @@ function calculateCardReward(
 
     let bestMissedRule: RewardRule | null = null;
     let maxMissedPercent = -1;
+
+    // Track rule with date mismatch but high potential
+    let bestMissedDateRule: RewardRule | null = null;
+    let maxMissedDateReward = -1;
 
     // Helper to check exclusions
     const isExcluded = (rule: RewardRule): boolean => {
@@ -98,7 +110,7 @@ function calculateCardReward(
             }
         }
 
-        // 3. Legacy Condition check (keep for backward compatibility if needed)
+        // 3. Legacy Condition check
         if (rule.condition) {
             if (rule.condition.dayOfWeek) {
                 const today = new Date().getDay();
@@ -115,6 +127,28 @@ function calculateCardReward(
         return true;
     };
 
+    // Helper to calculate reward for a rule regardless of conditions
+    const calculatePotential = (rule: RewardRule): number => {
+        const minSpend = rule.minSpend || 0;
+        if (amount < minSpend) return 0;
+
+        let potentialReward = 0;
+        let effectiveSpendingCap = Infinity;
+        if (rule.cap) {
+            if (rule.capType === 'reward') {
+                effectiveSpendingCap = (rule.cap / rule.percentage) * 100;
+            } else {
+                effectiveSpendingCap = rule.cap;
+            }
+        }
+        if (amount > effectiveSpendingCap) {
+            potentialReward = (effectiveSpendingCap * rule.percentage) / 100;
+        } else {
+            potentialReward = (amount * rule.percentage) / 100;
+        }
+        return potentialReward;
+    };
+
     for (const rule of card.rules) {
       // 1. Check Foreign Currency Constraint
       if (rule.isForeignCurrency && !isForeignCurrency) {
@@ -123,11 +157,6 @@ function calculateCardReward(
 
       // 2. Check Exclusions
       if (isExcluded(rule)) {
-          continue;
-      }
-
-      // 3. Check Conditions (New Logic)
-      if (!checkConditions(rule)) {
           continue;
       }
       
@@ -170,52 +199,43 @@ function calculateCardReward(
       }
 
       if (isMatch) {
-          const minSpend = rule.minSpend || 0;
-          // Note: monthlyMinSpend is not checked here because we don't have user history yet.
-          // It should ideally trigger a "Warning" or "Suggestion".
-          
-          if (amount >= minSpend) {
-             let currentReward = 0;
-             let currentCapped = false;
-             
-             // Determine effective cap
-             let effectiveSpendingCap = Infinity;
-             
-             if (rule.cap) {
-                 if (rule.capType === 'reward') {
-                     // Convert reward cap to spending cap: Reward Cap / Percentage
-                     effectiveSpendingCap = (rule.cap / rule.percentage) * 100;
-                 } else {
-                     // Default is 'spending' cap
-                     effectiveSpendingCap = rule.cap;
+          // 3. Check Conditions (Date/Time)
+          if (checkConditions(rule)) {
+              // Valid Rule Logic
+              const potentialReward = calculatePotential(rule);
+              const minSpend = rule.minSpend || 0;
+
+              if (amount >= minSpend) {
+                 if (potentialReward > maxReward) {
+                    maxReward = potentialReward;
+                    bestPercentage = rule.percentage;
+                    bestRule = rule;
+                    
+                    // Recalculate isCapped based on potential logic
+                    let effectiveSpendingCap = Infinity;
+                    if (rule.cap) {
+                         if (rule.capType === 'reward') effectiveSpendingCap = (rule.cap / rule.percentage) * 100;
+                         else effectiveSpendingCap = rule.cap;
+                    }
+                    isCapped = amount > effectiveSpendingCap;
                  }
-             }
-
-             if (amount > effectiveSpendingCap) {
-                 // Reward is calculated up to the cap
-                 currentReward = (effectiveSpendingCap * rule.percentage) / 100;
-                 
-                 // If there is a base rule, we might get base reward for the overflow?
-                 // For simplicity, we just cap it here. 
-                 // A more advanced logic would be: (cap * high%) + ((amount - cap) * base%)
-                 // But finding the 'fallback' rule is complex.
-                 
-                 currentCapped = true;
-             } else {
-                 currentReward = (amount * rule.percentage) / 100;
-             }
-
-             if (currentReward > maxReward) {
-                maxReward = currentReward;
-                bestPercentage = rule.percentage;
-                bestRule = rule;
-                isCapped = currentCapped;
-             }
+              } else {
+                 // Track missed rule (spending threshold)
+                 if (rule.percentage > maxMissedPercent) {
+                     maxMissedPercent = rule.percentage;
+                     bestMissedRule = rule;
+                 }
+              }
           } else {
-             if (rule.percentage > maxMissedPercent) {
-                 maxMissedPercent = rule.percentage;
-                 bestMissedRule = rule;
-             }
+              // Condition Failed (Date Mismatch)
+              // Calculate what *would* be the reward if date was correct
+              const potentialReward = calculatePotential(rule);
+              // Only consider it if amount meets minSpend, otherwise it's double missed
+              const minSpend = rule.minSpend || 0;
+              if (amount >= minSpend && potentialReward > maxMissedDateReward) {
+                  maxMissedDateReward = potentialReward;
+                  bestMissedDateRule = rule;
+              }
           }
       }
     }
@@ -225,6 +245,8 @@ function calculateCardReward(
         percentage: bestPercentage,
         rewardAmount: maxReward > 0 ? maxReward : 0,
         missedRule: bestMissedRule,
+        missedDateRule: bestMissedDateRule,
+        missedDateReward: maxMissedDateReward,
         isCapped
     };
 }
@@ -285,6 +307,16 @@ export function findBestCards(
         }
     }
 
+    let dateSuggestion = null;
+    if (current.missedDateRule && current.missedDateReward > current.rewardAmount) {
+        dateSuggestion = {
+            validDays: current.missedDateRule.validDays || (current.missedDateRule.condition?.dayOfWeek || []),
+            ruleDescription: current.missedDateRule.description,
+            newPercentage: current.missedDateRule.percentage,
+            newRewardAmount: current.missedDateReward
+        };
+    }
+
     const bestRule = current.rule || { description: "無適用回饋", percentage: 0, matchType: "base" as const };
     
     // Recalculate percentage based on actual reward vs amount (to reflect capping)
@@ -310,6 +342,7 @@ export function findBestCards(
       potentialPercentage: potentialBest.percentage,
       potentialRewardAmount: potentialBest.rewardAmount,
       spendingSuggestion,
+      dateSuggestion,
       isForeignCurrency,
       netRewardAmount,
       netPercentage,
