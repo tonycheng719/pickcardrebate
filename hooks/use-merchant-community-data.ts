@@ -61,7 +61,7 @@ export function useMerchantCommunityData(merchantId: string | null) {
           }
         });
 
-        const tags = tagsData?.map(t => t.tag_name) || [];
+        const tags = tagsData?.map((t: { tag_name: string }) => t.tag_name) || [];
 
         setData({ verifiedCards, tags, isLoading: false });
       } catch (err) {
