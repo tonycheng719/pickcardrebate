@@ -29,7 +29,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "HSBC Red Credit Card",
     bank: "HSBC",
     style: { bgColor: "bg-gradient-to-br from-red-500 via-red-600 to-pink-700", textColor: "text-white" },
-    imageUrl: "https://www.hsbc.com.hk/content/dam/hsbc/hk/images/credit-cards/red-credit-card-en.png", // Will fail and fallback, or work if fixed later
+    // imageUrl: "https://www.hsbc.com.hk/content/dam/hsbc/hk/images/credit-cards/red-credit-card-en.png",
     rewardTimeline: "獎賞錢即時入賬",
     foreignCurrencyFee: 1.95,
     rules: [
@@ -99,7 +99,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "SC Smart Card",
     bank: "Standard Chartered",
     style: { bgColor: "bg-gradient-to-r from-emerald-400 to-cyan-600", textColor: "text-white" },
-    imageUrl: "https://www.sc.com/hk/zh/credit-cards/smart/smart-card-face.png",
+    imageUrl: "https://av.sc.com/hk/content/images/hk-smart-card-masthead-400x255.png",
     rewardTimeline: "現金回贈於下期賬單顯示",
     foreignCurrencyFee: 0,
     rules: [
@@ -224,7 +224,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "Hang Seng MMPOWER",
     bank: "Hang Seng",
     style: { bgColor: "bg-gradient-to-br from-purple-600 via-pink-600 to-red-500", textColor: "text-white" },
-    imageUrl: "https://www.hangseng.com/content/dam/hase/config/personal/cards/products/images/mmpower-card-face.png",
+    imageUrl: "https://mhgprod.blob.core.windows.net/moneyhero/strapi-uploads/blt01c6ac63487924bd_21cb85603d.png",
     foreignCurrencyFee: 1.95,
     rules: [
       { description: "網上簽賬 5%", matchType: "category", matchValue: "online", percentage: 5.0, minSpend: 5000, cap: 16000, excludeCategories: ["ewallet"] },
@@ -404,7 +404,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "AEON CARD WAKUWAKU",
     bank: "AEON",
     style: { bgColor: "bg-gradient-to-br from-pink-400 to-pink-600", textColor: "text-white" },
-    // imageUrl: "https://www.aeon.com.hk/r/creditcard/cardface/wakuwaku_cardface.png", 
+    imageUrl: "https://mhgprod.blob.core.windows.net/moneyhero/strapi-uploads/blt6404429f0179dbba_0bc13b65f2.png", 
     foreignCurrencyFee: 1.95,
     rules: [
       { description: "網上簽賬 6%", matchType: "category", matchValue: "online", percentage: 6.0, cap: 5000, excludeCategories: ["ewallet"] },
@@ -480,7 +480,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "EarnMORE 銀聯卡",
     bank: "WeWa",
     style: { bgColor: "bg-gradient-to-br from-blue-600 to-indigo-700", textColor: "text-white" },
-    // imageUrl: "https://www.wewacard.com/contents/uploads/2016/07/EM_cardface_v2.png", 
+    imageUrl: "https://mhgprod.blob.core.windows.net/moneyhero/strapi-uploads/68_01_JNHYA_6_PDHB_9_F53_EJCHWHCTDH_16a90fe0a8.png", 
     rewardTimeline: "現金回贈即時入賬",
     foreignCurrencyFee: 0,
     rules: [
@@ -697,7 +697,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "Mox Credit",
     bank: "Mox",
     style: { bgColor: "bg-black", textColor: "text-white" },
-    imageUrl: "https://mox.com/images/cards/mox-card-black-front.png",
+    // imageUrl: "https://mox.com/images/cards/mox-card-black-front.png",
     foreignCurrencyFee: 1.95,
     rules: [
       { description: "超市 3%", matchType: "category", matchValue: ["supermarket"], percentage: 3.0 },
