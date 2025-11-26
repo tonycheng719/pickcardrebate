@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, MoreHorizontal, Shield, Ban, CheckCircle, Loader2 } from "lucide-react";
+import { Search, MoreHorizontal, Shield, Ban, CheckCircle, Loader2, AlertCircle } from "lucide-react";
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -31,9 +31,9 @@ export default function AdminUsersPage() {
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [errorDetail, setErrorDetail] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   
-  // Use useMemo to avoid recreating client on every render, though createBrowserClient is singleton-like
   const supabase = useMemo(() => createClient(), []);
 
   useEffect(() => {
@@ -42,16 +42,17 @@ export default function AdminUsersPage() {
     const fetchUsers = async () => {
       setIsLoading(true);
       setErrorMsg(null);
+      setErrorDetail(null);
       
       try {
-        // Add a timeout race to prevent hanging
+        // Increased timeout to 30s to rule out slow network
         const fetchPromise = supabase
           .from("profiles")
           .select("*")
           .order("email");
           
         const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error("Request timed out")), 10000)
+            setTimeout(() => reject(new Error("Timeout: Supabase connection took too long (>30s)")), 30000)
         );
 
         const { data, error } = await Promise.race([fetchPromise, timeoutPromise]) as any;
@@ -60,7 +61,8 @@ export default function AdminUsersPage() {
 
         if (error) {
           console.error("Error fetching users:", error);
-          setErrorMsg("載入失敗，請稍後再試。");
+          setErrorMsg("載入失敗");
+          setErrorDetail(error.message || JSON.stringify(error));
           return;
         }
 
@@ -77,8 +79,11 @@ export default function AdminUsersPage() {
             setUsers(mappedUsers);
         }
       } catch (err: any) {
-        console.error("Failed to fetch users", err);
-        if (isMounted) setErrorMsg(err.message || "發生錯誤");
+        console.error("Failed to fetch users (Exception)", err);
+        if (isMounted) {
+            setErrorMsg("發生例外錯誤");
+            setErrorDetail(err.message || String(err));
+        }
       } finally {
         if (isMounted) setIsLoading(false);
       }
@@ -150,7 +155,18 @@ export default function AdminUsersPage() {
             ) : errorMsg ? (
                 <tr>
                     <td colSpan={5} className="px-6 py-8 text-center text-red-500">
-                        {errorMsg}
+                        <div className="flex flex-col items-center justify-center gap-2">
+                            <div className="flex items-center gap-2 font-bold">
+                                <AlertCircle className="h-5 w-5" />
+                                {errorMsg}
+                            </div>
+                            <div className="text-xs font-mono bg-red-50 dark:bg-red-900/20 p-2 rounded max-w-lg break-all">
+                                {errorDetail}
+                            </div>
+                            <Button variant="outline" size="sm" onClick={() => window.location.reload()} className="mt-2">
+                                重新整理頁面
+                            </Button>
+                        </div>
                     </td>
                 </tr>
             ) : filteredUsers.length === 0 ? (
