@@ -1,14 +1,26 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@supabase/supabase-js";
 import { UserTable, AdminUser } from "./user-table";
 import { AlertCircle } from "lucide-react";
 
-export const dynamic = "force-dynamic"; // Force dynamic rendering to fetch fresh data
+export const dynamic = "force-dynamic"; 
 
 export default async function AdminUsersPage() {
-  const supabase = await createClient();
+  // Strategy: Bypass the standard createClient which reads cookies.
+  // The "role '' does not exist" error implies a corrupted or incompatible Auth Token in the cookie.
+  // Since the 'profiles' table is publicly readable (RLS policy), we can fetch it using a generic anon client
+  // without user session context. This avoids the role error entirely.
+  
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+  
+  // Create a plain client without cookie handling
+  const supabase = createClient(supabaseUrl, supabaseKey, {
+    auth: {
+        persistSession: false // Don't try to persist or load session
+    }
+  });
 
   try {
-    // Fetch users directly on the server
     const { data, error } = await supabase
       .from("profiles")
       .select("*")
