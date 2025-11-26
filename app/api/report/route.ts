@@ -1,10 +1,12 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 
-// Use Anon Client to bypass cookie issues, since we relaxed RLS for reports
+// Try to use Service Role Key if available, otherwise fallback to Anon Key
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey, {
+const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+const supabase = createClient(supabaseUrl, serviceRoleKey || anonKey, {
   auth: { persistSession: false }
 });
 
@@ -19,18 +21,18 @@ export async function POST(request: Request) {
         card_id, 
         description, 
         proposed_reward,
-        user_id // passed from client
+        user_id
     } = body;
 
     if (!description) {
       return NextResponse.json({ error: "請填寫描述" }, { status: 400 });
     }
 
+    console.log(`Submitting report for user: ${user_id}, using service role: ${!!serviceRoleKey}`);
+
     // Insert report
-    // We trust the client-provided user_id here because RLS is relaxed. 
-    // For higher security, we should validate token, but given the cookie issues, this is the pragmatic fix.
     const { error } = await supabase.from("reports").insert({
-      user_id: user_id || null, // Can be anonymous
+      user_id: user_id || null,
       merchant_name,
       category_id,
       amount,
@@ -52,4 +54,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
-
