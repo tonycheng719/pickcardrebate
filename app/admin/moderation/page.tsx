@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, X, Info, Loader2, Trash2, AlertTriangle, Edit } from "lucide-react";
+import { Check, X, Info, Loader2, Trash2, AlertTriangle, Edit, CheckCircle2, Lightbulb } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -21,6 +21,9 @@ interface Report {
   status: "pending" | "approved" | "rejected";
   created_at: string;
   user_id: string;
+  // New fields
+  report_type?: "error" | "verification" | "discovery";
+  conditions?: string[];
 }
 
 export default function AdminModerationPage() {
@@ -28,15 +31,12 @@ export default function AdminModerationPage() {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const router = useRouter();
-
-  // Initialize client inside component or outside? Outside is better usually, but here is fine.
   const supabase = createClient();
 
   const fetchReports = async () => {
     setLoading(true);
     setErrorMsg(null);
 
-    // Check Env Vars explicitly for debugging
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
         setErrorMsg("環境變數未設定 (NEXT_PUBLIC_SUPABASE_URL)");
         setLoading(false);
@@ -44,7 +44,6 @@ export default function AdminModerationPage() {
     }
 
     try {
-        // Add timeout using Promise.race
         const fetchPromise = supabase
             .from("reports")
             .select("*")
@@ -55,18 +54,13 @@ export default function AdminModerationPage() {
         );
 
         const result: any = await Promise.race([fetchPromise, timeoutPromise]);
-        
         const { data, error } = result || {};
 
-        if (error) {
-            console.error("Supabase fetch error:", error);
-            throw error;
-        }
-
+        if (error) throw error;
         setReports((data || []) as Report[]);
     } catch (err: any) {
         console.error("Fetch reports exception:", err);
-        setErrorMsg(err.message || "載入失敗，請檢查網絡或權限");
+        setErrorMsg(err.message || "載入失敗");
         toast.error("載入回報失敗: " + (err.message || "未知錯誤"));
     } finally {
         setLoading(false);
@@ -78,18 +72,15 @@ export default function AdminModerationPage() {
   }, []);
 
   const updateReportStatus = async (id: string, status: "approved" | "rejected") => {
-    // Optimistic update
     setReports(prev => prev.map(r => r.id === id ? { ...r, status } : r));
-
     const { error } = await supabase
       .from("reports")
       .update({ status })
       .eq("id", id);
 
     if (error) {
-      console.error("Failed to update report:", error);
       toast.error("更新狀態失敗");
-      fetchReports(); // Revert on error
+      fetchReports(); 
     } else {
       toast.success(status === "approved" ? "已通過回報" : "已拒絕回報");
     }
@@ -97,7 +88,6 @@ export default function AdminModerationPage() {
 
   const deleteReport = async (id: string) => {
       if (!confirm("確定要刪除此回報嗎？")) return;
-
       setReports(prev => prev.filter(r => r.id !== id));
       const { error } = await supabase
         .from("reports")
@@ -113,11 +103,40 @@ export default function AdminModerationPage() {
   };
 
   const handleQuickEdit = (cardId: string) => {
-      if (!cardId) {
-          toast.error("無法辨識卡片 ID");
-          return;
-      }
+      if (!cardId) return toast.error("無法辨識卡片 ID");
       router.push(`/admin/cards/new?id=${cardId}`);
+  };
+
+  // Helper to render report type badge
+  const ReportTypeBadge = ({ type }: { type?: string }) => {
+      if (type === 'verification') {
+          return <span className="flex items-center gap-1 text-green-600 bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded text-xs border border-green-200 dark:border-green-800"><CheckCircle2 className="w-3 h-3" /> 回報成功</span>;
+      }
+      if (type === 'discovery') {
+          return <span className="flex items-center gap-1 text-blue-600 bg-blue-50 dark:bg-blue-900/20 px-2 py-0.5 rounded text-xs border border-blue-200 dark:border-blue-800"><Lightbulb className="w-3 h-3" /> 新發現</span>;
+      }
+      return <span className="flex items-center gap-1 text-red-600 bg-red-50 dark:bg-red-900/20 px-2 py-0.5 rounded text-xs border border-red-200 dark:border-red-800"><AlertTriangle className="w-3 h-3" /> 計算錯誤</span>;
+  };
+
+  // Helper for condition tags
+  const ConditionTags = ({ conditions }: { conditions?: string[] }) => {
+      if (!conditions || conditions.length === 0) return null;
+      const labels: Record<string, string> = {
+          'must_register': '需登記',
+          'min_spend': '最低簽賬',
+          'promo_period': '限時推廣',
+          'weekend_only': '指定日子',
+          'targeted': '特選客戶'
+      };
+      return (
+          <div className="flex flex-wrap gap-1 mt-2">
+              {conditions.map(c => (
+                  <span key={c} className="text-xs px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded border border-gray-200 dark:border-gray-600">
+                      {labels[c] || c}
+                  </span>
+              ))}
+          </div>
+      );
   };
 
   const pending = reports.filter((r) => r.status === "pending");
@@ -127,8 +146,6 @@ export default function AdminModerationPage() {
           <div className="flex flex-col items-center justify-center h-96 gap-4">
               <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
               <p className="text-gray-500">正在載入回報資料...</p>
-              {/* Debug Info - visible if stuck */}
-              <p className="text-xs text-gray-400">Supabase URL: {process.env.NEXT_PUBLIC_SUPABASE_URL ? "Set" : "Missing"}</p>
           </div>
       );
   }
@@ -162,27 +179,24 @@ export default function AdminModerationPage() {
             <Card key={report.id} className="dark:bg-gray-800 dark:border-gray-700">
                 <CardHeader className="flex-row items-start justify-between space-y-0 pb-2">
                 <div>
+                    <div className="flex items-center gap-2 mb-1">
+                        <ReportTypeBadge type={report.report_type} />
+                        <span className="text-xs text-gray-400">{new Date(report.created_at).toLocaleString('zh-HK')}</span>
+                    </div>
                     <CardTitle className="text-lg dark:text-white flex items-center gap-2">
                         {report.merchant_name || "未指定商戶"} 
                         <span className="text-sm font-normal text-gray-500">({report.category_id})</span>
                     </CardTitle>
                     <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        卡片: {report.card_name || report.card_id || "未指定"} | 支付: {report.payment_method} | User: {report.user_id?.slice(0, 8)}...
-                    </div>
-                    <div className="text-xs text-gray-400 mt-0.5">
-                         {new Date(report.created_at).toLocaleString('zh-HK')}
+                        卡片: {report.card_name || report.card_id || "未指定"} | 支付: {report.payment_method}
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
-                    <span
-                        className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                        report.status === "approved"
-                            ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
-                            : report.status === "rejected"
-                            ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300"
-                            : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-200"
-                        }`}
-                    >
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                        report.status === "approved" ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300" :
+                        report.status === "rejected" ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300" :
+                        "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-200"
+                    }`}>
                         {report.status === "pending" ? "審核中" : report.status === "approved" ? "已通過" : "已拒絕"}
                     </span>
                      <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-red-500" onClick={() => deleteReport(report.id)}>
@@ -194,13 +208,14 @@ export default function AdminModerationPage() {
                 <div className="bg-gray-50 dark:bg-gray-900/50 p-3 rounded-lg text-sm space-y-2">
                      <div className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
                         <Info className="h-4 w-4 text-blue-500 mt-0.5 shrink-0" />
-                        <div>
-                            <span className="font-semibold">問題描述:</span> {report.description}
+                        <div className="flex-1">
+                            <span className="font-semibold">描述:</span> {report.description}
+                            <ConditionTags conditions={report.conditions} />
                         </div>
                     </div>
                     {report.proposed_reward && (
                         <div className="pl-7 text-gray-600 dark:text-gray-400">
-                            <span className="font-semibold">建議回贈:</span> {report.proposed_reward}
+                            <span className="font-semibold">建議/實際回贈:</span> {report.proposed_reward}%
                         </div>
                     )}
                 </div>
@@ -213,7 +228,7 @@ export default function AdminModerationPage() {
                         className="gap-2 bg-green-600 hover:bg-green-700"
                         onClick={() => updateReportStatus(report.id, "approved")}
                         >
-                        <Check className="h-4 w-4" /> 通過並修正
+                        <Check className="h-4 w-4" /> 標記為已處理
                         </Button>
                         {report.card_id && (
                             <Button
@@ -222,16 +237,17 @@ export default function AdminModerationPage() {
                                 className="gap-2"
                                 onClick={() => handleQuickEdit(report.card_id)}
                             >
-                                <Edit className="h-4 w-4" /> 編輯卡片規則
+                                <Edit className="h-4 w-4" /> 編輯卡片
                             </Button>
                         )}
+                        {/* Future: Add "Create Override" button here */}
                         <Button
                         variant="destructive"
                         size="sm"
                         className="gap-2"
                         onClick={() => updateReportStatus(report.id, "rejected")}
                         >
-                        <X className="h-4 w-4" /> 拒絕
+                        <X className="h-4 w-4" /> 忽略
                         </Button>
                     </div>
                 )}
