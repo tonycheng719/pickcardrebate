@@ -27,12 +27,22 @@ export default function AdminModerationPage() {
   const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const supabase = createClient();
   const router = useRouter();
+
+  // Initialize client inside component or outside? Outside is better usually, but here is fine.
+  const supabase = createClient();
 
   const fetchReports = async () => {
     setLoading(true);
     setErrorMsg(null);
+
+    // Check Env Vars explicitly for debugging
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+        setErrorMsg("環境變數未設定 (NEXT_PUBLIC_SUPABASE_URL)");
+        setLoading(false);
+        return;
+    }
+
     try {
         // Add timeout using Promise.race
         const fetchPromise = supabase
@@ -41,19 +51,19 @@ export default function AdminModerationPage() {
             .order("created_at", { ascending: false });
         
         const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error("Request timed out")), 10000)
+            setTimeout(() => reject(new Error("Request timed out (10s)")), 10000)
         );
 
         const result: any = await Promise.race([fetchPromise, timeoutPromise]);
         
-        const { data, error } = result;
+        const { data, error } = result || {};
 
         if (error) {
             console.error("Supabase fetch error:", error);
             throw error;
         }
 
-        setReports(data as Report[]);
+        setReports((data || []) as Report[]);
     } catch (err: any) {
         console.error("Fetch reports exception:", err);
         setErrorMsg(err.message || "載入失敗，請檢查網絡或權限");
@@ -117,6 +127,8 @@ export default function AdminModerationPage() {
           <div className="flex flex-col items-center justify-center h-96 gap-4">
               <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
               <p className="text-gray-500">正在載入回報資料...</p>
+              {/* Debug Info - visible if stuck */}
+              <p className="text-xs text-gray-400">Supabase URL: {process.env.NEXT_PUBLIC_SUPABASE_URL ? "Set" : "Missing"}</p>
           </div>
       );
   }

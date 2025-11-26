@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart3, TrendingUp, Calculator, PieChart, Wallet, Smartphone, Loader2 } from "lucide-react";
+import { BarChart3, TrendingUp, Calculator, PieChart, Wallet, Smartphone, Loader2, AlertTriangle } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/button";
 
 interface AnalyticsSummary {
   total_searches: number;
@@ -16,37 +17,64 @@ interface AnalyticsSummary {
 export default function AdminAnalyticsPage() {
   const [data, setData] = useState<AnalyticsSummary | null>(null);
   const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  
+  // Move createClient outside render loop usually, but safe here if env vars stable
   const supabase = createClient();
 
   useEffect(() => {
     const fetchAnalytics = async () => {
+      setLoading(true);
+      setErrorMsg(null);
+
+      // Check Env Vars explicitly for debugging
+      if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+          setErrorMsg("環境變數未設定 (NEXT_PUBLIC_SUPABASE_URL)");
+          setLoading(false);
+          return;
+      }
+
       try {
         const { data: rpcData, error } = await supabase.rpc("get_analytics_summary");
         
         if (error) {
           console.error("Failed to fetch analytics:", error);
+          setErrorMsg(error.message);
           return;
         }
 
         if (rpcData) {
-             // rpcData is technically 'any' or typed if we generated types
-             // The RPC returns a JSON object, so Supabase client might return it directly
              setData(rpcData as AnalyticsSummary);
         }
-      } catch (e) {
+      } catch (e: any) {
         console.error("Error fetching analytics:", e);
+        setErrorMsg(e.message || "未知錯誤");
       } finally {
         setLoading(false);
       }
     };
 
     fetchAnalytics();
-  }, [supabase]);
+  }, []); // Empty dependency array is safer for single fetch
 
   if (loading) {
       return (
-          <div className="flex items-center justify-center h-96">
+          <div className="flex flex-col items-center justify-center h-96 gap-4">
               <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+              <p className="text-gray-500">正在載入分析數據...</p>
+              {/* Debug Info */}
+              <p className="text-xs text-gray-400">Supabase URL: {process.env.NEXT_PUBLIC_SUPABASE_URL ? "Set" : "Missing"}</p>
+          </div>
+      );
+  }
+
+  if (errorMsg) {
+      return (
+          <div className="flex flex-col items-center justify-center h-96 gap-4">
+              <AlertTriangle className="h-12 w-12 text-red-500" />
+              <h3 className="text-lg font-medium">載入失敗</h3>
+              <p className="text-gray-500">{errorMsg}</p>
+              <Button onClick={() => window.location.reload()}>重試</Button>
           </div>
       );
   }
