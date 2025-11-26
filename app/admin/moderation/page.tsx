@@ -13,6 +13,7 @@ interface Report {
   category_id: string;
   amount: string;
   payment_method: string;
+  card_id: string; // Added card_id
   card_name: string;
   description: string;
   proposed_reward: string;
