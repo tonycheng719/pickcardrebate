@@ -428,7 +428,7 @@ export function CreditCardCalculator({
 
             {/* Scenario Toggle for Ambiguous Payments */}
             {AMBIGUOUS_PAYMENT_METHODS.includes(paymentMethod) && (
-                <div className="mt-3 p-3 bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 rounded-xl">
+                <div className="mt-3 p-3 bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 rounded-xl animate-in fade-in slide-in-from-top-2">
                     <Label className="text-xs text-gray-500 dark:text-gray-400 mb-2 block">
                         請問您的付款場景是？
                     </Label>
