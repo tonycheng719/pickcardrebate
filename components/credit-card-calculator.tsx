@@ -21,6 +21,7 @@ import { DynamicIcon } from "@/components/dynamic-icon";
 import { useDataset } from "@/lib/admin/data-store";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { ReportErrorDialog } from "@/components/report-error-dialog";
+import { logSearch } from "@/app/actions/log-search";
 
 const PAYMENT_OPTIONS = [
   { id: "physical_card", label: "實體卡" },
@@ -132,6 +133,19 @@ export function CreditCardCalculator({
       merchantList,
       categoryList
     );
+    
+    // Log the search anonymously or with user ID (handled by server action)
+    const bestResult = res[0];
+    logSearch({
+        merchantId: selectedMerchant.id,
+        merchantName: selectedMerchant.name,
+        categoryId: selectedCategory,
+        amount: parseFloat(amount),
+        paymentMethod,
+        bestCardId: bestResult?.card.id,
+        bestRewardAmount: bestResult?.rewardAmount
+    });
+
     setResults(res);
     setOpen(true);
   };
