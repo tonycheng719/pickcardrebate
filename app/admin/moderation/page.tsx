@@ -11,19 +11,16 @@ import { useRouter } from "next/navigation";
 interface Report {
   id: string;
   merchant_name: string;
-  category_id: string;
-  amount: string;
-  payment_method: string;
   card_id: string;
-  card_name: string;
-  description: string;
-  proposed_reward: string;
-  status: "pending" | "approved" | "rejected";
+  payment_method: string;
+  actual_rate: number;
+  comment: string;
+  status: "pending" | "verified" | "rejected";
   created_at: string;
   user_id: string;
-  // New fields
-  report_type?: "error" | "verification" | "discovery";
+  report_type?: string;
   conditions?: string[];
+  evidence_url?: string;
 }
 
 export default function AdminModerationPage() {
@@ -45,7 +42,7 @@ export default function AdminModerationPage() {
 
     try {
         const fetchPromise = supabase
-            .from("reports")
+            .from("merchant_reviews")
             .select("*")
             .order("created_at", { ascending: false });
         
@@ -71,10 +68,10 @@ export default function AdminModerationPage() {
     fetchReports();
   }, []);
 
-  const updateReportStatus = async (id: string, status: "approved" | "rejected") => {
+  const updateReportStatus = async (id: string, status: "verified" | "rejected") => {
     setReports(prev => prev.map(r => r.id === id ? { ...r, status } : r));
     const { error } = await supabase
-      .from("reports")
+      .from("merchant_reviews")
       .update({ status })
       .eq("id", id);
 
@@ -82,7 +79,7 @@ export default function AdminModerationPage() {
       toast.error("更新狀態失敗");
       fetchReports(); 
     } else {
-      toast.success(status === "approved" ? "已通過回報" : "已拒絕回報");
+      toast.success(status === "verified" ? "已通過回報" : "已拒絕回報");
     }
   };
 
@@ -90,7 +87,7 @@ export default function AdminModerationPage() {
       if (!confirm("確定要刪除此回報嗎？")) return;
       setReports(prev => prev.filter(r => r.id !== id));
       const { error } = await supabase
-        .from("reports")
+        .from("merchant_reviews")
         .delete()
         .eq("id", id);
       
@@ -103,7 +100,7 @@ export default function AdminModerationPage() {
   };
 
   const handleQuickEdit = (cardId: string) => {
-      if (!cardId) return toast.error("無法辨識卡片 ID");
+      if (!cardId || cardId === 'unknown') return toast.error("無法辨識卡片 ID");
       router.push(`/admin/cards/new?id=${cardId}`);
   };
 
@@ -165,7 +162,7 @@ export default function AdminModerationPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">回報審核</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">回報審核 (Community)</h1>
           <p className="text-gray-500 dark:text-gray-400">目前有 {pending.length} 個回報待處理。</p>
         </div>
         <Button variant="outline" onClick={fetchReports} size="sm">重新整理</Button>
@@ -185,19 +182,18 @@ export default function AdminModerationPage() {
                     </div>
                     <CardTitle className="text-lg dark:text-white flex items-center gap-2">
                         {report.merchant_name || "未指定商戶"} 
-                        <span className="text-sm font-normal text-gray-500">({report.category_id})</span>
                     </CardTitle>
                     <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        卡片: {report.card_name || report.card_id || "未指定"} | 支付: {report.payment_method}
+                        卡片: {report.card_id || "未指定"} | 支付: {report.payment_method}
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
                     <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                        report.status === "approved" ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300" :
+                        report.status === "verified" ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300" :
                         report.status === "rejected" ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300" :
                         "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-200"
                     }`}>
-                        {report.status === "pending" ? "審核中" : report.status === "approved" ? "已通過" : "已拒絕"}
+                        {report.status === "pending" ? "審核中" : report.status === "verified" ? "已通過" : "已拒絕"}
                     </span>
                      <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-red-500" onClick={() => deleteReport(report.id)}>
                          <Trash2 className="h-4 w-4" />
@@ -208,14 +204,14 @@ export default function AdminModerationPage() {
                 <div className="bg-gray-50 dark:bg-gray-900/50 p-3 rounded-lg text-sm space-y-2">
                      <div className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
                         <Info className="h-4 w-4 text-blue-500 mt-0.5 shrink-0" />
-                        <div className="flex-1">
-                            <span className="font-semibold">描述:</span> {report.description}
+                        <div className="flex-1 whitespace-pre-wrap">
+                            <span className="font-semibold">描述/備註:</span> {report.comment}
                             <ConditionTags conditions={report.conditions} />
                         </div>
                     </div>
-                    {report.proposed_reward && (
+                    {report.actual_rate != null && (
                         <div className="pl-7 text-gray-600 dark:text-gray-400">
-                            <span className="font-semibold">建議/實際回贈:</span> {report.proposed_reward}%
+                            <span className="font-semibold">建議/實際回贈:</span> {report.actual_rate}%
                         </div>
                     )}
                 </div>
@@ -226,21 +222,20 @@ export default function AdminModerationPage() {
                         variant="default"
                         size="sm"
                         className="gap-2 bg-green-600 hover:bg-green-700"
-                        onClick={() => updateReportStatus(report.id, "approved")}
+                        onClick={() => updateReportStatus(report.id, "verified")}
                         >
-                        <Check className="h-4 w-4" /> 標記為已處理
+                        <Check className="h-4 w-4" /> 驗證並通過
                         </Button>
-                        {report.card_id && (
+                        {report.card_id && report.card_id !== 'unknown' && (
                             <Button
                                 variant="secondary"
                                 size="sm"
                                 className="gap-2"
                                 onClick={() => handleQuickEdit(report.card_id)}
                             >
-                                <Edit className="h-4 w-4" /> 編輯卡片
+                                <Edit className="h-4 w-4" /> 編輯卡片規則
                             </Button>
                         )}
-                        {/* Future: Add "Create Override" button here */}
                         <Button
                         variant="destructive"
                         size="sm"

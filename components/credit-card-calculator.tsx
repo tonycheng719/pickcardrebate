@@ -554,6 +554,7 @@ export function CreditCardCalculator({
       <ReportErrorDialog 
         open={isReportDialogOpen}
         onOpenChange={setIsReportDialogOpen}
+        merchantId={selectedMerchant?.id}
         merchantName={selectedMerchant?.name}
         categoryId={selectedMerchant?.categoryIds[0]}
         amount={amount}

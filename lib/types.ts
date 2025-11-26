@@ -106,3 +106,34 @@ export interface ComboStrategy {
   totalReward: string;
   tags: string[];
 }
+
+export interface MerchantReview {
+  id: string;
+  user_id: string;
+  merchant_id: string;
+  merchant_name: string;
+  card_id: string;
+  payment_method: string;
+  actual_rate: number;
+  comment?: string;
+  status: 'pending' | 'verified' | 'rejected';
+  upvotes: number;
+  downvotes: number;
+  evidence_url?: string;
+  created_at: string;
+}
+
+export interface MerchantTag {
+  id: string;
+  merchant_id: string;
+  tag_name: string;
+  count: number;
+  last_updated_at: string;
+}
+
+export interface UserReputation {
+  user_id: string;
+  points: number;
+  level: number;
+  badges: string[];
+}

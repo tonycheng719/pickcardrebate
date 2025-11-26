@@ -18,6 +18,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { 
+        merchant_id,
         merchant_name, 
         category_id, 
         amount, 
@@ -27,8 +28,8 @@ export async function POST(request: Request) {
         description, 
         proposed_reward,
         user_id,
-        report_type, // New field
-        conditions   // New field
+        report_type,
+        conditions
     } = body;
 
     // Basic validation
@@ -36,20 +37,24 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "請填寫描述" }, { status: 400 });
     }
 
-    // Insert report with new fields
-    const { error } = await supabase.from("reports").insert({
+    // Construct comment with extra context if needed
+    let finalComment = description || "";
+    if (amount) finalComment += `\n(Transaction Amount: $${amount})`;
+    if (category_id) finalComment += `\n(Category: ${category_id})`;
+    if (card_name) finalComment += `\n(Card Name: ${card_name})`;
+
+    // Insert into merchant_reviews
+    const { error } = await supabase.from("merchant_reviews").insert({
       user_id: user_id || null,
-      merchant_name,
-      category_id,
-      amount,
+      merchant_id: merchant_id || null,
+      merchant_name: merchant_name || "Unknown Merchant",
+      card_id: card_id || "unknown",
       payment_method,
-      card_id,
-      card_name, // Ensure card_name is saved
-      description,
-      proposed_reward,
+      actual_rate: proposed_reward ? parseFloat(proposed_reward) : null,
+      comment: finalComment,
+      status: 'pending',
       report_type: report_type || 'error',
       conditions: conditions || [],
-      status: 'pending'
     });
 
     if (error) {

@@ -16,6 +16,7 @@ import { useWallet } from "@/lib/store/wallet-context";
 interface ReportErrorDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  merchantId?: string | null;
   merchantName?: string | null;
   categoryId?: string | null;
   amount?: string | null;
@@ -27,6 +28,7 @@ interface ReportErrorDialogProps {
 export function ReportErrorDialog({
   open,
   onOpenChange,
+  merchantId,
   merchantName,
   categoryId,
   amount,
@@ -89,6 +91,7 @@ export function ReportErrorDialog({
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
+                merchant_id: merchantId,
                 merchant_name: merchantName,
                 category_id: categoryId,
                 amount,
