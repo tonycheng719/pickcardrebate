@@ -254,6 +254,10 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       provider,
       options: {
         redirectTo: redirectUrl,
+        queryParams: {
+          // Force prompt to ensure we get refresh token if needed, and clear session
+          prompt: 'consent',
+        }
       },
     });
 
