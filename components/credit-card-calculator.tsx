@@ -16,7 +16,7 @@ import { CATEGORIES } from "@/lib/data/categories";
 import { HK_CARDS } from "@/lib/data/cards";
 import { findBestCards, CalculationResult } from "@/lib/logic/calculator";
 import { useWallet } from "@/lib/store/wallet-context";
-import { CheckCircle2, CreditCard, DollarSign, Sparkles } from "lucide-react";
+import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag } from "lucide-react";
 import { DynamicIcon } from "@/components/dynamic-icon";
 import { useDataset } from "@/lib/admin/data-store";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -72,6 +72,10 @@ export function CreditCardCalculator({
   const [paymentMethod, setPaymentMethod] = useState("physical_card");
   const [results, setResults] = useState<CalculationResult[]>([]);
   const [open, setOpen] = useState(false);
+  
+  // Separate state for report dialog
+  const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
+
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   // Refs for auto-scrolling
@@ -153,6 +157,13 @@ export function CreditCardCalculator({
   const best = results[0];
   const others = results.slice(1);
 
+  const handleReportClick = () => {
+    // Close the result dialog first if on mobile to avoid overlay issues, 
+    // OR just open report dialog on top. Shadcn supports stacked dialogs but drawers might differ.
+    // Let's try keeping result open and stacking report on top.
+    setIsReportDialogOpen(true);
+  };
+
   const ResultContent = () => (
     <div className="space-y-4 p-4 pb-8">
       {!best ? (
@@ -216,14 +227,9 @@ export function CreditCardCalculator({
           </div>
 
           <div className="pt-2 border-t border-gray-100 dark:border-gray-800 flex justify-center">
-             <ReportErrorDialog 
-                merchantName={selectedMerchant?.name}
-                categoryId={selectedMerchant?.categoryIds[0]}
-                amount={amount}
-                paymentMethod={PAYMENT_OPTIONS.find(p => p.id === paymentMethod)?.label}
-                cardName={best?.card.name}
-                cardId={best?.card.id}
-             />
+             <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-red-500 gap-1 h-8 px-2" onClick={handleReportClick}>
+                <Flag className="h-3 w-3" /> 回報錯誤
+             </Button>
           </div>
         </>
       )}
@@ -325,7 +331,7 @@ export function CreditCardCalculator({
               >
                 {PAYMENT_OPTIONS.map((opt) => (
                   <option key={opt.id} value={opt.id}>
-                    {opt.label}
+                  {opt.label}
                   </option>
                 ))}
               </select>
@@ -341,6 +347,7 @@ export function CreditCardCalculator({
         </div>
       </div>
 
+      {/* Main Result Dialog/Drawer */}
       {isDesktop ? (
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogContent className="max-w-lg">
@@ -364,6 +371,18 @@ export function CreditCardCalculator({
           </DrawerContent>
         </Drawer>
       )}
+
+      {/* Independent Report Error Dialog - Renders on top */}
+      <ReportErrorDialog 
+        open={isReportDialogOpen}
+        onOpenChange={setIsReportDialogOpen}
+        merchantName={selectedMerchant?.name}
+        categoryId={selectedMerchant?.categoryIds[0]}
+        amount={amount}
+        paymentMethod={PAYMENT_OPTIONS.find(p => p.id === paymentMethod)?.label}
+        cardName={best?.card.name}
+        cardId={best?.card.id}
+      />
     </div>
   );
 }
