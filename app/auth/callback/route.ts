@@ -10,7 +10,8 @@ export async function GET(request: Request) {
     await supabase.auth.exchangeCodeForSession(code);
   }
 
-  const redirectTo = searchParams.get("redirect") || "/";
-  return NextResponse.redirect(`${origin}${redirectTo}`);
+  // Force production URL for redirect to avoid localhost issues behind proxy
+  const productionOrigin = "https://pickcardrebate-web.zeabur.app";
+  return NextResponse.redirect(`${productionOrigin}${redirectTo}`);
 }
 
