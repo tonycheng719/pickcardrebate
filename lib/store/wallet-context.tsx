@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import type { AuthChangeEvent, Session, User } from "@supabase/supabase-js";
 import { logUserIp } from "@/app/actions/log-ip";
 import { useRouter, usePathname } from "next/navigation";
-import { fetchUserWallet, syncCardToAdd, syncCardToRemove, syncCardSettings, uploadLocalWallet } from "@/lib/wallet-sync";
+import { fetchUserWallet } from "@/lib/wallet-sync"; // Only keep fetchUserWallet
 
 export interface CardSettings {
   note?: string;
@@ -82,6 +82,23 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
 
+  // API Helper for Wallet Sync
+  const apiSyncWallet = async (action: string, payload: any) => {
+    try {
+        const response = await fetch("/api/wallet/sync", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action, ...payload })
+        });
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Wallet sync failed");
+        }
+    } catch (error) {
+        console.error(`API Sync Error (${action}):`, error);
+    }
+  };
+
   // Load initial data from local storage
   useEffect(() => {
     const savedCards = localStorage.getItem("pickcardrebate_wallet_cards");
@@ -152,50 +169,40 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
 
   const initializeWalletSync = useCallback(async (userId: string) => {
     try {
-        // 1. Fetch cloud data
+        // 1. Fetch cloud data (Reading is usually fine with public policies)
         const cloudData = await fetchUserWallet(supabase, userId);
         
         // 2. Merge logic
-        // If cloud is empty, upload local (if any)
         if (cloudData.myCardIds.length === 0 && Object.keys(cloudData.cardSettings).length === 0) {
-             // We access current state from refs or assume state is up to date if called after mount
-             // But here we are inside a callback. 
-             // Ideally, we should upload whatever is currently in 'myCardIds' and 'cardSettings' state
-             // However, state might be closure-captured. 
-             // Let's rely on the state passed/captured, or read from localStorage for truth during init.
+             // Cloud empty, upload local
              const localCardsStr = localStorage.getItem("pickcardrebate_wallet_cards");
              const localSettingsStr = localStorage.getItem("pickcardrebate_wallet_settings");
              
              const localCards = localCardsStr ? JSON.parse(localCardsStr) : [];
-             const localSettings = localSettingsStr ? JSON.parse(localSettingsStr) : {};
+             // We skip uploading settings in batch for now to keep API simple, or iterate
+             // Ideally api/wallet/sync should support full batch.
+             // For now, let's just upload cards in batch.
 
              if (localCards.length > 0) {
-                 await uploadLocalWallet(supabase, userId, localCards, localSettings);
-                 // State is already localCards, so no need to set
+                 await apiSyncWallet("batch_add", { userId, cardIds: localCards });
              }
         } else {
-             // Cloud has data.
-             // Merge strategy: Cloud wins for existence, but we can merge local-only cards too?
-             // For simplicity: Union of IDs, merge settings.
-             // Actually, commonly: Cloud overrides local on login, OR merges.
-             // Let's do: Union of IDs.
-             
+             // Cloud has data, merge
              const localCardsStr = localStorage.getItem("pickcardrebate_wallet_cards");
              const localSettingsStr = localStorage.getItem("pickcardrebate_wallet_settings");
              const localCards = localCardsStr ? JSON.parse(localCardsStr) : [];
              const localSettings = localSettingsStr ? JSON.parse(localSettingsStr) : {};
 
              const mergedIds = Array.from(new Set([...cloudData.myCardIds, ...localCards]));
-             const mergedSettings = { ...localSettings, ...cloudData.cardSettings }; // Cloud settings overwrite local for same keys? or vice versa. Let's say Cloud wins.
+             const mergedSettings = { ...localSettings, ...cloudData.cardSettings };
 
              setMyCardIds(mergedIds);
              setCardSettings(mergedSettings);
 
-             // If there were local items not in cloud, sync them up
-             // Find items in merged but not in cloud (which means they were local)
+             // Sync missing to cloud
              const missingInCloud = mergedIds.filter(id => !cloudData.myCardIds.includes(id));
              if (missingInCloud.length > 0) {
-                 await uploadLocalWallet(supabase, userId, missingInCloud, localSettings);
+                 await apiSyncWallet("batch_add", { userId, cardIds: missingInCloud });
              }
         }
         
@@ -238,7 +245,6 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      // Log IP in background
       logUserIp().catch(console.error);
 
       try {
@@ -292,13 +298,9 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     if (!myCardIds.includes(cardId)) {
       setMyCardIds(prev => [...prev, cardId]);
       
-      // Sync to cloud if logged in
+      // Sync to cloud via API
       if (user?.id) {
-          try {
-            await syncCardToAdd(supabase, user.id, cardId);
-          } catch (e) {
-              console.error("Cloud sync failed for addCard", e);
-          }
+          await apiSyncWallet("add", { userId: user.id, cardId });
       }
     }
   };
@@ -314,15 +316,9 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
         }
       });
       
-      // Sync to cloud if logged in
+      // Sync to cloud via API
       if (user?.id && idsToAdd.length > 0) {
-           // Initial simple loop, can be optimized with bulk insert if needed, 
-           // but addAllCards is rare (usually init).
-           // Actually uploadLocalWallet can handle bulk upsert.
-           // But we don't have settings here. 
-           // Just iterate for now or use a bulk add helper (not implemented yet for cards only).
-           // Let's use syncCardToAdd in loop for simplicity or uploadLocalWallet logic.
-           uploadLocalWallet(supabase, user.id, idsToAdd, {}).catch(console.error);
+          apiSyncWallet("batch_add", { userId: user.id, cardIds: idsToAdd });
       }
 
       return newIds;
@@ -332,13 +328,9 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   const removeCard = async (cardId: string) => {
     setMyCardIds(prev => prev.filter((id) => id !== cardId));
     
-    // Sync to cloud if logged in
+    // Sync to cloud via API
     if (user?.id) {
-        try {
-            await syncCardToRemove(supabase, user.id, cardId);
-        } catch (e) {
-            console.error("Cloud sync failed for removeCard", e);
-        }
+        await apiSyncWallet("remove", { userId: user.id, cardId });
     }
   };
 
@@ -444,10 +436,10 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
             }
         };
         
-        // Sync to cloud if logged in
+        // Sync to cloud via API
         if (user?.id) {
              const updatedSetting = newSettings[cardId];
-             syncCardSettings(supabase, user.id, cardId, updatedSetting).catch(e => console.error("Cloud sync failed for settings", e));
+             apiSyncWallet("settings", { userId: user.id, cardId, settings: updatedSetting });
         }
         
         return newSettings;
@@ -488,7 +480,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
 
   const isPromoFollowed = (promoId: string) => {
       return user?.followedPromoIds?.includes(promoId) || false;
-  };
+   };
 
   const value = {
     myCardIds,
