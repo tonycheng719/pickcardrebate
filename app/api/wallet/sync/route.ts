@@ -1,16 +1,20 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 
-// Use Service Role if available, otherwise Anon Key
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+// Safely get env vars or fallback
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 
-const supabase = createClient(supabaseUrl, serviceRoleKey || anonKey, {
-  auth: { persistSession: false }
-});
+const supabase = supabaseUrl 
+    ? createClient(supabaseUrl, serviceRoleKey || anonKey, { auth: { persistSession: false } })
+    : null;
 
 export async function POST(request: Request) {
+  if (!supabase) {
+      return NextResponse.json({ error: "Internal Server Configuration Error" }, { status: 500 });
+  }
+
   try {
     const body = await request.json();
     const { userId, action, cardId, settings, cardIds } = body;
@@ -18,8 +22,6 @@ export async function POST(request: Request) {
     if (!userId) {
       return NextResponse.json({ error: "Missing userId" }, { status: 400 });
     }
-
-    console.log(`Wallet sync: ${action} for user ${userId}`);
 
     if (action === "add") {
         const { error } = await supabase.from("user_cards").upsert(
@@ -57,4 +59,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
 }
-
