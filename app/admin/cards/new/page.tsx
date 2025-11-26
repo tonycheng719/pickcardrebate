@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAdminDataStore } from "@/lib/admin/data-store";
-import type { CreditCard } from "@/lib/types";
-import { Check } from "lucide-react";
+import type { CreditCard, RewardRule } from "@/lib/types";
+import { Check, Code } from "lucide-react";
 
 type NewCardForm = {
   name: string;
@@ -21,6 +21,7 @@ type NewCardForm = {
   description: string;
   sellingPoints: string;
   imageUrl: string;
+  rawRules: string; // New field for JSON rules
 };
 
 const DEFAULT_FORM: NewCardForm = {
@@ -35,6 +36,7 @@ const DEFAULT_FORM: NewCardForm = {
   description: "",
   sellingPoints: "",
   imageUrl: "",
+  rawRules: "[]",
 };
 
 const slugify = (value: string) =>
@@ -51,6 +53,7 @@ export default function AdminNewCardPage() {
   const [form, setForm] = useState<NewCardForm>(DEFAULT_FORM);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [jsonError, setJsonError] = useState<string | null>(null);
 
   const editingCard = useMemo(() => cards.find((card) => card.id === editingId), [cards, editingId]);
 
@@ -69,6 +72,7 @@ export default function AdminNewCardPage() {
       description: baseRule?.description || "",
       sellingPoints: editingCard.sellingPoints?.join("\n") || "",
       imageUrl: editingCard.imageUrl || "",
+      rawRules: JSON.stringify(editingCard.rules, null, 2),
     });
   }, [editingCard]);
 
@@ -78,11 +82,25 @@ export default function AdminNewCardPage() {
 
   const handleChange = (field: keyof NewCardForm, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
+    if (field === "rawRules") {
+        try {
+            JSON.parse(value);
+            setJsonError(null);
+        } catch (e: any) {
+            setJsonError(e.message);
+        }
+    }
   };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     setIsSubmitting(true);
+
+    if (jsonError) {
+        alert("請先修正 JSON 格式錯誤");
+        setIsSubmitting(false);
+        return;
+    }
 
     const tags = form.tags.split(",").map((tag) => tag.trim()).filter(Boolean);
     const sellingPoints = form.sellingPoints
@@ -91,11 +109,25 @@ export default function AdminNewCardPage() {
       .filter(Boolean);
     const percentageValue = parseFloat(form.basePercentage) || 0;
 
-    const baseRule = {
-      description: form.description || "基本回贈",
-      matchType: "base" as const,
-      percentage: percentageValue > 0 ? percentageValue : 0.5,
-    };
+    let rules: RewardRule[] = [];
+    try {
+        rules = JSON.parse(form.rawRules);
+    } catch (e) {
+        console.error("Invalid rules JSON, falling back to base rule");
+        // Fallback if JSON is empty or invalid (though check above should catch it)
+        rules = [{
+            description: form.description || "基本回贈",
+            matchType: "base" as const,
+            percentage: percentageValue > 0 ? percentageValue : 0.5,
+        }];
+    }
+    
+    // Ensure base rule syncs if user edited simple field but didn't touch JSON
+    // Or prioritize JSON? Let's prioritize JSON if it has content.
+    // Actually, to avoid confusion, if JSON is modified, use it.
+    // If JSON is default/empty, construct from form.
+    // But for "See calculation method", JSON is the source of truth.
+    // Let's assume JSON is the master for Rules.
 
     const existing = editingCard;
     const nextCard: CreditCard = {
@@ -107,9 +139,7 @@ export default function AdminNewCardPage() {
       foreignCurrencyFee: existing?.foreignCurrencyFee,
       feeWaiverCondition: existing?.feeWaiverCondition,
       waiverMethod: existing?.waiverMethod,
-      rules: existing
-        ? existing.rules.map((rule) => (rule.matchType === "base" ? baseRule : rule))
-        : [baseRule],
+      rules: rules,
       tags,
       welcomeOfferText: form.welcomeOffer,
       welcomeOfferReward: form.welcomeOfferReward || undefined,
@@ -124,7 +154,6 @@ export default function AdminNewCardPage() {
     router.push("/admin/cards");
   };
 
-  const parsedTags = form.tags.split(",").map((tag) => tag.trim()).filter(Boolean);
   const parsedSellingPoints = form.sellingPoints
     .split("\n")
     .map((point) => point.trim())
@@ -137,14 +166,14 @@ export default function AdminNewCardPage() {
           <button className="text-sm text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200" onClick={() => router.back()}>
             ← 返回信用卡列表
           </button>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mt-2">新增信用卡</h1>
-          <p className="text-gray-500 dark:text-gray-400">填寫以下資料以建立新卡片，提交後將待後端審核。</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mt-2">新增/編輯信用卡</h1>
+          <p className="text-gray-500 dark:text-gray-400">填寫以下資料以建立或修改卡片。</p>
         </div>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
         <form className="lg:col-span-2 space-y-5 bg-white dark:bg-gray-800 p-6 rounded-xl border dark:border-gray-700 shadow-sm" onSubmit={handleSubmit}>
-          {/* Form Fields ... (kept same for brevity, only Preview Card changed logic) */}
+          {/* Basic Info */}
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
               <label className="text-xs font-medium text-gray-500 dark:text-gray-400">信用卡名稱</label>
@@ -179,7 +208,7 @@ export default function AdminNewCardPage() {
               />
             </div>
             <div>
-              <label className="text-xs font-medium text-gray-500 dark:text-gray-400">基本回贈 %</label>
+              <label className="text-xs font-medium text-gray-500 dark:text-gray-400">基本回贈 % (顯示用)</label>
               <Input
                 type="number"
                 step="0.1"
@@ -200,7 +229,6 @@ export default function AdminNewCardPage() {
               className="mt-1 dark:bg-gray-700 dark:border-gray-600"
               placeholder="https://..."
             />
-            <p className="text-xs text-gray-500 mt-1">建議使用 PNG 去背圖片或完整的橫向卡面圖。</p>
           </div>
 
           <div>
@@ -257,32 +285,47 @@ export default function AdminNewCardPage() {
             />
           </div>
 
-          <div>
-            <label className="text-xs font-medium text-gray-500 dark:text-gray-400">回饋描述</label>
-            <textarea
-              value={form.description}
-              onChange={(e) => handleChange("description", e.target.value)}
-              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white"
-              rows={4}
-              placeholder="輸入回饋說明，例如：超市 5%，流動支付 3%..."
-            />
+          {/* Advanced Rules JSON Editor */}
+          <div className="pt-4 border-t dark:border-gray-700">
+            <div className="flex items-center justify-between mb-2">
+                <label className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                    <Code className="h-4 w-4" /> 進階設定：回贈規則 (JSON)
+                </label>
+                <span className="text-xs text-gray-500">小心編輯</span>
+            </div>
+            <div className="relative">
+                <textarea
+                    value={form.rawRules}
+                    onChange={(e) => handleChange("rawRules", e.target.value)}
+                    className={`font-mono text-xs mt-1 w-full rounded-md border ${jsonError ? "border-red-500 focus:ring-red-500" : "border-gray-300 dark:border-gray-600"} dark:bg-gray-900 px-3 py-2 text-gray-900 dark:text-gray-300 h-64`}
+                    spellCheck={false}
+                />
+                {jsonError && (
+                    <div className="absolute bottom-2 right-2 text-xs text-red-500 bg-white dark:bg-gray-800 px-2 py-1 rounded border border-red-200">
+                        JSON 格式錯誤: {jsonError}
+                    </div>
+                )}
+            </div>
+            <p className="text-xs text-gray-500 mt-1">
+                在此直接編輯回贈邏輯。這是計算機的核心依據。請確保格式正確。
+            </p>
           </div>
 
-          <div className="flex justify-end gap-3">
+          <div className="flex justify-end gap-3 pt-4">
             <Button type="button" variant="outline" onClick={() => router.back()}>
               取消
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting || !!jsonError}>
               {isSubmitting ? "儲存中..." : "儲存信用卡"}
             </Button>
           </div>
         </form>
 
-        <Card className="dark:bg-gray-800 dark:border-gray-700 h-fit">
+        <Card className="dark:bg-gray-800 dark:border-gray-700 h-fit sticky top-6">
           <CardHeader>
             <CardTitle className="text-lg dark:text-white">即時預覽</CardTitle>
           </CardHeader>
-          {/* Updated Preview Logic to Match Frontend */}
+          {/* Preview Logic */}
           <div className={`relative overflow-hidden ${(!form.imageUrl || imageError) ? (editingCard?.style?.bgColor || "bg-gradient-to-r from-slate-500 to-slate-700") + ' h-32 p-4' : 'bg-white dark:bg-gray-900 h-48 p-4 flex items-center justify-center'}`}>
                 {form.imageUrl && !imageError ? (
                     <div className="relative w-full h-full">
@@ -303,7 +346,6 @@ export default function AdminNewCardPage() {
             </div>
 
           <CardContent className="space-y-4 pt-4 px-6 pb-6">
-            {/* Always show Name & Bank */}
             <div className="mb-2">
                 <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{form.bank || "銀行名稱"}</div>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white leading-tight">{form.name || "信用卡名稱"}</h3>
@@ -332,12 +374,6 @@ export default function AdminNewCardPage() {
               ) : (
                 <p className="text-xs text-gray-400">尚未設定賣點</p>
               )}
-            </div>
-            <div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">申請連結</p>
-              <p className="text-sm text-blue-600 dark:text-blue-400 break-all">
-                {form.applyUrl || "https://example.com"}
-              </p>
             </div>
           </CardContent>
         </Card>

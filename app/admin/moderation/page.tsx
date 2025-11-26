@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, X, Info, Loader2, Trash2, AlertTriangle } from "lucide-react";
+import { Check, X, Info, Loader2, Trash2, AlertTriangle, Edit } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface Report {
   id: string;
@@ -27,6 +28,7 @@ export default function AdminModerationPage() {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const supabase = createClient();
+  const router = useRouter();
 
   const fetchReports = async () => {
     setLoading(true);
@@ -98,6 +100,14 @@ export default function AdminModerationPage() {
       } else {
           toast.success("已刪除");
       }
+  };
+
+  const handleQuickEdit = (cardId: string) => {
+      if (!cardId) {
+          toast.error("無法辨識卡片 ID");
+          return;
+      }
+      router.push(`/admin/cards/new?id=${cardId}`);
   };
 
   const pending = reports.filter((r) => r.status === "pending");
@@ -193,6 +203,16 @@ export default function AdminModerationPage() {
                         >
                         <Check className="h-4 w-4" /> 通過並修正
                         </Button>
+                        {report.card_id && (
+                            <Button
+                                variant="secondary"
+                                size="sm"
+                                className="gap-2"
+                                onClick={() => handleQuickEdit(report.card_id)}
+                            >
+                                <Edit className="h-4 w-4" /> 編輯卡片規則
+                            </Button>
+                        )}
                         <Button
                         variant="destructive"
                         size="sm"
