@@ -45,6 +45,7 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
+    console.log("Report submitted successfully via API");
     return NextResponse.json({ success: true });
   } catch (e: any) {
     console.error("API Report Error:", e);
