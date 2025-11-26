@@ -7,7 +7,12 @@ export async function GET(request: Request) {
 
   if (code) {
     const supabase = await createClient();
-    await supabase.auth.exchangeCodeForSession(code);
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    if (error) {
+        console.error("Auth exchange error:", error);
+        // Redirect to login with error
+        return NextResponse.redirect(`${origin}/login?error=auth_exchange_failed`);
+    }
   }
 
   // Force production URL for redirect to avoid localhost issues behind proxy
