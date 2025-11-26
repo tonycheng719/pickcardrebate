@@ -51,7 +51,9 @@ export default function SettingsPage() {
           <div className="flex-1 flex items-center justify-center">
               <div className="text-center">
                   <p className="text-gray-500 mb-4">請先登入以管理設定</p>
-                  <Button onClick={() => router.push("/login")}>前往登入</Button>
+                  <Link href="/login">
+                      <Button>前往登入</Button>
+                  </Link>
               </div>
           </div>
       </div>

@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
+import Link from "next/link";
+
 export default function LoginPage() {
   const { loginWithOAuth, requestSmsOtp, verifySmsOtp, user } = useWallet();
   const router = useRouter();
@@ -162,9 +164,9 @@ export default function LoginPage() {
 
           <p className="text-center text-xs text-gray-500 dark:text-gray-400">
             點擊繼續即代表您同意我們的
-            <a href="#" className="underline hover:text-gray-900 dark:hover:text-gray-200 mx-1">服務條款</a>
+            <Link href="/terms" className="underline hover:text-gray-900 dark:hover:text-gray-200 mx-1">服務條款</Link>
             與
-            <a href="#" className="underline hover:text-gray-900 dark:hover:text-gray-200 mx-1">隱私權政策</a>
+            <Link href="/privacy" className="underline hover:text-gray-900 dark:hover:text-gray-200 mx-1">隱私權政策</Link>
           </p>
         </div>
       </main>
