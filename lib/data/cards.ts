@@ -16,6 +16,7 @@ export const HK_CARDS: CreditCard[] = [
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["餐飲神卡", "最紅自主獎賞", "5X積分"],
+    imageUrl: "https://mhgprod.blob.core.windows.net/moneyhero/strapi-uploads/HSBC_Visa_Signature_Card_774a722fef.jpg",
     feeWaiverCondition: "首兩年免年費",
     welcomeOfferText: "迎新簽 $8,000 送 $800 獎賞錢",
     welcomeOfferReward: "$800 獎賞錢",
