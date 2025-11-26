@@ -46,7 +46,7 @@ export function useMerchantCommunityData(merchantId: string | null) {
         // Process reviews into a map keyed by card_id
         const verifiedCards: Record<string, { count: number; lastVerified: string }> = {};
         
-        reviews?.forEach(r => {
+        reviews?.forEach((r: { card_id: string | null; created_at: string }) => {
           // Ensure we handle potentially null card_ids gracefully, though schema says not null
           if (!r.card_id) return;
 
