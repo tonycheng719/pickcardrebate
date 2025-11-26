@@ -2,12 +2,13 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerFooter } from "@/components/ui/drawer";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { CheckCircle2, Flag } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { CheckCircle2, Flag, AlertTriangle, PartyPopper, Lightbulb } from "lucide-react";
 import { toast } from "sonner";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useWallet } from "@/lib/store/wallet-context";
@@ -36,6 +37,8 @@ export function ReportErrorDialog({
   const { user } = useWallet();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [reportType, setReportType] = useState<string>("error");
+  const [conditions, setConditions] = useState<string[]>([]);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   // Use refs for uncontrolled inputs to prevent re-render lag
@@ -45,6 +48,8 @@ export function ReportErrorDialog({
   useEffect(() => {
     if (open) {
         setIsSuccess(false);
+        setReportType("error");
+        setConditions([]);
         // Don't clear refs immediately to allow animation, or clear manually
         if (descriptionRef.current) descriptionRef.current.value = "";
         if (proposedRef.current) proposedRef.current.value = "";
@@ -69,8 +74,8 @@ export function ReportErrorDialog({
     const description = descriptionRef.current?.value || "";
     const proposedReward = proposedRef.current?.value || "";
 
-    if (!description.trim()) {
-        toast.error("請填寫錯誤描述");
+    if (!description.trim() && reportType !== 'verification') {
+        toast.error("請填寫描述");
         return;
     }
 
@@ -92,7 +97,10 @@ export function ReportErrorDialog({
                 card_name: cardName,
                 description,
                 proposed_reward: proposedReward,
-                user_id: user.id
+                user_id: user.id,
+                // New fields
+                report_type: reportType,
+                conditions: conditions,
             }),
         });
 
@@ -112,6 +120,12 @@ export function ReportErrorDialog({
     }
   };
 
+  const toggleCondition = (cond: string) => {
+      setConditions(prev => 
+          prev.includes(cond) ? prev.filter(c => c !== cond) : [...prev, cond]
+      );
+  };
+
   const SuccessView = () => (
     <div className="flex flex-col items-center justify-center py-8 text-center animate-in fade-in zoom-in-95 duration-300">
         <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4">
@@ -119,7 +133,7 @@ export function ReportErrorDialog({
         </div>
         <h3 className="text-xl font-bold text-green-700 mb-2">回報已提交！</h3>
         <p className="text-gray-500 mb-6">
-            感謝您的寶貴意見，我們會盡快審核並更新資料。
+            感謝您的情報，我們會盡快審核並更新資料。
         </p>
         <Button onClick={() => onOpenChange(false)} className="w-full bg-green-600 hover:bg-green-700 text-white">
             關閉
@@ -128,7 +142,8 @@ export function ReportErrorDialog({
   );
 
   const FormView = () => (
-    <div className="space-y-4">
+    <div className="space-y-5">
+        {/* Info Summary */}
         <div className="grid gap-4 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg text-sm border dark:border-gray-800">
             <div className="grid grid-cols-3 gap-1">
                 <span className="text-gray-500">商戶/類別:</span>
@@ -146,24 +161,104 @@ export function ReportErrorDialog({
             )}
         </div>
 
+        {/* Report Type Selection */}
+        <div className="space-y-3">
+            <Label>回報類型</Label>
+            <RadioGroup 
+                value={reportType} 
+                onValueChange={setReportType} 
+                className="grid grid-cols-3 gap-2"
+            >
+                <div>
+                    <RadioGroupItem value="error" id="type-error" className="peer sr-only" />
+                    <Label
+                        htmlFor="type-error"
+                        className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-red-500 peer-data-[state=checked]:bg-red-50 dark:peer-data-[state=checked]:bg-red-900/20 cursor-pointer transition-all"
+                    >
+                        <AlertTriangle className="mb-1 h-5 w-5 text-red-500" />
+                        <span className="text-xs font-medium">計算錯誤</span>
+                    </Label>
+                </div>
+                <div>
+                    <RadioGroupItem value="verification" id="type-verification" className="peer sr-only" />
+                    <Label
+                        htmlFor="type-verification"
+                        className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-green-500 peer-data-[state=checked]:bg-green-50 dark:peer-data-[state=checked]:bg-green-900/20 cursor-pointer transition-all"
+                    >
+                        <CheckCircle2 className="mb-1 h-5 w-5 text-green-500" />
+                        <span className="text-xs font-medium">回報成功</span>
+                    </Label>
+                </div>
+                <div>
+                    <RadioGroupItem value="discovery" id="type-discovery" className="peer sr-only" />
+                    <Label
+                        htmlFor="type-discovery"
+                        className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-blue-500 peer-data-[state=checked]:bg-blue-50 dark:peer-data-[state=checked]:bg-blue-900/20 cursor-pointer transition-all"
+                    >
+                        <Lightbulb className="mb-1 h-5 w-5 text-blue-500" />
+                        <span className="text-xs font-medium">新發現</span>
+                    </Label>
+                </div>
+            </RadioGroup>
+        </div>
+
+        {/* Conditions Tags */}
+        <div className="space-y-3">
+            <Label>條件標籤 (多選)</Label>
+            <div className="flex flex-wrap gap-2">
+                {[
+                    { id: 'must_register', label: '需登記' },
+                    { id: 'min_spend', label: '最低簽賬' },
+                    { id: 'promo_period', label: '限時推廣' },
+                    { id: 'weekend_only', label: '週末/指定日' },
+                    { id: 'targeted', label: '特選客戶' },
+                ].map((tag) => (
+                    <div 
+                        key={tag.id}
+                        onClick={() => toggleCondition(tag.id)}
+                        className={`px-3 py-1.5 rounded-full text-xs border cursor-pointer transition-colors ${
+                            conditions.includes(tag.id) 
+                                ? 'bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-black' 
+                                : 'bg-transparent text-gray-600 border-gray-200 hover:border-gray-400 dark:text-gray-300 dark:border-gray-700'
+                        }`}
+                    >
+                        {tag.label}
+                    </div>
+                ))}
+            </div>
+        </div>
+
+        {/* Description Input */}
         <div className="grid gap-2">
-            <Label htmlFor="description">錯誤描述 / 正確算法 <span className="text-red-500">*</span></Label>
+            <Label htmlFor="description">
+                {reportType === 'verification' ? '備註 (選填)' : '詳細說明'} 
+                {reportType !== 'verification' && <span className="text-red-500">*</span>}
+            </Label>
             <Textarea
                 id="description"
                 ref={descriptionRef}
-                placeholder="例如：此卡在該商戶只有 0.4% 回贈，因為..."
-                required
+                placeholder={
+                    reportType === 'error' ? "例如：此卡在該商戶只有 0.4% 回贈..." :
+                    reportType === 'verification' ? "例如：剛收到月結單確認有回贈..." :
+                    "例如：發現這家店其實可以用 Apple Pay..."
+                }
+                required={reportType !== 'verification'}
                 rows={3}
                 className="resize-none"
             />
         </div>
 
+        {/* Proposed Reward Input */}
         <div className="grid gap-2">
-            <Label htmlFor="proposed">建議回贈 % (選填)</Label>
+            <Label htmlFor="proposed">
+                {reportType === 'error' ? '正確回贈 % (選填)' : '實際回贈 % (選填)'}
+            </Label>
             <Input
                 id="proposed"
                 ref={proposedRef}
                 placeholder="例如：0.4"
+                type="number"
+                step="0.1"
             />
         </div>
 
@@ -172,9 +267,9 @@ export function ReportErrorDialog({
                 type="button"
                 onClick={handleSubmitClick} 
                 disabled={isSubmitting} 
-                className="w-full"
+                className="w-full bg-gray-900 hover:bg-gray-800 text-white dark:bg-white dark:text-black dark:hover:bg-gray-200"
             >
-                {isSubmitting ? "提交中..." : "提交回報"}
+                {isSubmitting ? "提交中..." : "提交情報"}
             </Button>
         </div>
     </div>
@@ -183,17 +278,17 @@ export function ReportErrorDialog({
   if (isDesktop) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[480px]">
                 {isSuccess ? (
                     <SuccessView />
                 ) : (
                     <>
                         <DialogHeader>
                             <DialogTitle className="flex items-center gap-2">
-                                <Flag className="h-5 w-5 text-red-500" /> 回報回贈錯誤
+                                <Flag className="h-5 w-5 text-gray-900 dark:text-white" /> 回報與情報分享
                             </DialogTitle>
                             <DialogDescription>
-                                如果您發現計算結果有誤，請告訴我們正確的資訊。
+                                您的回報將幫助社群獲得更準確的資訊。
                             </DialogDescription>
                         </DialogHeader>
                         <FormView />
@@ -215,13 +310,13 @@ export function ReportErrorDialog({
                 <>
                     <DrawerHeader className="text-left">
                         <DrawerTitle className="flex items-center gap-2">
-                            <Flag className="h-5 w-5 text-red-500" /> 回報回贈錯誤
+                            <Flag className="h-5 w-5 text-gray-900 dark:text-white" /> 回報與情報分享
                         </DrawerTitle>
                         <DrawerDescription>
-                            如果您發現計算結果有誤，請告訴我們正確的資訊。
+                            您的回報將幫助社群獲得更準確的資訊。
                         </DrawerDescription>
                     </DrawerHeader>
-                    <div className="px-4 pb-8">
+                    <div className="px-4 pb-8 max-h-[80vh] overflow-y-auto">
                         <FormView />
                     </div>
                 </>
