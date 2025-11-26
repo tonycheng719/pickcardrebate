@@ -36,6 +36,7 @@ export interface SearchOptions {
   paymentMethod?: string;
   userCards?: string[];
   isForeignCurrency?: boolean;
+  isOnlineScenario?: boolean; // New Option
 }
 
 function calculateCardReward(
@@ -44,7 +45,8 @@ function calculateCardReward(
     matchedCategory: Category | undefined,
     paymentMethod: string | undefined,
     amount: number,
-    isForeignCurrency: boolean
+    isForeignCurrency: boolean,
+    isOnlineScenario: boolean = false // New Argument
 ): { 
     rule: RewardRule | null, 
     percentage: number, 
@@ -181,8 +183,13 @@ function calculateCardReward(
             isMatch = matchedMerchant.categoryIds.includes(rule.matchValue as string);
           }
         }
+        
         // SPECIAL LOGIC: If paymentMethod is 'online', also match category 'online'
         if (paymentMethod === 'online' && rule.matchValue === 'online') {
+            isMatch = true;
+        }
+        // NEW: If isOnlineScenario is true, treat as online category
+        if (isOnlineScenario && rule.matchValue === 'online') {
             isMatch = true;
         }
       }
@@ -196,9 +203,15 @@ function calculateCardReward(
             if (rule.matchValue.includes("mobile") && ["apple_pay", "google_pay", "samsung_pay", "boc_pay"].includes(pMethod)) {
                 isMatch = true;
             }
+            // NEW: If isOnlineScenario is true, this might also be 'online' payment method in some rule definitions?
+            // Usually cards define 'online' as category, but sometimes as method.
+            if (isOnlineScenario && rule.matchValue.includes('online')) {
+                isMatch = true;
+            }
         } else {
              if (rule.matchValue === pMethod) isMatch = true;
              if (rule.matchValue === "mobile" && ["apple_pay", "google_pay", "samsung_pay", "boc_pay"].includes(pMethod)) isMatch = true;
+             if (isOnlineScenario && rule.matchValue === 'online') isMatch = true;
         }
       }
 
@@ -263,7 +276,7 @@ export function findBestCards(
   categoriesData: Category[] = CATEGORIES
 ): CalculationResult[] {
   const normalizedQuery = query.toLowerCase().trim();
-  const { amount = 0, paymentMethod, userCards, isForeignCurrency = false } = options;
+  const { amount = 0, paymentMethod, userCards, isForeignCurrency = false, isOnlineScenario = false } = options;
   
   const matchedMerchant = merchantsData.find(
     m => m.name.toLowerCase().includes(normalizedQuery) || 
@@ -279,16 +292,19 @@ export function findBestCards(
     : cardsData;
 
   const results: CalculationResult[] = cardPool.map(card => {
-    const current = calculateCardReward(card, matchedMerchant, matchedCategory, paymentMethod, amount, isForeignCurrency);
+    const current = calculateCardReward(card, matchedMerchant, matchedCategory, paymentMethod, amount, isForeignCurrency, isOnlineScenario);
     
     let suggestedMethod: string | null = null;
     let potentialBest = { rewardAmount: 0, percentage: 0 };
 
     // Payment Method Suggestion
+    // If user already selected "Online Scenario", we might not want to suggest other methods as aggressively, 
+    // or we should suggest "non-online" if it's better? (rare).
+    // Standard logic: check other methods.
     if (!paymentMethod || paymentMethod === "physical_card") {
         const methodsToCheck = ["apple_pay", "boc_pay", "alipay", "payme"];
         for (const m of methodsToCheck) {
-            const res = calculateCardReward(card, matchedMerchant, matchedCategory, m, amount, isForeignCurrency);
+            const res = calculateCardReward(card, matchedMerchant, matchedCategory, m, amount, isForeignCurrency, isOnlineScenario);
             if (res.rewardAmount > current.rewardAmount && res.rewardAmount > potentialBest.rewardAmount) {
                 potentialBest = res;
                 suggestedMethod = m;
