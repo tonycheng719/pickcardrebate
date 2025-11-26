@@ -14,7 +14,16 @@ export async function createClient() {
         },
         set(name: string, value: string, options: CookieOptions) {
           try {
-            cookieStore.set({ name, value, ...options })
+            cookieStore.set({ 
+                name, 
+                value, 
+                ...options,
+                // Force secure cookies in production
+                secure: process.env.NODE_ENV === 'production',
+                // Ensure sameSite is lax or none for cross-site redirects if needed, but lax is usually safer/default
+                sameSite: 'lax',
+                path: '/', 
+            })
           } catch (error) {
             // The `set` method was called from a Server Component.
             // This can be ignored if you have middleware refreshing
