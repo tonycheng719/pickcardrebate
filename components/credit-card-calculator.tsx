@@ -56,8 +56,6 @@ export function CreditCardCalculator({
   const { cards, merchants } = useDataset();
   const categoryList = CATEGORIES;
   
-  // Merge dataset merchants with general merchants (deduplicated by ID)
-  // This ensures that even if localStorage has old data, general merchants show up.
   const merchantList = useMemo(() => {
       const datasetMerchants = merchants.length ? merchants : POPULAR_MERCHANTS;
       const existingIds = new Set(datasetMerchants.map(m => m.id));
@@ -87,7 +85,6 @@ export function CreditCardCalculator({
   const handleCategorySelect = (catId: string) => {
     setSelectedCategory(catId);
     setSelectedMerchantId(null);
-    // Small delay to allow UI update
     setTimeout(() => {
       merchantsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
@@ -98,7 +95,6 @@ export function CreditCardCalculator({
     setSelectedMerchantId(merchantId);
     setTimeout(() => {
       inputSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-      // Focus input to trigger keyboard on mobile
       amountInputRef.current?.focus();
     }, 150);
   };
@@ -110,7 +106,6 @@ export function CreditCardCalculator({
         return merchantList
             .filter((m) => m.categoryIds.includes(selectedCategory))
             .sort((a, b) => {
-                // Put general/other merchants at the end
                 if (a.isGeneral && !b.isGeneral) return 1;
                 if (!a.isGeneral && b.isGeneral) return -1;
                 return 0;
@@ -123,7 +118,7 @@ export function CreditCardCalculator({
 
   const selectedMerchant =
     effectiveMerchants.find((m) => m.id === selectedMerchantId) ||
-    null; // Don't default select if not found, user needs to pick
+    null; 
 
   const handleCalculate = () => {
     if (!selectedMerchant || !amount) return;
@@ -138,7 +133,6 @@ export function CreditCardCalculator({
       categoryList
     );
     
-    // Log the search anonymously or with user ID (handled by server action)
     const bestResult = res[0];
     logSearch({
         merchantId: selectedMerchant.id,
@@ -158,10 +152,12 @@ export function CreditCardCalculator({
   const others = results.slice(1);
 
   const handleReportClick = () => {
-    // Close the result dialog first if on mobile to avoid overlay issues, 
-    // OR just open report dialog on top. Shadcn supports stacked dialogs but drawers might differ.
-    // Let's try keeping result open and stacking report on top.
-    setIsReportDialogOpen(true);
+    // Close the result dialog to avoid stacking issues
+    setOpen(false);
+    // Open report dialog with a slight delay to ensure clean transition
+    setTimeout(() => {
+        setIsReportDialogOpen(true);
+    }, 100);
   };
 
   const ResultContent = () => (
