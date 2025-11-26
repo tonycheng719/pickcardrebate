@@ -16,7 +16,7 @@ import { CATEGORIES } from "@/lib/data/categories";
 import { HK_CARDS } from "@/lib/data/cards";
 import { findBestCards, CalculationResult } from "@/lib/logic/calculator";
 import { useWallet } from "@/lib/store/wallet-context";
-import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle, Lightbulb, Store, Globe, ChevronDown, ChevronUp } from "lucide-react";
+import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle, Lightbulb, Store, Globe, ChevronDown, ChevronUp, BadgeCheck, Tag } from "lucide-react";
 import { DynamicIcon } from "@/components/dynamic-icon";
 import { useDataset } from "@/lib/admin/data-store";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -24,6 +24,7 @@ import { ReportErrorDialog } from "@/components/report-error-dialog";
 import { logSearch } from "@/app/actions/log-search";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { useMerchantCommunityData } from "@/hooks/use-merchant-community-data";
 
 const PAYMENT_OPTIONS = [
   { id: "physical_card", label: "實體卡" },
@@ -89,6 +90,9 @@ export function CreditCardCalculator({
   const merchantsRef = useRef<HTMLDivElement>(null);
   const inputSectionRef = useRef<HTMLDivElement>(null);
   const amountInputRef = useRef<HTMLInputElement>(null);
+
+  // Community Data Hook
+  const { verifiedCards, tags, isLoading: isCommunityLoading } = useMerchantCommunityData(selectedMerchantId);
 
   // Reset online scenario when payment method changes, but only if switching TO ambiguous method
   // If switching FROM ambiguous TO explicit (e.g. "online"), we can auto-set.
@@ -201,7 +205,10 @@ export function CreditCardCalculator({
     }, 100);
   };
 
-  const ResultRow = ({ result, isBest = false }: { result: CalculationResult, isBest?: boolean }) => (
+  const ResultRow = ({ result, isBest = false }: { result: CalculationResult, isBest?: boolean }) => {
+      const isVerified = verifiedCards[result.card.id]?.count > 0;
+      
+      return (
       <div
         className={`rounded-xl border p-3 flex items-center justify-between relative ${isBest ? 'bg-emerald-50 border-emerald-200' : 'bg-white dark:bg-gray-900'}`}
       >
@@ -219,6 +226,11 @@ export function CreditCardCalculator({
           
           {/* Mini Condition Tags */}
           <div className="flex flex-wrap gap-1 mt-1">
+              {isVerified && (
+                <span className="text-[10px] text-green-600 bg-green-50 px-1 rounded border border-green-100 flex items-center gap-0.5">
+                    <BadgeCheck className="w-3 h-3" /> 社群驗證
+                </span>
+              )}
               {result.matchedRule.validDays && (
                 <span className="text-[10px] text-blue-500 bg-blue-50 px-1 rounded">
                     僅限 {result.matchedRule.validDays.map(d => DAYS_MAP[d]).join("/")}
@@ -251,14 +263,29 @@ export function CreditCardCalculator({
           </div>
         </div>
       </div>
-  );
+  )};
 
-  const ResultContent = () => (
+  const ResultContent = () => {
+    // Check if the best card is verified
+    const isBestVerified = best ? verifiedCards[best.card.id]?.count > 0 : false;
+
+    return (
     <div className="space-y-4 p-4 pb-8">
       {!best ? (
         <p className="text-gray-500 text-sm">請輸入金額並重新計算。</p>
       ) : (
         <>
+          {/* Tags Display in Result Dialog */}
+          {tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-2">
+                  {tags.map(tag => (
+                      <span key={tag} className="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full flex items-center gap-1">
+                          <Tag className="w-3 h-3" /> {tag}
+                      </span>
+                  ))}
+              </div>
+          )}
+
           {/* 1. HERO CARD: The Absolute Best Option */}
           <div className="rounded-2xl border-2 border-emerald-200 p-4 bg-emerald-50 relative overflow-hidden shadow-sm">
             {best.isCapped && (
@@ -273,11 +300,19 @@ export function CreditCardCalculator({
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-sm text-gray-500">{best.card.bank}</p>
-                <h3 className="text-lg font-bold">{best.card.name}</h3>
+                <h3 className="text-lg font-bold flex items-center gap-1">
+                    {best.card.name}
+                    {isBestVerified && <BadgeCheck className="w-4 h-4 text-green-600" />}
+                </h3>
                 <p className="text-sm text-gray-500">{best.matchedRule.description}</p>
                 
                 {/* Condition & Cap Tags */}
                 <div className="flex flex-wrap gap-1 mt-2">
+                    {isBestVerified && (
+                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-green-100 text-green-700 rounded text-[10px] font-medium border border-green-200">
+                            <BadgeCheck className="w-3 h-3" /> 社群已驗證
+                        </span>
+                    )}
                    {best.matchedRule.validDays && (
                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded text-[10px] font-medium border border-blue-100">
                            <Calendar className="w-3 h-3" /> 
@@ -385,7 +420,7 @@ export function CreditCardCalculator({
         </>
       )}
     </div>
-  );
+  )};
 
   return (
     <div className="space-y-6">
@@ -456,9 +491,21 @@ export function CreditCardCalculator({
             className={`bg-gray-50 dark:bg-gray-800 rounded-2xl p-4 space-y-3 scroll-mt-20 transition-all duration-500 ${selectedMerchant ? "opacity-100 translate-y-0" : "opacity-50 translate-y-4 pointer-events-none"}`}
         >
           <div>
-            <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">
-              在 {selectedMerchant?.name || "商戶"} 消費
-            </label>
+            <div className="flex justify-between items-baseline mb-1">
+                <label className="text-xs text-gray-500 dark:text-gray-400 block">
+                在 {selectedMerchant?.name || "商戶"} 消費
+                </label>
+                {/* Community Tags Display */}
+                {tags.length > 0 && (
+                    <div className="flex gap-1.5">
+                        {tags.slice(0, 3).map(tag => (
+                            <span key={tag} className="text-[10px] px-1.5 py-0.5 bg-emerald-50 text-emerald-600 rounded-full border border-emerald-100 flex items-center gap-0.5">
+                                <Tag className="w-2.5 h-2.5" /> {tag}
+                            </span>
+                        ))}
+                    </div>
+                )}
+            </div>
             <div className="flex gap-3 flex-col md:flex-row items-start md:items-center">
               <div className="relative flex-1 w-full">
                 <div className="absolute left-3 top-0 bottom-0 flex items-center justify-center pointer-events-none">
