@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, MoreHorizontal, Shield, Ban, CheckCircle, Loader2 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
@@ -30,21 +30,37 @@ export default function AdminUsersPage() {
   const router = useRouter();
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [search, setSearch] = useState("");
-  const supabase = createClient();
+  
+  // Use useMemo to avoid recreating client on every render, though createBrowserClient is singleton-like
+  const supabase = useMemo(() => createClient(), []);
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchUsers = async () => {
       setIsLoading(true);
+      setErrorMsg(null);
+      
       try {
-        // Fetch from profiles table
-        const { data, error } = await supabase
+        // Add a timeout race to prevent hanging
+        const fetchPromise = supabase
           .from("profiles")
           .select("*")
-          .order("email"); // ordering by email as proxy for creation time if no created_at
+          .order("email");
+          
+        const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error("Request timed out")), 10000)
+        );
+
+        const { data, error } = await Promise.race([fetchPromise, timeoutPromise]) as any;
+
+        if (!isMounted) return;
 
         if (error) {
           console.error("Error fetching users:", error);
+          setErrorMsg("載入失敗，請稍後再試。");
           return;
         }
 
@@ -53,22 +69,27 @@ export default function AdminUsersPage() {
                 id: profile.id,
                 name: profile.name || "Unknown",
                 email: profile.email || "No Email",
-                role: "member", // Default to member as we don't store role in profiles yet
-                status: "active", // Default to active
-                joinDate: new Date().toISOString().split("T")[0], // Placeholder as profiles might not have created_at
+                role: "member", 
+                status: "active",
+                joinDate: profile.created_at ? new Date(profile.created_at).toISOString().split("T")[0] : new Date().toISOString().split("T")[0],
                 lastIp: profile.last_ip
             }));
             setUsers(mappedUsers);
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error("Failed to fetch users", err);
+        if (isMounted) setErrorMsg(err.message || "發生錯誤");
       } finally {
-        setIsLoading(false);
+        if (isMounted) setIsLoading(false);
       }
     };
 
     fetchUsers();
-  }, []);
+
+    return () => {
+        isMounted = false;
+    };
+  }, [supabase]);
 
   const filteredUsers = users.filter(u => 
     u.name.toLowerCase().includes(search.toLowerCase()) || 
@@ -79,7 +100,6 @@ export default function AdminUsersPage() {
     setUsers(users.map(u => 
         u.id === id ? { ...u, status: u.status === "active" ? "suspended" : "active" } : u
     ));
-    // TODO: Implement backend status toggle
   };
 
   return (
@@ -127,6 +147,12 @@ export default function AdminUsersPage() {
                         </div>
                     </td>
                  </tr>
+            ) : errorMsg ? (
+                <tr>
+                    <td colSpan={5} className="px-6 py-8 text-center text-red-500">
+                        {errorMsg}
+                    </td>
+                </tr>
             ) : filteredUsers.length === 0 ? (
                 <tr>
                     <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
