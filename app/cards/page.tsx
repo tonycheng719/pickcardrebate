@@ -134,6 +134,7 @@ function ReviewsDialog({ card, children }: { card: CreditCard; children: React.R
 function CardItem({ card }: { card: CreditCard }) {
     const { addCard, hasCard } = useWallet();
     const { getReviewsByCardId } = useReviews();
+    const [imageError, setImageError] = useState(false);
     const isOwned = hasCard(card.id);
     
     const reviews = getReviewsByCardId(card.id);
@@ -153,9 +154,14 @@ function CardItem({ card }: { card: CreditCard }) {
     return (
         <Card className="flex flex-col h-full hover:shadow-md transition-shadow group overflow-hidden border-0 ring-1 ring-gray-200 dark:ring-gray-700 dark:bg-gray-800">
             {/* Card Visual Header */}
-            <div className={`h-32 relative overflow-hidden ${!card.imageUrl ? card.style.bgColor + ' p-4' : 'bg-gray-100'}`}>
-                {card.imageUrl ? (
-                    <img src={card.imageUrl} alt={card.name} className="w-full h-full object-cover" />
+            <div className={`h-32 relative overflow-hidden ${(!card.imageUrl || imageError) ? card.style.bgColor + ' p-4' : 'bg-gray-100'}`}>
+                {card.imageUrl && !imageError ? (
+                    <img 
+                        src={card.imageUrl} 
+                        alt={card.name} 
+                        className="w-full h-full object-cover" 
+                        onError={() => setImageError(true)}
+                    />
                 ) : (
                     <>
                         <div className={`font-bold text-lg ${card.style.textColor} opacity-90`}>{card.bank}</div>

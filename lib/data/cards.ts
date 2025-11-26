@@ -28,6 +28,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "HSBC Red Credit Card",
     bank: "HSBC",
     style: { bgColor: "bg-gradient-to-br from-red-500 via-red-600 to-pink-700", textColor: "text-white" },
+    imageUrl: "https://www.hsbc.com.hk/content/dam/hsbc/hk/images/credit-cards/red-credit-card-en.png", // Will fail and fallback, or work if fixed later
     rewardTimeline: "獎賞錢即時入賬",
     foreignCurrencyFee: 1.95,
     rules: [
@@ -97,6 +98,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "SC Smart Card",
     bank: "Standard Chartered",
     style: { bgColor: "bg-gradient-to-r from-emerald-400 to-cyan-600", textColor: "text-white" },
+    imageUrl: "https://www.sc.com/hk/zh/credit-cards/smart/smart-card-face.png",
     rewardTimeline: "現金回贈於下期賬單顯示",
     foreignCurrencyFee: 0,
     rules: [
@@ -221,6 +223,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "Hang Seng MMPOWER",
     bank: "Hang Seng",
     style: { bgColor: "bg-gradient-to-br from-purple-600 via-pink-600 to-red-500", textColor: "text-white" },
+    imageUrl: "https://www.hangseng.com/content/dam/hase/config/personal/cards/products/images/mmpower-card-face.png",
     foreignCurrencyFee: 1.95,
     rules: [
       { description: "網上簽賬 5%", matchType: "category", matchValue: "online", percentage: 5.0, minSpend: 5000, cap: 16000, excludeCategories: ["ewallet"] },
@@ -693,6 +696,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "Mox Credit",
     bank: "Mox",
     style: { bgColor: "bg-black", textColor: "text-white" },
+    imageUrl: "https://mox.com/images/cards/mox-card-black-front.png",
     foreignCurrencyFee: 1.95,
     rules: [
       { description: "超市 3%", matchType: "category", matchValue: ["supermarket"], percentage: 3.0 },
