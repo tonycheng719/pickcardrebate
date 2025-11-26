@@ -8,10 +8,12 @@ export type SubmitReportState = {
 };
 
 export async function submitReport(prevState: SubmitReportState, formData: FormData): Promise<SubmitReportState> {
+  console.log("Server Action: submitReport called");
   const supabase = await createClient();
   const { data: { user }, error: userError } = await supabase.auth.getUser();
 
   if (userError || !user) {
+    console.log("Server Action: No user found");
     return { error: "請先登入會員" };
   }
 
@@ -28,6 +30,7 @@ export async function submitReport(prevState: SubmitReportState, formData: FormD
   }
 
   try {
+    console.log("Server Action: Inserting report for user", user.id);
     const { error } = await supabase.from("reports").insert({
       user_id: user.id,
       merchant_name,
@@ -39,12 +42,15 @@ export async function submitReport(prevState: SubmitReportState, formData: FormD
       proposed_reward,
     });
 
-    if (error) throw error;
+    if (error) {
+        console.error("Server Action: Insert error", error);
+        throw error;
+    }
 
+    console.log("Server Action: Success");
     return { success: true };
   } catch (error: any) {
     console.error("Report submission error:", error);
     return { error: error.message || "提交失敗，請稍後再試" };
   }
 }
-

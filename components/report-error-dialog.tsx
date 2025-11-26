@@ -11,11 +11,12 @@ import { submitReport } from "@/app/actions/submit-report";
 import { CheckCircle2, Flag } from "lucide-react";
 import { toast } from "sonner";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { useWallet } from "@/lib/store/wallet-context"; // Add this import
 
 interface ReportErrorDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  merchantName?: string | null; // Allow null
+  merchantName?: string | null;
   categoryId?: string | null;
   amount?: string | null;
   paymentMethod?: string | null;
@@ -33,6 +34,7 @@ export function ReportErrorDialog({
   cardId,
   cardName
 }: ReportErrorDialogProps) {
+  const { user } = useWallet(); // Get user status
   const [description, setDescription] = useState("");
   const [proposedReward, setProposedReward] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -48,9 +50,31 @@ export function ReportErrorDialog({
     }
   }, [open]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmitClick = async (e: React.MouseEvent) => {
+    // Prevent default if inside a form (though we moved button out of form context if possible or keep preventDefault)
+    e.preventDefault(); 
+    e.stopPropagation();
+
+    console.log("Submit clicked");
+
+    if (!user) {
+        toast.error("請先登入會員", {
+            description: "您需要登入才能提交回報。",
+            action: {
+                label: "去登入",
+                onClick: () => window.location.href = "/login"
+            }
+        });
+        return;
+    }
+
+    if (!description.trim()) {
+        toast.error("請填寫錯誤描述");
+        return;
+    }
+
     setIsSubmitting(true);
+    const loadingToast = toast.loading("正在提交回報...");
 
     const formData = new FormData();
     if (merchantName) formData.append("merchant_name", merchantName);
@@ -58,22 +82,26 @@ export function ReportErrorDialog({
     if (amount) formData.append("amount", amount);
     if (paymentMethod) formData.append("payment_method", paymentMethod);
     if (cardId) formData.append("card_id", cardId);
-    if (cardName) formData.append("card_name", cardName); // Add card name
+    if (cardName) formData.append("card_name", cardName);
     formData.append("description", description);
     if (proposedReward) formData.append("proposed_reward", proposedReward);
 
     try {
+        console.log("Calling server action...");
         const result = await submitReport({ success: false }, formData);
+        console.log("Server action result:", result);
 
         if (result.error) {
           toast.error(result.error);
         } else {
           setIsSuccess(true);
-          // Don't auto close, let user see success message
+          toast.success("回報已提交！");
         }
     } catch (error) {
+        console.error("Submission error:", error);
         toast.error("提交失敗，請稍後再試");
     } finally {
+        toast.dismiss(loadingToast);
         setIsSubmitting(false);
     }
   };
@@ -94,7 +122,7 @@ export function ReportErrorDialog({
   );
 
   const FormView = () => (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="space-y-4">
         <div className="grid gap-4 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg text-sm border dark:border-gray-800">
             <div className="grid grid-cols-3 gap-1">
                 <span className="text-gray-500">商戶/類別:</span>
@@ -135,11 +163,16 @@ export function ReportErrorDialog({
         </div>
 
         <div className="pt-2">
-            <Button type="submit" disabled={isSubmitting} className="w-full">
+            <Button 
+                type="button" // Changed to button to prevent form submission issues
+                onClick={handleSubmitClick} 
+                disabled={isSubmitting} 
+                className="w-full"
+            >
                 {isSubmitting ? "提交中..." : "提交回報"}
             </Button>
         </div>
-    </form>
+    </div>
   );
 
   if (isDesktop) {
