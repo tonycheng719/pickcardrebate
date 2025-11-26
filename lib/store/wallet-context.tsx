@@ -249,12 +249,12 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   };
 
   const loginWithOAuth = async (provider: "google" | "apple") => {
-    // Temporarily remove redirectTo to test if GOTRUE_SITE_URL is correctly set on backend
-    // const redirectUrl = "https://pickcardrebate-web.zeabur.app/auth/callback";
+    // Explicitly set redirect URL to ensure code exchange happens
+    const redirectUrl = "https://pickcardrebate-web.zeabur.app/auth/callback";
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        // redirectTo: redirectUrl, // Commented out to force using GOTRUE_SITE_URL
+        redirectTo: redirectUrl,
         queryParams: {
           prompt: 'consent',
         }
