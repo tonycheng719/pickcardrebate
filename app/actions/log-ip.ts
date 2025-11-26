@@ -5,42 +5,50 @@ import { headers } from "next/headers";
 
 export async function logUserIp() {
   try {
-    const supabase = await createClient();
+    // Try to create client, but catch initialization errors (like role "" error)
+    let supabase;
+    try {
+        supabase = await createClient();
+    } catch (initError) {
+        // If client creation fails (e.g. bad cookie), just abort silently
+        return { error: "Client initialization failed" };
+    }
+
     const { data: { user }, error: userError } = await supabase.auth.getUser();
 
-    if (userError || !user) {
-      // Silent fail if not logged in
+    if (userError || !user || !user.id) {
       return { error: "Unauthorized" };
     }
 
-    // Get IP from headers
     const headersList = await headers();
-    // x-forwarded-for is standard for proxies (like Zeabur/Vercel)
     const forwardedFor = headersList.get("x-forwarded-for");
     const realIp = headersList.get("x-real-ip");
     
     let ip = forwardedFor ? forwardedFor.split(',')[0].trim() : realIp;
 
-    // Fallback if no header (dev env)
     if (!ip) {
         ip = "unknown";
     }
 
     // Update profile
+    // Note: This might still fail if RLS blocks UPDATE and we don't have Service Role
+    // But we catch errors below.
     const { error } = await supabase
       .from("profiles")
       .update({ last_ip: ip })
       .eq("id", user.id);
 
     if (error) {
-      console.error("Failed to log IP:", error);
+      // Don't log verbose errors for known auth issues to keep logs clean
+      if (error.code !== '22023') {
+          console.error("Failed to log IP:", error);
+      }
       return { error: error.message };
     }
 
     return { success: true, ip };
   } catch (e) {
-    console.error("Error in logUserIp:", e);
+    // Catch-all for any other errors
     return { error: "Internal Server Error" };
   }
 }
-

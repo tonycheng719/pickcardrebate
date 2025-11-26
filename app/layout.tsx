@@ -1,12 +1,18 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Providers } from "@/components/providers";
 import { BottomNav } from "@/components/bottom-nav";
 import "./globals.css";
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 export const metadata: Metadata = {
   title: "信用卡回饋大師 | PickCardRebate",
   description: "一鍵找出最高回饋信用卡，聰明消費，解放腦力。",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0", // Prevent zoom on inputs
 };
 
 export default function RootLayout({
