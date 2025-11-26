@@ -6,6 +6,7 @@ import { Button } from "./ui/button";
 import { useWallet } from "@/lib/store/wallet-context";
 import { useTheme } from "./theme-provider";
 import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function Navbar() {
