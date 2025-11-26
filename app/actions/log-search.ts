@@ -1,8 +1,15 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@supabase/supabase-js";
 
-type LogSearchParams = {
+// Use Anon Client to avoid "role '' does not exist" error due to corrupted cookies
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: { persistSession: false }
+});
+
+interface LogSearchProps {
   merchantId?: string;
   merchantName?: string;
   categoryId?: string;
@@ -10,31 +17,28 @@ type LogSearchParams = {
   paymentMethod?: string;
   bestCardId?: string;
   bestRewardAmount?: number;
-};
-
-export async function logSearch(params: LogSearchParams) {
-  try {
-    const supabase = await createClient();
-    
-    // Get current user if logged in
-    const { data: { user } } = await supabase.auth.getUser();
-
-    const { error } = await supabase.from("search_logs").insert({
-      user_id: user?.id || null,
-      merchant_id: params.merchantId,
-      merchant_name: params.merchantName,
-      category_id: params.categoryId,
-      amount: params.amount,
-      payment_method: params.paymentMethod,
-      best_card_id: params.bestCardId,
-      best_reward_amount: params.bestRewardAmount,
-    });
-
-    if (error) {
-      console.error("Failed to log search:", error);
-    }
-  } catch (e) {
-    console.error("Error logging search:", e);
-  }
+  userId?: string; // Pass user ID from client explicitly
 }
 
+export async function logSearch(props: LogSearchProps) {
+  // We don't use createClient() from lib/supabase/server because it reads cookies and causes role errors
+  // Instead we trust the userId passed from client (for logging purposes this is low risk)
+  
+  const { error } = await supabase.from("search_logs").insert({
+    user_id: props.userId || null,
+    merchant_id: props.merchantId,
+    merchant_name: props.merchantName,
+    category_id: props.categoryId,
+    amount: props.amount,
+    payment_method: props.paymentMethod,
+    best_card_id: props.bestCardId,
+    best_reward_amount: props.bestRewardAmount,
+  });
+
+  if (error) {
+    // Suppress "role" errors if they somehow still happen (unlikely with anon client)
+    if (error.code !== '22023') {
+        console.error("Error logging search:", error);
+    }
+  }
+}

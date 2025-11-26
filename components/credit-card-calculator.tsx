@@ -52,7 +52,7 @@ export function CreditCardCalculator({
   title = "信用卡回贈計算機",
   subtitle = "選擇商戶與消費方式，即時計算最高回贈信用卡。",
 }: CreditCardCalculatorProps) {
-  const { myCardIds } = useWallet();
+  const { myCardIds, user } = useWallet(); // Get user from wallet context
   const { cards, merchants } = useDataset();
   const categoryList = CATEGORIES;
   
@@ -141,7 +141,8 @@ export function CreditCardCalculator({
         amount: parseFloat(amount),
         paymentMethod,
         bestCardId: bestResult?.card.id,
-        bestRewardAmount: bestResult?.rewardAmount
+        bestRewardAmount: bestResult?.rewardAmount,
+        userId: user?.id // Pass user ID from context state
     });
 
     setResults(res);
