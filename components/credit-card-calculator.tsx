@@ -16,7 +16,7 @@ import { CATEGORIES } from "@/lib/data/categories";
 import { HK_CARDS } from "@/lib/data/cards";
 import { findBestCards, CalculationResult } from "@/lib/logic/calculator";
 import { useWallet } from "@/lib/store/wallet-context";
-import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag } from "lucide-react";
+import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle } from "lucide-react";
 import { DynamicIcon } from "@/components/dynamic-icon";
 import { useDataset } from "@/lib/admin/data-store";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -40,6 +40,8 @@ const categoryNameMap = Object.fromEntries(CATEGORIES.map((cat) => [cat.id, cat.
 
 // Define general merchants explicitly to ensure they always appear
 const GENERAL_MERCHANTS = POPULAR_MERCHANTS.filter(m => m.isGeneral);
+
+const DAYS_MAP = ["週日", "週一", "週二", "週三", "週四", "週五", "週六"];
 
 type CreditCardCalculatorProps = {
   showIntro?: boolean;
@@ -167,13 +169,35 @@ export function CreditCardCalculator({
         <p className="text-gray-500 text-sm">請輸入金額並重新計算。</p>
       ) : (
         <>
-          <div className="rounded-2xl border-2 border-emerald-200 p-4 bg-emerald-50">
+          <div className="rounded-2xl border-2 border-emerald-200 p-4 bg-emerald-50 relative overflow-hidden">
+            {best.isCapped && (
+              <div className="absolute top-0 right-0 bg-amber-100 text-amber-700 text-[10px] px-2 py-1 rounded-bl-lg font-medium flex items-center gap-1">
+                <AlertCircle className="w-3 h-3" /> 已達上限
+              </div>
+            )}
             <div className="text-xs uppercase text-emerald-600 font-bold mb-1">本場最抵</div>
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-sm text-gray-500">{best.card.bank}</p>
                 <h3 className="text-lg font-bold">{best.card.name}</h3>
                 <p className="text-sm text-gray-500">{best.matchedRule.description}</p>
+                
+                {/* Condition & Cap Tags */}
+                <div className="flex flex-wrap gap-1 mt-2">
+                   {best.matchedRule.validDays && (
+                       <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded text-[10px] font-medium border border-blue-100">
+                           <Calendar className="w-3 h-3" /> 
+                           僅限 {best.matchedRule.validDays.map(d => DAYS_MAP[d]).join("/")}
+                       </span>
+                   )}
+                   {best.matchedRule.cap && (
+                       <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-orange-50 text-orange-600 rounded text-[10px] font-medium border border-orange-100">
+                           <Info className="w-3 h-3" /> 
+                           上限: {best.matchedRule.capType === 'spending' ? '簽賬' : '回贈'} ${best.matchedRule.cap}
+                       </span>
+                   )}
+                </div>
+
                 {myCardIds.includes(best.card.id) ? (
                   <span className="inline-flex items-center gap-1 text-xs text-emerald-600 mt-2">
                     <CheckCircle2 className="h-3 w-3" /> 你已持有
@@ -203,11 +227,31 @@ export function CreditCardCalculator({
             {others.map((result) => (
               <div
                 key={result.card.id}
-                className="rounded-xl border bg-white dark:bg-gray-900 p-3 flex items-center justify-between"
+                className="rounded-xl border bg-white dark:bg-gray-900 p-3 flex items-center justify-between relative"
               >
+                {result.isCapped && (
+                  <div className="absolute top-2 right-2 text-amber-500" title="已達上限">
+                    <AlertCircle className="w-3 h-3" />
+                  </div>
+                )}
                 <div>
                   <p className="font-semibold text-gray-900 dark:text-white">{result.card.name}</p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">{result.matchedRule.description}</p>
+                  
+                  {/* Mini Condition Tags for others */}
+                  <div className="flex flex-wrap gap-1 mt-1">
+                      {result.matchedRule.validDays && (
+                        <span className="text-[10px] text-blue-500 bg-blue-50 px-1 rounded">
+                            僅限 {result.matchedRule.validDays.map(d => DAYS_MAP[d]).join("/")}
+                        </span>
+                      )}
+                       {result.matchedRule.cap && (
+                         <span className="text-[10px] text-gray-400">
+                           (上限 {result.matchedRule.capType === 'spending' ? '簽' : '回'} ${result.matchedRule.cap})
+                         </span>
+                       )}
+                  </div>
+
                   {myCardIds.includes(result.card.id) && (
                     <span className="text-xs text-emerald-500 inline-flex items-center gap-1 mt-1">
                       <CreditCard className="h-3 w-3" /> 你已持有
