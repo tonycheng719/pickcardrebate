@@ -37,14 +37,30 @@ export interface UserProfile {
 }
 
 interface WalletContextType {
-  // ... existing
+  myCardIds: string[];
+  cardSettings: Record<string, CardSettings>;
+  addCard: (cardId: string) => void;
+  removeCard: (cardId: string) => void;
+  hasCard: (cardId: string) => boolean;
+  updateCardSetting: (cardId: string, settings: Partial<CardSettings>) => void;
+  addAllCards: (cardIds: string[]) => void;
+  
   user: UserProfile | null;
   loginWithOAuth: (provider: "google" | "apple") => Promise<void>;
   requestSmsOtp: (phone: string) => Promise<void>;
   verifySmsOtp: (phone: string, token: string) => Promise<void>;
   logout: () => Promise<void>;
-  updateProfile: (profile: Partial<UserProfile>) => Promise<void>; // Changed to Promise
-  // ... existing
+  updateProfile: (profile: Partial<UserProfile>) => Promise<void>;
+  
+  // Transactions
+  transactions: Transaction[];
+  addTransaction: (tx: Omit<Transaction, "id">) => void;
+  removeTransaction: (id: string) => void;
+
+  // Promos
+  followPromo: (promoId: string) => void;
+  unfollowPromo: (promoId: string) => void;
+  isPromoFollowed: (promoId: string) => boolean;
 }
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
