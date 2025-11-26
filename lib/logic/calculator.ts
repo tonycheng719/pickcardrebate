@@ -22,7 +22,7 @@ export interface CalculationResult {
   netPercentage?: number;
   isForeignCurrency?: boolean;
   fxFee?: number;
-  isCapped?: boolean; // New field
+  isCapped?: boolean;
 }
 
 export interface SearchOptions {
@@ -62,7 +62,7 @@ function calculateCardReward(
                 return true;
             }
         }
-        // Check Merchant Category Exclusion (if merchant is selected but category object not passed strictly, though matchedCategory usually covers it)
+        // Check Merchant Category Exclusion
         if (rule.excludeCategories && matchedMerchant && matchedMerchant.categoryIds) {
             if (matchedMerchant.categoryIds.some(catId => rule.excludeCategories?.includes(catId))) {
                 return true;
@@ -78,14 +78,56 @@ function calculateCardReward(
         return false;
     };
 
+    // Helper to check conditions (Updated Logic)
+    const checkConditions = (rule: RewardRule): boolean => {
+        // 1. Check validDays (0=Sun...6=Sat)
+        if (rule.validDays && rule.validDays.length > 0) {
+            const today = new Date().getDay();
+            if (!rule.validDays.includes(today)) {
+                return false;
+            }
+        }
+
+        // 2. Check validDateRange
+        if (rule.validDateRange) {
+            const now = new Date();
+            const start = new Date(rule.validDateRange.start);
+            const end = new Date(rule.validDateRange.end);
+            if (now < start || now > end) {
+                return false;
+            }
+        }
+
+        // 3. Legacy Condition check (keep for backward compatibility if needed)
+        if (rule.condition) {
+            if (rule.condition.dayOfWeek) {
+                const today = new Date().getDay();
+                if (!rule.condition.dayOfWeek.includes(today)) return false;
+            }
+            if (rule.condition.dateRange) {
+                const now = new Date();
+                const start = new Date(rule.condition.dateRange.start);
+                const end = new Date(rule.condition.dateRange.end);
+                if (now < start || now > end) return false;
+            }
+        }
+
+        return true;
+    };
+
     for (const rule of card.rules) {
       // 1. Check Foreign Currency Constraint
       if (rule.isForeignCurrency && !isForeignCurrency) {
           continue;
       }
 
-      // 2. Check Exclusions (New Logic)
+      // 2. Check Exclusions
       if (isExcluded(rule)) {
+          continue;
+      }
+
+      // 3. Check Conditions (New Logic)
+      if (!checkConditions(rule)) {
           continue;
       }
       
@@ -129,13 +171,35 @@ function calculateCardReward(
 
       if (isMatch) {
           const minSpend = rule.minSpend || 0;
+          // Note: monthlyMinSpend is not checked here because we don't have user history yet.
+          // It should ideally trigger a "Warning" or "Suggestion".
+          
           if (amount >= minSpend) {
              let currentReward = 0;
              let currentCapped = false;
-             const cap = rule.cap || Infinity;
+             
+             // Determine effective cap
+             let effectiveSpendingCap = Infinity;
+             
+             if (rule.cap) {
+                 if (rule.capType === 'reward') {
+                     // Convert reward cap to spending cap: Reward Cap / Percentage
+                     effectiveSpendingCap = (rule.cap / rule.percentage) * 100;
+                 } else {
+                     // Default is 'spending' cap
+                     effectiveSpendingCap = rule.cap;
+                 }
+             }
 
-             if (amount > cap) {
-                 currentReward = (cap * rule.percentage) / 100;
+             if (amount > effectiveSpendingCap) {
+                 // Reward is calculated up to the cap
+                 currentReward = (effectiveSpendingCap * rule.percentage) / 100;
+                 
+                 // If there is a base rule, we might get base reward for the overflow?
+                 // For simplicity, we just cap it here. 
+                 // A more advanced logic would be: (cap * high%) + ((amount - cap) * base%)
+                 // But finding the 'fallback' rule is complex.
+                 
                  currentCapped = true;
              } else {
                  currentReward = (amount * rule.percentage) / 100;
@@ -223,16 +287,16 @@ export function findBestCards(
 
     const bestRule = current.rule || { description: "無適用回饋", percentage: 0, matchType: "base" as const };
     
-    const rewardAmt = current.rewardAmount;
-    const percentage = amount > 0 ? (rewardAmt / amount) * 100 : bestRule.percentage;
+    // Recalculate percentage based on actual reward vs amount (to reflect capping)
+    const percentage = amount > 0 ? (current.rewardAmount / amount) * 100 : bestRule.percentage;
 
-    let netRewardAmount = rewardAmt;
+    let netRewardAmount = current.rewardAmount;
     let netPercentage = percentage;
     const fxFee = isForeignCurrency ? (card.foreignCurrencyFee || 0) : 0;
 
     if (isForeignCurrency) {
         const feeAmount = (amount * fxFee) / 100;
-        netRewardAmount = Math.max(0, rewardAmt - feeAmount);
+        netRewardAmount = Math.max(0, current.rewardAmount - feeAmount);
         netPercentage = amount > 0 ? (netRewardAmount / amount) * 100 : 0;
     }
 
@@ -240,7 +304,7 @@ export function findBestCards(
       card,
       matchedRule: bestRule,
       percentage: parseFloat(percentage.toFixed(2)),
-      rewardAmount: rewardAmt,
+      rewardAmount: current.rewardAmount,
       matchType: bestRule.matchType,
       suggestedPaymentMethod: suggestedMethod,
       potentialPercentage: potentialBest.percentage,

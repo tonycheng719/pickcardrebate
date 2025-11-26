@@ -1,15 +1,34 @@
 export type MatchType = "merchant" | "category" | "paymentMethod" | "base";
 
+export interface RewardRuleCondition {
+  dayOfWeek?: number[]; // 0=Sun, 1=Mon, ..., 6=Sat
+  dateRange?: { start: string; end: string }; // ISO date strings
+  userSelection?: string; // e.g., "dining_category_selected" - requires user setting match
+}
+
 export interface RewardRule {
   description: string;
   matchType: MatchType;
   matchValue?: string | string[]; // merchant name, category id, or payment method id
   percentage: number;
-  cap?: number; // Spending cap for this rule
+  
+  // Cap Logic
+  cap?: number; // Default is 'spending cap' unless capType is specified
+  capType?: 'spending' | 'reward'; // New: Distinguish between spending limit and reward limit
+  shareCapWith?: string; // New: Group ID for shared cap (e.g. "mmpower_online_mobile")
+
   minSpend?: number;
+  monthlyMinSpend?: number; // New: Monthly accumulation requirement
+
   isForeignCurrency?: boolean; // If true, only matches if transaction is foreign currency
-  excludeCategories?: string[]; // New: Categories to explicitly exclude (e.g., utilities, tax)
-  excludePaymentMethods?: string[]; // New: Payment methods to explicitly exclude (e.g., fps)
+  excludeCategories?: string[]; // Categories to explicitly exclude
+  excludePaymentMethods?: string[]; // Payment methods to explicitly exclude
+  
+  // Time Logic
+  validDays?: number[]; // New: 0=Sun...6=Sat
+  validDateRange?: { start: string; end: string }; // New: Promo period
+
+  condition?: RewardRuleCondition; // Legacy/Advanced conditions
 }
 
 export interface CreditCard {
@@ -20,7 +39,7 @@ export interface CreditCard {
     bgColor: string; // e.g. "bg-red-600" or hex
     textColor: string; // e.g. "text-white"
   };
-  imageUrl?: string; // New field for card image
+  imageUrl?: string;
   annualFee?: number;
   feeWaiverCondition?: string;
   rules: RewardRule[];
@@ -28,7 +47,7 @@ export interface CreditCard {
   applyUrl?: string;
   rewardTimeline?: string;
   waiverMethod?: string;
-  foreignCurrencyFee?: number; // e.g. 1.95
+  foreignCurrencyFee?: number;
   welcomeOfferText?: string;
   welcomeOfferReward?: string;
   welcomeOfferDeadline?: string;
@@ -39,16 +58,16 @@ export interface Merchant {
   id: string;
   name: string;
   categoryIds: string[];
-  aliases: string[]; // Added aliases
-  logo?: string; // URL or emoji
-  accentColor?: string; // Hex code
-  isGeneral?: boolean; // Added for generic merchants
+  aliases: string[];
+  logo?: string;
+  accentColor?: string;
+  isGeneral?: boolean;
 }
 
 export interface Category {
   id: string;
   name: string;
-  icon: string; // Lucide icon name
+  icon: string;
   bgColor: string;
   accentColor: string;
 }
@@ -56,11 +75,11 @@ export interface Category {
 export interface Promo {
   id: string;
   title: string;
-  merchant: string; // Changed from bank
+  merchant: string;
   description: string;
-  imageUrl?: string; // New field for promo banner
-  expiryDate: string; // Changed from validUntil
-  relatedCardIds: string[]; // Which cards have this promo
+  imageUrl?: string;
+  expiryDate: string;
+  relatedCardIds: string[];
   tags: string[];
   url?: string;
 }
