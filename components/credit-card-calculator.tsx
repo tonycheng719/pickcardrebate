@@ -25,6 +25,7 @@ import { logSearch } from "@/app/actions/log-search";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useMerchantCommunityData } from "@/hooks/use-merchant-community-data";
+import { LoginPromptDialog } from "@/components/login-prompt-dialog";
 
 const PAYMENT_OPTIONS = [
   { id: "physical_card", label: "實體卡" },
@@ -683,47 +684,12 @@ export function CreditCardCalculator({
       />
 
       {/* Login Prompt Dialog for Calculator */}
-      {isDesktop ? (
-          <Dialog open={showLoginPrompt} onOpenChange={setShowLoginPrompt}>
-              <DialogContent className="sm:max-w-[400px]">
-                  <div className="flex flex-col items-center justify-center py-6 text-center">
-                      <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-4">
-                          <LogIn className="h-8 w-8" />
-                      </div>
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">查看最抵回贈</h3>
-                      <p className="text-gray-500 mb-6 max-w-xs text-sm">
-                          登入後即可查看 <b>{selectedMerchant?.name}</b> 的最佳信用卡回贈攻略，並記錄您的搜尋歷史。
-                      </p>
-                      <Button onClick={() => window.location.href = "/login"} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white mb-3">
-                          立即登入
-                      </Button>
-                      <Button variant="ghost" onClick={() => setShowLoginPrompt(false)} className="w-full text-gray-500">
-                          暫不登入
-                      </Button>
-                  </div>
-              </DialogContent>
-          </Dialog>
-      ) : (
-          <Drawer open={showLoginPrompt} onOpenChange={setShowLoginPrompt}>
-              <DrawerContent>
-                  <div className="p-6 flex flex-col items-center text-center">
-                      <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-4">
-                          <LogIn className="h-8 w-8" />
-                      </div>
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">查看最抵回贈</h3>
-                      <p className="text-gray-500 mb-6 max-w-xs text-sm">
-                          登入後即可查看 <b>{selectedMerchant?.name}</b> 的最佳信用卡回贈攻略，並記錄您的搜尋歷史。
-                      </p>
-                      <Button onClick={() => window.location.href = "/login"} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white mb-3 h-12 text-lg">
-                          立即登入
-                      </Button>
-                      <Button variant="ghost" onClick={() => setShowLoginPrompt(false)} className="w-full text-gray-500 h-12">
-                          暫不登入
-                      </Button>
-                  </div>
-              </DrawerContent>
-          </Drawer>
-      )}
+      <LoginPromptDialog 
+          open={showLoginPrompt} 
+          onOpenChange={setShowLoginPrompt} 
+          title="查看最抵回贈"
+          description={`登入後即可查看 ${selectedMerchant?.name || "商戶"} 的最佳信用卡回贈攻略，並記錄您的搜尋歷史。`}
+      />
     </div>
   );
 }

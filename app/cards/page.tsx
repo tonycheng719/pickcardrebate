@@ -24,6 +24,7 @@ import { HK_CARDS } from "@/lib/data/cards";
 import { useDataset } from "@/lib/admin/data-store";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
+import { LoginPromptDialog } from "@/components/login-prompt-dialog";
 
 function ReviewsDialog({ card, children }: { card: CreditCard; children: React.ReactNode }) {
     // ... (existing code)
@@ -133,9 +134,10 @@ function ReviewsDialog({ card, children }: { card: CreditCard; children: React.R
 }
 
 function CardItem({ card }: { card: CreditCard }) {
-    const { addCard, hasCard } = useWallet();
+    const { addCard, hasCard, user } = useWallet();
     const { getReviewsByCardId } = useReviews();
     const [imageError, setImageError] = useState(false);
+    const [showLoginPrompt, setShowLoginPrompt] = useState(false);
     const isOwned = hasCard(card.id);
     
     const reviews = getReviewsByCardId(card.id);
@@ -145,6 +147,10 @@ function CardItem({ card }: { card: CreditCard }) {
         : null;
 
     const handleAddCard = () => {
+        if (!user) {
+            setShowLoginPrompt(true);
+            return;
+        }
         addCard(card.id);
         toast.success(`已加入 ${card.name}`, {
             description: "您現在可以在「我的錢包」中查看此卡片。",
@@ -153,6 +159,13 @@ function CardItem({ card }: { card: CreditCard }) {
     };
 
     return (
+        <>
+        <LoginPromptDialog 
+            open={showLoginPrompt} 
+            onOpenChange={setShowLoginPrompt} 
+            title="加入錢包需登入"
+            description="登入後即可建立您的專屬錢包，並在不同裝置間同步資料。"
+        />
         <Card className="flex flex-col h-full hover:shadow-md transition-shadow group overflow-hidden border-0 ring-1 ring-gray-200 dark:ring-gray-700 dark:bg-gray-800">
             {/* Card Visual Header - Improved Layout */}
             <div className={`relative overflow-hidden ${(!card.imageUrl || imageError) ? card.style.bgColor + ' h-32 p-4' : 'bg-white dark:bg-gray-900 h-48 p-4 flex items-center justify-center'}`}>
@@ -295,6 +308,7 @@ function CardItem({ card }: { card: CreditCard }) {
                 </div>
             </CardContent>
         </Card>
+        </>
     );
 }
 
