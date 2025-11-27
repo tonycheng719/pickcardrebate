@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, X, Info, Loader2, Trash2, AlertTriangle, Edit, CheckCircle2, Lightbulb, ExternalLink, Filter } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -32,7 +32,7 @@ export default function AdminModerationPage() {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [activeTab, setActiveTab] = useState("pending");
   const router = useRouter();
-  const supabase = createClient();
+  const supabase = createClientComponentClient();
 
   const fetchReports = async () => {
     setLoading(true);

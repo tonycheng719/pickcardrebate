@@ -22,6 +22,7 @@ type NewCardForm = {
   sellingPoints: string;
   imageUrl: string;
   rawRules: string; // New field for JSON rules
+  rawRewardConfig: string; // New field for Miles Config JSON
 };
 
 const DEFAULT_FORM: NewCardForm = {
@@ -37,6 +38,7 @@ const DEFAULT_FORM: NewCardForm = {
   sellingPoints: "",
   imageUrl: "",
   rawRules: "[]",
+  rawRewardConfig: "",
 };
 
 const slugify = (value: string) =>
@@ -73,6 +75,7 @@ export default function AdminNewCardPage() {
       sellingPoints: editingCard.sellingPoints?.join("\n") || "",
       imageUrl: editingCard.imageUrl || "",
       rawRules: JSON.stringify(editingCard.rules, null, 2),
+      rawRewardConfig: editingCard.rewardConfig ? JSON.stringify(editingCard.rewardConfig, null, 2) : "",
     });
   }, [editingCard]);
 
@@ -82,9 +85,9 @@ export default function AdminNewCardPage() {
 
   const handleChange = (field: keyof NewCardForm, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
-    if (field === "rawRules") {
+    if (field === "rawRules" || field === "rawRewardConfig") {
         try {
-            JSON.parse(value);
+            if (value) JSON.parse(value);
             setJsonError(null);
         } catch (e: any) {
             setJsonError(e.message);
@@ -121,6 +124,15 @@ export default function AdminNewCardPage() {
             percentage: percentageValue > 0 ? percentageValue : 0.5,
         }];
     }
+
+    let rewardConfig = undefined;
+    if (form.rawRewardConfig) {
+        try {
+            rewardConfig = JSON.parse(form.rawRewardConfig);
+        } catch (e) {
+            console.error("Invalid reward config JSON");
+        }
+    }
     
     // Ensure base rule syncs if user edited simple field but didn't touch JSON
     // Or prioritize JSON? Let's prioritize JSON if it has content.
@@ -147,6 +159,7 @@ export default function AdminNewCardPage() {
       applyUrl: form.applyUrl,
       sellingPoints,
       imageUrl: form.imageUrl,
+      rewardConfig,
     };
 
     addOrUpdateCard(nextCard);
@@ -300,14 +313,32 @@ export default function AdminNewCardPage() {
                     className={`font-mono text-xs mt-1 w-full rounded-md border ${jsonError ? "border-red-500 focus:ring-red-500" : "border-gray-300 dark:border-gray-600"} dark:bg-gray-900 px-3 py-2 text-gray-900 dark:text-gray-300 h-64`}
                     spellCheck={false}
                 />
-                {jsonError && (
+            </div>
+            <p className="text-xs text-gray-500 mt-1 mb-4">
+                在此直接編輯回贈邏輯。這是計算機的核心依據。請確保格式正確。
+            </p>
+
+            <div className="flex items-center justify-between mb-2 mt-4 border-t dark:border-gray-700 pt-4">
+                <label className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                    <Code className="h-4 w-4" /> 進階設定：里數設定 (Reward Config JSON)
+                </label>
+            </div>
+            <div className="relative">
+                <textarea
+                    value={form.rawRewardConfig}
+                    onChange={(e) => handleChange("rawRewardConfig", e.target.value)}
+                    className={`font-mono text-xs mt-1 w-full rounded-md border ${jsonError ? "border-red-500 focus:ring-red-500" : "border-gray-300 dark:border-gray-600"} dark:bg-gray-900 px-3 py-2 text-gray-900 dark:text-gray-300 h-32`}
+                    placeholder='例如：{"source": "RC", "ratio": 10}'
+                    spellCheck={false}
+                />
+                 {jsonError && (
                     <div className="absolute bottom-2 right-2 text-xs text-red-500 bg-white dark:bg-gray-800 px-2 py-1 rounded border border-red-200">
                         JSON 格式錯誤: {jsonError}
                     </div>
                 )}
             </div>
             <p className="text-xs text-gray-500 mt-1">
-                在此直接編輯回贈邏輯。這是計算機的核心依據。請確保格式正確。
+                設定兌換里數的來源及比率。source: 積分單位 (RC/Points), ratio: 多少積分換1里。
             </p>
           </div>
 

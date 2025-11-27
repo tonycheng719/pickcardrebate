@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, Calculator, PieChart, Smartphone, Loader2, AlertTriangle } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Button } from "@/components/ui/button";
 
 interface AnalyticsSummary {
@@ -19,7 +19,7 @@ export default function AdminAnalyticsPage() {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   
-  const supabase = createClient();
+  const supabase = createClientComponentClient();
 
   useEffect(() => {
     const fetchAnalytics = async () => {

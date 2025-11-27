@@ -1,33 +1,95 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Search, CreditCard, AlertCircle } from "lucide-react";
+import { Users, Search, CreditCard, AlertCircle, Loader2 } from "lucide-react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export default function AdminDashboard() {
-  const stats = [
-    { title: "總註冊會員", value: "1,234", icon: Users, change: "+12%", color: "text-blue-600" },
-    { title: "今日搜尋量", value: "8,502", icon: Search, change: "+5.4%", color: "text-green-600" },
-    { title: "收錄信用卡", value: "45", icon: CreditCard, change: "New", color: "text-purple-600" },
-    { title: "待審核回報", value: "12", icon: AlertCircle, change: "需處理", color: "text-orange-600" },
+  const [stats, setStats] = useState({
+    users: 0,
+    todaySearches: 0,
+    cards: 0,
+    pendingReports: 0,
+  });
+  const [loading, setLoading] = useState(true);
+  const supabase = createClientComponentClient();
+
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        setLoading(true);
+        
+        // 1. Users Count
+        const { count: usersCount } = await supabase
+          .from("profiles")
+          .select("*", { count: "exact", head: true });
+
+        // 2. Today's Searches
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const { count: searchesCount } = await supabase
+          .from("search_logs")
+          .select("*", { count: "exact", head: true })
+          .gte("created_at", today.toISOString());
+
+        // 3. Cards Count
+        const { count: cardsCount } = await supabase
+          .from("cards")
+          .select("*", { count: "exact", head: true });
+
+        // 4. Pending Reports
+        const { count: reportsCount } = await supabase
+          .from("merchant_reviews")
+          .select("*", { count: "exact", head: true })
+          .eq("status", "pending");
+
+        setStats({
+          users: usersCount || 0,
+          todaySearches: searchesCount || 0,
+          cards: cardsCount || 0,
+          pendingReports: reportsCount || 0,
+        });
+      } catch (error) {
+        console.error("Error fetching admin stats:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchStats();
+  }, [supabase]);
+
+  const statItems = [
+    { title: "總註冊會員", value: stats.users.toLocaleString(), icon: Users, change: "Total", color: "text-blue-600" },
+    { title: "今日搜尋量", value: stats.todaySearches.toLocaleString(), icon: Search, change: "Today", color: "text-green-600" },
+    { title: "收錄信用卡", value: stats.cards.toLocaleString(), icon: CreditCard, change: "Active", color: "text-purple-600" },
+    { title: "待審核回報", value: stats.pendingReports.toLocaleString(), icon: AlertCircle, change: "Pending", color: "text-orange-600" },
   ];
 
   return (
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">管理後台總覽</h1>
-        <p className="text-gray-500 dark:text-gray-400">歡迎回來，今天有 12 則新回報需要您的關注。</p>
+        <p className="text-gray-500 dark:text-gray-400">
+          {loading ? "正在載入數據..." : `歡迎回來，目前有 ${stats.pendingReports} 則新回報需要您的關注。`}
+        </p>
       </div>
 
       {/* Stats Grid */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat, index) => (
+        {statItems.map((stat, index) => (
           <Card key={index} className="dark:bg-gray-800 dark:border-gray-700">
             <CardContent className="p-6 flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{stat.title}</p>
                 <div className="flex items-baseline gap-2 mt-1">
-                  <h3 className="text-3xl font-bold text-gray-900 dark:text-white">{stat.value}</h3>
-                  <span className={`text-xs font-medium ${stat.change.includes("+") ? "text-green-600" : "text-gray-500"}`}>
+                  {loading ? (
+                    <Loader2 className="h-6 w-6 animate-spin text-gray-300" />
+                  ) : (
+                    <h3 className="text-3xl font-bold text-gray-900 dark:text-white">{stat.value}</h3>
+                  )}
+                  <span className={`text-xs font-medium ${stat.change === "Pending" && stats.pendingReports > 0 ? "text-orange-600 font-bold" : "text-gray-500"}`}>
                     {stat.change}
                   </span>
                 </div>

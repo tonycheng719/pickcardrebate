@@ -23,6 +23,7 @@ const DEFAULT_FORM = {
   aliases: "",
   logo: "",
   accentColor: "#16a34a",
+  isOnlineOnly: false,
 };
 
 export default function AdminMerchantsPage() {
@@ -46,6 +47,7 @@ export default function AdminMerchantsPage() {
       aliases: merchant.aliases ? merchant.aliases.join(", ") : "",
       logo: merchant.logo || "",
       accentColor: merchant.accentColor || "#16a34a",
+      isOnlineOnly: merchant.isOnlineOnly || false,
     });
   };
 
@@ -63,6 +65,7 @@ export default function AdminMerchantsPage() {
       aliases: form.aliases.split(",").map((alias) => alias.trim()).filter(Boolean),
       logo: form.logo || undefined,
       accentColor: form.accentColor || undefined,
+      isOnlineOnly: form.isOnlineOnly,
     };
     addOrUpdateMerchant(payload);
     resetForm();
@@ -159,6 +162,33 @@ export default function AdminMerchantsPage() {
                   />
                 </div>
               </div>
+
+              <div>
+                  <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">商戶性質</label>
+                  <div className="flex gap-4 mt-2">
+                      <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
+                          <input 
+                              type="radio" 
+                              name="merchantType"
+                              checked={!form.isOnlineOnly}
+                              onChange={() => setForm(prev => ({ ...prev, isOnlineOnly: false }))}
+                              className="w-4 h-4 text-blue-600"
+                          />
+                          實體/網上通用
+                      </label>
+                      <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
+                          <input 
+                              type="radio" 
+                              name="merchantType"
+                              checked={form.isOnlineOnly}
+                              onChange={() => setForm(prev => ({ ...prev, isOnlineOnly: true }))}
+                              className="w-4 h-4 text-blue-600"
+                          />
+                          純網上 (Online Only)
+                      </label>
+                  </div>
+              </div>
+
               <div className="flex justify-between gap-2">
                 {editingId ? (
                   <Button type="button" variant="outline" onClick={resetForm}>
@@ -182,6 +212,7 @@ export default function AdminMerchantsPage() {
             <tr>
               <th className="px-6 py-4 font-medium">商戶</th>
               <th className="px-6 py-4 font-medium">分類</th>
+              <th className="px-6 py-4 font-medium">性質</th>
               <th className="px-6 py-4 font-medium">別名</th>
               <th className="px-6 py-4 font-medium text-right">操作</th>
             </tr>
@@ -214,6 +245,13 @@ export default function AdminMerchantsPage() {
                         </span>
                     ))}
                   </div>
+                </td>
+                <td className="px-6 py-4">
+                    {merchant.isOnlineOnly ? (
+                        <span className="bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300 px-2 py-0.5 rounded text-xs font-medium">純網上</span>
+                    ) : (
+                        <span className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 px-2 py-0.5 rounded text-xs">通用</span>
+                    )}
                 </td>
                 <td className="px-6 py-4 text-gray-500 dark:text-gray-400">
                   {merchant.aliases && merchant.aliases.length > 0 ? merchant.aliases.join(", ") : "—"}

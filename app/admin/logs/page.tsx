@@ -1,21 +1,48 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { MOCK_OPERATION_LOGS } from "@/lib/admin/mock-data";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, Loader2 } from "lucide-react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+
+interface AdminLog {
+  id: string;
+  admin_email: string;
+  action: string;
+  target_type: string;
+  target_id: string;
+  details: any;
+  created_at: string;
+}
 
 export default function AdminLogsPage() {
+  const [logs, setLogs] = useState<AdminLog[]>([]);
+  const [loading, setLoading] = useState(true);
   const [keyword, setKeyword] = useState("");
-  const filteredLogs = useMemo(
-    () =>
-      MOCK_OPERATION_LOGS.filter(
-        (log) =>
-          log.actor.toLowerCase().includes(keyword.toLowerCase()) ||
-          log.action.includes(keyword) ||
-          log.target.toLowerCase().includes(keyword.toLowerCase())
-      ),
-    [keyword]
+  const supabase = createClientComponentClient();
+
+  useEffect(() => {
+    const fetchLogs = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("admin_audit_logs")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(50);
+      
+      if (!error && data) {
+        setLogs(data as AdminLog[]);
+      }
+      setLoading(false);
+    };
+    fetchLogs();
+  }, [supabase]);
+
+  const filteredLogs = logs.filter(
+    (log) =>
+      log.admin_email.toLowerCase().includes(keyword.toLowerCase()) ||
+      log.action.toLowerCase().includes(keyword.toLowerCase()) ||
+      log.target_type.toLowerCase().includes(keyword.toLowerCase())
   );
 
   return (
@@ -48,14 +75,38 @@ export default function AdminLogsPage() {
             </tr>
           </thead>
           <tbody className="divide-y dark:divide-gray-700">
-            {filteredLogs.map((log) => (
-              <tr key={log.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                <td className="px-6 py-4 text-gray-900 dark:text-white">{log.actor}</td>
-                <td className="px-6 py-4 text-gray-600 dark:text-gray-300">{log.action}</td>
-                <td className="px-6 py-4 text-gray-600 dark:text-gray-300">{log.target}</td>
-                <td className="px-6 py-4 text-gray-500 dark:text-gray-400">{log.timestamp}</td>
+            {loading ? (
+              <tr>
+                <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
+                  <Loader2 className="h-6 w-6 animate-spin mx-auto mb-2" />
+                  載入中...
+                </td>
               </tr>
-            ))}
+            ) : filteredLogs.length === 0 ? (
+               <tr>
+                <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
+                  暫無操作記錄
+                </td>
+              </tr>
+            ) : (
+              filteredLogs.map((log) => (
+                <tr key={log.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                  <td className="px-6 py-4 text-gray-900 dark:text-white">{log.admin_email}</td>
+                  <td className="px-6 py-4 text-gray-600 dark:text-gray-300">
+                    <span className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-xs font-medium mr-2">
+                        {log.target_type}
+                    </span>
+                    {log.action}
+                  </td>
+                  <td className="px-6 py-4 text-gray-600 dark:text-gray-300 text-xs font-mono">
+                    {log.target_id || "-"}
+                  </td>
+                  <td className="px-6 py-4 text-gray-500 dark:text-gray-400">
+                    {new Date(log.created_at).toLocaleString('zh-HK')}
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

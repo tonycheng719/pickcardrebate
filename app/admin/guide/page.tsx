@@ -22,11 +22,11 @@ export default function AdminGuidePage() {
           <TabsTrigger value="calculator" className="py-3 gap-2">
             <Calculator className="w-4 h-4" /> 回贈計算邏輯
           </TabsTrigger>
-          <TabsTrigger value="tags" className="py-3 gap-2">
-            <Tag className="w-4 h-4" /> 眾包標籤系統
+          <TabsTrigger value="online" className="py-3 gap-2">
+            <ShieldAlert className="w-4 h-4" /> 網上商戶設定
           </TabsTrigger>
-          <TabsTrigger value="data" className="py-3 gap-2">
-            <Database className="w-4 h-4" /> 數據架構
+          <TabsTrigger value="miles" className="py-3 gap-2">
+            <Tag className="w-4 h-4" /> 里數設定
           </TabsTrigger>
         </TabsList>
 
@@ -143,84 +143,70 @@ export default function AdminGuidePage() {
           </Card>
         </TabsContent>
 
-        {/* Tags System Tab */}
-        <TabsContent value="tags" className="mt-6 space-y-4">
+        {/* Online Merchant Logic Tab */}
+        <TabsContent value="online" className="mt-6 space-y-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-orange-600">
-                <Tag className="w-5 h-5" /> 眾包標籤系統 (Crowdsourced Tags)
+                <ShieldAlert className="w-5 h-5" /> 網上商戶 (Online Merchants)
               </CardTitle>
               <CardDescription>
-                利用群眾智慧為商戶貼標籤。
+                如何處理純網上商戶（如 Klook, Deliveroo）的場景判斷。
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
               <p>
-                有些商戶的類別模糊（例如：HKTVMall 是超市還是網購？），這會影響回贈計算。我們允許用戶為商戶添加標籤。
+                為了避免用戶混淆，系統支援將特定商戶標記為「純網上 (Online Only)」。
               </p>
-              <div className="grid md:grid-cols-3 gap-4">
-                <div className="p-4 border rounded-lg text-center">
-                  <div className="text-2xl font-bold text-orange-500 mb-2">收集</div>
-                  <p className="text-xs">用戶在回報時選擇標籤（如 #需登記 #網購）。</p>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="p-4 border rounded-lg">
+                  <h4 className="font-bold mb-2 text-gray-900 dark:text-white">設定方法</h4>
+                  <p>前往 <a href="/admin/merchants" className="text-blue-500 hover:underline">商戶管理</a>，編輯商戶時選擇「商戶性質：純網上」。</p>
                 </div>
-                <div className="p-4 border rounded-lg text-center">
-                  <div className="text-2xl font-bold text-orange-500 mb-2">聚合</div>
-                  <p className="text-xs">系統統計每個商戶下各標籤的出現次數。</p>
-                </div>
-                <div className="p-4 border rounded-lg text-center">
-                  <div className="text-2xl font-bold text-orange-500 mb-2">展示</div>
-                  <p className="text-xs">在計算機輸入框上方顯示最熱門的 3 個標籤，輔助用戶判斷。</p>
+                <div className="p-4 border rounded-lg">
+                  <h4 className="font-bold mb-2 text-gray-900 dark:text-white">前端效果</h4>
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>當用戶選擇此商戶時，計算機自動將場景鎖定為「網上/App 內付款」。</li>
+                    <li>隱藏「門市 vs 網上」的切換開關，減少用戶操作步驟。</li>
+                    <li>確保如 Chill Card (網購 5%) 等網購專用卡能被正確觸發。</li>
+                  </ul>
                 </div>
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        {/* Data Structure Tab */}
-        <TabsContent value="data" className="mt-6 space-y-4">
+        {/* Miles Logic Tab */}
+        <TabsContent value="miles" className="mt-6 space-y-4">
            <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-purple-600">
-                <Database className="w-5 h-5" /> 數據架構 (Database)
+                <Tag className="w-5 h-5" /> 里數設定 (Miles Configuration)
               </CardTitle>
               <CardDescription>
-                了解系統後台的資料關聯。
+                如何設定信用卡的回贈兌換比率。
               </CardDescription>
             </CardHeader>
-            <CardContent className="text-sm">
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
-                        <thead>
-                            <tr className="border-b dark:border-gray-700">
-                                <th className="py-2 px-4 font-semibold">資料表 (Table)</th>
-                                <th className="py-2 px-4 font-semibold">用途</th>
-                                <th className="py-2 px-4 font-semibold">關鍵欄位</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y dark:divide-gray-700">
-                            <tr>
-                                <td className="py-2 px-4 font-mono text-blue-600">cards</td>
-                                <td className="py-2 px-4">儲存所有信用卡的基本資料與規則。</td>
-                                <td className="py-2 px-4 font-mono text-xs">id, name, rules (jsonb)</td>
-                            </tr>
-                            <tr>
-                                <td className="py-2 px-4 font-mono text-blue-600">merchants</td>
-                                <td className="py-2 px-4">商戶資料庫，包含類別與 Logo。</td>
-                                <td className="py-2 px-4 font-mono text-xs">id, name, categoryIds</td>
-                            </tr>
-                            <tr>
-                                <td className="py-2 px-4 font-mono text-blue-600">merchant_reviews</td>
-                                <td className="py-2 px-4">用戶提交的回報與驗證情報。</td>
-                                <td className="py-2 px-4 font-mono text-xs">status, actual_rate, conditions</td>
-                            </tr>
-                             <tr>
-                                <td className="py-2 px-4 font-mono text-blue-600">merchant_tags</td>
-                                <td className="py-2 px-4">商戶的眾包標籤統計。</td>
-                                <td className="py-2 px-4 font-mono text-xs">tag_name, count</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <CardContent className="text-sm space-y-4">
+                <p className="text-gray-600 dark:text-gray-300">
+                    PickCardRebate 支援現金與里數雙模式。若要讓信用卡支援里數顯示，需在後台設定 <code>rewardConfig</code>。
+                </p>
+                <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg font-mono text-xs overflow-x-auto">
+                    <p className="text-gray-500 mb-2">// 範例：HSBC Visa Signature (1 RC = 10 Miles)</p>
+                    <pre>{`{
+  "source": "RC",
+  "ratio": 10
+}`}</pre>
+                    <p className="text-gray-500 mt-4 mb-2">// 範例：Citi Prestige (12 Points = 1 Mile -> Ratio = 1/12 = 0.0833)</p>
+                    <pre>{`{
+  "source": "Points",
+  "ratio": 0.0833
+}`}</pre>
                 </div>
+                <ul className="list-disc pl-5 space-y-1 text-gray-600 dark:text-gray-300">
+                    <li><strong>source</strong>: 積分單位名稱，如 RC, Points, DBS$。</li>
+                    <li><strong>ratio</strong>: 兌換率。即 1 單位積分可換多少里數。</li>
+                </ul>
             </CardContent>
            </Card>
         </TabsContent>
