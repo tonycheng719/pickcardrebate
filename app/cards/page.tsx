@@ -177,6 +177,7 @@ function CardItem({ card }: { card: CreditCard }) {
                             alt={card.name} 
                             className="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-300" 
                             onError={() => setImageError(true)}
+                            referrerPolicy="no-referrer"
                         />
                     </div>
                 ) : (

@@ -149,7 +149,12 @@ export default function WalletPage() {
                   <Card className="h-full hover:shadow-md transition-all active:scale-[0.98] border-0 ring-1 ring-gray-200 dark:ring-gray-700 dark:bg-gray-800 overflow-hidden group">
                     <div className={`h-32 relative overflow-hidden flex items-center justify-center ${!card.imageUrl ? (card.style?.bgColor || 'bg-gray-500') + ' p-4' : 'bg-gray-50 dark:bg-gray-900'}`}>
                         {card.imageUrl ? (
-                            <img src={card.imageUrl} alt={card.name} className="max-h-full max-w-full object-contain shadow-md rounded-lg" />
+                            <img 
+                                src={card.imageUrl} 
+                                alt={card.name} 
+                                className="max-h-full max-w-full object-contain shadow-md rounded-lg" 
+                                referrerPolicy="no-referrer"
+                            />
                         ) : (
                             <>
                                 <div className="flex justify-between items-start z-10 relative w-full">
