@@ -528,13 +528,26 @@ export function CreditCardCalculator({
             >
               <div className="flex items-center gap-3">
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0"
+                  className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0 overflow-hidden"
                   style={{
                     backgroundColor: `${merchant.accentColor || "#e5e7eb"}20`,
                     color: merchant.accentColor || "#111827",
                   }}
                 >
-                  {merchant.logo || merchant.name.charAt(0)}
+                  {merchant.logo?.startsWith("http") ? (
+                      <img 
+                        src={merchant.logo} 
+                        alt={merchant.name} 
+                        className="w-full h-full object-contain" 
+                        onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                            // Fallback to first letter if logo fails
+                            e.currentTarget.parentElement!.innerText = merchant.name.charAt(0);
+                        }}
+                      />
+                  ) : (
+                      merchant.logo || merchant.name.charAt(0)
+                  )}
                 </div>
                 <div className="min-w-0">
                   <div className="text-sm font-semibold text-gray-900 leading-tight truncate">{merchant.name}</div>
