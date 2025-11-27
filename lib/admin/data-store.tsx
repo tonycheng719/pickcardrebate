@@ -79,7 +79,8 @@ function mapPromoFromDB(dbPromo: any): Promo {
         ...dbPromo,
         imageUrl: dbPromo.image_url,
         expiryDate: dbPromo.expiry_date,
-        relatedCardIds: dbPromo.related_card_ids || []
+        relatedCardIds: dbPromo.related_card_ids || [],
+        content: dbPromo.content // Map content from DB
     };
 }
 
@@ -88,6 +89,7 @@ function mapPromoToDB(promo: Promo): any {
         id: promo.id,
         title: promo.title,
         description: promo.description,
+        content: promo.content, // Map content to DB
         merchant: promo.merchant,
         tags: promo.tags,
         image_url: promo.imageUrl,
