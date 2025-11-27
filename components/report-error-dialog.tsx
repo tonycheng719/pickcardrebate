@@ -109,14 +109,17 @@ export function ReportErrorDialog({
 
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.error || "提交失敗");
+            console.error("Server returned error:", errorData);
+            throw new Error(errorData.error || `提交失敗 (Status: ${response.status})`);
         }
 
         setIsSuccess(true);
         toast.success("回報已提交！");
     } catch (error: any) {
         console.error("Submission error:", error);
-        toast.error(error.message || "提交失敗，請稍後再試");
+        toast.error(`提交失敗: ${error.message || "未知錯誤"}`, {
+            duration: 5000, // Show longer
+        });
     } finally {
         toast.dismiss(loadingToast);
         setIsSubmitting(false);

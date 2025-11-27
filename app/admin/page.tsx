@@ -11,6 +11,8 @@ export default function AdminDashboard() {
     todaySearches: 0,
     cards: 0,
     pendingReports: 0,
+    recentReviews: [] as any[],
+    topSearches: [] as any[],
   });
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
@@ -30,7 +32,9 @@ export default function AdminDashboard() {
           users: data.users || 0,
           todaySearches: data.todaySearches || 0,
           cards: data.cards || 0,
-          pendingReports: data.reviews || 0, // Assuming pending reviews count
+          pendingReports: data.reviews || 0,
+          recentReviews: data.recentReviews || [],
+          topSearches: data.topSearches || [],
         });
       } catch (error) {
         console.error("Error fetching admin stats:", error);
@@ -84,14 +88,68 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-      <div className="mt-8 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-lg p-4">
-          <h3 className="text-blue-800 dark:text-blue-200 font-medium flex items-center gap-2">
-              <AlertCircle className="h-4 w-4" />
-              數據更新說明
-          </h3>
-          <p className="text-sm text-blue-600 dark:text-blue-300 mt-1">
-              上方數據已連接真實資料庫。下方的「熱門搜尋」與「最新回報」詳情請分別前往「數據分析」與「回報審核」頁面查看完整報告。
-          </p>
+      {/* Recent Activity Section */}
+      <div className="grid md:grid-cols-2 gap-8">
+        {/* Popular Searches Table */}
+        <Card className="dark:bg-gray-800 dark:border-gray-700">
+          <CardHeader>
+            <CardTitle className="text-lg dark:text-white">熱門搜尋關鍵字 (24h)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {stats.topSearches.length === 0 ? (
+                <p className="text-center text-gray-500 py-4">暫無數據</p>
+              ) : (
+                stats.topSearches.map((item, i) => (
+                <div key={i} className="flex items-center justify-between border-b dark:border-gray-700 pb-2 last:border-0">
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm text-gray-400 w-4">{i + 1}</span>
+                    <span className="font-medium text-gray-900 dark:text-gray-200">{item.term}</span>
+                  </div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">{item.count} 次</div>
+                </div>
+              ))
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Recent Reports */}
+        <Card className="dark:bg-gray-800 dark:border-gray-700">
+          <CardHeader>
+            <CardTitle className="text-lg dark:text-white">最新用戶回報</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {stats.recentReviews.length === 0 ? (
+                <p className="text-center text-gray-500 py-4">暫無數據</p>
+              ) : (
+                stats.recentReviews.map((item, i) => (
+                <div key={i} className="flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
+                        item.report_type === "error" ? "bg-red-100 text-red-700" : 
+                        item.report_type === "discovery" ? "bg-blue-100 text-blue-700" :
+                        item.report_type === "verification" ? "bg-green-100 text-green-700" :
+                        "bg-yellow-100 text-yellow-700"
+                      }`}>
+                        {item.report_type === "error" ? "錯誤回報" : 
+                         item.report_type === "discovery" ? "新發現" : 
+                         item.report_type === "verification" ? "成功驗證" : 
+                         item.report_type || "回報"}
+                      </span>
+                      <span className="text-xs text-gray-500">{new Date(item.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                    </div>
+                    <p className="font-medium text-sm text-gray-900 dark:text-gray-200 truncate max-w-[200px]">{item.merchant_name || "未指定商戶"}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">By {item.user_name}</p>
+                  </div>
+                </div>
+              ))
+              )}
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
