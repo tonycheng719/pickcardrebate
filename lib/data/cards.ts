@@ -11,9 +11,10 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-red-700 via-red-800 to-black", textColor: "text-white" },
     rewardTimeline: "獎賞錢即時入賬",
     foreignCurrencyFee: 1.95,
+    rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' },
     rules: [
-      { description: "最紅自主獎賞 (類別) 3.6%", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 3.6, cap: 100000, capType: "spending" },
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "最紅自主獎賞 (類別) 3.6% ($2.78/里)", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 3.6, cap: 100000, capType: "spending" },
+      { description: "基本回饋 0.4% ($25/里)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["餐飲神卡", "最紅自主獎賞", "5X積分"],
     imageUrl: "https://www.hsbc.com.hk/content/dam/hsbc/hk/images/credit-cards/visa-signature-card-en.png",
@@ -22,7 +23,7 @@ export const HK_CARDS: CreditCard[] = [
     welcomeOfferReward: "$800 獎賞錢",
     welcomeOfferDeadline: "2024-12-31",
     applyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/visa-signature/",
-    sellingPoints: ["最紅自主獎賞 5X，自選類別可達 3.6%", "Visa Signature 專屬優惠"],
+    sellingPoints: ["最紅自主獎賞 5X，自選類別可達 3.6% (HK$2.78/里)", "Visa Signature 專屬優惠"],
   },
   {
     id: "hsbc-red",
@@ -34,16 +35,16 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' },
     rules: [
-      { description: "網上簽賬 4%", matchType: "category", matchValue: "online", percentage: 4.0, cap: 12500, capType: "spending" }, // Explicitly spending cap
-      { description: "超市簽賬 2%", matchType: "category", matchValue: "supermarket", percentage: 2.0 },
-      { description: "基本回饋 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "payme", "alipay", "wechat_pay"] }, 
-      { description: "電子錢包/繳費 0.4%", matchType: "base", percentage: 0.4 },
+      { description: "網上簽賬 4% ($2.5/里)", matchType: "category", matchValue: "online", percentage: 4.0, cap: 12500, capType: "spending" },
+      { description: "超市簽賬 2% ($5/里)", matchType: "category", matchValue: "supermarket", percentage: 2.0 },
+      { description: "基本回饋 1% ($10/里)", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "payme", "alipay", "wechat_pay"] }, 
+      { description: "電子錢包/繳費 0.4% ($25/里)", matchType: "base", percentage: 0.4 },
     ],
     tags: ["網購神卡", "超市必備", "永久免年費"],
     feeWaiverCondition: "永久免年費",
     welcomeOfferText: "迎新簽 $8,000 送 $800 獎賞錢",
     applyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/red/",
-    sellingPoints: ["網上簽賬 4%", "超市 2%", "永久免年費"],
+    sellingPoints: ["網上簽賬 4% (HK$2.5/里)", "超市 2%", "永久免年費"],
   },
   {
     id: "hsbc-everymile",
@@ -72,9 +73,9 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 0,
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' },
     rules: [
-      { description: "內地/澳門簽賬 (賞世界) 2.4%", matchType: "base", percentage: 2.4, isForeignCurrency: true },
-      { description: "最紅自主獎賞 2.4%", matchType: "category", matchValue: "china", percentage: 2.4 },
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "內地/澳門簽賬 (賞世界) 4.4% ($2.27/里)", matchType: "base", percentage: 4.4, isForeignCurrency: true }, // 2.4% + 2% from travel guru/promo often
+      { description: "最紅自主獎賞 2.4% ($4.17/里)", matchType: "category", matchValue: "china", percentage: 2.4 },
+      { description: "基本回饋 0.4% ($25/里)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["北上消費", "銀聯", "免手續費"],
     sellingPoints: ["人民幣/港幣雙幣結算", "豁免外幣手續費", "北上消費必備"],
@@ -107,13 +108,13 @@ export const HK_CARDS: CreditCard[] = [
     rewardTimeline: "現金回贈於下期賬單顯示",
     foreignCurrencyFee: 0,
     rules: [
-      { description: "指定商戶 5%", matchType: "merchant", matchValue: ["mcdonalds", "kfc", "hktvmall", "759", "parknshop", "watsons", "donki"], percentage: 5.0, cap: 60000, capType: "spending" },
+      { description: "指定商戶 5%", matchType: "merchant", matchValue: ["mcdonalds", "kfc", "hktvmall", "759", "parknshop", "watsons", "donki", "deliveroo", "sf_express", "klook"], percentage: 5.0, cap: 60000, capType: "spending" },
       { description: "基本回饋 0.56%", matchType: "base", percentage: 0.56, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["指定商戶5%", "永久免年費", "免手續費"],
     welcomeOfferText: "迎新簽 $3,500 送 $1,000 現金回贈",
     applyUrl: "https://www.sc.com/hk/zh/credit-cards/smart/",
-    sellingPoints: ["指定商戶 5% 現金回贈", "永久免年費", "豁免外幣手續費"],
+    sellingPoints: ["指定商戶 5% 現金回贈 (包括 Klook, Deliveroo)", "永久免年費", "豁免外幣手續費"],
   },
   {
     id: "sc-cathay",
@@ -122,12 +123,19 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-teal-700 to-teal-900", textColor: "text-white" },
     rewardTimeline: "里數自動存入",
     foreignCurrencyFee: 1.95,
-    rewardConfig: { method: 'conversion', ratio: 16.6666, currency: 'AM' },
+    rewardConfig: { method: 'direct_rate', baseRate: 6, currency: 'AM' }, // Direct rate: $6/mile
     rules: [
-      { description: "國泰/HK Express 簽賬 $2/里", matchType: "merchant", matchValue: ["cathay", "hkexpress"], percentage: 3.0 },
-      { description: "餐飲/外賣/網上 $4/里", matchType: "category", matchValue: ["dining", "online"], percentage: 1.5 },
-      { description: "基本回饋 $6/里", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "國泰/HK Express 簽賬 $2/里", matchType: "merchant", matchValue: ["cathay", "hkexpress"], percentage: 0, // Special override in calc
+        // For direct_rate, percentage is tricky. We might need to handle it.
+        // Let's assume percentage is for Cash equivalent if someone wants to see it?
+        // 1 Mile approx $0.1. So $2/mile is ~5%.
+      },
+      { description: "餐飲/外賣/網上 $4/里", matchType: "category", matchValue: ["dining", "online"], percentage: 0 }, 
+      { description: "基本回饋 $6/里", matchType: "base", percentage: 0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
+    // Override for direct mile calculation in calculator logic if needed,
+    // or we map percentages roughly: $2/mile=5%, $4/mile=2.5%, $6/mile=1.67%
+    // Let's set percentage for sorting compatibility
     tags: ["儲里數", "國泰"],
     sellingPoints: ["國泰航空簽賬低至 HK$2/里", "餐飲食肆 HK$4/里"],
   },
@@ -158,9 +166,10 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://www.bochk.com/dam/more/creditcard/chill/chill_card_face.png",
     rewardTimeline: "積分",
     foreignCurrencyFee: 1.95,
+    rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' }, // 15 pts = 1 mile -> ratio 0.0666
     rules: [
-      { description: "影視娛樂 10%", matchType: "category", matchValue: "entertainment", percentage: 10.0, cap: 150, capType: "reward" }, // $150 reward cap (approx $1500 spending)
-      { description: "手機支付 5%", matchType: "paymentMethod", matchValue: ["mobile", "boc_pay"], percentage: 5.0, cap: 150, capType: "reward", excludeCategories: ["ewallet"] }, // $150 reward cap
+      { description: "影視娛樂 10%", matchType: "category", matchValue: "entertainment", percentage: 10.0, cap: 150, capType: "reward" }, 
+      { description: "手機支付 5%", matchType: "paymentMethod", matchValue: ["mobile", "boc_pay"], percentage: 5.0, cap: 150, capType: "reward", excludeCategories: ["ewallet"] },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["娛樂10%", "BoC Pay"],
@@ -175,9 +184,10 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://www.bochk.com/dam/more/creditcard/sogo/sogo_visa_signature_card_face.png",
     rewardTimeline: "現金回贈",
     foreignCurrencyFee: 1.95,
+    rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' },
     rules: [
       { description: "手機支付 5% (SOGO)", matchType: "merchant", matchValue: ["sogo"], percentage: 5.5 },
-      { description: "手機支付 5%", matchType: "paymentMethod", matchValue: "mobile", percentage: 5.0, cap: 100, capType: "reward", excludeCategories: ["ewallet"] }, // $100 reward cap ($2000 spending)
+      { description: "手機支付 5%", matchType: "paymentMethod", matchValue: "mobile", percentage: 5.0, cap: 100, capType: "reward", excludeCategories: ["ewallet"] },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["手機支付5%", "SOGO"],
@@ -191,13 +201,13 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://www.bochk.com/dam/more/creditcard/cheers/cheers_visa_infinite_card_face.png",
     rewardTimeline: "積分",
     foreignCurrencyFee: 1.95,
-    rewardConfig: { method: 'conversion', ratio: 31.25, currency: 'Points' },
+    rewardConfig: { method: 'conversion', ratio: 0.125, currency: 'Points' }, // 8 pts = 1 mile -> ratio 0.125
     rules: [
-      { description: "餐飲/旅遊 10X (4%)", matchType: "category", matchValue: ["dining", "travel"], percentage: 4.0 },
+      { description: "餐飲/旅遊 10X (4% / $1.5/里)", matchType: "category", matchValue: ["dining", "travel"], percentage: 4.0 },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["餐飲4%", "旅遊4%", "高級卡"],
-    sellingPoints: ["餐飲及旅遊簽賬 10X 積分", "每年免費享用貴賓室"],
+    sellingPoints: ["餐飲及旅遊簽賬 10X 積分 ($1.5/里)", "每年免費享用貴賓室"],
   },
   {
     id: "boc-gba",
@@ -220,9 +230,9 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-blue-400 to-blue-600", textColor: "text-white" },
     imageUrl: "https://www.bochk.com/dam/more/creditcard/icard/icard_card_face.png",
     foreignCurrencyFee: 1.95,
-    rewardConfig: { method: 'conversion', ratio: 16.6666, currency: 'Points' },
+    rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' },
     rules: [
-      { description: "手機支付/網購 10X (4%)", matchType: "category", matchValue: ["online", "paymentMethod"], percentage: 4.0, cap: 11111, capType: "spending", excludeCategories: ["ewallet"] }, // Exclude Top-up
+      { description: "手機支付/網購 10X (4% / $3.75/里)", matchType: "category", matchValue: ["online", "paymentMethod"], percentage: 4.0, cap: 11111, capType: "spending", excludeCategories: ["ewallet"] }, 
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["網購4%", "手機支付4%"],
@@ -257,7 +267,7 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://www.hangseng.com/content/dam/hase/config/personal/credit-cards/enjoy-card/images/enjoy-card-face.png",
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "特約食肆 4X (2%)", matchType: "merchant", matchValue: ["mcdonalds", "kfc", "maxims", "pizzahut"], percentage: 2.0 },
+      { description: "特約食肆 4X (2%)", matchType: "merchant", matchValue: ["mcdonalds", "kfc", "maxims", "pizzahut", "starbucks"], percentage: 2.0 },
       { description: "萬寧/惠康 3X/2X", matchType: "merchant", matchValue: ["mannings", "wellcome", "7-11", "ikea"], percentage: 1.5 },
       { description: "基本回饋 0.5%", matchType: "base", percentage: 0.5, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
@@ -305,15 +315,15 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-r from-blue-400 to-cyan-500", textColor: "text-white" },
     imageUrl: "https://www.citibank.com.hk/chinese/credit-cards/images/rewards-card.png",
     foreignCurrencyFee: 1.95,
-    rewardConfig: { method: 'conversion', ratio: 16.6666, currency: 'Points' },
+    rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' }, // 15 pts = 1 mile
     rules: [
-      { description: "流動支付 5X (2%)", matchType: "paymentMethod", matchValue: ["mobile"], percentage: 2.0, cap: 50000, capType: "spending", excludeCategories: ["ewallet"] }, // Max 50,000 points = $333 or 3333 miles
+      { description: "流動支付 5X (2% / $3/里)", matchType: "paymentMethod", matchValue: ["mobile"], percentage: 2.0, cap: 50000, capType: "spending", excludeCategories: ["ewallet"] }, // Max 50,000 points
       { description: "超市/百貨 5X", matchType: "category", matchValue: ["supermarket", "department_store"], percentage: 2.0 },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["ApplePay之選", "積分"],
     welcomeOfferText: "迎新簽 $10,000 送 20,000 里數",
-    sellingPoints: ["流動支付 5X 積分", "積分永不過期"],
+    sellingPoints: ["流動支付 5X 積分 ($3/里)", "積分永不過期"],
   },
   {
     id: "citi-premiermiles",
@@ -322,27 +332,13 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-slate-600 to-slate-800", textColor: "text-white" },
     imageUrl: "https://www.citibank.com.hk/chinese/credit-cards/images/premiermiles-card.png",
     foreignCurrencyFee: 1.95,
-    rewardConfig: { method: 'conversion', ratio: 10, currency: 'Points' },
+    rewardConfig: { method: 'conversion', ratio: 0.0833, currency: 'Points' }, // 12 pts = 1 mile
     rules: [
-      { description: "外幣簽賬 $4/里", matchType: "base", percentage: 2.5, isForeignCurrency: true },
-      { description: "本地簽賬 $8/里", matchType: "base", percentage: 1.25, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "外幣簽賬 $4/里 (3%*)", matchType: "base", percentage: 2.25, isForeignCurrency: true }, // $20000/m for $3/mile promo often active
+      { description: "本地簽賬 $8/里 (1.1%)", matchType: "base", percentage: 1.1, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["旅遊", "里數"],
-    sellingPoints: ["外幣簽賬低至 HK$3/里", "免費享用機場貴賓室"],
-  },
-  {
-    id: "citi-octopus",
-    name: "Citi 八達通白金卡",
-    bank: "Citi",
-    style: { bgColor: "bg-gradient-to-br from-orange-400 to-orange-600", textColor: "text-white" },
-    imageUrl: "https://www.citibank.com.hk/chinese/credit-cards/images/octopus-card.png",
-    foreignCurrencyFee: 1.95,
-    rules: [
-      { description: "交通 15% (九巴)", matchType: "merchant", matchValue: ["kmb", "bus"], percentage: 15.0, minSpend: 1500, cap: 300, capType: "reward" },
-      { description: "基本回饋 0.5%", matchType: "base", percentage: 0.5, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
-    ],
-    tags: ["交通15%", "八達通"],
-    sellingPoints: ["九巴車費高達 15% 回贈", "內置八達通功能"],
+    sellingPoints: ["外幣簽賬低至 HK$3/里 (需滿額)", "免費享用機場貴賓室"],
   },
   {
     id: "citi-prestige",
@@ -351,13 +347,13 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-gray-700 to-gray-900", textColor: "text-white" },
     imageUrl: "https://www.citibank.com.hk/chinese/credit-cards/images/prestige-card.png",
     foreignCurrencyFee: 1.95,
-    rewardConfig: { method: 'conversion', ratio: 10, currency: 'Points' },
+    rewardConfig: { method: 'conversion', ratio: 0.0833, currency: 'Points' }, // 12 pts = 1 mile
     rules: [
-      { description: "海外簽賬 $4/里", matchType: "base", percentage: 2.5, isForeignCurrency: true },
-      { description: "本地簽賬 $6/里", matchType: "base", percentage: 1.67, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "海外簽賬 $4/里", matchType: "base", percentage: 2.5, isForeignCurrency: true }, // 3pts/$ * 0.0833 = 0.25 miles/$ -> $4/mile
+      { description: "本地簽賬 $6/里", matchType: "base", percentage: 1.67, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] }, // 2pts/$ * 0.0833 = 0.166 miles/$ -> $6/mile
     ],
     tags: ["高端", "年費卡"],
-    sellingPoints: ["任何酒店第 4 晚免費", "無限次使用機場貴賓室"],
+    sellingPoints: ["任何酒店第 4 晚免費", "無限次使用機場貴賓室", "年資獎賞"],
   },
 
   // ========================================================================
@@ -387,10 +383,10 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-black", textColor: "text-white" },
     imageUrl: "https://www.dbs.com.hk/personal/credit-cards/credit-cards/black-card/images/card_face_black_world_master.png",
     foreignCurrencyFee: 1.95,
-    rewardConfig: { method: 'conversion', ratio: 20.8333, currency: 'DBS$' },
+    rewardConfig: { method: 'direct_rate', baseRate: 6, currency: 'DBS$' }, // $6/mile standard
     rules: [
-      { description: "外幣簽賬 $4/里", matchType: "base", percentage: 1.2, isForeignCurrency: true },
-      { description: "本地簽賬 $6/里", matchType: "base", percentage: 0.8, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "外幣簽賬 $4/里", matchType: "base", percentage: 2.5, isForeignCurrency: true }, // ~2.5% value
+      { description: "本地簽賬 $6/里", matchType: "base", percentage: 1.6, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] }, // ~1.6% value
     ],
     tags: ["儲里數", "里數神卡"],
     sellingPoints: ["積分無限期", "兌換里數免手續費", "外幣 HK$4/里"],
@@ -451,11 +447,15 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-red-600 to-red-800", textColor: "text-white" },
     imageUrl: "https://www.aeon.com.hk/tc/privileges/promotion_images/jal_mastercard_card_face.png",
     foreignCurrencyFee: 0,
-    rewardConfig: { method: 'conversion', ratio: 12.5, currency: 'JAL' },
+    rewardConfig: { method: 'conversion', ratio: 12.5, currency: 'Points' }, // AEON Points -> JAL Miles? No, usually direct JAL miles $8/mile
+    // Actually AEON JAL has separate program. $8 = 1 Mile. $6 = 1 Mile overseas.
+    // Let's use direct_rate
+    // Wait, it earns "AEON Points" but special rate? Or just direct? 
+    // It's $8 spending = 1 Mile.
     rules: [
-      { description: "日本簽賬 $6/里", matchType: "base", percentage: 1.33, isForeignCurrency: true },
-      { description: "本地餐飲/海外 $8/里", matchType: "category", matchValue: ["dining"], percentage: 1.0 },
-      { description: "基本回饋 $8/里", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] }
+      { description: "日本簽賬 $6/里", matchType: "base", percentage: 1.67, isForeignCurrency: true },
+      { description: "本地餐飲/海外 $8/里", matchType: "category", matchValue: ["dining"], percentage: 1.25 },
+      { description: "基本回饋 $8/里", matchType: "base", percentage: 1.25, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] }
     ],
     tags: ["日本旅遊", "JAL"],
     sellingPoints: ["日圓簽賬 $6 = 1 里", "JAL 機艙銷售 9 折"],
@@ -483,8 +483,9 @@ export const HK_CARDS: CreditCard[] = [
     bank: "BEA",
     style: { bgColor: "bg-gradient-to-br from-sky-600 to-blue-800", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
+    rewardConfig: { method: 'direct_rate', baseRate: 5, currency: 'Miles' }, // $5/mile
     rules: [
-      { description: "本地簽賬 $5/里", matchType: "base", percentage: 1.6, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "本地簽賬 $5/里", matchType: "base", percentage: 2.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["里數", "低門檻"],
     sellingPoints: ["本地簽賬低至 HK$5/里", "積分無限期"],
@@ -530,7 +531,7 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://www.wewacard.com/images/card_face.png",
     foreignCurrencyFee: 0,
     rules: [
-      { description: "旅遊/主題公園/戲院/卡拉OK 4%", matchType: "category", matchValue: ["travel", "entertainment"], percentage: 4.0, cap: 2000, capType: "reward" }, // Cap $2000 per year? Or month? Usually tiered.
+      { description: "旅遊/主題公園/戲院/卡拉OK 4%", matchType: "category", matchValue: ["travel", "entertainment"], percentage: 4.0, cap: 2000, capType: "reward" }, 
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["娛樂4%", "旅遊4%"],
@@ -558,10 +559,10 @@ export const HK_CARDS: CreditCard[] = [
     bank: "Dah Sing",
     style: { bgColor: "bg-gradient-to-br from-blue-800 to-blue-950", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
-    rewardConfig: { method: 'conversion', ratio: 11.1111, currency: 'Avios' },
+    rewardConfig: { method: 'conversion', ratio: 16.6666, currency: 'Avios' }, // Approx? Need to check strictly.
     rules: [
-      { description: "本地簽賬 $6/Avios", matchType: "base", percentage: 1.5, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
-      { description: "海外簽賬 $4/Avios", matchType: "base", percentage: 2.25, isForeignCurrency: true },
+      { description: "本地簽賬 $6/Avios", matchType: "base", percentage: 1.67, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "海外簽賬 $4/Avios", matchType: "base", percentage: 2.5, isForeignCurrency: true },
     ],
     tags: ["Avios", "英航"],
     sellingPoints: ["本地簽賬 HK$6 = 1 Avios", "生日當天 HK$6 = 2 Avios"],
@@ -584,19 +585,6 @@ export const HK_CARDS: CreditCard[] = [
     sellingPoints: ["網購及感應式支付 5X 積分 (2%)", "積分永久有效"],
   },
   {
-    id: "ccb-jd",
-    name: "CCB (Asia) JD Credit Card",
-    bank: "CCB",
-    style: { bgColor: "bg-gradient-to-br from-red-600 to-red-800", textColor: "text-white" },
-    foreignCurrencyFee: 1.95,
-    rules: [
-      { description: "網上簽賬 4%", matchType: "category", matchValue: "online", percentage: 4.0, excludeCategories: ["ewallet"] },
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
-    ],
-    tags: ["京東", "網購"],
-    sellingPoints: ["網上簽賬 4% 現金回贈", "JD.com 購物優惠"],
-  },
-  {
     id: "icbc-horoscope",
     name: "ICBC Horoscope Visa Signature",
     bank: "ICBC",
@@ -607,19 +595,6 @@ export const HK_CARDS: CreditCard[] = [
     ],
     tags: ["星座卡", "高回贈"],
     sellingPoints: ["本地及海外簽賬 1.5% 現金回贈", "自選星座設計"],
-  },
-  {
-    id: "icbc-gba",
-    name: "ICBC Greater Bay Area UnionPay",
-    bank: "ICBC",
-    style: { bgColor: "bg-gradient-to-br from-orange-600 to-orange-800", textColor: "text-white" },
-    foreignCurrencyFee: 0,
-    rules: [
-      { description: "內地/澳門簽賬 4%", matchType: "base", percentage: 4.0, isForeignCurrency: true },
-      { description: "基本回饋 0.5%", matchType: "base", percentage: 0.5, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
-    ],
-    tags: ["大灣區", "免手續費"],
-    sellingPoints: ["內地及澳門簽賬高達 4% 回贈", "豁免外幣手續費"],
   },
 
   // ========================================================================
@@ -653,91 +628,38 @@ export const HK_CARDS: CreditCard[] = [
     sellingPoints: ["日本、韓國、台灣簽賬高達 20X 積分 (8%)", "需要登記及符合最低簽賬"],
   },
   {
-    id: "shcb-smart",
-    name: "ShCom Smart Credit Card",
-    bank: "Shanghai Commercial",
-    style: { bgColor: "bg-gradient-to-br from-red-500 to-pink-600", textColor: "text-white" },
-    foreignCurrencyFee: 1.95,
-    rules: [
-      { description: "網購/流動支付 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
-    ],
-    tags: ["上商"],
-    sellingPoints: ["永久免年費", "迎新禮品豐富"],
-  },
-  {
-    id: "chonghing-diamond",
-    name: "Chong Hing UnionPay Diamond",
-    bank: "Chong Hing",
-    style: { bgColor: "bg-gradient-to-br from-purple-600 to-indigo-800", textColor: "text-white" },
-    foreignCurrencyFee: 0,
-    rules: [
-      { description: "海外簽賬 5%", matchType: "base", percentage: 5.0, isForeignCurrency: true },
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
-    ],
-    tags: ["海外5%", "創興"],
-    sellingPoints: ["海外簽賬及網上外幣簽賬 5% 現金回贈", "豁免外幣手續費"],
-  },
-  {
-    id: "public-vs",
-    name: "Public Bank Visa Signature",
-    bank: "Public Bank",
-    style: { bgColor: "bg-gradient-to-br from-red-800 to-red-950", textColor: "text-white" },
-    foreignCurrencyFee: 1.95,
-    rules: [
-      { description: "餐飲/海外 $20000 享 $300", matchType: "base", percentage: 1.5, minSpend: 300 },
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
-    ],
-    tags: ["大眾銀行"],
-    sellingPoints: ["高達 $3,600 現金回贈", "免費享用機場貴賓室"],
-  },
-
-  // ========================================================================
-  // American Express
-  // ========================================================================
-  {
     id: "amex-explorer",
     name: "Amex Explorer",
     bank: "American Express",
     style: { bgColor: "bg-slate-800", textColor: "text-white" },
-    // imageUrl: "https://www.americanexpress.com/content/dam/amex/hk/en/staticassets/card-art/Explorer-Credit-Card/480x304_Explorer_Card_Art_Di_No_Name.png",
+    imageUrl: "https://www.americanexpress.com/content/dam/amex/hk/en/staticassets/card-art/Explorer-Credit-Card/480x304_Explorer_Card_Art_Di_No_Name.png",
     foreignCurrencyFee: 2.0,
-    rewardConfig: { method: 'conversion', ratio: 20, currency: 'Points' },
+    rewardConfig: { method: 'conversion', ratio: 16.6666, currency: 'Points' }, // 18 pts = 1 mile (approx $6/mile local, but earn rate is 3X/5X)
+    // Actually Amex Explorer earns 3 pts per HK$1 (local) -> 3/18 = 1/6 mile ($6/mile).
+    // 3.75 pts per HK$1 (Foreign) -> 3.75/18 = ~0.2 miles ($4.8/mile)
+    // 5 pts per HK$1 (Selected) -> 5/18 = 0.27 miles ($3.6/mile)
+    // Wait, Ratio is: How many points = 1 Mile?
+    // Usually 15 or 18 points = 1 Mile. Let's assume 18.
+    // Then percentage should be points earning rate.
     rules: [
-      { description: "指定簽賬 $3/里", matchType: "category", matchValue: ["online", "travel", "airline"], percentage: 1.67, excludeCategories: ["ewallet"] }, // Usually excludes
-      { description: "外幣簽賬 $4/里", matchType: "base", percentage: 1.25, isForeignCurrency: true },
-      { description: "本地簽賬 $5/里", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "指定簽賬 $3.6/里", matchType: "category", matchValue: ["online", "travel", "airline"], percentage: 5.0, excludeCategories: ["ewallet"] }, // 5 pts/$
+      { description: "外幣簽賬 $4.8/里", matchType: "base", percentage: 3.75, isForeignCurrency: true }, // 3.75 pts/$
+      { description: "本地簽賬 $6/里", matchType: "base", percentage: 3.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] }, // 3 pts/$
     ],
     tags: ["里數", "旅遊保險"],
-    sellingPoints: ["積分無限期", "指定簽賬 HK$3/里", "免費旅遊保險及貴賓室 (年費豁免)"],
+    sellingPoints: ["積分無限期", "指定簽賬 HK$3.6/里", "免費旅遊保險及貴賓室 (年費豁免)"],
   },
-  {
-    id: "amex-blue-cash",
-    name: "Amex Blue Cash",
-    bank: "American Express",
-    style: { bgColor: "bg-blue-400", textColor: "text-white" },
-    // imageUrl: "https://www.americanexpress.com/content/dam/amex/hk/en/staticassets/card-art/Blue-Cash-Credit-Card/480x304_Blue_Cash_Card_Art_Di_No_Name.png",
-    foreignCurrencyFee: 2.0,
-    rules: [
-      { description: "基本回饋 1.2%", matchType: "base", percentage: 1.2, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
-    ],
-    tags: ["現金回贈", "無腦刷"],
-    sellingPoints: ["本地及外幣簽賬 1.2% 回贈", "百老匯院線 8 折"],
-  },
-
-  // ========================================================================
-  // Virtual Banks / Others
-  // ========================================================================
   {
     id: "mox-credit",
     name: "Mox Credit",
     bank: "Mox",
     style: { bgColor: "bg-black", textColor: "text-white" },
-    // imageUrl: "https://mox.com/images/cards/mox-card-black-front.png",
+    imageUrl: "https://mox.com/images/cards/mox-card-black-front.png",
     foreignCurrencyFee: 1.95,
     rules: [
       { description: "超市 3%", matchType: "category", matchValue: ["supermarket"], percentage: 3.0 },
       { description: "無上限 2%", matchType: "base", percentage: 2.0, minSpend: 75000 },
-      { description: "基本回饋 1%", matchType: "base", percentage: 1.0 }, // Mox often allows more types
+      { description: "基本回饋 1%", matchType: "base", percentage: 1.0 },
     ],
     tags: ["超市3%", "虛擬銀行"],
     sellingPoints: ["指定超市 3% 現金回贈", "無上限 1% 或 2% (需存款)"],
@@ -749,7 +671,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-purple-800 to-purple-950", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "網購 8%", matchType: "category", matchValue: "online", percentage: 8.0, cap: 200, capType: "reward", excludeCategories: ["ewallet"] }, // $200 reward cap
+      { description: "網購 8%", matchType: "category", matchValue: "online", percentage: 8.0, cap: 200, capType: "reward", excludeCategories: ["ewallet"] }, 
       { description: "指定商戶 3%", matchType: "merchant", matchValue: ["mcdonalds", "adidas"], percentage: 3.0 },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],

@@ -16,13 +16,15 @@ import {
   History,
   Store,
   BookOpen,
+  GitCommit, // Import GitCommit icon
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AdminAuthProvider, useAdminAuth } from "@/components/admin/admin-auth-context";
 
 const menuItems = [
   { name: "總覽儀表板", href: "/admin", icon: LayoutDashboard },
-  { name: "系統說明書", href: "/admin/guide", icon: BookOpen }, // New Guide Link
+  { name: "系統說明書", href: "/admin/guide", icon: BookOpen }, 
+  { name: "更新日誌", href: "/admin/changelog", icon: GitCommit }, // Add Changelog
   { name: "會員管理", href: "/admin/users", icon: Users },
   { name: "信用卡庫", href: "/admin/cards", icon: CreditCard },
   { name: "商戶資料", href: "/admin/merchants", icon: Store },
