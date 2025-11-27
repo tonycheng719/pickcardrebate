@@ -21,18 +21,15 @@ interface PageProps {
 
 // Generate static params for known promos at build time
 export async function generateStaticParams() {
-  const supabase = adminAuthClient;
+  // Temporarily remove DB fetching during build to ensure stability
+  // const supabase = adminAuthClient;
+  // const { data: dbPromos } = await supabase.from("promos").select("id");
+  // const dbIds = dbPromos?.map(p => p.id) || [];
   
-  // Get IDs from Supabase
-  const { data: dbPromos } = await supabase
-    .from("promos")
-    .select("id");
-    
-  const dbIds = dbPromos?.map(p => p.id) || [];
   const localIds = PROMOS.map(p => p.id);
   
-  // Combine unique IDs
-  const allIds = Array.from(new Set([...dbIds, ...localIds]));
+  // Combine unique IDs (currently just local)
+  const allIds = Array.from(new Set([...localIds]));
   
   return allIds.map((id) => ({
     id: id,
