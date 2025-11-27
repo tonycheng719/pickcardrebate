@@ -175,10 +175,16 @@ function CardItem({ card }: { card: CreditCard }) {
                         <img 
                             src={card.imageUrl} 
                             alt={card.name} 
-                            className="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-300" 
+                            className={`w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-300 ${imageError ? 'hidden' : ''}`} 
                             onError={() => setImageError(true)}
                             referrerPolicy="no-referrer"
                         />
+                        {imageError && (
+                            <div className={`absolute inset-0 w-full h-full flex flex-col justify-center items-start p-6 ${card.style?.bgColor || 'bg-gray-800'}`}>
+                                <div className={`font-bold text-lg ${card.style?.textColor || 'text-white'} opacity-90`}>{card.bank}</div>
+                                <div className={`text-xl font-bold mt-1 ${card.style?.textColor || 'text-white'} leading-tight`}>{card.name}</div>
+                            </div>
+                        )}
                     </div>
                 ) : (
                     // Fallback Gradient Style

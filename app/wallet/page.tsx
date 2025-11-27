@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { toast } from "sonner";
+import { CreditCard } from "@/lib/types";
 
 function CardSettingsDialog({ cardId, cardName, currentFeeDate, children }: { cardId: string, cardName: string, currentFeeDate?: string, children: React.ReactNode }) {
     const { updateCardSetting, removeCard } = useWallet();
@@ -80,6 +81,75 @@ function CardSettingsDialog({ cardId, cardName, currentFeeDate, children }: { ca
                 </div>
             </DialogContent>
         </Dialog>
+    );
+}
+
+function WalletCard({ card, feeDate }: { card: CreditCard, feeDate?: string }) {
+    const [imageError, setImageError] = useState(false);
+
+    return (
+        <Card className="h-full hover:shadow-md transition-all active:scale-[0.98] border-0 ring-1 ring-gray-200 dark:ring-gray-700 dark:bg-gray-800 overflow-hidden group">
+            <div className={`h-32 relative overflow-hidden flex items-center justify-center ${!card.imageUrl || imageError ? (card.style?.bgColor || 'bg-gray-500') + ' p-4' : 'bg-gray-50 dark:bg-gray-900'}`}>
+                {card.imageUrl && !imageError ? (
+                    <img 
+                        src={card.imageUrl} 
+                        alt={card.name} 
+                        className="max-h-full max-w-full object-contain shadow-md rounded-lg" 
+                        referrerPolicy="no-referrer"
+                        onError={() => setImageError(true)}
+                    />
+                ) : (
+                    <>
+                        <div className="flex justify-between items-start z-10 relative w-full">
+                            <div className={`font-bold text-lg ${card.style?.textColor || 'text-white'} opacity-90`}>{card.bank}</div>
+                            <CardSettingsDialog cardId={card.id} cardName={card.name} currentFeeDate={feeDate}>
+                                <button className={`p-1.5 rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors`}>
+                                    <Settings2 className="h-4 w-4" />
+                                </button>
+                            </CardSettingsDialog>
+                        </div>
+                        <div className={`text-2xl font-bold mt-1 ${card.style?.textColor || 'text-white'} z-10 relative w-full text-left`}>{card.name}</div>
+                        <div className="absolute bottom-4 right-4 w-10 h-8 bg-white/20 rounded backdrop-blur-md border border-white/30 z-10"></div>
+                    </>
+                )}
+                {card.imageUrl && !imageError && (
+                    <div className="absolute top-0 right-0 p-4 z-10">
+                        <CardSettingsDialog cardId={card.id} cardName={card.name} currentFeeDate={feeDate}>
+                            <button className="p-1.5 rounded-full bg-black/20 hover:bg-black/40 text-white backdrop-blur-sm transition-colors">
+                                <Settings2 className="h-4 w-4" />
+                            </button>
+                        </CardSettingsDialog>
+                    </div>
+                )}
+            </div>
+            
+            <CardContent className="pt-6 space-y-6">
+                {/* 年費提醒 */}
+                <div className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+                <Calendar className={`h-5 w-5 mt-0.5 ${feeDate ? "text-blue-600 dark:text-blue-400" : "text-gray-400"}`} />
+                <div>
+                    <div className="text-sm font-medium text-blue-900 dark:text-blue-200">年費到期日</div>
+                    {feeDate ? (
+                        <div className="text-xs text-blue-700 dark:text-blue-300 mt-0.5 font-mono">
+                            {feeDate}
+                        </div>
+                    ) : (
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                            尚未設定
+                        </div>
+                    )}
+                </div>
+                </div>
+
+                <div className="pt-2 flex justify-end">
+                    <Link href={`/cards?highlight=${card.id}`}>
+                    <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                        查看詳情 <ChevronRight className="h-4 w-4 ml-1" />
+                    </Button>
+                    </Link>
+                </div>
+            </CardContent>
+        </Card>
     );
 }
 
@@ -146,67 +216,7 @@ export default function WalletPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  <Card className="h-full hover:shadow-md transition-all active:scale-[0.98] border-0 ring-1 ring-gray-200 dark:ring-gray-700 dark:bg-gray-800 overflow-hidden group">
-                    <div className={`h-32 relative overflow-hidden flex items-center justify-center ${!card.imageUrl ? (card.style?.bgColor || 'bg-gray-500') + ' p-4' : 'bg-gray-50 dark:bg-gray-900'}`}>
-                        {card.imageUrl ? (
-                            <img 
-                                src={card.imageUrl} 
-                                alt={card.name} 
-                                className="max-h-full max-w-full object-contain shadow-md rounded-lg" 
-                                referrerPolicy="no-referrer"
-                            />
-                        ) : (
-                            <>
-                                <div className="flex justify-between items-start z-10 relative w-full">
-                                    <div className={`font-bold text-lg ${card.style?.textColor || 'text-white'} opacity-90`}>{card.bank}</div>
-                                    <CardSettingsDialog cardId={card.id} cardName={card.name} currentFeeDate={feeDate}>
-                                        <button className={`p-1.5 rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors`}>
-                                            <Settings2 className="h-4 w-4" />
-                                        </button>
-                                    </CardSettingsDialog>
-                                </div>
-                                <div className={`text-2xl font-bold mt-1 ${card.style?.textColor || 'text-white'} z-10 relative w-full text-left`}>{card.name}</div>
-                                <div className="absolute bottom-4 right-4 w-10 h-8 bg-white/20 rounded backdrop-blur-md border border-white/30 z-10"></div>
-                            </>
-                        )}
-                        {card.imageUrl && (
-                            <div className="absolute top-0 right-0 p-4 z-10">
-                                <CardSettingsDialog cardId={card.id} cardName={card.name} currentFeeDate={feeDate}>
-                                    <button className="p-1.5 rounded-full bg-black/20 hover:bg-black/40 text-white backdrop-blur-sm transition-colors">
-                                        <Settings2 className="h-4 w-4" />
-                                    </button>
-                                </CardSettingsDialog>
-                            </div>
-                        )}
-                    </div>
-                    
-                    <CardContent className="pt-6 space-y-6">
-                      {/* 年費提醒 */}
-                      <div className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
-                        <Calendar className={`h-5 w-5 mt-0.5 ${feeDate ? "text-blue-600 dark:text-blue-400" : "text-gray-400"}`} />
-                        <div>
-                            <div className="text-sm font-medium text-blue-900 dark:text-blue-200">年費到期日</div>
-                            {feeDate ? (
-                                <div className="text-xs text-blue-700 dark:text-blue-300 mt-0.5 font-mono">
-                                    {feeDate}
-                                </div>
-                            ) : (
-                                <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                                    尚未設定
-                                </div>
-                            )}
-                        </div>
-                      </div>
-
-                      <div className="pt-2 flex justify-end">
-                         <Link href={`/cards?highlight=${card.id}`}>
-                            <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-                                查看詳情 <ChevronRight className="h-4 w-4 ml-1" />
-                            </Button>
-                         </Link>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <WalletCard card={card} feeDate={feeDate} />
                 </motion.div>
               )})}
               
