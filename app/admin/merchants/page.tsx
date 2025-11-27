@@ -236,16 +236,31 @@ export default function AdminMerchantsPage() {
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center text-xl overflow-hidden"
+                      className="w-10 h-10 rounded-xl flex items-center justify-center text-xl overflow-hidden shrink-0"
                       style={{
                         backgroundColor: `${merchant.accentColor || "#e5e7eb"}20`,
                         color: merchant.accentColor || "#111827",
                       }}
                     >
                       {merchant.logo && merchant.logo.startsWith('http') ? (
-                          <img src={merchant.logo} alt={merchant.name} className="w-full h-full object-contain" />
+                          <img 
+                            src={merchant.logo} 
+                            alt={merchant.name} 
+                            className="w-full h-full object-contain" 
+                            onError={(e) => {
+                                e.currentTarget.style.display = 'none';
+                                const parent = e.currentTarget.parentElement;
+                                if (parent) {
+                                    parent.innerText = merchant.name.charAt(0);
+                                    parent.style.fontSize = '1.25rem'; // text-xl
+                                    parent.style.fontWeight = 'bold';
+                                }
+                            }}
+                          />
                       ) : (
-                          merchant.logo || merchant.name.charAt(0)
+                          <span className="truncate px-1 text-center text-sm font-bold">
+                            {merchant.logo || merchant.name.charAt(0)}
+                          </span>
                       )}
                     </div>
                     <div>
