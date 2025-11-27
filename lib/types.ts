@@ -52,6 +52,13 @@ export interface CreditCard {
   welcomeOfferReward?: string;
   welcomeOfferDeadline?: string;
   sellingPoints?: string[];
+  // New: Miles Configuration
+  rewardConfig?: {
+    method: 'conversion' | 'direct' | 'direct_rate';
+    currency?: string; // 'RC', 'DBS$', 'Points', 'AM'
+    ratio?: number; // e.g. 10 (1 RC = 10 Miles) or 0.0833 (12 Points = 1 Mile)
+    baseRate?: number; // For direct_rate: e.g. 6 ($6/Mile)
+  };
 }
 
 export interface Merchant {

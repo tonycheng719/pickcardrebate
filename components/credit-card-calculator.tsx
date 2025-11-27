@@ -60,7 +60,7 @@ export function CreditCardCalculator({
   title = "信用卡回贈計算機 (Beta)",
   subtitle = "選擇商戶與消費方式，即時計算最高回贈信用卡。",
 }: CreditCardCalculatorProps) {
-  const { myCardIds, user } = useWallet(); // Get user from wallet context
+  const { myCardIds, user, rewardPreference } = useWallet(); // Get user and preference from wallet context
   const { cards, merchants } = useDataset();
   const categoryList = CATEGORIES;
   
@@ -155,6 +155,7 @@ export function CreditCardCalculator({
         amount: parseFloat(amount),
         paymentMethod,
         isOnlineScenario, // Pass the toggle state
+        rewardPreference, // Pass preference
       },
       cardList,
       merchantList,
@@ -207,6 +208,7 @@ export function CreditCardCalculator({
 
   const ResultRow = ({ result, isBest = false }: { result: CalculationResult, isBest?: boolean }) => {
       const isVerified = verifiedCards[result.card.id]?.count > 0;
+      const milesText = result.milesReturn ? `$${result.milesReturn.toFixed(1)}/里` : null;
       
       return (
       <div
@@ -259,15 +261,16 @@ export function CreditCardCalculator({
         </div>
         <div className="text-right">
           <div className={`text-lg font-bold ${isBest ? 'text-emerald-700' : 'text-gray-800 dark:text-gray-100'}`}>
-            {result.rewardAmount > 0 ? `+$${result.rewardAmount.toFixed(1)}` : `${result.percentage}%`}
+            {milesText || (result.rewardAmount > 0 ? `+$${result.rewardAmount.toFixed(1)}` : `${result.percentage}%`)}
           </div>
         </div>
       </div>
   )};
 
-  const ResultContent = () => {
+    const ResultContent = () => {
     // Check if the best card is verified
     const isBestVerified = best ? verifiedCards[best.card.id]?.count > 0 : false;
+    const bestMilesText = best?.milesReturn ? `$${best.milesReturn.toFixed(1)}/里` : null;
 
     return (
     <div className="space-y-4 p-4 pb-8">
@@ -335,7 +338,7 @@ export function CreditCardCalculator({
               </div>
               <div className="text-right">
                 <div className="text-3xl font-bold text-emerald-700 tracking-tight">
-                  {best.rewardAmount > 0 ? `+$${best.rewardAmount.toFixed(1)}` : `${best.percentage}%`}
+                  {bestMilesText || (best.rewardAmount > 0 ? `+$${best.rewardAmount.toFixed(1)}` : `${best.percentage}%`)}
                 </div>
                 {best.card.welcomeOfferText && !myCardIds.includes(best.card.id) && (
                   <div className="text-xs text-orange-500 mt-2 font-medium">{best.card.welcomeOfferText}</div>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { CreditCard, Wallet, LogOut, Settings, Moon, Sun } from "lucide-react";
+import { CreditCard, Wallet, LogOut, Settings, Moon, Sun, Coins, Plane } from "lucide-react";
 import { Button } from "./ui/button";
 import { useWallet } from "@/lib/store/wallet-context";
 import { useTheme } from "./theme-provider";
@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function Navbar() {
-  const { user, logout } = useWallet();
+  const { user, logout, rewardPreference, toggleRewardPreference } = useWallet();
   const router = useRouter();
   const { theme, setTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -60,6 +60,23 @@ export function Navbar() {
               所有卡片
             </Link>
           </div>
+
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={toggleRewardPreference}
+            className="text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full mr-1"
+            title={`切換至${rewardPreference === 'miles' ? '現金' : '里數'}顯示`}
+          >
+            <motion.div
+              key={rewardPreference}
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.2 }}
+            >
+              {rewardPreference === 'miles' ? <Plane className="h-5 w-5 text-sky-500" /> : <Coins className="h-5 w-5 text-amber-500" />}
+            </motion.div>
+          </Button>
 
           <Button 
             variant="ghost" 
@@ -114,6 +131,32 @@ export function Navbar() {
                                 <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
                             </div>
                             <div className="p-1">
+                                {/* Reward Preference Toggle */}
+                                <button 
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        toggleRewardPreference();
+                                    }}
+                                    className="w-full text-left px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl flex items-center justify-between gap-3 transition-colors group"
+                                >
+                                    <div className="flex items-center gap-3">
+                                        {rewardPreference === 'miles' ? (
+                                            <Plane className="h-4 w-4 text-sky-500" />
+                                        ) : (
+                                            <Coins className="h-4 w-4 text-amber-500" />
+                                        )}
+                                        <span>回贈顯示</span>
+                                    </div>
+                                    <span className={`text-xs px-2 py-0.5 rounded-md font-medium transition-colors ${
+                                        rewardPreference === 'miles' 
+                                        ? 'bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-300' 
+                                        : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300'
+                                    }`}>
+                                        {rewardPreference === 'miles' ? '里數' : '現金'}
+                                    </span>
+                                </button>
+
                               <Link href="/settings">
                                   <button 
                                       onClick={() => setIsMenuOpen(false)}

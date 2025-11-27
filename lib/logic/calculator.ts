@@ -29,6 +29,7 @@ export interface CalculationResult {
   isForeignCurrency?: boolean;
   fxFee?: number;
   isCapped?: boolean;
+  milesReturn?: number; // $/Mile
 }
 
 export interface SearchOptions {
@@ -36,7 +37,8 @@ export interface SearchOptions {
   paymentMethod?: string;
   userCards?: string[];
   isForeignCurrency?: boolean;
-  isOnlineScenario?: boolean; // New Option
+  isOnlineScenario?: boolean;
+  rewardPreference?: "cash" | "miles"; // New Option
 }
 
 function calculateCardReward(
@@ -46,7 +48,8 @@ function calculateCardReward(
     paymentMethod: string | undefined,
     amount: number,
     isForeignCurrency: boolean,
-    isOnlineScenario: boolean = false // New Argument
+    isOnlineScenario: boolean = false,
+    rewardPreference: "cash" | "miles" = "cash" // New Argument
 ): { 
     rule: RewardRule | null, 
     percentage: number, 
@@ -54,7 +57,8 @@ function calculateCardReward(
     missedRule: RewardRule | null,
     missedDateRule: RewardRule | null,
     missedDateReward: number,
-    isCapped: boolean
+    isCapped: boolean,
+    milesReturn?: number
 } {
     let bestRule: RewardRule | null = null;
     let maxReward = -1;
@@ -67,6 +71,7 @@ function calculateCardReward(
     // Track rule with date mismatch but high potential
     let bestMissedDateRule: RewardRule | null = null;
     let maxMissedDateReward = -1;
+    let milesReturn: number | undefined = undefined;
 
     // Helper to check exclusions
     const isExcluded = (rule: RewardRule): boolean => {
@@ -257,6 +262,31 @@ function calculateCardReward(
       }
     }
 
+    // Calculate Miles Return
+    if (rewardPreference === "miles" && card.rewardConfig && maxReward > 0) {
+        const { method, ratio = 0, baseRate = 0 } = card.rewardConfig;
+        
+        // 1. Conversion Method: Reward Amount -> Points -> Miles
+        if (method === "conversion" && ratio > 0) {
+            // e.g., $100 spending * 4% = $4 Reward (RC/DBS$)
+            // $4 RC * 10 (ratio) = 40 Miles
+            // $/Mile = $100 / 40 = 2.5
+            const totalMiles = maxReward * ratio;
+            if (totalMiles > 0) {
+                milesReturn = amount / totalMiles;
+            }
+        } 
+        // 2. Direct Rate Method: $/Mile defined directly in rules? 
+        // Usually cards have complex rules. If we use 'rewardAmount' as cash value,
+        // we need to know how much cash value = 1 mile.
+        // Actually, most 'miles cards' give points which convert.
+        // For simplicity, we assume 'maxReward' is the CASH EQUIVALENT (or Points amount if percentage is points rate).
+        // We need to be careful: data/cards.ts usually defines percentage as CASHBACK equivalent percentage.
+        // If percentage is 4%, it means $4 value per $100.
+        // If 1 RC = $1 = 10 Miles (HSBC VS), then $4 RC = 40 Miles.
+        // ratio should be "Miles per $1 Reward Value".
+    }
+
     return { 
         rule: bestRule, 
         percentage: bestPercentage,
@@ -264,7 +294,8 @@ function calculateCardReward(
         missedRule: bestMissedRule,
         missedDateRule: bestMissedDateRule,
         missedDateReward: maxMissedDateReward,
-        isCapped
+        isCapped,
+        milesReturn
     };
 }
 
@@ -276,7 +307,7 @@ export function findBestCards(
   categoriesData: Category[] = CATEGORIES
 ): CalculationResult[] {
   const normalizedQuery = query.toLowerCase().trim();
-  const { amount = 0, paymentMethod, userCards, isForeignCurrency = false, isOnlineScenario = false } = options;
+  const { amount = 0, paymentMethod, userCards, isForeignCurrency = false, isOnlineScenario = false, rewardPreference = "cash" } = options;
   
   const matchedMerchant = merchantsData.find(
     m => m.name.toLowerCase().includes(normalizedQuery) || 
@@ -292,7 +323,7 @@ export function findBestCards(
     : cardsData;
 
   const results: CalculationResult[] = cardPool.map(card => {
-    const current = calculateCardReward(card, matchedMerchant, matchedCategory, paymentMethod, amount, isForeignCurrency, isOnlineScenario);
+    const current = calculateCardReward(card, matchedMerchant, matchedCategory, paymentMethod, amount, isForeignCurrency, isOnlineScenario, rewardPreference);
     
     let suggestedMethod: string | null = null;
     let potentialBest = { rewardAmount: 0, percentage: 0 };
@@ -304,7 +335,7 @@ export function findBestCards(
     if (!paymentMethod || paymentMethod === "physical_card") {
         const methodsToCheck = ["apple_pay", "boc_pay", "alipay", "payme"];
         for (const m of methodsToCheck) {
-            const res = calculateCardReward(card, matchedMerchant, matchedCategory, m, amount, isForeignCurrency, isOnlineScenario);
+            const res = calculateCardReward(card, matchedMerchant, matchedCategory, m, amount, isForeignCurrency, isOnlineScenario, rewardPreference);
             if (res.rewardAmount > current.rewardAmount && res.rewardAmount > potentialBest.rewardAmount) {
                 potentialBest = res;
                 suggestedMethod = m;
@@ -367,9 +398,21 @@ export function findBestCards(
       netRewardAmount,
       netPercentage,
       fxFee,
-      isCapped: current.isCapped
+      isCapped: current.isCapped,
+      milesReturn: current.milesReturn // Add to result
     };
   });
+
+  // Sort Logic for Miles
+  if (rewardPreference === "miles") {
+      return results.sort((a, b) => {
+          // Lower $/Mile is better
+          // But undefined milesReturn (no miles option) should be last
+          const aRate = a.milesReturn || Infinity;
+          const bRate = b.milesReturn || Infinity;
+          return aRate - bRate;
+      });
+  }
 
   if (isForeignCurrency) {
       return results.sort((a, b) => (b.netRewardAmount || 0) - (a.netRewardAmount || 0));

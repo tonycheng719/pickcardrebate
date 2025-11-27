@@ -62,6 +62,8 @@ interface WalletContextType {
   followPromo: (promoId: string) => void;
   unfollowPromo: (promoId: string) => void;
   isPromoFollowed: (promoId: string) => boolean;
+  rewardPreference: "cash" | "miles";
+  toggleRewardPreference: () => void;
 }
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
@@ -78,6 +80,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isWalletSynced, setIsWalletSynced] = useState(false); // New state to track if cloud sync is done
+  const [localRewardPreference, setLocalRewardPreference] = useState<"cash" | "miles">("cash");
   const supabase = useMemo(() => createClient(), []);
   const router = useRouter();
   const pathname = usePathname();
@@ -105,6 +108,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     const savedSettings = localStorage.getItem("pickcardrebate_wallet_settings");
     const savedUser = localStorage.getItem("pickcardrebate_user");
     const savedTransactions = localStorage.getItem("pickcardrebate_transactions");
+    const savedPreference = localStorage.getItem("pickcardrebate_reward_preference");
     
     if (savedCards) {
       try {
@@ -148,6 +152,10 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
             console.error("Failed to parse transactions", e);
         }
     }
+
+    if (savedPreference) {
+        setLocalRewardPreference(savedPreference as "cash" | "miles");
+    }
     
     setIsLoaded(true);
   }, []);
@@ -157,6 +165,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     if (isLoaded) {
       localStorage.setItem("pickcardrebate_wallet_cards", JSON.stringify(myCardIds));
       localStorage.setItem("pickcardrebate_wallet_settings", JSON.stringify(cardSettings));
+      localStorage.setItem("pickcardrebate_reward_preference", localRewardPreference);
       if (user) {
         localStorage.setItem("pickcardrebate_user", JSON.stringify(user));
       } else {
@@ -164,7 +173,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       }
       localStorage.setItem("pickcardrebate_transactions", JSON.stringify(transactions));
     }
-  }, [myCardIds, cardSettings, user, transactions, isLoaded]);
+  }, [myCardIds, cardSettings, user, transactions, isLoaded, localRewardPreference]);
 
 
   const initializeWalletSync = useCallback(async (userId: string) => {
@@ -482,6 +491,16 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       return user?.followedPromoIds?.includes(promoId) || false;
    };
 
+  const toggleRewardPreference = async () => {
+    const newPreference = (user?.rewardPreference || localRewardPreference) === "cash" ? "miles" : "cash";
+    
+    if (user) {
+        await updateProfile({ rewardPreference: newPreference });
+    }
+    
+    setLocalRewardPreference(newPreference);
+  };
+
   const value = {
     myCardIds,
     cardSettings,
@@ -501,7 +520,9 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     removeTransaction,
     followPromo,
     unfollowPromo,
-    isPromoFollowed
+    isPromoFollowed,
+    rewardPreference: user?.rewardPreference || localRewardPreference,
+    toggleRewardPreference
   };
 
   return <WalletContext.Provider value={value}>{children}</WalletContext.Provider>;
