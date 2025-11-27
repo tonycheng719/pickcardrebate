@@ -16,7 +16,7 @@ import { CATEGORIES } from "@/lib/data/categories";
 import { HK_CARDS } from "@/lib/data/cards";
 import { findBestCards, CalculationResult } from "@/lib/logic/calculator";
 import { useWallet } from "@/lib/store/wallet-context";
-  import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle, Lightbulb, Store, Globe, ChevronDown, ChevronUp, BadgeCheck, Tag, AlertTriangle, Search, LogIn } from "lucide-react";
+  import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle, Lightbulb, Store, Globe, ChevronDown, ChevronUp, BadgeCheck, Tag, AlertTriangle, Search, LogIn, PlusCircle, Loader2, History } from "lucide-react";
 import { DynamicIcon } from "@/components/dynamic-icon";
 import { useDataset } from "@/lib/admin/data-store";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -26,6 +26,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useMerchantCommunityData } from "@/hooks/use-merchant-community-data";
 import { LoginPromptDialog } from "@/components/login-prompt-dialog";
+import { toast } from "sonner";
 
 const PAYMENT_OPTIONS = [
   { id: "physical_card", label: "實體卡" },
@@ -84,6 +85,10 @@ export function CreditCardCalculator({
   const [showAllResults, setShowAllResults] = useState(false); // Toggle for showing all results
   const [showLoginPrompt, setShowLoginPrompt] = useState(false); // New state for login prompt
   
+  // Transaction Recording State
+  const [recordingCardId, setRecordingCardId] = useState<string | null>(null);
+  const [recordedCardIds, setRecordedCardIds] = useState<Set<string>>(new Set());
+  
   // Separate state for report dialog
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
 
@@ -96,6 +101,41 @@ export function CreditCardCalculator({
 
   // Community Data Hook
   const { verifiedCards, tags, isLoading: isCommunityLoading, trapCount } = useMerchantCommunityData(selectedMerchantId);
+
+  const handleRecordTransaction = async (result: CalculationResult) => {
+    if (!user || !selectedMerchant) return;
+    
+    const cardId = result.card.id;
+    setRecordingCardId(cardId);
+    
+    try {
+        const res = await fetch("/api/user/transactions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                userId: user.id,
+                merchantName: selectedMerchant.name,
+                categoryId: selectedCategory,
+                amount: amount,
+                paymentMethod: paymentMethod,
+                cardId: cardId,
+                rewardAmount: result.rewardAmount,
+                rewardCurrency: rewardPreference,
+                // rewardUnit: result.card.rewardConfig?.currency // Optional
+            })
+        });
+
+        if (!res.ok) throw new Error("Failed to record");
+        
+        setRecordedCardIds(prev => new Set(prev).add(cardId));
+        toast.success("已成功記錄這筆消費！", { description: "您可以在錢包中查看消費統計。" });
+    } catch (e) {
+        console.error(e);
+        toast.error("記錄失敗，請稍後再試。");
+    } finally {
+        setRecordingCardId(null);
+    }
+  };
 
   const filteredMerchants = useMemo(
     () => {
@@ -254,6 +294,9 @@ export function CreditCardCalculator({
       const isVerified = verifiedCards[result.card.id]?.count > 0;
       const milesText = result.milesReturn ? `$${result.milesReturn.toFixed(1)}/里` : null;
       const isCashFallback = rewardPreference === 'miles' && !milesText && result.rewardAmount > 0;
+      
+      const isRecording = recordingCardId === result.card.id;
+      const isRecorded = recordedCardIds.has(result.card.id);
 
       return (
       <div
@@ -299,11 +342,30 @@ export function CreditCardCalculator({
                </div>
            )}
 
-          {myCardIds.includes(result.card.id) && (
-            <span className="text-xs text-emerald-500 inline-flex items-center gap-1 mt-1">
-              <CreditCard className="h-3 w-3" /> 你已持有
-            </span>
-          )}
+          {/* Action Buttons Row */}
+          <div className="flex items-center gap-2 mt-2">
+            {myCardIds.includes(result.card.id) && (
+                <span className="text-xs text-emerald-500 inline-flex items-center gap-1">
+                <CreditCard className="h-3 w-3" /> 你已持有
+                </span>
+            )}
+            <button 
+                className={`text-xs border rounded px-2 py-0.5 flex items-center gap-1 transition-colors ${
+                    isRecorded 
+                    ? "bg-gray-100 text-gray-500 border-gray-200 cursor-default" 
+                    : "bg-white hover:bg-gray-50 text-gray-600 border-gray-200"
+                }`}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    if (!isRecorded && !isRecording) handleRecordTransaction(result);
+                }}
+                disabled={isRecorded || isRecording}
+            >
+                {isRecording ? <Loader2 className="w-3 h-3 animate-spin" /> : isRecorded ? <CheckCircle2 className="w-3 h-3" /> : <PlusCircle className="w-3 h-3" />}
+                {isRecorded ? "已記錄" : "記賬"}
+            </button>
+          </div>
+
         </div>
         <div className="text-right">
           <div className={`text-lg font-bold ${isBest ? 'text-emerald-700' : isCashFallback ? 'text-gray-400' : 'text-gray-800 dark:text-gray-100'}`}>
@@ -319,6 +381,9 @@ export function CreditCardCalculator({
     const isBestVerified = best ? verifiedCards[best.card.id]?.count > 0 : false;
     const bestMilesText = best?.milesReturn ? `$${best.milesReturn.toFixed(1)}/里` : null;
     const isBestCashFallback = best && rewardPreference === 'miles' && !bestMilesText && best.rewardAmount > 0;
+    
+    const isBestRecording = best && recordingCardId === best.card.id;
+    const isBestRecorded = best && recordedCardIds.has(best.card.id);
 
     return (
     <div className="space-y-4 p-4 pb-8">
@@ -378,11 +443,25 @@ export function CreditCardCalculator({
                    )}
                 </div>
 
-                {myCardIds.includes(best.card.id) && (
-                  <span className="inline-flex items-center gap-1 text-xs text-emerald-600 mt-2 font-medium">
-                    <CheckCircle2 className="h-3 w-3" /> 你已持有，用這張！
-                  </span>
-                )}
+                <div className="flex flex-col items-start gap-2 mt-2">
+                    {myCardIds.includes(best.card.id) && (
+                    <span className="inline-flex items-center gap-1 text-xs text-emerald-600 font-medium">
+                        <CheckCircle2 className="h-3 w-3" /> 你已持有，用這張！
+                    </span>
+                    )}
+                    
+                    {/* Record Transaction Button (Hero) */}
+                    <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className={`h-8 text-xs gap-1 border-emerald-200 bg-white hover:bg-emerald-50 text-emerald-700 ${isBestRecorded ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        onClick={() => !isBestRecorded && !isBestRecording && handleRecordTransaction(best)}
+                        disabled={isBestRecorded || isBestRecording}
+                    >
+                        {isBestRecording ? <Loader2 className="w-3 h-3 animate-spin" /> : isBestRecorded ? <CheckCircle2 className="w-3 h-3" /> : <PlusCircle className="w-3 h-3" />}
+                        {isBestRecorded ? "已記錄消費" : "一鍵記賬"}
+                    </Button>
+                </div>
               </div>
               <div className="text-right">
                 <div className={`text-3xl font-bold ${isBestCashFallback ? 'text-gray-400' : 'text-emerald-700'} tracking-tight`}>

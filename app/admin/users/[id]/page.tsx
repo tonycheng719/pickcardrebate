@@ -1,7 +1,7 @@
-import { createClient } from "@supabase/supabase-js";
+import { adminAuthClient } from "@/lib/supabase/admin-client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Ban, CheckCircle2, CreditCard, Calendar, AlertCircle } from "lucide-react";
+import { ArrowLeft, Ban, CheckCircle2, CreditCard, Calendar, AlertCircle, DollarSign, ShoppingBag } from "lucide-react";
 import { HK_CARDS } from "@/lib/data/cards";
 import Link from "next/link";
 
@@ -9,13 +9,7 @@ export const dynamic = "force-dynamic";
 
 // Fetch data on the server
 async function getUserData(id: string) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  
-  // Use Anon Client to bypass cookie/role issues
-  const supabase = createClient(supabaseUrl, supabaseKey, {
-    auth: { persistSession: false }
-  });
+  const supabase = adminAuthClient; // Use Admin Client (Service Role)
 
   // 1. Fetch User Profile
   const { data: user, error: userError } = await supabase
@@ -29,15 +23,6 @@ async function getUserData(id: string) {
   }
 
   // 2. Fetch User Cards & Settings
-  // Since RLS for user_cards is "Users can view own cards", Anon client usually CANNOT view other users' cards
-  // UNLESS we also relax RLS for user_cards/settings or use Service Role.
-  // However, user reported seeing "loading" forever, which means it was trying.
-  // If we use Anon client, we might get empty array if RLS blocks it.
-  // To fix this properly for Admin viewing User data, we MUST use Service Role if available, 
-  // OR we must relax RLS for "Admin view all".
-  // But we don't have Service Key in env vars confirmed.
-  // Let's try to fetch. If it fails/returns empty, at least the profile shows.
-  
   const { data: cardsData } = await supabase
     .from("user_cards")
     .select("card_id")
@@ -47,6 +32,14 @@ async function getUserData(id: string) {
     .from("user_card_settings")
     .select("card_id, settings")
     .eq("user_id", id);
+
+  // 3. Fetch User Transactions
+  const { data: transactions } = await supabase
+    .from("user_transactions")
+    .select("*")
+    .eq("user_id", id)
+    .order("transaction_date", { ascending: false })
+    .limit(50);
 
   const settingsMap = new Map();
   settingsData?.forEach((s: any) => {
@@ -64,14 +57,14 @@ async function getUserData(id: string) {
     };
   });
 
-  return { user, walletCards };
+  return { user, walletCards, transactions: transactions || [] };
 }
 
 export default async function AdminUserDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
   try {
-    const { user, walletCards } = await getUserData(id);
+    const { user, walletCards, transactions } = await getUserData(id);
 
     return (
       <div className="space-y-6">
@@ -132,6 +125,52 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
                   </div>
                 </div>
               </CardContent>
+            </Card>
+
+            {/* Transactions Section */}
+            <Card className="dark:bg-gray-800 dark:border-gray-700">
+                <CardHeader>
+                    <CardTitle className="text-lg dark:text-white flex items-center gap-2">
+                        <ShoppingBag className="h-5 w-5" /> 消費記錄 ({transactions.length})
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    {transactions.length === 0 ? (
+                        <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                            暫無記賬資料
+                        </div>
+                    ) : (
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-sm">
+                                <thead>
+                                    <tr className="border-b dark:border-gray-700 text-left">
+                                        <th className="pb-2 font-medium text-gray-500">日期</th>
+                                        <th className="pb-2 font-medium text-gray-500">商戶</th>
+                                        <th className="pb-2 font-medium text-gray-500">卡片</th>
+                                        <th className="pb-2 font-medium text-gray-500 text-right">金額</th>
+                                        <th className="pb-2 font-medium text-gray-500 text-right">回贈</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y dark:divide-gray-700">
+                                    {transactions.map((tx: any) => {
+                                        const cardName = HK_CARDS.find(c => c.id === tx.card_id)?.name || tx.card_id;
+                                        return (
+                                            <tr key={tx.id}>
+                                                <td className="py-3 text-gray-500">{tx.transaction_date}</td>
+                                                <td className="py-3 font-medium">{tx.merchant_name}</td>
+                                                <td className="py-3 text-gray-500 truncate max-w-[150px]" title={cardName}>{cardName}</td>
+                                                <td className="py-3 text-right font-mono">${tx.amount}</td>
+                                                <td className="py-3 text-right font-mono text-emerald-600">
+                                                    {tx.reward_amount > 0 ? `+$${tx.reward_amount}` : '-'}
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </CardContent>
             </Card>
 
             {/* Wallet Section */}

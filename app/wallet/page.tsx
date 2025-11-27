@@ -2,10 +2,10 @@
 
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useWallet } from "@/lib/store/wallet-context";
 import { useDataset } from "@/lib/admin/data-store";
-import { Plus, Wallet as WalletIcon, Trophy, Calendar, AlertCircle, ChevronRight, Settings2, Trash2 } from "lucide-react";
+import { Plus, Wallet as WalletIcon, Trophy, Calendar, AlertCircle, ChevronRight, Settings2, Trash2, TrendingUp, Receipt, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -17,9 +17,44 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { CreditCard } from "@/lib/types";
+
+function TransactionHistoryDialog({ transactions }: { transactions: any[] }) {
+    return (
+        <DialogContent className="max-w-md max-h-[80vh] overflow-hidden flex flex-col">
+            <DialogHeader>
+                <DialogTitle>最近消費記錄</DialogTitle>
+                <DialogDescription>您的一鍵記賬歷史</DialogDescription>
+            </DialogHeader>
+            <div className="flex-1 overflow-y-auto pr-2 space-y-3 py-4">
+                {transactions.length === 0 ? (
+                    <p className="text-center text-gray-500 py-8">暫無記錄</p>
+                ) : (
+                    transactions.map((tx) => (
+                        <div key={tx.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700">
+                            <div>
+                                <div className="font-bold text-gray-900 dark:text-gray-100">{tx.merchant_name}</div>
+                                <div className="text-xs text-gray-500 flex gap-2">
+                                    <span>{tx.transaction_date}</span>
+                                    <span>•</span>
+                                    <span>{tx.payment_method}</span>
+                                </div>
+                            </div>
+                            <div className="text-right">
+                                <div className="font-mono font-bold">-${tx.amount}</div>
+                                <div className="text-xs text-emerald-600 font-medium">
+                                    +{tx.reward_amount > 0 ? `$${tx.reward_amount}` : '-'}
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
+        </DialogContent>
+    );
+}
 
 function CardSettingsDialog({ cardId, cardName, currentFeeDate, children }: { cardId: string, cardName: string, currentFeeDate?: string, children: React.ReactNode }) {
     const { updateCardSetting, removeCard } = useWallet();
@@ -154,19 +189,54 @@ function WalletCard({ card, feeDate }: { card: CreditCard, feeDate?: string }) {
 }
 
 export default function WalletPage() {
-  const { myCardIds, cardSettings } = useWallet();
+  const { myCardIds, cardSettings, user } = useWallet();
   const { cards } = useDataset();
   
   const myCards = cards.filter((c) => myCardIds.includes(c.id));
+
+  const [transactions, setTransactions] = useState<any[]>([]);
+  const [stats, setStats] = useState({ spending: 0, rewards: 0 });
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    
+    fetch(`/api/user/transactions?userId=${user.id}`)
+      .then(res => res.json())
+      .then(data => {
+         if (Array.isArray(data)) {
+             setTransactions(data);
+             // Calculate stats for current month
+             const now = new Date();
+             const currentMonth = now.getMonth();
+             const currentYear = now.getFullYear();
+             
+             let spending = 0;
+             let rewards = 0;
+             
+             data.forEach((tx: any) => {
+                 const d = new Date(tx.transaction_date);
+                 if (d.getMonth() === currentMonth && d.getFullYear() === currentYear) {
+                     spending += parseFloat(tx.amount || 0);
+                     rewards += parseFloat(tx.reward_amount || 0);
+                 }
+             });
+             setStats({ spending, rewards });
+         }
+      })
+      .catch(err => console.error("Failed to fetch transactions", err));
+  }, [user]);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col transition-colors">
       <Navbar />
 
       <main className="container mx-auto px-4 py-8 flex-1">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">我的錢包</h1>
-          <p className="text-gray-600 dark:text-gray-400">管理您擁有的信用卡，追蹤迎新進度與年費期限。</p>
+        <div className="mb-8 flex justify-between items-end">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">我的錢包</h1>
+            <p className="text-gray-600 dark:text-gray-400">管理您擁有的信用卡，追蹤迎新進度與消費。</p>
+          </div>
         </div>
 
         {myCards.length === 0 ? (
@@ -188,20 +258,51 @@ export default function WalletPage() {
           </motion.div>
         ) : (
           <div className="space-y-8">
-            {/* 錢包摘要 - 可擴充為每月回贈儀表板 */}
+            {/* 錢包摘要 - Monthly Dashboard */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="grid grid-cols-2 md:grid-cols-4 gap-4"
             >
               <div className="bg-white dark:bg-gray-900 p-4 rounded-2xl border dark:border-gray-800 shadow-sm">
-                <div className="text-gray-500 text-xs mb-1">持有卡片</div>
+                <div className="flex items-center gap-2 text-gray-500 text-xs mb-1">
+                    <WalletIcon className="w-3 h-3" /> 持有卡片
+                </div>
                 <div className="text-2xl font-bold text-gray-900 dark:text-white">{myCards.length} 張</div>
               </div>
+              
               <div className="bg-white dark:bg-gray-900 p-4 rounded-2xl border dark:border-gray-800 shadow-sm">
-                <div className="text-gray-500 text-xs mb-1">本月預估回贈</div>
-                <div className="text-2xl font-bold text-emerald-600">$0.0</div>
+                <div className="flex items-center gap-2 text-gray-500 text-xs mb-1">
+                    <TrendingUp className="w-3 h-3" /> 本月支出
+                </div>
+                <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                    ${stats.spending.toLocaleString()}
+                </div>
               </div>
+
+              <div className="bg-white dark:bg-gray-900 p-4 rounded-2xl border dark:border-gray-800 shadow-sm">
+                <div className="flex items-center gap-2 text-gray-500 text-xs mb-1">
+                    <Trophy className="w-3 h-3" /> 本月回贈
+                </div>
+                <div className="text-2xl font-bold text-emerald-600">
+                    ${stats.rewards.toLocaleString()}
+                </div>
+              </div>
+
+              <Dialog open={isHistoryOpen} onOpenChange={setIsHistoryOpen}>
+                <DialogTrigger asChild>
+                    <div className="bg-emerald-50 dark:bg-emerald-900/20 p-4 rounded-2xl border border-emerald-100 dark:border-emerald-800/30 shadow-sm cursor-pointer hover:bg-emerald-100 dark:hover:bg-emerald-900/30 transition-colors group">
+                        <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 text-xs mb-1 font-medium">
+                            <Receipt className="w-3 h-3" /> 記賬記錄
+                        </div>
+                        <div className="text-lg font-bold text-emerald-800 dark:text-emerald-300 flex items-center justify-between">
+                            {transactions.length} 筆
+                            <ArrowUpRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </div>
+                    </div>
+                </DialogTrigger>
+                <TransactionHistoryDialog transactions={transactions} />
+              </Dialog>
             </motion.div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
