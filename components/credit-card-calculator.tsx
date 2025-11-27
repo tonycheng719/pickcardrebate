@@ -16,7 +16,7 @@ import { CATEGORIES } from "@/lib/data/categories";
 import { HK_CARDS } from "@/lib/data/cards";
 import { findBestCards, CalculationResult } from "@/lib/logic/calculator";
 import { useWallet } from "@/lib/store/wallet-context";
-import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle, Lightbulb, Store, Globe, ChevronDown, ChevronUp, BadgeCheck, Tag, AlertTriangle } from "lucide-react";
+  import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle, Lightbulb, Store, Globe, ChevronDown, ChevronUp, BadgeCheck, Tag, AlertTriangle, Search } from "lucide-react";
 import { DynamicIcon } from "@/components/dynamic-icon";
 import { useDataset } from "@/lib/admin/data-store";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -74,6 +74,7 @@ export function CreditCardCalculator({
   const cardList = cards.length ? cards : HK_CARDS;
   const [selectedCategory, setSelectedCategory] = useState(categoryList[0]?.id || "");
   const [selectedMerchantId, setSelectedMerchantId] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState(""); // New Search State
   const [amount, setAmount] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("physical_card");
   const [isOnlineScenario, setIsOnlineScenario] = useState(false); // New state for online toggle
@@ -112,6 +113,7 @@ export function CreditCardCalculator({
   const handleCategorySelect = (catId: string) => {
     setSelectedCategory(catId);
     setSelectedMerchantId(null);
+    setSearchQuery(""); // Reset search on category change
     setTimeout(() => {
       merchantsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
@@ -128,9 +130,20 @@ export function CreditCardCalculator({
 
   const filteredMerchants = useMemo(
     () => {
-        if (!selectedCategory || selectedCategory === 'all') return merchantList;
+        let list = merchantList;
+
+        // If search query exists, filter by name/alias globally (ignore category)
+        if (searchQuery.trim()) {
+            const q = searchQuery.toLowerCase().trim();
+            return list.filter(m => 
+                m.name.toLowerCase().includes(q) || 
+                m.aliases.some(a => a.toLowerCase().includes(q))
+            ).slice(0, 12); // Limit results for performance
+        }
+
+        if (!selectedCategory || selectedCategory === 'all') return list;
         
-        return merchantList
+        return list
             .filter((m) => m.categoryIds.includes(selectedCategory))
             .sort((a, b) => {
                 if (a.isGeneral && !b.isGeneral) return 1;
@@ -138,7 +151,7 @@ export function CreditCardCalculator({
                 return 0;
             });
     },
-    [merchantList, selectedCategory]
+    [merchantList, selectedCategory, searchQuery]
   );
   
   const effectiveMerchants = filteredMerchants;
@@ -435,15 +448,30 @@ export function CreditCardCalculator({
         </div>
       )}
 
-      <div className="bg-white dark:bg-gray-900 rounded-3xl p-6 shadow-lg border border-gray-100 dark:border-gray-800">
+        <div className="bg-white dark:bg-gray-900 rounded-3xl p-6 shadow-lg border border-gray-100 dark:border-gray-800">
+        
+        {/* Search Bar */}
+        <div className="relative mb-4">
+            <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+            <Input 
+                placeholder="搜尋商戶 (例如: 國泰, HKTVMall, 麥當勞...)" 
+                className="pl-9 bg-gray-50 dark:bg-gray-800 border-transparent focus:bg-white dark:focus:bg-gray-900 transition-all"
+                value={searchQuery}
+                onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    if (e.target.value) setSelectedCategory(""); // Clear category selection when searching
+                }}
+            />
+        </div>
+
         <div className="flex items-center gap-3 flex-wrap mb-4">
           {categoryList.map((cat) => (
             <button
               key={cat.id}
               className={`px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2 transition active:scale-95 ${
-                selectedCategory === cat.id
+                selectedCategory === cat.id && !searchQuery
                   ? `${cat.bgColor} ${cat.accentColor} ring-2 ring-offset-2 ring-emerald-200`
-                  : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+                  : "bg-gray-100 text-gray-500 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700"
               }`}
               onClick={() => handleCategorySelect(cat.id)}
             >
