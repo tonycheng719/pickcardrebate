@@ -5,12 +5,14 @@ export interface MerchantCommunityData {
   verifiedCards: Record<string, { count: number; lastVerified: string }>;
   tags: string[];
   isLoading: boolean;
+  trapCount: number; // New field for trap alerts
 }
 
 export function useMerchantCommunityData(merchantId: string | null) {
   const [data, setData] = useState<MerchantCommunityData>({
     verifiedCards: {},
     tags: [],
+    trapCount: 0,
     isLoading: false,
   });
   const supabase = createClient();
@@ -28,7 +30,7 @@ export function useMerchantCommunityData(merchantId: string | null) {
         // 1. Fetch verified reviews for this merchant
         const { data: reviews, error: reviewsError } = await supabase
           .from("merchant_reviews")
-          .select("card_id, created_at")
+          .select("card_id, created_at, report_type")
           .eq("merchant_id", merchantId)
           .eq("status", "verified");
 
@@ -45,8 +47,14 @@ export function useMerchantCommunityData(merchantId: string | null) {
 
         // Process reviews into a map keyed by card_id
         const verifiedCards: Record<string, { count: number; lastVerified: string }> = {};
+        let trapCount = 0;
         
-        reviews?.forEach((r: { card_id: string | null; created_at: string }) => {
+        reviews?.forEach((r: { card_id: string | null; created_at: string; report_type?: string }) => {
+          // Count traps regardless of card_id
+          if (r.report_type === 'trap') {
+              trapCount++;
+          }
+
           // Ensure we handle potentially null card_ids gracefully, though schema says not null
           if (!r.card_id) return;
 
@@ -63,7 +71,7 @@ export function useMerchantCommunityData(merchantId: string | null) {
 
         const tags = tagsData?.map((t: { tag_name: string }) => t.tag_name) || [];
 
-        setData({ verifiedCards, tags, isLoading: false });
+        setData({ verifiedCards, tags, trapCount, isLoading: false });
       } catch (err) {
         console.error("Failed to fetch community data", err);
         setData(prev => ({ ...prev, isLoading: false }));

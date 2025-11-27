@@ -176,23 +176,7 @@ export default function WalletPage() {
                     </div>
                     
                     <CardContent className="pt-6 space-y-6">
-                      {/* 迎新追蹤 (Mock) */}
-                      {card.welcomeOfferText && (
-                        <div className="space-y-2">
-                            <div className="flex justify-between text-sm">
-                                <span className="font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1">
-                                    <Trophy className="h-3 w-3 text-amber-500" /> 迎新挑戰
-                                </span>
-                                <span className="text-gray-500 text-xs">尚餘 45 天</span>
-                            </div>
-                            <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                                <div className="h-full bg-amber-500 w-[45%] rounded-full"></div>
-                            </div>
-                            <p className="text-xs text-gray-500">{card.welcomeOfferText}</p>
-                        </div>
-                      )}
-
-                      {/* 年費提醒 (Mock) */}
+                      {/* 年費提醒 */}
                       <div className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
                         <Calendar className={`h-5 w-5 mt-0.5 ${feeDate ? "text-blue-600 dark:text-blue-400" : "text-gray-400"}`} />
                         <div>

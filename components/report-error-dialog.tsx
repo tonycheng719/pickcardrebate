@@ -173,7 +173,7 @@ export function ReportErrorDialog({
             <RadioGroup 
                 value={reportType} 
                 onValueChange={setReportType} 
-                className="grid grid-cols-3 gap-2"
+                className="grid grid-cols-4 gap-2"
             >
                 <div>
                     <RadioGroupItem value="error" id="type-error" className="peer sr-only" />
@@ -203,6 +203,16 @@ export function ReportErrorDialog({
                     >
                         <Lightbulb className="mb-1 h-5 w-5 text-blue-500" />
                         <span className="text-xs font-medium">新發現</span>
+                    </Label>
+                </div>
+                <div>
+                    <RadioGroupItem value="trap" id="type-trap" className="peer sr-only" />
+                    <Label
+                        htmlFor="type-trap"
+                        className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-orange-500 peer-data-[state=checked]:bg-orange-50 dark:peer-data-[state=checked]:bg-orange-900/20 cursor-pointer transition-all"
+                    >
+                        <AlertTriangle className="mb-1 h-5 w-5 text-orange-500" />
+                        <span className="text-xs font-medium">中伏警報</span>
                     </Label>
                 </div>
             </RadioGroup>

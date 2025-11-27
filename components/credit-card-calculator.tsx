@@ -16,7 +16,7 @@ import { CATEGORIES } from "@/lib/data/categories";
 import { HK_CARDS } from "@/lib/data/cards";
 import { findBestCards, CalculationResult } from "@/lib/logic/calculator";
 import { useWallet } from "@/lib/store/wallet-context";
-import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle, Lightbulb, Store, Globe, ChevronDown, ChevronUp, BadgeCheck, Tag } from "lucide-react";
+import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle, Lightbulb, Store, Globe, ChevronDown, ChevronUp, BadgeCheck, Tag, AlertTriangle } from "lucide-react";
 import { DynamicIcon } from "@/components/dynamic-icon";
 import { useDataset } from "@/lib/admin/data-store";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -92,7 +92,7 @@ export function CreditCardCalculator({
   const amountInputRef = useRef<HTMLInputElement>(null);
 
   // Community Data Hook
-  const { verifiedCards, tags, isLoading: isCommunityLoading } = useMerchantCommunityData(selectedMerchantId);
+  const { verifiedCards, tags, isLoading: isCommunityLoading, trapCount } = useMerchantCommunityData(selectedMerchantId);
 
   // Reset online scenario when payment method changes, but only if switching TO ambiguous method
   // If switching FROM ambiguous TO explicit (e.g. "online"), we can auto-set.
@@ -497,7 +497,12 @@ export function CreditCardCalculator({
                 </label>
                 {/* Community Tags Display */}
                 {tags.length > 0 && (
-                    <div className="flex gap-1.5">
+                    <div className="flex gap-1.5 items-center">
+                        {trapCount > 0 && (
+                            <span className="text-[10px] px-1.5 py-0.5 bg-orange-100 text-orange-700 rounded-full border border-orange-200 flex items-center gap-0.5 font-medium animate-pulse" title="有中伏報告，請小心">
+                                <AlertTriangle className="w-2.5 h-2.5" /> 中伏警報 ({trapCount})
+                            </span>
+                        )}
                         {tags.slice(0, 3).map(tag => (
                             <span key={tag} className="text-[10px] px-1.5 py-0.5 bg-emerald-50 text-emerald-600 rounded-full border border-emerald-100 flex items-center gap-0.5">
                                 <Tag className="w-2.5 h-2.5" /> {tag}
