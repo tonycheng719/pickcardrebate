@@ -149,7 +149,7 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
     try {
         // Set a timeout to avoid hanging forever
         const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error("Timeout")), 5000)
+            setTimeout(() => reject(new Error("Timeout")), 10000)
         );
 
         // 1. Cards
