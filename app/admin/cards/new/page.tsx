@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ImageUpload } from "@/components/ui/image-upload";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAdminDataStore } from "@/lib/admin/data-store";
 import type { CreditCard, RewardRule } from "@/lib/types";
@@ -234,14 +235,26 @@ export default function AdminNewCardPage() {
           </div>
 
           <div>
-            <label className="text-xs font-medium text-gray-500 dark:text-gray-400">卡面圖片連結 (Image URL)</label>
-            <Input
-              type="url"
+            <ImageUpload
+              label="卡面圖片"
               value={form.imageUrl}
-              onChange={(e) => handleChange("imageUrl", e.target.value)}
-              className="mt-1 dark:bg-gray-700 dark:border-gray-600"
-              placeholder="https://..."
+              onChange={(url) => handleChange("imageUrl", url)}
+              onRemove={() => handleChange("imageUrl", "")}
+              bucket="images"
+              folder="cards"
+              recommendedSize="300x190px (比例約 1.6:1)"
             />
+            {/* URL Fallback (Hidden or secondary) - keeping it for manual entry if needed, but maybe not */}
+            <div className="mt-2">
+                <label className="text-xs font-medium text-gray-500 dark:text-gray-400">或直接輸入圖片連結 (URL)</label>
+                <Input
+                type="url"
+                value={form.imageUrl}
+                onChange={(e) => handleChange("imageUrl", e.target.value)}
+                className="mt-1 dark:bg-gray-700 dark:border-gray-600"
+                placeholder="https://..."
+                />
+            </div>
           </div>
 
           <div>

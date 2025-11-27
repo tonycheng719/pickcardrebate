@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ImageUpload } from "@/components/ui/image-upload";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAdminDataStore } from "@/lib/admin/data-store";
 import { CATEGORIES } from "@/lib/data/categories";
@@ -145,13 +146,24 @@ export default function AdminMerchantsPage() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs text-gray-500 dark:text-gray-400">圖示/Emoji</label>
-                  <Input
-                    className="mt-1 dark:bg-gray-700 dark:border-gray-600"
+                  <ImageUpload
+                    label="Logo / 圖示 (建議上傳透明背景 PNG)"
                     value={form.logo}
-                    onChange={(e) => setForm((prev) => ({ ...prev, logo: e.target.value }))}
-                    placeholder="例：🛒"
+                    onChange={(url) => setForm((prev) => ({ ...prev, logo: url }))}
+                    onRemove={() => setForm((prev) => ({ ...prev, logo: "" }))}
+                    bucket="images"
+                    folder="merchants"
+                    recommendedSize="128x128px 或 256x256px"
                   />
+                  <div className="mt-2">
+                    <label className="text-xs text-gray-500 dark:text-gray-400">或輸入 Emoji</label>
+                    <Input
+                        className="mt-1 dark:bg-gray-700 dark:border-gray-600"
+                        value={form.logo}
+                        onChange={(e) => setForm((prev) => ({ ...prev, logo: e.target.value }))}
+                        placeholder="例：🛒"
+                    />
+                  </div>
                 </div>
                 <div>
                   <label className="text-xs text-gray-500 dark:text-gray-400">品牌色</label>
@@ -224,13 +236,17 @@ export default function AdminMerchantsPage() {
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+                      className="w-10 h-10 rounded-xl flex items-center justify-center text-xl overflow-hidden"
                       style={{
                         backgroundColor: `${merchant.accentColor || "#e5e7eb"}20`,
                         color: merchant.accentColor || "#111827",
                       }}
                     >
-                      {merchant.logo || merchant.name.charAt(0)}
+                      {merchant.logo && merchant.logo.startsWith('http') ? (
+                          <img src={merchant.logo} alt={merchant.name} className="w-full h-full object-contain" />
+                      ) : (
+                          merchant.logo || merchant.name.charAt(0)
+                      )}
                     </div>
                     <div>
                       <div className="font-semibold text-gray-900 dark:text-white">{merchant.name}</div>
