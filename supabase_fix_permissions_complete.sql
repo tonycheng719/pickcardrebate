@@ -31,7 +31,20 @@ ON public.search_logs FOR SELECT
 TO authenticated
 USING (true);
 
--- 5. 修復 admin_audit_logs 權限
+-- 5. 修復 admin_audit_logs 權限 (確保表存在)
+CREATE TABLE IF NOT EXISTS public.admin_audit_logs (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    actor_id UUID REFERENCES auth.users(id),
+    actor_email TEXT,
+    action TEXT NOT NULL,
+    target_type TEXT,
+    target_id TEXT,
+    details JSONB
+);
+
+ALTER TABLE public.admin_audit_logs ENABLE ROW LEVEL SECURITY;
+
 DROP POLICY IF EXISTS "Allow authenticated insert audit logs" ON public.admin_audit_logs;
 CREATE POLICY "Allow authenticated insert audit logs"
 ON public.admin_audit_logs FOR INSERT
