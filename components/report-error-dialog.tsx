@@ -84,25 +84,26 @@ export function ReportErrorDialog({
     const loadingToast = toast.loading("正在提交回報...");
 
     try {
-        const response = await fetch("/api/report", {
+        // Use new API Route for submission to bypass client-side RLS
+        const response = await fetch("/api/report/submit", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                merchant_id: merchantId,
-                merchant_name: merchantName,
-                category_id: categoryId,
+                merchantId,
+                merchantName,
+                categoryId,
                 amount,
-                payment_method: paymentMethod,
-                card_id: cardId,
-                card_name: cardName,
+                paymentMethod,
+                cardId,
+                cardName,
                 description,
-                proposed_reward: proposedReward,
-                user_id: user.id,
-                // New fields
-                report_type: reportType,
-                conditions: conditions,
+                proposedReward,
+                userId: user.id,
+                userEmail: user.email, // Pass email for admin logs
+                reportType,
+                conditions,
             }),
         });
 

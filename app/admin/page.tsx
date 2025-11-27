@@ -20,35 +20,17 @@ export default function AdminDashboard() {
       try {
         setLoading(true);
         
-        // 1. Users Count
-        const { count: usersCount } = await supabase
-          .from("profiles")
-          .select("*", { count: "exact", head: true });
-
-        // 2. Today's Searches
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const { count: searchesCount } = await supabase
-          .from("search_logs")
-          .select("*", { count: "exact", head: true })
-          .gte("created_at", today.toISOString());
-
-        // 3. Cards Count
-        const { count: cardsCount } = await supabase
-          .from("cards")
-          .select("*", { count: "exact", head: true });
-
-        // 4. Pending Reports
-        const { count: reportsCount } = await supabase
-          .from("merchant_reviews")
-          .select("*", { count: "exact", head: true })
-          .eq("status", "pending");
+        // Use Server-side API to bypass client-side RLS issues
+        const res = await fetch('/api/admin/stats');
+        if (!res.ok) throw new Error('Failed to fetch stats');
+        
+        const data = await res.json();
 
         setStats({
-          users: usersCount || 0,
-          todaySearches: searchesCount || 0,
-          cards: cardsCount || 0,
-          pendingReports: reportsCount || 0,
+          users: data.users || 0,
+          todaySearches: data.todaySearches || 0,
+          cards: data.cards || 0,
+          pendingReports: data.reviews || 0, // Assuming pending reviews count
         });
       } catch (error) {
         console.error("Error fetching admin stats:", error);
@@ -58,7 +40,7 @@ export default function AdminDashboard() {
     }
 
     fetchStats();
-  }, [supabase]);
+  }, []); // Removed [supabase] dependency
 
   const statItems = [
     { title: "總註冊會員", value: stats.users.toLocaleString(), icon: Users, change: "Total", color: "text-blue-600" },
