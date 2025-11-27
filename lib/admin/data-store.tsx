@@ -127,6 +127,23 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
   const supabase = createClient();
   const categories = CATEGORIES;
 
+  const logAdminAction = async (action: string, targetType: string, targetId: string, details: any = {}) => {
+    try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) return;
+
+        await supabase.from('admin_audit_logs').insert({
+            admin_email: session.user.email || 'unknown',
+            action,
+            target_type: targetType,
+            target_id: targetId,
+            details
+        });
+    } catch (e) {
+        console.error("Failed to log admin action", e);
+    }
+  };
+
   const refreshData = useCallback(async () => {
     // Removed setIsLoading(true) here to prevent UI flickering if we already have data
     try {
@@ -191,6 +208,12 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
         const { error } = await supabase.from('cards').upsert(mapCardToDB(card));
         if (error) throw error;
         toast.success("卡片已儲存至雲端");
+        logAdminAction(
+            cards.some(c => c.id === card.id) ? "update" : "create",
+            "card",
+            card.id,
+            { name: card.name }
+        );
     } catch (e) {
         console.error(e);
         toast.error("儲存失敗");
@@ -204,6 +227,7 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
         const { error } = await supabase.from('cards').delete().eq('id', id);
         if (error) throw error;
         toast.success("卡片已刪除");
+        logAdminAction("delete", "card", id);
     } catch (e) {
         console.error(e);
         toast.error("刪除失敗");
@@ -223,6 +247,12 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
         const { error } = await supabase.from('merchants').upsert(mapMerchantToDB(merchant));
         if (error) throw error;
         toast.success("商戶已儲存");
+        logAdminAction(
+            merchants.some(m => m.id === merchant.id) ? "update" : "create",
+            "merchant",
+            merchant.id,
+            { name: merchant.name }
+        );
     } catch (e) {
         console.error(e);
         toast.error("儲存失敗");
@@ -235,6 +265,7 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
         const { error } = await supabase.from('merchants').delete().eq('id', id);
         if (error) throw error;
         toast.success("商戶已刪除");
+        logAdminAction("delete", "merchant", id);
     } catch (e) {
         console.error(e);
         toast.error("刪除失敗");
@@ -254,6 +285,12 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
         const { error } = await supabase.from('promos').upsert(mapPromoToDB(promo));
         if (error) throw error;
         toast.success("優惠已儲存");
+        logAdminAction(
+            promos.some(p => p.id === promo.id) ? "update" : "create",
+            "promo",
+            promo.id,
+            { title: promo.title }
+        );
     } catch (e) {
         console.error(e);
         toast.error("儲存失敗");
@@ -266,6 +303,7 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
         const { error } = await supabase.from('promos').delete().eq('id', id);
         if (error) throw error;
         toast.success("優惠已刪除");
+        logAdminAction("delete", "promo", id);
     } catch (e) {
         console.error(e);
         toast.error("刪除失敗");

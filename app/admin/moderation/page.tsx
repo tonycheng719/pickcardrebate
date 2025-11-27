@@ -3,8 +3,8 @@
 import { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, X, Info, Loader2, Trash2, AlertTriangle, Edit, CheckCircle2, Lightbulb, ExternalLink, Filter } from "lucide-react";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Check, X, Info, Loader2, Trash2, AlertTriangle, Edit, CheckCircle2, Lightbulb, ExternalLink, Filter, Plane } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -32,7 +32,7 @@ export default function AdminModerationPage() {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [activeTab, setActiveTab] = useState("pending");
   const router = useRouter();
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
 
   const fetchReports = async () => {
     setLoading(true);
@@ -74,6 +74,23 @@ export default function AdminModerationPage() {
 
   const updateReportStatus = async (id: string, status: "verified" | "rejected") => {
     setReports(prev => prev.map(r => r.id === id ? { ...r, status } : r));
+    
+    // Optimistic update log
+    try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+            await supabase.from('admin_audit_logs').insert({
+                admin_email: session.user.email || 'unknown',
+                action: status === "verified" ? "verify_report" : "reject_report",
+                target_type: "report",
+                target_id: id,
+                details: { status }
+            });
+        }
+    } catch (e) {
+        console.error("Log error", e);
+    }
+
     const { error } = await supabase
       .from("merchant_reviews")
       .update({ status })
@@ -161,6 +178,9 @@ export default function AdminModerationPage() {
       }
       if (type === 'discovery') {
           return <span className="flex items-center gap-1 text-blue-600 bg-blue-50 dark:bg-blue-900/20 px-2 py-0.5 rounded text-xs border border-blue-200 dark:border-blue-800"><Lightbulb className="w-3 h-3" /> 新發現</span>;
+      }
+      if (type === 'miles_error') {
+          return <span className="flex items-center gap-1 text-purple-600 bg-purple-50 dark:bg-purple-900/20 px-2 py-0.5 rounded text-xs border border-purple-200 dark:border-purple-800"><Plane className="w-3 h-3" /> 里數錯誤</span>;
       }
       return <span className="flex items-center gap-1 text-red-600 bg-red-50 dark:bg-red-900/20 px-2 py-0.5 rounded text-xs border border-red-200 dark:border-red-800"><AlertTriangle className="w-3 h-3" /> 計算錯誤</span>;
   };

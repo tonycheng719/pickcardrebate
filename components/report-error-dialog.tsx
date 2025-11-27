@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { CheckCircle2, Flag, AlertTriangle, PartyPopper, Lightbulb } from "lucide-react";
+import { CheckCircle2, Flag, AlertTriangle, PartyPopper, Lightbulb, Plane } from "lucide-react";
 import { toast } from "sonner";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useWallet } from "@/lib/store/wallet-context";
@@ -173,46 +173,56 @@ export function ReportErrorDialog({
             <RadioGroup 
                 value={reportType} 
                 onValueChange={setReportType} 
-                className="grid grid-cols-4 gap-2"
+                className="grid grid-cols-3 sm:grid-cols-5 gap-2"
             >
                 <div>
                     <RadioGroupItem value="error" id="type-error" className="peer sr-only" />
                     <Label
                         htmlFor="type-error"
-                        className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-red-500 peer-data-[state=checked]:bg-red-50 dark:peer-data-[state=checked]:bg-red-900/20 cursor-pointer transition-all"
+                        className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-red-500 peer-data-[state=checked]:bg-red-50 dark:peer-data-[state=checked]:bg-red-900/20 cursor-pointer transition-all h-full"
                     >
                         <AlertTriangle className="mb-1 h-5 w-5 text-red-500" />
-                        <span className="text-xs font-medium">計算錯誤</span>
+                        <span className="text-[10px] text-center font-medium leading-tight">計算錯誤</span>
+                    </Label>
+                </div>
+                <div>
+                    <RadioGroupItem value="miles_error" id="type-miles" className="peer sr-only" />
+                    <Label
+                        htmlFor="type-miles"
+                        className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-purple-500 peer-data-[state=checked]:bg-purple-50 dark:peer-data-[state=checked]:bg-purple-900/20 cursor-pointer transition-all h-full"
+                    >
+                        <Plane className="mb-1 h-5 w-5 text-purple-500" />
+                        <span className="text-[10px] text-center font-medium leading-tight">里數錯誤</span>
                     </Label>
                 </div>
                 <div>
                     <RadioGroupItem value="verification" id="type-verification" className="peer sr-only" />
                     <Label
                         htmlFor="type-verification"
-                        className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-green-500 peer-data-[state=checked]:bg-green-50 dark:peer-data-[state=checked]:bg-green-900/20 cursor-pointer transition-all"
+                        className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-green-500 peer-data-[state=checked]:bg-green-50 dark:peer-data-[state=checked]:bg-green-900/20 cursor-pointer transition-all h-full"
                     >
                         <CheckCircle2 className="mb-1 h-5 w-5 text-green-500" />
-                        <span className="text-xs font-medium">回報成功</span>
+                        <span className="text-[10px] text-center font-medium leading-tight">回報成功</span>
                     </Label>
                 </div>
                 <div>
                     <RadioGroupItem value="discovery" id="type-discovery" className="peer sr-only" />
                     <Label
                         htmlFor="type-discovery"
-                        className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-blue-500 peer-data-[state=checked]:bg-blue-50 dark:peer-data-[state=checked]:bg-blue-900/20 cursor-pointer transition-all"
+                        className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-blue-500 peer-data-[state=checked]:bg-blue-50 dark:peer-data-[state=checked]:bg-blue-900/20 cursor-pointer transition-all h-full"
                     >
                         <Lightbulb className="mb-1 h-5 w-5 text-blue-500" />
-                        <span className="text-xs font-medium">新發現</span>
+                        <span className="text-[10px] text-center font-medium leading-tight">新發現</span>
                     </Label>
                 </div>
                 <div>
                     <RadioGroupItem value="trap" id="type-trap" className="peer sr-only" />
                     <Label
                         htmlFor="type-trap"
-                        className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-orange-500 peer-data-[state=checked]:bg-orange-50 dark:peer-data-[state=checked]:bg-orange-900/20 cursor-pointer transition-all"
+                        className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-orange-500 peer-data-[state=checked]:bg-orange-50 dark:peer-data-[state=checked]:bg-orange-900/20 cursor-pointer transition-all h-full"
                     >
                         <AlertTriangle className="mb-1 h-5 w-5 text-orange-500" />
-                        <span className="text-xs font-medium">中伏警報</span>
+                        <span className="text-[10px] text-center font-medium leading-tight">中伏警報</span>
                     </Label>
                 </div>
             </RadioGroup>
@@ -255,6 +265,7 @@ export function ReportErrorDialog({
                 ref={descriptionRef}
                 placeholder={
                     reportType === 'error' ? "例如：此卡在該商戶只有 0.4% 回贈..." :
+                    reportType === 'miles_error' ? "例如：此卡應該是 $5/里，但顯示為 $6/里..." :
                     reportType === 'verification' ? "例如：剛收到月結單確認有回贈..." :
                     "例如：發現這家店其實可以用 Apple Pay..."
                 }
@@ -267,12 +278,13 @@ export function ReportErrorDialog({
         {/* Proposed Reward Input */}
         <div className="grid gap-2">
             <Label htmlFor="proposed">
-                {reportType === 'error' ? '正確回贈 % (選填)' : '實際回贈 % (選填)'}
+                {reportType === 'miles_error' ? '正確里數兌換率 (如 $5/里) (選填)' : 
+                 reportType === 'error' ? '正確回贈 % (選填)' : '實際回贈 % (選填)'}
             </Label>
             <Input
                 id="proposed"
                 ref={proposedRef}
-                placeholder="例如：0.4"
+                placeholder={reportType === 'miles_error' ? "例如：5" : "例如：0.4"}
                 type="number"
                 step="0.1"
             />

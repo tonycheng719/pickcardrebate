@@ -320,7 +320,7 @@ export default function AdminNewCardPage() {
 
             <div className="flex items-center justify-between mb-2 mt-4 border-t dark:border-gray-700 pt-4">
                 <label className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                    <Code className="h-4 w-4" /> 進階設定：里數設定 (Reward Config JSON)
+                    <Code className="h-4 w-4" /> 進階設定：里數設定 (JSON 檢視/編輯)
                 </label>
             </div>
             <div className="relative">
@@ -338,7 +338,7 @@ export default function AdminNewCardPage() {
                 )}
             </div>
             <p className="text-xs text-gray-500 mt-1">
-                設定兌換里數的來源及比率。source: 積分單位 (RC/Points), ratio: 多少積分換1里。
+                顯示目前的里數兌換設定 (由 SQL 控制)。如需緊急修改可直接編輯此處 JSON，格式如：<code>{`{"source": "RC", "ratio": 10}`}</code>。
             </p>
           </div>
 

@@ -105,13 +105,28 @@ export function CreditCardCalculator({
             return list.filter(m => 
                 m.name.toLowerCase().includes(q) || 
                 m.aliases.some(a => a.toLowerCase().includes(q))
-            ).slice(0, 12); // Limit results for performance
+            ).map(m => {
+                // Hot-fix: Merge local static config
+                const staticConfig = POPULAR_MERCHANTS.find(pm => pm.id === m.id);
+                if (staticConfig?.isOnlineOnly) {
+                    return { ...m, isOnlineOnly: true };
+                }
+                return m;
+            }).slice(0, 12); // Limit results for performance
         }
 
         if (!selectedCategory || selectedCategory === 'all') return list;
         
         return list
             .filter((m) => m.categoryIds.includes(selectedCategory))
+            .map(m => {
+                // Hot-fix: Merge local static config (like isOnlineOnly) if DB data is stale
+                const staticConfig = POPULAR_MERCHANTS.find(pm => pm.id === m.id);
+                if (staticConfig?.isOnlineOnly) {
+                    return { ...m, isOnlineOnly: true };
+                }
+                return m;
+            })
             .sort((a, b) => {
                 if (a.isGeneral && !b.isGeneral) return 1;
                 if (!a.isGeneral && b.isGeneral) return -1;
