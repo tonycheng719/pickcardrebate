@@ -32,4 +32,16 @@ export const POPULAR_MERCHANTS: Merchant[] = [
   { id: "klook", name: "Klook", categoryIds: ["travel", "online"], aliases: ["klook"], logo: "🎟️", accentColor: "#ff5b00", isOnlineOnly: true },
   { id: "cathay-pacific", name: "國泰航空 Cathay Pacific", categoryIds: ["travel"], aliases: ["cx", "cathay", "國泰", "cathay pacific"], logo: "✈️", accentColor: "#006564", isOnlineOnly: true },
   { id: "hk-express", name: "香港快運 HK Express", categoryIds: ["travel"], aliases: ["uo", "hkexpress", "快運", "hk express"], logo: "✈️", accentColor: "#6a3077", isOnlineOnly: true },
+  
+  // New Online Only Merchants
+  { id: "kkday", name: "KKday", categoryIds: ["travel", "online"], aliases: ["kkday"], logo: "🎫", accentColor: "#22d3ee", isOnlineOnly: true },
+  { id: "trip-com", name: "Trip.com", categoryIds: ["travel", "online"], aliases: ["trip", "携程"], logo: "✈️", accentColor: "#2563eb", isOnlineOnly: true },
+  { id: "agoda", name: "Agoda", categoryIds: ["travel", "online"], aliases: ["agoda"], logo: "🏨", accentColor: "#14b8a6", isOnlineOnly: true },
+  { id: "booking-com", name: "Booking.com", categoryIds: ["travel", "online"], aliases: ["booking", "booking.com"], logo: "🏨", accentColor: "#1d4ed8", isOnlineOnly: true },
+  { id: "uber", name: "Uber", categoryIds: ["transport", "online"], aliases: ["uber", "的士"], logo: "🚗", accentColor: "#000000", isOnlineOnly: true },
+  { id: "netflix", name: "Netflix", categoryIds: ["entertainment", "online"], aliases: ["netflix", "網飛"], logo: "🎬", accentColor: "#dc2626", isOnlineOnly: true },
+  { id: "spotify", name: "Spotify", categoryIds: ["entertainment", "online"], aliases: ["spotify"], logo: "🎵", accentColor: "#16a34a", isOnlineOnly: true },
+  { id: "disney-plus", name: "Disney+", categoryIds: ["entertainment", "online"], aliases: ["disney", "disney+"], logo: "🏰", accentColor: "#2563eb", isOnlineOnly: true },
+  { id: "towngas", name: "Towngas 煤氣", categoryIds: ["utilities"], aliases: ["煤氣", "towngas"], logo: "🔥", accentColor: "#ea580c", isOnlineOnly: true },
+  { id: "wechat-pay-hk", name: "WeChat Pay HK", categoryIds: ["ewallet"], aliases: ["wechat", "微信支付"], logo: "💬", accentColor: "#16a34a", isOnlineOnly: true },
 ];
