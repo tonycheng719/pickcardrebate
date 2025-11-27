@@ -32,6 +32,7 @@ export const HK_CARDS: CreditCard[] = [
     // imageUrl: "https://www.hsbc.com.hk/content/dam/hsbc/hk/images/credit-cards/red-credit-card-en.png",
     rewardTimeline: "獎賞錢即時入賬",
     foreignCurrencyFee: 1.95,
+    rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' },
     rules: [
       { description: "網上簽賬 4%", matchType: "category", matchValue: "online", percentage: 4.0, cap: 12500, capType: "spending" }, // Explicitly spending cap
       { description: "超市簽賬 2%", matchType: "category", matchValue: "supermarket", percentage: 2.0 },
@@ -69,6 +70,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-red-400 to-red-600", textColor: "text-white" },
     rewardTimeline: "獎賞錢即時入賬",
     foreignCurrencyFee: 0,
+    rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' },
     rules: [
       { description: "內地/澳門簽賬 (賞世界) 2.4%", matchType: "base", percentage: 2.4, isForeignCurrency: true },
       { description: "最紅自主獎賞 2.4%", matchType: "category", matchValue: "china", percentage: 2.4 },
@@ -84,6 +86,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-slate-800 to-black", textColor: "text-white" },
     rewardTimeline: "獎賞錢即時入賬",
     foreignCurrencyFee: 1.95,
+    rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' },
     rules: [
       { description: "海外/網上簽賬 2.4%", matchType: "category", matchValue: ["travel", "online"], percentage: 2.4, minSpend: 8000 },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
@@ -184,6 +187,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-neutral-800 to-black", textColor: "text-yellow-400" },
     rewardTimeline: "積分",
     foreignCurrencyFee: 1.95,
+    rewardConfig: { method: 'conversion', ratio: 31.25, currency: 'Points' },
     rules: [
       { description: "餐飲/旅遊 10X (4%)", matchType: "category", matchValue: ["dining", "travel"], percentage: 4.0 },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
@@ -210,6 +214,7 @@ export const HK_CARDS: CreditCard[] = [
     bank: "BOC",
     style: { bgColor: "bg-gradient-to-br from-blue-400 to-blue-600", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
+    rewardConfig: { method: 'conversion', ratio: 16.6666, currency: 'Points' },
     rules: [
       { description: "手機支付/網購 10X (4%)", matchType: "category", matchValue: ["online", "paymentMethod"], percentage: 4.0, cap: 11111, capType: "spending", excludeCategories: ["ewallet"] }, // Exclude Top-up
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
@@ -290,6 +295,7 @@ export const HK_CARDS: CreditCard[] = [
     bank: "Citi",
     style: { bgColor: "bg-gradient-to-r from-blue-400 to-cyan-500", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
+    rewardConfig: { method: 'conversion', ratio: 16.6666, currency: 'Points' },
     rules: [
       { description: "流動支付 5X (2%)", matchType: "paymentMethod", matchValue: ["mobile"], percentage: 2.0, cap: 50000, capType: "spending", excludeCategories: ["ewallet"] }, // Max 50,000 points = $333 or 3333 miles
       { description: "超市/百貨 5X", matchType: "category", matchValue: ["supermarket", "department_store"], percentage: 2.0 },

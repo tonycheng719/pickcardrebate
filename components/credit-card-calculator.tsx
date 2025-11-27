@@ -226,6 +226,7 @@ export function CreditCardCalculator({
       return (
       <div
         className={`rounded-xl border p-3 flex items-center justify-between relative ${isBest ? 'bg-emerald-50 border-emerald-200' : 'bg-white dark:bg-gray-900'}`}
+        title={`Debug: Miles=${result.milesReturn}, Pref=${rewardPreference}, Config=${!!result.card.rewardConfig}`}
       >
         {result.isCapped && (
           <div className="absolute top-2 right-2 text-amber-500" title="已達上限">
