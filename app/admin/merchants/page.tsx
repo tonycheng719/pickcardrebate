@@ -49,6 +49,7 @@ export default function AdminMerchantsPage() {
       accentColor: merchant.accentColor || "#16a34a",
       isOnlineOnly: merchant.isOnlineOnly || false,
     });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const resetForm = () => {

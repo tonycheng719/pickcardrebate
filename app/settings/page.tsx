@@ -31,9 +31,9 @@ export default function SettingsPage() {
     }
   }, [user, router]);
 
-  const handleSave = () => {
+  const handleSave = async () => {
       if (user) {
-          updateProfile({
+          await updateProfile({
               name,
               rewardPreference: preference,
               notifications: {
@@ -42,6 +42,8 @@ export default function SettingsPage() {
                   bills: notifBills
               }
           });
+          // Force refresh or ensure context is updated
+          router.refresh();
           alert("設定已儲存！");
       }
   };
