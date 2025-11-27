@@ -1,55 +1,47 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Trash2, GitCommit, Tag, Calendar } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { History, Plus, Loader2, Trash2 } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 
 interface Changelog {
   id: string;
   version: string;
   release_date: string;
   title: string;
-  content: string;
   type: "feature" | "fix" | "improvement" | "maintenance";
-  created_at: string;
+  content: string;
 }
 
-export default function AdminChangelogPage() {
+export default function ChangelogManagementPage() {
   const [logs, setLogs] = useState<Changelog[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Form State
-  const [formData, setFormData] = useState({
-    version: "",
-    title: "",
-    content: "",
-    type: "feature",
-    date: new Date().toISOString().split('T')[0]
-  });
+  const [version, setVersion] = useState("");
+  const [title, setTitle] = useState("");
+  const [type, setType] = useState<string>("feature");
+  const [content, setContent] = useState("");
+  const [releaseDate, setReleaseDate] = useState(new Date().toISOString().split('T')[0]);
 
   const fetchLogs = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-      const res = await fetch("/api/admin/changelog");
-      if (!res.ok) throw new Error("Failed to fetch logs");
-      const data = await res.json();
-      setLogs(data);
+      const response = await fetch("/api/changelog");
+      if (response.ok) {
+        const data = await response.json();
+        setLogs(data);
+      }
     } catch (error) {
-      console.error(error);
-      toast.error("載入日誌失敗");
+      toast.error("無法載入日誌列表");
     } finally {
       setLoading(false);
     }
@@ -59,199 +51,175 @@ export default function AdminChangelogPage() {
     fetchLogs();
   }, []);
 
-  const handleSubmit = async () => {
-    if (!formData.version || !formData.title) {
-      toast.error("請填寫版本號和標題");
-      return;
-    }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
 
     try {
-      const res = await fetch("/api/admin/changelog", {
+      const response = await fetch("/api/changelog", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          version,
+          title,
+          type,
+          content,
+          releaseDate
+        })
       });
 
-      if (!res.ok) throw new Error("Failed to create log");
+      if (!response.ok) throw new Error("Failed to submit");
 
-      toast.success("已新增更新日誌");
-      setIsDialogOpen(false);
-      setFormData({
-        version: "",
-        title: "",
-        content: "",
-        type: "feature",
-        date: new Date().toISOString().split('T')[0]
-      });
+      toast.success("日誌發佈成功！");
+      // Reset form
+      setVersion("");
+      setTitle("");
+      setContent("");
+      setType("feature");
       fetchLogs();
     } catch (error) {
-      toast.error("新增失敗");
-    }
-  };
-
-  const handleDelete = async (id: string) => {
-    if (!confirm("確定要刪除此日誌嗎？")) return;
-    try {
-      const res = await fetch(`/api/admin/changelog?id=${id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error("Failed to delete");
-      toast.success("已刪除");
-      fetchLogs();
-    } catch (error) {
-      toast.error("刪除失敗");
-    }
-  };
-
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case "feature": return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300";
-      case "fix": return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300";
-      case "improvement": return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300";
-      default: return "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300";
-    }
-  };
-
-  const getTypeText = (type: string) => {
-    switch (type) {
-      case "feature": return "新功能";
-      case "fix": return "修復";
-      case "improvement": return "優化";
-      case "maintenance": return "維護";
-      default: return type;
+      toast.error("發佈失敗");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">系統更新日誌</h1>
-          <p className="text-gray-500 dark:text-gray-400">記錄網站的版本迭代與重要修改。</p>
-        </div>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="gap-2">
-              <Plus className="h-4 w-4" /> 新增日誌
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>新增更新記錄</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4 py-4">
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <History className="w-8 h-8" /> 更新日誌管理
+        </h1>
+        <p className="text-gray-500 dark:text-gray-400">
+          發佈系統更新通知，讓用戶了解最新功能與修復。
+        </p>
+      </div>
+
+      <div className="grid lg:grid-cols-2 gap-6">
+        {/* Editor */}
+        <Card>
+          <CardHeader>
+            <CardTitle>發佈新日誌</CardTitle>
+            <CardDescription>支援 Markdown 語法</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">版本號 (e.g. v1.2.0)</label>
+                  <Label>版本號 (Version)</Label>
                   <Input 
-                    value={formData.version} 
-                    onChange={(e) => setFormData(prev => ({ ...prev, version: e.target.value }))}
                     placeholder="v1.0.0" 
+                    value={version} 
+                    onChange={e => setVersion(e.target.value)} 
+                    required 
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">日期</label>
+                  <Label>發佈日期</Label>
                   <Input 
                     type="date" 
-                    value={formData.date} 
-                    onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
+                    value={releaseDate} 
+                    onChange={e => setReleaseDate(e.target.value)} 
+                    required 
                   />
                 </div>
-              </div>
-              
-              <div className="space-y-2">
-                <label className="text-sm font-medium">標題</label>
-                <Input 
-                  value={formData.title} 
-                  onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                  placeholder="例如：新增里數計算功能" 
-                />
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">類型</label>
-                <Select 
-                    value={formData.type} 
-                    onValueChange={(val) => setFormData(prev => ({ ...prev, type: val as any }))}
-                >
+                <Label>類型 (Type)</Label>
+                <Select value={type} onValueChange={setType}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="feature">新功能 (Feature)</SelectItem>
-                    <SelectItem value="fix">修復 (Fix)</SelectItem>
-                    <SelectItem value="improvement">優化 (Improvement)</SelectItem>
-                    <SelectItem value="maintenance">維護 (Maintenance)</SelectItem>
+                    <SelectItem value="feature">🚀 Feature (新功能)</SelectItem>
+                    <SelectItem value="fix">🐛 Fix (修復)</SelectItem>
+                    <SelectItem value="improvement">✨ Improvement (優化)</SelectItem>
+                    <SelectItem value="maintenance">🔧 Maintenance (維護)</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">詳細內容</label>
-                <Textarea 
-                  value={formData.content} 
-                  onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
-                  placeholder="支援換行..." 
-                  rows={5}
+                <Label>標題 (Title)</Label>
+                <Input 
+                  placeholder="例如：新增深色模式與首頁改版" 
+                  value={title} 
+                  onChange={e => setTitle(e.target.value)} 
+                  required 
                 />
               </div>
 
-              <Button onClick={handleSubmit} className="w-full">發佈</Button>
-            </div>
-          </DialogContent>
-        </Dialog>
-      </div>
+              <div className="space-y-2">
+                <Label>內容 (Content)</Label>
+                <Textarea 
+                  placeholder="使用 Markdown 描述更新詳情...
+- 新增功能 A
+- 修復 Bug B" 
+                  className="min-h-[200px] font-mono text-sm"
+                  value={content}
+                  onChange={e => setContent(e.target.value)}
+                  required
+                />
+              </div>
 
-      <div className="relative border-l-2 border-gray-200 dark:border-gray-700 ml-3 space-y-8 pl-8 py-4">
-        {loading ? (
-            <p className="text-gray-500">載入中...</p>
-        ) : logs.length === 0 ? (
-            <p className="text-gray-500">暫無更新記錄。</p>
-        ) : (
-            logs.map((log) => (
-                <div key={log.id} className="relative">
-                    <span className={`absolute -left-[41px] top-1 h-6 w-6 rounded-full border-4 border-white dark:border-gray-900 flex items-center justify-center ${
-                        log.type === 'feature' ? 'bg-green-500' : 
-                        log.type === 'fix' ? 'bg-red-500' : 'bg-blue-500'
-                    }`}>
-                    </span>
-                    
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
+              <Button type="submit" className="w-full" disabled={isSubmitting}>
+                {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Plus className="mr-2 h-4 w-4" />}
+                發佈更新
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+
+        {/* Preview & History */}
+        <div className="space-y-6">
+          <Card className="bg-gray-50 dark:bg-gray-900 border-dashed">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm text-gray-500">預覽 (Preview)</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="prose prose-sm max-w-none dark:prose-invert bg-white dark:bg-gray-800 p-4 rounded-md border min-h-[100px]">
+                 {content ? <ReactMarkdown>{content}</ReactMarkdown> : <span className="text-gray-400 italic">內容將顯示於此...</span>}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>歷史記錄</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
+                {loading ? (
+                  <div className="text-center py-4 text-gray-500">載入中...</div>
+                ) : logs.length === 0 ? (
+                  <div className="text-center py-4 text-gray-500">暫無記錄</div>
+                ) : (
+                  logs.map(log => (
+                    <div key={log.id} className="p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                      <div className="flex items-center justify-between mb-1">
                         <div className="flex items-center gap-2">
-                            <span className="font-mono text-sm font-bold text-gray-500 dark:text-gray-400">{log.version}</span>
-                            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${getTypeColor(log.type)}`}>
-                                {getTypeText(log.type)}
-                            </span>
+                          <span className="font-bold text-sm">{log.version}</span>
+                          <span className={`text-[10px] px-2 py-0.5 rounded-full ${
+                            log.type === 'feature' ? 'bg-green-100 text-green-700' :
+                            log.type === 'fix' ? 'bg-red-100 text-red-700' :
+                            log.type === 'improvement' ? 'bg-blue-100 text-blue-700' :
+                            'bg-gray-100 text-gray-700'
+                          }`}>
+                            {log.type}
+                          </span>
                         </div>
-                        <span className="text-xs text-gray-400 flex items-center gap-1">
-                            <Calendar className="h-3 w-3" />
-                            {log.release_date}
-                        </span>
+                        <span className="text-xs text-gray-400">{log.release_date}</span>
+                      </div>
+                      <div className="font-medium text-sm truncate">{log.title}</div>
                     </div>
-
-                    <Card className="dark:bg-gray-800 dark:border-gray-700 hover:shadow-md transition-shadow group">
-                        <CardHeader className="py-3 px-4 pb-2 flex flex-row items-center justify-between space-y-0">
-                            <CardTitle className="text-base font-bold text-gray-900 dark:text-white">
-                                {log.title}
-                            </CardTitle>
-                            <Button 
-                                variant="ghost" 
-                                size="icon" 
-                                className="h-8 w-8 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
-                                onClick={() => handleDelete(log.id)}
-                            >
-                                <Trash2 className="h-4 w-4" />
-                            </Button>
-                        </CardHeader>
-                        <CardContent className="px-4 pb-4 pt-0">
-                            <div className="text-sm text-gray-600 dark:text-gray-300 whitespace-pre-wrap leading-relaxed">
-                                {log.content}
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
-            ))
-        )}
+                  ))
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
 }
-

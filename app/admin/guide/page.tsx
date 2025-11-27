@@ -1,12 +1,67 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BadgeCheck, Calculator, Tag, Database, ShieldAlert, Server, HardDrive, GitCommit } from "lucide-react";
+import { BadgeCheck, Calculator, Tag, Database, ShieldAlert, Server, HardDrive, GitCommit, History, ChevronDown } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
+interface Changelog {
+  id: string;
+  version: string;
+  release_date: string;
+  title: string;
+  type: "feature" | "fix" | "improvement" | "maintenance";
+  content: string;
+}
 
 export default function AdminGuidePage() {
+  const [changelogs, setChangelogs] = useState<Changelog[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [isChangelogOpen, setIsChangelogOpen] = useState(true);
+
+  useEffect(() => {
+    const fetchChangelogs = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch("/api/changelog");
+        if (response.ok) {
+          const data = await response.json();
+          setChangelogs(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch changelogs", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchChangelogs();
+  }, []);
+
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case "feature": return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
+      case "fix": return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300";
+      case "improvement": return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300";
+      case "maintenance": return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300";
+      default: return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  const getTypeLabel = (type: string) => {
+    switch (type) {
+      case "feature": return "新功能";
+      case "fix": return "修復";
+      case "improvement": return "優化";
+      case "maintenance": return "維護";
+      default: return type;
+    }
+  };
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-20">
       <div>
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">系統說明書</h1>
         <p className="text-gray-500 dark:text-gray-400">
@@ -14,7 +69,7 @@ export default function AdminGuidePage() {
         </p>
       </div>
 
-      <Tabs defaultValue="architecture" className="w-full">
+      <Tabs defaultValue="changelog" className="w-full">
         <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 h-auto">
           <TabsTrigger value="architecture" className="py-3 gap-2">
             <Server className="w-4 h-4" /> 系統架構
@@ -29,7 +84,7 @@ export default function AdminGuidePage() {
             <Tag className="w-4 h-4" /> 里數設定
           </TabsTrigger>
           <TabsTrigger value="changelog" className="py-3 gap-2">
-            <GitCommit className="w-4 h-4" /> 更新日誌
+            <History className="w-4 h-4" /> 更新日誌
           </TabsTrigger>
         </TabsList>
 
@@ -202,23 +257,57 @@ export default function AdminGuidePage() {
         <TabsContent value="changelog" className="mt-6 space-y-4">
            <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
-                <GitCommit className="w-5 h-5" /> 更新日誌管理
-              </CardTitle>
-              <CardDescription>
-                記錄網站的成長歷程。
-              </CardDescription>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
+                    <History className="w-5 h-5" /> 系統更新日誌 (Changelog)
+                  </CardTitle>
+                  <CardDescription className="mt-1">
+                    記錄 PickCardRebate 的重大更新、修復與改進。
+                  </CardDescription>
+                </div>
+                <Button onClick={() => setIsChangelogOpen(!isChangelogOpen)} variant="outline" size="sm">
+                    {isChangelogOpen ? "收起" : "展開"}
+                </Button>
+              </div>
             </CardHeader>
-            <CardContent className="text-sm space-y-4">
-                <p>
-                    前往 <a href="/admin/changelog" className="text-blue-500 hover:underline font-bold">更新日誌頁面</a> 來發佈新的版本記錄。
-                </p>
-                <ul className="list-disc pl-5 space-y-1 text-gray-600 dark:text-gray-300">
-                    <li><strong>Feature</strong>: 新增功能 (綠色)</li>
-                    <li><strong>Fix</strong>: 錯誤修復 (紅色)</li>
-                    <li><strong>Improvement</strong>: 效能或體驗優化 (藍色)</li>
-                </ul>
-            </CardContent>
+            
+            {isChangelogOpen && (
+              <CardContent className="space-y-8">
+                {loading ? (
+                  <div className="text-center py-8 text-gray-500">載入中...</div>
+                ) : changelogs.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500">暫無更新記錄</div>
+                ) : (
+                  <div className="relative border-l border-gray-200 dark:border-gray-700 ml-3">
+                    {changelogs.map((log) => (
+                      <div key={log.id} className="mb-10 ml-6">
+                        <span className="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
+                          <GitCommit className="w-3 h-3 text-blue-800 dark:text-blue-300" />
+                        </span>
+                        <div className="flex items-center mb-1">
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mr-3">
+                            {log.version}
+                          </h3>
+                          <Badge className={getTypeColor(log.type)}>
+                            {getTypeLabel(log.type)}
+                          </Badge>
+                          <span className="text-sm text-gray-400 ml-auto">
+                            {new Date(log.release_date).toLocaleDateString('zh-HK')}
+                          </span>
+                        </div>
+                        <h4 className="text-md font-medium text-gray-700 dark:text-gray-300 mb-3">
+                          {log.title}
+                        </h4>
+                        <div className="prose prose-sm max-w-none text-gray-500 dark:text-gray-400 dark:prose-invert">
+                          <ReactMarkdown>{log.content}</ReactMarkdown>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            )}
            </Card>
         </TabsContent>
 
