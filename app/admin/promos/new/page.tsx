@@ -13,6 +13,7 @@ type NewPromoForm = {
   title: string;
   merchant: string;
   description: string;
+  content: string;
   expiryDate: string;
   tags: string;
   url: string;
@@ -23,6 +24,7 @@ const DEFAULT_FORM: NewPromoForm = {
   title: "",
   merchant: "",
   description: "",
+  content: "",
   expiryDate: "",
   tags: "",
   url: "",
@@ -51,6 +53,7 @@ export default function AdminNewPromoPage() {
       title: editingPromo.title,
       merchant: editingPromo.merchant,
       description: editingPromo.description,
+      content: editingPromo.content || "",
       expiryDate: editingPromo.expiryDate,
       tags: editingPromo.tags.join(", "),
       url: editingPromo.url || "",
@@ -73,6 +76,7 @@ export default function AdminNewPromoPage() {
       title: form.title,
       merchant: form.merchant,
       description: form.description,
+      content: form.content,
       expiryDate: form.expiryDate,
       relatedCardIds: editingPromo?.relatedCardIds || [], // Keep existing related cards or empty for now
       tags,
@@ -136,14 +140,25 @@ export default function AdminNewPromoPage() {
           </div>
 
           <div>
-            <label className="text-xs font-medium text-gray-500 dark:text-gray-400">優惠描述</label>
+            <label className="text-xs font-medium text-gray-500 dark:text-gray-400">優惠描述 (簡短)</label>
             <textarea
               value={form.description}
               onChange={(e) => handleChange("description", e.target.value)}
               required
               className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white"
-              rows={4}
-              placeholder="輸入詳細優惠內容..."
+              rows={2}
+              placeholder="輸入簡短描述 (用於列表顯示)..."
+            />
+          </div>
+
+          <div>
+            <label className="text-xs font-medium text-gray-500 dark:text-gray-400">詳細內容 (Markdown)</label>
+            <textarea
+              value={form.content}
+              onChange={(e) => handleChange("content", e.target.value)}
+              className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white font-mono"
+              rows={10}
+              placeholder="# 詳細條款與細則&#10;&#10;- 條款 1&#10;- 條款 2"
             />
           </div>
 

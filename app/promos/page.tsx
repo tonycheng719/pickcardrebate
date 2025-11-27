@@ -197,11 +197,11 @@ export default function PromosPage() {
                 <CardFooter className="border-t dark:border-gray-800 pt-4 bg-gray-50/30 dark:bg-gray-800/50 px-5 pb-5 mt-auto">
                     <div className="w-full flex items-center justify-between text-xs">
                         <span className="text-gray-400 dark:text-gray-500">有效期至 {promo.expiryDate}</span>
-                        <a href={promo.url} target="_blank" rel="noopener noreferrer">
+                        <Link href={`/promos/${promo.id}`}>
                             <Button variant="ghost" size="sm" className="text-blue-600 dark:text-blue-400 p-0 h-auto hover:bg-transparent">
                                 詳情 <ExternalLink className="h-3 w-3 ml-1" />
                             </Button>
-                        </a>
+                        </Link>
                     </div>
                 </CardFooter>
                 </Card>

@@ -85,6 +85,7 @@ export interface Promo {
   title: string;
   merchant: string;
   description: string;
+  content?: string; // New: Markdown content for detail page
   imageUrl?: string;
   expiryDate: string;
   relatedCardIds: string[];
