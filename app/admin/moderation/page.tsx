@@ -38,27 +38,13 @@ export default function AdminModerationPage() {
     setLoading(true);
     setErrorMsg(null);
 
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-        setErrorMsg("環境變數未設定 (NEXT_PUBLIC_SUPABASE_URL)");
-        setLoading(false);
-        return;
-    }
-
     try {
-        const fetchPromise = supabase
-            .from("merchant_reviews")
-            .select("*")
-            .order("created_at", { ascending: false });
-        
-        const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error("Request timed out (10s)")), 10000)
-        );
-
-        const result: any = await Promise.race([fetchPromise, timeoutPromise]);
-        const { data, error } = result || {};
-
-        if (error) throw error;
-        setReports((data || []) as Report[]);
+        const response = await fetch("/api/admin/moderation");
+        if (!response.ok) {
+            throw new Error(`API Error: ${response.statusText}`);
+        }
+        const data = await response.json();
+        setReports(data as Report[]);
     } catch (err: any) {
         console.error("Fetch reports exception:", err);
         setErrorMsg(err.message || "載入失敗");
@@ -73,39 +59,30 @@ export default function AdminModerationPage() {
   }, []);
 
   const updateReportStatus = async (id: string, status: "verified" | "rejected") => {
+    // Optimistic update
     setReports(prev => prev.map(r => r.id === id ? { ...r, status } : r));
     
-    // Optimistic update log
     try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
-            await supabase.from('admin_audit_logs').insert({
-                admin_email: session.user.email || 'unknown',
-                action: status === "verified" ? "verify_report" : "reject_report",
-                target_type: "report",
-                target_id: id,
-                details: { status }
-            });
+        const response = await fetch("/api/admin/moderation", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id, status }),
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to update status");
         }
-    } catch (e) {
-        console.error("Log error", e);
-    }
-
-    const { error } = await supabase
-      .from("merchant_reviews")
-      .update({ status })
-      .eq("id", id);
-
-    if (error) {
-      toast.error("更新狀態失敗");
-      fetchReports(); 
-    } else {
-      toast.success(status === "verified" ? "已通過回報" : "已拒絕回報");
-      setSelectedIds(prev => {
-          const newSet = new Set(prev);
-          newSet.delete(id);
-          return newSet;
-      });
+        
+        toast.success(status === "verified" ? "已通過回報" : "已拒絕回報");
+        setSelectedIds(prev => {
+            const newSet = new Set(prev);
+            newSet.delete(id);
+            return newSet;
+        });
+    } catch (error) {
+        console.error("Update error:", error);
+        toast.error("更新狀態失敗，請重試");
+        fetchReports(); // Revert on error
     }
   };
 
@@ -117,32 +94,40 @@ export default function AdminModerationPage() {
       setReports(prev => prev.map(r => ids.includes(r.id) ? { ...r, status } : r));
       setSelectedIds(new Set());
 
-      const { error } = await supabase
-        .from("merchant_reviews")
-        .update({ status })
-        .in("id", ids);
+      try {
+          // Process one by one for now as API handles single update (or could improve API to handle batch)
+          // For simplicity, we'll just loop fetch calls or Promise.all
+          await Promise.all(ids.map(id => 
+             fetch("/api/admin/moderation", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id, status }),
+             })
+          ));
 
-      if (error) {
-          toast.error("批量更新失敗");
+          toast.success(`已批量更新 ${ids.length} 個回報`);
+      } catch (error) {
+          toast.error("批量更新部分失敗");
           fetchReports();
-      } else {
-          toast.success(`已批量${status === "verified" ? "通過" : "拒絕"} ${ids.length} 個回報`);
       }
   };
 
   const deleteReport = async (id: string) => {
       if (!confirm("確定要刪除此回報嗎？")) return;
       setReports(prev => prev.filter(r => r.id !== id));
-      const { error } = await supabase
-        .from("merchant_reviews")
-        .delete()
-        .eq("id", id);
       
-      if (error) {
+      try {
+          const response = await fetch("/api/admin/moderation", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id, action: "delete" }),
+        });
+
+        if (!response.ok) throw new Error("Delete failed");
+        toast.success("已刪除");
+      } catch (error) {
           toast.error("刪除失敗");
           fetchReports();
-      } else {
-          toast.success("已刪除");
       }
   };
 

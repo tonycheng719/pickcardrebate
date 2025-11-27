@@ -26,32 +26,11 @@ export default function AdminAnalyticsPage() {
       setLoading(true);
       setErrorMsg(null);
 
-      if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-          setErrorMsg("環境變數未設定 (NEXT_PUBLIC_SUPABASE_URL)");
-          setLoading(false);
-          return;
-      }
-
       try {
-        // Use Promise.race to enforce a timeout
-        const rpcPromise = supabase.rpc("get_analytics_summary");
-        const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error("連線逾時 (10s) - 請檢查網絡或 Supabase 狀態")), 10000)
-        );
-
-        const { data: rpcData, error } = await Promise.race([rpcPromise, timeoutPromise]) as any;
-        
-        if (error) {
-          console.error("Failed to fetch analytics:", error);
-          setErrorMsg(error.message || "無法獲取數據");
-          return;
-        }
-
-        if (rpcData) {
-             setData(rpcData as AnalyticsSummary);
-        } else {
-             setErrorMsg("回傳數據為空");
-        }
+        const response = await fetch("/api/admin/analytics");
+        if (!response.ok) throw new Error("Failed to fetch analytics");
+        const apiData = await response.json();
+        setData(apiData as AnalyticsSummary);
       } catch (e: any) {
         console.error("Error fetching analytics:", e);
         setErrorMsg(e.message || "未知錯誤");

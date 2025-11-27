@@ -84,65 +84,14 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-      {/* Recent Activity Section */}
-      <div className="grid md:grid-cols-2 gap-8">
-        {/* Popular Searches Table */}
-        <Card className="dark:bg-gray-800 dark:border-gray-700">
-          <CardHeader>
-            <CardTitle className="text-lg dark:text-white">熱門搜尋關鍵字 (24h)</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {[
-                { term: "壽司郎", count: 452, trend: "up" },
-                { term: "日本機票", count: 321, trend: "up" },
-                { term: "Apple Store", count: 289, trend: "down" },
-                { term: "交稅", count: 156, trend: "up" },
-                { term: "AEon", count: 98, trend: "flat" },
-              ].map((item, i) => (
-                <div key={i} className="flex items-center justify-between border-b dark:border-gray-700 pb-2 last:border-0">
-                  <div className="flex items-center gap-3">
-                    <span className="text-sm text-gray-400 w-4">{i + 1}</span>
-                    <span className="font-medium text-gray-900 dark:text-gray-200">{item.term}</span>
-                  </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">{item.count} 次</div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Pending Reports */}
-        <Card className="dark:bg-gray-800 dark:border-gray-700">
-          <CardHeader>
-            <CardTitle className="text-lg dark:text-white">最新用戶回報</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {[
-                { user: "User_882", type: "優惠失效", subject: "HSBC Red 網購", time: "10分鐘前" },
-                { user: "Alex_Chan", type: "新優惠", subject: "麥當勞 x PayMe", time: "1小時前" },
-                { user: "Sarah_L", type: "資料錯誤", subject: "信銀 Motion 上限", time: "3小時前" },
-              ].map((item, i) => (
-                <div key={i} className="flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
-                        item.type === "優惠失效" ? "bg-red-100 text-red-700" : 
-                        item.type === "新優惠" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"
-                      }`}>
-                        {item.type}
-                      </span>
-                      <span className="text-xs text-gray-500">{item.time}</span>
-                    </div>
-                    <p className="font-medium text-sm text-gray-900 dark:text-gray-200">{item.subject}</p>
-                  </div>
-                  <button className="text-sm text-blue-600 hover:underline">審核</button>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+      <div className="mt-8 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-lg p-4">
+          <h3 className="text-blue-800 dark:text-blue-200 font-medium flex items-center gap-2">
+              <AlertCircle className="h-4 w-4" />
+              數據更新說明
+          </h3>
+          <p className="text-sm text-blue-600 dark:text-blue-300 mt-1">
+              上方數據已連接真實資料庫。下方的「熱門搜尋」與「最新回報」詳情請分別前往「數據分析」與「回報審核」頁面查看完整報告。
+          </p>
       </div>
     </div>
   );

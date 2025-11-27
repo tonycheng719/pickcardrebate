@@ -21,22 +21,22 @@ export default function AdminLogsPage() {
   const [keyword, setKeyword] = useState("");
   const supabase = createClient();
 
-  useEffect(() => {
-    const fetchLogs = async () => {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from("admin_audit_logs")
-        .select("*")
-        .order("created_at", { ascending: false })
-        .limit(50);
-      
-      if (!error && data) {
-        setLogs(data as AdminLog[]);
-      }
-      setLoading(false);
-    };
-    fetchLogs();
-  }, [supabase]);
+    useEffect(() => {
+      const fetchLogs = async () => {
+        setLoading(true);
+        try {
+            const response = await fetch("/api/admin/logs");
+            if (!response.ok) throw new Error("Failed to fetch logs");
+            const data = await response.json();
+            setLogs(data as AdminLog[]);
+        } catch (error) {
+            console.error("Logs fetch error:", error);
+        } finally {
+            setLoading(false);
+        }
+      };
+      fetchLogs();
+    }, []);
 
   const filteredLogs = logs.filter(
     (log) =>
