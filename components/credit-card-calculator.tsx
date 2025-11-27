@@ -95,39 +95,6 @@ export function CreditCardCalculator({
   // Community Data Hook
   const { verifiedCards, tags, isLoading: isCommunityLoading, trapCount } = useMerchantCommunityData(selectedMerchantId);
 
-  // Reset online scenario when payment method changes, but only if switching TO ambiguous method
-  // If switching FROM ambiguous TO explicit (e.g. "online"), we can auto-set.
-  useEffect(() => {
-      if (paymentMethod === "online") {
-          setIsOnlineScenario(true);
-      } else if (paymentMethod === "physical_card") {
-          setIsOnlineScenario(false);
-      } else {
-          // For ambiguous methods, reset to false (default to offline/store) unless user changes it
-          // But maybe we want to persist? Let's reset to be safe/clear.
-          setIsOnlineScenario(false);
-      }
-  }, [paymentMethod]);
-
-  // Auto-scroll when category changes
-  const handleCategorySelect = (catId: string) => {
-    setSelectedCategory(catId);
-    setSelectedMerchantId(null);
-    setSearchQuery(""); // Reset search on category change
-    setTimeout(() => {
-      merchantsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 100);
-  };
-
-  // Auto-scroll and focus when merchant changes
-  const handleMerchantSelect = (merchantId: string) => {
-    setSelectedMerchantId(merchantId);
-    setTimeout(() => {
-      inputSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-      amountInputRef.current?.focus();
-    }, 150);
-  };
-
   const filteredMerchants = useMemo(
     () => {
         let list = merchantList;
@@ -159,6 +126,46 @@ export function CreditCardCalculator({
   const selectedMerchant =
     effectiveMerchants.find((m) => m.id === selectedMerchantId) ||
     null; 
+
+  // Reset online scenario when payment method changes, but only if switching TO ambiguous method
+  // If switching FROM ambiguous TO explicit (e.g. "online"), we can auto-set.
+  useEffect(() => {
+      // Priority Check: Is merchant Online Only?
+      if (selectedMerchant?.isOnlineOnly) {
+          setIsOnlineScenario(true);
+          return;
+      }
+
+      if (paymentMethod === "online") {
+          setIsOnlineScenario(true);
+      } else if (paymentMethod === "physical_card") {
+          setIsOnlineScenario(false);
+      } else {
+          // For ambiguous methods, reset to false (default to offline/store) unless user changes it
+          // But maybe we want to persist? Let's reset to be safe/clear.
+          setIsOnlineScenario(false);
+      }
+  }, [paymentMethod, selectedMerchant]); // Add selectedMerchant to dependency
+
+  // Auto-scroll when category changes
+  const handleCategorySelect = (catId: string) => {
+    setSelectedCategory(catId);
+    setSelectedMerchantId(null);
+    setSearchQuery(""); // Reset search on category change
+    setTimeout(() => {
+      merchantsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+  };
+
+  // Auto-scroll and focus when merchant changes
+  const handleMerchantSelect = (merchantId: string) => {
+    setSelectedMerchantId(merchantId);
+    setTimeout(() => {
+      inputSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      amountInputRef.current?.focus();
+    }, 150);
+  };
+
 
   const handleCalculate = () => {
     if (!selectedMerchant || !amount) return;
@@ -580,7 +587,8 @@ export function CreditCardCalculator({
             </div>
 
             {/* Scenario Toggle for Ambiguous Payments */}
-            {AMBIGUOUS_PAYMENT_METHODS.includes(paymentMethod) && (
+            {/* Only show if merchant is NOT online-only AND payment method is ambiguous */}
+            {AMBIGUOUS_PAYMENT_METHODS.includes(paymentMethod) && !selectedMerchant?.isOnlineOnly && (
                 <div className="mt-3 p-3 bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 rounded-xl animate-in fade-in slide-in-from-top-2">
                     <Label className="text-xs text-gray-500 dark:text-gray-400 mb-2 block">
                         請問您的付款場景是？

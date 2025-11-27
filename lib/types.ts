@@ -69,6 +69,7 @@ export interface Merchant {
   logo?: string;
   accentColor?: string;
   isGeneral?: boolean;
+  isOnlineOnly?: boolean;
 }
 
 export interface Category {
