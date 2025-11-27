@@ -73,8 +73,9 @@ export function ReportErrorDialog({
     const description = descriptionRef.current?.value || "";
     const proposedReward = proposedRef.current?.value || "";
 
+    // Validate description for error reports
     if (!description.trim() && reportType !== 'verification') {
-        toast.error("請填寫描述");
+        toast.error("請填寫描述說明情況");
         descriptionRef.current?.focus();
         return;
     }
@@ -293,9 +294,7 @@ export function ReportErrorDialog({
         <div className="pt-2">
             <Button 
                 type="button"
-                onPointerDown={(e) => {
-                    if (!isSubmitting) handleSubmitClick(e as any);
-                }}
+                onClick={handleSubmitClick}
                 disabled={isSubmitting} 
                 className="w-full bg-gray-900 hover:bg-gray-800 text-white dark:bg-white dark:text-black dark:hover:bg-gray-200"
             >
