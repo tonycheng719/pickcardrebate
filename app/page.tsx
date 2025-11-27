@@ -2,6 +2,7 @@
 
 import { Navbar } from "@/components/navbar";
 import { CreditCardCalculator } from "@/components/credit-card-calculator";
+import { TrendingMerchants } from "@/components/trending-merchants";
 import { useWallet } from "@/lib/store/wallet-context";
 import { Zap, ShieldCheck, Gift, Search } from "lucide-react";
 import { motion } from "framer-motion";
@@ -53,6 +54,7 @@ export default function Home() {
 
         <section className="mb-12">
           <CreditCardCalculator showIntro={false} />
+          <TrendingMerchants />
         </section>
 
         <section>
