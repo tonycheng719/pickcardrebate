@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@supabase/supabase-js"; // Import directly to control config
 import { ImagePlus, X, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -27,7 +27,6 @@ export function ImageUpload({
 }: ImageUploadProps) {
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const supabase = createClient();
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -36,11 +35,24 @@ export function ImageUpload({
     try {
       setIsUploading(true);
       
+      // Create a dedicated client for upload that bypasses storage/cookie issues
+      // This fixes "Access to storage is not allowed" errors in strict browsers
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+      
+      const uploadClient = createClient(supabaseUrl, supabaseKey, {
+        auth: {
+          persistSession: false, // CRITICAL: Disable storage persistence
+          autoRefreshToken: false,
+          detectSessionInUrl: false
+        }
+      });
+      
       // Generate a unique file name
       const fileExt = file.name.split('.').pop();
       const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
 
-      const { data, error } = await supabase.storage
+      const { data, error } = await uploadClient.storage
         .from(bucket)
         .upload(fileName, file, {
           cacheControl: '3600',
@@ -52,7 +64,7 @@ export function ImageUpload({
       }
 
       // Get Public URL
-      const { data: { publicUrl } } = supabase.storage
+      const { data: { publicUrl } } = uploadClient.storage
         .from(bucket)
         .getPublicUrl(fileName);
 
