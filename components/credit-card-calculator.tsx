@@ -244,7 +244,8 @@ export function CreditCardCalculator({
   const ResultRow = ({ result, isBest = false }: { result: CalculationResult, isBest?: boolean }) => {
       const isVerified = verifiedCards[result.card.id]?.count > 0;
       const milesText = result.milesReturn ? `$${result.milesReturn.toFixed(1)}/里` : null;
-      
+      const isCashFallback = rewardPreference === 'miles' && !milesText && result.rewardAmount > 0;
+
       return (
       <div
         className={`rounded-xl border p-3 flex items-center justify-between relative ${isBest ? 'bg-emerald-50 border-emerald-200' : 'bg-white dark:bg-gray-900'}`}
@@ -296,9 +297,10 @@ export function CreditCardCalculator({
           )}
         </div>
         <div className="text-right">
-          <div className={`text-lg font-bold ${isBest ? 'text-emerald-700' : 'text-gray-800 dark:text-gray-100'}`}>
-            {milesText || (result.rewardAmount > 0 ? `+$${result.rewardAmount.toFixed(1)}` : `${result.percentage}%`)}
+          <div className={`text-lg font-bold ${isBest ? 'text-emerald-700' : isCashFallback ? 'text-gray-400' : 'text-gray-800 dark:text-gray-100'}`}>
+            {milesText || (result.rewardAmount > 0 ? `+$${result.rewardAmount.toFixed(1)}${isCashFallback ? '' : ''}` : `${result.percentage}%`)}
           </div>
+          {isCashFallback && <div className="text-[10px] text-gray-400">現金回贈</div>}
         </div>
       </div>
   )};
@@ -307,6 +309,7 @@ export function CreditCardCalculator({
     // Check if the best card is verified
     const isBestVerified = best ? verifiedCards[best.card.id]?.count > 0 : false;
     const bestMilesText = best?.milesReturn ? `$${best.milesReturn.toFixed(1)}/里` : null;
+    const isBestCashFallback = best && rewardPreference === 'miles' && !bestMilesText && best.rewardAmount > 0;
 
     return (
     <div className="space-y-4 p-4 pb-8">
@@ -373,9 +376,10 @@ export function CreditCardCalculator({
                 )}
               </div>
               <div className="text-right">
-                <div className="text-3xl font-bold text-emerald-700 tracking-tight">
+                <div className={`text-3xl font-bold ${isBestCashFallback ? 'text-gray-400' : 'text-emerald-700'} tracking-tight`}>
                   {bestMilesText || (best.rewardAmount > 0 ? `+$${best.rewardAmount.toFixed(1)}` : `${best.percentage}%`)}
                 </div>
+                {isBestCashFallback && <div className="text-xs text-gray-400 font-medium mt-1">現金回贈</div>}
                 {best.card.welcomeOfferText && !myCardIds.includes(best.card.id) && (
                   <div className="text-xs text-orange-500 mt-2 font-medium">{best.card.welcomeOfferText}</div>
                 )}
