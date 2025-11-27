@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { adminAuthClient } from "@/lib/supabase/admin-client"; // Use Admin Client for reliable server-side fetching
+import { adminAuthClient } from "@/lib/supabase/admin-client";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -19,6 +19,26 @@ interface PageProps {
   };
 }
 
+// Generate static params for known promos at build time
+export async function generateStaticParams() {
+  const supabase = adminAuthClient;
+  
+  // Get IDs from Supabase
+  const { data: dbPromos } = await supabase
+    .from("promos")
+    .select("id");
+    
+  const dbIds = dbPromos?.map(p => p.id) || [];
+  const localIds = PROMOS.map(p => p.id);
+  
+  // Combine unique IDs
+  const allIds = Array.from(new Set([...dbIds, ...localIds]));
+  
+  return allIds.map((id) => ({
+    id: id,
+  }));
+}
+
 async function getPromo(id: string): Promise<Promo | null> {
   try {
     const supabase = adminAuthClient;
@@ -31,15 +51,11 @@ async function getPromo(id: string): Promise<Promo | null> {
       .single();
 
     if (data) return data as Promo;
-    if (error && error.code !== 'PGRST116') { // PGRST116 is "not found"
-        console.error("Supabase fetch promo error:", error);
-    }
   } catch (e) {
       console.error("getPromo exception:", e);
   }
 
   // Fallback to local data
-  // Note: local data doesn't have 'content', but will render the basic description
   const localPromo = PROMOS.find(p => p.id === id);
   return localPromo || null;
 }
