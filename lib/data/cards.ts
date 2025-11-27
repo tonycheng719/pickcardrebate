@@ -51,6 +51,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-stone-700 to-stone-900", textColor: "text-white" },
     rewardTimeline: "獎賞錢即時入賬",
     foreignCurrencyFee: 1.95,
+    rewardConfig: { method: 'conversion', ratio: 20, currency: 'RC' }, // 1 RC = 20 Miles (Special rate for EveryMile)
     rules: [
       { description: "指定商戶/交通 $2/里 (2.5%)", matchType: "category", matchValue: ["transport", "online", "dining"], percentage: 2.5 },
       { description: "海外簽賬 $2/里 (2.5%)", matchType: "base", percentage: 2.5, isForeignCurrency: true },
@@ -118,6 +119,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-teal-700 to-teal-900", textColor: "text-white" },
     rewardTimeline: "里數自動存入",
     foreignCurrencyFee: 1.95,
+    rewardConfig: { method: 'conversion', ratio: 16.6666, currency: 'AM' },
     rules: [
       { description: "國泰/HK Express 簽賬 $2/里", matchType: "merchant", matchValue: ["cathay", "hkexpress"], percentage: 3.0 },
       { description: "餐飲/外賣/網上 $4/里", matchType: "category", matchValue: ["dining", "online"], percentage: 1.5 },
@@ -303,8 +305,9 @@ export const HK_CARDS: CreditCard[] = [
     bank: "Citi",
     style: { bgColor: "bg-gradient-to-br from-slate-600 to-slate-800", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
+    rewardConfig: { method: 'conversion', ratio: 10, currency: 'Points' },
     rules: [
-      { description: "外幣簽賬 $3/里", matchType: "base", percentage: 3.0, isForeignCurrency: true },
+      { description: "外幣簽賬 $4/里", matchType: "base", percentage: 2.5, isForeignCurrency: true },
       { description: "本地簽賬 $8/里", matchType: "base", percentage: 1.25, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["旅遊", "里數"],
@@ -329,6 +332,7 @@ export const HK_CARDS: CreditCard[] = [
     bank: "Citi",
     style: { bgColor: "bg-gradient-to-br from-gray-700 to-gray-900", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
+    rewardConfig: { method: 'conversion', ratio: 10, currency: 'Points' },
     rules: [
       { description: "海外簽賬 $4/里", matchType: "base", percentage: 2.5, isForeignCurrency: true },
       { description: "本地簽賬 $6/里", matchType: "base", percentage: 1.67, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
@@ -362,9 +366,10 @@ export const HK_CARDS: CreditCard[] = [
     bank: "DBS",
     style: { bgColor: "bg-black", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
+    rewardConfig: { method: 'conversion', ratio: 20.8333, currency: 'DBS$' },
     rules: [
-      { description: "外幣簽賬 $4/里", matchType: "base", percentage: 2.0, isForeignCurrency: true },
-      { description: "本地簽賬 $6/里", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "外幣簽賬 $4/里", matchType: "base", percentage: 1.2, isForeignCurrency: true },
+      { description: "本地簽賬 $6/里", matchType: "base", percentage: 0.8, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["儲里數", "里數神卡"],
     sellingPoints: ["積分無限期", "兌換里數免手續費", "外幣 HK$4/里"],
@@ -422,8 +427,9 @@ export const HK_CARDS: CreditCard[] = [
     bank: "AEON",
     style: { bgColor: "bg-gradient-to-br from-red-600 to-red-800", textColor: "text-white" },
     foreignCurrencyFee: 0,
+    rewardConfig: { method: 'conversion', ratio: 12.5, currency: 'JAL' },
     rules: [
-      { description: "日本簽賬 $6/里", matchType: "base", percentage: 1.5, isForeignCurrency: true },
+      { description: "日本簽賬 $6/里", matchType: "base", percentage: 1.33, isForeignCurrency: true },
       { description: "本地餐飲/海外 $8/里", matchType: "category", matchValue: ["dining"], percentage: 1.0 },
       { description: "基本回饋 $8/里", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] }
     ],
@@ -527,9 +533,10 @@ export const HK_CARDS: CreditCard[] = [
     bank: "Dah Sing",
     style: { bgColor: "bg-gradient-to-br from-blue-800 to-blue-950", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
+    rewardConfig: { method: 'conversion', ratio: 11.1111, currency: 'Avios' },
     rules: [
       { description: "本地簽賬 $6/Avios", matchType: "base", percentage: 1.5, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
-      { description: "海外簽賬 $4/Avios", matchType: "base", percentage: 2.5, isForeignCurrency: true },
+      { description: "海外簽賬 $4/Avios", matchType: "base", percentage: 2.25, isForeignCurrency: true },
     ],
     tags: ["Avios", "英航"],
     sellingPoints: ["本地簽賬 HK$6 = 1 Avios", "生日當天 HK$6 = 2 Avios"],
@@ -668,9 +675,10 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-slate-800", textColor: "text-white" },
     // imageUrl: "https://www.americanexpress.com/content/dam/amex/hk/en/staticassets/card-art/Explorer-Credit-Card/480x304_Explorer_Card_Art_Di_No_Name.png",
     foreignCurrencyFee: 2.0,
+    rewardConfig: { method: 'conversion', ratio: 20, currency: 'Points' },
     rules: [
-      { description: "指定簽賬 $3/里", matchType: "category", matchValue: ["online", "travel", "airline"], percentage: 2.5, excludeCategories: ["ewallet"] }, // Usually excludes
-      { description: "外幣簽賬 $3.6/里", matchType: "base", percentage: 2.0, isForeignCurrency: true },
+      { description: "指定簽賬 $3/里", matchType: "category", matchValue: ["online", "travel", "airline"], percentage: 1.67, excludeCategories: ["ewallet"] }, // Usually excludes
+      { description: "外幣簽賬 $4/里", matchType: "base", percentage: 1.25, isForeignCurrency: true },
       { description: "本地簽賬 $5/里", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["里數", "旅遊保險"],

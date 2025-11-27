@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, X, Info, Loader2, Trash2, AlertTriangle, Edit, CheckCircle2, Lightbulb } from "lucide-react";
+import { Check, X, Info, Loader2, Trash2, AlertTriangle, Edit, CheckCircle2, Lightbulb, ExternalLink, Filter } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 
 interface Report {
   id: string;
@@ -27,6 +29,8 @@ export default function AdminModerationPage() {
   const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [activeTab, setActiveTab] = useState("pending");
   const router = useRouter();
   const supabase = createClient();
 
@@ -80,7 +84,33 @@ export default function AdminModerationPage() {
       fetchReports(); 
     } else {
       toast.success(status === "verified" ? "已通過回報" : "已拒絕回報");
+      setSelectedIds(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(id);
+          return newSet;
+      });
     }
+  };
+
+  const batchUpdateStatus = async (status: "verified" | "rejected") => {
+      if (selectedIds.size === 0) return;
+      const ids = Array.from(selectedIds);
+      
+      // Optimistic update
+      setReports(prev => prev.map(r => ids.includes(r.id) ? { ...r, status } : r));
+      setSelectedIds(new Set());
+
+      const { error } = await supabase
+        .from("merchant_reviews")
+        .update({ status })
+        .in("id", ids);
+
+      if (error) {
+          toast.error("批量更新失敗");
+          fetchReports();
+      } else {
+          toast.success(`已批量${status === "verified" ? "通過" : "拒絕"} ${ids.length} 個回報`);
+      }
   };
 
   const deleteReport = async (id: string) => {
@@ -102,6 +132,26 @@ export default function AdminModerationPage() {
   const handleQuickEdit = (cardId: string) => {
       if (!cardId || cardId === 'unknown') return toast.error("無法辨識卡片 ID");
       router.push(`/admin/cards/new?id=${cardId}`);
+  };
+
+  const toggleSelection = (id: string) => {
+      setSelectedIds(prev => {
+          const newSet = new Set(prev);
+          if (newSet.has(id)) {
+              newSet.delete(id);
+          } else {
+              newSet.add(id);
+          }
+          return newSet;
+      });
+  };
+
+  const toggleAll = (filteredReports: Report[]) => {
+      if (selectedIds.size === filteredReports.length && filteredReports.length > 0) {
+          setSelectedIds(new Set());
+      } else {
+          setSelectedIds(new Set(filteredReports.map(r => r.id)));
+      }
   };
 
   // Helper to render report type badge
@@ -137,6 +187,11 @@ export default function AdminModerationPage() {
   };
 
   const pending = reports.filter((r) => r.status === "pending");
+  
+  const filteredReports = useMemo(() => {
+      if (activeTab === "all") return reports;
+      return reports.filter(r => r.status === activeTab);
+  }, [reports, activeTab]);
 
   if (loading) {
       return (
@@ -159,54 +214,118 @@ export default function AdminModerationPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 pb-20">
+      <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">回報審核 (Community)</h1>
           <p className="text-gray-500 dark:text-gray-400">目前有 {pending.length} 個回報待處理。</p>
         </div>
-        <Button variant="outline" onClick={fetchReports} size="sm">重新整理</Button>
+        <div className="flex gap-2">
+             <Button variant="outline" onClick={fetchReports} size="sm">重新整理</Button>
+        </div>
+      </div>
+
+      <Tabs defaultValue="pending" value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList>
+              <TabsTrigger value="pending" className="relative">
+                  待處理
+                  {pending.length > 0 && <span className="ml-2 bg-red-100 text-red-600 text-[10px] px-1.5 rounded-full">{pending.length}</span>}
+              </TabsTrigger>
+              <TabsTrigger value="verified">已通過</TabsTrigger>
+              <TabsTrigger value="rejected">已拒絕</TabsTrigger>
+              <TabsTrigger value="all">全部</TabsTrigger>
+          </TabsList>
+      </Tabs>
+
+      {/* Batch Actions Bar */}
+      {selectedIds.size > 0 && (
+          <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-lg rounded-full px-6 py-3 flex items-center gap-4 animate-in slide-in-from-bottom-4">
+              <span className="text-sm font-medium">已選取 {selectedIds.size} 個</span>
+              <div className="h-4 w-px bg-gray-200 dark:bg-gray-700" />
+              <div className="flex gap-2">
+                  <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white rounded-full" onClick={() => batchUpdateStatus("verified")}>
+                      <Check className="w-4 h-4 mr-1" /> 通過選取
+                  </Button>
+                  <Button size="sm" variant="destructive" className="rounded-full" onClick={() => batchUpdateStatus("rejected")}>
+                      <X className="w-4 h-4 mr-1" /> 拒絕選取
+                  </Button>
+              </div>
+              <Button variant="ghost" size="icon" className="h-8 w-8 ml-2 rounded-full" onClick={() => setSelectedIds(new Set())}>
+                  <X className="w-4 h-4" />
+              </Button>
+          </div>
+      )}
+
+      <div className="flex items-center mb-2 gap-2">
+          <input 
+              type="checkbox" 
+              className="w-4 h-4 rounded border-gray-300"
+              checked={filteredReports.length > 0 && selectedIds.size === filteredReports.length}
+              onChange={() => toggleAll(filteredReports)}
+          />
+          <span className="text-sm text-gray-500">全選本頁</span>
       </div>
 
       <div className="grid gap-4">
-        {reports.length === 0 ? (
-            <p className="text-center text-gray-500 py-8">目前沒有任何回報。</p>
+        {filteredReports.length === 0 ? (
+            <div className="text-center py-12 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-dashed border-gray-200 dark:border-gray-700">
+                <p className="text-gray-500">此狀態下沒有回報。</p>
+            </div>
         ) : (
-            reports.map((report) => (
-            <Card key={report.id} className="dark:bg-gray-800 dark:border-gray-700">
-                <CardHeader className="flex-row items-start justify-between space-y-0 pb-2">
-                <div>
-                    <div className="flex items-center gap-2 mb-1">
-                        <ReportTypeBadge type={report.report_type} />
-                        <span className="text-xs text-gray-400">{new Date(report.created_at).toLocaleString('zh-HK')}</span>
+            filteredReports.map((report) => (
+            <Card key={report.id} className={`dark:bg-gray-800 dark:border-gray-700 transition-colors ${selectedIds.has(report.id) ? 'ring-2 ring-blue-500 bg-blue-50/50 dark:bg-blue-900/10' : ''}`}>
+                <CardHeader className="flex-row items-start space-y-0 pb-2 gap-4">
+                <div className="pt-1">
+                    <input 
+                        type="checkbox" 
+                        className="w-5 h-5 rounded border-gray-300 cursor-pointer"
+                        checked={selectedIds.has(report.id)}
+                        onChange={() => toggleSelection(report.id)}
+                    />
+                </div>
+                <div className="flex-1">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 mb-1">
+                            <ReportTypeBadge type={report.report_type} />
+                            <span className="text-xs text-gray-400">{new Date(report.created_at).toLocaleString('zh-HK')}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                                report.status === "verified" ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300" :
+                                report.status === "rejected" ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300" :
+                                "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-200"
+                            }`}>
+                                {report.status === "pending" ? "審核中" : report.status === "verified" ? "已通過" : "已拒絕"}
+                            </span>
+                             <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-red-500" onClick={() => deleteReport(report.id)}>
+                                 <Trash2 className="h-4 w-4" />
+                             </Button>
+                        </div>
                     </div>
-                    <CardTitle className="text-lg dark:text-white flex items-center gap-2">
+
+                    <CardTitle className="text-lg dark:text-white flex items-center gap-2 mt-1">
                         {report.merchant_name || "未指定商戶"} 
                     </CardTitle>
                     <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                         卡片: {report.card_id || "未指定"} | 支付: {report.payment_method}
                     </div>
                 </div>
-                <div className="flex items-center gap-2">
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                        report.status === "verified" ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300" :
-                        report.status === "rejected" ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300" :
-                        "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-200"
-                    }`}>
-                        {report.status === "pending" ? "審核中" : report.status === "verified" ? "已通過" : "已拒絕"}
-                    </span>
-                     <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-red-500" onClick={() => deleteReport(report.id)}>
-                         <Trash2 className="h-4 w-4" />
-                     </Button>
-                </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="pl-12 space-y-4">
                 <div className="bg-gray-50 dark:bg-gray-900/50 p-3 rounded-lg text-sm space-y-2">
                      <div className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
                         <Info className="h-4 w-4 text-blue-500 mt-0.5 shrink-0" />
                         <div className="flex-1 whitespace-pre-wrap">
                             <span className="font-semibold">描述/備註:</span> {report.comment}
                             <ConditionTags conditions={report.conditions} />
+                            
+                            {report.evidence_url && (
+                                <div className="mt-2">
+                                    <a href={report.evidence_url} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline text-xs flex items-center gap-1">
+                                        <ExternalLink className="w-3 h-3" /> 查看證據連結/圖片
+                                    </a>
+                                </div>
+                            )}
                         </div>
                     </div>
                     {report.actual_rate != null && (
@@ -217,33 +336,34 @@ export default function AdminModerationPage() {
                 </div>
                 
                 {report.status === "pending" && (
-                    <div className="flex gap-3 pt-2">
+                    <div className="flex gap-3 pt-2 flex-wrap">
                         <Button
                         variant="default"
                         size="sm"
                         className="gap-2 bg-green-600 hover:bg-green-700"
                         onClick={() => updateReportStatus(report.id, "verified")}
                         >
-                        <Check className="h-4 w-4" /> 驗證並通過
+                        <Check className="h-4 w-4" /> 通過
                         </Button>
-                        {report.card_id && report.card_id !== 'unknown' && (
-                            <Button
-                                variant="secondary"
-                                size="sm"
-                                className="gap-2"
-                                onClick={() => handleQuickEdit(report.card_id)}
-                            >
-                                <Edit className="h-4 w-4" /> 編輯卡片規則
-                            </Button>
-                        )}
                         <Button
                         variant="destructive"
                         size="sm"
                         className="gap-2"
                         onClick={() => updateReportStatus(report.id, "rejected")}
                         >
-                        <X className="h-4 w-4" /> 忽略
+                        <X className="h-4 w-4" /> 拒絕
                         </Button>
+
+                        {report.card_id && report.card_id !== 'unknown' && (
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="gap-2 ml-auto"
+                                onClick={() => handleQuickEdit(report.card_id)}
+                            >
+                                <Edit className="h-4 w-4" /> 編輯卡片規則
+                            </Button>
+                        )}
                     </div>
                 )}
                 </CardContent>
