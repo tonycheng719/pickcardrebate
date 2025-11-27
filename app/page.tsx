@@ -4,33 +4,33 @@ import { Navbar } from "@/components/navbar";
 import { CreditCardCalculator } from "@/components/credit-card-calculator";
 import { TrendingMerchants } from "@/components/trending-merchants";
 import { useWallet } from "@/lib/store/wallet-context";
-import { Zap, ShieldCheck, Gift, Search } from "lucide-react";
+import { Zap, ShieldCheck, PieChart, BadgeCheck, Plane } from "lucide-react";
 import { motion } from "framer-motion";
 
 const features = [
   {
     title: "一鍵計算",
-    desc: "輸入商戶金額，即時找出回贈最高的信用卡。",
+    desc: "輸入商戶金額，AI 即時找出全港回贈最高的信用卡。",
     icon: Zap,
     color: "bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400",
   },
   {
-    title: "迎新追蹤",
-    desc: "自動提醒迎新簽賬進度，賺盡每一分獎賞。",
-    icon: Gift,
-    color: "bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400",
+    title: "社群驗證",
+    desc: "全港首創！結合用戶實測數據，回贈真偽一目了然，不再中伏。",
+    icon: BadgeCheck,
+    color: "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400",
   },
   {
-    title: "全港卡庫",
-    desc: "收錄主流信用卡資訊，年費豁免方法一目了然。",
-    icon: Search,
+    title: "智能記賬",
+    desc: "一鍵記錄消費與回贈，自動生成月度報表，理財更輕鬆。",
+    icon: PieChart,
     color: "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400",
   },
   {
-    title: "安心無憂",
-    desc: "無需連結銀行戶口，資料只儲存於您的裝置。",
-    icon: ShieldCheck,
-    color: "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400",
+    title: "里數現金",
+    desc: "無論是現金回贈還是飛行里數，自訂偏好，精準計算每一分價值。",
+    icon: Plane,
+    color: "bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400",
   },
 ];
 
