@@ -29,4 +29,6 @@ export const POPULAR_MERCHANTS: Merchant[] = [
   { id: "alipayhk", name: "AlipayHK", categoryIds: ["ewallet"], aliases: ["支付寶", "alipay"], logo: "💠", accentColor: "#0284c7" },
   { id: "sogo", name: "SOGO 崇光", categoryIds: ["department_store"], aliases: ["sogo", "崇光"], logo: "🛍️", accentColor: "#2563eb" },
   { id: "klook", name: "Klook", categoryIds: ["travel", "online"], aliases: ["klook"], logo: "🎟️", accentColor: "#ff5b00" },
+  { id: "cathay-pacific", name: "國泰航空 Cathay Pacific", categoryIds: ["travel"], aliases: ["cx", "cathay", "國泰", "cathay pacific"], logo: "✈️", accentColor: "#006564" },
+  { id: "hk-express", name: "香港快運 HK Express", categoryIds: ["travel"], aliases: ["uo", "hkexpress", "快運", "hk express"], logo: "✈️", accentColor: "#6a3077" },
 ];

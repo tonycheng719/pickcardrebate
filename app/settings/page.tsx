@@ -92,37 +92,37 @@ export default function SettingsPage() {
                 </CardContent>
             </Card>
 
-            {/* Preferences Section - Hidden as per request
             <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                        <Wallet className="h-5 w-5 text-green-600" /> 消費偏好
+                        <Wallet className="h-5 w-5 text-green-600" /> 回贈偏好
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">首選回饋類型</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">首選顯示單位</label>
                         <div className="grid grid-cols-2 gap-4">
                             <button 
-                                className={`p-4 rounded-xl border-2 flex flex-col items-center gap-2 transition-all ${preference === "cash" ? "border-blue-600 bg-blue-50 text-blue-700" : "border-gray-200 hover:border-gray-300"}`}
+                                className={`p-4 rounded-xl border-2 flex flex-col items-center gap-2 transition-all ${preference === "cash" ? "border-amber-500 bg-amber-50 text-amber-700" : "border-gray-200 hover:border-gray-300 bg-white"}`}
                                 onClick={() => setPreference("cash")}
                             >
                                 <span className="text-2xl">💰</span>
                                 <span className="font-bold">現金回贈</span>
+                                <span className="text-xs text-gray-500">顯示 % 或 $</span>
                             </button>
                             <button 
-                                className={`p-4 rounded-xl border-2 flex flex-col items-center gap-2 transition-all ${preference === "miles" ? "border-blue-600 bg-blue-50 text-blue-700" : "border-gray-200 hover:border-gray-300"}`}
+                                className={`p-4 rounded-xl border-2 flex flex-col items-center gap-2 transition-all ${preference === "miles" ? "border-sky-500 bg-sky-50 text-sky-700" : "border-gray-200 hover:border-gray-300 bg-white"}`}
                                 onClick={() => setPreference("miles")}
                             >
                                 <span className="text-2xl">✈️</span>
                                 <span className="font-bold">飛行里數</span>
+                                <span className="text-xs text-gray-500">顯示 $/里 (低至)</span>
                             </button>
                         </div>
-                        <p className="text-xs text-gray-500 mt-2">這將影響系統推薦信用卡的排序權重。</p>
+                        <p className="text-xs text-gray-500 mt-2">系統將根據此設定優先排序並顯示計算結果。</p>
                     </div>
                 </CardContent>
             </Card>
-            */}
 
             {/* Notifications Section */}
             <Card>
