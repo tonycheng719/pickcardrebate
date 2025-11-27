@@ -91,24 +91,40 @@ export function TrendingMerchants() {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
         {trending.map((item, index) => {
             const details = getMerchantDetails(item.merchant_name);
+            const rank = index + 1;
+            
+            // Rank styling
+            let rankBadgeStyle = "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400";
+            let rankTextStyle = "";
+            
+            if (rank === 1) {
+                rankBadgeStyle = "bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800/50";
+                rankTextStyle = "text-yellow-600 dark:text-yellow-400";
+            } else if (rank === 2) {
+                rankBadgeStyle = "bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700"; // Silver-ish
+                rankTextStyle = "text-slate-600 dark:text-slate-400";
+            } else if (rank === 3) {
+                rankBadgeStyle = "bg-orange-50 text-orange-700 border-orange-100 dark:bg-orange-900/20 dark:text-orange-400 dark:border-orange-800/50"; // Bronze-ish
+                rankTextStyle = "text-orange-600 dark:text-orange-400";
+            }
+
             return (
                 <div 
                     key={item.merchant_name}
-                    className="group relative flex flex-col items-start p-3 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl hover:shadow-md hover:border-orange-200 dark:hover:border-orange-900/50 transition-all cursor-pointer overflow-hidden"
-                    // onClick={() => handleTrendClick(item.merchant_id)} 
-                    // Note: Click handling requires refactoring Calculator to accept props or URL params.
-                    // For MVP, let's just display it.
+                    className="group relative flex flex-col items-start p-3 pl-4 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl hover:shadow-md hover:border-orange-200 dark:hover:border-orange-900/50 transition-all cursor-pointer overflow-hidden"
                 >
-                    <div className="absolute top-0 right-0 px-2 py-1 bg-gray-50 dark:bg-gray-800 text-[10px] font-bold text-gray-400 rounded-bl-lg group-hover:text-orange-500 transition-colors">
-                        #{index + 1}
+                    {/* Rank Badge */}
+                    <div className={`absolute top-0 left-0 px-2 py-1 text-xs font-bold rounded-br-lg border-r border-b ${rankBadgeStyle}`}>
+                        #{rank}
                     </div>
-                    <div className="mb-2 w-8 h-8 rounded-lg bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-sm font-bold text-gray-700 dark:text-gray-300">
+
+                    <div className="mt-6 mb-1 w-10 h-10 rounded-xl bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-lg font-bold text-gray-700 dark:text-gray-300 shadow-sm">
                         {item.merchant_name.charAt(0)}
                     </div>
-                    <div className="font-semibold text-sm text-gray-900 dark:text-gray-100 line-clamp-1">
+                    <div className={`font-bold text-sm line-clamp-1 ${rankTextStyle || "text-gray-900 dark:text-gray-100"}`}>
                         {item.merchant_name}
                     </div>
-                    <div className="flex items-center gap-1 mt-1 text-xs text-gray-500">
+                    <div className="flex items-center gap-1 mt-1 text-xs text-gray-400 font-medium">
                         <TrendingUp className="w-3 h-3" />
                         {item.search_count} 次查詢
                     </div>
