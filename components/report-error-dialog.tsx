@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { CheckCircle2, Flag, AlertTriangle, PartyPopper, Lightbulb, Plane } from "lucide-react";
+import { CheckCircle2, Flag, AlertTriangle, PartyPopper, Lightbulb, Plane, LogIn } from "lucide-react";
 import { toast } from "sonner";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useWallet } from "@/lib/store/wallet-context";
@@ -127,6 +127,24 @@ export function ReportErrorDialog({
           prev.includes(cond) ? prev.filter(c => c !== cond) : [...prev, cond]
       );
   };
+
+  const LoginPromptView = () => (
+    <div className="flex flex-col items-center justify-center py-8 text-center animate-in fade-in zoom-in-95 duration-300">
+        <div className="w-16 h-16 bg-gray-100 text-gray-600 rounded-full flex items-center justify-center mb-4">
+            <LogIn className="h-8 w-8" />
+        </div>
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">請先登入會員</h3>
+        <p className="text-gray-500 mb-6 max-w-xs">
+            為了確保情報的準確性，您需要登入才能提交回報。
+        </p>
+        <Button onClick={() => window.location.href = "/login"} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white mb-3">
+            前往登入
+        </Button>
+        <Button variant="ghost" onClick={() => onOpenChange(false)} className="w-full">
+            取消
+        </Button>
+    </div>
+  );
 
   const SuccessView = () => (
     <div className="flex flex-col items-center justify-center py-8 text-center animate-in fade-in zoom-in-95 duration-300">
@@ -308,7 +326,9 @@ export function ReportErrorDialog({
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-[480px]">
-                {isSuccess ? (
+                {!user ? (
+                    <LoginPromptView />
+                ) : isSuccess ? (
                     <SuccessView />
                 ) : (
                     <>
@@ -331,7 +351,11 @@ export function ReportErrorDialog({
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
         <DrawerContent>
-            {isSuccess ? (
+            {!user ? (
+                <div className="p-4">
+                    <LoginPromptView />
+                </div>
+            ) : isSuccess ? (
                 <div className="p-4">
                     <SuccessView />
                 </div>
