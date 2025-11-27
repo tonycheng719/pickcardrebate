@@ -93,18 +93,18 @@ export function TrendingMerchants() {
             const details = getMerchantDetails(item.merchant_name);
             const rank = index + 1;
             
-            // Rank styling
+            // Rank styling - Stronger colors for better visibility
             let rankBadgeStyle = "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400";
             let rankTextStyle = "";
             
             if (rank === 1) {
-                rankBadgeStyle = "bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800/50";
-                rankTextStyle = "text-yellow-600 dark:text-yellow-400";
+                rankBadgeStyle = "bg-yellow-500 text-white border-yellow-600 shadow-sm"; // Gold
+                rankTextStyle = "text-yellow-700 dark:text-yellow-500";
             } else if (rank === 2) {
-                rankBadgeStyle = "bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700"; // Silver-ish
+                rankBadgeStyle = "bg-slate-400 text-white border-slate-500 shadow-sm"; // Silver
                 rankTextStyle = "text-slate-600 dark:text-slate-400";
             } else if (rank === 3) {
-                rankBadgeStyle = "bg-orange-50 text-orange-700 border-orange-100 dark:bg-orange-900/20 dark:text-orange-400 dark:border-orange-800/50"; // Bronze-ish
+                rankBadgeStyle = "bg-orange-400 text-white border-orange-500 shadow-sm"; // Bronze
                 rankTextStyle = "text-orange-600 dark:text-orange-400";
             }
 
