@@ -29,7 +29,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "HSBC Red Credit Card",
     bank: "HSBC",
     style: { bgColor: "bg-gradient-to-br from-red-500 via-red-600 to-pink-700", textColor: "text-white" },
-    // imageUrl: "https://www.hsbc.com.hk/content/dam/hsbc/hk/images/credit-cards/red-credit-card-en.png",
+    imageUrl: "https://www.hsbc.com.hk/content/dam/hsbc/hk/images/credit-cards/red-credit-card-en.png",
     rewardTimeline: "獎賞錢即時入賬",
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' },
@@ -136,6 +136,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "SC Simply Cash Visa",
     bank: "Standard Chartered",
     style: { bgColor: "bg-gradient-to-br from-blue-500 to-blue-700", textColor: "text-white" },
+    imageUrl: "https://av.sc.com/hk/content/images/hk-simply-cash-visa-card-masthead-400x255.png",
     rewardTimeline: "現金回贈",
     foreignCurrencyFee: 1.95,
     rules: [
@@ -154,6 +155,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "BOC Chill Card",
     bank: "BOC",
     style: { bgColor: "bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500", textColor: "text-white" },
+    imageUrl: "https://www.bochk.com/dam/more/creditcard/chill/chill_card_face.png",
     rewardTimeline: "積分",
     foreignCurrencyFee: 1.95,
     rules: [
@@ -170,6 +172,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "BOC SOGO Visa Signature",
     bank: "BOC",
     style: { bgColor: "bg-gradient-to-br from-blue-700 to-blue-900", textColor: "text-white" },
+    imageUrl: "https://www.bochk.com/dam/more/creditcard/sogo/sogo_visa_signature_card_face.png",
     rewardTimeline: "現金回贈",
     foreignCurrencyFee: 1.95,
     rules: [
@@ -185,6 +188,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "BOC Cheers Visa Infinite",
     bank: "BOC",
     style: { bgColor: "bg-gradient-to-br from-neutral-800 to-black", textColor: "text-yellow-400" },
+    imageUrl: "https://www.bochk.com/dam/more/creditcard/cheers/cheers_visa_infinite_card_face.png",
     rewardTimeline: "積分",
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 31.25, currency: 'Points' },
@@ -200,6 +204,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "BOC 大灣區一卡通",
     bank: "BOC",
     style: { bgColor: "bg-gradient-to-br from-blue-600 to-cyan-600", textColor: "text-white" },
+    imageUrl: "https://www.bochk.com/dam/more/creditcard/gba/gba_diamond_card_face.png",
     foreignCurrencyFee: 0,
     rules: [
       { description: "內地簽賬 4%", matchType: "base", percentage: 4.0, isForeignCurrency: true },
@@ -213,6 +218,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "BOC i-card",
     bank: "BOC",
     style: { bgColor: "bg-gradient-to-br from-blue-400 to-blue-600", textColor: "text-white" },
+    imageUrl: "https://www.bochk.com/dam/more/creditcard/icard/icard_card_face.png",
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 16.6666, currency: 'Points' },
     rules: [
@@ -231,7 +237,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "Hang Seng MMPOWER",
     bank: "Hang Seng",
     style: { bgColor: "bg-gradient-to-br from-purple-600 via-pink-600 to-red-500", textColor: "text-white" },
-    imageUrl: "https://mhgprod.blob.core.windows.net/moneyhero/strapi-uploads/blt01c6ac63487924bd_21cb85603d.png",
+    imageUrl: "https://www.hangseng.com/content/dam/hase/config/personal/credit-cards/mmpower-card/images/mmpower-card-face.png",
     foreignCurrencyFee: 1.95,
     rules: [
       { description: "網上簽賬 5%", matchType: "category", matchValue: "online", percentage: 5.0, minSpend: 5000, cap: 500, capType: "reward", excludeCategories: ["ewallet"] }, // Max $500 +FUN Dollars
@@ -248,6 +254,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "Hang Seng enJoy Card",
     bank: "Hang Seng",
     style: { bgColor: "bg-gradient-to-br from-red-500 to-red-700", textColor: "text-white" },
+    imageUrl: "https://www.hangseng.com/content/dam/hase/config/personal/credit-cards/enjoy-card/images/enjoy-card-face.png",
     foreignCurrencyFee: 1.95,
     rules: [
       { description: "特約食肆 4X (2%)", matchType: "merchant", matchValue: ["mcdonalds", "kfc", "maxims", "pizzahut"], percentage: 2.0 },
@@ -262,6 +269,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "Hang Seng Travel+",
     bank: "Hang Seng",
     style: { bgColor: "bg-gradient-to-br from-sky-500 to-blue-600", textColor: "text-white" },
+    imageUrl: "https://www.hangseng.com/content/dam/hase/config/personal/credit-cards/travel-plus-card/images/travel-plus-card-face.png",
     foreignCurrencyFee: 1.95,
     rules: [
       { description: "外幣簽賬 7%", matchType: "base", percentage: 7.0, minSpend: 6000, isForeignCurrency: true, cap: 500, capType: "reward" },
@@ -280,6 +288,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "Citi Cash Back Card",
     bank: "Citi",
     style: { bgColor: "bg-gradient-to-br from-blue-700 to-blue-900", textColor: "text-white" },
+    imageUrl: "https://www.citibank.com.hk/chinese/credit-cards/images/cash-back-card.png",
     foreignCurrencyFee: 1.95,
     rules: [
       { description: "食肆/酒店 2%", matchType: "category", matchValue: ["dining", "travel"], percentage: 2.0 },
@@ -294,6 +303,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "Citi Rewards Card",
     bank: "Citi",
     style: { bgColor: "bg-gradient-to-r from-blue-400 to-cyan-500", textColor: "text-white" },
+    imageUrl: "https://www.citibank.com.hk/chinese/credit-cards/images/rewards-card.png",
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 16.6666, currency: 'Points' },
     rules: [
@@ -310,6 +320,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "Citi PremierMiles",
     bank: "Citi",
     style: { bgColor: "bg-gradient-to-br from-slate-600 to-slate-800", textColor: "text-white" },
+    imageUrl: "https://www.citibank.com.hk/chinese/credit-cards/images/premiermiles-card.png",
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'Points' },
     rules: [
@@ -324,6 +335,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "Citi 八達通白金卡",
     bank: "Citi",
     style: { bgColor: "bg-gradient-to-br from-orange-400 to-orange-600", textColor: "text-white" },
+    imageUrl: "https://www.citibank.com.hk/chinese/credit-cards/images/octopus-card.png",
     foreignCurrencyFee: 1.95,
     rules: [
       { description: "交通 15% (九巴)", matchType: "merchant", matchValue: ["kmb", "bus"], percentage: 15.0, minSpend: 1500, cap: 300, capType: "reward" },
@@ -337,6 +349,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "Citi Prestige Card",
     bank: "Citi",
     style: { bgColor: "bg-gradient-to-br from-gray-700 to-gray-900", textColor: "text-white" },
+    imageUrl: "https://www.citibank.com.hk/chinese/credit-cards/images/prestige-card.png",
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'Points' },
     rules: [
@@ -355,6 +368,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "DBS Eminent Card",
     bank: "DBS",
     style: { bgColor: "bg-gradient-to-br from-gray-600 to-gray-900", textColor: "text-white" },
+    imageUrl: "https://www.dbs.com.hk/personal/credit-cards/credit-cards/eminent-card/images/card_face_eminent_visa_signature.png",
     foreignCurrencyFee: 1.95,
     rules: [
       { description: "餐飲 5%", matchType: "category", matchValue: "dining", percentage: 5.0, minSpend: 300, cap: 8000, capType: "spending" },
@@ -371,6 +385,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "DBS Black World Mastercard",
     bank: "DBS",
     style: { bgColor: "bg-black", textColor: "text-white" },
+    imageUrl: "https://www.dbs.com.hk/personal/credit-cards/credit-cards/black-card/images/card_face_black_world_master.png",
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 20.8333, currency: 'DBS$' },
     rules: [
@@ -385,6 +400,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "DBS Live Fresh",
     bank: "DBS",
     style: { bgColor: "bg-gradient-to-br from-lime-300 to-lime-500", textColor: "text-black" },
+    imageUrl: "https://www.dbs.com.hk/personal/credit-cards/credit-cards/live-fresh-card/images/card_face_live_fresh.png",
     foreignCurrencyFee: 1.95,
     rules: [
       { description: "自選類別 (網購) 6%", matchType: "category", matchValue: "online", percentage: 6.0, excludeCategories: ["ewallet"], cap: 150, capType: "reward" }, // $150 reward cap for extra 5%
@@ -398,6 +414,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "DBS COMPASS VISA",
     bank: "DBS",
     style: { bgColor: "bg-gradient-to-br from-red-500 to-red-700", textColor: "text-white" },
+    imageUrl: "https://www.dbs.com.hk/personal/credit-cards/credit-cards/compass-visa/images/card_face_compass_visa.png",
     foreignCurrencyFee: 1.95,
     rules: [
       { description: "星期三超市/淘寶 10%", matchType: "category", matchValue: ["supermarket", "online"], percentage: 10.0, validDays: [3] }, // Wednesday (0=Sun, 3=Wed)
@@ -416,7 +433,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "AEON CARD WAKUWAKU",
     bank: "AEON",
     style: { bgColor: "bg-gradient-to-br from-pink-400 to-pink-600", textColor: "text-white" },
-    imageUrl: "https://mhgprod.blob.core.windows.net/moneyhero/strapi-uploads/blt6404429f0179dbba_0bc13b65f2.png", 
+    imageUrl: "https://www.aeon.com.hk/wakuwaku/images/card_face.png",
     foreignCurrencyFee: 1.95,
     rules: [
       { description: "網上簽賬 6%", matchType: "category", matchValue: "online", percentage: 6.0, cap: 300, capType: "reward", excludeCategories: ["ewallet"] }, // $300 reward cap
@@ -432,6 +449,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "AEON Card JAL",
     bank: "AEON",
     style: { bgColor: "bg-gradient-to-br from-red-600 to-red-800", textColor: "text-white" },
+    imageUrl: "https://www.aeon.com.hk/tc/privileges/promotion_images/jal_mastercard_card_face.png",
     foreignCurrencyFee: 0,
     rewardConfig: { method: 'conversion', ratio: 12.5, currency: 'JAL' },
     rules: [
@@ -493,7 +511,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "EarnMORE 銀聯卡",
     bank: "WeWa",
     style: { bgColor: "bg-gradient-to-br from-blue-600 to-indigo-700", textColor: "text-white" },
-    imageUrl: "https://mhgprod.blob.core.windows.net/moneyhero/strapi-uploads/68_01_JNHYA_6_PDHB_9_F53_EJCHWHCTDH_16a90fe0a8.png", 
+    imageUrl: "https://www.primecredit.com/credit-card/images/earnmore_card_face.png",
     rewardTimeline: "現金回贈即時入賬",
     foreignCurrencyFee: 0,
     rules: [
@@ -509,6 +527,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "WeWa 銀聯卡",
     bank: "WeWa",
     style: { bgColor: "bg-gradient-to-br from-yellow-300 to-yellow-500", textColor: "text-black" },
+    imageUrl: "https://www.wewacard.com/images/card_face.png",
     foreignCurrencyFee: 0,
     rules: [
       { description: "旅遊/主題公園/戲院/卡拉OK 4%", matchType: "category", matchValue: ["travel", "entertainment"], percentage: 4.0, cap: 2000, capType: "reward" }, // Cap $2000 per year? Or month? Usually tiered.
@@ -624,6 +643,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "Fubon Titanium Card",
     bank: "Fubon",
     style: { bgColor: "bg-gradient-to-br from-blue-800 to-indigo-900", textColor: "text-white" },
+    imageUrl: "https://www.fubonbank.com.hk/web/html/cc_platinum_card_face.png",
     foreignCurrencyFee: 1.95,
     rules: [
       { description: "日韓台 8% (20X)", matchType: "base", percentage: 8.0, isForeignCurrency: true, minSpend: 2000 },
