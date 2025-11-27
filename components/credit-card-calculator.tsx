@@ -16,7 +16,7 @@ import { CATEGORIES } from "@/lib/data/categories";
 import { HK_CARDS } from "@/lib/data/cards";
 import { findBestCards, CalculationResult } from "@/lib/logic/calculator";
 import { useWallet } from "@/lib/store/wallet-context";
-  import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle, Lightbulb, Store, Globe, ChevronDown, ChevronUp, BadgeCheck, Tag, AlertTriangle, Search } from "lucide-react";
+  import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle, Lightbulb, Store, Globe, ChevronDown, ChevronUp, BadgeCheck, Tag, AlertTriangle, Search, LogIn } from "lucide-react";
 import { DynamicIcon } from "@/components/dynamic-icon";
 import { useDataset } from "@/lib/admin/data-store";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -81,6 +81,7 @@ export function CreditCardCalculator({
   const [results, setResults] = useState<CalculationResult[]>([]);
   const [open, setOpen] = useState(false);
   const [showAllResults, setShowAllResults] = useState(false); // Toggle for showing all results
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false); // New state for login prompt
   
   // Separate state for report dialog
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
@@ -184,6 +185,13 @@ export function CreditCardCalculator({
 
   const handleCalculate = () => {
     if (!selectedMerchant || !amount) return;
+
+    // Require login to calculate
+    if (!user) {
+        setShowLoginPrompt(true);
+        return;
+    }
+
     const res = findBestCards(
       selectedMerchant.name,
       {
@@ -673,6 +681,49 @@ export function CreditCardCalculator({
         cardName={best?.card.name}
         cardId={best?.card.id}
       />
+
+      {/* Login Prompt Dialog for Calculator */}
+      {isDesktop ? (
+          <Dialog open={showLoginPrompt} onOpenChange={setShowLoginPrompt}>
+              <DialogContent className="sm:max-w-[400px]">
+                  <div className="flex flex-col items-center justify-center py-6 text-center">
+                      <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-4">
+                          <LogIn className="h-8 w-8" />
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">查看最抵回贈</h3>
+                      <p className="text-gray-500 mb-6 max-w-xs text-sm">
+                          登入後即可查看 <b>{selectedMerchant?.name}</b> 的最佳信用卡回贈攻略，並記錄您的搜尋歷史。
+                      </p>
+                      <Button onClick={() => window.location.href = "/login"} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white mb-3">
+                          立即登入
+                      </Button>
+                      <Button variant="ghost" onClick={() => setShowLoginPrompt(false)} className="w-full text-gray-500">
+                          暫不登入
+                      </Button>
+                  </div>
+              </DialogContent>
+          </Dialog>
+      ) : (
+          <Drawer open={showLoginPrompt} onOpenChange={setShowLoginPrompt}>
+              <DrawerContent>
+                  <div className="p-6 flex flex-col items-center text-center">
+                      <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-4">
+                          <LogIn className="h-8 w-8" />
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">查看最抵回贈</h3>
+                      <p className="text-gray-500 mb-6 max-w-xs text-sm">
+                          登入後即可查看 <b>{selectedMerchant?.name}</b> 的最佳信用卡回贈攻略，並記錄您的搜尋歷史。
+                      </p>
+                      <Button onClick={() => window.location.href = "/login"} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white mb-3 h-12 text-lg">
+                          立即登入
+                      </Button>
+                      <Button variant="ghost" onClick={() => setShowLoginPrompt(false)} className="w-full text-gray-500 h-12">
+                          暫不登入
+                      </Button>
+                  </div>
+              </DrawerContent>
+          </Drawer>
+      )}
     </div>
   );
 }
