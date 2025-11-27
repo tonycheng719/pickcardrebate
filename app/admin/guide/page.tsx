@@ -197,7 +197,7 @@ export default function AdminGuidePage() {
   "source": "RC",
   "ratio": 10
 }`}</pre>
-                    <p className="text-gray-500 mt-4 mb-2">// 範例：Citi Prestige (12 Points = 1 Mile -> Ratio = 1/12 = 0.0833)</p>
+                    <p className="text-gray-500 mt-4 mb-2">// 範例：Citi Prestige (12 Points = 1 Mile -&gt; Ratio = 1/12 = 0.0833)</p>
                     <pre>{`{
   "source": "Points",
   "ratio": 0.0833
