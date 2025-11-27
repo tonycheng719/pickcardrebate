@@ -19,7 +19,7 @@ export function useMerchantCommunityData(merchantId: string | null) {
 
   useEffect(() => {
     if (!merchantId) {
-      setData({ verifiedCards: {}, tags: [], isLoading: false });
+      setData({ verifiedCards: {}, tags: [], trapCount: 0, isLoading: false });
       return;
     }
 
