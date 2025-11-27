@@ -59,9 +59,6 @@ export function ReportErrorDialog({
   }, [open]);
 
   const handleSubmitClick = async (e: React.MouseEvent) => {
-    e.preventDefault(); 
-    e.stopPropagation();
-
     if (!user) {
         toast.error("請先登入會員", {
             description: "您需要登入才能提交回報。",
@@ -78,6 +75,7 @@ export function ReportErrorDialog({
 
     if (!description.trim() && reportType !== 'verification') {
         toast.error("請填寫描述");
+        descriptionRef.current?.focus();
         return;
     }
 
@@ -131,6 +129,11 @@ export function ReportErrorDialog({
 
   const SuccessView = () => (
     <div className="flex flex-col items-center justify-center py-8 text-center animate-in fade-in zoom-in-95 duration-300">
+        {/* Hidden Title/Desc for Accessibility when in Success View */}
+        <div className="sr-only">
+            <DialogTitle>回報提交成功</DialogTitle>
+            <DialogDescription>您的回報已成功提交。</DialogDescription>
+        </div>
         <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4">
             <CheckCircle2 className="h-8 w-8" />
         </div>
@@ -268,7 +271,9 @@ export function ReportErrorDialog({
         <div className="pt-2">
             <Button 
                 type="button"
-                onClick={handleSubmitClick} 
+                onPointerDown={(e) => {
+                    if (!isSubmitting) handleSubmitClick(e as any);
+                }}
                 disabled={isSubmitting} 
                 className="w-full bg-gray-900 hover:bg-gray-800 text-white dark:bg-white dark:text-black dark:hover:bg-gray-200"
             >
