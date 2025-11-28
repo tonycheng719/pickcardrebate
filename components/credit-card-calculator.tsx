@@ -308,65 +308,76 @@ export function CreditCardCalculator({
             <AlertCircle className="w-3 h-3" />
           </div>
         )}
-        <div>
-          <p className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-              {result.card.name}
-              {isBest && <span className="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full font-bold">最抵</span>}
-          </p>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{result.matchedRule.description}</p>
-          
-          {/* Mini Condition Tags */}
-          <div className="flex flex-wrap gap-1 mt-1">
-              {isVerified && (
-                <span className="text-[10px] text-green-600 bg-green-50 px-1 rounded border border-green-100 flex items-center gap-0.5">
-                    <BadgeCheck className="w-3 h-3" /> 社群驗證
-                </span>
-              )}
-              {result.matchedRule.validDays && (
-                <span className="text-[10px] text-blue-500 bg-blue-50 px-1 rounded">
-                    僅限 {result.matchedRule.validDays.map(d => DAYS_MAP[d]).join("/")}
-                </span>
-              )}
-               {result.matchedRule.cap && (
-                 <span className="text-[10px] text-gray-400">
-                   (上限 {result.matchedRule.capType === 'spending' ? '簽' : '回'} ${result.matchedRule.cap})
-                 </span>
-               )}
-          </div>
-
-          {/* Date Suggestion */}
-           {result.dateSuggestion && (
-               <div className="text-[10px] text-blue-500 mt-1 flex items-center gap-1">
-                   <Lightbulb className="w-3 h-3" />
-                   {result.dateSuggestion.validDays.map(d => DAYS_MAP[d]).join("/")} 可享 {result.dateSuggestion.newPercentage}%
-               </div>
-           )}
-
-          {/* Action Buttons Row */}
-          <div className="flex items-center gap-2 mt-2">
-            {myCardIds.includes(result.card.id) && (
-                <span className="text-xs text-emerald-500 inline-flex items-center gap-1">
-                <CreditCard className="h-3 w-3" /> 你已持有
-                </span>
+        <div className="flex items-center gap-3">
+            {/* Card Image for Row */}
+            {result.card.imageUrl ? (
+                <div className="w-12 h-8 rounded border bg-white flex items-center justify-center overflow-hidden shrink-0">
+                    <img src={result.card.imageUrl} alt={result.card.name} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
+                </div>
+            ) : (
+                <div className={`w-12 h-8 rounded border ${result.card.style?.bgColor || 'bg-gray-500'} shrink-0`}></div>
             )}
-            <button 
-                className={`text-xs border rounded px-2 py-0.5 flex items-center gap-1 transition-colors ${
-                    isRecorded 
-                    ? "bg-gray-100 text-gray-500 border-gray-200 cursor-default" 
-                    : "bg-white hover:bg-gray-50 text-gray-600 border-gray-200"
-                }`}
-                onClick={(e) => {
-                    e.stopPropagation();
-                    if (!isRecorded && !isRecording) handleRecordTransaction(result);
-                }}
-                disabled={isRecorded || isRecording}
-            >
-                {isRecording ? <Loader2 className="w-3 h-3 animate-spin" /> : isRecorded ? <CheckCircle2 className="w-3 h-3" /> : <PlusCircle className="w-3 h-3" />}
-                {isRecorded ? "已記錄" : "記賬"}
-            </button>
-          </div>
 
+            <div>
+            <p className="font-semibold text-gray-900 dark:text-white flex items-center gap-2 text-sm">
+                {result.card.name}
+                {isBest && <span className="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full font-bold">最抵</span>}
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">{result.matchedRule.description}</p>
+            
+            {/* Mini Condition Tags */}
+            <div className="flex flex-wrap gap-1 mt-1">
+                {isVerified && (
+                    <span className="text-[10px] text-green-600 bg-green-50 px-1 rounded border border-green-100 flex items-center gap-0.5">
+                        <BadgeCheck className="w-3 h-3" /> 社群驗證
+                    </span>
+                )}
+                {result.matchedRule.validDays && (
+                    <span className="text-[10px] text-blue-500 bg-blue-50 px-1 rounded">
+                        僅限 {result.matchedRule.validDays.map(d => DAYS_MAP[d]).join("/")}
+                    </span>
+                )}
+                {result.matchedRule.cap && (
+                    <span className="text-[10px] text-gray-400">
+                    (上限 {result.matchedRule.capType === 'spending' ? '簽' : '回'} ${result.matchedRule.cap})
+                    </span>
+                )}
+            </div>
+
+            {/* Date Suggestion */}
+            {result.dateSuggestion && (
+                <div className="text-[10px] text-blue-500 mt-1 flex items-center gap-1">
+                    <Lightbulb className="w-3 h-3" />
+                    {result.dateSuggestion.validDays.map(d => DAYS_MAP[d]).join("/")} 可享 {result.dateSuggestion.newPercentage}%
+                </div>
+            )}
+
+            {/* Action Buttons Row */}
+            <div className="flex items-center gap-2 mt-2">
+                {myCardIds.includes(result.card.id) && (
+                    <span className="text-xs text-emerald-500 inline-flex items-center gap-1">
+                    <CreditCard className="h-3 w-3" /> 你已持有
+                    </span>
+                )}
+                <button 
+                    className={`text-xs border rounded px-2 py-0.5 flex items-center gap-1 transition-colors ${
+                        isRecorded 
+                        ? "bg-gray-100 text-gray-500 border-gray-200 cursor-default" 
+                        : "bg-white hover:bg-gray-50 text-gray-600 border-gray-200"
+                    }`}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        if (!isRecorded && !isRecording) handleRecordTransaction(result);
+                    }}
+                    disabled={isRecorded || isRecording}
+                >
+                    {isRecording ? <Loader2 className="w-3 h-3 animate-spin" /> : isRecorded ? <CheckCircle2 className="w-3 h-3" /> : <PlusCircle className="w-3 h-3" />}
+                    {isRecorded ? "已記錄" : "記賬"}
+                </button>
+            </div>
+          </div>
         </div>
+        
         <div className="text-right">
           <div className={`text-lg font-bold ${isBest ? 'text-emerald-700' : isCashFallback ? 'text-gray-400' : 'text-gray-800 dark:text-gray-100'}`}>
             {milesText || (result.rewardAmount > 0 ? `+$${result.rewardAmount.toFixed(1)}${isCashFallback ? '' : ''}` : `${result.percentage}%`)}
@@ -409,18 +420,28 @@ export function CreditCardCalculator({
                 <AlertCircle className="w-3 h-3" /> 已達上限
               </div>
             )}
-            <div className="text-xs uppercase text-emerald-600 font-bold mb-1 flex justify-between">
+            <div className="text-xs uppercase text-emerald-600 font-bold mb-2 flex justify-between">
                 <span>全場最抵</span>
                 {!myCardIds.includes(best.card.id) && <span className="text-orange-500">你未持有</span>}
             </div>
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-sm text-gray-500">{best.card.bank}</p>
-                <h3 className="text-lg font-bold flex items-center gap-1">
+            
+            <div className="flex items-start justify-between gap-3">
+              {/* Card Image for Hero */}
+              {best.card.imageUrl ? (
+                <div className="w-16 h-10 rounded border bg-white flex items-center justify-center overflow-hidden shrink-0 shadow-sm">
+                    <img src={best.card.imageUrl} alt={best.card.name} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
+                </div>
+              ) : (
+                <div className={`w-16 h-10 rounded border ${best.card.style?.bgColor || 'bg-gray-500'} shrink-0 shadow-sm`}></div>
+              )}
+
+              <div className="flex-1 min-w-0">
+                <p className="text-xs text-gray-500">{best.card.bank}</p>
+                <h3 className="text-lg font-bold flex items-center gap-1 leading-tight">
                     {best.card.name}
-                    {isBestVerified && <BadgeCheck className="w-4 h-4 text-green-600" />}
+                    {isBestVerified && <BadgeCheck className="w-4 h-4 text-green-600 shrink-0" />}
                 </h3>
-                <p className="text-sm text-gray-500">{best.matchedRule.description}</p>
+                <p className="text-sm text-gray-600 mt-0.5">{best.matchedRule.description}</p>
                 
                 {/* Condition & Cap Tags */}
                 <div className="flex flex-wrap gap-1 mt-2">
@@ -443,7 +464,7 @@ export function CreditCardCalculator({
                    )}
                 </div>
 
-                <div className="flex flex-col items-start gap-2 mt-2">
+                <div className="flex flex-col items-start gap-2 mt-3">
                     {myCardIds.includes(best.card.id) && (
                     <span className="inline-flex items-center gap-1 text-xs text-emerald-600 font-medium">
                         <CheckCircle2 className="h-3 w-3" /> 你已持有，用這張！
@@ -463,13 +484,14 @@ export function CreditCardCalculator({
                     </Button>
                 </div>
               </div>
-              <div className="text-right">
+
+              <div className="text-right shrink-0">
                 <div className={`text-3xl font-bold ${isBestCashFallback ? 'text-gray-400' : 'text-emerald-700'} tracking-tight`}>
                   {bestMilesText || (best.rewardAmount > 0 ? `+$${best.rewardAmount.toFixed(1)}` : `${best.percentage}%`)}
                 </div>
                 {isBestCashFallback && <div className="text-xs text-gray-400 font-medium mt-1">現金回贈</div>}
                 {best.card.welcomeOfferText && !myCardIds.includes(best.card.id) && (
-                  <div className="text-xs text-orange-500 mt-2 font-medium">{best.card.welcomeOfferText}</div>
+                  <div className="text-xs text-orange-500 mt-2 font-medium max-w-[80px] ml-auto">{best.card.welcomeOfferText}</div>
                 )}
               </div>
             </div>

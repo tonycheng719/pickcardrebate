@@ -123,7 +123,7 @@ function WalletCard({ card, feeDate }: { card: CreditCard, feeDate?: string }) {
     const [imageError, setImageError] = useState(false);
 
     return (
-        <Card className="h-full hover:shadow-md transition-all active:scale-[0.98] border-0 ring-1 ring-gray-200 dark:ring-gray-700 dark:bg-gray-800 overflow-hidden group">
+        <Card className="h-full hover:shadow-md transition-all active:scale-[0.98] border-0 ring-1 ring-gray-200 dark:ring-gray-700 dark:bg-gray-800 overflow-hidden group flex flex-col">
             <div className={`h-32 relative overflow-hidden flex items-center justify-center ${!card.imageUrl || imageError ? (card.style?.bgColor || 'bg-gray-500') + ' p-4' : 'bg-gray-50 dark:bg-gray-900'}`}>
                 {card.imageUrl && !imageError ? (
                     <img 
@@ -158,9 +158,15 @@ function WalletCard({ card, feeDate }: { card: CreditCard, feeDate?: string }) {
                 )}
             </div>
             
-            <CardContent className="pt-6 space-y-6">
+            <CardContent className="pt-4 space-y-4 flex-1 flex flex-col">
+                {/* Card Name & Bank Display - Always Visible */}
+                <div>
+                    <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{card.bank}</div>
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white leading-tight">{card.name}</h3>
+                </div>
+
                 {/* 年費提醒 */}
-                <div className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+                <div className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl mt-auto">
                 <Calendar className={`h-5 w-5 mt-0.5 ${feeDate ? "text-blue-600 dark:text-blue-400" : "text-gray-400"}`} />
                 <div>
                     <div className="text-sm font-medium text-blue-900 dark:text-blue-200">年費到期日</div>
