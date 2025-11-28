@@ -13,8 +13,7 @@ export default function AuthSuccessPage() {
 
   useEffect(() => {
     const handleAuthSuccess = async () => {
-      if (!user || isRedirecting) return;
-
+      if (isRedirecting) return;
       setIsRedirecting(true);
 
       // 1. Ensure profile exists in DB (fix missing member issue) via API
@@ -29,21 +28,29 @@ export default function AuthSuccessPage() {
       toast.success("歡迎回來！");
       setTimeout(() => {
         window.location.href = "/";
-      }, 500); // Small delay for toast to show
+      }, 500); 
     };
 
     if (user) {
         handleAuthSuccess();
     } else {
-        // Check for error in URL
-        const params = new URLSearchParams(window.location.search);
-        const error = params.get('error');
-        if (error) {
-            toast.error("登入失敗", { description: params.get('error_description') || "請重試" });
-            setTimeout(() => {
-                 router.push("/login");
-            }, 2000);
-        }
+        // Fallback: If user state doesn't update within 5 seconds, force redirect or login
+        const timeout = setTimeout(() => {
+            if (!user && !isRedirecting) {
+                // Check URL for error
+                const params = new URLSearchParams(window.location.search);
+                if (params.get('error')) {
+                    toast.error("登入失敗", { description: params.get('error_description') || "請重試" });
+                    router.push("/login");
+                } else {
+                    // Maybe session is there but context slow? Or cookie lost?
+                    // Try redirecting home, maybe home will pick it up or show non-logged in state
+                    console.warn("Auth success timeout, redirecting to home...");
+                    window.location.href = "/";
+                }
+            }
+        }, 3000);
+        return () => clearTimeout(timeout);
     }
   }, [user, isRedirecting, router]);
 
@@ -60,10 +67,17 @@ export default function AuthSuccessPage() {
           <Loader2 className="h-4 w-4 animate-spin" />
           正在準備您的錢包...
         </p>
+        
+        {/* Manual Override Button after delay */}
+        <div className="mt-8 opacity-0 animate-in fade-in slide-in-from-bottom-4 fill-mode-forwards" style={{ animationDelay: '3s' }}>
+            <button 
+                onClick={() => window.location.href = "/"}
+                className="text-sm text-gray-400 hover:text-gray-600 underline"
+            >
+                如果太久沒有回應，請點此直接進入
+            </button>
+        </div>
       </div>
     </div>
   );
 }
-
-
-
