@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ensureProfile } from "@/app/actions/ensure-profile";
 import { Loader2 } from "lucide-react";
 
 export default function AuthSuccessPage() {
@@ -10,8 +9,12 @@ export default function AuthSuccessPage() {
 
   useEffect(() => {
     const init = async () => {
-      // 1. Ensure profile exists in DB (fix missing member issue)
-      await ensureProfile();
+      // 1. Ensure profile exists in DB (fix missing member issue) via API
+      try {
+        await fetch("/api/auth/ensure-profile");
+      } catch (e) {
+        console.error("Failed to ensure profile", e);
+      }
 
       // 2. Hard redirect to home to clear Next.js router cache and force fresh state
       // Using window.location.href instead of router.push to ensure full reload
