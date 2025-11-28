@@ -1,19 +1,25 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 
-// Safely get env vars or fallback
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
-
-const supabase = supabaseUrl 
-    ? createClient(supabaseUrl, serviceRoleKey || anonKey, { auth: { persistSession: false } })
-    : null;
+// Safely get env vars with robust fallbacks
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+// Try all possible service role key names
+const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SERVICE_ROLE_KEY;
 
 export async function POST(request: Request) {
-  if (!supabase) {
-      return NextResponse.json({ error: "Internal Server Configuration Error" }, { status: 500 });
+  if (!supabaseUrl || !serviceRoleKey) {
+      console.error("CRITICAL: Missing Supabase Config in Wallet Sync API");
+      return NextResponse.json({ error: "Internal Server Configuration Error: Missing Keys" }, { status: 500 });
   }
+
+  // Always use a fresh client with the service role key for admin-level access
+  const supabase = createClient(supabaseUrl, serviceRoleKey, { 
+      auth: { 
+          persistSession: false,
+          autoRefreshToken: false,
+          detectSessionInUrl: false
+      } 
+  });
 
   try {
     const body = await request.json();
@@ -44,13 +50,15 @@ export async function POST(request: Request) {
         );
         if (error) throw error;
     }
-    else if (action === "batch_add" && cardIds) {
-        const payload = cardIds.map((id: string) => ({ user_id: userId, card_id: id }));
-        const { error } = await supabase.from("user_cards").upsert(
-            payload,
-            { onConflict: "user_id,card_id" }
-        );
-        if (error) throw error;
+    else if (action === "batch_add" && cardIds && Array.isArray(cardIds)) {
+        if (cardIds.length > 0) {
+            const payload = cardIds.map((id: string) => ({ user_id: userId, card_id: id }));
+            const { error } = await supabase.from("user_cards").upsert(
+                payload,
+                { onConflict: "user_id,card_id" }
+            );
+            if (error) throw error;
+        }
     }
 
     return NextResponse.json({ success: true });
