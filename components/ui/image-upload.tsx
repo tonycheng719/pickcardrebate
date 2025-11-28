@@ -35,10 +35,13 @@ export function ImageUpload({
     try {
       setIsUploading(true);
       
-      // Create a dedicated client for upload that bypasses storage/cookie issues
-      // This fixes "Access to storage is not allowed" errors in strict browsers
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+      // Check if env vars are available
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+      if (!supabaseUrl || !supabaseKey) {
+        throw new Error("Missing Supabase Configuration (Public URL or Key). Please check environment variables.");
+      }
       
       const uploadClient = createClient(supabaseUrl, supabaseKey, {
         auth: {
@@ -100,6 +103,7 @@ export function ImageUpload({
             src={value}
             alt="Uploaded image"
             className="w-full h-full object-contain"
+            referrerPolicy="no-referrer"
           />
           <button
             onClick={onRemove}
@@ -136,4 +140,3 @@ export function ImageUpload({
     </div>
   );
 }
-
