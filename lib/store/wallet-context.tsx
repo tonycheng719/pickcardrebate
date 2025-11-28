@@ -291,6 +291,38 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     }
   }, [user, isLoaded, pathname, router]);
 
+  // Handle OAuth code exchange manually if needed (for implicit flow or manual recovery)
+  useEffect(() => {
+    const handleAuthChange = async () => {
+        // Check if we have a code in the URL (OAuth callback)
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code');
+        
+        if (code && !user) {
+            console.log("Detected OAuth code, attempting manual exchange...");
+            try {
+                const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+                if (error) throw error;
+                if (data.session) {
+                    console.log("Manual session exchange successful", data.session.user.email);
+                    await hydrateSupabaseUser(data.session.user);
+                    // Clean up URL
+                    const newUrl = window.location.pathname;
+                    window.history.replaceState({}, document.title, newUrl);
+                    toast.success("登入成功！");
+                }
+            } catch (e) {
+                console.error("Manual auth exchange failed:", e);
+                // Don't show error toast here to avoid double alerts if auto-handling works
+            }
+        }
+    };
+
+    if (isLoaded) {
+        handleAuthChange();
+    }
+  }, [isLoaded, user, supabase, hydrateSupabaseUser]);
+
   useEffect(() => {
     const syncSession = async () => {
       const { data } = await supabase.auth.getSession();
