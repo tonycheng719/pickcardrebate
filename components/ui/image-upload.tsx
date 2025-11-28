@@ -35,44 +35,28 @@ export function ImageUpload({
     try {
       setIsUploading(true);
       
-      // Check if env vars are available
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("bucket", bucket);
+      formData.append("folder", folder);
 
-      if (!supabaseUrl || !supabaseKey) {
-        throw new Error("Missing Supabase Configuration (Public URL or Key). Please check environment variables.");
-      }
-      
-      const uploadClient = createClient(supabaseUrl, supabaseKey, {
-        auth: {
-          persistSession: false, // CRITICAL: Disable storage persistence
-          autoRefreshToken: false,
-          detectSessionInUrl: false
-        }
+      const response = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
       });
-      
-      // Generate a unique file name
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
 
-      const { data, error } = await uploadClient.storage
-        .from(bucket)
-        .upload(fileName, file, {
-          cacheControl: '3600',
-          upsert: false
-        });
+      const result = await response.json();
 
-      if (error) {
-        throw error;
+      if (!response.ok) {
+        throw new Error(result.error || "Upload failed");
       }
 
-      // Get Public URL
-      const { data: { publicUrl } } = uploadClient.storage
-        .from(bucket)
-        .getPublicUrl(fileName);
-
-      onChange(publicUrl);
-      toast.success("圖片上傳成功");
+      if (result.url) {
+        onChange(result.url);
+        toast.success("圖片上傳成功");
+      } else {
+        throw new Error("No URL returned from server");
+      }
     } catch (error: any) {
       console.error("Upload error:", error);
       toast.error(`上傳失敗: ${error.message}`);
