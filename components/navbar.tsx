@@ -63,7 +63,7 @@ export function Navbar() {
               最新優惠
             </Link>
             <Link href="/cards" className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-              所有卡片
+              所有信用卡
             </Link>
           </div>
 
