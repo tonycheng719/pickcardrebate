@@ -203,7 +203,17 @@ export default function WalletPage() {
   const { myCardIds, cardSettings, user } = useWallet();
   const { cards } = useDataset();
   
+  // Debug: Log card IDs
+  console.log("[Wallet Page] myCardIds from context:", myCardIds);
+  console.log("[Wallet Page] Available cards from dataset:", cards.length);
+  
   const myCards = cards.filter((c) => myCardIds.includes(c.id));
+  
+  // Debug: Check if any cards are missing
+  const missingCardIds = myCardIds.filter(id => !cards.find(c => c.id === id));
+  if (missingCardIds.length > 0) {
+    console.warn("[Wallet Page] Missing cards in dataset:", missingCardIds);
+  }
 
   const [transactions, setTransactions] = useState<any[]>([]);
   const [stats, setStats] = useState({ spending: 0, rewards: 0 });

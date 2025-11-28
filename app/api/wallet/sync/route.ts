@@ -40,13 +40,17 @@ export async function GET(request: Request) {
     // Fetch cards
     const { data: cardsData, error: cardsError } = await supabase
       .from("user_cards")
-      .select("card_id")
-      .eq("user_id", userId);
+      .select("card_id, created_at")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: true });
 
     if (cardsError) {
       console.error("Error fetching user cards (Service Role):", cardsError);
       throw cardsError;
     }
+    
+    // Log all card IDs for debugging
+    console.log(`[Wallet API GET] Raw cards from DB for user ${userId}:`, cardsData?.map(c => c.card_id));
 
     // Fetch settings
     const { data: settingsData, error: settingsError } = await supabase
