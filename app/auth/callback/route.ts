@@ -19,6 +19,8 @@ export async function GET(request: Request) {
   const isDev = origin.includes("localhost");
   const targetOrigin = isDev ? origin : "https://pickcardrebate.com";
   
+  console.log("Auth Callback Redirecting to:", `${targetOrigin}/auth/success`, "Origin:", origin);
+
   return NextResponse.redirect(`${targetOrigin}/auth/success`);
 }
 
