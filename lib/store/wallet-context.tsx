@@ -355,6 +355,9 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
         redirectBase = "https://pickcardrebate.com";
     } else if (window.location.hostname.includes("localhost")) {
         redirectBase = "http://localhost:3000"; // Or whatever your local port is
+    } else if (window.location.hostname.includes("zeabur.app")) {
+        // Fallback for Zeabur domain if accessed directly
+        redirectBase = "https://pickcardrebate-web.zeabur.app";
     }
 
     const redirectUrl = `${redirectBase}/auth/callback`;
