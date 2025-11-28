@@ -699,11 +699,7 @@ export const HK_CARDS: CreditCard[] = [
     bank: "建行(亞洲)",
     style: { bgColor: "bg-gradient-to-br from-sky-600 to-blue-800", textColor: "text-white" },
     foreignCurrencyFee: 0,
-    rewardConfig: {
-      type: "miles",
-      milesProgram: "asiamiles",
-      baseConversion: 6,
-    },
+    rewardConfig: { method: 'direct_rate', baseRate: 6, currency: 'AM' }, // $6/mile standard, $1.5/mile overseas
     rules: [
       { description: "海外/內地簽賬 4%", matchType: "category", matchValue: ["foreign"], percentage: 4.0, isForeignCurrency: true },
       { description: "本地餐飲 2%", matchType: "category", matchValue: ["dining"], percentage: 2.0 },
@@ -718,14 +714,10 @@ export const HK_CARDS: CreditCard[] = [
     bank: "東亞銀行",
     style: { bgColor: "bg-gradient-to-br from-slate-800 to-slate-950", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
-    rewardConfig: {
-      type: "miles",
-      milesProgram: "asiamiles",
-      baseConversion: 5,
-    },
+    rewardConfig: { method: 'direct_rate', baseRate: 5, currency: 'Miles' }, // $5/mile
     rules: [
-      { description: "海外簽賬 $5=1里", matchType: "category", matchValue: ["foreign"], percentage: 1.6, isForeignCurrency: true },
-      { description: "本地簽賬 $5=1里", matchType: "base", percentage: 1.6 },
+      { description: "海外簽賬 $5=1里", matchType: "category", matchValue: ["foreign"], percentage: 2.0, isForeignCurrency: true },
+      { description: "本地簽賬 $5=1里", matchType: "base", percentage: 2.0 },
     ],
     tags: ["里數卡", "高端卡"],
     sellingPoints: ["本地及海外簽賬 $5=1里", "機場貴賓室", "旅遊保險"],
