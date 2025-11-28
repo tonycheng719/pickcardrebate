@@ -122,9 +122,14 @@ function CardSettingsDialog({ cardId, cardName, currentFeeDate, children }: { ca
 function WalletCard({ card, feeDate }: { card: CreditCard, feeDate?: string }) {
     const [imageError, setImageError] = useState(false);
 
+    // Reset error state when card or image URL changes
+    useEffect(() => {
+        setImageError(false);
+    }, [card.imageUrl]);
+
     return (
         <Card className="h-full hover:shadow-md transition-all active:scale-[0.98] border-0 ring-1 ring-gray-200 dark:ring-gray-700 dark:bg-gray-800 overflow-hidden group flex flex-col">
-            <div className={`h-32 relative overflow-hidden flex items-center justify-center ${!card.imageUrl || imageError ? (card.style?.bgColor || 'bg-gray-500') + ' p-4' : 'bg-gray-50 dark:bg-gray-900'}`}>
+            <div className={`h-32 relative overflow-hidden flex items-center justify-center ${(!card.imageUrl || imageError) ? (card.style?.bgColor || 'bg-gray-500') + ' p-4' : 'bg-gray-50 dark:bg-gray-900'}`}>
                 {card.imageUrl && !imageError ? (
                     <img 
                         src={card.imageUrl} 
