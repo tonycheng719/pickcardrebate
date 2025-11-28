@@ -16,6 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription as DialogDesc,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
@@ -25,9 +26,9 @@ import { useDataset } from "@/lib/admin/data-store";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { LoginPromptDialog } from "@/components/login-prompt-dialog";
+import { Skeleton } from "@/components/ui/skeleton";
 
 function ReviewsDialog({ card, children }: { card: CreditCard; children: React.ReactNode }) {
-    // ... (existing code)
     const { user } = useWallet();
     const { getReviewsByCardId, addReview } = useReviews();
     const [reviewContent, setReviewContent] = useState("");
@@ -319,8 +320,54 @@ function CardItem({ card }: { card: CreditCard }) {
     );
 }
 
+function CardSkeleton() {
+    return (
+        <div className="flex flex-col h-[500px] rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 overflow-hidden shadow-sm">
+            {/* Image Placeholder */}
+            <div className="h-48 bg-gray-100 dark:bg-gray-900/50 p-4 flex items-center justify-center">
+                <Skeleton className="h-32 w-48 rounded-lg" />
+            </div>
+            
+            {/* Content Placeholder */}
+            <div className="flex-1 p-6 space-y-4">
+                {/* Title & Bank */}
+                <div className="space-y-2 mb-4">
+                    <Skeleton className="h-3 w-20" />
+                    <Skeleton className="h-6 w-40" />
+                </div>
+
+                {/* Tags */}
+                <div className="flex gap-2 mb-4">
+                    <Skeleton className="h-6 w-16 rounded-md" />
+                    <Skeleton className="h-6 w-20 rounded-md" />
+                </div>
+
+                {/* Rules */}
+                <div className="space-y-3 mb-4">
+                    {[1, 2, 3].map(i => (
+                        <div key={i} className="flex justify-between py-1">
+                            <Skeleton className="h-4 w-32" />
+                            <Skeleton className="h-4 w-10" />
+                        </div>
+                    ))}
+                </div>
+
+                {/* Offer */}
+                <Skeleton className="h-24 w-full rounded-xl" />
+                
+                {/* Buttons */}
+                <div className="mt-auto pt-4 flex gap-2">
+                    <Skeleton className="h-10 flex-1 rounded-md" />
+                    <Skeleton className="h-10 w-10 rounded-md" />
+                    <Skeleton className="h-10 w-10 rounded-md" />
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export default function AllCardsPage() {
-    const { cards } = useDataset();
+    const { cards, isLoading } = useDataset();
     const cardList = cards.length ? cards : HK_CARDS;
 
     return (
@@ -333,18 +380,33 @@ export default function AllCardsPage() {
               <p className="text-gray-600 dark:text-gray-400">收錄香港主流信用卡，查看優惠詳情並加入您的錢包。</p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {cardList.map((card, index) => (
-                <motion.div
-                  key={card.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.4 }}
-                >
-                  <CardItem card={card} />
-                </motion.div>
-              ))}
-            </div>
+            {isLoading ? (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {[1, 2, 3, 4, 5, 6].map((i) => (
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: i * 0.05 }}
+                        >
+                            <CardSkeleton />
+                        </motion.div>
+                    ))}
+                </div>
+            ) : (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {cardList.map((card, index) => (
+                    <motion.div
+                      key={card.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1, duration: 0.4 }}
+                    >
+                      <CardItem card={card} />
+                    </motion.div>
+                  ))}
+                </div>
+            )}
           </main>
         </div>
       );

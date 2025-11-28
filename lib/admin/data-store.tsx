@@ -442,5 +442,6 @@ export function useDataset() {
     merchants: context.merchants,
     promos: context.promos,
     categories: context.categories,
+    isLoading: context.isLoading,
   };
 }
