@@ -349,8 +349,16 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   };
 
   const loginWithOAuth = async (provider: "google" | "apple") => {
-    // Use window.location.origin to dynamically get the current domain (localhost or production)
-    const redirectUrl = `${window.location.origin}/auth/callback`;
+    // Force use custom domain if on production to avoid Zeabur/Custom domain mismatch
+    let redirectBase = window.location.origin;
+    if (window.location.hostname.includes("pickcardrebate.com")) {
+        redirectBase = "https://pickcardrebate.com";
+    } else if (window.location.hostname.includes("localhost")) {
+        redirectBase = "http://localhost:3000"; // Or whatever your local port is
+    }
+
+    const redirectUrl = `${redirectBase}/auth/callback`;
+    
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
