@@ -29,6 +29,13 @@ function mapCardToDB(card: CreditCard): any {
 export async function GET(request: Request) {
     try {
         console.log(`Seeding ${HK_CARDS.length} cards...`);
+
+        // Debug Info
+        const keyCheck = process.env.SUPABASE_SERVICE_ROLE_KEY 
+            ? `Present (Starts with ${process.env.SUPABASE_SERVICE_ROLE_KEY.substring(0, 5)}...)`
+            : "Missing";
+            
+        console.log("Checking SUPABASE_SERVICE_ROLE_KEY:", keyCheck);
         
         const payload = HK_CARDS.map(mapCardToDB);
         
@@ -39,7 +46,13 @@ export async function GET(request: Request) {
 
         if (error) {
             console.error('Seed error:', error);
-            return NextResponse.json({ error: error.message }, { status: 500 });
+            return NextResponse.json({ 
+                error: error.message,
+                debug: {
+                    envVarStatus: keyCheck,
+                    hint: "If envVarStatus is Missing or using a placeholder, please set SUPABASE_SERVICE_ROLE_KEY in Zeabur settings."
+                }
+            }, { status: 500 });
         }
 
         return NextResponse.json({ 
@@ -52,4 +65,3 @@ export async function GET(request: Request) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
-
