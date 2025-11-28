@@ -1,75 +1,141 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { useWallet } from "@/lib/store/wallet-context";
+import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 
 export default function AuthSuccessPage() {
   const router = useRouter();
   const { user } = useWallet();
   const [isRedirecting, setIsRedirecting] = useState(false);
+  const [status, setStatus] = useState<"verifying" | "exchanging" | "success" | "error">("verifying");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  useEffect(() => {
-    const handleAuthSuccess = async () => {
-      if (isRedirecting) return;
-      setIsRedirecting(true);
+  const handleCodeExchange = useCallback(async () => {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+    const error = params.get("error");
+    const errorDescription = params.get("error_description");
 
-      // 1. Ensure profile exists in DB (fix missing member issue) via API
+    if (error) {
+      setStatus("error");
+      setErrorMessage(errorDescription || error);
+      toast.error("登入失敗", { description: errorDescription || "請重試" });
+      setTimeout(() => router.push("/login"), 2000);
+      return;
+    }
+
+    if (code) {
+      setStatus("exchanging");
+      console.log("Auth Success: Exchanging code for session...");
+      
       try {
-        await fetch("/api/auth/ensure-profile");
-      } catch (e) {
-        console.error("Failed to ensure profile", e);
+        const supabase = createClient();
+        const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+        
+        if (exchangeError) {
+          console.error("Code exchange error:", exchangeError);
+          throw exchangeError;
+        }
+        
+        if (data.session) {
+          console.log("Session established successfully for:", data.session.user.email);
+          setStatus("success");
+          
+          // Clean up URL
+          window.history.replaceState({}, document.title, window.location.pathname);
+          
+          // Ensure profile exists
+          try {
+            await fetch("/api/auth/ensure-profile");
+          } catch (e) {
+            console.warn("Ensure profile failed, but continuing...", e);
+          }
+          
+          toast.success("登入成功！歡迎回來");
+          
+          // Force full page reload to ensure all contexts pick up the new session
+          setTimeout(() => {
+            window.location.href = "/";
+          }, 800);
+          return;
+        }
+      } catch (e: any) {
+        console.error("Session exchange failed:", e);
+        setStatus("error");
+        setErrorMessage(e.message || "驗證失敗");
+        toast.error("登入驗證失敗", { description: "請重新嘗試登入" });
+        setTimeout(() => router.push("/login"), 2000);
+        return;
       }
-
-      // 2. Hard redirect to home to clear Next.js router cache and force fresh state
-      // Using window.location.href instead of router.push to ensure full reload
+    }
+    
+    // No code in URL, check if already logged in via cookies
+    if (user) {
+      setStatus("success");
       toast.success("歡迎回來！");
       setTimeout(() => {
         window.location.href = "/";
-      }, 500); 
-    };
-
-    if (user) {
-        handleAuthSuccess();
-    } else {
-        // Fallback: If user state doesn't update within 5 seconds, force redirect or login
-        const timeout = setTimeout(() => {
-            if (!user && !isRedirecting) {
-                // Check URL for error
-                const params = new URLSearchParams(window.location.search);
-                if (params.get('error')) {
-                    toast.error("登入失敗", { description: params.get('error_description') || "請重試" });
-                    router.push("/login");
-                } else {
-                    // Maybe session is there but context slow? Or cookie lost?
-                    // Try redirecting home, maybe home will pick it up or show non-logged in state
-                    console.warn("Auth success timeout, redirecting to home...");
-                    window.location.href = "/";
-                }
-            }
-        }, 3000);
-        return () => clearTimeout(timeout);
+      }, 500);
     }
-  }, [user, isRedirecting, router]);
+  }, [router, user]);
+
+  useEffect(() => {
+    // Run once on mount
+    handleCodeExchange();
+  }, [handleCodeExchange]);
+
+  // Timeout fallback
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (status === "verifying" || status === "exchanging") {
+        console.warn("Auth timeout, forcing redirect...");
+        window.location.href = "/";
+      }
+    }, 8000); // 8 second timeout
+
+    return () => clearTimeout(timeout);
+  }, [status]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center gap-4">
         <div className="p-4 bg-white dark:bg-gray-800 rounded-full shadow-lg animate-bounce">
-            <span className="text-4xl">👋</span>
+            <span className="text-4xl">
+              {status === "error" ? "😕" : status === "success" ? "🎉" : "👋"}
+            </span>
         </div>
         <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-            {user ? "登入成功！" : "正在驗證..."}
+            {status === "verifying" && "正在驗證..."}
+            {status === "exchanging" && "正在建立連線..."}
+            {status === "success" && "登入成功！"}
+            {status === "error" && "登入失敗"}
         </h1>
-        <p className="text-gray-500 flex items-center gap-2">
-          <Loader2 className="h-4 w-4 animate-spin" />
-          正在準備您的錢包...
-        </p>
+        
+        {status !== "error" && status !== "success" && (
+          <p className="text-gray-500 flex items-center gap-2">
+            <Loader2 className="h-4 w-4 animate-spin" />
+            正在準備您的錢包...
+          </p>
+        )}
+        
+        {status === "error" && errorMessage && (
+          <p className="text-red-500 text-sm max-w-xs text-center">
+            {errorMessage}
+          </p>
+        )}
+        
+        {status === "success" && (
+          <p className="text-green-600 text-sm">
+            即將跳轉至首頁...
+          </p>
+        )}
         
         {/* Manual Override Button after delay */}
-        <div className="mt-8 opacity-0 animate-in fade-in slide-in-from-bottom-4 fill-mode-forwards" style={{ animationDelay: '3s' }}>
+        <div className="mt-8 opacity-0 animate-in fade-in slide-in-from-bottom-4 fill-mode-forwards" style={{ animationDelay: '4s' }}>
             <button 
                 onClick={() => window.location.href = "/"}
                 className="text-sm text-gray-400 hover:text-gray-600 underline"
