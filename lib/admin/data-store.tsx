@@ -207,9 +207,23 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
     });
 
     try {
-        const { error } = await supabase.from('cards').upsert(mapCardToDB(card));
+        // Use 'image_url' mapping explicitly, ensure it's sent
+        const dbPayload = mapCardToDB(card);
+        console.log("Saving card to DB:", dbPayload); // Debug log
+
+        const { error } = await supabase.from('cards').upsert(dbPayload);
         if (error) throw error;
         toast.success("卡片已儲存至雲端");
+        
+        // Also update local memory state so it reflects immediately
+        setCards(prev => {
+            const idx = prev.findIndex(c => c.id === card.id);
+            if (idx === -1) return [...prev, card];
+            const next = [...prev];
+            next[idx] = card;
+            return next;
+        });
+
         logAdminAction(
             cards.some(c => c.id === card.id) ? "update" : "create",
             "card",

@@ -159,11 +159,15 @@ export default function AdminNewCardPage() {
       welcomeOfferDeadline: form.welcomeOfferDeadline || undefined,
       applyUrl: form.applyUrl,
       sellingPoints,
-      imageUrl: form.imageUrl,
+      imageUrl: form.imageUrl, // Ensure this gets the latest form value
       rewardConfig,
     };
 
-    addOrUpdateCard(nextCard);
+    // Remove undefined values to avoid overwriting with nulls if not intended? 
+    // Actually mapCardToDB handles the payload structure.
+    
+    console.log("Submitting card:", nextCard); // Debug
+    await addOrUpdateCard(nextCard); // Await to ensure completion before redirect
     setIsSubmitting(false);
     router.push("/admin/cards");
   };
