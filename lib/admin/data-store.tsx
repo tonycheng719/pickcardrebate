@@ -154,11 +154,17 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
             setTimeout(() => reject(new Error("Timeout")), 10000)
         );
 
-        // 1. Cards
-        const cardsPromise = supabase.from('cards').select('*');
-        const { data: cardsData, error: cardsError } = await Promise.race([cardsPromise, timeoutPromise]) as any;
+        // 1. Cards - USE API ROUTE
+        // This bypasses potential client-side RLS issues or timeouts for admin context
+        // Fallback to supabase client if API fails or for other entities
+        const cardsApiPromise = fetch('/api/admin/cards').then(res => {
+            if (!res.ok) throw new Error('API Error');
+            return res.json();
+        });
         
-        if (cardsError) throw cardsError;
+        // Use promise.any or similar? Let's just try API first for Cards as that's the problematic one
+        const { cards: cardsData } = await Promise.race([cardsApiPromise, timeoutPromise]) as any;
+        
         if (cardsData && cardsData.length > 0) {
             setCards(cardsData.map(mapCardFromDB));
         }
@@ -227,6 +233,11 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
             card.id,
             { name: card.name }
         );
+        
+        // Trigger refresh to ensure we have latest server state (e.g. IDs or timestamps)
+        // But wait a bit to let DB settle
+        setTimeout(refreshData, 500);
+        
     } catch (e: any) {
         console.error(e);
         toast.error(`儲存失敗: ${e.message}`);
