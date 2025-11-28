@@ -520,6 +520,16 @@ export function CreditCardCalculator({
                 </div>
             )}
 
+            {/* Card Specific Note (e.g. SC Smart tiers) */}
+            {best.card.note && (
+                <div className="mt-2 p-2.5 bg-amber-50 border border-amber-100 rounded-xl flex items-start gap-2">
+                    <Info className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                    <div className="text-[11px] text-amber-800 leading-snug">
+                        {best.card.note}
+                    </div>
+                </div>
+            )}
+
             {!isBestOwned && best.card.applyUrl && (
               <Button
                 className="w-full mt-3 bg-orange-500 hover:bg-orange-600 h-9 text-sm"

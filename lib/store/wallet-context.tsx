@@ -285,8 +285,9 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   // Onboarding Redirect Logic
   useEffect(() => {
     if (isLoaded && user) {
-        if ((!user.gender || !user.district) && pathname !== "/onboarding") {
-            console.log("User missing onboarding info", user);
+        if ((!user.gender || !user.district || !user.birthYear) && pathname !== "/onboarding") {
+            console.log("User missing onboarding info, redirecting to onboarding...", user);
+            router.replace("/onboarding");
         }
     }
   }, [user, isLoaded, pathname, router]);
