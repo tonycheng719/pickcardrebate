@@ -15,9 +15,10 @@ export async function GET(request: Request) {
     }
   }
 
-  // Redirect to success page to handle profile creation and hard refresh
-  const productionOrigin = "https://pickcardrebate-web.zeabur.app";
-  // We ignore the original redirect param for now to ensure consistent flow through success page
-  return NextResponse.redirect(`${productionOrigin}/auth/success`);
+  // Determine redirect origin dynamically or fallback to production
+  const isDev = origin.includes("localhost");
+  const targetOrigin = isDev ? origin : "https://pickcardrebate.com";
+  
+  return NextResponse.redirect(`${targetOrigin}/auth/success`);
 }
 
