@@ -474,13 +474,24 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       if (profile.notifications) updates.notifications = profile.notifications;
       if (profile.followedPromoIds) updates.followed_promo_ids = profile.followedPromoIds;
 
-      const { error } = await supabase
-        .from("profiles")
-        .update(updates)
-        .eq("id", user.id);
+      // Use API route to bypass RLS
+      try {
+        const response = await fetch("/api/user/profile", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user.id, updates })
+        });
 
-      if (error) {
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Failed to update profile");
+        }
+        
+        console.log("[Profile] Updated successfully via API");
+      } catch (error: any) {
         console.error("Error updating profile:", error);
+        toast.error("更新失敗", { description: error.message });
+        throw error; // Re-throw so caller knows it failed
       }
     }
   };

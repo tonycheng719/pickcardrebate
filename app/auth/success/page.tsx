@@ -147,49 +147,38 @@ export default function AuthSuccessPage() {
     return () => clearTimeout(timeout);
   }, [status]);
 
+  // Minimal UI - just show a subtle loading indicator
+  // Error state gets a more visible display
+  if (status === "error") {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="flex flex-col items-center gap-4">
+          <div className="p-4 bg-red-100 dark:bg-red-900/30 rounded-full">
+            <span className="text-4xl">😕</span>
+          </div>
+          <h1 className="text-xl font-bold text-red-700 dark:text-red-400">登入失敗</h1>
+          {errorMessage && (
+            <p className="text-red-500 text-sm max-w-xs text-center">{errorMessage}</p>
+          )}
+          <button 
+            onClick={() => router.push("/login")}
+            className="mt-4 px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg text-sm hover:bg-gray-200 dark:hover:bg-gray-700"
+          >
+            重新登入
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // For non-error states, show a minimal full-page loader that doesn't look like a "popup"
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900">
-      <div className="flex flex-col items-center gap-4">
-        <div className="p-4 bg-white dark:bg-gray-800 rounded-full shadow-lg animate-bounce">
-            <span className="text-4xl">
-              {status === "error" ? "😕" : status === "success" ? "🎉" : "👋"}
-            </span>
-        </div>
-        <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-            {status === "verifying" && "正在驗證..."}
-            {status === "exchanging" && "正在建立連線..."}
-            {status === "success" && "登入成功！"}
-            {status === "error" && "登入失敗"}
-        </h1>
-        
-        {status !== "error" && status !== "success" && (
-          <p className="text-gray-500 flex items-center gap-2">
-            <Loader2 className="h-4 w-4 animate-spin" />
-            正在準備您的錢包...
-          </p>
-        )}
-        
-        {status === "error" && errorMessage && (
-          <p className="text-red-500 text-sm max-w-xs text-center">
-            {errorMessage}
-          </p>
-        )}
-        
-        {status === "success" && (
-          <p className="text-green-600 text-sm">
-            即將跳轉至首頁...
-          </p>
-        )}
-        
-        {/* Manual Override Button after delay */}
-        <div className="mt-8 opacity-0 animate-in fade-in slide-in-from-bottom-4 fill-mode-forwards" style={{ animationDelay: '4s' }}>
-            <button 
-                onClick={() => window.location.href = "/"}
-                className="text-sm text-gray-400 hover:text-gray-600 underline"
-            >
-                如果太久沒有回應，請點此直接進入
-            </button>
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
+      <div className="flex flex-col items-center gap-3">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600 dark:text-blue-400" />
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          {status === "success" ? "跳轉中..." : ""}
+        </p>
       </div>
     </div>
   );
