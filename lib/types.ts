@@ -52,6 +52,7 @@ export interface CreditCard {
   welcomeOfferReward?: string;
   welcomeOfferDeadline?: string;
   sellingPoints?: string[];
+  note?: string; // New: Special notes for complex rules (e.g. tiered rewards)
   // New: Miles Configuration
   rewardConfig?: {
     method: 'conversion' | 'direct' | 'direct_rate';
