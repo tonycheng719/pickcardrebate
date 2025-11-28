@@ -112,6 +112,7 @@ export function TrendingMerchants() {
                 <div 
                     key={item.merchant_name}
                     className="group relative flex flex-col items-start p-3 pl-4 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl hover:shadow-md hover:border-orange-200 dark:hover:border-orange-900/50 transition-all cursor-pointer overflow-hidden"
+                    onClick={() => handleTrendClick(item.merchant_id)}
                 >
                     {/* Rank Badge */}
                     <div className={`absolute top-0 left-0 px-2 py-1 text-xs font-bold rounded-br-lg border-r border-b ${rankBadgeStyle}`}>

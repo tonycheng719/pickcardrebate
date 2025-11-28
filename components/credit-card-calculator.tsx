@@ -248,21 +248,25 @@ export function CreditCardCalculator({
     
     const bestResult = res[0];
     
-    // Log Search via Server Action (wrapped in try-catch to prevent crashes)
-    // try {
-    //     logSearch({
-    //         merchantId: selectedMerchant.id,
-    //         merchantName: selectedMerchant.name,
-    //         categoryId: selectedCategory,
-    //         amount: parseFloat(amount),
-    //         paymentMethod,
-    //         bestCardId: bestResult?.card.id,
-    //         bestRewardAmount: bestResult?.rewardAmount,
-    //         userId: user?.id // Pass user ID from context state
-    //     }).catch(e => console.error("Log search failed silently", e));
-    // } catch (e) {
-    //     console.error("Error triggering log search", e);
-    // }
+    // Log Search via API Route (Safe from Server Action errors)
+    try {
+        fetch("/api/search/log", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                merchantId: selectedMerchant.id,
+                merchantName: selectedMerchant.name,
+                categoryId: selectedCategory,
+                amount: parseFloat(amount),
+                paymentMethod,
+                bestCardId: bestResult?.card.id,
+                bestRewardAmount: bestResult?.rewardAmount,
+                userId: user?.id
+            })
+        }).catch(e => console.error("Log search failed silently", e));
+    } catch (e) {
+        console.error("Error triggering log search", e);
+    }
 
     setResults(res);
     setOpen(true);
