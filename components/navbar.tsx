@@ -15,15 +15,17 @@ export function Navbar() {
   const { user, logout, rewardPreference, toggleRewardPreference } = useWallet();
   const { getSetting } = useSettings();
   const router = useRouter();
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   
   // Use setting from DB, fallback to constant
   const whatsappUrl = getSetting("whatsapp_group_url") || WHATSAPP_GROUP_URL;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   // 監聽捲動以改變 Navbar 樣式
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
@@ -32,7 +34,7 @@ export function Navbar() {
   }, []);
 
   const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
 
   return (
@@ -105,13 +107,17 @@ export function Navbar() {
             onClick={toggleTheme}
             className="text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"
           >
-            <motion.div
-              initial={false}
-              animate={{ rotate: theme === "dark" ? 180 : 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-            </motion.div>
+            {mounted ? (
+                <motion.div
+                  initial={false}
+                  animate={{ rotate: resolvedTheme === "dark" ? 180 : 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {resolvedTheme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                </motion.div>
+            ) : (
+                <div className="w-5 h-5" />
+            )}
           </Button>
 
           {user ? (
