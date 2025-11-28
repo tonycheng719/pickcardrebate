@@ -723,10 +723,10 @@ export const HK_CARDS: CreditCard[] = [
     sellingPoints: ["本地及海外簽賬 $5=1里", "機場貴賓室", "旅遊保險"],
   },
   {
-    id: "sc-myauto",
-    name: "渣打 My Auto 信用卡",
-    bank: "渣打銀行",
-    style: { bgColor: "bg-gradient-to-br from-emerald-600 to-emerald-800", textColor: "text-white" },
+    id: "dahsing-myauto",
+    name: "大新 My Auto 信用卡",
+    bank: "大新銀行",
+    style: { bgColor: "bg-gradient-to-br from-blue-600 to-blue-800", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
       { description: "油站 4%", matchType: "category", matchValue: ["petrol"], percentage: 4.0 },
