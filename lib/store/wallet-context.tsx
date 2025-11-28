@@ -183,46 +183,41 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
 
   const initializeWalletSync = useCallback(async (userId: string) => {
     try {
-        // 1. Fetch cloud data (Reading is usually fine with public policies)
+        // 1. Fetch cloud data (this is the source of truth for logged-in users)
         const cloudData = await fetchUserWallet(supabase, userId);
+        console.log("[WalletSync] Cloud data fetched:", cloudData.myCardIds.length, "cards");
         
-        // 2. Merge logic
+        // 2. CLOUD DATA IS THE PRIMARY SOURCE OF TRUTH
+        // Only upload local data to cloud if cloud is completely empty (first-time sync)
         if (cloudData.myCardIds.length === 0 && Object.keys(cloudData.cardSettings).length === 0) {
-             // Cloud empty, upload local
+             // Cloud empty, this is a first-time sync - upload local data
              const localCardsStr = localStorage.getItem("pickcardrebate_wallet_cards");
-             const localSettingsStr = localStorage.getItem("pickcardrebate_wallet_settings");
-             
              const localCards = localCardsStr ? JSON.parse(localCardsStr) : [];
-             // We skip uploading settings in batch for now to keep API simple, or iterate
-             // Ideally api/wallet/sync should support full batch.
-             // For now, let's just upload cards in batch.
+             console.log("[WalletSync] Cloud empty, uploading local cards:", localCards.length);
 
              if (localCards.length > 0) {
                  await apiSyncWallet("batch_add", { userId, cardIds: localCards });
+                 // After uploading, set state to local cards
+                 setMyCardIds(localCards);
              }
         } else {
-             // Cloud has data, merge
-             const localCardsStr = localStorage.getItem("pickcardrebate_wallet_cards");
-             const localSettingsStr = localStorage.getItem("pickcardrebate_wallet_settings");
-             const localCards = localCardsStr ? JSON.parse(localCardsStr) : [];
-             const localSettings = localSettingsStr ? JSON.parse(localSettingsStr) : {};
-
-             const mergedIds = Array.from(new Set([...cloudData.myCardIds, ...localCards]));
-             const mergedSettings = { ...localSettings, ...cloudData.cardSettings };
-
-             setMyCardIds(mergedIds);
-             setCardSettings(mergedSettings);
-
-             // Sync missing to cloud
-             const missingInCloud = mergedIds.filter(id => !cloudData.myCardIds.includes(id));
-             if (missingInCloud.length > 0) {
-                 await apiSyncWallet("batch_add", { userId, cardIds: missingInCloud });
-             }
+             // Cloud has data - USE CLOUD DATA AS THE SOURCE OF TRUTH
+             // Do NOT merge with local storage, as that may contain stale data from another session
+             console.log("[WalletSync] Using cloud data as source of truth:", cloudData.myCardIds);
+             
+             setMyCardIds(cloudData.myCardIds);
+             setCardSettings(cloudData.cardSettings);
+             
+             // Update local storage to match cloud (for offline/guest mode fallback)
+             localStorage.setItem("pickcardrebate_wallet_cards", JSON.stringify(cloudData.myCardIds));
+             localStorage.setItem("pickcardrebate_wallet_settings", JSON.stringify(cloudData.cardSettings));
         }
         
         setIsWalletSynced(true);
+        console.log("[WalletSync] Sync complete");
     } catch (e) {
         console.error("Wallet Sync Failed", e);
+        toast.error("錢包同步失敗", { description: "請重新整理頁面" });
     }
   }, [supabase]);
 
