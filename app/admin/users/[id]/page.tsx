@@ -89,6 +89,9 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
              <Button variant="outline" className="text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20">
                <Ban className="h-4 w-4 mr-2" /> 封鎖會員
              </Button>
+             <Button variant="outline" className="text-orange-600 hover:bg-orange-50 dark:text-orange-400 dark:hover:bg-orange-900/20">
+               <Ban className="h-4 w-4 mr-2" /> 禁止評論
+             </Button>
           </div>
         </div>
 
