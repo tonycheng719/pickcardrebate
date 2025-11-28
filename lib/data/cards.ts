@@ -115,6 +115,7 @@ export const HK_CARDS: CreditCard[] = [
     welcomeOfferText: "迎新簽 $3,500 送 $1,000 現金回贈",
     applyUrl: "https://www.sc.com/hk/zh/credit-cards/smart/",
     sellingPoints: ["指定商戶 5% 現金回贈 (包括 Klook, Deliveroo)", "基本回饋需月簽賬滿$4,000 (0.56%)，滿$15,000升級至1.2%", "永久免年費", "豁免外幣手續費"],
+    note: "基本回贈率取決於當月總簽賬額：未滿$4,000 (0%)；滿$4,000 (0.56%)；滿$15,000 (1.2%)。計算機暫以標準 0.56% 計算。",
   },
   {
     id: "sc-cathay",
