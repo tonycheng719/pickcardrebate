@@ -76,7 +76,13 @@ export default function AdminCardsPage() {
               <tr key={card.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
-                    <div className={`w-8 h-5 rounded ${card.style.bgColor}`}></div>
+                    {card.imageUrl ? (
+                        <div className="w-8 h-5 rounded overflow-hidden border border-gray-100 dark:border-gray-600 bg-white">
+                            <img src={card.imageUrl} alt={card.name} className="w-full h-full object-contain" />
+                        </div>
+                    ) : (
+                        <div className={`w-8 h-5 rounded ${card.style.bgColor}`}></div>
+                    )}
                     <span className="font-medium text-gray-900 dark:text-white">{card.name}</span>
                   </div>
                 </td>
