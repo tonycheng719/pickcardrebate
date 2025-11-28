@@ -5,9 +5,10 @@ import React, { createContext, useContext, useState, useEffect, useMemo, useCall
 import { Transaction } from "../types";
 import { createClient } from "@/lib/supabase/client";
 import type { AuthChangeEvent, Session, User } from "@supabase/supabase-js";
-import { logUserIp } from "@/app/actions/log-ip";
+// import { logUserIp } from "@/app/actions/log-ip"; // Temporarily disabled to fix Server Action error
 import { useRouter, usePathname } from "next/navigation";
 import { fetchUserWallet } from "@/lib/wallet-sync"; // Only keep fetchUserWallet
+import { toast } from "sonner"; // Import toast for error feedback
 
 export interface CardSettings {
   note?: string;
@@ -97,8 +98,10 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
             const errorData = await response.json();
             throw new Error(errorData.error || "Wallet sync failed");
         }
-    } catch (error) {
+    } catch (error: any) {
         console.error(`API Sync Error (${action}):`, error);
+        // Show error to user to indicate persistence failure
+        toast.error("雲端同步失敗", { description: "請檢查網絡或稍後再試 (Error: " + error.message + ")" });
     }
   };
 
@@ -254,7 +257,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      logUserIp().catch(console.error);
+      // logUserIp().catch(console.error); // Disabled to prevent "Failed to find Server Action" error
 
       try {
         const { data } = await supabase
