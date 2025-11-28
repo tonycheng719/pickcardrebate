@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import type { AuthChangeEvent, Session, User } from "@supabase/supabase-js";
 // import { logUserIp } from "@/app/actions/log-ip"; // Temporarily disabled to fix Server Action error
 import { useRouter, usePathname } from "next/navigation";
-import { fetchUserWallet } from "@/lib/wallet-sync"; // Only keep fetchUserWallet
+// Wallet sync now uses API route instead of direct Supabase calls
 import { toast } from "sonner"; // Import toast for error feedback
 
 export interface CardSettings {
@@ -183,13 +183,21 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
 
   const initializeWalletSync = useCallback(async (userId: string) => {
     try {
-        // 1. Fetch cloud data (this is the source of truth for logged-in users)
-        const cloudData = await fetchUserWallet(supabase, userId);
-        console.log("[WalletSync] Cloud data fetched:", cloudData.myCardIds.length, "cards");
+        // 1. Fetch cloud data via API (uses Service Role to bypass RLS)
+        console.log("[WalletSync] Fetching wallet data via API for user:", userId);
+        const response = await fetch(`/api/wallet/sync?userId=${userId}`);
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Failed to fetch wallet");
+        }
+        
+        const cloudData = await response.json();
+        console.log("[WalletSync] Cloud data fetched:", cloudData.myCardIds?.length || 0, "cards");
         
         // 2. CLOUD DATA IS THE PRIMARY SOURCE OF TRUTH
         // Only upload local data to cloud if cloud is completely empty (first-time sync)
-        if (cloudData.myCardIds.length === 0 && Object.keys(cloudData.cardSettings).length === 0) {
+        if (!cloudData.myCardIds?.length && !Object.keys(cloudData.cardSettings || {}).length) {
              // Cloud empty, this is a first-time sync - upload local data
              const localCardsStr = localStorage.getItem("pickcardrebate_wallet_cards");
              const localCards = localCardsStr ? JSON.parse(localCardsStr) : [];
@@ -205,21 +213,21 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
              // Do NOT merge with local storage, as that may contain stale data from another session
              console.log("[WalletSync] Using cloud data as source of truth:", cloudData.myCardIds);
              
-             setMyCardIds(cloudData.myCardIds);
-             setCardSettings(cloudData.cardSettings);
+             setMyCardIds(cloudData.myCardIds || []);
+             setCardSettings(cloudData.cardSettings || {});
              
              // Update local storage to match cloud (for offline/guest mode fallback)
-             localStorage.setItem("pickcardrebate_wallet_cards", JSON.stringify(cloudData.myCardIds));
-             localStorage.setItem("pickcardrebate_wallet_settings", JSON.stringify(cloudData.cardSettings));
+             localStorage.setItem("pickcardrebate_wallet_cards", JSON.stringify(cloudData.myCardIds || []));
+             localStorage.setItem("pickcardrebate_wallet_settings", JSON.stringify(cloudData.cardSettings || {}));
         }
         
         setIsWalletSynced(true);
-        console.log("[WalletSync] Sync complete");
-    } catch (e) {
+        console.log("[WalletSync] Sync complete, cards:", cloudData.myCardIds?.length || 0);
+    } catch (e: any) {
         console.error("Wallet Sync Failed", e);
-        toast.error("錢包同步失敗", { description: "請重新整理頁面" });
+        toast.error("錢包同步失敗", { description: e.message || "請重新整理頁面" });
     }
-  }, [supabase]);
+  }, []);
 
   const buildUserFromSession = useCallback(
     (sessionUser: User, profileData?: any): UserProfile => {

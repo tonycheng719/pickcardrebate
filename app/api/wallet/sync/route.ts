@@ -1,25 +1,86 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 
+export const dynamic = 'force-dynamic';
+
 // Safely get env vars with robust fallbacks
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 // Try all possible service role key names
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SERVICE_ROLE_KEY;
 
-export async function POST(request: Request) {
+function getServiceClient() {
   if (!supabaseUrl || !serviceRoleKey) {
-      console.error("CRITICAL: Missing Supabase Config in Wallet Sync API");
-      return NextResponse.json({ error: "Internal Server Configuration Error: Missing Keys" }, { status: 500 });
+    console.error("CRITICAL: Missing Supabase Config in Wallet Sync API");
+    return null;
+  }
+  return createClient(supabaseUrl, serviceRoleKey, { 
+    auth: { 
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false
+    } 
+  });
+}
+
+// GET: Fetch user wallet data using Service Role (bypasses RLS)
+export async function GET(request: Request) {
+  const supabase = getServiceClient();
+  if (!supabase) {
+    return NextResponse.json({ error: "Internal Server Configuration Error" }, { status: 500 });
   }
 
-  // Always use a fresh client with the service role key for admin-level access
-  const supabase = createClient(supabaseUrl, serviceRoleKey, { 
-      auth: { 
-          persistSession: false,
-          autoRefreshToken: false,
-          detectSessionInUrl: false
-      } 
-  });
+  try {
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get("userId");
+
+    if (!userId) {
+      return NextResponse.json({ error: "Missing userId" }, { status: 400 });
+    }
+
+    // Fetch cards
+    const { data: cardsData, error: cardsError } = await supabase
+      .from("user_cards")
+      .select("card_id")
+      .eq("user_id", userId);
+
+    if (cardsError) {
+      console.error("Error fetching user cards (Service Role):", cardsError);
+      throw cardsError;
+    }
+
+    // Fetch settings
+    const { data: settingsData, error: settingsError } = await supabase
+      .from("user_card_settings")
+      .select("card_id, settings")
+      .eq("user_id", userId);
+
+    if (settingsError) {
+      console.error("Error fetching user card settings (Service Role):", settingsError);
+      throw settingsError;
+    }
+
+    const myCardIds = cardsData ? cardsData.map((c: any) => c.card_id) : [];
+    const cardSettings: Record<string, any> = {};
+    if (settingsData) {
+      settingsData.forEach((s: any) => {
+        cardSettings[s.card_id] = s.settings;
+      });
+    }
+
+    console.log(`[Wallet API GET] User ${userId}: ${myCardIds.length} cards found`);
+
+    return NextResponse.json({ myCardIds, cardSettings });
+  } catch (e: any) {
+    console.error("Wallet Fetch Error:", e);
+    return NextResponse.json({ error: e.message }, { status: 500 });
+  }
+}
+
+export async function POST(request: Request) {
+  const supabase = getServiceClient();
+  if (!supabase) {
+    return NextResponse.json({ error: "Internal Server Configuration Error" }, { status: 500 });
+  }
 
   try {
     const body = await request.json();
