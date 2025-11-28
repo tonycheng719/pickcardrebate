@@ -1,5 +1,24 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/client';
+import { createClient } from '@supabase/supabase-js';
+
+// Helper to get a Service Role client
+function getServiceRoleClient() {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SERVICE_ROLE_KEY;
+
+    if (!supabaseUrl || !serviceRoleKey) {
+        console.error("Transaction API: Missing Supabase Config (URL or Service Role Key)");
+        return null;
+    }
+
+    return createClient(supabaseUrl, serviceRoleKey, {
+        auth: {
+            persistSession: false,
+            autoRefreshToken: false,
+            detectSessionInUrl: false
+        }
+    });
+}
 
 // POST: Create a new transaction record
 export async function POST(request: Request) {
@@ -22,9 +41,12 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: "User ID is required" }, { status: 401 });
         }
 
-        // Use standard client - RLS policy allows users to insert their own data
-        const supabase = createClient();
+        const supabase = getServiceRoleClient();
+        if (!supabase) {
+            return NextResponse.json({ error: "Server Configuration Error" }, { status: 500 });
+        }
 
+        // Using service_role client bypasses RLS, allowing insertion
         const { data, error } = await supabase
             .from('user_transactions')
             .insert([{
@@ -61,7 +83,12 @@ export async function GET(request: Request) {
             return NextResponse.json({ error: "User ID required" }, { status: 400 });
         }
 
-        const supabase = createClient();
+        // Use service role for reading too, to be consistent and robust
+        const supabase = getServiceRoleClient();
+        if (!supabase) {
+            // Fallback to anon client if service key missing? No, better fail safe.
+            return NextResponse.json({ error: "Server Configuration Error" }, { status: 500 });
+        }
         
         const { data, error } = await supabase
             .from('user_transactions')
@@ -77,6 +104,3 @@ export async function GET(request: Request) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
-
-
-

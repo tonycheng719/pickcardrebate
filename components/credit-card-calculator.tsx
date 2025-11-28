@@ -247,16 +247,16 @@ export function CreditCardCalculator({
     );
     
     const bestResult = res[0];
-    logSearch({
-        merchantId: selectedMerchant.id,
-        merchantName: selectedMerchant.name,
-        categoryId: selectedCategory,
-        amount: parseFloat(amount),
-        paymentMethod,
-        bestCardId: bestResult?.card.id,
-        bestRewardAmount: bestResult?.rewardAmount,
-        userId: user?.id // Pass user ID from context state
-    });
+    // logSearch({
+    //     merchantId: selectedMerchant.id,
+    //     merchantName: selectedMerchant.name,
+    //     categoryId: selectedCategory,
+    //     amount: parseFloat(amount),
+    //     paymentMethod,
+    //     bestCardId: bestResult?.card.id,
+    //     bestRewardAmount: bestResult?.rewardAmount,
+    //     userId: user?.id // Pass user ID from context state
+    // });
 
     setResults(res);
     setOpen(true);
