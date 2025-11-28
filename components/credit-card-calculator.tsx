@@ -297,6 +297,7 @@ export function CreditCardCalculator({
       
       const isRecording = recordingCardId === result.card.id;
       const isRecorded = recordedCardIds.has(result.card.id);
+      const isOwned = myCardIds.includes(result.card.id);
 
       return (
       <div
@@ -354,26 +355,28 @@ export function CreditCardCalculator({
 
             {/* Action Buttons Row */}
             <div className="flex items-center gap-2 mt-2">
-                {myCardIds.includes(result.card.id) && (
+                {isOwned && (
                     <span className="text-xs text-emerald-500 inline-flex items-center gap-1">
                     <CreditCard className="h-3 w-3" /> 你已持有
                     </span>
                 )}
-                <button 
-                    className={`text-xs border rounded px-2 py-0.5 flex items-center gap-1 transition-colors ${
-                        isRecorded 
-                        ? "bg-gray-100 text-gray-500 border-gray-200 cursor-default" 
-                        : "bg-white hover:bg-gray-50 text-gray-600 border-gray-200"
-                    }`}
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        if (!isRecorded && !isRecording) handleRecordTransaction(result);
-                    }}
-                    disabled={isRecorded || isRecording}
-                >
-                    {isRecording ? <Loader2 className="w-3 h-3 animate-spin" /> : isRecorded ? <CheckCircle2 className="w-3 h-3" /> : <PlusCircle className="w-3 h-3" />}
-                    {isRecorded ? "已記錄" : "記賬"}
-                </button>
+                {isOwned && (
+                    <button 
+                        className={`text-xs border rounded px-2 py-0.5 flex items-center gap-1 transition-colors ${
+                            isRecorded 
+                            ? "bg-gray-100 text-gray-500 border-gray-200 cursor-default" 
+                            : "bg-white hover:bg-gray-50 text-gray-600 border-gray-200"
+                        }`}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            if (!isRecorded && !isRecording) handleRecordTransaction(result);
+                        }}
+                        disabled={isRecorded || isRecording}
+                    >
+                        {isRecording ? <Loader2 className="w-3 h-3 animate-spin" /> : isRecorded ? <CheckCircle2 className="w-3 h-3" /> : <PlusCircle className="w-3 h-3" />}
+                        {isRecorded ? "已記錄" : "記賬"}
+                    </button>
+                )}
             </div>
           </div>
         </div>
@@ -395,6 +398,7 @@ export function CreditCardCalculator({
     
     const isBestRecording = best && recordingCardId === best.card.id;
     const isBestRecorded = best && recordedCardIds.has(best.card.id);
+    const isBestOwned = myCardIds.includes(best.card.id);
 
     return (
     <div className="space-y-4 p-4 pb-8">
@@ -422,7 +426,7 @@ export function CreditCardCalculator({
             )}
             <div className="text-xs uppercase text-emerald-600 font-bold mb-2 flex justify-between">
                 <span>全場最抵</span>
-                {!myCardIds.includes(best.card.id) && <span className="text-orange-500">你未持有</span>}
+                {!isBestOwned && <span className="text-orange-500">你未持有</span>}
             </div>
             
             <div className="flex items-start justify-between gap-3">
@@ -465,23 +469,25 @@ export function CreditCardCalculator({
                 </div>
 
                 <div className="flex flex-col items-start gap-2 mt-3">
-                    {myCardIds.includes(best.card.id) && (
+                    {isBestOwned && (
                     <span className="inline-flex items-center gap-1 text-xs text-emerald-600 font-medium">
                         <CheckCircle2 className="h-3 w-3" /> 你已持有，用這張！
                     </span>
                     )}
                     
-                    {/* Record Transaction Button (Hero) */}
-                    <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className={`h-8 text-xs gap-1 border-emerald-200 bg-white hover:bg-emerald-50 text-emerald-700 ${isBestRecorded ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        onClick={() => !isBestRecorded && !isBestRecording && handleRecordTransaction(best)}
-                        disabled={isBestRecorded || isBestRecording}
-                    >
-                        {isBestRecording ? <Loader2 className="w-3 h-3 animate-spin" /> : isBestRecorded ? <CheckCircle2 className="w-3 h-3" /> : <PlusCircle className="w-3 h-3" />}
-                        {isBestRecorded ? "已記錄消費" : "一鍵記賬"}
-                    </Button>
+                    {/* Record Transaction Button (Hero) - Only show if owned */}
+                    {isBestOwned && (
+                        <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className={`h-8 text-xs gap-1 border-emerald-200 bg-white hover:bg-emerald-50 text-emerald-700 ${isBestRecorded ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            onClick={() => !isBestRecorded && !isBestRecording && handleRecordTransaction(best)}
+                            disabled={isBestRecorded || isBestRecording}
+                        >
+                            {isBestRecording ? <Loader2 className="w-3 h-3 animate-spin" /> : isBestRecorded ? <CheckCircle2 className="w-3 h-3" /> : <PlusCircle className="w-3 h-3" />}
+                            {isBestRecorded ? "已記錄消費" : "一鍵記賬"}
+                        </Button>
+                    )}
                 </div>
               </div>
 
@@ -490,7 +496,7 @@ export function CreditCardCalculator({
                   {bestMilesText || (best.rewardAmount > 0 ? `+$${best.rewardAmount.toFixed(1)}` : `${best.percentage}%`)}
                 </div>
                 {isBestCashFallback && <div className="text-xs text-gray-400 font-medium mt-1">現金回贈</div>}
-                {best.card.welcomeOfferText && !myCardIds.includes(best.card.id) && (
+                {best.card.welcomeOfferText && !isBestOwned && (
                   <div className="text-xs text-orange-500 mt-2 font-medium max-w-[80px] ml-auto">{best.card.welcomeOfferText}</div>
                 )}
               </div>
@@ -508,7 +514,7 @@ export function CreditCardCalculator({
                 </div>
             )}
 
-            {!myCardIds.includes(best.card.id) && best.card.applyUrl && (
+            {!isBestOwned && best.card.applyUrl && (
               <Button
                 className="w-full mt-3 bg-orange-500 hover:bg-orange-600 h-9 text-sm"
                 onClick={() => window.open(best.card.applyUrl, "_blank")}
@@ -521,7 +527,7 @@ export function CreditCardCalculator({
           <div className="space-y-3 max-h-[40vh] overflow-y-auto pr-1">
             
             {/* 2. My Best Card (If the best card above is NOT owned) */}
-            {(!myCardIds.includes(best.card.id) && myBestCard) && (
+            {(!isBestOwned && myBestCard) && (
                 <div className="space-y-1">
                     <div className="text-xs text-gray-500 font-medium px-1">你的錢包中最抵：</div>
                     <ResultRow result={myBestCard} isBest={false} />
