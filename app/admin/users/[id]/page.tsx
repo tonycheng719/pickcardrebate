@@ -41,20 +41,33 @@ async function getUserData(id: string) {
     .order("transaction_date", { ascending: false })
     .limit(50);
 
+  // 4. Fetch Card Details from DB (for uploaded images)
+  const { data: dbCards } = await supabase
+    .from("cards")
+    .select("id, name, bank, image_url, style");
+
+  const dbCardsMap = new Map();
+  dbCards?.forEach((c: any) => {
+    dbCardsMap.set(c.id, c);
+  });
+
   const settingsMap = new Map();
   settingsData?.forEach((s: any) => {
     settingsMap.set(s.card_id, s.settings);
   });
 
   const walletCards = (cardsData || []).map((uc: any) => {
-    const cardInfo = HK_CARDS.find(c => c.id === uc.card_id);
+    // Prioritize DB data (uploaded images), fallback to static HK_CARDS
+    const dbCardInfo = dbCardsMap.get(uc.card_id);
+    const staticCardInfo = HK_CARDS.find(c => c.id === uc.card_id);
     const settings = settingsMap.get(uc.card_id) || {};
+    
     return {
         id: uc.card_id,
-        name: cardInfo?.name || uc.card_id,
-        bank: cardInfo?.bank || "Unknown",
-        imageUrl: cardInfo?.imageUrl,
-        style: cardInfo?.style,
+        name: dbCardInfo?.name || staticCardInfo?.name || uc.card_id,
+        bank: dbCardInfo?.bank || staticCardInfo?.bank || "Unknown",
+        imageUrl: dbCardInfo?.image_url || staticCardInfo?.imageUrl, // DB first, then static
+        style: dbCardInfo?.style || staticCardInfo?.style,
         settings
     };
   });
