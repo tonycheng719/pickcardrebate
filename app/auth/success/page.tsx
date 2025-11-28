@@ -56,7 +56,25 @@ export default function AuthSuccessPage() {
           
           if (data.session) {
             console.log("Session established successfully for:", data.session.user.email);
+            console.log("Access token (first 20 chars):", data.session.access_token.substring(0, 20) + "...");
+            console.log("Cookies after exchange:", document.cookie);
+            
             setStatus("success");
+            
+            // Manually store tokens in localStorage as backup (Supabase SSR should handle this)
+            // This is a fallback for cases where cookies don't work
+            try {
+              const storageKey = `sb-${new URL(process.env.NEXT_PUBLIC_SUPABASE_URL || '').hostname.split('.')[0]}-auth-token`;
+              localStorage.setItem(storageKey, JSON.stringify({
+                access_token: data.session.access_token,
+                refresh_token: data.session.refresh_token,
+                expires_at: Math.floor(Date.now() / 1000) + (data.session.expires_in || 3600),
+                user: data.session.user
+              }));
+              console.log("Session stored in localStorage as backup:", storageKey);
+            } catch (storageError) {
+              console.warn("Failed to store session in localStorage:", storageError);
+            }
             
             // Ensure profile exists
             try {
@@ -70,7 +88,7 @@ export default function AuthSuccessPage() {
             // Force full page reload to ensure all contexts pick up the new session
             setTimeout(() => {
               window.location.href = "/";
-            }, 800);
+            }, 1000);
             return;
           }
         } catch (e: any) {

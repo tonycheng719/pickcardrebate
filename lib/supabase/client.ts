@@ -33,9 +33,53 @@ export function createClient() {
             signInWithOAuth: () => Promise.resolve({ error: new Error("Missing Supabase Config") }),
             signOut: () => Promise.resolve({ error: null }),
             onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
+            exchangeCodeForSession: () => Promise.resolve({ data: { session: null }, error: new Error("Missing Supabase Config") }),
         }
     } as any
   }
 
-  return createBrowserClient(url, key)
+  return createBrowserClient(url, key, {
+    cookies: {
+      // Use default cookie handling but ensure proper settings
+      getAll() {
+        if (typeof document === 'undefined') return [];
+        return document.cookie.split('; ').map(cookie => {
+          const [name, ...rest] = cookie.split('=');
+          return { name, value: rest.join('=') };
+        });
+      },
+      setAll(cookiesToSet) {
+        if (typeof document === 'undefined') return;
+        cookiesToSet.forEach(({ name, value, options }) => {
+          // Build cookie string with proper settings
+          let cookieString = `${name}=${value}`;
+          
+          // Set path
+          cookieString += '; path=/';
+          
+          // Set secure flag for production
+          if (window.location.protocol === 'https:') {
+            cookieString += '; secure';
+          }
+          
+          // Set SameSite to Lax for better compatibility
+          cookieString += '; samesite=lax';
+          
+          // Set max-age if provided
+          if (options?.maxAge) {
+            cookieString += `; max-age=${options.maxAge}`;
+          }
+          
+          document.cookie = cookieString;
+          console.log('[Supabase Client] Cookie set:', name);
+        });
+      },
+    },
+    auth: {
+      flowType: 'pkce',
+      detectSessionInUrl: true,
+      persistSession: true,
+      autoRefreshToken: true,
+    }
+  })
 }
