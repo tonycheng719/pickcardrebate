@@ -3,12 +3,14 @@
 import { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, X, Info, Loader2, Trash2, AlertTriangle, Edit, CheckCircle2, Lightbulb, ExternalLink, Filter, Plane } from "lucide-react";
+import { Check, X, Info, Loader2, Trash2, AlertTriangle, Edit, CheckCircle2, Lightbulb, ExternalLink, Filter, Plane, MessageSquare, Reply } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 
 interface Report {
   id: string;
@@ -312,11 +314,6 @@ export default function AdminModerationPage() {
           <span className="text-sm text-gray-500">全選本頁</span>
       </div>
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
-import { MessageSquare, Reply } from "lucide-react";
-
-// ... (inside component return)
 
       {/* Reply Dialog */}
       <Dialog open={replyDialogOpen} onOpenChange={setReplyDialogOpen}>
