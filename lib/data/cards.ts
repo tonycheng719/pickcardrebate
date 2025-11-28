@@ -109,12 +109,12 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 0,
     rules: [
       { description: "指定商戶 5%", matchType: "merchant", matchValue: ["mcdonalds", "kfc", "hktvmall", "759", "parknshop", "watsons", "donki", "deliveroo", "sf_express", "klook"], percentage: 5.0, cap: 60000, capType: "spending" },
-      { description: "基本回饋 0.56%", matchType: "base", percentage: 0.56, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "基本回饋 0.56% (需月簽賬滿$4,000)", matchType: "base", percentage: 0.56, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["指定商戶5%", "永久免年費", "免手續費"],
     welcomeOfferText: "迎新簽 $3,500 送 $1,000 現金回贈",
     applyUrl: "https://www.sc.com/hk/zh/credit-cards/smart/",
-    sellingPoints: ["指定商戶 5% 現金回贈 (包括 Klook, Deliveroo)", "永久免年費", "豁免外幣手續費"],
+    sellingPoints: ["指定商戶 5% 現金回贈 (包括 Klook, Deliveroo)", "基本回饋需月簽賬滿$4,000 (0.56%)，滿$15,000升級至1.2%", "永久免年費", "豁免外幣手續費"],
   },
   {
     id: "sc-cathay",
