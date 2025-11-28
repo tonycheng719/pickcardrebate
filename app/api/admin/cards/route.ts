@@ -3,6 +3,12 @@ import { adminAuthClient } from "@/lib/supabase/admin-client";
 
 export async function POST(request: NextRequest) {
   try {
+    // Check for Service Role Key at runtime for API routes too
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY && !process.env.SERVICE_ROLE_KEY) {
+        console.error("CRITICAL: Service Role Key missing in API Route");
+        return NextResponse.json({ error: "Server Misconfiguration: Missing Service Role Key" }, { status: 500 });
+    }
+
     const card = await request.json();
     
     if (!card.id) {
@@ -28,6 +34,11 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY && !process.env.SERVICE_ROLE_KEY) {
+        console.error("CRITICAL: Service Role Key missing in API Route");
+        return NextResponse.json({ error: "Server Misconfiguration: Missing Service Role Key" }, { status: 500 });
+    }
+
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
 
@@ -51,4 +62,3 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
-
