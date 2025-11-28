@@ -349,7 +349,8 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   };
 
   const loginWithOAuth = async (provider: "google" | "apple") => {
-    const redirectUrl = "https://pickcardrebate-web.zeabur.app/auth/callback";
+    // Use window.location.origin to dynamically get the current domain (localhost or production)
+    const redirectUrl = `${window.location.origin}/auth/callback`;
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
