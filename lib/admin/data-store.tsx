@@ -207,46 +207,52 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
     });
 
     try {
-        // Use 'image_url' mapping explicitly, ensure it's sent
         const dbPayload = mapCardToDB(card);
-        console.log("Saving card to DB:", dbPayload); // Debug log
-
-        const { error } = await supabase.from('cards').upsert(dbPayload);
-        if (error) throw error;
-        toast.success("卡片已儲存至雲端");
-        
-        // Also update local memory state so it reflects immediately
-        setCards(prev => {
-            const idx = prev.findIndex(c => c.id === card.id);
-            if (idx === -1) return [...prev, card];
-            const next = [...prev];
-            next[idx] = card;
-            return next;
+        // Use API route instead of direct client to bypass RLS restrictions for admin operations
+        const res = await fetch('/api/admin/cards', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dbPayload)
         });
 
+        if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.error || 'Failed to save card');
+        }
+
+        toast.success("卡片已儲存至雲端");
         logAdminAction(
             cards.some(c => c.id === card.id) ? "update" : "create",
             "card",
             card.id,
             { name: card.name }
         );
-    } catch (e) {
+    } catch (e: any) {
         console.error(e);
-        toast.error("儲存失敗");
-        // Revert logic could go here
+        toast.error(`儲存失敗: ${e.message}`);
+        // Could trigger a refresh here to revert optimistic update if needed
     }
   };
 
   const removeCard = async (id: string) => {
     setCards(prev => prev.filter(c => c.id !== id));
     try {
-        const { error } = await supabase.from('cards').delete().eq('id', id);
-        if (error) throw error;
+        // Use API route
+        const res = await fetch(`/api/admin/cards?id=${id}`, {
+            method: 'DELETE'
+        });
+
+        if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.error || 'Failed to delete card');
+        }
+
         toast.success("卡片已刪除");
         logAdminAction("delete", "card", id);
-    } catch (e) {
+    } catch (e: any) {
         console.error(e);
-        toast.error("刪除失敗");
+        toast.error(`刪除失敗: ${e.message}`);
+        refreshData(); // Revert if failed
     }
   };
 
@@ -260,8 +266,18 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
     });
 
     try {
-        const { error } = await supabase.from('merchants').upsert(mapMerchantToDB(merchant));
-        if (error) throw error;
+        const dbPayload = mapMerchantToDB(merchant);
+        const res = await fetch('/api/admin/merchants', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dbPayload)
+        });
+
+        if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.error || 'Failed to save merchant');
+        }
+
         toast.success("商戶已儲存");
         logAdminAction(
             merchants.some(m => m.id === merchant.id) ? "update" : "create",
@@ -269,22 +285,30 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
             merchant.id,
             { name: merchant.name }
         );
-    } catch (e) {
+    } catch (e: any) {
         console.error(e);
-        toast.error("儲存失敗");
+        toast.error(`儲存失敗: ${e.message}`);
     }
   };
 
   const removeMerchant = async (id: string) => {
     setMerchants(prev => prev.filter(m => m.id !== id));
     try {
-        const { error } = await supabase.from('merchants').delete().eq('id', id);
-        if (error) throw error;
+        const res = await fetch(`/api/admin/merchants?id=${id}`, {
+            method: 'DELETE'
+        });
+
+        if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.error || 'Failed to delete merchant');
+        }
+
         toast.success("商戶已刪除");
         logAdminAction("delete", "merchant", id);
-    } catch (e) {
+    } catch (e: any) {
         console.error(e);
-        toast.error("刪除失敗");
+        toast.error(`刪除失敗: ${e.message}`);
+        refreshData();
     }
   };
 
@@ -298,8 +322,18 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
     });
 
     try {
-        const { error } = await supabase.from('promos').upsert(mapPromoToDB(promo));
-        if (error) throw error;
+        const dbPayload = mapPromoToDB(promo);
+        const res = await fetch('/api/admin/promos', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dbPayload)
+        });
+
+        if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.error || 'Failed to save promo');
+        }
+
         toast.success("優惠已儲存");
         logAdminAction(
             promos.some(p => p.id === promo.id) ? "update" : "create",
@@ -307,22 +341,30 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
             promo.id,
             { title: promo.title }
         );
-    } catch (e) {
+    } catch (e: any) {
         console.error(e);
-        toast.error("儲存失敗");
+        toast.error(`儲存失敗: ${e.message}`);
     }
   };
 
   const removePromo = async (id: string) => {
     setPromos(prev => prev.filter(p => p.id !== id));
     try {
-        const { error } = await supabase.from('promos').delete().eq('id', id);
-        if (error) throw error;
+        const res = await fetch(`/api/admin/promos?id=${id}`, {
+            method: 'DELETE'
+        });
+
+        if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.error || 'Failed to delete promo');
+        }
+
         toast.success("優惠已刪除");
         logAdminAction("delete", "promo", id);
-    } catch (e) {
+    } catch (e: any) {
         console.error(e);
-        toast.error("刪除失敗");
+        toast.error(`刪除失敗: ${e.message}`);
+        refreshData();
     }
   };
 
