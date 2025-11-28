@@ -26,7 +26,9 @@
     26|    };
     27|}
     28|
-    29|export async function GET(request: Request) {
+    29|export const dynamic = 'force-dynamic';
+
+export async function GET(request: Request) {
     30|    try {
     31|        console.log(`Seeding ${HK_CARDS.length} cards...`);
     32|
