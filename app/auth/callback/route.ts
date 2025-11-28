@@ -16,9 +16,13 @@ export async function GET(request: Request) {
   }
 
   // Determine redirect origin dynamically or fallback to production
-  const isDev = origin.includes("localhost");
-  const targetOrigin = isDev ? origin : "https://pickcardrebate.com";
+  // const isDev = origin.includes("localhost");
+  // const targetOrigin = isDev ? origin : "https://pickcardrebate.com";
   
+  // Temporary fallback: use origin directly to fix redirection loop/error until DNS stabilizes
+  // We rely on WalletContext's manual code exchange as a safety net if this redirects to Zeabur
+  const targetOrigin = origin;
+
   console.log("Auth Callback Redirecting to:", `${targetOrigin}/auth/success`, "Origin:", origin);
 
   return NextResponse.redirect(`${targetOrigin}/auth/success`);
