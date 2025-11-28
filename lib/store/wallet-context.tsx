@@ -28,6 +28,8 @@ export interface UserProfile {
   avatar?: string;
   gender?: "male" | "female" | "other";
   district?: string;
+  birthYear?: number;
+  birthMonth?: number;
   lastIp?: string;
   rewardPreference: "cash" | "miles";
   notifications: {
@@ -418,6 +420,8 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       if (profile.avatar) updates.avatar_url = profile.avatar;
       if (profile.gender) updates.gender = profile.gender;
       if (profile.district) updates.district = profile.district;
+      if (profile.birthYear) updates.birth_year = profile.birthYear;
+      if (profile.birthMonth) updates.birth_month = profile.birthMonth;
       if (profile.lastIp) updates.last_ip = profile.lastIp;
       if (profile.rewardPreference) updates.reward_preference = profile.rewardPreference;
       if (profile.notifications) updates.notifications = profile.notifications;

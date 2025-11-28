@@ -31,7 +31,13 @@ export default function OnboardingPage() {
   const router = useRouter();
   const [gender, setGender] = useState<"male" | "female" | "other">("male");
   const [district, setDistrict] = useState("");
+  const [birthYear, setBirthYear] = useState("");
+  const [birthMonth, setBirthMonth] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 100 }, (_, i) => currentYear - i); // Last 100 years
+  const months = Array.from({ length: 12 }, (_, i) => i + 1);
 
   useEffect(() => {
     // Redirect if not logged in
@@ -40,19 +46,21 @@ export default function OnboardingPage() {
     }
     
     // Redirect if already completed
-    if (user && user.gender && user.district) {
+    if (user && user.gender && user.district && user.birthYear) {
       router.replace("/");
     }
   }, [user, router, isLoading]);
 
   const handleSubmit = async () => {
-    if (!district) return;
+    if (!district || !birthYear || !birthMonth) return;
 
     setIsLoading(true);
     try {
       await updateProfile({
         gender,
-        district
+        district,
+        birthYear: parseInt(birthYear),
+        birthMonth: parseInt(birthMonth)
       });
       toast.success("設定完成！");
       router.push("/");
@@ -67,7 +75,7 @@ export default function OnboardingPage() {
     }
   };
 
-  const isFormValid = gender && district;
+  const isFormValid = gender && district && birthYear && birthMonth;
 
   if (!user) {
       return null; // Or loading spinner
@@ -131,6 +139,32 @@ export default function OnboardingPage() {
                   </Label>
                 </div>
               </RadioGroup>
+            </div>
+
+            <div className="space-y-4">
+              <Label className="text-base">出生年月 <span className="text-red-500">*</span></Label>
+              <div className="grid grid-cols-2 gap-4">
+                <Select value={birthYear} onValueChange={setBirthYear}>
+                    <SelectTrigger className="h-12">
+                        <SelectValue placeholder="年份" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {years.map(y => (
+                            <SelectItem key={y} value={y.toString()}>{y}</SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+                <Select value={birthMonth} onValueChange={setBirthMonth}>
+                    <SelectTrigger className="h-12">
+                        <SelectValue placeholder="月份" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {months.map(m => (
+                            <SelectItem key={m} value={m.toString()}>{m}月</SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+              </div>
             </div>
 
             <div className="space-y-4">

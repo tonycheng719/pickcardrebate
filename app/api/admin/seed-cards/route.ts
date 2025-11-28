@@ -37,7 +37,29 @@ export async function GET(request: Request) {
             
         console.log("Checking SUPABASE_SERVICE_ROLE_KEY:", keyCheck);
         
-        const payload = HK_CARDS.map(mapCardToDB);
+        // Fetch existing cards to check for custom images
+        const { data: existingCards } = await adminAuthClient
+            .from('cards')
+            .select('id, image_url');
+            
+        const existingImagesMap = new Map();
+        if (existingCards) {
+            existingCards.forEach((c: any) => {
+                if (c.image_url && c.image_url.includes("supabase")) {
+                    existingImagesMap.set(c.id, c.image_url);
+                }
+            });
+        }
+
+        const payload = HK_CARDS.map(card => {
+            const dbPayload = mapCardToDB(card);
+            // Preserve existing Supabase Storage URL if present
+            if (existingImagesMap.has(card.id)) {
+                console.log(`Preserving custom image for ${card.id}: ${existingImagesMap.get(card.id)}`);
+                dbPayload.image_url = existingImagesMap.get(card.id);
+            }
+            return dbPayload;
+        });
         
         const { data, error } = await adminAuthClient
             .from('cards')

@@ -88,8 +88,23 @@ export default function SettingsPage() {
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                        <Input value={user.email} disabled className="bg-gray-50" />
+                        <Input value={user.email} disabled className="bg-gray-50 text-gray-500" />
                         <p className="text-xs text-gray-500 mt-1">Email 無法更改</p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">性別</label>
+                            <Input value={user.gender === 'male' ? '男士' : user.gender === 'female' ? '女士' : '其他'} disabled className="bg-gray-50 text-gray-500" />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">居住地區</label>
+                            <Input value={user.district} disabled className="bg-gray-50 text-gray-500" />
+                        </div>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">出生年月</label>
+                        <Input value={user.birthYear ? `${user.birthYear}年 ${user.birthMonth}月` : '未設定'} disabled className="bg-gray-50 text-gray-500" />
+                        <p className="text-xs text-gray-500 mt-1">基本資料無法更改，如需協助請聯絡客服。</p>
                     </div>
                 </CardContent>
             </Card>

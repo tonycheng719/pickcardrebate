@@ -120,6 +120,12 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
                     </div>
                   </div>
                   <div>
+                    <label className="text-sm font-medium text-gray-500 dark:text-gray-400">出生年月</label>
+                    <div className="mt-1 text-sm dark:text-gray-200">
+                      {user.birth_year ? `${user.birth_year}年 ${user.birth_month}月` : "未設定"}
+                    </div>
+                  </div>
+                  <div>
                      <label className="text-sm font-medium text-gray-500 dark:text-gray-400">最後登入 IP</label>
                      <div className="mt-1 font-mono text-sm dark:text-gray-200">{user.last_ip || "-"}</div>
                   </div>
