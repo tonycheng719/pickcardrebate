@@ -53,6 +53,8 @@ async function getUserData(id: string) {
         id: uc.card_id,
         name: cardInfo?.name || uc.card_id,
         bank: cardInfo?.bank || "Unknown",
+        imageUrl: cardInfo?.imageUrl,
+        style: cardInfo?.style,
         settings
     };
   });
@@ -202,9 +204,17 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
                         {walletCards.map((card) => (
                             <div key={card.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-6 bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center">
-                                        <CreditCard className="h-4 w-4 text-gray-500" />
-                                    </div>
+                                    {card.imageUrl ? (
+                                        <img 
+                                            src={card.imageUrl} 
+                                            alt={card.name} 
+                                            className="w-16 h-10 object-contain rounded bg-white dark:bg-gray-800 p-1 border dark:border-gray-700"
+                                        />
+                                    ) : (
+                                        <div className={`w-16 h-10 rounded flex items-center justify-center ${card.style?.bgColor || 'bg-gray-200 dark:bg-gray-700'}`}>
+                                            <CreditCard className={`h-5 w-5 ${card.style?.textColor || 'text-gray-500'}`} />
+                                        </div>
+                                    )}
                                     <div>
                                         <div className="font-medium text-sm text-gray-900 dark:text-white">{card.name}</div>
                                         <div className="text-xs text-gray-500">{card.bank}</div>
