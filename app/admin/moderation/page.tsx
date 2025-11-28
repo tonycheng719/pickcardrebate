@@ -125,9 +125,50 @@ export default function AdminModerationPage() {
 
         if (!response.ok) throw new Error("Delete failed");
         toast.success("已刪除");
+    } catch (error) {
+        toast.error("刪除失敗");
+        fetchReports();
+    }
+  };
+
+  // New: Reply to Report (Admin Response)
+  const [replyDialogOpen, setReplyDialogOpen] = useState(false);
+  const [replyContent, setReplyContent] = useState("");
+  const [replyTargetId, setReplyTargetId] = useState<string | null>(null);
+  const [isSubmittingReply, setIsSubmittingReply] = useState(false);
+
+  const handleReplyOpen = (id: string) => {
+      setReplyTargetId(id);
+      setReplyContent(""); // Reset or fetch existing? For now fresh reply.
+      setReplyDialogOpen(true);
+  };
+
+  const handleReplySubmit = async () => {
+      if (!replyTargetId || !replyContent.trim()) return;
+      
+      setIsSubmittingReply(true);
+      try {
+          const response = await fetch("/api/reviews/reply", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ 
+                  reviewId: replyTargetId, 
+                  content: replyContent,
+                  isAdminReply: true 
+              }),
+          });
+
+          if (!response.ok) throw new Error("Reply failed");
+          
+          toast.success("回應已發送");
+          setReplyDialogOpen(false);
+          // Optionally mark as verified if responding?
+          // updateReportStatus(replyTargetId, "verified"); 
       } catch (error) {
-          toast.error("刪除失敗");
-          fetchReports();
+          console.error(error);
+          toast.error("發送回應失敗");
+      } finally {
+          setIsSubmittingReply(false);
       }
   };
 
@@ -271,6 +312,41 @@ export default function AdminModerationPage() {
           <span className="text-sm text-gray-500">全選本頁</span>
       </div>
 
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { MessageSquare, Reply } from "lucide-react";
+
+// ... (inside component return)
+
+      {/* Reply Dialog */}
+      <Dialog open={replyDialogOpen} onOpenChange={setReplyDialogOpen}>
+          <DialogContent>
+              <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2">
+                      <MessageSquare className="h-5 w-5 text-blue-600" /> 回覆會員評價
+                  </DialogTitle>
+                  <DialogDescription>
+                      您的回覆將會公開顯示給會員查看。
+                  </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4 py-2">
+                  <Textarea 
+                      value={replyContent} 
+                      onChange={(e) => setReplyContent(e.target.value)}
+                      placeholder="輸入回覆內容..."
+                      rows={4}
+                  />
+              </div>
+              <DialogFooter>
+                  <Button variant="ghost" onClick={() => setReplyDialogOpen(false)}>取消</Button>
+                  <Button onClick={handleReplySubmit} disabled={isSubmittingReply}>
+                      {isSubmittingReply ? <Loader2 className="h-4 w-4 animate-spin" /> : <Reply className="h-4 w-4 mr-2" />}
+                      發送回覆
+                  </Button>
+              </DialogFooter>
+          </DialogContent>
+      </Dialog>
+
       <div className="grid gap-4">
         {filteredReports.length === 0 ? (
             <div className="text-center py-12 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-dashed border-gray-200 dark:border-gray-700">
@@ -357,6 +433,15 @@ export default function AdminModerationPage() {
                         onClick={() => updateReportStatus(report.id, "rejected")}
                         >
                         <X className="h-4 w-4" /> 拒絕
+                        </Button>
+
+                        <Button
+                            variant="secondary"
+                            size="sm"
+                            className="gap-2"
+                            onClick={() => handleReplyOpen(report.id)}
+                        >
+                            <MessageSquare className="h-4 w-4" /> 回覆
                         </Button>
 
                         {report.card_id && report.card_id !== 'unknown' && (
