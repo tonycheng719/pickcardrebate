@@ -120,21 +120,30 @@ export default function AdminSettingsPage() {
         <CardContent>
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-medium text-gray-900 dark:text-white">初始化雲端資料庫</p>
+              <p className="font-medium text-gray-900 dark:text-white">重置並更新卡片資料 (Re-seed)</p>
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                將本地的卡片、商戶預設資料上傳至 Supabase (僅在資料庫為空時使用)。
+                將最新的代碼庫卡片資料 (包括新規則說明) 強制更新至 Supabase。這將覆蓋現有的卡片設定。
               </p>
             </div>
             <Button 
                 variant="outline" 
-                onClick={() => {
-                    if (confirm("確定要上傳初始資料嗎？這將會寫入大量數據。")) {
-                        uploadInitialData();
+                onClick={async () => {
+                    if (confirm("確定要強制更新所有卡片資料嗎？這將會覆蓋現有資料庫中的卡片描述。")) {
+                        try {
+                            const res = await fetch("/api/admin/seed-cards");
+                            const data = await res.json();
+                            if (res.ok) {
+                                toast.success(`成功更新 ${data.count} 張卡片`);
+                            } else {
+                                toast.error(`更新失敗: ${data.error}`);
+                            }
+                        } catch (e) {
+                            toast.error("請求失敗");
+                        }
                     }
                 }}
-                disabled={isLoading}
             >
-              {isLoading ? "處理中..." : "上傳初始資料"}
+              強制更新資料庫
             </Button>
           </div>
         </CardContent>

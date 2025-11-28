@@ -250,14 +250,14 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://www.hangseng.com/content/dam/hase/config/personal/credit-cards/mmpower-card/images/mmpower-card-face.png",
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "網上簽賬 5%", matchType: "category", matchValue: "online", percentage: 5.0, minSpend: 5000, cap: 500, capType: "reward", excludeCategories: ["ewallet"] }, // Max $500 +FUN Dollars
-      { description: "手機支付 5%", matchType: "paymentMethod", matchValue: "mobile", percentage: 5.0, minSpend: 5000, cap: 500, capType: "reward", excludeCategories: ["ewallet"] },
-      { description: "外幣簽賬 6%", matchType: "base", percentage: 6.0, minSpend: 5000, isForeignCurrency: true, cap: 500, capType: "reward" },
+      { description: "網上簽賬 5% (需月簽賬滿$5,000)", matchType: "category", matchValue: "online", percentage: 5.0, minSpend: 5000, cap: 500, capType: "reward", excludeCategories: ["ewallet"] }, // Max $500 +FUN Dollars
+      { description: "手機支付 5% (需月簽賬滿$5,000)", matchType: "paymentMethod", matchValue: "mobile", percentage: 5.0, minSpend: 5000, cap: 500, capType: "reward", excludeCategories: ["ewallet"] },
+      { description: "外幣簽賬 6% (需月簽賬滿$5,000)", matchType: "base", percentage: 6.0, minSpend: 5000, isForeignCurrency: true, cap: 500, capType: "reward" },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["網購5%", "手機支付5%", "必須登記"],
     welcomeOfferText: "迎新簽 $5,000 送 $700 Fun Dollars",
-    sellingPoints: ["網購及手機支付 5%", "外幣 6%", "每月簽賬滿額解鎖"],
+    sellingPoints: ["網購及手機支付 5% (需月簽賬滿$5,000)", "外幣 6%", "每月簽賬滿額解鎖"],
   },
   {
     id: "hangseng-enjoy",
@@ -282,12 +282,12 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://www.hangseng.com/content/dam/hase/config/personal/credit-cards/travel-plus-card/images/travel-plus-card-face.png",
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "外幣簽賬 7%", matchType: "base", percentage: 7.0, minSpend: 6000, isForeignCurrency: true, cap: 500, capType: "reward" },
-      { description: "本地餐飲/交通 5%", matchType: "category", matchValue: ["dining", "transport"], percentage: 5.0, minSpend: 6000, cap: 500, capType: "reward" },
+      { description: "外幣簽賬 7% (需月簽賬滿$6,000)", matchType: "base", percentage: 7.0, minSpend: 6000, isForeignCurrency: true, cap: 500, capType: "reward" },
+      { description: "本地餐飲/交通 5% (需月簽賬滿$6,000)", matchType: "category", matchValue: ["dining", "transport"], percentage: 5.0, minSpend: 6000, cap: 500, capType: "reward" },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["旅遊7%", "餐飲5%"],
-    sellingPoints: ["外幣簽賬高達 7%", "本地餐飲及交通 5%"],
+    sellingPoints: ["外幣簽賬高達 7% (需月簽賬滿$6,000)", "本地餐飲及交通 5% (需月簽賬滿$6,000)"],
   },
 
   // ========================================================================
@@ -367,14 +367,14 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://www.dbs.com.hk/personal/credit-cards/credit-cards/eminent-card/images/card_face_eminent_visa_signature.png",
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "餐飲 5%", matchType: "category", matchValue: "dining", percentage: 5.0, minSpend: 300, cap: 8000, capType: "spending" },
-      { description: "健身/運動 5%", matchType: "category", matchValue: ["sports", "gym"], percentage: 5.0, minSpend: 300, cap: 8000, capType: "spending" },
-      { description: "醫療 5%", matchType: "category", matchValue: "medical", percentage: 5.0, minSpend: 300, cap: 8000, capType: "spending" },
+      { description: "餐飲 5% (單筆滿$300)", matchType: "category", matchValue: "dining", percentage: 5.0, minSpend: 300, cap: 8000, capType: "spending" },
+      { description: "健身/運動 5% (單筆滿$300)", matchType: "category", matchValue: ["sports", "gym"], percentage: 5.0, minSpend: 300, cap: 8000, capType: "spending" },
+      { description: "醫療 5% (單筆滿$300)", matchType: "category", matchValue: "medical", percentage: 5.0, minSpend: 300, cap: 8000, capType: "spending" },
       { description: "基本回饋 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["餐飲5%", "健身5%"],
     welcomeOfferText: "迎新高達 $1,000 回贈",
-    sellingPoints: ["餐飲、健身、醫療 5% 回贈", "基本簽賬 1%"],
+    sellingPoints: ["餐飲、健身、醫療 5% 回贈 (單筆滿$300)", "基本簽賬 1%"],
   },
   {
     id: "dbs-black",
@@ -621,7 +621,7 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://www.fubonbank.com.hk/web/html/cc_platinum_card_face.png",
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "日韓台 8% (20X)", matchType: "base", percentage: 8.0, isForeignCurrency: true, minSpend: 2000 },
+      { description: "日韓台 8% (20X) (需登記)", matchType: "base", percentage: 8.0, isForeignCurrency: true, minSpend: 2000 },
       { description: "本地簽賬 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["日韓台8%", "旅遊神卡"],
