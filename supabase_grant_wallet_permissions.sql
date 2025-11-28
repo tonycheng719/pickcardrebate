@@ -17,3 +17,5 @@ CREATE POLICY "Allow public write user_card_settings" ON public.user_card_settin
 CREATE POLICY "Allow public update user_card_settings" ON public.user_card_settings FOR UPDATE USING (true);
 CREATE POLICY "Allow public delete user_card_settings" ON public.user_card_settings FOR DELETE USING (true);
 
+
+

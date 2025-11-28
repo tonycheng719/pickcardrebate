@@ -18,3 +18,5 @@ CREATE POLICY "Allow public insert reports" ON public.reports FOR INSERT WITH CH
 DROP POLICY IF EXISTS "Allow public insert search_logs" ON public.search_logs;
 CREATE POLICY "Allow public insert search_logs" ON public.search_logs FOR INSERT WITH CHECK (true);
 
+
+

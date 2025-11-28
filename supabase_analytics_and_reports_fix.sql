@@ -97,3 +97,5 @@ GRANT EXECUTE ON FUNCTION get_analytics_summary() TO anon;
 GRANT EXECUTE ON FUNCTION get_analytics_summary() TO authenticated;
 GRANT EXECUTE ON FUNCTION get_analytics_summary() TO service_role;
 
+
+

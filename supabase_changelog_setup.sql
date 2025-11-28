@@ -16,3 +16,5 @@ ALTER TABLE public.system_changelogs DISABLE ROW LEVEL SECURITY;
 -- 賦予權限
 GRANT ALL ON public.system_changelogs TO anon, authenticated, service_role;
 
+
+

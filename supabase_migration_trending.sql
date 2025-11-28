@@ -22,3 +22,5 @@ GRANT EXECUTE ON FUNCTION get_trending_merchants() TO authenticated;
 -- Notify to reload schema
 NOTIFY pgrst, 'reload schema';
 
+
+

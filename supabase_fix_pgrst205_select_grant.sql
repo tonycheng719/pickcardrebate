@@ -5,3 +5,5 @@ GRANT SELECT ON public.user_card_settings TO anon;
 -- 再次刷新 Schema Cache
 NOTIFY pgrst, 'reload schema';
 
+
+

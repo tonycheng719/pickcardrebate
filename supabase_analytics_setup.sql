@@ -42,3 +42,5 @@ GRANT ALL ON public.user_transactions TO service_role;
 -- 為了配合我們的 API Route 模式，賦予 anon/authenticated 基本操作權限 (由 API 層控制邏輯)
 GRANT ALL ON public.user_transactions TO anon, authenticated;
 
+
+

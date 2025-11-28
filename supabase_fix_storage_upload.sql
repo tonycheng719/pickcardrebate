@@ -22,3 +22,5 @@ GRANT ALL ON SCHEMA storage TO anon, authenticated, service_role;
 GRANT ALL ON TABLE storage.objects TO anon, authenticated, service_role;
 GRANT ALL ON TABLE storage.buckets TO anon, authenticated, service_role;
 
+
+

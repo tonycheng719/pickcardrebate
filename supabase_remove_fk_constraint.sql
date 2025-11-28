@@ -17,3 +17,5 @@ WITH CHECK (true);
 GRANT INSERT ON public.reports TO anon;
 GRANT SELECT ON public.reports TO anon; -- 有些回傳機制可能需要 SELECT
 
+
+

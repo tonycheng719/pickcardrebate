@@ -59,3 +59,5 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON public.user_card_settings TO anon;
 -- 7. 刷新 Schema Cache
 NOTIFY pgrst, 'reload schema';
 
+
+

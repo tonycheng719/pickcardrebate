@@ -20,3 +20,5 @@ WHERE id = 'hsbc-visa-signature';
 -- 刷新 Schema Cache 以確保前台立即更新
 NOTIFY pgrst, 'reload schema';
 
+
+

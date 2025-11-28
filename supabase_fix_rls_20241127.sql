@@ -31,3 +31,5 @@ ADD COLUMN IF NOT EXISTS gender text,
 ADD COLUMN IF NOT EXISTS district text,
 ADD COLUMN IF NOT EXISTS last_ip text;
 
+
+

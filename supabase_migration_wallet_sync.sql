@@ -67,3 +67,5 @@ ON public.user_card_settings FOR SELECT
 TO authenticated 
 USING (true);
 
+
+

@@ -23,3 +23,5 @@ END $$;
 -- 3. 再次確保權限 (以防萬一)
 GRANT ALL ON public.merchant_reviews TO anon, authenticated, service_role;
 
+
+

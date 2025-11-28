@@ -1,18 +1,61 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAdminDataStore } from "@/lib/admin/data-store";
-import { Database } from "lucide-react";
+import { Database, MessageCircle, Save } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DEFAULT_SYSTEM_SETTINGS, SystemSetting } from "@/lib/admin/mock-data";
+import { toast } from "sonner";
 
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState<SystemSetting[]>(DEFAULT_SYSTEM_SETTINGS);
   const [saved, setSaved] = useState(false);
   const { uploadInitialData, isLoading } = useAdminDataStore();
+  
+  const [whatsappUrl, setWhatsappUrl] = useState("");
+  const [isSettingsLoading, setIsSettingsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchSettings() {
+      try {
+        const res = await fetch("/api/admin/settings");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.settings?.whatsapp_group_url) {
+            setWhatsappUrl(data.settings.whatsapp_group_url);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch settings", error);
+      } finally {
+        setIsSettingsLoading(false);
+      }
+    }
+    fetchSettings();
+  }, []);
+
+  const handleSaveWhatsapp = async () => {
+    try {
+        const res = await fetch("/api/admin/settings", {
+            method: "POST",
+            body: JSON.stringify({
+                key: "whatsapp_group_url",
+                value: whatsappUrl
+            })
+        });
+        
+        if (res.ok) {
+            toast.success("WhatsApp 連結已更新");
+        } else {
+            toast.error("更新失敗");
+        }
+    } catch (e) {
+        toast.error("發生錯誤");
+    }
+  };
   
   // Local state for Analytics (simulated backend fields)
   const [analytics, setAnalytics] = useState({
@@ -41,6 +84,32 @@ export default function AdminSettingsPage() {
         </div>
         <Button onClick={handleSave}>{saved ? "已儲存" : "儲存設定"}</Button>
       </div>
+
+      <Card className="dark:bg-gray-800 dark:border-gray-700">
+        <CardHeader>
+          <CardTitle className="text-lg dark:text-white flex items-center gap-2">
+            <MessageCircle className="h-5 w-5" /> 社群設定
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="grid gap-2">
+                <Label>WhatsApp 討論群連結</Label>
+                <div className="flex gap-2">
+                    <Input 
+                        placeholder="https://chat.whatsapp.com/..." 
+                        value={whatsappUrl}
+                        onChange={(e) => setWhatsappUrl(e.target.value)}
+                    />
+                    <Button onClick={handleSaveWhatsapp} disabled={isSettingsLoading}>
+                        <Save className="h-4 w-4 mr-2" /> 儲存
+                    </Button>
+                </div>
+                <p className="text-xs text-gray-500">更新後，前台的 Navbar、Footer 和優惠詳情頁將自動更新連結。</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <Card className="dark:bg-gray-800 dark:border-gray-700">
         <CardHeader>

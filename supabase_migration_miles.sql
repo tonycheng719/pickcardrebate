@@ -64,3 +64,5 @@ WHERE id = 'citi-prestige';
 -- Notify to reload schema
 NOTIFY pgrst, 'reload schema';
 
+
+

@@ -21,3 +21,5 @@ NOTIFY pgrst, 'reload schema';
 -- 4. 再次確保權限
 GRANT ALL ON public.merchant_reviews TO anon, authenticated, service_role;
 
+
+

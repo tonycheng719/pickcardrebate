@@ -46,3 +46,5 @@ VALUES
 ON CONFLICT (id) DO UPDATE 
 SET is_online_only = TRUE;
 
+
+

@@ -19,3 +19,5 @@ CREATE POLICY "Allow public view user_card_settings"
 ON public.user_card_settings FOR SELECT 
 USING (true);
 
+
+

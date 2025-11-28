@@ -56,3 +56,5 @@ ON CONFLICT (id) DO UPDATE SET
     is_general = EXCLUDED.is_general,
     is_online_only = EXCLUDED.is_online_only;
 
+
+

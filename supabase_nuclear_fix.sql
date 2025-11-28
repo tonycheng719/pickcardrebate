@@ -46,3 +46,5 @@ GRANT ALL ON public.profiles TO anon, authenticated, service_role;
 -- 4. 確保 Sequence 權限 (如果有 serial id)
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated, service_role;
 
+
+

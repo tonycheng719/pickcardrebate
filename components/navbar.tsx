@@ -1,18 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { CreditCard, Wallet, LogOut, Settings, Moon, Sun, Coins, Plane } from "lucide-react";
+import { CreditCard, Wallet, LogOut, Settings, Moon, Sun, Coins, Plane, MessageCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { useWallet } from "@/lib/store/wallet-context";
 import { useTheme } from "./theme-provider";
+import { useSettings } from "@/lib/store/settings-context";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { WHATSAPP_GROUP_URL } from "@/lib/constants";
 
 export function Navbar() {
   const { user, logout, rewardPreference, toggleRewardPreference } = useWallet();
+  const { getSetting } = useSettings();
   const router = useRouter();
   const { theme, setTheme } = useTheme();
+  
+  // Use setting from DB, fallback to constant
+  const whatsappUrl = getSetting("whatsapp_group_url") || WHATSAPP_GROUP_URL;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -77,6 +83,21 @@ export function Navbar() {
               {rewardPreference === 'miles' ? <Plane className="h-5 w-5 text-sky-500" /> : <Coins className="h-5 w-5 text-amber-500" />}
             </motion.div>
           </Button>
+
+          <a 
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="加入 WhatsApp 討論群"
+          >
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="text-gray-600 dark:text-gray-300 hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/20 dark:hover:text-green-400 rounded-full mr-1"
+            >
+              <MessageCircle className="h-5 w-5" />
+            </Button>
+          </a>
 
           <Button 
             variant="ghost" 

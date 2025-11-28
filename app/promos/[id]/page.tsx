@@ -4,11 +4,13 @@ import { adminAuthClient } from "@/lib/supabase/admin-client";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ExternalLink, Calendar, Tag, Clock, ArrowLeft, Share2 } from "lucide-react";
+import { ExternalLink, Calendar, Tag, Clock, ArrowLeft, Share2, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import { Promo } from "@/lib/types";
 import { PROMOS } from "@/lib/data/promos";
+import { WHATSAPP_GROUP_URL } from "@/lib/constants";
+import { getSystemSetting } from "@/lib/data/settings";
 
 // Revalidate every hour
 export const revalidate = 3600;
@@ -75,6 +77,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function PromoDetailPage({ params }: PageProps) {
   const promo = await getPromo(params.id);
+  
+  // Fetch dynamic settings
+  const whatsappUrl = await getSystemSetting("whatsapp_group_url") || WHATSAPP_GROUP_URL;
 
   if (!promo) {
     notFound();
@@ -170,6 +175,24 @@ export default async function PromoDetailPage({ params }: PageProps) {
                             查看相關信用卡
                         </Button>
                     </Link>
+                </div>
+
+                {/* WhatsApp CTA */}
+                <div className="mt-8 bg-green-50 dark:bg-green-900/10 border border-green-100 dark:border-green-900/30 rounded-xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="flex items-center gap-4">
+                        <div className="bg-green-100 dark:bg-green-900/30 p-3 rounded-full">
+                            <MessageCircle className="h-6 w-6 text-green-600 dark:text-green-400" />
+                        </div>
+                        <div>
+                            <h3 className="font-bold text-gray-900 dark:text-gray-100">對這個優惠有疑問？</h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">加入我們的 WhatsApp 討論群，與其他谷友即時交流心得！</p>
+                        </div>
+                    </div>
+                    <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+                        <Button className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white border-none gap-2 rounded-lg">
+                            <MessageCircle className="h-4 w-4" /> 加入討論群
+                        </Button>
+                    </a>
                 </div>
             </div>
         </article>

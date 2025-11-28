@@ -35,3 +35,5 @@ GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated, se
 -- 5. 確保 RPC 可執行
 GRANT EXECUTE ON FUNCTION public.get_analytics_summary() TO anon, authenticated, service_role;
 
+
+

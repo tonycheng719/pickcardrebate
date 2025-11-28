@@ -53,3 +53,5 @@ GRANT ALL ON public.merchant_overrides TO service_role;
 -- 刷新 Schema Cache
 NOTIFY pgrst, 'reload schema';
 
+
+

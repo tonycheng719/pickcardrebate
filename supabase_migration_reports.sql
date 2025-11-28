@@ -26,3 +26,5 @@ WITH CHECK (auth.uid() = user_id);
 -- Assuming public insert, private select for now or just allow auth users to see their own?
 -- Let's just allow insert for authenticated users.
 
+
+

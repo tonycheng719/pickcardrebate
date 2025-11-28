@@ -37,3 +37,5 @@ GRANT SELECT ON public.promos TO anon, authenticated, service_role;
 -- 5. 驗證：您可以在 SQL Editor 運行這行測試，應該要能立即返回數據
 -- SELECT count(*) FROM public.cards;
 
+
+

@@ -30,3 +30,5 @@ ON public.search_logs FOR SELECT
 TO authenticated 
 USING (true);
 
+
+

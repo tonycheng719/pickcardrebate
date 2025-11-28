@@ -16,3 +16,5 @@ ALTER TABLE public.admin_audit_logs ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Allow read access for all authenticated users" ON public.admin_audit_logs FOR SELECT USING (auth.role() = 'authenticated');
 CREATE POLICY "Allow insert access for all authenticated users" ON public.admin_audit_logs FOR INSERT WITH CHECK (auth.role() = 'authenticated');
 
+
+

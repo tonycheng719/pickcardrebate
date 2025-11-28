@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Providers } from "@/components/providers";
 import { BottomNav } from "@/components/bottom-nav";
+import { SiteFooter } from "@/components/site-footer";
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -22,9 +23,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-HK" suppressHydrationWarning>
-      <body className="antialiased bg-gray-50 dark:bg-gray-950 min-h-screen text-gray-900 dark:text-gray-100 transition-colors duration-300 pb-20 md:pb-0">
+      <body className="antialiased bg-gray-50 dark:bg-gray-950 min-h-screen text-gray-900 dark:text-gray-100 transition-colors duration-300 pb-20 md:pb-0 flex flex-col">
         <Providers>
-        {children}
+          <div className="flex-1">
+            {children}
+          </div>
+          <SiteFooter />
           <div className="md:hidden">
             <BottomNav />
           </div>

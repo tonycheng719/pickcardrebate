@@ -12,3 +12,5 @@ WITH CHECK (auth.uid() = user_id);
 GRANT INSERT ON public.reports TO authenticated;
 GRANT USAGE, SELECT ON SEQUENCE reports_id_seq TO authenticated; -- 如果 id 是 serial，雖然這裡是 uuid default gen_random_uuid()，但預防萬一
 
+
+

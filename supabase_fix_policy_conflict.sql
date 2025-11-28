@@ -29,3 +29,5 @@ CREATE POLICY "Allow authenticated insert promos" ON public.promos FOR INSERT TO
 CREATE POLICY "Allow authenticated update promos" ON public.promos FOR UPDATE TO authenticated USING (true);
 CREATE POLICY "Allow authenticated delete promos" ON public.promos FOR DELETE TO authenticated USING (true);
 
+
+
