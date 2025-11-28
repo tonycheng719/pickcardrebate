@@ -16,14 +16,24 @@ export async function GET(request: Request) {
   }
 
   // Determine redirect origin dynamically or fallback to production
-  // const isDev = origin.includes("localhost");
-  // const targetOrigin = isDev ? origin : "https://pickcardrebate.com";
+  const isDev = origin.includes("localhost");
+  // If we are in a proxy situation where origin is localhost (from internal network) but the actual request came from public
+  // We need to be careful. The "origin" variable here comes from new URL(request.url).
+  // If Zeabur/Nginx is stripping the host header, request.url might be http://localhost:8080/auth/callback...
   
-  // Temporary fallback: use origin directly to fix redirection loop/error until DNS stabilizes
-  // We rely on WalletContext's manual code exchange as a safety net if this redirects to Zeabur
-  const targetOrigin = origin;
+  let targetOrigin = origin;
+  
+  // Robust check: if the internal origin is localhost but we are in production (based on env or common sense)
+  // we should redirect to the public domain to ensure the user lands on the right site.
+  if (isDev && process.env.NODE_ENV === 'production') {
+      // We are likely behind a proxy in Zeabur
+      targetOrigin = "https://pickcardrebate.com";
+  } else if (!isDev) {
+      // If origin is already public (e.g. zeabur.app or pickcardrebate.com), use it.
+      targetOrigin = origin;
+  }
 
-  console.log("Auth Callback Redirecting to:", `${targetOrigin}/auth/success`, "Origin:", origin);
+  console.log("Auth Callback Redirecting to:", `${targetOrigin}/auth/success`, "Origin:", origin, "Target:", targetOrigin);
 
   return NextResponse.redirect(`${targetOrigin}/auth/success`);
 }
