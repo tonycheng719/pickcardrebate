@@ -200,20 +200,27 @@ function WalletCard({ card, feeDate }: { card: CreditCard, feeDate?: string }) {
 }
 
 export default function WalletPage() {
-  const { myCardIds, cardSettings, user } = useWallet();
+  const { myCardIds, cardSettings, user, removeCard } = useWallet();
   const { cards } = useDataset();
   
-  // Debug: Log card IDs
-  console.log("[Wallet Page] myCardIds from context:", myCardIds);
-  console.log("[Wallet Page] Available cards from dataset:", cards.length);
-  
+  // Filter to only cards that exist in the dataset
   const myCards = cards.filter((c) => myCardIds.includes(c.id));
   
-  // Debug: Check if any cards are missing
-  const missingCardIds = myCardIds.filter(id => !cards.find(c => c.id === id));
-  if (missingCardIds.length > 0) {
-    console.warn("[Wallet Page] Missing cards in dataset:", missingCardIds);
-  }
+  // Auto-cleanup: Remove invalid card IDs that don't exist in the dataset
+  useEffect(() => {
+    if (cards.length > 0 && user?.id) {
+      const invalidCardIds = myCardIds.filter(id => !cards.find(c => c.id === id));
+      if (invalidCardIds.length > 0) {
+        console.warn("[Wallet] Removing invalid card IDs:", invalidCardIds);
+        invalidCardIds.forEach(id => {
+          removeCard(id);
+        });
+        toast.info("已自動清理無效卡片", { 
+          description: `移除了 ${invalidCardIds.length} 張不存在的卡片` 
+        });
+      }
+    }
+  }, [cards, myCardIds, user, removeCard]);
 
   const [transactions, setTransactions] = useState<any[]>([]);
   const [stats, setStats] = useState({ spending: 0, rewards: 0 });
