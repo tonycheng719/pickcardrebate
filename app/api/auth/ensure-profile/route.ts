@@ -61,6 +61,7 @@ export async function GET(request: Request) {
             const fullName = userMetadata?.full_name || userMetadata?.name || userEmail?.split("@")[0] || "Member";
             const avatarUrl = userMetadata?.avatar_url;
 
+            console.log("[ensure-profile] Creating new profile for:", userId);
             const { error: upsertError } = await adminAuthClient.from("profiles").upsert({
                 id: userId,
                 email: userEmail,
@@ -72,24 +73,27 @@ export async function GET(request: Request) {
             });
             
             if (upsertError) {
-                console.error("Error creating profile:", upsertError);
+                console.error("[ensure-profile] Error creating profile:", upsertError);
                 throw upsertError;
             }
-            console.log("Profile created for user (API/Admin):", userId);
+            console.log("[ensure-profile] Profile created for user:", userId, "last_login:", now);
         } else {
             // Update last_login for existing profile
-            const { error: updateError } = await adminAuthClient
+            console.log("[ensure-profile] Updating last_login for:", userId);
+            const { data: updateData, error: updateError } = await adminAuthClient
                 .from("profiles")
                 .update({ last_login: now, updated_at: now })
-                .eq("id", userId);
+                .eq("id", userId)
+                .select("last_login");
             
             if (updateError) {
-                console.error("Error updating last_login:", updateError);
-                // Non-critical, don't throw
+                console.error("[ensure-profile] Error updating last_login:", updateError);
+                return NextResponse.json({ success: false, error: updateError.message }, { status: 500 });
             }
+            console.log("[ensure-profile] last_login updated for:", userId, "to:", updateData);
         }
 
-        return NextResponse.json({ success: true });
+        return NextResponse.json({ success: true, last_login: now });
     } catch (error: any) {
         console.error("Error ensuring profile (API):", error);
         return NextResponse.json({ error: error.message }, { status: 500 });
