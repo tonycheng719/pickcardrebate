@@ -1,7 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 
 // Fallback for build time, but should be provided by env at runtime
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://api.pickcardrebate.com";
+// Use Zeabur's original domain since api.pickcardrebate.com DNS is not resolving
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://pickcardrebate-supabase-kong.zeabur.app";
 
 // Support both variable names: SUPABASE_SERVICE_ROLE_KEY (Standard) or SERVICE_ROLE_KEY (Zeabur/Supabase auto-gen)
 const SERVICE_KEY_VALUE = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SERVICE_ROLE_KEY;

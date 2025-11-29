@@ -4,7 +4,8 @@ const nextConfig: NextConfig = {
   // Restore env vars to ensure they are available both at build time and runtime
   // This fixes the "Missing Supabase Config" error on the client side
   env: {
-    NEXT_PUBLIC_SUPABASE_URL: "https://api.pickcardrebate.com",
+    // Use Zeabur's original domain since api.pickcardrebate.com DNS is not resolving
+    NEXT_PUBLIC_SUPABASE_URL: "https://pickcardrebate-supabase-kong.zeabur.app",
     NEXT_PUBLIC_SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpc3MiOiAic3VwYWJhc2UtZGVtbyIsCiAgICAiaWF0IjogMTY0MTc2OTIwMCwKICAgICJleHAiOiAxNzk5NTM1NjAwCn0.dc_X5iR_VP_qT0zsiyj_I_OZ2T9FtRU2BBNWN8Bu4GE",
   },
   // output: "standalone", // Disabled to fix 404 asset errors
