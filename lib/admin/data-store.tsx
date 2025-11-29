@@ -149,48 +149,60 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
   const refreshData = useCallback(async () => {
     // Removed setIsLoading(true) here to prevent UI flickering if we already have data
     try {
-        // Set a longer timeout (20s) to accommodate slow connections
+        // Set a shorter timeout (8s) - if it fails, we use local data which is fine
         const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error("Timeout")), 20000)
+            setTimeout(() => reject(new Error("Timeout")), 8000)
         );
 
-        // 1. Cards - USE API ROUTE
-        // This bypasses potential client-side RLS issues or timeouts for admin context
-        // Fallback to supabase client if API fails or for other entities
-        const cardsApiPromise = fetch('/api/admin/cards').then(res => {
-            if (!res.ok) throw new Error('API Error');
-            return res.json();
-        });
-        
-        // Use promise.any or similar? Let's just try API first for Cards as that's the problematic one
-        const { cards: cardsData } = await Promise.race([cardsApiPromise, timeoutPromise]) as any;
-        
-        if (cardsData && cardsData.length > 0) {
-            setCards(cardsData.map(mapCardFromDB));
+        // Use AbortController for fetch requests
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+        try {
+            // 1. Cards - USE API ROUTE with abort signal
+            const cardsRes = await fetch('/api/admin/cards', { signal: controller.signal });
+            if (cardsRes.ok) {
+                const { cards: cardsData } = await cardsRes.json();
+                if (cardsData && cardsData.length > 0) {
+                    setCards(cardsData.map(mapCardFromDB));
+                }
+            }
+        } catch (e: any) {
+            if (e.name !== 'AbortError') {
+                console.warn("Cards fetch failed:", e.message);
+            }
         }
 
-        // 2. Merchants
-        const merchantsPromise = supabase.from('merchants').select('*');
-        const { data: merchantsData, error: merchantsError } = await Promise.race([merchantsPromise, timeoutPromise]) as any;
-        
-        if (merchantsError) throw merchantsError;
-        if (merchantsData && merchantsData.length > 0) {
-            setMerchants(merchantsData.map(mapMerchantFromDB));
+        // 2. Merchants - with independent timeout
+        try {
+            const merchantsPromise = supabase.from('merchants').select('*');
+            const merchantsTimeout = new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 5000));
+            const { data: merchantsData } = await Promise.race([merchantsPromise, merchantsTimeout]) as any;
+            
+            if (merchantsData && merchantsData.length > 0) {
+                setMerchants(merchantsData.map(mapMerchantFromDB));
+            }
+        } catch (e: any) {
+            console.warn("Merchants fetch failed:", e.message);
         }
 
-        // 3. Promos
-        const promosPromise = supabase.from('promos').select('*');
-        const { data: promosData, error: promosError } = await Promise.race([promosPromise, timeoutPromise]) as any;
-        
-        if (promosError) throw promosError;
-        if (promosData && promosData.length > 0) {
-            setPromos(promosData.map(mapPromoFromDB));
+        // 3. Promos - with independent timeout
+        try {
+            const promosPromise = supabase.from('promos').select('*');
+            const promosTimeout = new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 5000));
+            const { data: promosData } = await Promise.race([promosPromise, promosTimeout]) as any;
+            
+            if (promosData && promosData.length > 0) {
+                setPromos(promosData.map(mapPromoFromDB));
+            }
+        } catch (e: any) {
+            console.warn("Promos fetch failed:", e.message);
         }
         
         setIsLoading(false); // Data sync complete
-    } catch (error) {
-        console.warn("Supabase sync failed or timed out, using local data.", error);
-        // Don't show error toast to user, just silently fail to local data
+    } catch (error: any) {
+        console.warn("Data sync error:", error.message);
+        // Don't show error toast to user, just silently use local data
         setIsLoading(false);
     }
   }, []);
