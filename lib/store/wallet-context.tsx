@@ -267,21 +267,43 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       // logUserIp().catch(console.error); // Disabled to prevent "Failed to find Server Action" error
 
       try {
-        const { data } = await supabase
-          .from("profiles")
-          .select("name, avatar_url, gender, district, birth_year, birth_month, last_ip, reward_preference, notifications, followed_promo_ids")
-          .eq("id", sessionUser.id)
-          .maybeSingle();
+        // Use API route to fetch profile (more reliable than direct Supabase client)
+        let profileData = null;
+        try {
+          const profileRes = await fetch(`/api/user/profile?userId=${sessionUser.id}`);
+          if (profileRes.ok) {
+            const { profile } = await profileRes.json();
+            profileData = profile;
+          }
+        } catch (e) {
+          console.warn("Profile API fetch failed, trying direct query...", e);
+          // Fallback to direct Supabase query with timeout
+          const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error("Profile fetch timeout")), 5000)
+          );
+          const queryPromise = supabase
+            .from("profiles")
+            .select("name, avatar_url, gender, district, birth_year, birth_month, last_ip, reward_preference, notifications, followed_promo_ids")
+            .eq("id", sessionUser.id)
+            .maybeSingle();
+          
+          const { data } = await Promise.race([queryPromise, timeoutPromise]) as any;
+          profileData = data;
+        }
 
-        const profile = buildUserFromSession(sessionUser, data);
+        const profile = buildUserFromSession(sessionUser, profileData);
         setUser(profile);
+        console.log("[Auth] User hydrated:", profile.email, "Gender:", profile.gender, "BirthYear:", profile.birthYear);
         
         // Start Wallet Sync
         initializeWalletSync(sessionUser.id);
 
       } catch (error) {
         console.error("Failed to load Supabase profile", error);
-        setUser(buildUserFromSession(sessionUser));
+        // Still set user from session data (basic info)
+        const basicProfile = buildUserFromSession(sessionUser);
+        setUser(basicProfile);
+        console.log("[Auth] Using basic profile (no DB data):", basicProfile.email);
       }
     },
     [buildUserFromSession, supabase, initializeWalletSync]
