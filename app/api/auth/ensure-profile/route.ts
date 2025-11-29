@@ -12,11 +12,13 @@ export async function GET(request: Request) {
             return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
         }
 
+        const now = new Date().toISOString();
+
         // 2. Perform DB Operations using Admin Client (Service Role) to bypass RLS
         // Check if profile exists
         const { data: profile, error: fetchError } = await adminAuthClient
             .from("profiles")
-            .select("id")
+            .select("id, created_at")
             .eq("id", user.id)
             .single();
 
@@ -26,17 +28,18 @@ export async function GET(request: Request) {
         }
 
         if (!profile) {
-            // Insert profile if missing
+            // Insert new profile
             const fullName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "Member";
             const avatarUrl = user.user_metadata?.avatar_url;
 
-            // Using upsert with Admin Client
             const { error: upsertError } = await adminAuthClient.from("profiles").upsert({
                 id: user.id,
                 email: user.email,
                 name: fullName,
                 avatar_url: avatarUrl,
-                updated_at: new Date().toISOString(),
+                created_at: now,
+                last_login: now,
+                updated_at: now,
             });
             
             if (upsertError) {
@@ -44,6 +47,17 @@ export async function GET(request: Request) {
                 throw upsertError;
             }
             console.log("Profile created for user (API/Admin):", user.id);
+        } else {
+            // Update last_login for existing profile
+            const { error: updateError } = await adminAuthClient
+                .from("profiles")
+                .update({ last_login: now, updated_at: now })
+                .eq("id", user.id);
+            
+            if (updateError) {
+                console.error("Error updating last_login:", updateError);
+                // Non-critical, don't throw
+            }
         }
 
         return NextResponse.json({ success: true });

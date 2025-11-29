@@ -701,7 +701,7 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 0,
     rewardConfig: { method: 'direct_rate', baseRate: 6, currency: 'AM' }, // $6/mile standard, $1.5/mile overseas
     rules: [
-      { description: "海外/內地簽賬 4%", matchType: "category", matchValue: ["foreign"], percentage: 4.0, isForeignCurrency: true },
+      { description: "海外/內地簽賬 4%", matchType: "base", percentage: 4.0, isForeignCurrency: true },
       { description: "本地餐飲 2%", matchType: "category", matchValue: ["dining"], percentage: 2.0 },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4 },
     ],
@@ -716,8 +716,8 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'direct_rate', baseRate: 5, currency: 'Miles' }, // $5/mile
     rules: [
-      { description: "海外簽賬 $5=1里", matchType: "category", matchValue: ["foreign"], percentage: 2.0, isForeignCurrency: true },
-      { description: "本地簽賬 $5=1里", matchType: "base", percentage: 2.0 },
+      { description: "海外簽賬 $5=1里 (2%)", matchType: "base", percentage: 2.0, isForeignCurrency: true },
+      { description: "本地簽賬 $5=1里 (2%)", matchType: "base", percentage: 2.0 },
     ],
     tags: ["里數卡", "高端卡"],
     sellingPoints: ["本地及海外簽賬 $5=1里", "機場貴賓室", "旅遊保險"],
