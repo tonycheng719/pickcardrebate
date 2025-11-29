@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { adminAuthClient } from '@/lib/supabase/admin-client';
+import { logAdminAction } from '@/lib/admin/audit-log';
 
 export const dynamic = 'force-dynamic';
 
@@ -129,15 +130,16 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: 'Missing comment ID' }, { status: 400 });
     }
 
+    // Get comment details before deleting
+    const { data: commentToDelete } = await adminAuthClient
+      .from('card_comments')
+      .select('user_id, user_name, card_id, content')
+      .eq('id', commentId)
+      .single();
+
     // Verify ownership if not admin
     if (!isAdmin && userId) {
-      const { data: comment } = await adminAuthClient
-        .from('card_comments')
-        .select('user_id')
-        .eq('id', commentId)
-        .single();
-
-      if (comment?.user_id !== userId) {
+      if (commentToDelete?.user_id !== userId) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
       }
     }
@@ -152,6 +154,18 @@ export async function DELETE(request: Request) {
       .eq('id', commentId);
 
     if (error) throw error;
+
+    // Log admin action if deleted by admin
+    if (isAdmin) {
+      await logAdminAction({
+        adminEmail: 'admin',
+        action: 'delete_comment',
+        targetType: 'comment',
+        targetId: commentId,
+        targetName: `${commentToDelete?.user_name}'s comment on ${commentToDelete?.card_id}`,
+        details: { content: commentToDelete?.content?.substring(0, 100) }
+      });
+    }
 
     return NextResponse.json({ success: true });
   } catch (error: any) {

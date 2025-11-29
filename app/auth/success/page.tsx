@@ -101,8 +101,9 @@ export default function AuthSuccessPage() {
                 name: data.session.user.user_metadata?.full_name || data.session.user.user_metadata?.name || '',
                 avatar: data.session.user.user_metadata?.avatar_url || ''
               });
-              await fetch(`/api/auth/ensure-profile?${profileParams.toString()}`);
-              console.log("Profile ensured with last_login updated");
+              const profileRes = await fetch(`/api/auth/ensure-profile?${profileParams.toString()}`);
+              const profileData = await profileRes.json();
+              console.log("Profile ensured response:", profileData);
             } catch (e) {
               console.warn("Ensure profile failed, but continuing...", e);
             }

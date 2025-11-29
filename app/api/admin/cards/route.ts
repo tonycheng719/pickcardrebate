@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminAuthClient } from "@/lib/supabase/admin-client";
+import { logAdminAction } from "@/lib/admin/audit-log";
 
 export const dynamic = 'force-dynamic';
 
@@ -42,6 +43,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing card ID" }, { status: 400 });
     }
 
+    // Check if card exists to determine if this is create or update
+    const { data: existingCard } = await adminAuthClient
+      .from('cards')
+      .select('id, name')
+      .eq('id', card.id)
+      .single();
+
+    const isUpdate = !!existingCard;
+
     // Use upsert to handle both create and update
     const { error } = await adminAuthClient
       .from('cards')
@@ -51,6 +61,15 @@ export async function POST(request: NextRequest) {
       console.error("Error saving card:", error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
+
+    // Log admin action
+    await logAdminAction({
+      adminEmail: 'admin', // TODO: Get from session
+      action: isUpdate ? 'update' : 'create',
+      targetType: 'card',
+      targetId: card.id,
+      targetName: card.name,
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -73,6 +92,13 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: "Missing card ID" }, { status: 400 });
     }
 
+    // Get card name before deleting
+    const { data: cardToDelete } = await adminAuthClient
+      .from('cards')
+      .select('name')
+      .eq('id', id)
+      .single();
+
     const { error } = await adminAuthClient
       .from('cards')
       .delete()
@@ -82,6 +108,15 @@ export async function DELETE(request: NextRequest) {
       console.error("Error deleting card:", error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
+
+    // Log admin action
+    await logAdminAction({
+      adminEmail: 'admin',
+      action: 'delete',
+      targetType: 'card',
+      targetId: id,
+      targetName: cardToDelete?.name || id,
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {

@@ -30,9 +30,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 function ReviewsDialog({ card, children }: { card: CreditCard; children: React.ReactNode }) {
     const { user } = useWallet();
-    const { getReviewsByCardId, addReview } = useReviews();
+    const { getReviewsByCardId, addReview, fetchReviewsForCard, isLoading } = useReviews();
     const [reviewContent, setReviewContent] = useState("");
     const [rating, setRating] = useState(5);
+    const [isOpen, setIsOpen] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
     
     const reviews = getReviewsByCardId(card.id);
     
@@ -40,16 +42,29 @@ function ReviewsDialog({ card, children }: { card: CreditCard; children: React.R
         ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(1) 
         : "0.0";
 
-    const handleAddReview = (e: React.FormEvent) => {
+    // Fetch reviews when dialog opens
+    useEffect(() => {
+        if (isOpen) {
+            fetchReviewsForCard(card.id);
+        }
+    }, [isOpen, card.id, fetchReviewsForCard]);
+
+    const handleAddReview = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (reviewContent.trim()) {
-            addReview(card.id, rating, reviewContent);
+        if (!reviewContent.trim()) return;
+        
+        setSubmitting(true);
+        const success = await addReview(card.id, rating, reviewContent);
+        setSubmitting(false);
+        
+        if (success) {
             setReviewContent("");
+            setRating(5);
         }
     };
 
     return (
-        <Dialog>
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
                 {children}
             </DialogTrigger>
@@ -98,16 +113,17 @@ function ReviewsDialog({ card, children }: { card: CreditCard; children: React.R
 
                 <div className="pt-2">
                     {user ? (
-                        <form onSubmit={handleAddReview} className="bg-gray-50 p-4 rounded-xl space-y-3">
-                            <h4 className="font-bold text-sm text-gray-900">撰寫評論</h4>
+                        <form onSubmit={handleAddReview} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl space-y-3">
+                            <h4 className="font-bold text-sm text-gray-900 dark:text-white">撰寫評論</h4>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">每張信用卡每 24 小時只能評論一次</p>
                             <div className="flex items-center gap-1">
-                                <span className="text-xs text-gray-500 mr-2">評分:</span>
+                                <span className="text-xs text-gray-500 dark:text-gray-400 mr-2">評分:</span>
                                 {[1, 2, 3, 4, 5].map(star => (
                                     <button 
                                         type="button"
                                         key={star}
                                         onClick={() => setRating(star)}
-                                        className={`text-xl transition-transform hover:scale-110 ${rating >= star ? "text-yellow-400" : "text-gray-300"}`}
+                                        className={`text-xl transition-transform hover:scale-110 ${rating >= star ? "text-yellow-400" : "text-gray-300 dark:text-gray-600"}`}
                                     >
                                         ★
                                     </button>
@@ -118,14 +134,17 @@ function ReviewsDialog({ card, children }: { card: CreditCard; children: React.R
                                     value={reviewContent}
                                     onChange={(e) => setReviewContent(e.target.value)}
                                     placeholder="分享您的用卡心得..."
-                                    className="bg-white"
+                                    className="bg-white dark:bg-gray-700 dark:border-gray-600"
+                                    disabled={submitting}
                                 />
-                                <Button type="submit">發布</Button>
+                                <Button type="submit" disabled={submitting || !reviewContent.trim()}>
+                                    {submitting ? "發布中..." : "發布"}
+                                </Button>
                             </div>
                         </form>
                     ) : (
-                        <div className="bg-gray-50 p-4 rounded-xl text-center text-sm text-gray-500">
-                            <Link href="/login" className="text-blue-600 font-medium hover:underline">登入</Link> 後即可發表評論
+                        <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl text-center text-sm text-gray-500 dark:text-gray-400">
+                            <Link href="/login" className="text-blue-600 dark:text-blue-400 font-medium hover:underline">登入</Link> 後即可發表評論
                         </div>
                     )}
                 </div>

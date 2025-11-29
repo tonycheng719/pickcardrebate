@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { adminAuthClient } from '@/lib/supabase/admin-client';
+import { logAdminAction } from "@/lib/admin/audit-log";
 
 export const dynamic = 'force-dynamic';
 
@@ -14,6 +15,13 @@ export async function POST(request: Request) {
 
     console.log("[ban-comment] Updating user:", userId, "ban:", ban);
 
+    // Get user info before updating
+    const { data: userProfile } = await adminAuthClient
+      .from("profiles")
+      .select("email, name")
+      .eq("id", userId)
+      .single();
+
     const { error } = await adminAuthClient
       .from('profiles')
       .update({ is_banned_comment: ban, updated_at: new Date().toISOString() })
@@ -23,6 +31,15 @@ export async function POST(request: Request) {
         console.error("Supabase update error:", error);
         throw error;
     }
+
+    // Log admin action
+    await logAdminAction({
+      adminEmail: 'admin',
+      action: ban ? 'ban_comment' : 'unban_comment',
+      targetType: 'user',
+      targetId: userId,
+      targetName: userProfile?.name || userProfile?.email || userId,
+    });
 
     console.log("[ban-comment] Success for user:", userId);
     return NextResponse.json({ success: true, isBannedComment: ban });
