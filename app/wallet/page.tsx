@@ -17,7 +17,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { CreditCard } from "@/lib/types";
 
@@ -207,10 +207,14 @@ export default function WalletPage() {
   const myCards = cards.filter((c) => myCardIds.includes(c.id));
   
   // Auto-cleanup: Remove invalid card IDs that don't exist in the dataset
+  // Use a ref to track if cleanup has already run to prevent infinite loops
+  const hasCleanedUp = useRef(false);
+  
   useEffect(() => {
-    if (cards.length > 0 && user?.id) {
+    if (cards.length > 0 && user?.id && !hasCleanedUp.current) {
       const invalidCardIds = myCardIds.filter(id => !cards.find(c => c.id === id));
       if (invalidCardIds.length > 0) {
+        hasCleanedUp.current = true; // Mark as cleaned up to prevent re-running
         console.warn("[Wallet] Removing invalid card IDs:", invalidCardIds);
         invalidCardIds.forEach(id => {
           removeCard(id);
