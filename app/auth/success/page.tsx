@@ -57,34 +57,40 @@ export default function AuthSuccessPage() {
           if (data.session) {
             console.log("Session established successfully for:", data.session.user.email);
             console.log("Access token (first 20 chars):", data.session.access_token.substring(0, 20) + "...");
-            console.log("Cookies after exchange:", document.cookie);
             
             setStatus("success");
             
-            // Manually store tokens in localStorage as backup (Supabase SSR should handle this)
-            // This is a fallback for cases where cookies don't work
+            // Store session in multiple localStorage keys to ensure compatibility
             try {
-              // Use a consistent key format that matches Supabase's default
-              const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-              let storageKey = 'sb-auth-token'; // Default fallback
-              try {
-                const hostname = new URL(supabaseUrl).hostname;
-                // For zeabur domain: pickcardrebate-supabase-kong.zeabur.app -> sb-pickcardrebate-supabase-kong-auth-token
-                const projectRef = hostname.split('.')[0];
-                storageKey = `sb-${projectRef}-auth-token`;
-              } catch (e) {
-                console.warn("Could not parse Supabase URL for storage key");
-              }
+              const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://pickcardrebate-supabase-kong.zeabur.app';
+              const hostname = new URL(supabaseUrl).hostname;
+              const projectRef = hostname.split('.')[0];
               
-              localStorage.setItem(storageKey, JSON.stringify({
+              const sessionData = JSON.stringify({
                 access_token: data.session.access_token,
                 refresh_token: data.session.refresh_token,
                 expires_at: Math.floor(Date.now() / 1000) + (data.session.expires_in || 3600),
+                expires_in: data.session.expires_in || 3600,
+                token_type: 'bearer',
                 user: data.session.user
-              }));
-              console.log("Session stored in localStorage:", storageKey);
+              });
+              
+              // Store in multiple keys for compatibility
+              localStorage.setItem(`sb-${projectRef}-auth-token`, sessionData);
+              localStorage.setItem('sb-auth-token', sessionData);
+              localStorage.setItem('supabase.auth.token', sessionData);
+              
+              console.log("Session stored in localStorage with keys:", `sb-${projectRef}-auth-token`, 'sb-auth-token', 'supabase.auth.token');
+              
+              // Also try to set the session directly in Supabase client
+              await supabase.auth.setSession({
+                access_token: data.session.access_token,
+                refresh_token: data.session.refresh_token
+              });
+              console.log("Session set directly in Supabase client");
+              
             } catch (storageError) {
-              console.warn("Failed to store session in localStorage:", storageError);
+              console.warn("Failed to store session:", storageError);
             }
             
             // Ensure profile exists
@@ -99,7 +105,7 @@ export default function AuthSuccessPage() {
             // Force full page reload to ensure all contexts pick up the new session
             setTimeout(() => {
               window.location.href = "/";
-            }, 1000);
+            }, 800);
             return;
           }
         } catch (e: any) {

@@ -353,12 +353,56 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const syncSession = async () => {
-      const { data } = await supabase.auth.getSession();
+      let { data } = await supabase.auth.getSession();
+      
+      // If no session from cookies, try to restore from localStorage backup
+      if (!data.session) {
+        console.log("[Auth] No session from cookies, checking localStorage...");
+        try {
+          const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://pickcardrebate-supabase-kong.zeabur.app';
+          const hostname = new URL(supabaseUrl).hostname;
+          const projectRef = hostname.split('.')[0];
+          
+          // Try multiple possible localStorage keys
+          const possibleKeys = [
+            `sb-${projectRef}-auth-token`,
+            'sb-auth-token',
+            'supabase.auth.token'
+          ];
+          
+          for (const key of possibleKeys) {
+            const stored = localStorage.getItem(key);
+            if (stored) {
+              try {
+                const parsed = JSON.parse(stored);
+                if (parsed.access_token && parsed.refresh_token) {
+                  console.log("[Auth] Found session in localStorage:", key);
+                  const { data: restoredData, error } = await supabase.auth.setSession({
+                    access_token: parsed.access_token,
+                    refresh_token: parsed.refresh_token
+                  });
+                  if (!error && restoredData.session) {
+                    console.log("[Auth] Session restored from localStorage for:", restoredData.session.user.email);
+                    data = restoredData;
+                    break;
+                  }
+                }
+              } catch (e) {
+                console.warn("[Auth] Failed to parse localStorage key:", key, e);
+              }
+            }
+          }
+        } catch (e) {
+          console.warn("[Auth] localStorage recovery failed:", e);
+        }
+      }
+      
       await hydrateSupabaseUser(data.session?.user ?? null);
     };
 
     syncSession();
     const { data: listener } = supabase.auth.onAuthStateChange(async (_event: AuthChangeEvent, session: Session | null) => {
+      console.log("[Auth] Auth state changed:", _event, session?.user?.email);
       await hydrateSupabaseUser(session?.user ?? null);
     });
 
