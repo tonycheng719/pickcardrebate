@@ -93,9 +93,16 @@ export default function AuthSuccessPage() {
               console.warn("Failed to store session:", storageError);
             }
             
-            // Ensure profile exists
+            // Ensure profile exists and update last_login
             try {
-              await fetch("/api/auth/ensure-profile");
+              const profileParams = new URLSearchParams({
+                userId: data.session.user.id,
+                email: data.session.user.email || '',
+                name: data.session.user.user_metadata?.full_name || data.session.user.user_metadata?.name || '',
+                avatar: data.session.user.user_metadata?.avatar_url || ''
+              });
+              await fetch(`/api/auth/ensure-profile?${profileParams.toString()}`);
+              console.log("Profile ensured with last_login updated");
             } catch (e) {
               console.warn("Ensure profile failed, but continuing...", e);
             }

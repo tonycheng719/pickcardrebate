@@ -2,14 +2,43 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { adminAuthClient } from '@/lib/supabase/admin-client';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
     try {
-        // 1. Get User Identity using Standard Client (Cookies)
-        const supabase = await createClient();
-        const { data: { user } } = await supabase.auth.getUser();
+        // Check for userId in query params (for cases where cookies aren't set yet)
+        const { searchParams } = new URL(request.url);
+        const userIdParam = searchParams.get('userId');
+        
+        let userId: string | undefined;
+        let userEmail: string | undefined;
+        let userMetadata: any = {};
 
-        if (!user) {
-            return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+        if (userIdParam) {
+            // Trust the userId from params (called from auth/success with session data)
+            userId = userIdParam;
+            userEmail = searchParams.get('email') || undefined;
+            userMetadata = {
+                full_name: searchParams.get('name') || undefined,
+                avatar_url: searchParams.get('avatar') || undefined,
+            };
+            console.log("[ensure-profile] Using userId from params:", userId);
+        } else {
+            // Fallback: Get User Identity using Standard Client (Cookies)
+            const supabase = await createClient();
+            const { data: { user } } = await supabase.auth.getUser();
+
+            if (!user) {
+                return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+            }
+            userId = user.id;
+            userEmail = user.email;
+            userMetadata = user.user_metadata || {};
+            console.log("[ensure-profile] Using userId from cookies:", userId);
+        }
+
+        if (!userId) {
+            return NextResponse.json({ error: "No user ID provided" }, { status: 400 });
         }
 
         const now = new Date().toISOString();
@@ -29,12 +58,12 @@ export async function GET(request: Request) {
 
         if (!profile) {
             // Insert new profile
-            const fullName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "Member";
-            const avatarUrl = user.user_metadata?.avatar_url;
+            const fullName = userMetadata?.full_name || userMetadata?.name || userEmail?.split("@")[0] || "Member";
+            const avatarUrl = userMetadata?.avatar_url;
 
             const { error: upsertError } = await adminAuthClient.from("profiles").upsert({
-                id: user.id,
-                email: user.email,
+                id: userId,
+                email: userEmail,
                 name: fullName,
                 avatar_url: avatarUrl,
                 created_at: now,
@@ -46,13 +75,13 @@ export async function GET(request: Request) {
                 console.error("Error creating profile:", upsertError);
                 throw upsertError;
             }
-            console.log("Profile created for user (API/Admin):", user.id);
+            console.log("Profile created for user (API/Admin):", userId);
         } else {
             // Update last_login for existing profile
             const { error: updateError } = await adminAuthClient
                 .from("profiles")
                 .update({ last_login: now, updated_at: now })
-                .eq("id", user.id);
+                .eq("id", userId);
             
             if (updateError) {
                 console.error("Error updating last_login:", updateError);
