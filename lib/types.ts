@@ -81,17 +81,26 @@ export interface Category {
   accentColor: string;
 }
 
+export interface PromoFAQ {
+  question: string;
+  answer: string;
+}
+
 export interface Promo {
   id: string;
   title: string;
   merchant: string;
   description: string;
-  content?: string; // New: Markdown content for detail page
+  content?: string; // Markdown content for detail page
   imageUrl?: string;
   expiryDate: string;
   relatedCardIds: string[];
   tags: string[];
   url?: string;
+  // SEO Fields
+  faqs?: PromoFAQ[]; // FAQ for structured data
+  seoTitle?: string; // Custom SEO title
+  seoDescription?: string; // Custom meta description
 }
 
 export interface Transaction {
