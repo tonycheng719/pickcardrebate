@@ -1,9 +1,10 @@
 import { adminAuthClient } from "@/lib/supabase/admin-client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Ban, CheckCircle2, CreditCard, Calendar, AlertCircle, DollarSign, ShoppingBag } from "lucide-react";
+import { ArrowLeft, CheckCircle2, CreditCard, Calendar, AlertCircle, ShoppingBag } from "lucide-react";
 import { HK_CARDS } from "@/lib/data/cards";
 import Link from "next/link";
+import { UserActionButtons } from "@/components/admin/user-action-buttons";
 
 export const dynamic = "force-dynamic";
 
@@ -100,14 +101,11 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
             <p className="text-gray-500 dark:text-gray-400 mt-1">ID: {user.id}</p>
           </div>
           
-          <div className="flex gap-3">
-             <Button variant="outline" className="text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20">
-               <Ban className="h-4 w-4 mr-2" /> 封鎖會員
-             </Button>
-             <Button variant="outline" className="text-orange-600 hover:bg-orange-50 dark:text-orange-400 dark:hover:bg-orange-900/20">
-               <Ban className="h-4 w-4 mr-2" /> 禁止評論
-             </Button>
-          </div>
+          <UserActionButtons 
+            userId={user.id} 
+            isBanned={user.is_banned || false} 
+            isBannedComment={user.is_banned_comment || false} 
+          />
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
