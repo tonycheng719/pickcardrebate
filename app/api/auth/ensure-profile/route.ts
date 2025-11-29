@@ -48,7 +48,7 @@ export async function GET(request: Request) {
         const { data: profile, error: fetchError } = await adminAuthClient
             .from("profiles")
             .select("id, created_at")
-            .eq("id", user.id)
+            .eq("id", userId)
             .single();
 
         if (fetchError && fetchError.code !== 'PGRST116') { // PGRST116 is "Row not found"
