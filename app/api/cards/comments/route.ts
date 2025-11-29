@@ -76,16 +76,16 @@ export async function POST(request: Request) {
     }
 
     // Check rate limit (24 hours between comments on same card)
-    const { data: recentComment, error: rateCheckError } = await adminAuthClient
+    const { data: recentComments, error: rateCheckError } = await adminAuthClient
       .from('card_comments')
       .select('created_at')
       .eq('user_id', userId)
       .eq('card_id', cardId)
       .eq('is_deleted', false)
       .order('created_at', { ascending: false })
-      .limit(1)
-      .single();
+      .limit(1);
 
+    const recentComment = recentComments?.[0] || null;
     console.log('[Card Comments API] Rate limit check:', { recentComment, rateCheckError: rateCheckError?.message });
 
     if (recentComment) {

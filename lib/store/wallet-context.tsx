@@ -1,7 +1,7 @@
 "use client";
 
 // Context for managing user wallet and global state
-import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from "react";
+import React, { createContext, useContext, useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { Transaction } from "../types";
 import { createClient } from "@/lib/supabase/client";
 import type { AuthChangeEvent, Session, User } from "@supabase/supabase-js";
@@ -88,6 +88,9 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   const supabase = useMemo(() => createClient(), []);
   const router = useRouter();
   const pathname = usePathname();
+  
+  // Ref to track if wallet sync is in progress to prevent duplicate calls
+  const walletSyncInProgress = useRef<string | null>(null);
 
   // API Helper for Wallet Sync
   const apiSyncWallet = async (action: string, payload: any) => {
@@ -183,6 +186,13 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
 
 
   const initializeWalletSync = useCallback(async (userId: string) => {
+    // Prevent duplicate sync calls for the same user
+    if (walletSyncInProgress.current === userId) {
+      console.log("[WalletSync] Sync already in progress for user:", userId);
+      return;
+    }
+    walletSyncInProgress.current = userId;
+    
     try {
         // 1. Fetch cloud data via API (uses Service Role to bypass RLS)
         console.log("[WalletSync] Fetching wallet data via API for user:", userId);
@@ -227,6 +237,11 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     } catch (e: any) {
         console.error("Wallet Sync Failed", e);
         toast.error("錢包同步失敗", { description: e.message || "請重新整理頁面" });
+    } finally {
+        // Clear the in-progress flag after a delay to allow for re-sync if needed
+        setTimeout(() => {
+          walletSyncInProgress.current = null;
+        }, 5000); // 5 second cooldown
     }
   }, []);
 
