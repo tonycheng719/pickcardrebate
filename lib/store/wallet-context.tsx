@@ -38,6 +38,7 @@ export interface UserProfile {
     community: boolean;
   };
   followedPromoIds?: string[];
+  isBannedComment?: boolean; // Whether user is banned from commenting
 }
 
 interface WalletContextType {
@@ -251,6 +252,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
         rewardPreference: (profileData?.reward_preference as "cash" | "miles") || "cash",
         notifications: profileData?.notifications || DEFAULT_NOTIFICATIONS,
         followedPromoIds: profileData?.followed_promo_ids || [],
+        isBannedComment: profileData?.is_banned_comment || false,
       };
     },
     []
@@ -283,7 +285,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
           );
           const queryPromise = supabase
             .from("profiles")
-            .select("name, avatar_url, gender, district, birth_year, birth_month, last_ip, reward_preference, notifications, followed_promo_ids")
+            .select("name, avatar_url, gender, district, birth_year, birth_month, last_ip, reward_preference, notifications, followed_promo_ids, is_banned, is_banned_comment")
             .eq("id", sessionUser.id)
             .maybeSingle();
           
@@ -291,9 +293,19 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
           profileData = data;
         }
 
+        // Check if user is banned
+        if (profileData?.is_banned) {
+          console.log("[Auth] User is banned, logging out:", sessionUser.email);
+          toast.error("您的帳號已被停用，如有疑問請聯繫客服。");
+          await supabase.auth.signOut();
+          setUser(null);
+          router.replace("/login");
+          return;
+        }
+
         const profile = buildUserFromSession(sessionUser, profileData);
         setUser(profile);
-        console.log("[Auth] User hydrated:", profile.email, "Gender:", profile.gender, "BirthYear:", profile.birthYear);
+        console.log("[Auth] User hydrated:", profile.email, "Gender:", profile.gender, "BirthYear:", profile.birthYear, "BannedComment:", profileData?.is_banned_comment);
         
         // Start Wallet Sync
         initializeWalletSync(sessionUser.id);

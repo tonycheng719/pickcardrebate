@@ -8,8 +8,9 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { History, Plus, Loader2, Trash2 } from "lucide-react";
+import { History, Plus, Loader2, Trash2, FileText, ExternalLink } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import Link from "next/link";
 
 interface Changelog {
   id: string;
@@ -86,13 +87,24 @@ export default function ChangelogManagementPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-          <History className="w-8 h-8" /> 更新日誌管理
-        </h1>
-        <p className="text-gray-500 dark:text-gray-400">
-          發佈系統更新通知，讓用戶了解最新功能與修復。
-        </p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <History className="w-8 h-8" /> 更新日誌管理
+          </h1>
+          <p className="text-gray-500 dark:text-gray-400">
+            發佈系統更新通知，讓用戶了解最新功能與修復。
+          </p>
+        </div>
+        <Link 
+          href="https://github.com/tonycheng719/pickcardrebate/blob/main/SYSTEM_DOCUMENTATION.md" 
+          target="_blank"
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
+        >
+          <FileText className="h-4 w-4" />
+          系統說明書
+          <ExternalLink className="h-3 w-3" />
+        </Link>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">

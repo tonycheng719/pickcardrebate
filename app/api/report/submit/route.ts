@@ -1,11 +1,29 @@
 import { NextResponse } from 'next/server';
 import { adminAuthClient } from '@/lib/supabase/admin-client';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     
     console.log("Submitting report payload:", body);
+
+    // Check if user is banned from commenting
+    if (body.userId) {
+      const { data: profile } = await adminAuthClient
+        .from('profiles')
+        .select('is_banned_comment')
+        .eq('id', body.userId)
+        .single();
+      
+      if (profile?.is_banned_comment) {
+        console.log("User is banned from commenting:", body.userId);
+        return NextResponse.json({ 
+          error: "您已被禁止提交評論，如有疑問請聯繫客服。" 
+        }, { status: 403 });
+      }
+    }
 
     // Map frontend fields to DB columns explicitly
     const { error } = await adminAuthClient
