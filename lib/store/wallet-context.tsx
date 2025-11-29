@@ -245,6 +245,8 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
         avatar: profileData?.avatar_url || sessionUser.user_metadata?.avatar_url,
         gender: profileData?.gender,
         district: profileData?.district,
+        birthYear: profileData?.birth_year,
+        birthMonth: profileData?.birth_month,
         lastIp: profileData?.last_ip,
         rewardPreference: (profileData?.reward_preference as "cash" | "miles") || "cash",
         notifications: profileData?.notifications || DEFAULT_NOTIFICATIONS,
@@ -267,7 +269,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       try {
         const { data } = await supabase
           .from("profiles")
-          .select("name, avatar_url, gender, district, last_ip, reward_preference, notifications, followed_promo_ids")
+          .select("name, avatar_url, gender, district, birth_year, birth_month, last_ip, reward_preference, notifications, followed_promo_ids")
           .eq("id", sessionUser.id)
           .maybeSingle();
 
