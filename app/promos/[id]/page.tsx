@@ -14,11 +14,13 @@ import { getSystemSetting } from "@/lib/data/settings";
 
 // Revalidate every hour
 export const revalidate = 3600;
+// Allow dynamic params not generated at build time
+export const dynamicParams = true;
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 // Generate static params for known promos at build time
@@ -60,7 +62,8 @@ async function getPromo(id: string): Promise<Promo | null> {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const promo = await getPromo(params.id);
+  const { id } = await params;
+  const promo = await getPromo(id);
   if (!promo) return { title: "優惠未找到 | PickCardRebate" };
 
   return {
@@ -76,7 +79,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function PromoDetailPage({ params }: PageProps) {
-  const promo = await getPromo(params.id);
+  const { id } = await params;
+  const promo = await getPromo(id);
   
   // Fetch dynamic settings
   const whatsappUrl = await getSystemSetting("whatsapp_group_url") || WHATSAPP_GROUP_URL;
