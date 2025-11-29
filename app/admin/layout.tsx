@@ -10,13 +10,14 @@ import {
   Tag,
   BarChart3,
   MessageSquare,
+  MessageCircle,
   Settings,
   LogOut,
   Shield,
   History,
   Store,
   BookOpen,
-  GitCommit, // Import GitCommit icon
+  GitCommit,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AdminAuthProvider, useAdminAuth } from "@/components/admin/admin-auth-context";
@@ -31,6 +32,7 @@ const menuItems = [
   { name: "優惠活動", href: "/admin/promos", icon: Tag },
   { name: "搜尋分析", href: "/admin/analytics", icon: BarChart3 },
   { name: "回報審核", href: "/admin/moderation", icon: MessageSquare },
+  { name: "信用卡評論", href: "/admin/comments", icon: MessageCircle },
   { name: "操作日誌", href: "/admin/logs", icon: History },
   { name: "系統設定", href: "/admin/settings", icon: Settings },
 ];
