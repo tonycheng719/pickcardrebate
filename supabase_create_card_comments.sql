@@ -1,4 +1,7 @@
 -- Create card_comments table for credit card reviews/comments
+-- This script is safe to run multiple times
+
+-- Create table if not exists
 CREATE TABLE IF NOT EXISTS card_comments (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   card_id TEXT NOT NULL,                    -- References card ID from cards table
@@ -14,7 +17,7 @@ CREATE TABLE IF NOT EXISTS card_comments (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Create indexes for faster queries
+-- Create indexes for faster queries (IF NOT EXISTS handles duplicates)
 CREATE INDEX IF NOT EXISTS idx_card_comments_card_id ON card_comments(card_id);
 CREATE INDEX IF NOT EXISTS idx_card_comments_user_id ON card_comments(user_id);
 CREATE INDEX IF NOT EXISTS idx_card_comments_created_at ON card_comments(created_at DESC);
@@ -22,7 +25,14 @@ CREATE INDEX IF NOT EXISTS idx_card_comments_created_at ON card_comments(created
 -- Enable RLS
 ALTER TABLE card_comments ENABLE ROW LEVEL SECURITY;
 
--- Allow authenticated users to read non-deleted comments
+-- Drop existing policies to avoid conflicts
+DROP POLICY IF EXISTS "Anyone can read non-deleted comments" ON card_comments;
+DROP POLICY IF EXISTS "Authenticated users can insert own comments" ON card_comments;
+DROP POLICY IF EXISTS "Users can update own comments" ON card_comments;
+DROP POLICY IF EXISTS "Service role has full access to card_comments" ON card_comments;
+
+-- Recreate policies
+-- Allow anyone to read non-deleted comments
 CREATE POLICY "Anyone can read non-deleted comments"
 ON card_comments FOR SELECT
 USING (is_deleted = FALSE);
@@ -46,8 +56,7 @@ TO service_role
 USING (true)
 WITH CHECK (true);
 
--- Create a function to check comment rate limit
--- Users can only comment on the same card once per 24 hours
+-- Create or replace the rate limit check function
 CREATE OR REPLACE FUNCTION check_card_comment_rate_limit(p_user_id UUID, p_card_id TEXT)
 RETURNS BOOLEAN AS $$
 DECLARE
@@ -76,5 +85,4 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- Verify
-SELECT 'card_comments table created successfully' as status;
-
+SELECT 'card_comments table setup completed successfully' as status;

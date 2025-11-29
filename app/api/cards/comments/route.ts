@@ -54,7 +54,10 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { cardId, userId, userName, userAvatar, content, rating } = body;
 
+    console.log('[Card Comments API] POST request:', { cardId, userId, userName, rating });
+
     if (!cardId || !userId || !content) {
+      console.log('[Card Comments API] Missing required fields');
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
@@ -66,13 +69,14 @@ export async function POST(request: Request) {
       .single();
 
     if (profile?.is_banned_comment) {
+      console.log('[Card Comments API] User is banned from commenting:', userId);
       return NextResponse.json({ 
         error: '您已被禁止發表評論，如有疑問請聯繫客服。' 
       }, { status: 403 });
     }
 
     // Check rate limit (24 hours between comments on same card)
-    const { data: recentComment } = await adminAuthClient
+    const { data: recentComment, error: rateCheckError } = await adminAuthClient
       .from('card_comments')
       .select('created_at')
       .eq('user_id', userId)
@@ -82,12 +86,17 @@ export async function POST(request: Request) {
       .limit(1)
       .single();
 
+    console.log('[Card Comments API] Rate limit check:', { recentComment, rateCheckError: rateCheckError?.message });
+
     if (recentComment) {
       const lastCommentTime = new Date(recentComment.created_at);
       const hoursSinceLastComment = (Date.now() - lastCommentTime.getTime()) / (1000 * 60 * 60);
       
+      console.log('[Card Comments API] Hours since last comment:', hoursSinceLastComment);
+      
       if (hoursSinceLastComment < 24) {
         const hoursRemaining = Math.ceil(24 - hoursSinceLastComment);
+        console.log('[Card Comments API] Rate limited, hours remaining:', hoursRemaining);
         return NextResponse.json({ 
           error: `您已在 24 小時內評論過此信用卡，請 ${hoursRemaining} 小時後再試。` 
         }, { status: 429 });
@@ -95,6 +104,7 @@ export async function POST(request: Request) {
     }
 
     // Insert comment
+    console.log('[Card Comments API] Inserting comment...');
     const { data, error } = await adminAuthClient
       .from('card_comments')
       .insert({
@@ -109,11 +119,15 @@ export async function POST(request: Request) {
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      console.error('[Card Comments API] Insert error:', error);
+      throw error;
+    }
 
+    console.log('[Card Comments API] Comment inserted successfully:', data?.id);
     return NextResponse.json({ success: true, comment: data });
   } catch (error: any) {
-    console.error('Error creating comment:', error);
+    console.error('[Card Comments API] Error creating comment:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
