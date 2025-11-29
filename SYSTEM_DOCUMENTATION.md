@@ -212,7 +212,9 @@ supabase.auth.token
 - **商戶管理**: `/admin/merchants`
 - **優惠管理**: `/admin/promos`
 - **用戶管理**: `/admin/users`
-- **內容審核**: `/admin/moderation`
+- **內容審核**: `/admin/moderation` - 管理用戶提交的回報和評論
+- **操作日誌**: `/admin/logs` - 追蹤管理員操作記錄
+- **更新日誌**: `/admin/changelog` - 發佈系統更新通知
 - **系統設定**: `/admin/settings`
 
 ### 用戶管理功能
