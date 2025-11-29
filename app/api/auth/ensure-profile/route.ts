@@ -5,10 +5,17 @@ import { adminAuthClient } from '@/lib/supabase/admin-client';
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
+    console.log("[ensure-profile] API called");
     try {
         // Check for userId in query params (for cases where cookies aren't set yet)
         const { searchParams } = new URL(request.url);
         const userIdParam = searchParams.get('userId');
+        
+        console.log("[ensure-profile] Query params:", { 
+            userId: userIdParam, 
+            email: searchParams.get('email'),
+            name: searchParams.get('name')
+        });
         
         let userId: string | undefined;
         let userEmail: string | undefined;
