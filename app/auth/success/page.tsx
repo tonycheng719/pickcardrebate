@@ -64,14 +64,25 @@ export default function AuthSuccessPage() {
             // Manually store tokens in localStorage as backup (Supabase SSR should handle this)
             // This is a fallback for cases where cookies don't work
             try {
-              const storageKey = `sb-${new URL(process.env.NEXT_PUBLIC_SUPABASE_URL || '').hostname.split('.')[0]}-auth-token`;
+              // Use a consistent key format that matches Supabase's default
+              const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+              let storageKey = 'sb-auth-token'; // Default fallback
+              try {
+                const hostname = new URL(supabaseUrl).hostname;
+                // For zeabur domain: pickcardrebate-supabase-kong.zeabur.app -> sb-pickcardrebate-supabase-kong-auth-token
+                const projectRef = hostname.split('.')[0];
+                storageKey = `sb-${projectRef}-auth-token`;
+              } catch (e) {
+                console.warn("Could not parse Supabase URL for storage key");
+              }
+              
               localStorage.setItem(storageKey, JSON.stringify({
                 access_token: data.session.access_token,
                 refresh_token: data.session.refresh_token,
                 expires_at: Math.floor(Date.now() / 1000) + (data.session.expires_in || 3600),
                 user: data.session.user
               }));
-              console.log("Session stored in localStorage as backup:", storageKey);
+              console.log("Session stored in localStorage:", storageKey);
             } catch (storageError) {
               console.warn("Failed to store session in localStorage:", storageError);
             }

@@ -149,9 +149,9 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
   const refreshData = useCallback(async () => {
     // Removed setIsLoading(true) here to prevent UI flickering if we already have data
     try {
-        // Set a timeout to avoid hanging forever
+        // Set a longer timeout (20s) to accommodate slow connections
         const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error("Timeout")), 10000)
+            setTimeout(() => reject(new Error("Timeout")), 20000)
         );
 
         // 1. Cards - USE API ROUTE
