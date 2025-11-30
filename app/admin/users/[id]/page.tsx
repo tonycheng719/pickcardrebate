@@ -146,7 +146,8 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
                      <div className="mt-1 text-sm dark:text-gray-200">
                        {user.created_at ? new Date(user.created_at).toLocaleString('zh-HK', { 
                          year: 'numeric', month: '2-digit', day: '2-digit',
-                         hour: '2-digit', minute: '2-digit'
+                         hour: '2-digit', minute: '2-digit',
+                         timeZone: 'Asia/Hong_Kong'
                        }) : "-"}
                      </div>
                   </div>
@@ -155,7 +156,8 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
                      <div className="mt-1 text-sm dark:text-gray-200">
                        {user.last_login ? new Date(user.last_login).toLocaleString('zh-HK', { 
                          year: 'numeric', month: '2-digit', day: '2-digit',
-                         hour: '2-digit', minute: '2-digit'
+                         hour: '2-digit', minute: '2-digit',
+                         timeZone: 'Asia/Hong_Kong'
                        }) : "-"}
                      </div>
                   </div>
