@@ -94,6 +94,7 @@ export function CreditCardCalculator({
   
   // New states for "Why this card" and "Compare" features
   const [showWhyDialog, setShowWhyDialog] = useState(false);
+  const [whyCardResult, setWhyCardResult] = useState<CalculationResult | null>(null); // Track which card to show "Why" for
   const [showCompareDialog, setShowCompareDialog] = useState(false);
   const [compareCardResult, setCompareCardResult] = useState<CalculationResult | null>(null);
 
@@ -232,11 +233,8 @@ export function CreditCardCalculator({
   const handleCalculate = () => {
     if (!selectedMerchant || !amount) return;
 
-    // Require login to calculate
-    if (!user) {
-        setShowLoginPrompt(true);
-        return;
-    }
+    // Calculator is now open to all users (guests included)
+    // Login is only required for other features like recording transactions
 
     const res = findBestCards(
       selectedMerchant.name,
@@ -297,8 +295,8 @@ export function CreditCardCalculator({
   // 3. The Rest (unowned cards, filtered out by default)
   const unownedCards = otherResults.filter(r => !myCardIds.includes(r.card.id));
 
-  // Generate "Why this card" analysis text
-  const generateWhyAnalysis = (result: CalculationResult) => {
+  // Generate "Why this card" analysis text - now accepts a result parameter
+  const generateWhyAnalysis = (result: CalculationResult | null) => {
     if (!result) return "";
     const { card, matchedRule, percentage, rewardAmount } = result;
     const parts: string[] = [];
@@ -332,6 +330,12 @@ export function CreditCardCalculator({
     }
     
     return parts.join(' ');
+  };
+
+  // Handle "Why this card" click - now supports any card
+  const handleWhyClick = (result: CalculationResult) => {
+    setWhyCardResult(result);
+    setShowWhyDialog(true);
   };
 
   // Handle compare click
@@ -419,7 +423,17 @@ export function CreditCardCalculator({
                     <CreditCard className="h-3 w-3" /> 你已持有
                     </span>
                 )}
-                {isOwned && (
+                {/* Why this card button - available for all cards */}
+                <button 
+                    className="text-xs border border-gray-200 rounded px-2 py-0.5 flex items-center gap-1 text-gray-500 hover:bg-gray-50 hover:border-gray-300 transition-colors"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        handleWhyClick(result);
+                    }}
+                >
+                    <HelpCircle className="w-3 h-3" /> 點解係呢張？
+                </button>
+                {isOwned && user && (
                     <button 
                         className={`text-xs border rounded px-2 py-0.5 flex items-center gap-1 transition-colors ${
                             isRecorded 
@@ -572,7 +586,7 @@ export function CreditCardCalculator({
                         {/* Why This Card Button */}
                         <button 
                             className="text-xs border border-gray-200 rounded-lg px-2 py-1 flex items-center gap-1 text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-colors"
-                            onClick={() => setShowWhyDialog(true)}
+                            onClick={() => handleWhyClick(best)}
                         >
                             <HelpCircle className="w-3 h-3" /> 點解係呢張？
                         </button>
@@ -953,7 +967,7 @@ export function CreditCardCalculator({
           description={`登入後即可查看 ${selectedMerchant?.name || "商戶"} 的最佳信用卡回贈攻略，並記錄您的搜尋歷史。`}
       />
 
-      {/* "Why This Card" Dialog */}
+      {/* "Why This Card" Dialog - Now supports any card */}
       <Dialog open={showWhyDialog} onOpenChange={setShowWhyDialog}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
@@ -961,18 +975,18 @@ export function CreditCardCalculator({
               <HelpCircle className="h-5 w-5 text-emerald-500" /> 點解係呢張？
             </DialogTitle>
           </DialogHeader>
-          {best && (
+          {whyCardResult && (
             <div className="space-y-4">
               {/* Card Info */}
               <div className="flex items-center gap-3">
-                {best.card.imageUrl ? (
-                  <img src={best.card.imageUrl} alt={best.card.name} className="w-16 h-10 object-contain rounded border" referrerPolicy="no-referrer" />
+                {whyCardResult.card.imageUrl ? (
+                  <img src={whyCardResult.card.imageUrl} alt={whyCardResult.card.name} className="w-16 h-10 object-contain rounded border" referrerPolicy="no-referrer" />
                 ) : (
-                  <div className={`w-16 h-10 rounded ${best.card.style?.bgColor || 'bg-gray-500'}`}></div>
+                  <div className={`w-16 h-10 rounded ${whyCardResult.card.style?.bgColor || 'bg-gray-500'}`}></div>
                 )}
                 <div>
-                  <p className="font-bold text-gray-900">{best.card.name}</p>
-                  <p className="text-xs text-gray-500">{best.card.bank}</p>
+                  <p className="font-bold text-gray-900">{whyCardResult.card.name}</p>
+                  <p className="text-xs text-gray-500">{whyCardResult.card.bank}</p>
                 </div>
               </div>
               
@@ -980,7 +994,7 @@ export function CreditCardCalculator({
               <div className="p-3 bg-emerald-50 border border-emerald-100 border-dashed rounded-xl">
                 <p className="text-sm text-emerald-800 font-medium mb-1">智能分析：</p>
                 <p className="text-sm text-emerald-700 leading-relaxed">
-                  {generateWhyAnalysis(best)}
+                  {generateWhyAnalysis(whyCardResult)}
                 </p>
               </div>
 
@@ -988,13 +1002,23 @@ export function CreditCardCalculator({
               <div className="grid grid-cols-2 gap-3 text-center">
                 <div className="p-2 bg-gray-50 rounded-lg">
                   <p className="text-xs text-gray-500">回贈率</p>
-                  <p className="text-lg font-bold text-emerald-600">{best.percentage}%</p>
+                  <p className="text-lg font-bold text-emerald-600">{whyCardResult.percentage}%</p>
                 </div>
                 <div className="p-2 bg-gray-50 rounded-lg">
                   <p className="text-xs text-gray-500">預計回贈</p>
-                  <p className="text-lg font-bold text-emerald-600">+${best.rewardAmount.toFixed(1)}</p>
+                  <p className="text-lg font-bold text-emerald-600">+${whyCardResult.rewardAmount.toFixed(1)}</p>
                 </div>
               </div>
+
+              {/* Card Note if exists */}
+              {whyCardResult.card.note && (
+                <div className="p-2.5 bg-amber-50 border border-amber-100 rounded-xl flex items-start gap-2">
+                  <Info className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                  <div className="text-[11px] text-amber-800 leading-snug">
+                    {whyCardResult.card.note}
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </DialogContent>
