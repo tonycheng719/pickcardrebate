@@ -72,7 +72,9 @@ export function PromoCalendar({ open, onOpenChange }: PromoCalendarProps) {
             // Determine category from matchType/matchValue
             let category = "general";
             if (rule.matchType === "category") {
-              category = rule.matchValue || "general";
+              // matchValue can be string or string[], take first value if array
+              const matchVal = rule.matchValue;
+              category = Array.isArray(matchVal) ? (matchVal[0] || "general") : (matchVal || "general");
             } else if (rule.matchType === "merchant") {
               category = "merchant";
             }
