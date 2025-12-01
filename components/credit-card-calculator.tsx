@@ -16,7 +16,7 @@ import { CATEGORIES } from "@/lib/data/categories";
 import { HK_CARDS } from "@/lib/data/cards";
 import { findBestCards, CalculationResult } from "@/lib/logic/calculator";
 import { useWallet } from "@/lib/store/wallet-context";
-  import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle, Lightbulb, Store, Globe, ChevronDown, ChevronUp, BadgeCheck, Tag, AlertTriangle, Search, LogIn, PlusCircle, Loader2, History } from "lucide-react";
+  import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle, Lightbulb, Store, Globe, ChevronDown, ChevronUp, BadgeCheck, Tag, AlertTriangle, Search, LogIn, PlusCircle, Loader2, History, HelpCircle, Swords, X } from "lucide-react";
 import { DynamicIcon } from "@/components/dynamic-icon";
 import { useDataset } from "@/lib/admin/data-store";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -91,6 +91,11 @@ export function CreditCardCalculator({
   
   // Separate state for report dialog
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
+  
+  // New states for "Why this card" and "Compare" features
+  const [showWhyDialog, setShowWhyDialog] = useState(false);
+  const [showCompareDialog, setShowCompareDialog] = useState(false);
+  const [compareCardResult, setCompareCardResult] = useState<CalculationResult | null>(null);
 
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
@@ -292,6 +297,49 @@ export function CreditCardCalculator({
   // 3. The Rest (unowned cards, filtered out by default)
   const unownedCards = otherResults.filter(r => !myCardIds.includes(r.card.id));
 
+  // Generate "Why this card" analysis text
+  const generateWhyAnalysis = (result: CalculationResult) => {
+    if (!result) return "";
+    const { card, matchedRule, percentage, rewardAmount } = result;
+    const parts: string[] = [];
+    
+    // Main reason
+    if (matchedRule.matchType === 'merchant') {
+      parts.push(`${card.name} 在 ${selectedMerchant?.name} 有專屬 ${percentage}% 回贈優惠。`);
+    } else if (matchedRule.matchType === 'category') {
+      parts.push(`${card.name} 在${categoryNameMap[selectedCategory] || '此類別'}消費享 ${percentage}% 回贈。`);
+    } else if (matchedRule.matchType === 'paymentMethod') {
+      const paymentLabel = PAYMENT_OPTIONS.find(p => p.id === paymentMethod)?.label || paymentMethod;
+      parts.push(`${card.name} 使用 ${paymentLabel} 付款可享 ${percentage}% 回贈。`);
+    } else {
+      parts.push(`${card.name} 基本回贈為 ${percentage}%。`);
+    }
+    
+    // Cap info
+    if (matchedRule.cap) {
+      if (matchedRule.capType === 'reward') {
+        parts.push(`每月回贈上限 $${matchedRule.cap}。`);
+      } else {
+        parts.push(`每月簽賬上限 $${matchedRule.cap}。`);
+      }
+    } else {
+      parts.push(`無上限。`);
+    }
+    
+    // Day restriction
+    if (matchedRule.validDays) {
+      parts.push(`限 ${matchedRule.validDays.map(d => DAYS_MAP[d]).join("/")} 適用。`);
+    }
+    
+    return parts.join(' ');
+  };
+
+  // Handle compare click
+  const handleCompareClick = (result: CalculationResult) => {
+    setCompareCardResult(result);
+    setShowCompareDialog(true);
+  };
+
   const handleReportClick = () => {
     // Close the result dialog to avoid stacking issues
     setOpen(false);
@@ -365,7 +413,7 @@ export function CreditCardCalculator({
             )}
 
             {/* Action Buttons Row */}
-            <div className="flex items-center gap-2 mt-2">
+            <div className="flex items-center gap-2 mt-2 flex-wrap">
                 {isOwned && (
                     <span className="text-xs text-emerald-500 inline-flex items-center gap-1">
                     <CreditCard className="h-3 w-3" /> 你已持有
@@ -388,11 +436,23 @@ export function CreditCardCalculator({
                         {isRecorded ? "已記錄" : "記賬"}
                     </button>
                 )}
+                {/* Compare with Best Button - only show for non-best cards */}
+                {!isBest && best && (
+                    <button 
+                        className="text-xs border border-gray-200 rounded px-2 py-0.5 flex items-center gap-1 text-gray-500 hover:bg-gray-50 hover:border-gray-300 transition-colors"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleCompareClick(result);
+                        }}
+                    >
+                        <Swords className="w-3 h-3" /> 同冠軍比較
+                    </button>
+                )}
             </div>
           </div>
         </div>
         
-        <div className="text-right">
+        <div className="text-right shrink-0">
           <div className={`text-lg font-bold ${isBest ? 'text-emerald-700' : isCashFallback ? 'text-gray-400' : 'text-gray-800 dark:text-gray-100'}`}>
             {milesText || (result.rewardAmount > 0 ? `+$${result.rewardAmount.toFixed(1)}${isCashFallback ? '' : ''}` : `${result.percentage}%`)}
           </div>
@@ -485,20 +545,47 @@ export function CreditCardCalculator({
                         <CheckCircle2 className="h-3 w-3" /> 你已持有，用這張！
                     </span>
                     )}
-                    
-                    {/* Record Transaction Button (Hero) - Only show if owned */}
-                    {isBestOwned && (
-                        <Button 
-                            variant="outline" 
-                            size="sm" 
-                            className={`h-8 text-xs gap-1 border-emerald-200 bg-white hover:bg-emerald-50 text-emerald-700 ${isBestRecorded ? 'opacity-50 cursor-not-allowed' : ''}`}
-                            onClick={() => !isBestRecorded && !isBestRecording && handleRecordTransaction(best)}
-                            disabled={isBestRecorded || isBestRecording}
-                        >
-                            {isBestRecording ? <Loader2 className="w-3 h-3 animate-spin" /> : isBestRecorded ? <CheckCircle2 className="w-3 h-3" /> : <PlusCircle className="w-3 h-3" />}
-                            {isBestRecorded ? "已記錄消費" : "一鍵記賬"}
-                        </Button>
+                    {!isBestOwned && (
+                    <span className="inline-flex items-center gap-1 text-xs text-red-500 font-medium">
+                        <X className="h-3 w-3" /> 你錢包未有此卡
+                    </span>
                     )}
+                    
+                    <div className="flex items-center gap-2 flex-wrap">
+                        {/* Why This Card Button */}
+                        <button 
+                            className="text-xs border border-gray-200 rounded-lg px-2 py-1 flex items-center gap-1 text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-colors"
+                            onClick={() => setShowWhyDialog(true)}
+                        >
+                            <HelpCircle className="w-3 h-3" /> 點解係呢張？
+                        </button>
+                        
+                        {/* Record Transaction Button (Hero) - Only show if owned */}
+                        {isBestOwned && (
+                            <Button 
+                                variant="outline" 
+                                size="sm" 
+                                className={`h-8 text-xs gap-1 border-emerald-200 bg-white hover:bg-emerald-50 text-emerald-700 ${isBestRecorded ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                onClick={() => !isBestRecorded && !isBestRecording && handleRecordTransaction(best)}
+                                disabled={isBestRecorded || isBestRecording}
+                            >
+                                {isBestRecording ? <Loader2 className="w-3 h-3 animate-spin" /> : isBestRecorded ? <CheckCircle2 className="w-3 h-3" /> : <PlusCircle className="w-3 h-3" />}
+                                {isBestRecorded ? "已記錄消費" : "一鍵記賬"}
+                            </Button>
+                        )}
+                        
+                        {/* Login to record button - show if not owned */}
+                        {!isBestOwned && !user && (
+                            <Button 
+                                variant="outline" 
+                                size="sm" 
+                                className="h-8 text-xs gap-1 border-gray-200 bg-white hover:bg-gray-50 text-gray-600"
+                                onClick={() => setShowLoginPrompt(true)}
+                            >
+                                <LogIn className="w-3 h-3" /> 登入以紀錄
+                            </Button>
+                        )}
+                    </div>
                 </div>
               </div>
 
@@ -831,6 +918,127 @@ export function CreditCardCalculator({
           title="查看最抵回贈"
           description={`登入後即可查看 ${selectedMerchant?.name || "商戶"} 的最佳信用卡回贈攻略，並記錄您的搜尋歷史。`}
       />
+
+      {/* "Why This Card" Dialog */}
+      <Dialog open={showWhyDialog} onOpenChange={setShowWhyDialog}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-gray-800">
+              <HelpCircle className="h-5 w-5 text-emerald-500" /> 點解係呢張？
+            </DialogTitle>
+          </DialogHeader>
+          {best && (
+            <div className="space-y-4">
+              {/* Card Info */}
+              <div className="flex items-center gap-3">
+                {best.card.imageUrl ? (
+                  <img src={best.card.imageUrl} alt={best.card.name} className="w-16 h-10 object-contain rounded border" referrerPolicy="no-referrer" />
+                ) : (
+                  <div className={`w-16 h-10 rounded ${best.card.style?.bgColor || 'bg-gray-500'}`}></div>
+                )}
+                <div>
+                  <p className="font-bold text-gray-900">{best.card.name}</p>
+                  <p className="text-xs text-gray-500">{best.card.bank}</p>
+                </div>
+              </div>
+              
+              {/* Analysis */}
+              <div className="p-3 bg-emerald-50 border border-emerald-100 border-dashed rounded-xl">
+                <p className="text-sm text-emerald-800 font-medium mb-1">智能分析：</p>
+                <p className="text-sm text-emerald-700 leading-relaxed">
+                  {generateWhyAnalysis(best)}
+                </p>
+              </div>
+
+              {/* Quick Stats */}
+              <div className="grid grid-cols-2 gap-3 text-center">
+                <div className="p-2 bg-gray-50 rounded-lg">
+                  <p className="text-xs text-gray-500">回贈率</p>
+                  <p className="text-lg font-bold text-emerald-600">{best.percentage}%</p>
+                </div>
+                <div className="p-2 bg-gray-50 rounded-lg">
+                  <p className="text-xs text-gray-500">預計回贈</p>
+                  <p className="text-lg font-bold text-emerald-600">+${best.rewardAmount.toFixed(1)}</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Compare Dialog */}
+      <Dialog open={showCompareDialog} onOpenChange={setShowCompareDialog}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-gray-800 justify-center">
+              <Swords className="h-5 w-5 text-gray-500" /> 殘酷二選一
+            </DialogTitle>
+          </DialogHeader>
+          {best && compareCardResult && (
+            <div className="space-y-4">
+              {/* Cards Comparison Header */}
+              <div className="flex items-center justify-center gap-6">
+                {/* Best Card */}
+                <div className="text-center">
+                  {best.card.imageUrl ? (
+                    <img src={best.card.imageUrl} alt={best.card.name} className="w-20 h-12 object-contain rounded border mx-auto mb-2" referrerPolicy="no-referrer" />
+                  ) : (
+                    <div className={`w-20 h-12 rounded ${best.card.style?.bgColor || 'bg-gray-500'} mx-auto mb-2`}></div>
+                  )}
+                  <p className="text-sm font-bold text-gray-900 flex items-center justify-center gap-1">
+                    🏆 {best.card.name}
+                  </p>
+                </div>
+
+                {/* Compare Card */}
+                <div className="text-center">
+                  {compareCardResult.card.imageUrl ? (
+                    <img src={compareCardResult.card.imageUrl} alt={compareCardResult.card.name} className="w-20 h-12 object-contain rounded border mx-auto mb-2" referrerPolicy="no-referrer" />
+                  ) : (
+                    <div className={`w-20 h-12 rounded ${compareCardResult.card.style?.bgColor || 'bg-gray-500'} mx-auto mb-2`}></div>
+                  )}
+                  <p className="text-sm font-bold text-gray-900">{compareCardResult.card.name}</p>
+                </div>
+              </div>
+
+              {/* Comparison Table */}
+              <div className="border rounded-lg overflow-hidden">
+                <div className="grid grid-cols-[1fr,1fr,1fr] gap-0 text-sm">
+                  {/* Row 1: Reward Amount */}
+                  <div className="p-3 bg-gray-50 font-medium text-gray-600">回贈金額</div>
+                  <div className="p-3 text-right font-bold text-emerald-600">${best.rewardAmount.toFixed(1)}</div>
+                  <div className="p-3 text-right text-gray-600">vs ${compareCardResult.rewardAmount.toFixed(1)}</div>
+                  
+                  {/* Row 2: Percentage */}
+                  <div className="p-3 bg-gray-50 font-medium text-gray-600">回贈率</div>
+                  <div className="p-3 text-right font-bold text-emerald-600">{best.percentage}%</div>
+                  <div className="p-3 text-right text-gray-600">vs {compareCardResult.percentage}%</div>
+                  
+                  {/* Row 3: Cap */}
+                  <div className="p-3 bg-gray-50 font-medium text-gray-600">上限</div>
+                  <div className="p-3 text-right text-gray-700">{best.matchedRule.cap ? `$${best.matchedRule.cap}` : '無上限'}</div>
+                  <div className="p-3 text-right text-gray-500">vs<br/>{compareCardResult.matchedRule.cap ? `$${compareCardResult.matchedRule.cap}` : '無上限'}</div>
+                </div>
+              </div>
+
+              {/* Conclusion */}
+              <div className="p-3 bg-red-50 rounded-xl text-center">
+                <p className="text-sm text-red-700">
+                  結論：用錯卡會蝕 <span className="font-bold">${(best.rewardAmount - compareCardResult.rewardAmount).toFixed(1)}</span>！ 💸
+                </p>
+              </div>
+
+              {/* CTA */}
+              <Button 
+                className="w-full bg-gray-800 hover:bg-gray-900"
+                onClick={() => setShowCompareDialog(false)}
+              >
+                明白，即刻換卡
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
