@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { merchantId, merchantName, categoryId, amount, paymentMethod, bestCardId, bestRewardAmount, userId } = body;
+    const { merchantId, merchantName, categoryId, amount, paymentMethod, isOnline, bestCardId, bestRewardAmount, userId } = body;
 
     // Use admin client (Service Role) to bypass RLS for logging
     // This ensures search logs are always recorded regardless of user auth state
@@ -16,6 +16,7 @@ export async function POST(request: Request) {
       category_id: categoryId,
       amount,
       payment_method: paymentMethod,
+      is_online: isOnline || false, // 門市 = false, 網上 = true
       best_card_id: bestCardId,
       best_reward_amount: bestRewardAmount,
       user_id: userId || null, // Optional

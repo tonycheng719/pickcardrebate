@@ -259,6 +259,7 @@ export function CreditCardCalculator({
                 categoryId: selectedCategory,
                 amount: parseFloat(amount),
                 paymentMethod,
+                isOnline: isOnlineScenario,
                 bestCardId: bestResult?.card.id,
                 bestRewardAmount: bestResult?.rewardAmount,
                 userId: user?.id
