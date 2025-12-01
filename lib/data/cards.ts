@@ -35,16 +35,17 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' },
     rules: [
+      { description: "週五超市 4%", matchType: "category", matchValue: "supermarket", percentage: 4.0, validDays: [5] },
       { description: "網上簽賬 4% ($2.5/里)", matchType: "category", matchValue: "online", percentage: 4.0, cap: 12500, capType: "spending" },
       { description: "超市簽賬 2% ($5/里)", matchType: "category", matchValue: "supermarket", percentage: 2.0 },
       { description: "基本回饋 1% ($10/里)", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "payme", "alipay", "wechat_pay"] }, 
       { description: "電子錢包/繳費 0.4% ($25/里)", matchType: "base", percentage: 0.4 },
     ],
-    tags: ["網購神卡", "超市必備", "永久免年費"],
+    tags: ["網購神卡", "超市必備", "永久免年費", "週五超市"],
     feeWaiverCondition: "永久免年費",
     welcomeOfferText: "迎新簽 $8,000 送 $800 獎賞錢",
     applyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/red/",
-    sellingPoints: ["網上簽賬 4% (HK$2.5/里)", "超市 2%", "永久免年費"],
+    sellingPoints: ["週五超市 4%", "網上簽賬 4% (HK$2.5/里)", "超市 2%", "永久免年費"],
   },
   {
     id: "hsbc-everymile",
@@ -187,12 +188,13 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' },
     rules: [
+      { description: "週二 SOGO 8%", matchType: "merchant", matchValue: ["sogo"], percentage: 8.0, validDays: [2] },
       { description: "手機支付 5% (SOGO)", matchType: "merchant", matchValue: ["sogo"], percentage: 5.5 },
       { description: "手機支付 5%", matchType: "paymentMethod", matchValue: "mobile", percentage: 5.0, cap: 100, capType: "reward", excludeCategories: ["ewallet"] },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
-    tags: ["手機支付5%", "SOGO"],
-    sellingPoints: ["手機支付 5% 現金回贈", "崇光百貨全年 5%"],
+    tags: ["手機支付5%", "SOGO", "週二SOGO"],
+    sellingPoints: ["週二 SOGO 8% 回贈", "手機支付 5% 現金回贈", "崇光百貨全年 5%"],
   },
   {
     id: "boc-cheers",
@@ -268,12 +270,13 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://www.hangseng.com/content/dam/hase/config/personal/credit-cards/enjoy-card/images/enjoy-card-face.png",
     foreignCurrencyFee: 1.95,
     rules: [
+      { description: "週三超市 5% (惠康/百佳/萬寧)", matchType: "merchant", matchValue: ["wellcome", "parknshop", "mannings"], percentage: 5.0, validDays: [3] },
       { description: "特約食肆 4X (2%)", matchType: "merchant", matchValue: ["mcdonalds", "kfc", "maxims", "pizzahut", "starbucks"], percentage: 2.0 },
       { description: "萬寧/惠康 3X/2X", matchType: "merchant", matchValue: ["mannings", "wellcome", "7-11", "ikea"], percentage: 1.5 },
       { description: "基本回饋 0.5%", matchType: "base", percentage: 0.5, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
-    tags: ["儲分", "食肆優惠"],
-    sellingPoints: ["特約商戶高達 4X yuu 積分", "yuu 積分可當現金使用"],
+    tags: ["儲分", "食肆優惠", "週三超市"],
+    sellingPoints: ["週三惠康/百佳/萬寧 5%", "特約商戶高達 4X yuu 積分", "yuu 積分可當現金使用"],
   },
   {
     id: "hangseng-travel-plus",
@@ -302,12 +305,13 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://www.citibank.com.hk/chinese/credit-cards/images/cash-back-card.png",
     foreignCurrencyFee: 1.95,
     rules: [
+      { description: "週五六日食肆 3%", matchType: "category", matchValue: ["dining"], percentage: 3.0, validDays: [5, 6, 0] },
       { description: "食肆/酒店 2%", matchType: "category", matchValue: ["dining", "travel"], percentage: 2.0 },
       { description: "外幣 2%", matchType: "base", percentage: 2.0, isForeignCurrency: true },
       { description: "基本回饋 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
-    tags: ["自動回贈", "餐飲2%"],
-    sellingPoints: ["全球食肆及酒店 2% 回贈", "無上限，自動入賬"],
+    tags: ["自動回贈", "餐飲2%", "週末餐飲3%"],
+    sellingPoints: ["週五六日食肆 3% 回贈", "全球食肆及酒店 2% 回贈", "無上限，自動入賬"],
   },
   {
     id: "citi-rewards",
@@ -433,13 +437,14 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://www.aeon.com.hk/wakuwaku/images/card_face.png",
     foreignCurrencyFee: 1.95,
     rules: [
+      { description: "每月20日 AEON 5%", matchType: "merchant", matchValue: ["aeon"], percentage: 5.0 }, // 20th of each month
       { description: "網上簽賬 6%", matchType: "category", matchValue: "online", percentage: 6.0, cap: 300, capType: "reward", excludeCategories: ["ewallet"] }, // $300 reward cap
       { description: "日本簽賬 3%", matchType: "base", percentage: 3.0, isForeignCurrency: true },
       { description: "基本回饋 0.5%", matchType: "base", percentage: 0.5, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
-    tags: ["網購6%", "日本3%"],
+    tags: ["網購6%", "日本3%", "每月20日AEON"],
     welcomeOfferText: "迎新高達 16% 回贈",
-    sellingPoints: ["網上簽賬 6% 現金回贈", "日本簽賬 3%", "永久免年費"],
+    sellingPoints: ["每月20日 AEON 5%", "網上簽賬 6% 現金回贈", "日本簽賬 3%", "永久免年費"],
   },
   {
     id: "aeon-card-jal",
@@ -517,12 +522,13 @@ export const HK_CARDS: CreditCard[] = [
     rewardTimeline: "現金回贈即時入賬",
     foreignCurrencyFee: 0,
     rules: [
+      { description: "週五六日 3%", matchType: "base", percentage: 3.0, validDays: [5, 6, 0], cap: 150000, capType: "spending", excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
       { description: "全方位 2%", matchType: "base", percentage: 2.0, cap: 150000, capType: "spending", excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] }, // $150000 spending cap
       { description: "八達通自動增值 2%", matchType: "category", matchValue: ["ewallet"], percentage: 2.0 },
     ],
-    tags: ["全方位2%", "懶人必備"],
+    tags: ["全方位2%", "懶人必備", "週末3%"],
     welcomeOfferText: "迎新送按摩椅或 $500 回贈",
-    sellingPoints: ["全方位 2% 回贈", "八達通自動增值 2%", "免外幣手續費"],
+    sellingPoints: ["週五六日 3% 回贈", "全方位 2% 回贈", "八達通自動增值 2%", "免外幣手續費"],
   },
   {
     id: "wewa-unionpay",
@@ -654,16 +660,15 @@ export const HK_CARDS: CreditCard[] = [
     id: "mox-credit",
     name: "Mox Credit",
     bank: "Mox",
-    style: { bgColor: "bg-black", textColor: "text-white" },
+    style: { bgColor: "bg-gradient-to-br from-teal-400 to-cyan-600", textColor: "text-white" },
     imageUrl: "https://mox.com/images/cards/mox-card-black-front.png",
-    foreignCurrencyFee: 1.95,
+    foreignCurrencyFee: 0,
     rules: [
-      { description: "超市 3%", matchType: "category", matchValue: ["supermarket"], percentage: 3.0 },
-      { description: "無上限 2%", matchType: "base", percentage: 2.0, minSpend: 75000 },
-      { description: "基本回饋 1%", matchType: "base", percentage: 1.0 },
+      { description: "指定超市 3% (惠康/百佳/AEON/HKTVmall等)", matchType: "merchant", matchValue: ["wellcome", "parknshop", "aeon", "hktvmall", "donki", "759"], percentage: 3.0 },
+      { description: "基本回饋 1% (無上限)", matchType: "base", percentage: 1.0 },
     ],
-    tags: ["超市3%", "虛擬銀行"],
-    sellingPoints: ["指定超市 3% 現金回贈", "無上限 1% 或 2% (需存款)"],
+    tags: ["超市3%", "虛擬銀行", "無上限1%"],
+    sellingPoints: ["指定超市 3% 現金回贈 (無上限)", "所有簽賬 1% (無上限)", "免外幣手續費"],
   },
   {
     id: "sim-credit-card",
