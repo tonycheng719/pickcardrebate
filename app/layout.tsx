@@ -96,6 +96,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-HK" suppressHydrationWarning>
+      <head>
+        {/* Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0ST5J83F7"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-E0ST5J83F7');
+            `,
+          }}
+        />
+      </head>
       <body className="antialiased bg-gray-50 dark:bg-gray-950 min-h-screen text-gray-900 dark:text-gray-100 transition-colors duration-300 pb-20 md:pb-0 flex flex-col">
         <Providers>
           <div className="flex-1">

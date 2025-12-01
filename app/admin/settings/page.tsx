@@ -57,10 +57,10 @@ export default function AdminSettingsPage() {
     }
   };
   
-  // Local state for Analytics (simulated backend fields)
+  // Local state for Analytics - GA4 is hardcoded in layout.tsx
   const [analytics, setAnalytics] = useState({
-    ga4Id: "G-XXXXXXXXXX",
-    metaPixelId: "XXXXXXXXXXXXXXX"
+    ga4Id: "G-E0ST5J83F7",
+    metaPixelId: ""
   });
 
   const toggleSetting = (id: string) => {
@@ -156,12 +156,17 @@ export default function AdminSettingsPage() {
         <CardContent className="space-y-4">
             <div className="grid gap-2">
                 <Label>Google Analytics 4 (GA4) Measurement ID</Label>
-                <Input 
-                    placeholder="G-XXXXXXXXXX" 
-                    value={analytics.ga4Id}
-                    onChange={(e) => setAnalytics({...analytics, ga4Id: e.target.value})}
-                />
-                <p className="text-xs text-gray-500">輸入後將自動在全站頁面載入 GA4 追蹤碼。</p>
+                <div className="flex items-center gap-2">
+                  <Input 
+                      value={analytics.ga4Id}
+                      readOnly
+                      className="bg-gray-100 dark:bg-gray-700"
+                  />
+                  <span className="text-xs px-2 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 rounded-full whitespace-nowrap">
+                    已啟用
+                  </span>
+                </div>
+                <p className="text-xs text-gray-500">GA4 追蹤碼已在全站啟用。如需更改，請聯繫開發人員。</p>
             </div>
             <div className="grid gap-2">
                 <Label>Meta (Facebook) Pixel ID</Label>
@@ -169,8 +174,9 @@ export default function AdminSettingsPage() {
                     placeholder="XXXXXXXXXXXXXXX" 
                     value={analytics.metaPixelId}
                     onChange={(e) => setAnalytics({...analytics, metaPixelId: e.target.value})}
+                    disabled
                 />
-                <p className="text-xs text-gray-500">輸入後將自動在全站頁面載入 Pixel 追蹤碼。</p>
+                <p className="text-xs text-gray-500">Meta Pixel 尚未設定。如需啟用，請聯繫開發人員。</p>
             </div>
         </CardContent>
       </Card>
