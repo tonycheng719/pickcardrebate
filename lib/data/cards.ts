@@ -269,14 +269,16 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-red-500 to-red-700", textColor: "text-white" },
     imageUrl: "https://www.hangseng.com/content/dam/hase/config/personal/credit-cards/enjoy-card/images/enjoy-card-face.png",
     foreignCurrencyFee: 1.95,
+    rewardConfig: { method: 'conversion', ratio: 200, currency: 'yuu積分' }, // $1 = 1 yuu point, 200 points = $1 cash
     rules: [
       { description: "週三超市 5% (惠康/百佳/萬寧)", matchType: "merchant", matchValue: ["wellcome", "parknshop", "mannings"], percentage: 5.0, validDays: [3] },
+      { description: "惠康/百佳 3X yuu積分 (1.5%)", matchType: "merchant", matchValue: ["wellcome", "parknshop"], percentage: 1.5 },
+      { description: "萬寧 3X yuu積分 (1.5%)", matchType: "merchant", matchValue: ["mannings"], percentage: 1.5 },
       { description: "特約食肆 4X (2%)", matchType: "merchant", matchValue: ["mcdonalds", "kfc", "maxims", "pizzahut", "starbucks"], percentage: 2.0 },
-      { description: "萬寧/惠康 3X/2X", matchType: "merchant", matchValue: ["mannings", "wellcome", "7-11", "ikea"], percentage: 1.5 },
-      { description: "基本回饋 0.5%", matchType: "base", percentage: 0.5, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "基本回饋 1X yuu積分 (0.5%)", matchType: "base", percentage: 0.5, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["儲分", "食肆優惠", "週三超市"],
-    sellingPoints: ["週三惠康/百佳/萬寧 5%", "特約商戶高達 4X yuu 積分", "yuu 積分可當現金使用"],
+    sellingPoints: ["週三惠康/百佳/萬寧 5%", "惠康/百佳 3X yuu 積分", "yuu 積分可當現金使用"],
   },
   {
     id: "hangseng-travel-plus",

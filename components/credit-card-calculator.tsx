@@ -453,10 +453,27 @@ export function CreditCardCalculator({
         </div>
         
         <div className="text-right shrink-0">
-          <div className={`text-lg font-bold ${isBest ? 'text-emerald-700' : isCashFallback ? 'text-gray-400' : 'text-gray-800 dark:text-gray-100'}`}>
-            {milesText || (result.rewardAmount > 0 ? `+$${result.rewardAmount.toFixed(1)}${isCashFallback ? '' : ''}` : `${result.percentage}%`)}
-          </div>
-          {isCashFallback && <div className="text-[10px] text-gray-400">現金回贈</div>}
+          {/* Points display (e.g. yuu積分) */}
+          {result.pointsAmount && result.pointsCurrency ? (
+            <>
+              <div className={`text-lg font-bold ${isBest ? 'text-emerald-700' : 'text-orange-600'}`}>
+                {result.pointsAmount.toLocaleString()} {result.pointsCurrency}
+              </div>
+              <div className="text-[10px] text-gray-500">
+                ≈ ${result.pointsCashValue?.toFixed(1)} · {result.percentage}%
+              </div>
+            </>
+          ) : (
+            <>
+              <div className={`text-lg font-bold ${isBest ? 'text-emerald-700' : isCashFallback ? 'text-gray-400' : 'text-gray-800 dark:text-gray-100'}`}>
+                {milesText || (result.rewardAmount > 0 ? `+$${result.rewardAmount.toFixed(1)}` : `${result.percentage}%`)}
+              </div>
+              {isCashFallback && <div className="text-[10px] text-gray-400">現金回贈</div>}
+              {!isCashFallback && !milesText && result.rewardAmount > 0 && (
+                <div className="text-[10px] text-gray-500">{result.percentage}%</div>
+              )}
+            </>
+          )}
         </div>
       </div>
   )};
@@ -590,10 +607,27 @@ export function CreditCardCalculator({
               </div>
 
               <div className="text-right shrink-0">
-                <div className={`text-3xl font-bold ${isBestCashFallback ? 'text-gray-400' : 'text-emerald-700'} tracking-tight`}>
-                  {bestMilesText || (best.rewardAmount > 0 ? `+$${best.rewardAmount.toFixed(1)}` : `${best.percentage}%`)}
-                </div>
-                {isBestCashFallback && <div className="text-xs text-gray-400 font-medium mt-1">現金回贈</div>}
+                {/* Points display for Hero (e.g. yuu積分) */}
+                {best.pointsAmount && best.pointsCurrency ? (
+                  <>
+                    <div className="text-3xl font-bold text-orange-600 tracking-tight">
+                      {best.pointsAmount.toLocaleString()} {best.pointsCurrency}
+                    </div>
+                    <div className="text-xs text-gray-500 mt-1">
+                      ≈ ${best.pointsCashValue?.toFixed(1)} · {best.percentage}%
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className={`text-3xl font-bold ${isBestCashFallback ? 'text-gray-400' : 'text-emerald-700'} tracking-tight`}>
+                      {bestMilesText || (best.rewardAmount > 0 ? `+$${best.rewardAmount.toFixed(1)}` : `${best.percentage}%`)}
+                    </div>
+                    {isBestCashFallback && <div className="text-xs text-gray-400 font-medium mt-1">現金回贈</div>}
+                    {!isBestCashFallback && !bestMilesText && best.rewardAmount > 0 && (
+                      <div className="text-xs text-gray-500 mt-1">{best.percentage}%</div>
+                    )}
+                  </>
+                )}
                 {best.card.welcomeOfferText && !isBestOwned && (
                   <div className="text-xs text-orange-500 mt-2 font-medium max-w-[80px] ml-auto">{best.card.welcomeOfferText}</div>
                 )}

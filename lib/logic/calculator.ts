@@ -30,6 +30,10 @@ export interface CalculationResult {
   fxFee?: number;
   isCapped?: boolean;
   milesReturn?: number; // $/Mile
+  // New: Points display
+  pointsAmount?: number; // e.g. 1500 (yuu points)
+  pointsCurrency?: string; // e.g. "yuu積分", "獎賞錢", "積分"
+  pointsCashValue?: number; // e.g. 7.5 (cash equivalent)
 }
 
 export interface SearchOptions {
@@ -180,21 +184,25 @@ function calculateCardReward(
         }
       }
       else if (rule.matchType === "category") {
+        // Handle matchValue as string or string[]
+        const ruleCategories = Array.isArray(rule.matchValue) ? rule.matchValue : [rule.matchValue];
+        
         if (matchedCategory) {
-          isMatch = rule.matchValue === matchedCategory.id;
+          isMatch = ruleCategories.includes(matchedCategory.id);
         } 
         else if (matchedMerchant) {
           if (Array.isArray(matchedMerchant.categoryIds)) {
-            isMatch = matchedMerchant.categoryIds.includes(rule.matchValue as string);
+            // Check if any merchant category matches any rule category
+            isMatch = matchedMerchant.categoryIds.some(catId => ruleCategories.includes(catId));
           }
         }
         
         // SPECIAL LOGIC: If paymentMethod is 'online', also match category 'online'
-        if (paymentMethod === 'online' && rule.matchValue === 'online') {
+        if (paymentMethod === 'online' && ruleCategories.includes('online')) {
             isMatch = true;
         }
         // NEW: If isOnlineScenario is true, treat as online category
-        if (isOnlineScenario && rule.matchValue === 'online') {
+        if (isOnlineScenario && ruleCategories.includes('online')) {
             isMatch = true;
         }
       }
@@ -383,6 +391,25 @@ export function findBestCards(
         netPercentage = amount > 0 ? (netRewardAmount / amount) * 100 : 0;
     }
 
+    // Calculate points display if card has rewardConfig
+    let pointsAmount: number | undefined;
+    let pointsCurrency: string | undefined;
+    let pointsCashValue: number | undefined;
+    
+    if (card.rewardConfig && card.rewardConfig.currency) {
+      pointsCurrency = card.rewardConfig.currency;
+      
+      if (card.rewardConfig.method === 'conversion' && card.rewardConfig.ratio) {
+        // For yuu points: $500 * 1.5% = $7.5 cash, but as points = amount * percentage / 100 * pointsPerDollar
+        // yuu: 1 yuu point = $0.005 (200 points = $1)
+        // So points earned = amount * (percentage / 100) * (1 / 0.005) = amount * percentage * 2
+        // Actually simpler: points = (amount * percentage / 100) * ratio
+        // e.g. $500 * 1.5% * 200 = 1500 yuu points
+        pointsAmount = Math.round(amount * (percentage / 100) * card.rewardConfig.ratio);
+        pointsCashValue = current.rewardAmount; // Cash equivalent
+      }
+    }
+
     return {
       card,
       matchedRule: bestRule,
@@ -399,7 +426,10 @@ export function findBestCards(
       netPercentage,
       fxFee,
       isCapped: current.isCapped,
-      milesReturn: current.milesReturn // Add to result
+      milesReturn: current.milesReturn,
+      pointsAmount,
+      pointsCurrency,
+      pointsCashValue
     };
   });
 
