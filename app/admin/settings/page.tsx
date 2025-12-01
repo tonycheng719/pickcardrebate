@@ -117,7 +117,7 @@ export default function AdminSettingsPage() {
             <Database className="h-5 w-5" /> 資料庫管理
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="font-medium text-gray-900 dark:text-white">重置並更新卡片資料 (Re-seed)</p>
@@ -143,7 +143,36 @@ export default function AdminSettingsPage() {
                     }
                 }}
             >
-              強制更新資料庫
+              更新卡片資料
+            </Button>
+          </div>
+          
+          <div className="flex items-center justify-between border-t dark:border-gray-700 pt-6">
+            <div>
+              <p className="font-medium text-gray-900 dark:text-white">重置並更新商戶資料</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                將最新的代碼庫商戶資料 (包括 icon、分類) 強制更新至 Supabase。
+              </p>
+            </div>
+            <Button 
+                variant="outline" 
+                onClick={async () => {
+                    if (confirm("確定要強制更新所有商戶資料嗎？")) {
+                        try {
+                            const res = await fetch("/api/admin/seed-merchants");
+                            const data = await res.json();
+                            if (res.ok) {
+                                toast.success(data.message || `成功更新商戶資料`);
+                            } else {
+                                toast.error(`更新失敗: ${data.error}`);
+                            }
+                        } catch (e) {
+                            toast.error("請求失敗");
+                        }
+                    }
+                }}
+            >
+              更新商戶資料
             </Button>
           </div>
         </CardContent>
