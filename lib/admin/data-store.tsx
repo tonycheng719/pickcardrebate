@@ -119,10 +119,37 @@ interface AdminDataStoreContextType {
 
 const AdminDataStoreContext = createContext<AdminDataStoreContextType | undefined>(undefined);
 
+// Helper to get cached merchants from localStorage
+function getCachedMerchants(): Merchant[] {
+  if (typeof window === 'undefined') return POPULAR_MERCHANTS;
+  try {
+    const cached = localStorage.getItem('cached_merchants');
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      if (parsed && parsed.length > 0) {
+        return parsed;
+      }
+    }
+  } catch (e) {
+    console.warn("Failed to load cached merchants");
+  }
+  return POPULAR_MERCHANTS;
+}
+
+// Helper to cache merchants to localStorage
+function cacheMerchants(merchants: Merchant[]) {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem('cached_merchants', JSON.stringify(merchants));
+  } catch (e) {
+    console.warn("Failed to cache merchants");
+  }
+}
+
 export function DataStoreProvider({ children }: { children: React.ReactNode }) {
-  // Start with local data IMMEDIATELY to avoid white screen
+  // Start with cached data or local data IMMEDIATELY to avoid white screen
   const [cards, setCards] = useState<CreditCard[]>(HK_CARDS); 
-  const [merchants, setMerchants] = useState<Merchant[]>(POPULAR_MERCHANTS);
+  const [merchants, setMerchants] = useState<Merchant[]>(getCachedMerchants);
   const [promos, setPromos] = useState<Promo[]>(PROMOS);
   const [isLoading, setIsLoading] = useState(true); // Still track loading for admin/background sync
   
@@ -174,13 +201,37 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
         }
 
         // 2. Merchants - with independent timeout
+        // Merge DB merchants with local merchants to ensure logos are updated
         try {
             const merchantsPromise = supabase.from('merchants').select('*');
             const merchantsTimeout = new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 5000));
             const { data: merchantsData } = await Promise.race([merchantsPromise, merchantsTimeout]) as any;
             
             if (merchantsData && merchantsData.length > 0) {
-                setMerchants(merchantsData.map(mapMerchantFromDB));
+                const dbMerchants = merchantsData.map(mapMerchantFromDB);
+                // Create a map of DB merchants by ID for quick lookup
+                const dbMerchantMap = new Map(dbMerchants.map((m: Merchant) => [m.id, m]));
+                
+                // Merge: Use DB data if available, otherwise fallback to local
+                const mergedMerchants = POPULAR_MERCHANTS.map(localMerchant => {
+                    const dbMerchant = dbMerchantMap.get(localMerchant.id);
+                    if (dbMerchant) {
+                        // Prefer DB merchant data (has updated logos)
+                        return dbMerchant;
+                    }
+                    return localMerchant;
+                });
+                
+                // Also add any DB-only merchants not in local data
+                dbMerchants.forEach((dbM: Merchant) => {
+                    if (!POPULAR_MERCHANTS.some(lm => lm.id === dbM.id)) {
+                        mergedMerchants.push(dbM);
+                    }
+                });
+                
+                setMerchants(mergedMerchants);
+                // Cache merchants for faster initial load next time
+                cacheMerchants(mergedMerchants);
             }
         } catch (e: any) {
             console.warn("Merchants fetch failed:", e.message);

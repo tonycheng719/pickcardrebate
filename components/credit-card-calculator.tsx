@@ -1001,23 +1001,38 @@ export function CreditCardCalculator({
                 </div>
               </div>
 
-              {/* Comparison Table */}
+              {/* Comparison Table - Compact Single Row Format */}
               <div className="border rounded-lg overflow-hidden">
-                <div className="grid grid-cols-[1fr,1fr,1fr] gap-0 text-sm">
+                <div className="divide-y">
                   {/* Row 1: Reward Amount */}
-                  <div className="p-3 bg-gray-50 font-medium text-gray-600">回贈金額</div>
-                  <div className="p-3 text-right font-bold text-emerald-600">${best.rewardAmount.toFixed(1)}</div>
-                  <div className="p-3 text-right text-gray-600">vs ${compareCardResult.rewardAmount.toFixed(1)}</div>
+                  <div className="flex items-center justify-between p-3">
+                    <span className="text-sm font-medium text-gray-600">回贈金額</span>
+                    <span className="text-sm">
+                      <span className="font-bold text-emerald-600">${best.rewardAmount.toFixed(1)}</span>
+                      <span className="text-gray-400 mx-1">vs</span>
+                      <span className="text-gray-600">${compareCardResult.rewardAmount.toFixed(1)}</span>
+                    </span>
+                  </div>
                   
                   {/* Row 2: Percentage */}
-                  <div className="p-3 bg-gray-50 font-medium text-gray-600">回贈率</div>
-                  <div className="p-3 text-right font-bold text-emerald-600">{best.percentage}%</div>
-                  <div className="p-3 text-right text-gray-600">vs {compareCardResult.percentage}%</div>
+                  <div className="flex items-center justify-between p-3 bg-gray-50">
+                    <span className="text-sm font-medium text-gray-600">回贈率</span>
+                    <span className="text-sm">
+                      <span className="font-bold text-emerald-600">{best.percentage}%</span>
+                      <span className="text-gray-400 mx-1">vs</span>
+                      <span className="text-gray-600">{compareCardResult.percentage}%</span>
+                    </span>
+                  </div>
                   
                   {/* Row 3: Cap */}
-                  <div className="p-3 bg-gray-50 font-medium text-gray-600">上限</div>
-                  <div className="p-3 text-right text-gray-700">{best.matchedRule.cap ? `$${best.matchedRule.cap}` : '無上限'}</div>
-                  <div className="p-3 text-right text-gray-500">vs<br/>{compareCardResult.matchedRule.cap ? `$${compareCardResult.matchedRule.cap}` : '無上限'}</div>
+                  <div className="flex items-center justify-between p-3">
+                    <span className="text-sm font-medium text-gray-600">上限</span>
+                    <span className="text-sm">
+                      <span className="text-gray-700">{best.matchedRule.cap ? `$${best.matchedRule.cap}` : '無上限'}</span>
+                      <span className="text-gray-400 mx-1">vs</span>
+                      <span className="text-gray-500">{compareCardResult.matchedRule.cap ? `$${compareCardResult.matchedRule.cap}` : '無上限'}</span>
+                    </span>
+                  </div>
                 </div>
               </div>
 
