@@ -25,7 +25,8 @@ export interface RewardRule {
   excludePaymentMethods?: string[]; // Payment methods to explicitly exclude
   
   // Time Logic
-  validDays?: number[]; // New: 0=Sun...6=Sat
+  validDays?: number[]; // New: 0=Sun...6=Sat (day of week)
+  validDates?: number[]; // New: 1-31 (day of month, e.g. [20] for 20th of each month)
   validDateRange?: { start: string; end: string }; // New: Promo period
 
   condition?: RewardRuleCondition; // Legacy/Advanced conditions

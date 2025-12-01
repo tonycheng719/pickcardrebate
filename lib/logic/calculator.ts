@@ -103,7 +103,7 @@ function calculateCardReward(
 
     // Helper to check conditions (Updated Logic)
     const checkConditions = (rule: RewardRule): boolean => {
-        // 1. Check validDays (0=Sun...6=Sat)
+        // 1. Check validDays (0=Sun...6=Sat - day of week)
         if (rule.validDays && rule.validDays.length > 0) {
             const today = new Date().getDay();
             if (!rule.validDays.includes(today)) {
@@ -111,7 +111,15 @@ function calculateCardReward(
             }
         }
 
-        // 2. Check validDateRange
+        // 2. Check validDates (1-31 - day of month)
+        if (rule.validDates && rule.validDates.length > 0) {
+            const todayDate = new Date().getDate();
+            if (!rule.validDates.includes(todayDate)) {
+                return false;
+            }
+        }
+
+        // 3. Check validDateRange
         if (rule.validDateRange) {
             const now = new Date();
             const start = new Date(rule.validDateRange.start);
@@ -121,7 +129,7 @@ function calculateCardReward(
             }
         }
 
-        // 3. Legacy Condition check
+        // 4. Legacy Condition check
         if (rule.condition) {
             if (rule.condition.dayOfWeek) {
                 const today = new Date().getDay();

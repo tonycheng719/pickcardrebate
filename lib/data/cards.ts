@@ -170,13 +170,14 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' }, // 15 pts = 1 mile -> ratio 0.0666
     rules: [
+      { description: "週五六日影視娛樂 12%", matchType: "category", matchValue: "entertainment", percentage: 12.0, validDays: [5, 6, 0], cap: 150, capType: "reward" },
       { description: "影視娛樂 10%", matchType: "category", matchValue: "entertainment", percentage: 10.0, cap: 150, capType: "reward" }, 
       { description: "手機支付 5%", matchType: "paymentMethod", matchValue: ["mobile", "boc_pay"], percentage: 5.0, cap: 150, capType: "reward", excludeCategories: ["ewallet"] },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
-    tags: ["娛樂10%", "BoC Pay"],
+    tags: ["娛樂10%", "BoC Pay", "週末娛樂12%"],
     welcomeOfferText: "迎新簽 $5,000 送 $500 現金回贈",
-    sellingPoints: ["影視娛樂 10%", "手機支付 5%", "永久免年費"],
+    sellingPoints: ["週五六日影視娛樂 12%", "影視娛樂 10%", "手機支付 5%", "永久免年費"],
   },
   {
     id: "boc-sogo",
@@ -439,7 +440,7 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://www.aeon.com.hk/wakuwaku/images/card_face.png",
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "每月20日 AEON 5%", matchType: "merchant", matchValue: ["aeon"], percentage: 5.0 }, // 20th of each month
+      { description: "每月20日 AEON 5%", matchType: "merchant", matchValue: ["aeon"], percentage: 5.0, validDates: [20] }, // 20th of each month
       { description: "網上簽賬 6%", matchType: "category", matchValue: "online", percentage: 6.0, cap: 300, capType: "reward", excludeCategories: ["ewallet"] }, // $300 reward cap
       { description: "日本簽賬 3%", matchType: "base", percentage: 3.0, isForeignCurrency: true },
       { description: "基本回饋 0.5%", matchType: "base", percentage: 0.5, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },

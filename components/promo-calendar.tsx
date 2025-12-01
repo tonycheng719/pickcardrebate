@@ -9,6 +9,7 @@ import { useWallet } from "@/lib/store/wallet-context";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { ChevronLeft, ChevronRight, Calendar, Bell, CreditCard } from "lucide-react";
 import { CreditCard as CreditCardType } from "@/lib/types";
+import { HK_CARDS } from "@/lib/data/cards";
 
 const DAYS_OF_WEEK = ["日", "一", "二", "三", "四", "五", "六"];
 const MONTHS = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
@@ -37,9 +38,32 @@ interface PromoCalendarProps {
 }
 
 export function PromoCalendar({ open, onOpenChange }: PromoCalendarProps) {
-  const { cards } = useDataset();
+  const { cards: datasetCards } = useDataset();
   const { myCardIds } = useWallet();
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  
+  // Use HK_CARDS as primary source (always has latest validDays), merge with dataset cards
+  const cards = useMemo(() => {
+    // HK_CARDS has the latest static data with validDays
+    // Dataset cards may have updated images/info from DB
+    const cardMap = new Map<string, CreditCardType>();
+    
+    // Start with HK_CARDS (has all validDays)
+    HK_CARDS.forEach(card => cardMap.set(card.id, card));
+    
+    // Overlay with dataset cards (for updated images, etc.)
+    datasetCards.forEach(card => {
+      const existing = cardMap.get(card.id);
+      if (existing) {
+        // Keep rules from HK_CARDS (has validDays), but update other fields
+        cardMap.set(card.id, { ...card, rules: existing.rules });
+      } else {
+        cardMap.set(card.id, card);
+      }
+    });
+    
+    return Array.from(cardMap.values());
+  }, [datasetCards]);
   
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
@@ -52,11 +76,11 @@ export function PromoCalendar({ open, onOpenChange }: PromoCalendarProps) {
   const today = new Date();
   const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
 
-  // Extract promos with validDays from all cards
-  const dayPromos = useMemo(() => {
+  // Extract promos with validDays (day of week) from all cards
+  const dayOfWeekPromos = useMemo(() => {
     const promosByDay: Record<number, DayPromo[]> = {};
     
-    // Initialize all days
+    // Initialize all days of week (0-6)
     for (let i = 0; i <= 6; i++) {
       promosByDay[i] = [];
     }
@@ -72,7 +96,6 @@ export function PromoCalendar({ open, onOpenChange }: PromoCalendarProps) {
             // Determine category from matchType/matchValue
             let category = "general";
             if (rule.matchType === "category") {
-              // matchValue can be string or string[], take first value if array
               const matchVal = rule.matchValue;
               category = Array.isArray(matchVal) ? (matchVal[0] || "general") : (matchVal || "general");
             } else if (rule.matchType === "merchant") {
@@ -94,11 +117,63 @@ export function PromoCalendar({ open, onOpenChange }: PromoCalendarProps) {
     return promosByDay;
   }, [cards]);
 
-  // Get promos for a specific date (day of month)
+  // Extract promos with validDates (day of month) from all cards
+  const dateOfMonthPromos = useMemo(() => {
+    const promosByDate: Record<number, DayPromo[]> = {};
+
+    cards.forEach(card => {
+      if (!card.rules) return;
+      
+      card.rules.forEach(rule => {
+        if (rule.validDates && rule.validDates.length > 0) {
+          rule.validDates.forEach((dateOfMonth: number) => {
+            if (!promosByDate[dateOfMonth]) promosByDate[dateOfMonth] = [];
+            
+            let category = "general";
+            if (rule.matchType === "category") {
+              const matchVal = rule.matchValue;
+              category = Array.isArray(matchVal) ? (matchVal[0] || "general") : (matchVal || "general");
+            } else if (rule.matchType === "merchant") {
+              category = "merchant";
+            }
+            
+            promosByDate[dateOfMonth].push({
+              card,
+              rule,
+              description: rule.description || `${card.name} ${rule.percentage}%`,
+              percentage: rule.percentage,
+              category
+            });
+          });
+        }
+      });
+    });
+
+    return promosByDate;
+  }, [cards]);
+
+  // Get promos for a specific date (combines day of week and day of month promos)
   const getPromosForDate = (dayOfMonth: number): DayPromo[] => {
     const date = new Date(year, month, dayOfMonth);
     const dayOfWeek = date.getDay();
-    return dayPromos[dayOfWeek] || [];
+    
+    // Combine promos from day of week (e.g. every Wednesday) and day of month (e.g. every 20th)
+    const weekPromos = dayOfWeekPromos[dayOfWeek] || [];
+    const monthPromos = dateOfMonthPromos[dayOfMonth] || [];
+    
+    // Deduplicate by card.id + rule.description
+    const seen = new Set<string>();
+    const combined: DayPromo[] = [];
+    
+    [...weekPromos, ...monthPromos].forEach(promo => {
+      const key = `${promo.card.id}-${promo.rule.description}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        combined.push(promo);
+      }
+    });
+    
+    return combined;
   };
 
   // Check if user owns the card
