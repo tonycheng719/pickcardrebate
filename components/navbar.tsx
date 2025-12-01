@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { CreditCard, Wallet, LogOut, Settings, Moon, Sun, Coins, Plane, MessageCircle } from "lucide-react";
+import { CreditCard, Wallet, LogOut, Settings, Moon, Sun, Coins, Plane, MessageCircle, CalendarDays } from "lucide-react";
 import { Button } from "./ui/button";
 import { useWallet } from "@/lib/store/wallet-context";
 import { useTheme } from "./theme-provider";
@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { WHATSAPP_GROUP_URL } from "@/lib/constants";
+import { PromoCalendar } from "./promo-calendar";
 
 export function Navbar() {
   const { user, logout, rewardPreference, toggleRewardPreference } = useWallet();
@@ -22,6 +23,7 @@ export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
 
   // 監聽捲動以改變 Navbar 樣式
   useEffect(() => {
@@ -84,6 +86,16 @@ export function Navbar() {
             >
               {rewardPreference === 'miles' ? <Plane className="h-5 w-5 text-sky-500" /> : <Coins className="h-5 w-5 text-amber-500" />}
             </motion.div>
+          </Button>
+
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => setShowCalendar(true)}
+            className="text-gray-600 dark:text-gray-300 hover:bg-emerald-50 hover:text-emerald-600 dark:hover:bg-emerald-900/20 dark:hover:text-emerald-400 rounded-full mr-1"
+            title="本月優惠日曆"
+          >
+            <CalendarDays className="h-5 w-5" />
           </Button>
 
           <a 
@@ -227,6 +239,9 @@ export function Navbar() {
           )}
         </nav>
       </div>
+      
+      {/* Promo Calendar Dialog */}
+      <PromoCalendar open={showCalendar} onOpenChange={setShowCalendar} />
     </motion.header>
   );
 }
