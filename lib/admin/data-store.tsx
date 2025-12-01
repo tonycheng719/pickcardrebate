@@ -208,12 +208,12 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
             const { data: merchantsData } = await Promise.race([merchantsPromise, merchantsTimeout]) as any;
             
             if (merchantsData && merchantsData.length > 0) {
-                const dbMerchants = merchantsData.map(mapMerchantFromDB);
+                const dbMerchants: Merchant[] = merchantsData.map(mapMerchantFromDB);
                 // Create a map of DB merchants by ID for quick lookup
-                const dbMerchantMap = new Map(dbMerchants.map((m: Merchant) => [m.id, m]));
+                const dbMerchantMap = new Map<string, Merchant>(dbMerchants.map((m) => [m.id, m]));
                 
                 // Merge: Use DB data if available, otherwise fallback to local
-                const mergedMerchants = POPULAR_MERCHANTS.map(localMerchant => {
+                const mergedMerchants: Merchant[] = POPULAR_MERCHANTS.map(localMerchant => {
                     const dbMerchant = dbMerchantMap.get(localMerchant.id);
                     if (dbMerchant) {
                         // Prefer DB merchant data (has updated logos)
@@ -223,7 +223,7 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
                 });
                 
                 // Also add any DB-only merchants not in local data
-                dbMerchants.forEach((dbM: Merchant) => {
+                dbMerchants.forEach((dbM) => {
                     if (!POPULAR_MERCHANTS.some(lm => lm.id === dbM.id)) {
                         mergedMerchants.push(dbM);
                     }
