@@ -1044,12 +1044,24 @@ export function CreditCardCalculator({
               </div>
 
               {/* CTA */}
-              <Button 
-                className="w-full bg-gray-800 hover:bg-gray-900"
-                onClick={() => setShowCompareDialog(false)}
-              >
-                明白，即刻換卡
-              </Button>
+              {best.card.applyUrl ? (
+                <Button 
+                  className="w-full bg-orange-500 hover:bg-orange-600"
+                  onClick={() => {
+                    window.open(best.card.applyUrl, "_blank");
+                    setShowCompareDialog(false);
+                  }}
+                >
+                  立即申請 {best.card.name}
+                </Button>
+              ) : (
+                <Button 
+                  className="w-full bg-gray-800 hover:bg-gray-900"
+                  onClick={() => setShowCompareDialog(false)}
+                >
+                  明白，關閉
+                </Button>
+              )}
             </div>
           )}
         </DialogContent>
