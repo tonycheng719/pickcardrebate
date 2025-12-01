@@ -276,14 +276,19 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 200, currency: 'yuu積分' }, // $1 = 1 yuu point, 200 points = $1 cash
     rules: [
-      { description: "週三超市 5% (惠康/百佳/萬寧)", matchType: "merchant", matchValue: ["wellcome", "parknshop", "mannings"], percentage: 5.0, validDays: [3] },
+      // 惠康/Market Place: 每月3/13/23日 92折 (約8%折扣)
+      { description: "惠康 92折日 (3/13/23號)", matchType: "merchant", matchValue: ["wellcome"], percentage: 8.0, validDates: [3, 13, 23] },
+      // 萬寧: 每月1/20日 94折 (約6%折扣)
+      { description: "萬寧 94折日 (1/20號)", matchType: "merchant", matchValue: ["mannings"], percentage: 6.0, validDates: [1, 20] },
+      // 平日惠康/百佳 3X yuu積分 (1.5%)
       { description: "惠康/百佳 3X yuu積分 (1.5%)", matchType: "merchant", matchValue: ["wellcome", "parknshop"], percentage: 1.5 },
       { description: "萬寧 3X yuu積分 (1.5%)", matchType: "merchant", matchValue: ["mannings"], percentage: 1.5 },
       { description: "特約食肆 4X (2%)", matchType: "merchant", matchValue: ["mcdonalds", "kfc", "maxims", "pizzahut", "starbucks"], percentage: 2.0 },
       { description: "基本回饋 1X yuu積分 (0.5%)", matchType: "base", percentage: 0.5, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
-    tags: ["儲分", "食肆優惠", "週三超市"],
-    sellingPoints: ["週三惠康/百佳/萬寧 5%", "惠康/百佳 3X yuu 積分", "yuu 積分可當現金使用"],
+    tags: ["儲分", "食肆優惠", "yuu積分"],
+    sellingPoints: ["惠康 92折日 (每月3/13/23號)", "萬寧 94折日 (每月1/20號)", "惠康/百佳 3X yuu積分", "yuu 積分可當現金使用"],
+    note: "惠康92折需單筆滿$100。折扣優惠與yuu積分可同時享有。",
   },
   {
     id: "hangseng-travel-plus",

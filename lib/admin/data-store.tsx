@@ -120,6 +120,7 @@ interface AdminDataStoreContextType {
 const AdminDataStoreContext = createContext<AdminDataStoreContextType | undefined>(undefined);
 
 // Helper to get cached merchants from localStorage
+// IMPORTANT: Always merge with local data to ensure logos are up-to-date
 function getCachedMerchants(): Merchant[] {
   if (typeof window === 'undefined') return POPULAR_MERCHANTS;
   try {
@@ -127,7 +128,23 @@ function getCachedMerchants(): Merchant[] {
     if (cached) {
       const parsed = JSON.parse(cached);
       if (parsed && parsed.length > 0) {
-        return parsed;
+        // Merge cached with local to ensure logos are current
+        const cachedMap = new Map<string, Merchant>(parsed.map((m: Merchant) => [m.id, m]));
+        return POPULAR_MERCHANTS.map(localMerchant => {
+          const cachedMerchant = cachedMap.get(localMerchant.id);
+          if (cachedMerchant) {
+            // Use local logo unless cached has a Supabase storage URL
+            const useCachedLogo = cachedMerchant.logo && (
+              cachedMerchant.logo.includes('supabase') || 
+              cachedMerchant.logo.includes('storage')
+            );
+            return {
+              ...localMerchant,
+              logo: useCachedLogo ? cachedMerchant.logo : localMerchant.logo,
+            };
+          }
+          return localMerchant;
+        });
       }
     }
   } catch (e) {
@@ -201,7 +218,8 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
         }
 
         // 2. Merchants - with independent timeout
-        // Merge DB merchants with local merchants to ensure logos are updated
+        // IMPORTANT: Prioritize LOCAL static data for logos (most up-to-date)
+        // DB data is only used for merchants not in local data
         try {
             const merchantsPromise = supabase.from('merchants').select('*');
             const merchantsTimeout = new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 5000));
@@ -212,12 +230,21 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
                 // Create a map of DB merchants by ID for quick lookup
                 const dbMerchantMap = new Map<string, Merchant>(dbMerchants.map((m) => [m.id, m]));
                 
-                // Merge: Use DB data if available, otherwise fallback to local
+                // Merge: LOCAL data takes priority for logos, DB data used for extra fields
                 const mergedMerchants: Merchant[] = POPULAR_MERCHANTS.map(localMerchant => {
                     const dbMerchant = dbMerchantMap.get(localMerchant.id);
                     if (dbMerchant) {
-                        // Prefer DB merchant data (has updated logos)
-                        return dbMerchant;
+                        // LOCAL logo takes priority (most up-to-date in code)
+                        // Only use DB logo if it's a Supabase storage URL (user uploaded)
+                        const useDbLogo = dbMerchant.logo && (
+                            dbMerchant.logo.includes('supabase') || 
+                            dbMerchant.logo.includes('storage')
+                        );
+                        return {
+                            ...localMerchant, // Start with local data
+                            ...dbMerchant,    // Override with DB data
+                            logo: useDbLogo ? dbMerchant.logo : localMerchant.logo, // Prefer local logo unless DB has uploaded one
+                        };
                     }
                     return localMerchant;
                 });
