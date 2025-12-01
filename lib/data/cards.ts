@@ -106,17 +106,19 @@ export const HK_CARDS: CreditCard[] = [
     bank: "Standard Chartered",
     style: { bgColor: "bg-gradient-to-r from-emerald-400 to-cyan-600", textColor: "text-white" },
     imageUrl: "https://av.sc.com/hk/content/images/hk-smart-card-masthead-400x255.png",
-    rewardTimeline: "現金回贈於下期賬單顯示",
+    rewardTimeline: "現金回贈於下期賬單顯示，需手動換領 ($50倍數)",
     foreignCurrencyFee: 0,
     rules: [
-      { description: "指定商戶 5%", matchType: "merchant", matchValue: ["mcdonalds", "kfc", "hktvmall", "759", "parknshop", "watsons", "donki", "deliveroo", "sf_express", "klook"], percentage: 5.0, cap: 60000, capType: "spending" },
-      { description: "基本回饋 0.56% (需月簽賬滿$4,000)", matchType: "base", percentage: 0.56, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      // 特約商戶 5% (需月簽賬滿$4,000，每月上限簽$5,000)
+      { description: "特約商戶 5% (百佳/屈臣氏/759/Klook等)", matchType: "merchant", matchValue: ["parknshop", "fusion", "taste", "watsons", "759", "japanhome", "deliveroo", "klook", "decathlon", "netflix", "disney", "spotify", "cmhk"], percentage: 5.0, cap: 5000, capType: "spending" },
+      // 基本回贈 0.56% (假設月簽賬滿$4,000)
+      { description: "基本回贈 0.56%", matchType: "base", percentage: 0.56, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
-    tags: ["指定商戶5%", "永久免年費", "免手續費"],
+    tags: ["特約商戶5%", "永久免年費", "免外幣手續費"],
     welcomeOfferText: "迎新簽 $3,500 送 $1,000 現金回贈",
     applyUrl: "https://www.sc.com/hk/zh/credit-cards/smart/",
-    sellingPoints: ["指定商戶 5% 現金回贈 (包括 Klook, Deliveroo)", "基本回饋需月簽賬滿$4,000 (0.56%)，滿$15,000升級至1.2%", "永久免年費", "豁免外幣手續費"],
-    note: "基本回贈率取決於當月總簽賬額：未滿$4,000 (0%)；滿$4,000 (0.56%)；滿$15,000 (1.2%)。計算機暫以標準 0.56% 計算。",
+    sellingPoints: ["特約商戶 5% (百佳/屈臣氏/759/Klook/Deliveroo等)", "基本回贈 0.56% (月簽滿$15,000升至1.2%)", "永久免年費", "豁免外幣手續費"],
+    note: "⚠️ 需月簽賬滿 $4,000 才有回贈！未滿 $4,000 = 0%。特約商戶每月上限簽 $5,000。回贈需手動換領 ($50 倍數)。",
   },
   {
     id: "sc-cathay",
@@ -262,6 +264,7 @@ export const HK_CARDS: CreditCard[] = [
     tags: ["網購5%", "手機支付5%", "必須登記"],
     welcomeOfferText: "迎新簽 $5,000 送 $700 Fun Dollars",
     sellingPoints: ["網購及手機支付 5% (需月簽賬滿$5,000)", "外幣 6%", "每月簽賬滿額解鎖"],
+    note: "⚠️ 需月簽賬滿 $5,000 才享 5%/6% 回贈！未滿額只有 0.4% 基本回贈。需每月登記。",
   },
   {
     id: "hangseng-enjoy",
@@ -295,6 +298,7 @@ export const HK_CARDS: CreditCard[] = [
     ],
     tags: ["旅遊7%", "餐飲5%"],
     sellingPoints: ["外幣簽賬高達 7% (需月簽賬滿$6,000)", "本地餐飲及交通 5% (需月簽賬滿$6,000)"],
+    note: "⚠️ 需月簽賬滿 $6,000 才享 5%/7% 回贈！未滿額只有 0.4% 基本回贈。",
   },
 
   // ========================================================================
