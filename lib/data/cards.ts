@@ -289,19 +289,19 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 200, currency: 'yuu積分' }, // $1 = 1 yuu point, 200 points = $1 cash
     rules: [
-      // 惠康/Market Place: 每月3/13/23日 92折 (約8%折扣)
-      { description: "惠康 92折日 (3/13/23號)", matchType: "merchant", matchValue: ["wellcome"], percentage: 8.0, validDates: [3, 13, 23] },
-      // 萬寧: 每月1/20日 94折 (約6%折扣)
-      { description: "萬寧 94折日 (1/20號)", matchType: "merchant", matchValue: ["mannings"], percentage: 6.0, validDates: [1, 20] },
-      // 平日惠康/百佳 3X yuu積分 (1.5%)
+      // 惠康/Market Place: 每月3/13/23日 92折 - 折扣優惠，非回贈
+      { description: "惠康 92折 (3/13/23號)", matchType: "merchant", matchValue: ["wellcome"], percentage: 8.0, validDates: [3, 13, 23], isDiscount: true, minSpend: 100 },
+      // 萬寧: 每月1/20日 94折 - 折扣優惠，非回贈
+      { description: "萬寧 94折 (1/20號)", matchType: "merchant", matchValue: ["mannings"], percentage: 6.0, validDates: [1, 20], isDiscount: true },
+      // 平日惠康/百佳 3X yuu積分 (1.5%) - 回贈
       { description: "惠康/百佳 3X yuu積分 (1.5%)", matchType: "merchant", matchValue: ["wellcome", "parknshop"], percentage: 1.5 },
       { description: "萬寧 3X yuu積分 (1.5%)", matchType: "merchant", matchValue: ["mannings"], percentage: 1.5 },
       { description: "特約食肆 4X (2%)", matchType: "merchant", matchValue: ["mcdonalds", "kfc", "maxims", "pizzahut", "starbucks"], percentage: 2.0 },
       { description: "基本回饋 1X yuu積分 (0.5%)", matchType: "base", percentage: 0.5, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
-    tags: ["儲分", "食肆優惠", "yuu積分"],
-    sellingPoints: ["惠康 92折日 (每月3/13/23號)", "萬寧 94折日 (每月1/20號)", "惠康/百佳 3X yuu積分", "yuu 積分可當現金使用"],
-    note: "💡 惠康 92 折僅限每月 3/13/23 號，需單筆滿 $100。萬寧 94 折僅限每月 1/20 號。折扣優惠與 yuu 積分可同時享有！",
+    tags: ["儲分", "食肆優惠", "yuu積分", "折扣日"],
+    sellingPoints: ["惠康 92折 (每月3/13/23號) [折扣]", "萬寧 94折 (每月1/20號) [折扣]", "惠康/百佳 3X yuu積分", "yuu 積分可當現金使用"],
+    note: "⚠️ 折扣優惠：惠康92折僅限每月 3/13/23 號 (需滿$100)、萬寧94折僅限每月 1/20 號。折扣是購物時直接減價，非事後回贈。折扣與 yuu 積分可同時享有！",
   },
   {
     id: "hangseng-travel-plus",
@@ -774,24 +774,24 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' },
     rules: [
-      // 百佳 92折日 (每月2/12/22日，需滿$100)
-      { description: "百佳 92折 (2/12/22號)", matchType: "merchant", matchValue: ["parknshop"], percentage: 8.0, validDates: [2, 12, 22] },
-      // 屈臣氏 92折日 (每月8/18/28日，需滿$400)
-      { description: "屈臣氏 92折 (8/18/28號)", matchType: "merchant", matchValue: ["watsons"], percentage: 8.0, validDates: [8, 18, 28] },
-      // 豐澤 95折日 (1/5/8/12月的10日，需滿$2,000) - 簡化為每月10日
-      { description: "豐澤 95折 (每月10號)", matchType: "merchant", matchValue: ["fortress"], percentage: 5.0, validDates: [10] },
-      // VIP會員 6倍易賞錢 (2.4%)
+      // 百佳 92折日 (每月2/12/22日，需滿$100) - 折扣優惠，非回贈
+      { description: "百佳 92折 (2/12/22號)", matchType: "merchant", matchValue: ["parknshop"], percentage: 8.0, validDates: [2, 12, 22], isDiscount: true, minSpend: 100 },
+      // 屈臣氏 92折日 (每月8/18/28日，需滿$400) - 折扣優惠，非回贈
+      { description: "屈臣氏 92折 (8/18/28號)", matchType: "merchant", matchValue: ["watsons"], percentage: 8.0, validDates: [8, 18, 28], isDiscount: true, minSpend: 400 },
+      // 豐澤 95折日 (1/5/8/12月的10日，需滿$2,000) - 折扣優惠，非回贈
+      { description: "豐澤 95折 (每月10號)", matchType: "merchant", matchValue: ["fortress"], percentage: 5.0, validDates: [10], isDiscount: true, minSpend: 2000 },
+      // VIP會員 6倍易賞錢 (2.4%) - 回贈
       { description: "百佳/屈臣氏/豐澤 VIP 2.4%", matchType: "merchant", matchValue: ["parknshop", "watsons", "fortress"], percentage: 2.4 },
-      // 最紅自主獎賞 (需登記)
+      // 最紅自主獎賞 (需登記) - 回贈
       { description: "最紅自主獎賞 2.4%", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 2.4, cap: 25000, capType: "spending" },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
-    tags: ["易賞錢", "百佳", "屈臣氏", "92折日"],
+    tags: ["易賞錢", "百佳", "屈臣氏", "折扣日"],
     feeWaiverCondition: "首兩年免年費",
     welcomeOfferText: "迎新簽 $5,800 送 $600 獎賞錢",
     applyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/easy/",
-    sellingPoints: ["百佳 92折 (每月2/12/22號)", "屈臣氏 92折 (每月8/18/28號)", "VIP會員 6倍易賞錢 (2.4%)", "最紅自主獎賞 2.4%"],
-    note: "⚠️ 百佳92折需滿$100 (2/12/22號)。屈臣氏92折需滿$400 (8/18/28號)。豐澤95折需滿$2,000。需綁定「易賞錢」App 及登記「最紅自主獎賞」。",
+    sellingPoints: ["百佳 92折 (每月2/12/22號) [折扣]", "屈臣氏 92折 (每月8/18/28號) [折扣]", "VIP會員 6倍易賞錢 (2.4%)", "最紅自主獎賞 2.4%"],
+    note: "⚠️ 折扣優惠：百佳92折需滿$100 (2/12/22號)、屈臣氏92折需滿$400 (8/18/28號)、豐澤95折需滿$2,000。折扣是購物時直接減價，非事後回贈。需綁定「易賞錢」App。",
   },
   {
     id: "citi-hktvmall",

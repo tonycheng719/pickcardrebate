@@ -234,8 +234,10 @@ function CardItem({ card }: { card: CreditCard }) {
                 <div className="space-y-3 mb-4 flex-1">
                     {card.rules.slice(0, 3).map((rule, i) => (
                         <div key={i} className="flex justify-between text-sm border-b border-dashed dark:border-gray-700 pb-2 last:border-0">
-                            <span className="text-gray-600 dark:text-gray-400 truncate max-w-[75%]">{rule.description}</span>
-                            <span className="font-bold text-gray-900 dark:text-white">{rule.percentage}%</span>
+                            <span className="text-gray-600 dark:text-gray-400 truncate max-w-[70%]">{rule.description}</span>
+                            <span className={`font-bold ${rule.isDiscount ? 'text-orange-600 dark:text-orange-400' : 'text-gray-900 dark:text-white'}`}>
+                                {rule.isDiscount ? '折扣' : `${rule.percentage}%`}
+                            </span>
                         </div>
                     ))}
                 </div>

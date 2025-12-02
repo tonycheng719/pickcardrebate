@@ -309,9 +309,15 @@ export function PromoCalendar({ open, onOpenChange }: PromoCalendarProps) {
                     <div>
                       <p className="text-sm font-medium text-gray-900">
                         {promo.card.name}
+                        {promo.rule.isDiscount && (
+                          <span className="ml-1.5 text-[10px] px-1.5 py-0.5 bg-orange-100 text-orange-600 rounded-full font-normal">
+                            折扣
+                          </span>
+                        )}
                       </p>
                       <p className="text-xs text-gray-500">
                         {promo.description}
+                        {promo.rule.isDiscount && ' (購物時直接減價)'}
                       </p>
                       {isCardOwned(promo.card.id) && (
                         <span className="text-[10px] text-emerald-600 flex items-center gap-0.5">

@@ -12,6 +12,9 @@ export interface RewardRule {
   matchValue?: string | string[]; // merchant name, category id, or payment method id
   percentage: number;
   
+  // Discount vs Rebate
+  isDiscount?: boolean; // If true, this is a direct discount (e.g. 92折), not a rebate
+  
   // Cap Logic
   cap?: number; // Default is 'spending cap' unless capType is specified
   capType?: 'spending' | 'reward'; // New: Distinguish between spending limit and reward limit
