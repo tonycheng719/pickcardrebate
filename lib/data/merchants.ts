@@ -44,4 +44,11 @@ export const POPULAR_MERCHANTS: Merchant[] = [
   { id: "disney-plus", name: "Disney+", categoryIds: ["entertainment", "online"], aliases: ["disney", "disney+"], logo: "https://logo.clearbit.com/disneyplus.com", accentColor: "#2563eb", isOnlineOnly: true },
   { id: "towngas", name: "Towngas 煤氣", categoryIds: ["utilities"], aliases: ["煤氣", "towngas"], logo: "https://logo.clearbit.com/towngas.com", accentColor: "#ea580c", isOnlineOnly: true },
   { id: "wechat-pay-hk", name: "WeChat Pay HK", categoryIds: ["ewallet"], aliases: ["wechat", "微信支付"], logo: "https://logo.clearbit.com/wechat.com", accentColor: "#16a34a", isOnlineOnly: true },
+  
+  // Government / Utilities
+  { id: "wsd", name: "Water Supplies Department 水務署", categoryIds: ["utilities", "government"], aliases: ["水費", "水務署", "wsd", "water"], logo: "https://logo.clearbit.com/wsd.gov.hk", accentColor: "#0ea5e9", isOnlineOnly: true },
+  
+  // Convenience Stores
+  { id: "7-eleven", name: "7-Eleven", categoryIds: ["convenience"], aliases: ["7-11", "seven eleven", "7仔", "七仔"], logo: "https://logo.clearbit.com/7-eleven.com.hk", accentColor: "#16a34a" },
+  { id: "circle-k", name: "OK便利店 Circle K", categoryIds: ["convenience"], aliases: ["ok", "circle k", "ok便利店"], logo: "https://logo.clearbit.com/circlek.hk", accentColor: "#dc2626" },
 ];
