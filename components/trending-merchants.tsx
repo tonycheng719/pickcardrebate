@@ -133,8 +133,8 @@ export function TrendingMerchants() {
         </Button> */}
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-        {trending.map((item, index) => {
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+        {trending.slice(0, 6).map((item, index) => {
             const details = getMerchantDetails(item.merchant_name, item.merchant_id);
             const rank = index + 1;
             

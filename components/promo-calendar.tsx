@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
@@ -66,7 +66,16 @@ export function PromoCalendar({ open, onOpenChange }: PromoCalendarProps) {
   }, [datasetCards]);
   
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [selectedDay, setSelectedDay] = useState<number | null>(new Date().getDate());
+
+  // Reset to today when dialog opens
+  useEffect(() => {
+    if (open) {
+      const today = new Date();
+      setCurrentDate(today);
+      setSelectedDay(today.getDate());
+    }
+  }, [open]);
 
   // Get current month info
   const year = currentDate.getFullYear();
