@@ -4,11 +4,12 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAdminDataStore } from "@/lib/admin/data-store";
-import { Database, MessageCircle, Save } from "lucide-react";
+import { Database, MessageCircle, Save, Key, Eye, EyeOff } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DEFAULT_SYSTEM_SETTINGS, SystemSetting } from "@/lib/admin/mock-data";
 import { toast } from "sonner";
+import { createClient } from "@/lib/supabase/client";
 
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState<SystemSetting[]>(DEFAULT_SYSTEM_SETTINGS);
@@ -17,6 +18,14 @@ export default function AdminSettingsPage() {
   
   const [whatsappUrl, setWhatsappUrl] = useState("");
   const [isSettingsLoading, setIsSettingsLoading] = useState(true);
+  
+  // Password change states
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
 
   useEffect(() => {
     async function fetchSettings() {
@@ -54,6 +63,69 @@ export default function AdminSettingsPage() {
         }
     } catch (e) {
         toast.error("發生錯誤");
+    }
+  };
+
+  const handleChangePassword = async () => {
+    // Validation
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      toast.error("請填寫所有密碼欄位");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      toast.error("新密碼與確認密碼不符");
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      toast.error("新密碼至少需要 6 個字元");
+      return;
+    }
+
+    setIsChangingPassword(true);
+
+    try {
+      const supabase = createClient();
+      
+      // First, verify current password by trying to sign in
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user?.email) {
+        toast.error("無法取得用戶資料");
+        return;
+      }
+
+      // Try to sign in with current password to verify
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: user.email,
+        password: currentPassword
+      });
+
+      if (signInError) {
+        toast.error("目前密碼不正確");
+        return;
+      }
+
+      // Update password
+      const { error: updateError } = await supabase.auth.updateUser({
+        password: newPassword
+      });
+
+      if (updateError) {
+        toast.error("更新密碼失敗：" + updateError.message);
+        return;
+      }
+
+      toast.success("密碼已成功更新！");
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (error: any) {
+      console.error("Password change error:", error);
+      toast.error("發生錯誤：" + error.message);
+    } finally {
+      setIsChangingPassword(false);
     }
   };
   
@@ -108,6 +180,77 @@ export default function AdminSettingsPage() {
                 <p className="text-xs text-gray-500">更新後，前台的 Navbar、Footer 和優惠詳情頁將自動更新連結。</p>
             </div>
           </div>
+        </CardContent>
+      </Card>
+
+      {/* Password Change Section */}
+      <Card className="dark:bg-gray-800 dark:border-gray-700">
+        <CardHeader>
+          <CardTitle className="text-lg dark:text-white flex items-center gap-2">
+            <Key className="h-5 w-5" /> 更改密碼
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid gap-2">
+            <Label>目前密碼</Label>
+            <div className="relative">
+              <Input 
+                type={showCurrentPassword ? "text" : "password"}
+                placeholder="輸入目前密碼" 
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                className="pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                {showCurrentPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
+          </div>
+          
+          <div className="grid gap-2">
+            <Label>新密碼</Label>
+            <div className="relative">
+              <Input 
+                type={showNewPassword ? "text" : "password"}
+                placeholder="輸入新密碼（至少 6 個字元）" 
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
+          </div>
+          
+          <div className="grid gap-2">
+            <Label>確認新密碼</Label>
+            <Input 
+              type="password"
+              placeholder="再次輸入新密碼" 
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            {confirmPassword && newPassword !== confirmPassword && (
+              <p className="text-xs text-red-500">密碼不符</p>
+            )}
+          </div>
+          
+          <Button 
+            onClick={handleChangePassword} 
+            disabled={isChangingPassword || !currentPassword || !newPassword || !confirmPassword || newPassword !== confirmPassword}
+            className="w-full sm:w-auto"
+          >
+            {isChangingPassword ? "更新中..." : "更新密碼"}
+          </Button>
         </CardContent>
       </Card>
 
