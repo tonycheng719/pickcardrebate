@@ -270,15 +270,18 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://www.hangseng.com/content/dam/hase/config/personal/credit-cards/mmpower-card/images/mmpower-card-face.png",
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "網上簽賬 5% (需月簽賬滿$5,000)", matchType: "category", matchValue: "online", percentage: 5.0, minSpend: 5000, cap: 500, capType: "reward", excludeCategories: ["ewallet"] }, // Max $500 +FUN Dollars
-      { description: "手機支付 5% (Apple Pay/Google Pay等)", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 5.0, minSpend: 5000, cap: 500, capType: "reward", excludeCategories: ["ewallet"] },
-      { description: "外幣簽賬 6% (需月簽賬滿$5,000)", matchType: "base", percentage: 6.0, minSpend: 5000, isForeignCurrency: true, cap: 500, capType: "reward" },
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      // 海外外幣 6% (需月簽賬滿$5,000，每月上限$500回贈)
+      { description: "海外外幣簽賬 6% (需月簽$5,000)", matchType: "base", percentage: 6.0, minSpend: 5000, isForeignCurrency: true, cap: 500, capType: "reward" },
+      // 網上簽賬 5% (需月簽賬滿$5,000，與自選類別共用$500上限)
+      { description: "網上簽賬 5% (需月簽$5,000)", matchType: "category", matchValue: "online", percentage: 5.0, minSpend: 5000, cap: 500, capType: "reward", excludeCategories: ["ewallet"], excludePaymentMethods: ["alipay", "wechat_pay"] },
+      // 自選類別 (餐飲/電子產品/娛樂) 1% - 但網上自選會計入網上5%
+      { description: "自選類別 1% (餐飲/電子/娛樂)", matchType: "category", matchValue: ["dining", "electronics", "entertainment"], percentage: 1.0, minSpend: 5000, excludePaymentMethods: ["alipay", "wechat_pay"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps", "alipay", "wechat_pay"] },
     ],
-    tags: ["網購5%", "手機支付5%", "必須登記"],
+    tags: ["網購5%", "外幣6%", "必須登記"],
     welcomeOfferText: "迎新簽 $5,000 送 $700 Fun Dollars",
-    sellingPoints: ["網購 5% (需月簽賬滿$5,000)", "手機支付 5% (Apple Pay/Google Pay等)", "外幣 6%", "每月簽賬滿額解鎖"],
-    note: "⚠️ 需月簽賬滿 $5,000 才享 5%/6% 回贈！未滿額只有 0.4% 基本回贈。需每月登記。手機支付包括 Apple Pay/Google Pay/Samsung Pay。",
+    sellingPoints: ["海外外幣簽賬 6% (需月簽$5,000)", "網上簽賬 5% (需月簽$5,000)", "自選類別 1% (餐飲/電子/娛樂)", "每月回贈上限 $500"],
+    note: "⚠️ 需月簽賬滿 $5,000 並登記才享優惠！Alipay/WeChat Pay 簽賬不計回贈。網上及自選類別共用每月 $500 回贈上限。",
   },
   {
     id: "hangseng-enjoy",
@@ -348,14 +351,15 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' }, // 15 pts = 1 mile
     rules: [
-      { description: "流動支付 5X (2% / $3/里)", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 2.0, cap: 50000, capType: "spending", excludeCategories: ["ewallet"] }, // Max 50,000 points
+      // 流動支付 5X (Apple Pay/Google Pay/Samsung Pay，不包括八達通增值/電子錢包增值)
+      { description: "流動支付 5X (2% / $3/里)", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 2.0, cap: 50000, capType: "spending", excludeCategories: ["ewallet"], excludePaymentMethods: ["octopus", "payme", "alipay", "wechat_pay"] },
       { description: "超市/百貨 5X (2%)", matchType: "category", matchValue: ["supermarket", "department_store"], percentage: 2.0 },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["Apple Pay之選", "積分", "流動支付"],
-    welcomeOfferText: "迎新簽 $10,000 送 20,000 里數",
-    sellingPoints: ["流動支付 5X 積分 (Apple Pay/Google Pay等)", "超市/百貨 5X 積分", "積分永不過期"],
-    note: "流動支付 5X 需使用 Apple Pay/Google Pay/Samsung Pay。每月額外積分上限 50,000 分 (約 $50,000 簽賬)。",
+    welcomeOfferText: "迎新簽 $5,000 送 $1,200 回贈",
+    sellingPoints: ["流動支付 5X 積分 (Apple Pay/Google Pay/Samsung Pay)", "超市/百貨 5X 積分", "積分永不過期"],
+    note: "⚠️ 流動支付 5X 需使用 Apple Pay/Google Pay/Samsung Pay！八達通增值/電子錢包增值不計。每月額外積分上限 50,000 分。",
   },
   {
     id: "citi-premiermiles",
@@ -399,15 +403,17 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://www.dbs.com.hk/personal/credit-cards/credit-cards/eminent-card/images/card_face_eminent_visa_signature.png",
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "餐飲 5% (單筆滿$300)", matchType: "category", matchValue: "dining", percentage: 5.0, minSpend: 300, cap: 8000, capType: "spending" },
-      { description: "健身/運動 5% (單筆滿$300)", matchType: "category", matchValue: ["sports", "gym"], percentage: 5.0, minSpend: 300, cap: 8000, capType: "spending" },
-      { description: "醫療 5% (單筆滿$300)", matchType: "category", matchValue: "medical", percentage: 5.0, minSpend: 300, cap: 8000, capType: "spending" },
-      { description: "基本回饋 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      // 指定類別 5%: 餐飲/運動服飾/健身中心/醫療 (單筆≥$300，Signature卡每月首$8,000)
+      { description: "餐飲 5% (單筆≥$300)", matchType: "category", matchValue: "dining", percentage: 5.0, minSpend: 300, cap: 8000, capType: "spending" },
+      { description: "運動服飾/健身 5% (單筆≥$300)", matchType: "category", matchValue: ["sports", "gym", "sportswear"], percentage: 5.0, minSpend: 300, cap: 8000, capType: "spending" },
+      { description: "醫療 5% (單筆≥$300)", matchType: "category", matchValue: "medical", percentage: 5.0, minSpend: 300, cap: 8000, capType: "spending" },
+      // 其他零售 1% (包括未滿$300的指定類別)
+      { description: "其他零售 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "payme", "alipay", "wechat_pay"] },
     ],
-    tags: ["餐飲5%", "健身5%"],
+    tags: ["餐飲5%", "健身5%", "運動服飾5%", "需登記"],
     welcomeOfferText: "迎新高達 $1,000 回贈",
-    sellingPoints: ["餐飲、健身、醫療 5% 回贈 (單筆滿$300)", "基本簽賬 1%"],
-    note: "⚠️ 餐飲/健身/醫療 5% 需單筆消費滿 $300！未滿 $300 只有 1% 基本回贈。每月上限簽 $8,000。",
+    sellingPoints: ["餐飲/運動服飾/健身/醫療 5% (單筆≥$300)", "其他零售 1%", "需透過 DBS Card+ App 登記"],
+    note: "⚠️ 指定類別 5% 需單筆消費滿 $300 並登記！未滿 $300 只有 1%。Signature卡每月首 $8,000 享 5%。電子錢包增值/PayMe/支付寶/微信支付不計回贈。",
   },
   {
     id: "dbs-black",
@@ -447,13 +453,15 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://www.dbs.com.hk/personal/credit-cards/credit-cards/compass-visa/images/card_face_compass_visa.png",
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "星期三超市/淘寶 10%", matchType: "category", matchValue: ["supermarket", "online"], percentage: 10.0, validDays: [3] }, // Wednesday (0=Sun, 3=Wed)
-      { description: "指定日子超市/淘寶 1% (非週三)", matchType: "category", matchValue: ["supermarket", "online"], percentage: 1.0 },
+      // 週三大折日：全港超市 8% (單筆≥$300，每月首$2,000)
+      { description: "週三超市 8% (單筆≥$300)", matchType: "category", matchValue: "supermarket", percentage: 8.0, validDays: [3], minSpend: 300, cap: 2000, capType: "spending" },
+      // 非週三超市
+      { description: "超市 0.4% (非週三)", matchType: "category", matchValue: "supermarket", percentage: 0.4 },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
-    tags: ["超市10%", "淘寶"],
-    sellingPoints: ["逢星期三超市/淘寶 10% 回贈 (需登記)", "每月 2/12/22 日 Flexi-Shopping 免手續費"],
-    note: "⚠️ 週三超市/淘寶 10% 需每月登記！未登記只有 1% 回贈。",
+    tags: ["週三超市8%", "超市"],
+    sellingPoints: ["逢星期三全港超市 8% 回贈 (單筆≥$300)", "每月首 $2,000 超市簽賬享優惠", "每月 2/12/22 日 Flexi-Shopping 免手續費"],
+    note: "⚠️ 週三超市 8% 需單筆消費滿 $300！每月首 $2,000 超市簽賬享 8%，超出部分為 0.4%。Apple Pay/Google Pay/Samsung Pay 可用，但 PayMe/支付寶/微信支付不計。",
   },
 
   // ========================================================================
@@ -741,18 +749,22 @@ export const HK_CARDS: CreditCard[] = [
   },
   {
     id: "ccb-travo",
-    name: "建行(亞洲) TRAVO Mastercard",
+    name: "建行(亞洲) TRAVO World Mastercard",
     bank: "建行(亞洲)",
     style: { bgColor: "bg-gradient-to-br from-sky-600 to-blue-800", textColor: "text-white" },
     foreignCurrencyFee: 0,
     rewardConfig: { method: 'direct_rate', baseRate: 6, currency: 'AM' }, // $6/mile standard, $1.5/mile overseas
     rules: [
+      // 海外/內地簽賬 4% (或 $1.5=1里)
       { description: "海外/內地簽賬 4%", matchType: "base", percentage: 4.0, isForeignCurrency: true },
-      { description: "本地餐飲 2%", matchType: "category", matchValue: ["dining"], percentage: 2.0 },
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4 },
+      // 本地餐飲/外賣平台 2% (或 $3=1里)
+      { description: "本地餐飲/外賣 2%", matchType: "category", matchValue: ["dining"], percentage: 2.0 },
+      // 基本回饋 0.4%
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["ewallet"], excludePaymentMethods: ["alipay", "payme", "wechat_pay", "octopus"] },
     ],
     tags: ["旅遊4%", "餐飲2%", "免外幣手續費"],
-    sellingPoints: ["海外及內地簽賬 4% 回贈 (或 $1.5=1里)", "本地餐飲 2% 回贈 (或 $3=1里)", "免外幣手續費", "送旅遊保險"],
+    sellingPoints: ["海外及內地簽賬 4% 回贈 (或 $1.5=1里)", "本地餐飲/外賣 2% 回贈 (或 $3=1里)", "免外幣手續費", "送旅遊保險"],
+    note: "⚠️ 電子錢包交易/增值 (AlipayHK/PayMe/WeChat Pay) 及八達通自動增值不計回贈！",
   },
   {
     id: "dahsing-myauto",
@@ -882,7 +894,7 @@ export const HK_CARDS: CreditCard[] = [
     tags: ["網購8%", "年輕人", "無需登記"],
     sellingPoints: ["網上簽賬 8% 回贈 (無需登記)", "每月回贈上限 $300", "永久免年費", "適合年輕人"],
     applyUrl: "https://www.fubonbank.com.hk/tc/cards/credit-card-products/incard.html",
-    note: "💡 網上簽賬 8% 無需登記！每月回贈上限 $300 (即首 $3,947 網上簽賬享 8%)，超出部分為 0.4%。",
+    note: "💡 網上簽賬 8% 無需登記！每月回贈上限 $300 (即首 $3,750 網上簽賬享 8%)，超出部分為 0.4%。",
   },
   {
     id: "cncbi-gba",
