@@ -60,7 +60,7 @@ export function Navbar() {
           </span>
         </Link>
         
-        <nav className="flex items-center gap-1 md:gap-4">
+        <nav className="flex items-center gap-1 md:gap-3">
           {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-6 mr-4">
             <Link href="/promos" className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
@@ -71,11 +71,12 @@ export function Navbar() {
             </Link>
           </div>
 
+          {/* Desktop only: Reward Preference Toggle */}
           <Button 
             variant="ghost" 
             size="icon" 
             onClick={toggleRewardPreference}
-            className="text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full mr-1"
+            className="hidden md:flex text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"
             title={`切換至${rewardPreference === 'miles' ? '現金' : '里數'}顯示`}
           >
             <motion.div
@@ -88,36 +89,40 @@ export function Navbar() {
             </motion.div>
           </Button>
 
+          {/* Calendar - visible on all sizes */}
           <Button 
             variant="ghost" 
             size="icon" 
             onClick={() => setShowCalendar(true)}
-            className="text-gray-600 dark:text-gray-300 hover:bg-emerald-50 hover:text-emerald-600 dark:hover:bg-emerald-900/20 dark:hover:text-emerald-400 rounded-full mr-1"
+            className="text-gray-600 dark:text-gray-300 hover:bg-emerald-50 hover:text-emerald-600 dark:hover:bg-emerald-900/20 dark:hover:text-emerald-400 rounded-full"
             title="本月優惠日曆"
           >
             <CalendarDays className="h-5 w-5" />
           </Button>
 
+          {/* Desktop only: WhatsApp */}
           <a 
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
             title="加入 WhatsApp 討論群"
+            className="hidden md:block"
           >
             <Button 
               variant="ghost" 
               size="icon" 
-              className="text-gray-600 dark:text-gray-300 hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/20 dark:hover:text-green-400 rounded-full mr-1"
+              className="text-gray-600 dark:text-gray-300 hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/20 dark:hover:text-green-400 rounded-full"
             >
               <MessageCircle className="h-5 w-5" />
             </Button>
           </a>
 
+          {/* Desktop only: Theme Toggle */}
           <Button 
             variant="ghost" 
             size="icon" 
             onClick={toggleTheme}
-            className="text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"
+            className="hidden md:flex text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"
           >
             {mounted ? (
                 <motion.div
@@ -133,7 +138,7 @@ export function Navbar() {
           </Button>
 
           {user ? (
-            <div className="flex items-center gap-2 ml-1">
+            <div className="flex items-center gap-1 md:gap-2 ml-1">
                <Link href="/wallet" className="hidden md:block">
                 <Button variant="ghost" className="gap-2 font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full">
                   <Wallet className="h-4 w-4" />
@@ -196,6 +201,40 @@ export function Navbar() {
                                     </span>
                                 </button>
 
+                                {/* Mobile only: Theme Toggle */}
+                                <button 
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        toggleTheme();
+                                    }}
+                                    className="md:hidden w-full text-left px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl flex items-center justify-between gap-3 transition-colors"
+                                >
+                                    <div className="flex items-center gap-3">
+                                        {mounted && resolvedTheme === "dark" ? (
+                                            <Sun className="h-4 w-4 text-amber-500" />
+                                        ) : (
+                                            <Moon className="h-4 w-4 text-indigo-500" />
+                                        )}
+                                        <span>外觀模式</span>
+                                    </div>
+                                    <span className="text-xs px-2 py-0.5 rounded-md font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+                                        {mounted && resolvedTheme === "dark" ? '深色' : '淺色'}
+                                    </span>
+                                </button>
+
+                                {/* Mobile only: WhatsApp */}
+                                <a 
+                                    href={whatsappUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="md:hidden w-full text-left px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-xl flex items-center gap-3 transition-colors"
+                                    onClick={() => setIsMenuOpen(false)}
+                                >
+                                    <MessageCircle className="h-4 w-4 text-green-500" />
+                                    <span>加入討論群</span>
+                                </a>
+
                               <Link href="/settings">
                                   <button 
                                       onClick={() => setIsMenuOpen(false)}
@@ -229,9 +268,22 @@ export function Navbar() {
               </div>
             </div>
           ) : (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
+                {/* Mobile only: Theme Toggle for guests */}
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={toggleTheme}
+                  className="md:hidden text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"
+                >
+                  {mounted ? (
+                      resolvedTheme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />
+                  ) : (
+                      <div className="w-5 h-5" />
+                  )}
+                </Button>
                 <Link href="/login">
-                    <Button variant="primary" size="sm" className="rounded-full px-5 shadow-blue-200 dark:shadow-none bg-blue-600 hover:bg-blue-700 text-white border-none">
+                    <Button variant="primary" size="sm" className="rounded-full px-4 md:px-5 shadow-blue-200 dark:shadow-none bg-blue-600 hover:bg-blue-700 text-white border-none">
                       登入
                     </Button>
                 </Link>
