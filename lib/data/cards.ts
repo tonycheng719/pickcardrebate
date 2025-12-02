@@ -505,15 +505,18 @@ export const HK_CARDS: CreditCard[] = [
   {
     id: "bea-goal",
     name: "BEA GOAL Credit Card",
-    bank: "BEA",
+    bank: "東亞銀行",
     style: { bgColor: "bg-gradient-to-br from-purple-500 to-purple-700", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "手機支付/網購 12% (迎新/推廣)", matchType: "paymentMethod", matchValue: ["mobile", "online"], percentage: 4.4, excludeCategories: ["ewallet"] },
+      // 手機支付/網購 4% (單筆滿 $2,000)
+      { description: "手機支付/網購 4% (滿$2000)", matchType: "paymentMethod", matchValue: ["mobile"], percentage: 4.0, minSpend: 2000, excludeCategories: ["ewallet"] },
+      { description: "網購 4% (滿$2000)", matchType: "category", matchValue: "online", percentage: 4.0, minSpend: 2000, excludeCategories: ["ewallet"] },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["手機支付", "網購"],
-    sellingPoints: ["手機支付及網購高達 4.4% 回贈", "PayMe/AlipayHK 增值亦有回贈"],
+    sellingPoints: ["手機支付及網購 4% 回贈 (單筆滿$2,000)", "適合大額消費"],
+    note: "⚠️ 手機支付/網購 4% 需單筆消費滿 $2,000！未滿 $2,000 只有 0.4% 基本回贈。",
   },
   {
     id: "bea-world-master",
