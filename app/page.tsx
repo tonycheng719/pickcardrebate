@@ -6,6 +6,24 @@ import { TrendingMerchants } from "@/components/trending-merchants";
 import { useWallet } from "@/lib/store/wallet-context";
 import { Zap, ShieldCheck, PieChart, BadgeCheck, Plane } from "lucide-react";
 import { motion } from "framer-motion";
+import { useMemo } from "react";
+
+// Get greeting based on current time (Hong Kong Time)
+function getGreeting(): string {
+  const now = new Date();
+  // Convert to Hong Kong time (UTC+8)
+  const hkHour = (now.getUTCHours() + 8) % 24;
+  
+  if (hkHour >= 5 && hkHour < 12) {
+    return "早晨";
+  } else if (hkHour >= 12 && hkHour < 18) {
+    return "午安";
+  } else if (hkHour >= 18 && hkHour < 22) {
+    return "晚安";
+  } else {
+    return "夜了";
+  }
+}
 
 const features = [
   {
@@ -36,6 +54,7 @@ const features = [
 
 export default function Home() {
   const { user } = useWallet();
+  const greeting = useMemo(() => getGreeting(), []);
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950">
@@ -44,7 +63,7 @@ export default function Home() {
       <main className="flex-1 container mx-auto px-4 pt-6 pb-24">
         <div className="mb-8 flex justify-between items-start">
           <div>
-            <p className="text-gray-500 dark:text-gray-400 text-sm mb-1 font-medium">早晨, {user?.name || "精明消費者"} 👋</p>
+            <p className="text-gray-500 dark:text-gray-400 text-sm mb-1 font-medium">{greeting}, {user?.name || "精明消費者"} 👋</p>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white">信用卡回贈計算機</h1>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
               選擇商戶與消費方式，即刻知道哪張卡最抵。
