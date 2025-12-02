@@ -325,29 +325,41 @@ function calculateCardReward(
       }
     }
 
-    // Calculate Miles Return
-    if (rewardPreference === "miles" && card.rewardConfig && maxReward > 0) {
-        const { method, ratio = 0, baseRate = 0 } = card.rewardConfig;
+    // Calculate Miles Return ($/Mile)
+    // Only calculate for cards that can actually earn miles
+    if (rewardPreference === "miles" && card.rewardConfig && bestPercentage > 0) {
+        const { method, ratio = 0, currency = '' } = card.rewardConfig;
+        const currencyLower = currency.toLowerCase();
         
-        // 1. Conversion Method: Reward Amount -> Points -> Miles
-        if (method === "conversion" && ratio > 0) {
-            // e.g., $100 spending * 4% = $4 Reward (RC/DBS$)
-            // $4 RC * 10 (ratio) = 40 Miles
-            // $/Mile = $100 / 40 = 2.5
-            const totalMiles = maxReward * ratio;
-            if (totalMiles > 0) {
-                milesReturn = amount / totalMiles;
+        // Identify miles-earning cards by their currency type
+        const isMilesCard = currencyLower.includes('mile') || 
+                           currencyLower.includes('里') ||
+                           currencyLower.includes('avios') ||
+                           currencyLower === 'rc' || // HSBC RC can convert to miles
+                           (currencyLower === 'points' && ratio < 1); // Citi/BEA style points
+        
+        // Skip non-miles cards (yuu積分, AEON積分, Club積分, A. Point, etc.)
+        const isNonMilesCard = currencyLower.includes('yuu') ||
+                               currencyLower.includes('club') ||
+                               currencyLower.includes('a. point') ||
+                               ratio >= 100; // High ratio = cash equivalent points, not miles
+        
+        if (method === "conversion" && isMilesCard && !isNonMilesCard) {
+            if (ratio >= 1 && ratio < 100) {
+                // HSBC style: RC/Points * ratio = Miles
+                // e.g., $500 * 2.4% = $12 RC, $12 * 10 = 120 miles
+                // $/Mile = $500 / 120 = $4.17
+                const totalMiles = maxReward * ratio;
+                if (totalMiles > 0) {
+                    milesReturn = amount / totalMiles;
+                }
+            } else if (ratio < 1) {
+                // Citi/BEA style: ratio represents points-to-miles conversion
+                // For these cards, $/Mile is approximately 100 / percentage
+                // e.g., Citi 1.1% -> ~$9/mile (actual is $8/mile, close enough)
+                milesReturn = 100 / bestPercentage;
             }
-        } 
-        // 2. Direct Rate Method: $/Mile defined directly in rules? 
-        // Usually cards have complex rules. If we use 'rewardAmount' as cash value,
-        // we need to know how much cash value = 1 mile.
-        // Actually, most 'miles cards' give points which convert.
-        // For simplicity, we assume 'maxReward' is the CASH EQUIVALENT (or Points amount if percentage is points rate).
-        // We need to be careful: data/cards.ts usually defines percentage as CASHBACK equivalent percentage.
-        // If percentage is 4%, it means $4 value per $100.
-        // If 1 RC = $1 = 10 Miles (HSBC VS), then $4 RC = 40 Miles.
-        // ratio should be "Miles per $1 Reward Value".
+        }
     }
 
     return { 
