@@ -35,6 +35,10 @@ export interface CalculationResult {
   pointsAmount?: number; // e.g. 1500 (yuu points)
   pointsCurrency?: string; // e.g. "yuu積分", "獎賞錢", "積分"
   pointsCashValue?: number; // e.g. 7.5 (cash equivalent)
+  // New: Discount display (separate from rebate)
+  discountRule?: RewardRule; // The discount rule if applicable
+  discountPercentage?: number; // e.g. 8 for 92折
+  discountAmount?: number; // Actual savings from discount
 }
 
 export interface SearchOptions {
@@ -63,7 +67,10 @@ function calculateCardReward(
     missedDateRule: RewardRule | null,
     missedDateReward: number,
     isCapped: boolean,
-    milesReturn?: number
+    milesReturn?: number,
+    discountRule?: RewardRule,
+    discountPercentage?: number,
+    discountAmount?: number
 } {
     let bestRule: RewardRule | null = null;
     let maxReward = -1;
@@ -77,6 +84,11 @@ function calculateCardReward(
     let bestMissedDateRule: RewardRule | null = null;
     let maxMissedDateReward = -1;
     let milesReturn: number | undefined = undefined;
+
+    // Track discount rules separately (isDiscount: true)
+    let bestDiscountRule: RewardRule | null = null;
+    let bestDiscountPercentage = 0;
+    let bestDiscountAmount = 0;
 
     // Helper to check exclusions
     const isExcluded = (rule: RewardRule): boolean => {
@@ -244,26 +256,37 @@ function calculateCardReward(
               const potentialReward = calculatePotential(rule);
               const minSpend = rule.minSpend || 0;
 
-              if (amount >= minSpend) {
-                 if (potentialReward > maxReward) {
-                    maxReward = potentialReward;
-                    bestPercentage = rule.percentage;
-                    bestRule = rule;
-                    
-                    // Recalculate isCapped based on potential logic
-                    let effectiveSpendingCap = Infinity;
-                    if (rule.cap) {
-                         if (rule.capType === 'reward') effectiveSpendingCap = (rule.cap / rule.percentage) * 100;
-                         else effectiveSpendingCap = rule.cap;
-                    }
-                    isCapped = amount > effectiveSpendingCap;
-                 }
+              // IMPORTANT: Handle discount rules separately
+              if (rule.isDiscount) {
+                  // This is a DISCOUNT (購物時直接減價), not a rebate
+                  if (amount >= minSpend && rule.percentage > bestDiscountPercentage) {
+                      bestDiscountRule = rule;
+                      bestDiscountPercentage = rule.percentage;
+                      bestDiscountAmount = (amount * rule.percentage) / 100;
+                  }
               } else {
-                 // Track missed rule (spending threshold)
-                 if (rule.percentage > maxMissedPercent) {
-                     maxMissedPercent = rule.percentage;
-                     bestMissedRule = rule;
-                 }
+                  // This is a REBATE (事後回贈)
+                  if (amount >= minSpend) {
+                     if (potentialReward > maxReward) {
+                        maxReward = potentialReward;
+                        bestPercentage = rule.percentage;
+                        bestRule = rule;
+                        
+                        // Recalculate isCapped based on potential logic
+                        let effectiveSpendingCap = Infinity;
+                        if (rule.cap) {
+                             if (rule.capType === 'reward') effectiveSpendingCap = (rule.cap / rule.percentage) * 100;
+                             else effectiveSpendingCap = rule.cap;
+                        }
+                        isCapped = amount > effectiveSpendingCap;
+                     }
+                  } else {
+                     // Track missed rule (spending threshold)
+                     if (rule.percentage > maxMissedPercent) {
+                         maxMissedPercent = rule.percentage;
+                         bestMissedRule = rule;
+                     }
+                  }
               }
           } else {
               // Condition Failed (Date Mismatch)
@@ -312,7 +335,10 @@ function calculateCardReward(
         missedDateRule: bestMissedDateRule,
         missedDateReward: maxMissedDateReward,
         isCapped,
-        milesReturn
+        milesReturn,
+        discountRule: bestDiscountRule || undefined,
+        discountPercentage: bestDiscountPercentage > 0 ? bestDiscountPercentage : undefined,
+        discountAmount: bestDiscountAmount > 0 ? bestDiscountAmount : undefined
     };
 }
 
@@ -439,7 +465,11 @@ export function findBestCards(
       milesReturn: current.milesReturn,
       pointsAmount,
       pointsCurrency,
-      pointsCashValue
+      pointsCashValue,
+      // Discount info (separate from rebate)
+      discountRule: current.discountRule,
+      discountPercentage: current.discountPercentage,
+      discountAmount: current.discountAmount
     };
   });
 
