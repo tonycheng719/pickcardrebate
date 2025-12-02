@@ -1,24 +1,12 @@
-import { createClient } from "@supabase/supabase-js";
 import { UserTable, AdminUser } from "./user-table";
 import { AlertCircle } from "lucide-react";
+import { adminAuthClient } from "@/lib/supabase/admin-client";
 
 export const dynamic = "force-dynamic"; 
 
 export default async function AdminUsersPage() {
-  // Strategy: Bypass the standard createClient which reads cookies.
-  // The "role '' does not exist" error implies a corrupted or incompatible Auth Token in the cookie.
-  // Since the 'profiles' table is publicly readable (RLS policy), we can fetch it using a generic anon client
-  // without user session context. This avoids the role error entirely.
-  
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  
-  // Create a plain client without cookie handling
-  const supabase = createClient(supabaseUrl, supabaseKey, {
-    auth: {
-        persistSession: false // Don't try to persist or load session
-    }
-  });
+  // Use service_role client to bypass RLS for admin access
+  const supabase = adminAuthClient;
 
   try {
     const { data, error } = await supabase
