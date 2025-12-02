@@ -13,7 +13,8 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' },
     rules: [
-      { description: "最紅自主獎賞 (類別) 3.6% ($2.78/里)", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 3.6, cap: 100000, capType: "spending" },
+      // 最紅自主獎賞: 需登記並選擇類別，每季額外積分上限 $25,000 (每月約 $8,333)
+      { description: "最紅自主獎賞 (類別) 3.6% ($2.78/里)", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 3.6, cap: 25000, capType: "spending" },
       { description: "基本回饋 0.4% ($25/里)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["餐飲神卡", "最紅自主獎賞", "5X積分"],
@@ -24,6 +25,7 @@ export const HK_CARDS: CreditCard[] = [
     welcomeOfferDeadline: "2024-12-31",
     applyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/visa-signature/",
     sellingPoints: ["最紅自主獎賞 5X，自選類別可達 3.6% (HK$2.78/里)", "Visa Signature 專屬優惠"],
+    note: "⚠️ 需登記「最紅自主獎賞」並選擇類別才享 3.6%！未登記只有 0.4% 基本回贈。每季額外積分上限 $25,000 簽賬。",
   },
   {
     id: "hsbc-red",
@@ -65,6 +67,7 @@ export const HK_CARDS: CreditCard[] = [
     welcomeOfferText: "迎新簽 $8,000 送 $800 獎賞錢",
     applyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/everymile/",
     sellingPoints: ["指定日常簽賬低至 HK$2/里", "免費環亞機場貴賓室"],
+    note: "指定商戶包括：交通 (港鐵/巴士/的士)、網購、餐飲。需配合「獎賞錢」兌換里數。",
   },
   {
     id: "hsbc-pulse",
@@ -81,6 +84,7 @@ export const HK_CARDS: CreditCard[] = [
     ],
     tags: ["北上消費", "銀聯", "免手續費"],
     sellingPoints: ["人民幣/港幣雙幣結算", "豁免外幣手續費", "北上消費必備"],
+    note: "⚠️ 內地 4.4% 需登記「賞世界」及「最紅自主獎賞」！未登記只有 0.4% 基本回贈。",
   },
   {
     id: "hsbc-premier",
