@@ -31,6 +31,10 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: Request) {
     try {
         console.log(`Seeding ${HK_CARDS.length} cards...`);
+        
+        // Log all card IDs being seeded
+        const cardIds = HK_CARDS.map(c => c.id);
+        console.log("Card IDs to seed:", cardIds.join(", "));
 
         // Debug Info
         const keyCheck = process.env.SUPABASE_SERVICE_ROLE_KEY 
@@ -43,6 +47,8 @@ export async function GET(request: Request) {
         const { data: existingCards } = await adminAuthClient
             .from('cards')
             .select('id, image_url');
+        
+        console.log(`Found ${existingCards?.length || 0} existing cards in DB`);
             
         const existingImagesMap = new Map();
         if (existingCards) {
@@ -60,9 +66,16 @@ export async function GET(request: Request) {
             if (existingImagesMap.has(card.id)) {
                 console.log(`Preserving custom image for ${card.id}: ${existingImagesMap.get(card.id)}`);
                 dbPayload.image_url = existingImagesMap.get(card.id);
+            } else {
+                // Log new cards being added
+                if (!existingCards?.some((c: any) => c.id === card.id)) {
+                    console.log(`[NEW CARD] Adding: ${card.id} - ${card.name}`);
+                }
             }
             return dbPayload;
         });
+        
+        console.log(`Upserting ${payload.length} cards...`);
         
         const { data, error } = await adminAuthClient
             .from('cards')
@@ -80,9 +93,19 @@ export async function GET(request: Request) {
             }, { status: 500 });
         }
 
+        console.log(`Successfully seeded ${data?.length} cards`);
+        
+        // Log which cards were updated
+        const newCardIds = ['hsbc-easy', 'citi-hktvmall', 'fubon-yata'];
+        const newCardsInResult = data?.filter((c: any) => newCardIds.includes(c.id));
+        if (newCardsInResult && newCardsInResult.length > 0) {
+            console.log(`New cards added: ${newCardsInResult.map((c: any) => c.id).join(", ")}`);
+        }
+
         return NextResponse.json({ 
             message: 'Successfully seeded cards', 
             count: data?.length,
+            newCards: newCardsInResult?.map((c: any) => ({ id: c.id, name: c.name })),
             cards: data 
         });
     } catch (error: any) {
