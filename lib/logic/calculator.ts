@@ -515,6 +515,13 @@ export function findBestCards(
     };
   });
 
+  // Helper function to calculate total value (rebate + discount)
+  const getTotalValue = (result: CalculationResult): number => {
+    const rebateValue = result.rewardAmount || 0;
+    const discountValue = result.discountAmount || 0;
+    return rebateValue + discountValue;
+  };
+
   // Sort Logic for Miles
   if (rewardPreference === "miles") {
       return results.sort((a, b) => {
@@ -530,7 +537,8 @@ export function findBestCards(
       return results.sort((a, b) => (b.netRewardAmount || 0) - (a.netRewardAmount || 0));
   }
 
-  return results.sort((a, b) => b.rewardAmount - a.rewardAmount);
+  // Sort by total value (rebate + discount combined)
+  return results.sort((a, b) => getTotalValue(b) - getTotalValue(a));
 }
 
 export function getMerchantOrCategoryName(
