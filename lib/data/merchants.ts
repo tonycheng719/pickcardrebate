@@ -48,6 +48,8 @@ export const POPULAR_MERCHANTS: Merchant[] = [
   
   // Government / Utilities
   { id: "wsd", name: "Water Supplies Department 水務署", categoryIds: ["utilities", "government"], aliases: ["水費", "水務署", "wsd", "water"], logo: "https://logo.clearbit.com/wsd.gov.hk", accentColor: "#0ea5e9", isOnlineOnly: true },
+  { id: "housing-authority", name: "房屋署 Housing Authority", categoryIds: ["government"], aliases: ["公屋租", "公屋", "房屋署", "房署", "housing", "租金"], logo: "🏠", accentColor: "#4b5563", isOnlineOnly: true },
+  { id: "hkelectric", name: "港燈 HK Electric", categoryIds: ["utilities"], aliases: ["港燈", "電費", "hk electric"], logo: "https://logo.clearbit.com/hkelectric.com", accentColor: "#f59e0b", isOnlineOnly: true },
   
   // Convenience Stores
   { id: "7-eleven", name: "7-Eleven", categoryIds: ["convenience"], aliases: ["7-11", "seven eleven", "7仔", "七仔"], logo: "https://logo.clearbit.com/7-eleven.com.hk", accentColor: "#16a34a" },

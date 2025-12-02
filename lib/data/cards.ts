@@ -552,20 +552,23 @@ export const HK_CARDS: CreditCard[] = [
   // ========================================================================
   {
     id: "earnmore",
-    name: "EarnMORE 銀聯卡",
-    bank: "WeWa",
+    name: "安信 EarnMORE 銀聯卡",
+    bank: "安信",
     style: { bgColor: "bg-gradient-to-br from-blue-600 to-indigo-700", textColor: "text-white" },
     imageUrl: "https://www.primecredit.com/credit-card/images/earnmore_card_face.png",
     rewardTimeline: "現金回贈即時入賬",
     foreignCurrencyFee: 0,
     rules: [
+      // AlipayHK 繳費 (水電煤/政府) 2% - 唯一有回贈的卡！
+      { description: "AlipayHK 繳水電煤 2%", matchType: "paymentMethod", matchValue: ["alipay"], percentage: 2.0, cap: 150000, capType: "spending" },
       { description: "週五六日 3%", matchType: "base", percentage: 3.0, validDays: [5, 6, 0], cap: 150000, capType: "spending", excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
-      { description: "全方位 2%", matchType: "base", percentage: 2.0, cap: 150000, capType: "spending", excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] }, // $150000 spending cap
+      { description: "全方位 2%", matchType: "base", percentage: 2.0, cap: 150000, capType: "spending", excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
       { description: "八達通自動增值 2%", matchType: "category", matchValue: ["ewallet"], percentage: 2.0 },
     ],
-    tags: ["全方位2%", "懶人必備", "週末3%"],
+    tags: ["全方位2%", "懶人必備", "週末3%", "水電煤"],
     welcomeOfferText: "迎新送按摩椅或 $500 回贈",
-    sellingPoints: ["週五六日 3% 回贈", "全方位 2% 回贈", "八達通自動增值 2%", "免外幣手續費"],
+    sellingPoints: ["週五六日 3% 回贈", "全方位 2% 回贈", "AlipayHK 繳水電煤有回贈", "八達通自動增值 2%", "免外幣手續費"],
+    note: "💡 水電煤/政府繳費：大部分信用卡不計回贈，但此卡透過 AlipayHK 繳費可享 2% 回贈！",
   },
   {
     id: "wewa-unionpay",
