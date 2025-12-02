@@ -27,12 +27,15 @@ export async function GET() {
         const avgAmount = amountData?.length ? totalAmount / amountData.length : 0;
 
         // 3. Top Merchants (Simple aggregation)
-        // Note: Supabase JS client doesn't support complex group by well without RPC, 
-        // so we do simple JS aggregation for fallback (not efficient for large data but works for now)
+        // Get all logs from last 30 days to match frontend trending
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        
         const { data: allLogs } = await adminAuthClient
             .from("search_logs")
             .select("merchant_name, category_id, payment_method")
-            .limit(500); // Sample last 500 for stats
+            .gte("created_at", thirtyDaysAgo.toISOString())
+            .order("created_at", { ascending: false });
 
         const merchantCounts: Record<string, number> = {};
         const categoryCounts: Record<string, number> = {};
@@ -44,9 +47,10 @@ export async function GET() {
             if (log.payment_method) paymentCounts[log.payment_method] = (paymentCounts[log.payment_method] || 0) + 1;
         });
 
+        // Top 20 merchants for admin view
         const topMerchants = Object.entries(merchantCounts)
             .sort(([, a], [, b]) => b - a)
-            .slice(0, 5)
+            .slice(0, 20)
             .map(([name, count]) => ({ merchant_name: name, count }));
 
         const categoryStats = Object.entries(categoryCounts)

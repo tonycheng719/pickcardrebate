@@ -135,21 +135,22 @@ export default function AdminAnalyticsPage() {
         <Card className="dark:bg-gray-800 dark:border-gray-700">
             <CardHeader>
                 <CardTitle className="text-lg dark:text-white flex items-center gap-2">
-                    <Calculator className="h-5 w-5 text-blue-600" /> 熱門商戶 Top 5
+                    <Calculator className="h-5 w-5 text-blue-600" /> 熱門商戶 Top 20
                 </CardTitle>
+                <p className="text-xs text-gray-500 dark:text-gray-400">最近 30 天搜尋統計</p>
             </CardHeader>
             <CardContent>
-                <div className="space-y-5">
+                <div className="space-y-3 max-h-[600px] overflow-y-auto">
                     {data.top_merchants.length === 0 ? (
                         <p className="text-center text-gray-500 py-4">暫無數據</p>
                     ) : (
                         data.top_merchants.map((item, i) => (
-                            <div key={i} className="flex items-center justify-between">
+                            <div key={i} className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-0">
                                 <div className="flex items-center gap-3">
-                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${getRankColor(i)}`}>
+                                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold ${getRankColor(i)}`}>
                                         {i + 1}
                                     </div>
-                                    <span className="font-medium text-gray-900 dark:text-white truncate max-w-[180px]">{item.merchant_name}</span>
+                                    <span className="font-medium text-gray-900 dark:text-white truncate max-w-[200px]">{item.merchant_name}</span>
                                 </div>
                                 <div className="flex items-center gap-4">
                                     <span className="text-sm text-gray-500 dark:text-gray-400 font-mono">{item.count} 次</span>

@@ -509,14 +509,14 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-purple-500 to-purple-700", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
-      // 手機支付/網購 4% (單筆 $2,000-$5,556)
-      { description: "手機支付 4% ($2000-$5556)", matchType: "paymentMethod", matchValue: ["mobile"], percentage: 4.0, minSpend: 2000, cap: 5556, capType: "spending", excludeCategories: ["ewallet"] },
-      { description: "網購 4% ($2000-$5556)", matchType: "category", matchValue: "online", percentage: 4.0, minSpend: 2000, cap: 5556, capType: "spending", excludeCategories: ["ewallet"] },
+      // 手機支付/網購 4.4% (單筆 $2,000-$5,000)
+      { description: "手機支付 4.4% ($2000-$5000)", matchType: "paymentMethod", matchValue: ["mobile"], percentage: 4.4, minSpend: 2000, cap: 5000, capType: "spending", excludeCategories: ["ewallet"] },
+      { description: "網購 4.4% ($2000-$5000)", matchType: "category", matchValue: "online", percentage: 4.4, minSpend: 2000, cap: 5000, capType: "spending", excludeCategories: ["ewallet"] },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["手機支付", "網購"],
-    sellingPoints: ["手機支付及網購 4% 回贈", "單筆 $2,000-$5,556 享優惠"],
-    note: "⚠️ 手機支付/網購 4% 需單筆消費 $2,000-$5,556！未滿 $2,000 或超過 $5,556 部分只有 0.4%。",
+    sellingPoints: ["手機支付及網購 4.4% 回贈", "單筆 $2,000-$5,000 享優惠"],
+    note: "⚠️ 手機支付/網購 4.4% 需單筆消費 $2,000-$5,000！未滿 $2,000 或超過 $5,000 部分只有 0.4%。",
   },
   {
     id: "bea-world-master",
