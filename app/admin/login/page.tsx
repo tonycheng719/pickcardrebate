@@ -9,7 +9,7 @@ import { useAdminAuth } from "@/components/admin/admin-auth-context";
 export default function AdminLoginPage() {
   const router = useRouter();
   const { login } = useAdminAuth();
-  const [email, setEmail] = useState("admin@pickcardrebate.hk");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -59,7 +59,6 @@ export default function AdminLoginPage() {
           <Button type="submit" className="w-full h-11" disabled={loading}>
             {loading ? "登入中..." : "登入後台"}
           </Button>
-          <p className="text-xs text-gray-400 text-center">預設帳號：admin@pickcardrebate.hk / 密碼：123456</p>
         </form>
       </div>
     </div>

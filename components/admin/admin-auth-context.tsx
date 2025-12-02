@@ -16,11 +16,14 @@ type AdminAuthContextValue = {
 const AdminAuthContext = createContext<AdminAuthContextValue | undefined>(undefined);
 
 const STORAGE_KEY = "pickcardrebate-admin-auth";
-const HARD_CODED_ADMIN = {
-  email: "admin@pickcardrebate.hk",
-  password: "123456",
+
+// Admin credentials should be managed via Supabase Auth
+// This fallback is only used if Supabase is not available
+const getAdminCredentials = () => ({
+  email: process.env.NEXT_PUBLIC_ADMIN_EMAIL || "",
+  password: process.env.ADMIN_PASSWORD || "",
   name: "PickCardRebate Admin",
-};
+});
 
 export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
   const [admin, setAdmin] = useState<AdminUser | null>(null);
@@ -33,13 +36,29 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
-    if (email === HARD_CODED_ADMIN.email && password === HARD_CODED_ADMIN.password) {
-      const user = { email, name: HARD_CODED_ADMIN.name };
+    // Use Supabase Auth for login
+    try {
+      const { createClient } = await import("@/lib/supabase/client");
+      const supabase = createClient();
+      
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error || !data.user) {
+        console.error("Login error:", error);
+        return false;
+      }
+
+      const user = { email: data.user.email || email, name: "PickCardRebate Admin" };
       setAdmin(user);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
       return true;
+    } catch (err) {
+      console.error("Login error:", err);
+      return false;
     }
-    return false;
   }, []);
 
   const logout = useCallback(() => {
