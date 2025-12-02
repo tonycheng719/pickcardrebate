@@ -19,7 +19,8 @@ export interface CalculationResult {
     newRewardAmount: number;
   } | null;
   dateSuggestion?: {
-    validDays: number[];
+    validDays?: number[];
+    validDates?: number[]; // Day of month (1-31)
     ruleDescription: string;
     newPercentage: number;
     newRewardAmount: number;
@@ -377,7 +378,8 @@ export function findBestCards(
     let dateSuggestion = null;
     if (current.missedDateRule && current.missedDateReward > current.rewardAmount) {
         dateSuggestion = {
-            validDays: current.missedDateRule.validDays || (current.missedDateRule.condition?.dayOfWeek || []),
+            validDays: current.missedDateRule.validDays || (current.missedDateRule.condition?.dayOfWeek || undefined),
+            validDates: current.missedDateRule.validDates, // Day of month (e.g. [3, 13, 23])
             ruleDescription: current.missedDateRule.description,
             newPercentage: current.missedDateRule.percentage,
             newRewardAmount: current.missedDateReward

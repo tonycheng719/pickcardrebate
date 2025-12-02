@@ -412,7 +412,12 @@ export function CreditCardCalculator({
             {result.dateSuggestion && (
                 <div className="text-[10px] text-blue-500 mt-1 flex items-center gap-1">
                     <Lightbulb className="w-3 h-3" />
-                    {result.dateSuggestion.validDays.map(d => DAYS_MAP[d]).join("/")} 可享 {result.dateSuggestion.newPercentage}%
+                    {result.dateSuggestion.validDays && result.dateSuggestion.validDays.length > 0 
+                        ? `${result.dateSuggestion.validDays.map(d => DAYS_MAP[d]).join("/")} 可享 ${result.dateSuggestion.newPercentage}%`
+                        : result.dateSuggestion.validDates && result.dateSuggestion.validDates.length > 0
+                        ? `每月 ${result.dateSuggestion.validDates.join("/")} 號可享 ${result.dateSuggestion.newPercentage}%`
+                        : `特定日子可享 ${result.dateSuggestion.newPercentage}%`
+                    }
                 </div>
             )}
 
@@ -654,7 +659,13 @@ export function CreditCardCalculator({
                     <Lightbulb className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
                     <div className="text-xs text-blue-700">
                         <span className="font-bold">小貼士：</span>
-                        如果在 <span className="font-bold">{best.dateSuggestion.validDays.map(d => DAYS_MAP[d]).join("/")}</span> 消費，
+                        {best.dateSuggestion.validDays && best.dateSuggestion.validDays.length > 0 ? (
+                            <>如果在 <span className="font-bold">{best.dateSuggestion.validDays.map(d => DAYS_MAP[d]).join("/")}</span> 消費，</>
+                        ) : best.dateSuggestion.validDates && best.dateSuggestion.validDates.length > 0 ? (
+                            <>如果在 <span className="font-bold">每月 {best.dateSuggestion.validDates.join("/")} 號</span> 消費，</>
+                        ) : (
+                            <>如果在特定日子消費，</>
+                        )}
                         回贈可達 <span className="font-bold">+${best.dateSuggestion.newRewardAmount.toFixed(1)} ({best.dateSuggestion.newPercentage}%)</span>！
                     </div>
                 </div>
