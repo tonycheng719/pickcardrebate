@@ -5,6 +5,7 @@ import { ReviewsProvider } from "@/lib/store/reviews-context";
 import { DataStoreProvider } from "@/lib/admin/data-store";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SettingsProvider } from "@/lib/store/settings-context";
+import { AnalyticsUserTracker } from "@/components/analytics";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -13,6 +14,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <DataStoreProvider>
           <WalletProvider>
             <ReviewsProvider>
+              <AnalyticsUserTracker />
               {children}
             </ReviewsProvider>
           </WalletProvider>
