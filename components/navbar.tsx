@@ -71,12 +71,12 @@ export function Navbar() {
             </Link>
           </div>
 
-          {/* Desktop only: Reward Preference Toggle */}
+          {/* Reward Preference Toggle - visible on all sizes */}
           <Button 
             variant="ghost" 
             size="icon" 
             onClick={toggleRewardPreference}
-            className="hidden md:flex text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"
+            className="text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"
             title={`切換至${rewardPreference === 'miles' ? '現金' : '里數'}顯示`}
           >
             <motion.div
@@ -175,32 +175,6 @@ export function Navbar() {
                                 <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
                             </div>
                             <div className="p-1">
-                                {/* Reward Preference Toggle */}
-                                <button 
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        toggleRewardPreference();
-                                    }}
-                                    className="w-full text-left px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl flex items-center justify-between gap-3 transition-colors group"
-                                >
-                                    <div className="flex items-center gap-3">
-                                        {rewardPreference === 'miles' ? (
-                                            <Plane className="h-4 w-4 text-sky-500" />
-                                        ) : (
-                                            <Coins className="h-4 w-4 text-amber-500" />
-                                        )}
-                                        <span>回贈顯示</span>
-                                    </div>
-                                    <span className={`text-xs px-2 py-0.5 rounded-md font-medium transition-colors ${
-                                        rewardPreference === 'miles' 
-                                        ? 'bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-300' 
-                                        : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300'
-                                    }`}>
-                                        {rewardPreference === 'miles' ? '里數' : '現金'}
-                                    </span>
-                                </button>
-
                                 {/* Mobile only: Theme Toggle */}
                                 <button 
                                     onClick={(e) => {
