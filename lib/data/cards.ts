@@ -514,19 +514,6 @@ export const HK_CARDS: CreditCard[] = [
     sellingPoints: ["手機支付及網購高達 4.4% 回贈", "PayMe/AlipayHK 增值亦有回贈"],
   },
   {
-    id: "bea-world-master",
-    name: "BEA Flyer World Mastercard",
-    bank: "BEA",
-    style: { bgColor: "bg-gradient-to-br from-sky-600 to-blue-800", textColor: "text-white" },
-    foreignCurrencyFee: 1.95,
-    rewardConfig: { method: 'direct_rate', baseRate: 5, currency: 'Miles' }, // $5/mile
-    rules: [
-      { description: "本地簽賬 $5/里", matchType: "base", percentage: 2.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
-    ],
-    tags: ["里數", "低門檻"],
-    sellingPoints: ["本地簽賬低至 HK$5/里", "積分無限期"],
-  },
-  {
     id: "bea-i-titanium",
     name: "BEA i-Titanium Card",
     bank: "BEA",
@@ -753,9 +740,11 @@ export const HK_CARDS: CreditCard[] = [
     rewardConfig: { method: 'direct_rate', baseRate: 5, currency: 'Miles' }, // $5/mile
     rules: [
       { description: "海外簽賬 $5=1里 (2%)", matchType: "base", percentage: 2.0, isForeignCurrency: true },
-      { description: "本地簽賬 $5=1里 (2%)", matchType: "base", percentage: 2.0 },
+      { description: "本地簽賬 $5=1里 (2%)", matchType: "base", percentage: 2.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["里數卡", "高端卡"],
+    sellingPoints: ["本地及海外簽賬 $5=1里", "免費機場貴賓室", "旅遊保險", "積分無限期"],
+    applyUrl: "https://www.hkbea.com/html/tc/bea-world-mastercard.html",
     sellingPoints: ["本地及海外簽賬 $5=1里", "機場貴賓室", "旅遊保險"],
   },
   {
@@ -900,21 +889,6 @@ export const HK_CARDS: CreditCard[] = [
     sellingPoints: ["內地簽賬 4% 回贈", "人民幣/港幣雙幣", "免外幣手續費"],
     applyUrl: "https://www.cncbinternational.com/personal/credit-cards/gba-dual-currency-credit-card/tc/index.jsp",
     note: "內地簽賬 4% 回贈無上限。適合經常北上消費的用戶。",
-  },
-  {
-    id: "bea-world-mastercard",
-    name: "東亞銀行 World Mastercard",
-    bank: "東亞銀行",
-    style: { bgColor: "bg-gradient-to-br from-gray-700 to-gray-900", textColor: "text-white" },
-    foreignCurrencyFee: 1.95,
-    rewardConfig: { method: 'direct_rate', baseRate: 5, currency: 'Miles' },
-    rules: [
-      { description: "本地簽賬 $5=1里 (2%)", matchType: "base", percentage: 2.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
-      { description: "海外簽賬 $5=1里 (2%)", matchType: "base", percentage: 2.0, isForeignCurrency: true },
-    ],
-    tags: ["里數卡", "高端"],
-    sellingPoints: ["本地及海外簽賬 $5=1里", "免費機場貴賓室", "旅遊保險"],
-    applyUrl: "https://www.hkbea.com/html/tc/bea-world-mastercard.html",
   },
   {
     id: "sc-apoint",
