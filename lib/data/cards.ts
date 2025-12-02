@@ -882,7 +882,7 @@ export const HK_CARDS: CreditCard[] = [
     tags: ["網購8%", "年輕人"],
     sellingPoints: ["網上簽賬 8% 回贈 (每月上限 $300)", "永久免年費", "適合年輕人"],
     applyUrl: "https://www.fubonbank.com.hk/tc/cards/credit-card-products/incard.html",
-    note: "⚠️ 網上簽賬 8% 需每月登記！每月回贈上限 $300 (即首 $3,750 網上簽賬享 8%)，超出部分為 0.4%。未登記只有 0.4% 基本回贈。",
+    note: "⚠️ 網上簽賬 8% 需每月登記！每月回贈上限 $300 (即首 $3,947 網上簽賬享 7.6%)，超出部分為 0.4%。未登記只有 0.4% 基本回贈。",
   },
   {
     id: "cncbi-gba",
