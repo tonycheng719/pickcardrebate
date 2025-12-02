@@ -4,7 +4,7 @@ import { Navbar } from "@/components/navbar";
 import { CreditCardCalculator } from "@/components/credit-card-calculator";
 import { TrendingMerchants } from "@/components/trending-merchants";
 import { useWallet } from "@/lib/store/wallet-context";
-import { Zap, ShieldCheck, PieChart, BadgeCheck, Plane, RefreshCw, Smartphone, Calendar, Users } from "lucide-react";
+import { Zap, ShieldCheck, PieChart, BadgeCheck, Plane, RefreshCw, Smartphone, Calendar, Layers } from "lucide-react";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 
@@ -69,9 +69,9 @@ const features = [
     color: "bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400",
   },
   {
-    title: "港人共建",
-    desc: "由香港人為香港人打造，持續收集意見，不斷優化功能。",
-    icon: Users,
+    title: "多卡比較",
+    desc: "一次過比較多張信用卡，清楚睇到邊張最抵，揀卡從此唔使煩。",
+    icon: Layers,
     color: "bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400",
   },
 ];
