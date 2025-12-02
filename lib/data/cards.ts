@@ -180,12 +180,13 @@ export const HK_CARDS: CreditCard[] = [
     rules: [
       { description: "週五六日影視娛樂 12%", matchType: "category", matchValue: "entertainment", percentage: 12.0, validDays: [5, 6, 0], cap: 150, capType: "reward" },
       { description: "影視娛樂 10%", matchType: "category", matchValue: "entertainment", percentage: 10.0, cap: 150, capType: "reward" }, 
-      { description: "手機支付 5%", matchType: "paymentMethod", matchValue: ["mobile", "boc_pay"], percentage: 5.0, cap: 150, capType: "reward", excludeCategories: ["ewallet"] },
+      { description: "手機支付 5% (BoC Pay/Apple Pay等)", matchType: "paymentMethod", matchValue: ["mobile", "boc_pay", "apple_pay", "google_pay"], percentage: 5.0, cap: 150, capType: "reward", excludeCategories: ["ewallet"] },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["娛樂10%", "BoC Pay", "週末娛樂12%"],
     welcomeOfferText: "迎新簽 $5,000 送 $500 現金回贈",
-    sellingPoints: ["週五六日影視娛樂 12%", "影視娛樂 10%", "手機支付 5%", "永久免年費"],
+    sellingPoints: ["週五六日影視娛樂 12%", "影視娛樂 10%", "手機支付 5% (BoC Pay/Apple Pay等)", "永久免年費"],
+    note: "手機支付 5% 需使用 BoC Pay/Apple Pay/Google Pay/Samsung Pay。每月回贈上限 $150。",
   },
   {
     id: "boc-sogo",
@@ -197,13 +198,17 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' },
     rules: [
-      { description: "週二 SOGO 8%", matchType: "merchant", matchValue: ["sogo"], percentage: 8.0, validDays: [2] },
-      { description: "手機支付 5% (SOGO)", matchType: "merchant", matchValue: ["sogo"], percentage: 5.5 },
-      { description: "手機支付 5%", matchType: "paymentMethod", matchValue: "mobile", percentage: 5.0, cap: 100, capType: "reward", excludeCategories: ["ewallet"] },
+      // 週二 SOGO 8% (需用 BoC Pay)
+      { description: "週二 SOGO 8% (BoC Pay)", matchType: "merchant", matchValue: ["sogo"], percentage: 8.0, validDays: [2] },
+      // SOGO 手機支付 5.5% (BoC Pay/Apple Pay/Google Pay)
+      { description: "SOGO 手機支付 5.5%", matchType: "merchant", matchValue: ["sogo"], percentage: 5.5 },
+      // 一般商戶手機支付 5% (每月上限$100回贈)
+      { description: "手機支付 5% (上限$100回贈)", matchType: "paymentMethod", matchValue: ["mobile", "boc_pay", "apple_pay", "google_pay"], percentage: 5.0, cap: 100, capType: "reward", excludeCategories: ["ewallet"] },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
-    tags: ["手機支付5%", "SOGO", "週二SOGO"],
-    sellingPoints: ["週二 SOGO 8% 回贈", "手機支付 5% 現金回贈", "崇光百貨全年 5%"],
+    tags: ["手機支付5%", "SOGO", "週二SOGO 8%", "BoC Pay"],
+    sellingPoints: ["週二 SOGO 8% (需用 BoC Pay)", "SOGO 手機支付 5.5%", "一般手機支付 5% (上限$100回贈)", "崇光百貨專屬優惠"],
+    note: "⚠️ 週二 SOGO 8% 需使用 BoC Pay！手機支付包括 BoC Pay/Apple Pay/Google Pay。每月手機支付回贈上限 $100。",
   },
   {
     id: "boc-cheers",
@@ -244,11 +249,13 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' },
     rules: [
-      { description: "手機支付/網購 10X (4% / $3.75/里)", matchType: "category", matchValue: ["online", "paymentMethod"], percentage: 4.0, cap: 11111, capType: "spending", excludeCategories: ["ewallet"] }, 
+      { description: "網購/手機支付 4% (10X積分)", matchType: "category", matchValue: ["online"], percentage: 4.0, cap: 11111, capType: "spending", excludeCategories: ["ewallet"] }, 
+      { description: "手機支付 4% (BoC Pay/Apple Pay等)", matchType: "paymentMethod", matchValue: ["mobile", "boc_pay", "apple_pay", "google_pay"], percentage: 4.0, cap: 11111, capType: "spending", excludeCategories: ["ewallet"] }, 
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
-    tags: ["網購4%", "手機支付4%"],
-    sellingPoints: ["網上及手機支付 10X 積分 (4%)", "每月額外積分上限 10,000 分"],
+    tags: ["網購4%", "手機支付4%", "BoC Pay"],
+    sellingPoints: ["網購 4% (10X積分)", "手機支付 4% (BoC Pay/Apple Pay等)", "每月額外積分上限 10,000 分"],
+    note: "網購及手機支付 4% 需使用 BoC Pay/Apple Pay/Google Pay/Samsung Pay。每月額外積分上限 10,000 分 (約 $11,111 簽賬)。",
   },
 
   // ========================================================================
@@ -263,14 +270,14 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rules: [
       { description: "網上簽賬 5% (需月簽賬滿$5,000)", matchType: "category", matchValue: "online", percentage: 5.0, minSpend: 5000, cap: 500, capType: "reward", excludeCategories: ["ewallet"] }, // Max $500 +FUN Dollars
-      { description: "手機支付 5% (需月簽賬滿$5,000)", matchType: "paymentMethod", matchValue: "mobile", percentage: 5.0, minSpend: 5000, cap: 500, capType: "reward", excludeCategories: ["ewallet"] },
+      { description: "手機支付 5% (Apple Pay/Google Pay等)", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 5.0, minSpend: 5000, cap: 500, capType: "reward", excludeCategories: ["ewallet"] },
       { description: "外幣簽賬 6% (需月簽賬滿$5,000)", matchType: "base", percentage: 6.0, minSpend: 5000, isForeignCurrency: true, cap: 500, capType: "reward" },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["網購5%", "手機支付5%", "必須登記"],
     welcomeOfferText: "迎新簽 $5,000 送 $700 Fun Dollars",
-    sellingPoints: ["網購及手機支付 5% (需月簽賬滿$5,000)", "外幣 6%", "每月簽賬滿額解鎖"],
-    note: "⚠️ 需月簽賬滿 $5,000 才享 5%/6% 回贈！未滿額只有 0.4% 基本回贈。需每月登記。",
+    sellingPoints: ["網購 5% (需月簽賬滿$5,000)", "手機支付 5% (Apple Pay/Google Pay等)", "外幣 6%", "每月簽賬滿額解鎖"],
+    note: "⚠️ 需月簽賬滿 $5,000 才享 5%/6% 回贈！未滿額只有 0.4% 基本回贈。需每月登記。手機支付包括 Apple Pay/Google Pay/Samsung Pay。",
   },
   {
     id: "hangseng-enjoy",
@@ -340,13 +347,14 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' }, // 15 pts = 1 mile
     rules: [
-      { description: "流動支付 5X (2% / $3/里)", matchType: "paymentMethod", matchValue: ["mobile"], percentage: 2.0, cap: 50000, capType: "spending", excludeCategories: ["ewallet"] }, // Max 50,000 points
-      { description: "超市/百貨 5X", matchType: "category", matchValue: ["supermarket", "department_store"], percentage: 2.0 },
+      { description: "流動支付 5X (2% / $3/里)", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 2.0, cap: 50000, capType: "spending", excludeCategories: ["ewallet"] }, // Max 50,000 points
+      { description: "超市/百貨 5X (2%)", matchType: "category", matchValue: ["supermarket", "department_store"], percentage: 2.0 },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
-    tags: ["ApplePay之選", "積分"],
+    tags: ["Apple Pay之選", "積分", "流動支付"],
     welcomeOfferText: "迎新簽 $10,000 送 20,000 里數",
-    sellingPoints: ["流動支付 5X 積分 ($3/里)", "積分永不過期"],
+    sellingPoints: ["流動支付 5X 積分 (Apple Pay/Google Pay等)", "超市/百貨 5X 積分", "積分永不過期"],
+    note: "流動支付 5X 需使用 Apple Pay/Google Pay/Samsung Pay。每月額外積分上限 50,000 分 (約 $50,000 簽賬)。",
   },
   {
     id: "citi-premiermiles",
@@ -914,13 +922,19 @@ export const HK_CARDS: CreditCard[] = [
     bank: "Standard Chartered",
     style: { bgColor: "bg-gradient-to-br from-orange-500 to-orange-700", textColor: "text-white" },
     foreignCurrencyFee: 0,
+    rewardConfig: { method: 'conversion', ratio: 1000, currency: 'A. Point' }, // 1000 A. Point = $1
     rules: [
-      { description: "所有簽賬 2%", matchType: "base", percentage: 2.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      // AlipayHK 跨境商戶 (北上/淘寶): 20個 A. Point/$1 = 2%
+      { description: "AlipayHK 跨境/北上 2% (20 A. Point/$1)", matchType: "paymentMethod", matchValue: ["alipay"], percentage: 2.0, isForeignCurrency: true },
+      // 實體卡/電子錢包簽賬: 10個 A. Point/$1 = 1%
+      { description: "實體卡/電子錢包 1% (10 A. Point/$1)", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      // AlipayHK 本地合資格簽賬: 2個 A. Point/$1 = 0.2%
+      { description: "AlipayHK 本地 0.2% (2 A. Point/$1)", matchType: "paymentMethod", matchValue: ["alipay"], percentage: 0.2 },
     ],
-    tags: ["全方位2%", "簡單", "免手續費"],
-    sellingPoints: ["所有簽賬 2% 回贈", "無上限", "免外幣手續費", "永久免年費"],
+    tags: ["AlipayHK", "北上2%", "淘寶免手續費"],
+    sellingPoints: ["AlipayHK 北上/跨境 2% (20 A. Point/$1)", "實體卡簽賬 1% (10 A. Point/$1)", "淘寶首5筆免手續費", "免外幣手續費"],
     applyUrl: "https://www.sc.com/hk/zh/credit-cards/apointcard/",
-    note: "全方位 2% 回贈無上限，無需登記。適合不想計算的懶人。",
+    note: "⚠️ 需連結 AlipayHK 使用！北上/跨境消費透過 AlipayHK 可享 2%。實體卡簽賬 1%。AlipayHK 本地消費只有 0.2%。淘寶每月首5筆免手續費。",
   },
   {
     id: "boc-taobao",
