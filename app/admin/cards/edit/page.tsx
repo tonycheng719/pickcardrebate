@@ -65,44 +65,30 @@ export default function AdminEditCardImagePage() {
     setIsSubmitting(true);
 
     try {
-      const supabase = createClient();
-      
-      // 檢查卡片是否已存在於數據庫
-      const { data: existing } = await supabase
-        .from("cards")
-        .select("id")
-        .eq("id", cardId)
-        .single();
-
-      if (existing) {
-        // 更新現有記錄
-        const { error } = await supabase
-          .from("cards")
-          .update({ 
-            image_url: imageUrl,
-            updated_at: new Date().toISOString()
-          })
-          .eq("id", cardId);
-
-        if (error) throw error;
-      } else {
-        // 插入新記錄（只有圖片，其他資料由 cards.ts 提供）
-        const { error } = await supabase
-          .from("cards")
-          .insert({
-            id: cardId,
+      // Use API route to bypass RLS (server-side with service role)
+      const response = await fetch('/api/admin/cards/update-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cardId,
+          imageUrl,
+          cardData: {
             name: card.name,
             bank: card.bank,
-            image_url: imageUrl,
             tags: card.tags,
-            selling_points: card.sellingPoints,
-            welcome_offer_text: card.welcomeOfferText,
-            fee_waiver_condition: card.feeWaiverCondition,
-            apply_url: card.applyUrl,
-            foreign_currency_fee: card.foreignCurrencyFee
-          });
+            sellingPoints: card.sellingPoints,
+            welcomeOfferText: card.welcomeOfferText,
+            feeWaiverCondition: card.feeWaiverCondition,
+            applyUrl: card.applyUrl,
+            foreignCurrencyFee: card.foreignCurrencyFee
+          }
+        })
+      });
 
-        if (error) throw error;
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.error || '儲存失敗');
       }
 
       toast.success("圖片已更新！");
