@@ -37,18 +37,19 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' },
     rules: [
-      // 指定商戶 8% (每月首$1,250): 壽司郎/譚仔/The Coffee Academïcs/GU/Decathlon/lululemon/NAMCO/TAITO
+      // 指定商戶 8% (每月首$1,250): 壽司郎/譚仔三哥/譚仔雲南/The Coffee Academïcs/GU/Decathlon/lululemon/NAMCO/TAITO
       { description: "指定商戶 8% (壽司郎/譚仔等)", matchType: "merchant", matchValue: ["sushiro", "tamjai", "tamjai_yunnan", "coffee_academics", "gu", "decathlon", "lululemon", "namco", "taito"], percentage: 8.0, cap: 1250, capType: "spending" },
+      // 網上簽賬 4% (包括網上超市)
       { description: "網上簽賬 4% (每月首$10,000)", matchType: "category", matchValue: "online", percentage: 4.0, cap: 10000, capType: "spending" },
-      { description: "超市簽賬 2%", matchType: "category", matchValue: "supermarket", percentage: 2.0 },
+      // 實體超市只有 0.4% (屬於「其他簽賬」)
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "payme", "alipay", "wechat_pay"] }, 
     ],
-    tags: ["網購神卡", "超市必備", "永久免年費", "指定商戶8%"],
+    tags: ["網購神卡", "永久免年費", "指定商戶8%"],
     feeWaiverCondition: "永久免年費",
     welcomeOfferText: "迎新簽 $8,000 送 $800 獎賞錢",
     applyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/red/",
-    sellingPoints: ["指定商戶 8% (壽司郎/譚仔/GU/Decathlon等)", "網上簽賬 4% (每月首$10,000)", "超市 2%", "永久免年費"],
-    note: "網上簽賬 4% 每月首 $10,000，其後 0.4%。指定商戶 8% 每月首 $1,250。",
+    sellingPoints: ["指定商戶 8% (壽司郎/譚仔/GU/Decathlon等)", "網上簽賬 4% (每月首$10,000)", "永久免年費"],
+    note: "⚠️ 實體超市簽賬只有 0.4%！網上超市 (如 HKTVmall) 才享 4%。指定商戶 8% 每月首 $1,250。",
   },
   {
     id: "hsbc-everymile",
@@ -512,6 +513,21 @@ export const HK_CARDS: CreditCard[] = [
     ],
     tags: ["手機支付", "網購"],
     sellingPoints: ["手機支付及網購高達 4.4% 回贈", "PayMe/AlipayHK 增值亦有回贈"],
+  },
+  {
+    id: "bea-world-master",
+    name: "BEA Flyer World Mastercard",
+    bank: "東亞銀行",
+    style: { bgColor: "bg-gradient-to-br from-sky-600 to-blue-800", textColor: "text-white" },
+    foreignCurrencyFee: 1.95,
+    rewardConfig: { method: 'direct_rate', baseRate: 5, currency: 'Miles' }, // $5/mile
+    rules: [
+      { description: "本地簽賬 $5/里 (2%)", matchType: "base", percentage: 2.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "海外簽賬 $5/里 (2%)", matchType: "base", percentage: 2.0, isForeignCurrency: true },
+    ],
+    tags: ["里數", "Flyer"],
+    sellingPoints: ["本地簽賬低至 HK$5/里", "積分無限期", "亞洲萬里通直接入賬"],
+    applyUrl: "https://www.hkbea.com/html/tc/bea-flyer-world-mastercard.html",
   },
   {
     id: "bea-i-titanium",

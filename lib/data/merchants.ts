@@ -51,4 +51,15 @@ export const POPULAR_MERCHANTS: Merchant[] = [
   // Convenience Stores
   { id: "7-eleven", name: "7-Eleven", categoryIds: ["convenience"], aliases: ["7-11", "seven eleven", "7仔", "七仔"], logo: "https://logo.clearbit.com/7-eleven.com.hk", accentColor: "#16a34a" },
   { id: "circle-k", name: "OK便利店 Circle K", categoryIds: ["convenience"], aliases: ["ok", "circle k", "ok便利店"], logo: "https://logo.clearbit.com/circlek.hk", accentColor: "#dc2626" },
+  
+  // HSBC Red 指定商戶 (8% 回贈)
+  { id: "sushiro", name: "壽司郎 Sushiro", categoryIds: ["dining"], aliases: ["sushiro", "壽司郎"], logo: "https://logo.clearbit.com/sushiro.hk", accentColor: "#dc2626" },
+  { id: "tamjai", name: "譚仔三哥米線", categoryIds: ["dining"], aliases: ["譚仔三哥", "tamjai", "譚仔"], logo: "https://logo.clearbit.com/tamjai.com.hk", accentColor: "#f97316" },
+  { id: "tamjai_yunnan", name: "譚仔雲南米線", categoryIds: ["dining"], aliases: ["譚仔雲南", "雲南米線"], logo: "https://logo.clearbit.com/tamjaiyunnan.com", accentColor: "#ea580c" },
+  { id: "coffee_academics", name: "The Coffee Academïcs", categoryIds: ["dining"], aliases: ["coffee academics", "咖啡學院"], logo: "https://logo.clearbit.com/the-coffeeacademics.com", accentColor: "#78350f" },
+  { id: "gu", name: "GU", categoryIds: ["department_store"], aliases: ["gu", "極優"], logo: "https://logo.clearbit.com/gu-global.com", accentColor: "#dc2626" },
+  { id: "decathlon", name: "Decathlon 迪卡儂", categoryIds: ["other"], aliases: ["decathlon", "迪卡儂"], logo: "https://logo.clearbit.com/decathlon.com.hk", accentColor: "#0284c7" },
+  { id: "lululemon", name: "lululemon", categoryIds: ["other"], aliases: ["lululemon"], logo: "https://logo.clearbit.com/lululemon.com", accentColor: "#dc2626" },
+  { id: "namco", name: "NAMCO", categoryIds: ["entertainment"], aliases: ["namco", "南夢宮"], logo: "https://logo.clearbit.com/namco.co.jp", accentColor: "#f97316" },
+  { id: "taito", name: "TAITO STATION", categoryIds: ["entertainment"], aliases: ["taito", "太東"], logo: "https://logo.clearbit.com/taito.co.jp", accentColor: "#7c3aed" },
 ];
