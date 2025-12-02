@@ -83,7 +83,43 @@ DROP POLICY IF EXISTS "Allow authenticated read search_logs" ON public.search_lo
 DROP POLICY IF EXISTS "Allow authenticated select search_logs" ON public.search_logs;
 
 -- =====================================================
--- STEP 2: Create optimized policies with (select auth.uid())
+-- STEP 2: Drop new-style policies if they exist (from previous run)
+-- =====================================================
+
+DROP POLICY IF EXISTS "user_cards_select" ON public.user_cards;
+DROP POLICY IF EXISTS "user_cards_insert" ON public.user_cards;
+DROP POLICY IF EXISTS "user_cards_delete" ON public.user_cards;
+DROP POLICY IF EXISTS "user_card_settings_select" ON public.user_card_settings;
+DROP POLICY IF EXISTS "user_card_settings_insert" ON public.user_card_settings;
+DROP POLICY IF EXISTS "user_card_settings_update" ON public.user_card_settings;
+DROP POLICY IF EXISTS "user_transactions_select" ON public.user_transactions;
+DROP POLICY IF EXISTS "user_transactions_insert" ON public.user_transactions;
+DROP POLICY IF EXISTS "user_transactions_update" ON public.user_transactions;
+DROP POLICY IF EXISTS "user_transactions_delete" ON public.user_transactions;
+DROP POLICY IF EXISTS "profiles_select_own" ON public.profiles;
+DROP POLICY IF EXISTS "profiles_insert" ON public.profiles;
+DROP POLICY IF EXISTS "profiles_update" ON public.profiles;
+DROP POLICY IF EXISTS "merchant_reviews_select" ON public.merchant_reviews;
+DROP POLICY IF EXISTS "merchant_reviews_insert" ON public.merchant_reviews;
+DROP POLICY IF EXISTS "merchant_reviews_update" ON public.merchant_reviews;
+DROP POLICY IF EXISTS "merchant_review_replies_select" ON public.merchant_review_replies;
+DROP POLICY IF EXISTS "merchant_review_replies_update" ON public.merchant_review_replies;
+DROP POLICY IF EXISTS "merchant_review_replies_delete" ON public.merchant_review_replies;
+DROP POLICY IF EXISTS "merchant_tags_select" ON public.merchant_tags;
+DROP POLICY IF EXISTS "merchant_tags_insert" ON public.merchant_tags;
+DROP POLICY IF EXISTS "review_votes_select" ON public.review_votes;
+DROP POLICY IF EXISTS "review_votes_insert" ON public.review_votes;
+DROP POLICY IF EXISTS "review_votes_update" ON public.review_votes;
+DROP POLICY IF EXISTS "card_comments_select" ON public.card_comments;
+DROP POLICY IF EXISTS "card_comments_insert" ON public.card_comments;
+DROP POLICY IF EXISTS "card_comments_update" ON public.card_comments;
+DROP POLICY IF EXISTS "reports_insert" ON public.reports;
+DROP POLICY IF EXISTS "reports_select" ON public.reports;
+DROP POLICY IF EXISTS "search_logs_insert" ON public.search_logs;
+DROP POLICY IF EXISTS "search_logs_select" ON public.search_logs;
+
+-- =====================================================
+-- STEP 3: Create optimized policies with (select auth.uid())
 -- =====================================================
 
 -- user_cards: Users can manage their own cards
@@ -191,7 +227,7 @@ CREATE POLICY "search_logs_select" ON public.search_logs
   FOR SELECT USING ((select auth.uid()) IS NOT NULL);
 
 -- =====================================================
--- STEP 3: Notify PostgREST to reload schema
+-- STEP 4: Notify PostgREST to reload schema
 -- =====================================================
 NOTIFY pgrst, 'reload schema';
 

@@ -15,6 +15,7 @@ import { POPULAR_MERCHANTS } from "@/lib/data/merchants";
 import { CATEGORIES } from "@/lib/data/categories";
 import { HK_CARDS } from "@/lib/data/cards";
 import { findBestCards, CalculationResult } from "@/lib/logic/calculator";
+import { CreditCard as CreditCardType } from "@/lib/types";
 import { useWallet } from "@/lib/store/wallet-context";
   import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle, Lightbulb, Store, Globe, ChevronDown, ChevronUp, BadgeCheck, Tag, AlertTriangle, Search, LogIn, PlusCircle, Loader2, History, HelpCircle, Swords, X } from "lucide-react";
 import { DynamicIcon } from "@/components/dynamic-icon";
@@ -73,7 +74,28 @@ export function CreditCardCalculator({
       return [...datasetMerchants, ...missingGeneral];
   }, [merchants]);
 
-  const cardList = cards.length ? cards : HK_CARDS;
+  // Merge cards: HK_CARDS has the latest rules, dataset cards may have updated images
+  const cardList = useMemo(() => {
+    const cardMap = new Map<string, CreditCardType>();
+    
+    // Start with HK_CARDS (has all latest rules)
+    HK_CARDS.forEach(card => cardMap.set(card.id, card));
+    
+    // Overlay with dataset cards (for updated images, etc.) but keep rules from HK_CARDS
+    cards.forEach(card => {
+      const existing = cardMap.get(card.id);
+      if (existing) {
+        // Keep rules/note from HK_CARDS, but update imageUrl and other fields
+        cardMap.set(card.id, { 
+          ...existing, 
+          imageUrl: card.imageUrl || existing.imageUrl,
+        });
+      }
+      // Note: Don't add cards that are only in DB but not in HK_CARDS
+    });
+    
+    return Array.from(cardMap.values());
+  }, [cards]);
   const [selectedCategory, setSelectedCategory] = useState(categoryList[0]?.id || "");
   const [selectedMerchantId, setSelectedMerchantId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState(""); // New Search State
