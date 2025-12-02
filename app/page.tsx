@@ -4,7 +4,7 @@ import { Navbar } from "@/components/navbar";
 import { CreditCardCalculator } from "@/components/credit-card-calculator";
 import { TrendingMerchants } from "@/components/trending-merchants";
 import { useWallet } from "@/lib/store/wallet-context";
-import { Zap, ShieldCheck, PieChart, BadgeCheck, Plane, RefreshCw, Smartphone } from "lucide-react";
+import { Zap, ShieldCheck, PieChart, BadgeCheck, Plane, RefreshCw, Smartphone, Calendar, Users } from "lucide-react";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 
@@ -62,6 +62,18 @@ const features = [
     icon: Smartphone,
     color: "bg-cyan-100 text-cyan-600 dark:bg-cyan-900/30 dark:text-cyan-400",
   },
+  {
+    title: "優惠月曆",
+    desc: "一覽全月折扣日、會員日，提前計劃消費，從此不再錯過優惠。",
+    icon: Calendar,
+    color: "bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400",
+  },
+  {
+    title: "港人共建",
+    desc: "由香港人為香港人打造，持續收集意見，不斷優化功能。",
+    icon: Users,
+    color: "bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400",
+  },
 ];
 
 export default function Home() {
@@ -93,7 +105,7 @@ export default function Home() {
             <h3 className="font-bold text-gray-900 dark:text-white text-lg">為什麼選擇 PickCardRebate？</h3>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {features.map((feature, index) => (
               <motion.div
                 key={index}

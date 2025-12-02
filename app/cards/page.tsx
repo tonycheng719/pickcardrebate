@@ -7,7 +7,7 @@ import { useWallet } from "@/lib/store/wallet-context";
 import { useReviews } from "@/lib/store/reviews-context";
 import type { CreditCard } from "@/lib/types";
 import { 
-    Plus, Check, ExternalLink, MessageSquare, Star
+    Plus, Check, ExternalLink, MessageSquare, Star, Search, X
 } from "lucide-react";
 import {
   Dialog,
@@ -389,7 +389,20 @@ function CardSkeleton() {
 
 export default function AllCardsPage() {
     const { cards, isLoading } = useDataset();
+    const [searchQuery, setSearchQuery] = useState("");
     const cardList = cards.length ? cards : HK_CARDS;
+    
+    // Filter cards based on search query
+    const filteredCards = cardList.filter(card => {
+        if (!searchQuery.trim()) return true;
+        const query = searchQuery.toLowerCase();
+        return (
+            card.name.toLowerCase().includes(query) ||
+            card.bank.toLowerCase().includes(query) ||
+            card.tags?.some(tag => tag.toLowerCase().includes(query)) ||
+            card.sellingPoints?.some(point => point.toLowerCase().includes(query))
+        );
+    });
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col transition-colors">
@@ -399,6 +412,33 @@ export default function AllCardsPage() {
             <div className="mb-8">
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">所有信用卡</h1>
               <p className="text-gray-600 dark:text-gray-400">收錄香港主流信用卡，查看優惠詳情並加入您的錢包。</p>
+            </div>
+
+            {/* Search Bar */}
+            <div className="mb-6">
+              <div className="relative max-w-md">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  type="text"
+                  placeholder="搜尋信用卡名稱、銀行、標籤..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 pr-10 h-11 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
+              {searchQuery && (
+                <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                  找到 <span className="font-bold text-emerald-600">{filteredCards.length}</span> 張信用卡
+                </p>
+              )}
             </div>
 
             {isLoading ? (
@@ -414,14 +454,27 @@ export default function AllCardsPage() {
                         </motion.div>
                     ))}
                 </div>
+            ) : filteredCards.length === 0 ? (
+                <div className="text-center py-16">
+                    <Search className="h-12 w-12 mx-auto text-gray-300 dark:text-gray-600 mb-4" />
+                    <h3 className="text-lg font-bold text-gray-700 dark:text-gray-300 mb-2">找不到符合的信用卡</h3>
+                    <p className="text-gray-500 dark:text-gray-400">嘗試其他關鍵字，例如銀行名稱或優惠類型</p>
+                    <Button 
+                        variant="outline" 
+                        className="mt-4"
+                        onClick={() => setSearchQuery("")}
+                    >
+                        清除搜尋
+                    </Button>
+                </div>
             ) : (
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {cardList.map((card, index) => (
+                  {filteredCards.map((card, index) => (
                     <motion.div
                       key={card.id}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1, duration: 0.4 }}
+                      transition={{ delay: Math.min(index * 0.05, 0.3), duration: 0.3 }}
                     >
                       <CardItem card={card} />
                     </motion.div>
