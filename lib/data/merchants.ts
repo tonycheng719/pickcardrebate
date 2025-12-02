@@ -67,4 +67,9 @@ export const POPULAR_MERCHANTS: Merchant[] = [
   { id: "kfc", name: "KFC 肯德基", categoryIds: ["dining", "online"], aliases: ["kfc", "肯德基", "kentucky"], logo: "https://logo.clearbit.com/kfc.com.hk", accentColor: "#dc2626" },
   { id: "genki-sushi", name: "元氣壽司 Genki Sushi", categoryIds: ["dining", "online"], aliases: ["genki", "元氣", "元氣壽司"], logo: "https://logo.clearbit.com/genkisushi.com.hk", accentColor: "#dc2626" },
   { id: "pizza-hut", name: "Pizza Hut 必勝客", categoryIds: ["dining", "online"], aliases: ["pizza hut", "必勝客", "pizzahut"], logo: "https://logo.clearbit.com/pizzahut.com.hk", accentColor: "#dc2626" },
+  
+  // 電器/數碼 (門市+網上)
+  { id: "fortress", name: "Fortress 豐澤", categoryIds: ["electronics", "online"], aliases: ["fortress", "豐澤"], logo: "https://logo.clearbit.com/fortress.com.hk", accentColor: "#0ea5e9" },
+  { id: "yoho", name: "友和 YOHO", categoryIds: ["electronics", "online"], aliases: ["yoho", "友和"], logo: "https://logo.clearbit.com/yohohongkong.com", accentColor: "#f97316" },
+  { id: "broadway", name: "Broadway 百老滙", categoryIds: ["electronics", "online"], aliases: ["broadway", "百老滙", "百老匯"], logo: "https://logo.clearbit.com/broadway.com.hk", accentColor: "#1d4ed8" },
 ];
