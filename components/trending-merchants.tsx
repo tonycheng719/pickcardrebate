@@ -55,32 +55,36 @@ export function TrendingMerchants() {
       );
     }
 
-    // Check if logo is an emoji (single character or emoji)
-    if (logo.length <= 2 || /\p{Emoji}/u.test(logo)) {
+    // Check if logo is a URL (starts with http or //)
+    const isUrl = logo.startsWith('http') || logo.startsWith('//');
+    
+    if (isUrl) {
+      // It's a URL - render as image
       return (
-        <div 
-          className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow-sm"
-          style={{ backgroundColor: accentColor ? `${accentColor}20` : '#f3f4f6' }}
-        >
-          {logo}
+        <div className="w-10 h-10 rounded-xl bg-white dark:bg-gray-800 flex items-center justify-center shadow-sm overflow-hidden p-1">
+          <img 
+            src={logo} 
+            alt={name} 
+            className="w-full h-full object-contain"
+            referrerPolicy="no-referrer"
+            onError={(e) => {
+              // Fallback to first character on error
+              const target = e.target as HTMLImageElement;
+              target.style.display = 'none';
+              target.parentElement!.innerHTML = `<span class="text-lg font-bold" style="color: ${accentColor || '#6b7280'}">${name.charAt(0)}</span>`;
+            }}
+          />
         </div>
       );
     }
 
-    // It's a URL - render as image
+    // Otherwise it's an emoji or text - render as text
     return (
-      <div className="w-10 h-10 rounded-xl bg-white dark:bg-gray-800 flex items-center justify-center shadow-sm overflow-hidden p-1">
-        <img 
-          src={logo} 
-          alt={name} 
-          className="w-full h-full object-contain"
-          onError={(e) => {
-            // Fallback to first character on error
-            const target = e.target as HTMLImageElement;
-            target.style.display = 'none';
-            target.parentElement!.innerHTML = `<span class="text-lg font-bold" style="color: ${accentColor || '#6b7280'}">${name.charAt(0)}</span>`;
-          }}
-        />
+      <div 
+        className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow-sm"
+        style={{ backgroundColor: accentColor ? `${accentColor}20` : '#f3f4f6' }}
+      >
+        {logo}
       </div>
     );
   };
