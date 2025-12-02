@@ -748,21 +748,6 @@ export const HK_CARDS: CreditCard[] = [
     sellingPoints: ["海外及內地簽賬 4% 回贈 (或 $1.5=1里)", "本地餐飲 2% 回贈 (或 $3=1里)", "免外幣手續費", "送旅遊保險"],
   },
   {
-    id: "bea-world",
-    name: "東亞 World Mastercard",
-    bank: "東亞銀行",
-    style: { bgColor: "bg-gradient-to-br from-slate-800 to-slate-950", textColor: "text-white" },
-    foreignCurrencyFee: 1.95,
-    rewardConfig: { method: 'direct_rate', baseRate: 5, currency: 'Miles' }, // $5/mile
-    rules: [
-      { description: "海外簽賬 $5=1里 (2%)", matchType: "base", percentage: 2.0, isForeignCurrency: true },
-      { description: "本地簽賬 $5=1里 (2%)", matchType: "base", percentage: 2.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
-    ],
-    tags: ["里數卡", "高端卡"],
-    sellingPoints: ["本地及海外簽賬 $5=1里", "免費機場貴賓室", "旅遊保險", "積分無限期"],
-    applyUrl: "https://www.hkbea.com/html/tc/bea-world-mastercard.html",
-  },
-  {
     id: "dahsing-myauto",
     name: "大新 My Auto 信用卡",
     bank: "大新銀行",
