@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { Flame, TrendingUp, ArrowRight } from "lucide-react";
+import { Flame, TrendingUp, ArrowRight, Store } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useDataset } from "@/lib/admin/data-store";
@@ -35,9 +35,54 @@ export function TrendingMerchants() {
     fetchTrending();
   }, []);
 
-  // Helper to find merchant details (like category/color) from local dataset if needed
-  const getMerchantDetails = (name: string) => {
-    return merchants.find(m => m.name === name);
+  // Helper to find merchant details by name or id
+  const getMerchantDetails = (name: string, id: string) => {
+    // Try to find by id first, then by name
+    return merchants.find(m => m.id === id) || merchants.find(m => m.name === name || m.aliases?.some(a => a.toLowerCase() === name.toLowerCase()));
+  };
+
+  // Render merchant logo
+  const renderMerchantLogo = (logo: string | undefined, name: string, accentColor: string | undefined) => {
+    if (!logo) {
+      // Fallback to first character
+      return (
+        <div 
+          className="w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold text-white shadow-sm"
+          style={{ backgroundColor: accentColor || '#6b7280' }}
+        >
+          {name.charAt(0)}
+        </div>
+      );
+    }
+
+    // Check if logo is an emoji (single character or emoji)
+    if (logo.length <= 2 || /\p{Emoji}/u.test(logo)) {
+      return (
+        <div 
+          className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow-sm"
+          style={{ backgroundColor: accentColor ? `${accentColor}20` : '#f3f4f6' }}
+        >
+          {logo}
+        </div>
+      );
+    }
+
+    // It's a URL - render as image
+    return (
+      <div className="w-10 h-10 rounded-xl bg-white dark:bg-gray-800 flex items-center justify-center shadow-sm overflow-hidden p-1">
+        <img 
+          src={logo} 
+          alt={name} 
+          className="w-full h-full object-contain"
+          onError={(e) => {
+            // Fallback to first character on error
+            const target = e.target as HTMLImageElement;
+            target.style.display = 'none';
+            target.parentElement!.innerHTML = `<span class="text-lg font-bold" style="color: ${accentColor || '#6b7280'}">${name.charAt(0)}</span>`;
+          }}
+        />
+      </div>
+    );
   };
 
   // Function to handle click - scroll to calculator and fill (simplified for now as calculator state is internal)
@@ -90,7 +135,7 @@ export function TrendingMerchants() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
         {trending.map((item, index) => {
-            const details = getMerchantDetails(item.merchant_name);
+            const details = getMerchantDetails(item.merchant_name, item.merchant_id);
             const rank = index + 1;
             
             // Rank styling - Stronger colors for better visibility
@@ -119,9 +164,11 @@ export function TrendingMerchants() {
                         #{rank}
                     </div>
 
-                    <div className="mt-6 mb-1 w-10 h-10 rounded-xl bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-lg font-bold text-gray-700 dark:text-gray-300 shadow-sm">
-                        {item.merchant_name.charAt(0)}
+                    {/* Merchant Logo */}
+                    <div className="mt-6 mb-1">
+                        {renderMerchantLogo(details?.logo, item.merchant_name, details?.accentColor)}
                     </div>
+                    
                     <div className={`font-bold text-sm line-clamp-1 ${rankTextStyle || "text-gray-900 dark:text-gray-100"}`}>
                         {item.merchant_name}
                     </div>
