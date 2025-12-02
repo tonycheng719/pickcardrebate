@@ -467,15 +467,16 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://www.aeon.com.hk/wakuwaku/images/card_face.png",
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "每月20日 AEON 5%", matchType: "merchant", matchValue: ["aeon"], percentage: 5.0, validDates: [20] }, // 20th of each month
+      // 每月20日 AEON 會員日 95折 - 折扣優惠，非回贈
+      { description: "每月20日 AEON 95折", matchType: "merchant", matchValue: ["aeon"], percentage: 5.0, validDates: [20], isDiscount: true },
       { description: "網上簽賬 6%", matchType: "category", matchValue: "online", percentage: 6.0, cap: 300, capType: "reward", excludeCategories: ["ewallet"] }, // $300 reward cap
       { description: "日本簽賬 3%", matchType: "base", percentage: 3.0, isForeignCurrency: true },
       { description: "基本回饋 0.5%", matchType: "base", percentage: 0.5, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
-    tags: ["網購6%", "日本3%", "每月20日AEON"],
+    tags: ["網購6%", "日本3%", "AEON會員日"],
     welcomeOfferText: "迎新高達 16% 回贈",
-    sellingPoints: ["每月20日 AEON 5%", "網上簽賬 6% 現金回贈", "日本簽賬 3%", "永久免年費"],
-    note: "網上簽賬 6% 每月回贈上限 $300。日本簽賬 3% 僅限日圓交易。",
+    sellingPoints: ["每月20日 AEON 95折 [折扣]", "網上簽賬 6% 現金回贈", "日本簽賬 3%", "永久免年費"],
+    note: "⚠️ 每月20日 AEON 95折是購物時直接減價，非事後回贈。網上簽賬 6% 每月回贈上限 $300。日本簽賬 3% 僅限日圓交易。",
   },
   {
     id: "aeon-card-jal",
@@ -818,17 +819,17 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-purple-600 to-purple-800", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
-      // 一田 VIP Day 額外優惠
-      { description: "一田 VIP Day 5%", matchType: "merchant", matchValue: ["yata"], percentage: 5.0 },
-      // 一田平日
+      // 一田 VIP Day 95折 - 折扣優惠，非回贈
+      { description: "一田 VIP Day 95折", matchType: "merchant", matchValue: ["yata"], percentage: 5.0, isDiscount: true },
+      // 一田平日 2% 回贈
       { description: "一田 2%", matchType: "merchant", matchValue: ["yata"], percentage: 2.0 },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
-    tags: ["一田", "百貨公司"],
+    tags: ["一田", "百貨公司", "VIP Day"],
     welcomeOfferText: "迎新送一田購物禮券",
     applyUrl: "https://www.fubonbank.com.hk/tc/cards/bonus-points-program/yata-credit-card.html",
-    sellingPoints: ["一田 VIP Day 額外 5% 回贈", "一田平日 2% 回贈", "一田專屬優惠"],
-    note: "一田 VIP Day 期間可享額外 5% 回贈。需配合一田會員使用。",
+    sellingPoints: ["一田 VIP Day 95折 [折扣]", "一田平日 2% 回贈", "一田專屬優惠"],
+    note: "⚠️ 一田 VIP Day 95折是購物時直接減價，非事後回贈。一田平日消費享 2% 回贈。需配合一田會員使用。",
   },
 
   // ========================================================================
