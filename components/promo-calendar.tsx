@@ -308,7 +308,10 @@ export function PromoCalendar({ open, onOpenChange }: PromoCalendarProps) {
                     )}
                     <div>
                       <p className="text-sm font-medium text-gray-900">
-                        {promo.card.bank} {promo.description}
+                        {promo.card.name}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {promo.description}
                       </p>
                       {isCardOwned(promo.card.id) && (
                         <span className="text-[10px] text-emerald-600 flex items-center gap-0.5">
