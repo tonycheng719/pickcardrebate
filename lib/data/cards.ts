@@ -572,8 +572,8 @@ export const HK_CARDS: CreditCard[] = [
   // ========================================================================
   {
     id: "dahsing-one",
-    name: "Dah Sing ONE+ Credit Card",
-    bank: "Dah Sing",
+    name: "大新 ONE+ 白金卡",
+    bank: "大新銀行",
     style: { bgColor: "bg-gradient-to-br from-purple-800 to-purple-950", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
@@ -764,18 +764,6 @@ export const HK_CARDS: CreditCard[] = [
     tags: ["油站4%", "汽車"],
     sellingPoints: ["油站簽賬 4% 回贈", "汽車相關消費優惠", "專為車主而設"],
   },
-  {
-    id: "dahsing-one-plus",
-    name: "大新 ONE+ 白金卡",
-    bank: "大新銀行",
-    style: { bgColor: "bg-gradient-to-br from-red-600 to-red-800", textColor: "text-white" },
-    foreignCurrencyFee: 1.95,
-    rules: [
-      { description: "所有簽賬 1%", matchType: "base", percentage: 1.0 },
-    ],
-    tags: ["全方位1%", "簡單"],
-    sellingPoints: ["所有簽賬 1% 現金回贈", "無上限", "簡單易用"],
-  },
 
   // ========================================================================
   // 新增卡片 (2024-2025)
@@ -844,5 +832,135 @@ export const HK_CARDS: CreditCard[] = [
     applyUrl: "https://www.fubonbank.com.hk/tc/cards/bonus-points-program/yata-credit-card.html",
     sellingPoints: ["一田 VIP Day 額外 5% 回贈", "一田平日 2% 回贈", "一田專屬優惠"],
     note: "一田 VIP Day 期間可享額外 5% 回贈。需配合一田會員使用。",
+  },
+
+  // ========================================================================
+  // 新增卡片 - 2024-12 批次
+  // ========================================================================
+  {
+    id: "fubon-platinum",
+    name: "富邦白金卡",
+    bank: "富邦銀行",
+    style: { bgColor: "bg-gradient-to-br from-blue-700 to-blue-900", textColor: "text-white" },
+    foreignCurrencyFee: 1.95,
+    rules: [
+      { description: "本地簽賬 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+    ],
+    tags: ["基本卡"],
+    sellingPoints: ["基本回贈", "免首年年費"],
+    applyUrl: "https://www.fubonbank.com.hk/tc/cards/credit-card-products/platinum-card.html",
+  },
+  {
+    id: "fubon-visa-infinite",
+    name: "富邦 Visa Infinite 卡",
+    bank: "富邦銀行",
+    style: { bgColor: "bg-gradient-to-br from-slate-800 to-black", textColor: "text-yellow-400" },
+    foreignCurrencyFee: 1.95,
+    rules: [
+      { description: "海外簽賬 3%", matchType: "base", percentage: 3.0, isForeignCurrency: true },
+      { description: "本地簽賬 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+    ],
+    tags: ["高端卡", "旅遊"],
+    sellingPoints: ["海外簽賬 3% 回贈", "機場貴賓室", "旅遊保險"],
+    applyUrl: "https://www.fubonbank.com.hk/tc/cards/credit-card-products/visa-infinite-card.html",
+  },
+  {
+    id: "fubon-incard",
+    name: "富邦 iN VISA 白金卡",
+    bank: "富邦銀行",
+    style: { bgColor: "bg-gradient-to-br from-pink-500 to-purple-600", textColor: "text-white" },
+    foreignCurrencyFee: 1.95,
+    rules: [
+      { description: "網上簽賬 2%", matchType: "category", matchValue: "online", percentage: 2.0, excludeCategories: ["ewallet"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+    ],
+    tags: ["網購", "年輕人"],
+    sellingPoints: ["網上簽賬 2% 回贈", "永久免年費", "適合年輕人"],
+    applyUrl: "https://www.fubonbank.com.hk/tc/cards/credit-card-products/incard.html",
+  },
+  {
+    id: "cncbi-gba",
+    name: "信銀國際大灣區雙幣信用卡",
+    bank: "信銀國際",
+    style: { bgColor: "bg-gradient-to-br from-red-600 to-red-800", textColor: "text-white" },
+    foreignCurrencyFee: 0,
+    rules: [
+      { description: "內地簽賬 4%", matchType: "base", percentage: 4.0, isForeignCurrency: true },
+      { description: "本地簽賬 0.55%", matchType: "base", percentage: 0.55, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+    ],
+    tags: ["大灣區", "北上", "免手續費"],
+    sellingPoints: ["內地簽賬 4% 回贈", "人民幣/港幣雙幣", "免外幣手續費"],
+    applyUrl: "https://www.cncbinternational.com/personal/credit-cards/gba-dual-currency-credit-card/tc/index.jsp",
+    note: "內地簽賬 4% 回贈無上限。適合經常北上消費的用戶。",
+  },
+  {
+    id: "bea-world-mastercard",
+    name: "東亞銀行 World Mastercard",
+    bank: "東亞銀行",
+    style: { bgColor: "bg-gradient-to-br from-gray-700 to-gray-900", textColor: "text-white" },
+    foreignCurrencyFee: 1.95,
+    rewardConfig: { method: 'direct_rate', baseRate: 5, currency: 'Miles' },
+    rules: [
+      { description: "本地簽賬 $5=1里 (2%)", matchType: "base", percentage: 2.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "海外簽賬 $5=1里 (2%)", matchType: "base", percentage: 2.0, isForeignCurrency: true },
+    ],
+    tags: ["里數卡", "高端"],
+    sellingPoints: ["本地及海外簽賬 $5=1里", "免費機場貴賓室", "旅遊保險"],
+    applyUrl: "https://www.hkbea.com/html/tc/bea-world-mastercard.html",
+  },
+  {
+    id: "sc-apoint",
+    name: "渣打 a]point 信用卡",
+    bank: "渣打銀行",
+    style: { bgColor: "bg-gradient-to-br from-orange-500 to-orange-700", textColor: "text-white" },
+    foreignCurrencyFee: 0,
+    rules: [
+      { description: "所有簽賬 2%", matchType: "base", percentage: 2.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+    ],
+    tags: ["全方位2%", "簡單", "免手續費"],
+    sellingPoints: ["所有簽賬 2% 回贈", "無上限", "免外幣手續費", "永久免年費"],
+    applyUrl: "https://www.sc.com/hk/zh/credit-cards/apointcard/",
+    note: "全方位 2% 回贈無上限，無需登記。適合不想計算的懶人。",
+  },
+  {
+    id: "boc-taobao",
+    name: "中銀淘寶 World 萬事達卡",
+    bank: "中銀香港",
+    style: { bgColor: "bg-gradient-to-br from-orange-400 to-red-500", textColor: "text-white" },
+    foreignCurrencyFee: 1.95,
+    rules: [
+      { description: "淘寶/天貓 4%", matchType: "merchant", matchValue: ["taobao", "tmall"], percentage: 4.0 },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+    ],
+    tags: ["淘寶", "網購"],
+    sellingPoints: ["淘寶/天貓簽賬 4% 回贈", "專為淘寶用戶而設"],
+    applyUrl: "https://www.bochk.com/tc/creditcard/products/taobao.html",
+  },
+  {
+    id: "hangseng-muji",
+    name: "恒生 MUJI Card",
+    bank: "恒生銀行",
+    style: { bgColor: "bg-gradient-to-br from-stone-600 to-stone-800", textColor: "text-white" },
+    foreignCurrencyFee: 1.95,
+    rules: [
+      { description: "MUJI 5%", matchType: "merchant", matchValue: ["muji"], percentage: 5.0 },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+    ],
+    tags: ["MUJI", "生活品味"],
+    sellingPoints: ["MUJI 簽賬 5% 回贈", "MUJI 專屬優惠", "無印良品愛好者必備"],
+    applyUrl: "https://www.hangseng.com/zh-hk/personal/cards/products/co-branded/muji-card/",
+  },
+  {
+    id: "hangseng-platinum",
+    name: "恒生白金卡",
+    bank: "恒生銀行",
+    style: { bgColor: "bg-gradient-to-br from-gray-500 to-gray-700", textColor: "text-white" },
+    foreignCurrencyFee: 1.95,
+    rules: [
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+    ],
+    tags: ["基本卡"],
+    sellingPoints: ["基本回贈", "入門信用卡"],
+    applyUrl: "https://www.hangseng.com/zh-hk/personal/cards/products/platinum-card/",
   },
 ];
