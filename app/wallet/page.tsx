@@ -282,11 +282,19 @@ export default function WalletPage() {
             </div>
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">您的錢包是空的</h2>
             <p className="text-gray-500 mb-6 max-w-xs mx-auto">加入您擁有的信用卡，我們將為您計算最佳簽賬策略。</p>
-            <Link href="/cards">
-              <Button className="gap-2 rounded-full px-6">
-                <Plus className="h-4 w-4" /> 加入第一張卡
-              </Button>
-            </Link>
+            {user ? (
+              <Link href="/cards">
+                <Button className="gap-2 rounded-full px-6">
+                  <Plus className="h-4 w-4" /> 加入第一張卡
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/login">
+                <Button className="gap-2 rounded-full px-6">
+                  <Plus className="h-4 w-4" /> 登入以加入卡片
+                </Button>
+              </Link>
+            )}
           </motion.div>
         ) : (
           <div className="space-y-8">
