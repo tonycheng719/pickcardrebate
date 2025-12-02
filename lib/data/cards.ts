@@ -776,4 +776,73 @@ export const HK_CARDS: CreditCard[] = [
     tags: ["全方位1%", "簡單"],
     sellingPoints: ["所有簽賬 1% 現金回贈", "無上限", "簡單易用"],
   },
+
+  // ========================================================================
+  // 新增卡片 (2024-2025)
+  // ========================================================================
+  {
+    id: "hsbc-easy",
+    name: "HSBC Easy Card",
+    bank: "HSBC",
+    style: { bgColor: "bg-gradient-to-br from-red-500 to-red-700", textColor: "text-white" },
+    rewardTimeline: "獎賞錢即時入賬",
+    foreignCurrencyFee: 1.95,
+    rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' },
+    rules: [
+      // 百佳 92折日 (每月2/12/22日，需滿$100)
+      { description: "百佳 92折 (2/12/22號)", matchType: "merchant", matchValue: ["parknshop"], percentage: 8.0, validDates: [2, 12, 22] },
+      // 屈臣氏 92折日 (每月8/18/28日，需滿$400)
+      { description: "屈臣氏 92折 (8/18/28號)", matchType: "merchant", matchValue: ["watsons"], percentage: 8.0, validDates: [8, 18, 28] },
+      // 豐澤 95折日 (1/5/8/12月的10日，需滿$2,000) - 簡化為每月10日
+      { description: "豐澤 95折 (每月10號)", matchType: "merchant", matchValue: ["fortress"], percentage: 5.0, validDates: [10] },
+      // VIP會員 6倍易賞錢 (2.4%)
+      { description: "百佳/屈臣氏/豐澤 VIP 2.4%", matchType: "merchant", matchValue: ["parknshop", "watsons", "fortress"], percentage: 2.4 },
+      // 最紅自主獎賞 (需登記)
+      { description: "最紅自主獎賞 2.4%", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 2.4, cap: 25000, capType: "spending" },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+    ],
+    tags: ["易賞錢", "百佳", "屈臣氏", "92折日"],
+    feeWaiverCondition: "首兩年免年費",
+    welcomeOfferText: "迎新簽 $5,800 送 $600 獎賞錢",
+    applyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/easy/",
+    sellingPoints: ["百佳 92折 (每月2/12/22號)", "屈臣氏 92折 (每月8/18/28號)", "VIP會員 6倍易賞錢 (2.4%)", "最紅自主獎賞 2.4%"],
+    note: "⚠️ 百佳92折需滿$100 (2/12/22號)。屈臣氏92折需滿$400 (8/18/28號)。豐澤95折需滿$2,000。需綁定「易賞錢」App 及登記「最紅自主獎賞」。",
+  },
+  {
+    id: "citi-hktvmall",
+    name: "Citi HKTVmall 信用卡",
+    bank: "Citi",
+    style: { bgColor: "bg-gradient-to-br from-green-500 to-green-700", textColor: "text-white" },
+    foreignCurrencyFee: 1.95,
+    rules: [
+      // HKTVmall 5% (需每月登記)
+      { description: "HKTVmall 5%", matchType: "merchant", matchValue: ["hktvmall"], percentage: 5.0, cap: 300, capType: "reward" },
+      // 指定日子 HKTVmall 額外優惠
+      { description: "基本回饋 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+    ],
+    tags: ["HKTVmall", "網購"],
+    welcomeOfferText: "迎新高達 $1,000 HKTVmall 電子購物禮券",
+    applyUrl: "https://www.citibank.com.hk/chinese/credit-cards/citi-hktvmall-card.html",
+    sellingPoints: ["HKTVmall 5% 回贈 (每月上限$300)", "迎新送 HKTVmall 禮券", "基本簽賬 1%"],
+    note: "⚠️ HKTVmall 5% 需每月登記！每月回贈上限 $300。未登記只有 1% 基本回贈。",
+  },
+  {
+    id: "fubon-yata",
+    name: "富邦一田 Visa 白金卡",
+    bank: "Fubon",
+    style: { bgColor: "bg-gradient-to-br from-purple-600 to-purple-800", textColor: "text-white" },
+    foreignCurrencyFee: 1.95,
+    rules: [
+      // 一田 VIP Day 額外優惠
+      { description: "一田 VIP Day 5%", matchType: "merchant", matchValue: ["yata"], percentage: 5.0 },
+      // 一田平日
+      { description: "一田 2%", matchType: "merchant", matchValue: ["yata"], percentage: 2.0 },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+    ],
+    tags: ["一田", "百貨公司"],
+    welcomeOfferText: "迎新送一田購物禮券",
+    applyUrl: "https://www.fubonbank.com.hk/tc/cards/bonus-points-program/yata-credit-card.html",
+    sellingPoints: ["一田 VIP Day 額外 5% 回贈", "一田平日 2% 回贈", "一田專屬優惠"],
+    note: "一田 VIP Day 期間可享額外 5% 回贈。需配合一田會員使用。",
+  },
 ];
