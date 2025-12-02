@@ -761,7 +761,6 @@ export const HK_CARDS: CreditCard[] = [
     tags: ["里數卡", "高端卡"],
     sellingPoints: ["本地及海外簽賬 $5=1里", "免費機場貴賓室", "旅遊保險", "積分無限期"],
     applyUrl: "https://www.hkbea.com/html/tc/bea-world-mastercard.html",
-    sellingPoints: ["本地及海外簽賬 $5=1里", "機場貴賓室", "旅遊保險"],
   },
   {
     id: "dahsing-myauto",
