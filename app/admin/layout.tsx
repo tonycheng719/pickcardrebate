@@ -18,6 +18,7 @@ import {
   Store,
   BookOpen,
   GitCommit,
+  Calculator,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AdminAuthProvider, useAdminAuth } from "@/components/admin/admin-auth-context";
@@ -25,12 +26,13 @@ import { AdminAuthProvider, useAdminAuth } from "@/components/admin/admin-auth-c
 const menuItems = [
   { name: "總覽儀表板", href: "/admin", icon: LayoutDashboard },
   { name: "系統說明書", href: "/admin/guide", icon: BookOpen }, 
-  { name: "更新日誌", href: "/admin/changelog", icon: GitCommit }, // Add Changelog
+  { name: "更新日誌", href: "/admin/changelog", icon: GitCommit },
   { name: "會員管理", href: "/admin/users", icon: Users },
   { name: "信用卡庫", href: "/admin/cards", icon: CreditCard },
   { name: "商戶資料", href: "/admin/merchants", icon: Store },
   { name: "優惠活動", href: "/admin/promos", icon: Tag },
   { name: "搜尋分析", href: "/admin/analytics", icon: BarChart3 },
+  { name: "計算機記錄", href: "/admin/search-logs", icon: Calculator },
   { name: "回報審核", href: "/admin/moderation", icon: MessageSquare },
   { name: "信用卡評論", href: "/admin/comments", icon: MessageCircle },
   { name: "操作日誌", href: "/admin/logs", icon: History },
