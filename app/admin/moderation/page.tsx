@@ -17,6 +17,7 @@ interface Report {
   merchant_name: string;
   card_id: string;
   payment_method: string;
+  amount?: number;
   actual_rate: number;
   comment: string;
   status: "pending" | "verified" | "rejected";
@@ -385,7 +386,7 @@ export default function AdminModerationPage() {
                         {report.merchant_name || "未指定商戶"} 
                     </CardTitle>
                     <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        卡片: {report.card_id || "未指定"} | 支付: {report.payment_method}
+                        卡片: {report.card_id || "未指定"} | 金額: ${report.amount || "未指定"} | 支付: {report.payment_method}
                     </div>
                 </div>
                 </CardHeader>
