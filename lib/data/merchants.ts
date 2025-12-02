@@ -75,4 +75,87 @@ export const POPULAR_MERCHANTS: Merchant[] = [
   { id: "fortress", name: "Fortress 豐澤", categoryIds: ["electronics", "online"], aliases: ["fortress", "豐澤"], logo: "https://logo.clearbit.com/fortress.com.hk", accentColor: "#0ea5e9" },
   { id: "yoho", name: "友和 YOHO", categoryIds: ["electronics", "online"], aliases: ["yoho", "友和"], logo: "https://logo.clearbit.com/yohohongkong.com", accentColor: "#f97316" },
   { id: "broadway", name: "Broadway 百老滙", categoryIds: ["electronics", "online"], aliases: ["broadway", "百老滙", "百老匯"], logo: "https://logo.clearbit.com/broadway.com.hk", accentColor: "#1d4ed8" },
+
+  // ========== yuu 積分商戶 (恒生 enJoy 卡) ==========
+  // 4X yuu積分 (2%) - 美心中菜
+  { id: "jade_garden", name: "翠園 Jade Garden", categoryIds: ["dining"], aliases: ["翠園", "jade garden"], logo: "🥢", accentColor: "#16a34a" },
+  { id: "maxims_palace", name: "美心皇宮", categoryIds: ["dining"], aliases: ["美心皇宮", "maxims palace"], logo: "🏯", accentColor: "#f59e0b" },
+  { id: "peking_garden", name: "北京樓 Peking Garden", categoryIds: ["dining"], aliases: ["北京樓", "peking garden"], logo: "🦆", accentColor: "#dc2626" },
+  { id: "chiu_chow", name: "潮江春", categoryIds: ["dining"], aliases: ["潮江春", "chiu chow"], logo: "🦐", accentColor: "#0ea5e9" },
+  { id: "jasmine_place", name: "翠玉軒", categoryIds: ["dining"], aliases: ["翠玉軒", "jasmine"], logo: "🥟", accentColor: "#84cc16" },
+  { id: "orchid_court", name: "紫玉蘭", categoryIds: ["dining"], aliases: ["紫玉蘭", "orchid"], logo: "🌸", accentColor: "#a855f7" },
+  { id: "eight_month", name: "八月花", categoryIds: ["dining"], aliases: ["八月花", "eight month"], logo: "🌺", accentColor: "#f43f5e" },
+
+  // 4X yuu積分 (2%) - 美心西餐
+  { id: "cafe_landmark", name: "Café Landmark", categoryIds: ["dining"], aliases: ["cafe landmark"], logo: "☕", accentColor: "#78350f" },
+  { id: "muses", name: "MUSES", categoryIds: ["dining"], aliases: ["muses"], logo: "🎭", accentColor: "#7c3aed" },
+  { id: "wildfire", name: "Wildfire Pizzabar", categoryIds: ["dining"], aliases: ["wildfire", "pizzabar"], logo: "🔥", accentColor: "#ea580c" },
+
+  // 4X yuu積分 (2%) - m.a.x. concepts 國際食府
+  { id: "simplylife", name: "simplylife BAKERY CAFÉ", categoryIds: ["dining"], aliases: ["simplylife", "simply life"], logo: "🥐", accentColor: "#f59e0b" },
+  { id: "kikusan", name: "吉谷舍 kikusan", categoryIds: ["dining"], aliases: ["吉谷舍", "kikusan"], logo: "🍱", accentColor: "#dc2626" },
+  { id: "thai_basil", name: "THAI BASIL", categoryIds: ["dining"], aliases: ["thai basil", "泰式"], logo: "🌿", accentColor: "#16a34a" },
+  { id: "exp", name: "EXP", categoryIds: ["dining"], aliases: ["exp"], logo: "🍜", accentColor: "#3b82f6" },
+  { id: "dragon_inn", name: "龍點", categoryIds: ["dining"], aliases: ["龍點", "dragon inn"], logo: "🐉", accentColor: "#dc2626" },
+  { id: "ming_court", name: "明谷", categoryIds: ["dining"], aliases: ["明谷", "ming court"], logo: "🏮", accentColor: "#f97316" },
+  { id: "hong_kong_day", name: "香港地", categoryIds: ["dining"], aliases: ["香港地", "hong kong day"], logo: "🇭🇰", accentColor: "#dc2626" },
+
+  // 4X yuu積分 (2%) - 美心快餐
+  { id: "mx", name: "美心MX", categoryIds: ["dining"], aliases: ["mx", "美心mx", "美心快餐"], logo: "🍱", accentColor: "#f59e0b" },
+  { id: "canteen", name: "can.teen", categoryIds: ["dining"], aliases: ["canteen", "can.teen"], logo: "🍽️", accentColor: "#84cc16" },
+  { id: "deli_o", name: "Deli-O", categoryIds: ["dining"], aliases: ["deli-o", "deli o"], logo: "🥪", accentColor: "#0ea5e9" },
+
+  // 4X yuu積分 (2%) - 麵包西餅店
+  { id: "arome", name: "東海堂 Arome", categoryIds: ["dining"], aliases: ["東海堂", "arome"], logo: "🍰", accentColor: "#f43f5e" },
+  { id: "maxims_cakes", name: "美心西餅", categoryIds: ["dining"], aliases: ["美心西餅", "maxims cakes"], logo: "🎂", accentColor: "#f59e0b" },
+  { id: "paper_stone", name: "Paper Stone Bakery", categoryIds: ["dining"], aliases: ["paper stone", "paper stone bakery"], logo: "🥖", accentColor: "#78350f" },
+  { id: "urban_bakery", name: "URBAN Bakery", categoryIds: ["dining"], aliases: ["urban", "urban bakery"], logo: "🥐", accentColor: "#1d4ed8" },
+  { id: "homebake", name: "Homebake", categoryIds: ["dining"], aliases: ["homebake", "美心烘焙所"], logo: "🍞", accentColor: "#f97316" },
+
+  // 4X yuu積分 (2%) - 其他
+  { id: "starbucks", name: "Starbucks 星巴克", categoryIds: ["dining"], aliases: ["starbucks", "星巴克"], logo: "https://logo.clearbit.com/starbucks.com", accentColor: "#16a34a" },
+  { id: "heichinrou", name: "并并屋", categoryIds: ["dining"], aliases: ["并并屋", "heichinrou"], logo: "🍜", accentColor: "#dc2626" },
+  { id: "fish_izakaya", name: "魚尚", categoryIds: ["dining"], aliases: ["魚尚", "fish izakaya"], logo: "🐟", accentColor: "#0ea5e9" },
+  { id: "phd", name: "PHD (Pizza Hut Delivery)", categoryIds: ["dining", "online"], aliases: ["phd", "pizza hut delivery"], logo: "🍕", accentColor: "#dc2626", isOnlineOnly: true },
+
+  // 3X yuu積分 (1.5%) - 零售
+  { id: "ikea", name: "IKEA 宜家家居", categoryIds: ["home", "online"], aliases: ["ikea", "宜家", "宜家家居"], logo: "https://logo.clearbit.com/ikea.com.hk", accentColor: "#0ea5e9" },
+  { id: "gnc", name: "GNC", categoryIds: ["personal_care"], aliases: ["gnc"], logo: "https://logo.clearbit.com/gnc.com.hk", accentColor: "#1d4ed8" },
+  { id: "3hreesixty", name: "3hreesixty", categoryIds: ["supermarket"], aliases: ["3hreesixty", "360"], logo: "🛒", accentColor: "#16a34a" },
+  { id: "olivers", name: "Oliver's The Delicatessen", categoryIds: ["supermarket"], aliases: ["olivers", "oliver's"], logo: "🥗", accentColor: "#84cc16" },
+  { id: "market_place", name: "Market Place by Jasons", categoryIds: ["supermarket"], aliases: ["market place", "jasons"], logo: "🛒", accentColor: "#f97316" },
+
+  // 2X yuu積分 (1%) - 油站
+  { id: "shell", name: "Shell 蜆殼", categoryIds: ["petrol"], aliases: ["shell", "蜆殼"], logo: "https://logo.clearbit.com/shell.com.hk", accentColor: "#facc15" },
+
+  // ========== 渣打 Smart 卡特約商戶 ==========
+  { id: "japanhome", name: "Japan Home 日本城", categoryIds: ["home"], aliases: ["japan home", "日本城"], logo: "https://logo.clearbit.com/japanhome.com.hk", accentColor: "#dc2626" },
+  { id: "cmhk", name: "中國移動香港 CMHK", categoryIds: ["telecom", "online"], aliases: ["cmhk", "中國移動", "china mobile"], logo: "https://logo.clearbit.com/hk.chinamobile.com", accentColor: "#0ea5e9", isOnlineOnly: true },
+
+  // ========== 油站 ==========
+  { id: "caltex", name: "Caltex 加德士", categoryIds: ["petrol"], aliases: ["caltex", "加德士"], logo: "https://logo.clearbit.com/caltex.com", accentColor: "#dc2626" },
+  { id: "esso", name: "Esso 埃索", categoryIds: ["petrol"], aliases: ["esso", "埃索"], logo: "https://logo.clearbit.com/esso.com.hk", accentColor: "#1d4ed8" },
+  { id: "sinopec", name: "Sinopec 中石化", categoryIds: ["petrol"], aliases: ["sinopec", "中石化"], logo: "https://logo.clearbit.com/sinopec.com", accentColor: "#dc2626" },
+
+  // ========== 交通 ==========
+  { id: "citybus", name: "Citybus 城巴", categoryIds: ["transport"], aliases: ["citybus", "城巴"], logo: "https://logo.clearbit.com/citybus.com.hk", accentColor: "#facc15" },
+  { id: "nwfb", name: "NWFB 新巴", categoryIds: ["transport"], aliases: ["nwfb", "新巴", "new world first bus"], logo: "https://logo.clearbit.com/nwfb.com.hk", accentColor: "#f97316" },
+  { id: "hktramways", name: "Hong Kong Tramways 香港電車", categoryIds: ["transport"], aliases: ["tram", "電車", "叮叮"], logo: "🚃", accentColor: "#16a34a" },
+  { id: "star_ferry", name: "Star Ferry 天星小輪", categoryIds: ["transport"], aliases: ["star ferry", "天星小輪", "天星"], logo: "⛴️", accentColor: "#16a34a" },
+
+  // ========== 百貨公司 ==========
+  { id: "aeon", name: "AEON 永旺", categoryIds: ["department_store", "supermarket"], aliases: ["aeon", "永旺", "jusco"], logo: "https://logo.clearbit.com/aeon.com.hk", accentColor: "#ec4899" },
+  { id: "muji", name: "MUJI 無印良品", categoryIds: ["department_store", "home"], aliases: ["muji", "無印良品", "無印"], logo: "https://logo.clearbit.com/muji.com", accentColor: "#78350f" },
+
+  // ========== 運動服飾 ==========
+  { id: "nike", name: "Nike", categoryIds: ["sports_apparel"], aliases: ["nike"], logo: "https://logo.clearbit.com/nike.com", accentColor: "#000000" },
+  { id: "adidas", name: "Adidas", categoryIds: ["sports_apparel"], aliases: ["adidas"], logo: "https://logo.clearbit.com/adidas.com", accentColor: "#000000" },
+  { id: "uniqlo", name: "UNIQLO", categoryIds: ["department_store"], aliases: ["uniqlo", "優衣庫"], logo: "https://logo.clearbit.com/uniqlo.com", accentColor: "#dc2626" },
+
+  // ========== 停車場/隧道 ==========
+  { id: "autotoll", name: "Autotoll 易通行", categoryIds: ["tunnel_fee"], aliases: ["autotoll", "易通行", "隧道費"], logo: "🚗", accentColor: "#3b82f6" },
+  { id: "wilson_parking", name: "Wilson Parking 威信停車場", categoryIds: ["parking"], aliases: ["wilson", "威信", "停車場"], logo: "🅿️", accentColor: "#1d4ed8" },
+
+  // ========== 電動車充電 ==========
+  { id: "ev_charging", name: "電動車充電站", categoryIds: ["ev_charging"], aliases: ["ev charging", "充電站", "電動車"], logo: "🔌", accentColor: "#16a34a", isGeneral: true },
 ];
