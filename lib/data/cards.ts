@@ -872,14 +872,14 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-pink-500 to-purple-600", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
-      // 網上簽賬 8% (需每月登記，每月首 $10,000 簽賬)
-      { description: "網上簽賬 8% (需登記)", matchType: "category", matchValue: "online", percentage: 8.0, cap: 10000, capType: "spending", excludeCategories: ["ewallet"] },
+      // 網上簽賬 8% (需每月登記，每月回贈上限 $300)
+      { description: "網上簽賬 8% (需登記)", matchType: "category", matchValue: "online", percentage: 8.0, cap: 300, capType: "reward", excludeCategories: ["ewallet"] },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["網購8%", "年輕人"],
-    sellingPoints: ["網上簽賬 8% 回贈 (需每月登記)", "永久免年費", "適合年輕人"],
+    sellingPoints: ["網上簽賬 8% 回贈 (每月上限 $300)", "永久免年費", "適合年輕人"],
     applyUrl: "https://www.fubonbank.com.hk/tc/cards/credit-card-products/incard.html",
-    note: "⚠️ 網上簽賬 8% 需每月登記！每月首 $10,000 網上簽賬享 8%，超出部分為 0.4%。未登記只有 0.4% 基本回贈。",
+    note: "⚠️ 網上簽賬 8% 需每月登記！每月回贈上限 $300 (即首 $3,750 網上簽賬享 8%)，超出部分為 0.4%。未登記只有 0.4% 基本回贈。",
   },
   {
     id: "cncbi-gba",
