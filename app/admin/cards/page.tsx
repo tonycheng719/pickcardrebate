@@ -2,15 +2,44 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Plus, Edit, ExternalLink, Trash2 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { Search, Edit, ExternalLink, Image, Info } from "lucide-react";
+import { useMemo, useState, useEffect } from "react";
 import Link from "next/link";
-import { useAdminDataStore } from "@/lib/admin/data-store";
+import { HK_CARDS } from "@/lib/data/cards";
+import { createClient } from "@/lib/supabase/client";
+import type { CreditCard } from "@/lib/types";
 
 export default function AdminCardsPage() {
-  const { cards, removeCard } = useAdminDataStore();
+  // 使用 cards.ts 作為唯一來源
+  const [dbImages, setDbImages] = useState<Record<string, string>>({});
   const [search, setSearch] = useState("");
   const [bankFilter, setBankFilter] = useState("所有銀行");
+
+  // 從數據庫獲取圖片 URL
+  useEffect(() => {
+    async function fetchImages() {
+      const supabase = createClient();
+      const { data } = await supabase.from("cards").select("id, image_url");
+      if (data) {
+        const imageMap: Record<string, string> = {};
+        data.forEach((card: any) => {
+          if (card.image_url) {
+            imageMap[card.id] = card.image_url;
+          }
+        });
+        setDbImages(imageMap);
+      }
+    }
+    fetchImages();
+  }, []);
+
+  // 合併 cards.ts 同數據庫圖片
+  const cards: CreditCard[] = useMemo(() => {
+    return HK_CARDS.map(card => ({
+      ...card,
+      imageUrl: dbImages[card.id] || card.imageUrl
+    }));
+  }, [dbImages]);
 
   const bankOptions = useMemo(() => ["所有銀行", ...Array.from(new Set(cards.map((card) => card.bank)))], [cards]);
 
@@ -29,13 +58,14 @@ export default function AdminCardsPage() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">信用卡管理</h1>
-          <p className="text-gray-500 dark:text-gray-400">管理全站 {cards.length} 張信用卡資料與回贈規則。</p>
+          <p className="text-gray-500 dark:text-gray-400">
+            共 {cards.length} 張信用卡（資料來源：cards.ts）
+          </p>
         </div>
-        <Link href="/admin/cards/new">
-          <Button className="gap-2">
-            <Plus className="h-4 w-4" /> 新增信用卡
-          </Button>
-        </Link>
+        <div className="flex items-center gap-2 text-sm text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 px-3 py-2 rounded-lg">
+          <Info className="h-4 w-4" />
+          <span>卡片規則由 cards.ts 管理，此處只能編輯圖片</span>
+        </div>
       </div>
 
       <div className="flex gap-4 bg-white dark:bg-gray-800 p-4 rounded-xl border dark:border-gray-700">
@@ -100,28 +130,17 @@ export default function AdminCardsPage() {
                 <td className="px-6 py-4">
                   <div className="flex gap-2">
                     <Link
-                      href={`/admin/cards/new?id=${card.id}`}
+                      href={`/admin/cards/edit?id=${card.id}`}
                       className="p-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 rounded transition-colors"
-                      title="編輯"
+                      title="編輯圖片"
                     >
-                      <Edit className="h-4 w-4" />
+                      <Image className="h-4 w-4" />
                     </Link>
                     {card.applyUrl && (
                       <a href={card.applyUrl} target="_blank" rel="noopener noreferrer" className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 rounded transition-colors" title="查看連結">
                         <ExternalLink className="h-4 w-4" />
                       </a>
                     )}
-                    <button
-                      className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
-                      title="刪除"
-                      onClick={() => {
-                        if (confirm(`確定刪除 ${card.name}？`)) {
-                          removeCard(card.id);
-                        }
-                      }}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
                   </div>
                 </td>
               </tr>
