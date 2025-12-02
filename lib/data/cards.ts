@@ -509,14 +509,14 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-purple-500 to-purple-700", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
-      // 手機支付/網購 4.4% (單筆 $2,000-$5,000)
-      { description: "手機支付 4.4% ($2000-$5000)", matchType: "paymentMethod", matchValue: ["mobile"], percentage: 4.4, minSpend: 2000, cap: 5000, capType: "spending", excludeCategories: ["ewallet"] },
-      { description: "網購 4.4% ($2000-$5000)", matchType: "category", matchValue: "online", percentage: 4.4, minSpend: 2000, cap: 5000, capType: "spending", excludeCategories: ["ewallet"] },
+      // 手機支付/網購 4.4% (單筆 $2,000-$3,947)
+      { description: "手機支付 4.4% ($2000-$3947)", matchType: "paymentMethod", matchValue: ["mobile"], percentage: 4.4, minSpend: 2000, cap: 3947, capType: "spending", excludeCategories: ["ewallet"] },
+      { description: "網購 4.4% ($2000-$3947)", matchType: "category", matchValue: "online", percentage: 4.4, minSpend: 2000, cap: 3947, capType: "spending", excludeCategories: ["ewallet"] },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
     tags: ["手機支付", "網購"],
-    sellingPoints: ["手機支付及網購 4.4% 回贈", "單筆 $2,000-$5,000 享優惠"],
-    note: "⚠️ 手機支付/網購 4.4% 需單筆消費 $2,000-$5,000！未滿 $2,000 或超過 $5,000 部分只有 0.4%。",
+    sellingPoints: ["手機支付及網購 4.4% 回贈", "單筆 $2,000-$3,947 享優惠"],
+    note: "⚠️ 手機支付/網購 4.4% 需單筆消費 $2,000-$3,947！未滿 $2,000 或超過 $3,947 部分只有 0.4%。",
   },
   {
     id: "bea-world-master",
@@ -882,7 +882,7 @@ export const HK_CARDS: CreditCard[] = [
     tags: ["網購8%", "年輕人"],
     sellingPoints: ["網上簽賬 8% 回贈 (每月上限 $300)", "永久免年費", "適合年輕人"],
     applyUrl: "https://www.fubonbank.com.hk/tc/cards/credit-card-products/incard.html",
-    note: "⚠️ 網上簽賬 8% 需每月登記！每月回贈上限 $300 (即首 $3,947 網上簽賬享 7.6%)，超出部分為 0.4%。未登記只有 0.4% 基本回贈。",
+    note: "⚠️ 網上簽賬 8% 需每月登記！每月回贈上限 $300 (即首 $3,750 網上簽賬享 8%)，超出部分為 0.4%。未登記只有 0.4% 基本回贈。",
   },
   {
     id: "cncbi-gba",
