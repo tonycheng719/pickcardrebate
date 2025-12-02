@@ -39,6 +39,10 @@ export interface CalculationResult {
   discountRule?: RewardRule; // The discount rule if applicable
   discountPercentage?: number; // e.g. 8 for 92折
   discountAmount?: number; // Actual savings from discount
+  // Missed discount (date mismatch for discount rules)
+  missedDiscountRule?: RewardRule;
+  missedDiscountPercentage?: number;
+  missedDiscountAmount?: number;
 }
 
 export interface SearchOptions {
@@ -70,7 +74,10 @@ function calculateCardReward(
     milesReturn?: number,
     discountRule?: RewardRule,
     discountPercentage?: number,
-    discountAmount?: number
+    discountAmount?: number,
+    missedDiscountRule?: RewardRule,
+    missedDiscountPercentage?: number,
+    missedDiscountAmount?: number
 } {
     let bestRule: RewardRule | null = null;
     let maxReward = -1;
@@ -89,6 +96,11 @@ function calculateCardReward(
     let bestDiscountRule: RewardRule | null = null;
     let bestDiscountPercentage = 0;
     let bestDiscountAmount = 0;
+
+    // Track missed discount rules (date mismatch for discounts)
+    let bestMissedDiscountRule: RewardRule | null = null;
+    let bestMissedDiscountPercentage = 0;
+    let bestMissedDiscountAmount = 0;
 
     // Helper to check exclusions
     const isExcluded = (rule: RewardRule): boolean => {
@@ -294,9 +306,20 @@ function calculateCardReward(
               const potentialReward = calculatePotential(rule);
               // Only consider it if amount meets minSpend, otherwise it's double missed
               const minSpend = rule.minSpend || 0;
-              if (amount >= minSpend && potentialReward > maxMissedDateReward) {
-                  maxMissedDateReward = potentialReward;
-                  bestMissedDateRule = rule;
+              
+              if (amount >= minSpend) {
+                  // Track missed discount rules separately
+                  if (rule.isDiscount) {
+                      const potentialDiscountAmount = (amount * rule.percentage) / 100;
+                      if (potentialDiscountAmount > bestMissedDiscountAmount) {
+                          bestMissedDiscountRule = rule;
+                          bestMissedDiscountPercentage = rule.percentage;
+                          bestMissedDiscountAmount = potentialDiscountAmount;
+                      }
+                  } else if (potentialReward > maxMissedDateReward) {
+                      maxMissedDateReward = potentialReward;
+                      bestMissedDateRule = rule;
+                  }
               }
           }
       }
@@ -338,7 +361,10 @@ function calculateCardReward(
         milesReturn,
         discountRule: bestDiscountRule || undefined,
         discountPercentage: bestDiscountPercentage > 0 ? bestDiscountPercentage : undefined,
-        discountAmount: bestDiscountAmount > 0 ? bestDiscountAmount : undefined
+        discountAmount: bestDiscountAmount > 0 ? bestDiscountAmount : undefined,
+        missedDiscountRule: bestMissedDiscountRule || undefined,
+        missedDiscountPercentage: bestMissedDiscountPercentage > 0 ? bestMissedDiscountPercentage : undefined,
+        missedDiscountAmount: bestMissedDiscountAmount > 0 ? bestMissedDiscountAmount : undefined
     };
 }
 
@@ -469,7 +495,11 @@ export function findBestCards(
       // Discount info (separate from rebate)
       discountRule: current.discountRule,
       discountPercentage: current.discountPercentage,
-      discountAmount: current.discountAmount
+      discountAmount: current.discountAmount,
+      // Missed discount info (date mismatch)
+      missedDiscountRule: current.missedDiscountRule,
+      missedDiscountPercentage: current.missedDiscountPercentage,
+      missedDiscountAmount: current.missedDiscountAmount
     };
   });
 

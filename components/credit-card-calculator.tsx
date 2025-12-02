@@ -430,6 +430,17 @@ export function CreditCardCalculator({
                 )}
             </div>
 
+            {/* Missed Discount Suggestion */}
+            {result.missedDiscountRule && result.missedDiscountAmount && result.missedDiscountAmount > 0 && (
+                <div className="text-[10px] text-orange-500 mt-1 flex items-center gap-1">
+                    <Lightbulb className="w-3 h-3" />
+                    {result.missedDiscountRule.validDates && result.missedDiscountRule.validDates.length > 0
+                        ? `每月 ${result.missedDiscountRule.validDates.join("/")} 號可享 ${100 - (result.missedDiscountPercentage || 0)}折`
+                        : `特定日子可享 ${100 - (result.missedDiscountPercentage || 0)}折`
+                    }
+                </div>
+            )}
+
             {/* Date Suggestion */}
             {result.dateSuggestion && (
                 <div className="text-[10px] text-blue-500 mt-1 flex items-center gap-1">
@@ -687,7 +698,25 @@ export function CreditCardCalculator({
               </div>
             </div>
             
-            {/* Date Suggestion Logic */}
+            {/* Missed Discount Suggestion (折扣日期建議) */}
+            {best.missedDiscountRule && best.missedDiscountAmount && best.missedDiscountAmount > 0 && (
+                <div className="mt-3 p-3 bg-orange-50 border border-orange-100 rounded-xl flex items-start gap-2 animate-in fade-in slide-in-from-bottom-2">
+                    <Lightbulb className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" />
+                    <div className="text-xs text-orange-700">
+                        <span className="font-bold">💡 折扣日提示：</span>
+                        {best.missedDiscountRule.validDays && best.missedDiscountRule.validDays.length > 0 ? (
+                            <>如果在 <span className="font-bold">{best.missedDiscountRule.validDays.map(d => DAYS_MAP[d]).join("/")}</span> 消費，</>
+                        ) : best.missedDiscountRule.validDates && best.missedDiscountRule.validDates.length > 0 ? (
+                            <>如果在 <span className="font-bold">每月 {best.missedDiscountRule.validDates.join("/")} 號</span> 消費，</>
+                        ) : (
+                            <>如果在特定日子消費，</>
+                        )}
+                        可享 <span className="font-bold">{100 - (best.missedDiscountPercentage || 0)}折</span>（即減 ${best.missedDiscountAmount.toFixed(0)}）！
+                    </div>
+                </div>
+            )}
+
+            {/* Date Suggestion Logic (回贈日期建議) */}
             {best.dateSuggestion && (
                 <div className="mt-3 p-3 bg-blue-50 border border-blue-100 rounded-xl flex items-start gap-2 animate-in fade-in slide-in-from-bottom-2">
                     <Lightbulb className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
