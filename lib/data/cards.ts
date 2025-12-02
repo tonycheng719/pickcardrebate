@@ -910,8 +910,8 @@ export const HK_CARDS: CreditCard[] = [
   },
   {
     id: "sc-apoint",
-    name: "渣打 a]point 信用卡",
-    bank: "渣打銀行",
+    name: "渣打 A. Point Card",
+    bank: "Standard Chartered",
     style: { bgColor: "bg-gradient-to-br from-orange-500 to-orange-700", textColor: "text-white" },
     foreignCurrencyFee: 0,
     rules: [
