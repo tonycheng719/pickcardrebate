@@ -62,4 +62,9 @@ export const POPULAR_MERCHANTS: Merchant[] = [
   { id: "lululemon", name: "lululemon", categoryIds: ["other"], aliases: ["lululemon"], logo: "https://logo.clearbit.com/lululemon.com", accentColor: "#dc2626" },
   { id: "namco", name: "NAMCO", categoryIds: ["entertainment"], aliases: ["namco", "南夢宮"], logo: "https://logo.clearbit.com/namco.co.jp", accentColor: "#f97316" },
   { id: "taito", name: "TAITO STATION", categoryIds: ["entertainment"], aliases: ["taito", "太東"], logo: "https://logo.clearbit.com/taito.co.jp", accentColor: "#7c3aed" },
+  
+  // 餐飲 - 連鎖店 (門市+網上)
+  { id: "kfc", name: "KFC 肯德基", categoryIds: ["dining", "online"], aliases: ["kfc", "肯德基", "kentucky"], logo: "https://logo.clearbit.com/kfc.com.hk", accentColor: "#dc2626" },
+  { id: "genki-sushi", name: "元氣壽司 Genki Sushi", categoryIds: ["dining", "online"], aliases: ["genki", "元氣", "元氣壽司"], logo: "https://logo.clearbit.com/genkisushi.com.hk", accentColor: "#dc2626" },
+  { id: "pizza-hut", name: "Pizza Hut 必勝客", categoryIds: ["dining", "online"], aliases: ["pizza hut", "必勝客", "pizzahut"], logo: "https://logo.clearbit.com/pizzahut.com.hk", accentColor: "#dc2626" },
 ];
