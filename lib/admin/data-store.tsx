@@ -12,21 +12,35 @@ import { toast } from "sonner";
 // --- Data Mapping Helpers (Snake Case DB <-> Camel Case App) ---
 
 function mapCardFromDB(dbCard: any): CreditCard {
+    // Find matching local card to get note, rewardConfig, rules, and other fields
+    // LOCAL data takes priority for rules (most up-to-date calculations)
+    const localCard = HK_CARDS.find(c => c.id === dbCard.id);
+    
+    // Determine which image to use: DB image if it's a Supabase storage URL, otherwise local
+    const useDbImage = dbCard.image_url && (
+        dbCard.image_url.includes('supabase') || 
+        dbCard.image_url.includes('storage')
+    );
+    
     return {
         ...dbCard,
-        imageUrl: dbCard.image_url,
-        foreignCurrencyFee: dbCard.foreign_currency_fee,
-        welcomeOfferText: dbCard.welcome_offer_text,
+        imageUrl: useDbImage ? dbCard.image_url : (localCard?.imageUrl || dbCard.image_url),
+        foreignCurrencyFee: dbCard.foreign_currency_fee ?? localCard?.foreignCurrencyFee,
+        welcomeOfferText: dbCard.welcome_offer_text || localCard?.welcomeOfferText,
         welcomeOfferReward: dbCard.welcome_offer_reward,
         welcomeOfferDeadline: dbCard.welcome_offer_deadline,
-        applyUrl: dbCard.apply_url,
-        sellingPoints: dbCard.selling_points,
+        applyUrl: dbCard.apply_url || localCard?.applyUrl,
+        sellingPoints: localCard?.sellingPoints || dbCard.selling_points, // Prefer local for up-to-date selling points
         feeWaiverCondition: dbCard.fee_waiver_condition,
         waiverMethod: dbCard.waiver_method,
-        rewardTimeline: dbCard.reward_timeline,
-        style: dbCard.style || { bgColor: "bg-gray-800", textColor: "text-white" }, // Fallback
-        rules: dbCard.rules || [],
-        tags: dbCard.tags || []
+        rewardTimeline: localCard?.rewardTimeline || dbCard.reward_timeline, // Prefer local
+        style: dbCard.style || localCard?.style || { bgColor: "bg-gray-800", textColor: "text-white" },
+        // IMPORTANT: LOCAL rules take priority (most up-to-date calculations)
+        rules: localCard?.rules || dbCard.rules || [],
+        tags: localCard?.tags || dbCard.tags || [],
+        // Fields only in local static data
+        note: localCard?.note,
+        rewardConfig: localCard?.rewardConfig,
     };
 }
 
