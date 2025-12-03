@@ -346,8 +346,28 @@ export default async function BlogCategoryPage({ params }: { params: Promise<{ s
     day: 'numeric' 
   });
   
-  // Structured Data for SEO
-  const structuredData = {
+  // FAQ Data
+  const faqItems = [
+    {
+      question: `${currentYear}年最抵${category.name}信用卡係邊張？`,
+      answer: `根據最新數據，${rankings[0]?.card.name} 以 ${rankings[0]?.percentage}% 回贈率排名第一，${rankings[1]?.card.name} 以 ${rankings[1]?.percentage}% 排名第二。`
+    },
+    {
+      question: `${category.name}信用卡有咩要注意？`,
+      answer: `主要留意：1) 簽賬上限 - 部分卡有每月上限；2) 最低消費 - 部分卡需要月簽滿指定金額；3) 登記要求 - 部分優惠需要預先登記；4) 優惠期限 - 留意優惠到期日。`
+    },
+    {
+      question: `點樣揀${category.name}信用卡？`,
+      answer: `建議根據你嘅消費習慣揀卡：高消費用戶可選回贈率高但有上限嘅卡；低消費用戶適合無最低消費要求嘅卡；經常外遊嘅話要留意外幣手續費。`
+    },
+    {
+      question: `${category.name}信用卡回贈幾時入賬？`,
+      answer: `大部分信用卡回贈會喺下一期月結單入賬，部分銀行需要手動換領或透過 App 確認。詳情請參閱各卡詳情頁面。`
+    }
+  ];
+  
+  // Structured Data for SEO - Article
+  const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
     "headline": `${currentYear} 最抵${category.name}信用卡 Top 15`,
@@ -369,11 +389,79 @@ export default async function BlogCategoryPage({ params }: { params: Promise<{ s
     }
   };
   
+  // BreadcrumbList Schema
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "首頁",
+        "item": "https://pickcardrebate.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "排行榜",
+        "item": "https://pickcardrebate.com/rankings"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": `${category.name}信用卡排行榜`,
+        "item": `https://pickcardrebate.com/blog/${slug}`
+      }
+    ]
+  };
+  
+  // FAQ Schema
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map(item => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer
+      }
+    }))
+  };
+  
+  // ItemList Schema for Rankings
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": `${currentYear} 最抵${category.name}信用卡排行榜`,
+    "description": `${category.description}`,
+    "numberOfItems": rankings.length,
+    "itemListElement": rankings.slice(0, 10).map((result, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": result.card.name,
+      "url": `https://pickcardrebate.com/cards/${result.card.id}`
+    }))
+  };
+  
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-900">
+      {/* Structured Data for SEO */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
       
       <Navbar />
@@ -467,6 +555,25 @@ export default async function BlogCategoryPage({ params }: { params: Promise<{ s
               <span>使用我哋嘅<Link href="/" className="underline">回贈計算機</Link>計算實際回贈金額</span>
             </li>
           </ul>
+        </div>
+        
+        {/* FAQ Section */}
+        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6 mb-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            ❓ 常見問題
+          </h2>
+          <div className="space-y-4">
+            {faqItems.map((item, index) => (
+              <div key={index} className="border-b border-gray-100 dark:border-gray-800 pb-4 last:border-0 last:pb-0">
+                <h3 className="font-medium text-gray-900 dark:text-white mb-2">
+                  Q: {item.question}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 text-sm">
+                  A: {item.answer}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
         
         {/* Disclaimer */}

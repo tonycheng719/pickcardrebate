@@ -80,8 +80,36 @@ export default function CardDetailPage() {
 
   const isInWallet = hasCard(card.id);
   
-  // Generate structured data for SEO
-  const structuredData = {
+  // FAQ Data for card
+  const faqItems = [
+    {
+      question: `${card.name} 年費係幾多？`,
+      answer: card.annualFee 
+        ? `${card.name} 年費為 HK$${card.annualFee.toLocaleString()}。${card.feeWaiverCondition || ''}`
+        : `${card.name} 永久免年費。`
+    },
+    {
+      question: `${card.name} 最低年薪要求？`,
+      answer: card.minIncome 
+        ? `申請 ${card.name} 需要年薪達 HK$${card.minIncome.toLocaleString()} 或以上。`
+        : `${card.name} 無特定年薪要求，詳情請參閱官方網站。`
+    },
+    {
+      question: `${card.name} 有咩回贈優惠？`,
+      answer: card.sellingPoints?.join('；') || `${card.name} 提供多項簽賬回贈優惠，詳情請參閱上方回贈詳情。`
+    },
+    {
+      question: `${card.name} 外幣手續費係幾多？`,
+      answer: card.foreignCurrencyFee !== undefined
+        ? card.foreignCurrencyFee === 0 
+          ? `${card.name} 豁免外幣交易手續費，海外簽賬更抵！`
+          : `${card.name} 外幣交易手續費為 ${card.foreignCurrencyFee}%。`
+        : `詳情請參閱 ${card.bank} 官方網站。`
+    }
+  ];
+  
+  // Generate structured data for SEO - Product Schema
+  const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": card.name,
@@ -97,12 +125,47 @@ export default function CardDetailPage() {
       "price": card.annualFee || 0,
       "priceCurrency": "HKD",
       "description": card.feeWaiverCondition || "年費詳情請參閱官網"
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.5",
-      "reviewCount": "100"
     }
+  };
+  
+  // BreadcrumbList Schema
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "首頁",
+        "item": "https://pickcardrebate.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "信用卡",
+        "item": "https://pickcardrebate.com/cards"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": card.name,
+        "item": `https://pickcardrebate.com/cards/${card.id}`
+      }
+    ]
+  };
+  
+  // FAQ Schema
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map(item => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer
+      }
+    }))
   };
 
   const handleShare = async (platform: string) => {
@@ -139,9 +202,19 @@ export default function CardDetailPage() {
       
       {/* Structured Data for SEO */}
       <Script
-        id="structured-data"
+        id="product-schema"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      <Script
+        id="breadcrumb-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <Script
+        id="faq-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
       <main className="container mx-auto px-4 py-8 flex-1">
@@ -434,6 +507,33 @@ export default function CardDetailPage() {
                         <p className="font-medium text-gray-900 dark:text-white">{card.rewardConfig.currency}</p>
                       </div>
                     )}
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+            
+            {/* FAQ Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <Card>
+                <CardContent className="p-5">
+                  <h2 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                    ❓ 常見問題
+                  </h2>
+                  <div className="space-y-4">
+                    {faqItems.map((item, index) => (
+                      <div key={index} className="border-b border-gray-100 dark:border-gray-800 pb-4 last:border-0 last:pb-0">
+                        <h3 className="font-medium text-gray-900 dark:text-white mb-2 text-sm">
+                          Q: {item.question}
+                        </h3>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm">
+                          A: {item.answer}
+                        </p>
+                      </div>
+                    ))}
                   </div>
                 </CardContent>
               </Card>
