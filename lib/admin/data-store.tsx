@@ -16,15 +16,13 @@ function mapCardFromDB(dbCard: any): CreditCard {
     // LOCAL data takes priority for rules (most up-to-date calculations)
     const localCard = HK_CARDS.find(c => c.id === dbCard.id);
     
-    // Determine which image to use: DB image if it's a Supabase storage URL, otherwise local
-    const useDbImage = dbCard.image_url && (
-        dbCard.image_url.includes('supabase') || 
-        dbCard.image_url.includes('storage')
-    );
+    // Use DB image if available, otherwise fallback to local
+    // This allows both uploaded images (Supabase) and manually entered URLs to work
+    const imageUrl = dbCard.image_url || localCard?.imageUrl;
     
     return {
         ...dbCard,
-        imageUrl: useDbImage ? dbCard.image_url : (localCard?.imageUrl || dbCard.image_url),
+        imageUrl,
         foreignCurrencyFee: dbCard.foreign_currency_fee ?? localCard?.foreignCurrencyFee,
         welcomeOfferText: dbCard.welcome_offer_text || localCard?.welcomeOfferText,
         welcomeOfferReward: dbCard.welcome_offer_reward,
@@ -222,7 +220,21 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
             if (cardsRes.ok) {
                 const { cards: cardsData } = await cardsRes.json();
                 if (cardsData && cardsData.length > 0) {
-                    setCards(cardsData.map(mapCardFromDB));
+                    // Create a map of DB cards by ID for quick lookup
+                    const dbCardMap = new Map<string, any>(cardsData.map((c: any) => [c.id, c]));
+                    
+                    // Merge: Start with LOCAL cards, override with DB data where available
+                    const mergedCards = HK_CARDS.map(localCard => {
+                        const dbCard = dbCardMap.get(localCard.id);
+                        if (dbCard) {
+                            // DB card exists - merge with local, prioritizing DB image
+                            return mapCardFromDB(dbCard);
+                        }
+                        // No DB record - use local card as-is
+                        return localCard;
+                    });
+                    
+                    setCards(mergedCards);
                 }
             }
         } catch (e: any) {
