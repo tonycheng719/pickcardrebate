@@ -137,7 +137,8 @@ export default function PromosPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05, duration: 0.4 }}
             >
-                <Card className="flex flex-col h-full hover:shadow-lg transition-all active:scale-[0.98] duration-300 overflow-hidden border-0 ring-1 ring-gray-200 dark:ring-gray-800 dark:bg-gray-800 rounded-2xl">
+                <Link href={`/promos/${promo.id}`} className="block h-full">
+                <Card className="flex flex-col h-full hover:shadow-lg transition-all active:scale-[0.98] duration-300 overflow-hidden border-0 ring-1 ring-gray-200 dark:ring-gray-800 dark:bg-gray-800 rounded-2xl cursor-pointer">
                 {/* Promo Visual Header */}
                 <div className="h-40 bg-gray-100 dark:bg-gray-900 relative overflow-hidden group">
                     {promo.imageUrl ? (
@@ -153,6 +154,7 @@ export default function PromosPage() {
                     <div className="absolute top-3 right-3 flex gap-2 z-10">
                         <button 
                             onClick={(e) => {
+                                e.preventDefault();
                                 e.stopPropagation();
                                 toggleFollow(promo.id);
                             }}
@@ -197,14 +199,13 @@ export default function PromosPage() {
                 <CardFooter className="border-t dark:border-gray-800 pt-4 bg-gray-50/30 dark:bg-gray-800/50 px-5 pb-5 mt-auto">
                     <div className="w-full flex items-center justify-between text-xs">
                         <span className="text-gray-400 dark:text-gray-500">有效期至 {promo.expiryDate}</span>
-                        <Link href={`/promos/${promo.id}`}>
-                            <Button variant="ghost" size="sm" className="text-blue-600 dark:text-blue-400 p-0 h-auto hover:bg-transparent">
-                                詳情 <ExternalLink className="h-3 w-3 ml-1" />
-                            </Button>
-                        </Link>
+                        <span className="text-blue-600 dark:text-blue-400 font-medium flex items-center">
+                            詳情 <ExternalLink className="h-3 w-3 ml-1" />
+                        </span>
                     </div>
                 </CardFooter>
                 </Card>
+                </Link>
             </motion.div>
             )})}
         </div>
