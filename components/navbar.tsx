@@ -63,7 +63,7 @@ export function Navbar() {
         <nav className="flex items-center gap-1 md:gap-3">
           {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-6 mr-4">
-            <Link href="/promos" className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <Link href="/discover" className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               最新優惠
             </Link>
             <Link href="/cards" className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">

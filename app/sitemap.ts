@@ -3,6 +3,9 @@ import { HK_CARDS } from '@/lib/data/cards';
 import { PROMOS } from '@/lib/data/promos';
 import { RANKING_CATEGORIES } from '@/lib/logic/rankings';
 
+// 攻略文章 IDs
+const GUIDE_SLUGS = ['overseas-fee'];
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://pickcardrebate.com';
   
@@ -21,7 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/promos`,
+      url: `${baseUrl}/discover`,
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.9,
@@ -56,18 +59,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly',
       priority: 0.3,
     },
-    {
-      url: `${baseUrl}/guide`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/guide/overseas-fee`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.85,
-    },
   ];
 
   // Card detail pages (exclude hidden cards)
@@ -80,12 +71,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     }));
 
-  // Promo detail pages
+  // Discover pages (promos + guides)
   const promoPages: MetadataRoute.Sitemap = PROMOS.map((promo) => ({
-    url: `${baseUrl}/promos/${promo.id}`,
+    url: `${baseUrl}/discover/${promo.id}`,
     lastModified: new Date(),
     changeFrequency: 'daily' as const,
     priority: 0.8,
+  }));
+
+  const guidePages: MetadataRoute.Sitemap = GUIDE_SLUGS.map((slug) => ({
+    url: `${baseUrl}/discover/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.85,
   }));
 
   // Blog/Rankings category pages
@@ -96,6 +94,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.85,
   }));
 
-  return [...staticPages, ...cardPages, ...promoPages, ...blogPages];
+  return [...staticPages, ...cardPages, ...promoPages, ...guidePages, ...blogPages];
 }
-
