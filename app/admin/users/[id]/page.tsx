@@ -62,13 +62,15 @@ async function getUserData(id: string) {
     const dbCardInfo = dbCardsMap.get(uc.card_id);
     const staticCardInfo = HK_CARDS.find(c => c.id === uc.card_id);
     const settings = settingsMap.get(uc.card_id) || {};
+    const isUnknownCard = !dbCardInfo && !staticCardInfo;
     
     return {
         id: uc.card_id,
         name: dbCardInfo?.name || staticCardInfo?.name || uc.card_id,
-        bank: dbCardInfo?.bank || staticCardInfo?.bank || "Unknown",
+        bank: dbCardInfo?.bank || staticCardInfo?.bank || (isUnknownCard ? "⚠️ 卡片已刪除" : "Unknown"),
         imageUrl: dbCardInfo?.image_url || staticCardInfo?.imageUrl, // DB first, then static
         style: dbCardInfo?.style || staticCardInfo?.style,
+        isUnknown: isUnknownCard,
         settings
     };
   });
@@ -229,7 +231,7 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
                 ) : (
                     <div className="space-y-3">
                         {walletCards.map((card) => (
-                            <div key={card.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
+                            <div key={card.id} className={`flex items-center justify-between p-3 rounded-lg ${card.isUnknown ? 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800' : 'bg-gray-50 dark:bg-gray-900/50'}`}>
                                 <div className="flex items-center gap-3">
                                     {card.imageUrl ? (
                                         <img 
@@ -238,13 +240,18 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
                                             className="w-16 h-10 object-contain rounded bg-white dark:bg-gray-800 p-1 border dark:border-gray-700"
                                         />
                                     ) : (
-                                        <div className={`w-16 h-10 rounded flex items-center justify-center ${card.style?.bgColor || 'bg-gray-200 dark:bg-gray-700'}`}>
-                                            <CreditCard className={`h-5 w-5 ${card.style?.textColor || 'text-gray-500'}`} />
+                                        <div className={`w-16 h-10 rounded flex items-center justify-center ${card.isUnknown ? 'bg-red-200 dark:bg-red-800' : (card.style?.bgColor || 'bg-gray-200 dark:bg-gray-700')}`}>
+                                            <CreditCard className={`h-5 w-5 ${card.isUnknown ? 'text-red-600' : (card.style?.textColor || 'text-gray-500')}`} />
                                         </div>
                                     )}
                                     <div>
-                                        <div className="font-medium text-sm text-gray-900 dark:text-white">{card.name}</div>
-                                        <div className="text-xs text-gray-500">{card.bank}</div>
+                                        <div className={`font-medium text-sm ${card.isUnknown ? 'text-red-600 dark:text-red-400' : 'text-gray-900 dark:text-white'}`}>
+                                          {card.name}
+                                        </div>
+                                        <div className={`text-xs ${card.isUnknown ? 'text-red-500' : 'text-gray-500'}`}>
+                                          {card.bank}
+                                          {card.isUnknown && <span className="ml-1">(ID: {card.id})</span>}
+                                        </div>
                                     </div>
                                 </div>
                                 {card.settings.annualFeeDate && (

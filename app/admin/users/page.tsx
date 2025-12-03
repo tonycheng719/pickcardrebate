@@ -9,11 +9,11 @@ export default async function AdminUsersPage() {
   const supabase = adminAuthClient;
 
   try {
-    // Fetch profiles
+    // Fetch profiles - ordered by created_at descending (newest first)
     const { data, error } = await supabase
       .from("profiles")
       .select("*")
-      .order("email");
+      .order("created_at", { ascending: false });
 
     if (error) {
         console.error("AdminUsersPage fetch error:", error);

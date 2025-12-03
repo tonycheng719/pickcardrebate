@@ -268,9 +268,13 @@ export default function CompareStatsPage() {
                       </td>
                       <td className="py-3 px-4 text-gray-500 dark:text-gray-400">
                         {log.userId ? (
-                          <span className="text-xs" title={log.userId}>
+                          <a 
+                            href={`/admin/users/${log.userId}`}
+                            className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+                            title={`點擊查看會員詳情: ${log.userId}`}
+                          >
                             {log.userEmail || log.userId.substring(0, 8) + '...'}
-                          </span>
+                          </a>
                         ) : (
                           <span className="text-xs text-gray-400">訪客</span>
                         )}
