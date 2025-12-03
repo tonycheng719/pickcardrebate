@@ -22,11 +22,11 @@ export const debitCardFaqData = [
   },
   {
     question: "香港邊間銀行有 Debit Card？",
-    answer: "香港主要銀行都有提供 Debit Card，包括：HSBC（滙豐）、Hang Seng（恒生）、中銀香港、渣打銀行、DBS 星展、Mox Bank、ZA Bank、WeLab Bank 等。虛擬銀行的 Debit Card 通常回贈較高。"
+    answer: "香港主要銀行都有提供 Debit Card，包括：HSBC（滙豐）、Hang Seng（恒生）、中銀香港、渣打銀行，以及虛擬銀行如 Mox Bank、ZA Bank、WeLab Bank、livi Bank、Airstar Bank、Ant Bank 等。虛擬銀行的 Debit Card 通常回贈較高，而且免外幣手續費。"
   },
   {
     question: "Debit Card 可以在日本或海外使用嗎？",
-    answer: "可以！只要你的 Debit Card 有 Visa 或 Mastercard 標誌，就可以在全球接受該網絡的商戶使用。但要留意海外簽賬可能會收取外幣交易手續費（通常 1-1.95%），建議選擇免外幣手續費的 Debit Card。"
+    answer: "可以！只要你的 Debit Card 有 Visa 或 Mastercard 標誌，就可以在全球接受該網絡的商戶使用。現時大部分虛擬銀行（如 Mox、ZA Bank、WeLab、livi 等）的 Debit Card 都免外幣手續費，非常適合海外消費。傳統銀行如果持有外幣戶口，使用多貨幣 Debit Card 也可免手續費。"
   },
   {
     question: "Debit Card 有什麼好處？",
@@ -42,7 +42,7 @@ export const debitCardFaqData = [
   },
   {
     question: "Debit Card 有回贈嗎？",
-    answer: "有！雖然 Debit Card 回贈通常比 Credit Card 低，但部分銀行仍提供回贈。例如：Mox Card 本地簽賬 0.5%、ZA Card 指定商戶高達 11%、WeLab Debit Card 高達 6% 回贈。虛擬銀行的 Debit Card 回贈普遍較傳統銀行高。"
+    answer: "有！雖然 Debit Card 回贈通常比 Credit Card 低，但虛擬銀行仍提供不錯的回贈。例如：Mox Card 全部簽賬 0.5%、ZA Card 指定商戶高達 11%、WeLab Debit Card 高達 6%、livi Debit Card 高達 1%、Ant Bank 高達 2% 回贈。而且所有虛擬銀行 Debit Card 都免外幣手續費！"
   }
 ];
 
@@ -73,15 +73,42 @@ export const bankDebitCards = [
     foreignRebate: "1%", 
     foreignFee: "0%", 
     note: "GoSave 儲蓄計劃回贈",
+    highlight: true 
+  },
+  { 
+    bank: "livi Bank", 
+    card: "livi Debit Card", 
+    localRebate: "最高 1%", 
+    foreignRebate: "1%", 
+    foreignFee: "0%", 
+    note: "免外幣手續費，liviSave 高息儲蓄",
+    highlight: true 
+  },
+  { 
+    bank: "Airstar Bank 天星", 
+    card: "Debit Card", 
+    localRebate: "0.5%", 
+    foreignRebate: "0.5%", 
+    foreignFee: "0%", 
+    note: "免外幣手續費",
+    highlight: false 
+  },
+  { 
+    bank: "Ant Bank 螞蟻銀行", 
+    card: "Debit Card", 
+    localRebate: "最高 2%", 
+    foreignRebate: "1%", 
+    foreignFee: "0%", 
+    note: "免外幣手續費，高息儲蓄",
     highlight: false 
   },
   { 
     bank: "HSBC 滙豐", 
-    card: "Debit Card", 
+    card: "多貨幣 Debit Card", 
     localRebate: "0%", 
     foreignRebate: "0%", 
-    foreignFee: "1.95%", 
-    note: "傳統銀行，網絡廣泛",
+    foreignFee: "0%*", 
+    note: "*需持有外幣戶口；否則收 1.95%",
     highlight: false 
   },
   { 
@@ -89,8 +116,8 @@ export const bankDebitCards = [
     card: "Debit Card", 
     localRebate: "0%", 
     foreignRebate: "0%", 
-    foreignFee: "1.95%", 
-    note: "傳統銀行，分行多",
+    foreignFee: "0%*", 
+    note: "*需持有外幣戶口；否則收手續費",
     highlight: false 
   },
   { 
@@ -98,17 +125,8 @@ export const bankDebitCards = [
     card: "Debit Card", 
     localRebate: "0%", 
     foreignRebate: "0%", 
-    foreignFee: "1.95%", 
-    note: "北上消費方便",
-    highlight: false 
-  },
-  { 
-    bank: "渣打銀行", 
-    card: "Debit Card", 
-    localRebate: "0%", 
-    foreignRebate: "0%", 
-    foreignFee: "1.95%", 
-    note: "傳統銀行",
+    foreignFee: "0%*", 
+    note: "*需持有外幣戶口；北上消費方便",
     highlight: false 
   },
 ];
@@ -320,14 +338,14 @@ export function DebitCardGuide() {
           但要留意<strong>外幣手續費</strong>，揀錯卡可能蝕錢。
         </p>
 
-        <div className="not-prose bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 my-6">
+        <div className="not-prose bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4 my-6">
           <div className="flex items-start gap-3">
-            <AlertTriangle className="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" />
+            <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
             <div>
-              <h4 className="font-bold text-red-800 dark:text-red-200 mb-1">⚠️ 外幣手續費陷阱</h4>
-              <p className="text-red-700 dark:text-red-300 text-sm">
-                傳統銀行（HSBC、恒生、中銀）的 Debit Card 海外簽賬通常收取 <strong>1.95% 手續費</strong>。
-                建議使用<strong>虛擬銀行 Debit Card</strong>（Mox、ZA Bank），大多<strong>免外幣手續費</strong>！
+              <h4 className="font-bold text-green-800 dark:text-green-200 mb-1">✅ 好消息：大部分 Debit Card 免外幣手續費！</h4>
+              <p className="text-green-700 dark:text-green-300 text-sm">
+                香港虛擬銀行（Mox、ZA Bank、WeLab、livi、Airstar、Ant Bank）的 Debit Card 全部<strong>免外幣手續費</strong>！
+                傳統銀行（HSBC、恒生、中銀）如持有外幣戶口，使用多貨幣 Debit Card 也可免手續費。
               </p>
             </div>
           </div>
@@ -481,7 +499,7 @@ export function DebitCardGuide() {
           根據回贈率、外幣手續費、使用方便度，以下係我哋嘅 <strong>Debit Card 推薦</strong>：
         </p>
 
-        <div className="not-prose grid md:grid-cols-2 gap-4 my-6">
+        <div className="not-prose grid md:grid-cols-3 gap-4 my-6">
           <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-2xl p-5 border border-purple-200 dark:border-purple-800">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-2xl">🥇</span>
@@ -503,6 +521,18 @@ export function DebitCardGuide() {
               <li>• 本地/海外簽賬 <strong>0.5% 回贈</strong></li>
               <li>• <strong>免外幣手續費</strong></li>
               <li>• 適合經常海外消費用戶</li>
+            </ul>
+          </div>
+
+          <div className="bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 rounded-2xl p-5 border border-orange-200 dark:border-orange-800">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-2xl">🥉</span>
+              <h4 className="font-bold text-orange-800 dark:text-orange-200">livi Debit Card</h4>
+            </div>
+            <ul className="space-y-1 text-sm text-orange-700 dark:text-orange-300">
+              <li>• liviSave <strong>高息儲蓄</strong></li>
+              <li>• <strong>免外幣手續費</strong></li>
+              <li>• 適合想儲蓄又想消費用戶</li>
             </ul>
           </div>
         </div>
