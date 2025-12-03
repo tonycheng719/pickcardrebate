@@ -67,4 +67,15 @@ export const PROMOS: Promo[] = [
     tags: ["超市", "星期三", "需登記"],
     url: "https://www.dbs.com.hk",
   },
+  {
+    id: "fubon-yata-monday-2025",
+    title: "富邦一田卡 星期一超市 95折",
+    merchant: "一田",
+    description: "逢星期一於一田超市購物可享 95 折優惠，正價及減價貨品均適用。",
+    imageUrl: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?q=80&w=2074&auto=format&fit=crop",
+    expiryDate: "2025-12-31",
+    relatedCardIds: ["fubon-yata"],
+    tags: ["超市", "星期一", "折扣", "一田"],
+    url: "https://www.fubonbank.com.hk/tc/cards/bonus-points-program/yata-credit-card.html",
+  },
 ];
