@@ -311,6 +311,35 @@ export const HK_CARDS: CreditCard[] = [
     promoName: "餐飲及旅遊簽賬 10X 積分優惠",
   },
   {
+    id: "boc-cheers-signature",
+    name: "BOC Cheers Visa Signature",
+    bank: "BOC",
+    style: { bgColor: "bg-gradient-to-br from-gray-700 to-gray-900", textColor: "text-yellow-300" },
+    imageUrl: "https://www.bochk.com/dam/more/creditcard/cheers/cheers_visa_signature_card_face.png",
+    rewardTimeline: "積分",
+    annualFee: 1200,
+    feeWaiverCondition: "首年免年費",
+    foreignCurrencyFee: 1.95,
+    rewardConfig: { method: 'conversion', ratio: 0.125, currency: 'Points' },
+    rules: [
+      // T&C 2025/7/1-2025/12/31: 需每月簽滿 $5,000，餐飲+旅遊可享 8X 積分 (3.2%)
+      // 餐飲上限：80,000 積分/月 = $10,000 簽賬
+      // 旅遊上限：200,000 積分/月 = $25,000 簽賬
+      // 餐飲+旅遊合共上限：240,000 積分/月 = $30,000 簽賬
+      { description: "本地餐飲 8X (3.2%)", matchType: "category", matchValue: ["dining"], percentage: 3.2, monthlyMinSpend: 5000, cap: 10000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      { description: "外幣簽賬 8X (3.2%)", matchType: "base", percentage: 3.2, isForeignCurrency: true, monthlyMinSpend: 5000, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      // T&C: 不適用於 Alipay/WeChat Pay/PayMe
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+    ],
+    tags: ["餐飲3.2%", "旅遊3.2%"],
+    welcomeOfferText: "迎新簽 $8,000 送 80,000 積分",
+    applyUrl: "https://www.bochk.com/tc/creditcard/cheers.html",
+    sellingPoints: ["本地餐飲 8X (3.2%)", "外幣簽賬 8X (3.2%)", "需每月簽滿 $5,000", "免費旅遊保險"],
+    note: "💡 【推廣期 2025/7/1-2025/12/31】需每月簽滿 $5,000 方可享餐飲/外幣 8X 積分 (3.2%)！📊 每月上限：餐飲 $10,000 + 外幣 $25,000（合共 $30,000）。⚠️ 不適用於 Alipay/WeChat Pay/PayMe。✈️ 免費旅遊保險：憑卡支付機票/酒店/套票，即享高達 $780萬人身意外保障。",
+    promoEndDate: "2025-12-31",
+    promoName: "餐飲及旅遊簽賬 8X 積分優惠",
+  },
+  {
     id: "boc-gba",
     name: "BOC 大灣區一卡通",
     bank: "BOC",
