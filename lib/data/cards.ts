@@ -22,7 +22,7 @@ export const HK_CARDS: CreditCard[] = [
       { description: "賞世界 6X (2.4%) [需登記]", matchType: "base", percentage: 2.4, isForeignCurrency: true, cap: 100000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 賞滋味限制：不包括酒席宴會/私人宴會/包場派對/酒店百貨公司俱樂部內飲食專櫃
       // T&C: 基本回饋 0.4% ($250 = $1 RC)，排除電子錢包、繳稅、繳費
-      { description: "基本回饋 0.4% ($25/里)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "基本回饋 0.4% ($25/里)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
     tags: ["餐飲神卡", "最紅自主獎賞", "6X積分", "需登記"],
     imageUrl: "https://www.hsbc.com.hk/content/dam/hsbc/hk/images/credit-cards/visa-signature-card-en.png",
@@ -53,7 +53,7 @@ export const HK_CARDS: CreditCard[] = [
       // 不包括：網上繳費、電子錢包簽賬、保費、證券買賣、租金/物業管理費、廣告服務、八達通增值
       { description: "網上簽賬 4% (每月首$10,000)", matchType: "category", matchValue: "online", percentage: 4.0, cap: 400, capType: "reward", excludeCategories: ["utilities", "insurance", "ewallet"], excludePaymentMethods: ["octopus"] },
       // T&C: 基本獎賞 0.4%
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "payme", "alipay", "wechat_pay", "octopus"] }, 
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] }, 
     ],
     tags: ["網購神卡", "永久免年費", "指定商戶8%"],
     annualFee: 0,
@@ -79,7 +79,7 @@ export const HK_CARDS: CreditCard[] = [
       { description: "指定商戶/交通 $2/里 (2.5%)", matchType: "category", matchValue: ["transport", "online", "dining"], percentage: 2.5, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       { description: "海外簽賬 $2/里 (2.5%)", matchType: "base", percentage: 2.5, isForeignCurrency: true },
       // T&C: 基本回饋 $5/里 (1%)，排除電子錢包（八達通自動增值除外）
-      { description: "基本回饋 $5/里 (1%)", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "基本回饋 $5/里 (1%)", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
     tags: ["旅遊神卡", "交通$2/里", "Lounge"],
     welcomeOfferText: "迎新簽 $8,000 送 $600-$800 獎賞錢 (首60日內)",
@@ -103,7 +103,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 最紅自主獎賞「賞世界」
       { description: "最紅自主獎賞 (賞世界) 2.4%", matchType: "category", matchValue: "china", percentage: 2.4, cap: 100000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 基本回饋 0.4%，排除電子錢包、繳稅、繳費、PayMe增值
-      { description: "基本回饋 0.4% ($25/里)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "基本回饋 0.4% ($25/里)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
     tags: ["北上消費", "銀聯", "免手續費", "內地4.4%"],
     welcomeOfferText: "迎新簽 $8,000 送 $600-$800 獎賞錢 (首60日內)",
@@ -124,7 +124,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 最紅自主獎賞適用
       { description: "海外/網上簽賬 2.4%", matchType: "category", matchValue: ["travel", "online"], percentage: 2.4, minSpend: 8000, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 基本回饋 0.4%，排除電子錢包、繳稅、繳費
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
     tags: ["卓越理財", "旅遊"],
     sellingPoints: ["卓越理財客戶專享", "指定類別額外獎賞錢"],
@@ -145,7 +145,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 最紅自主獎賞適用
       { description: "最紅自主獎賞 2.4%", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 2.4, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 基本回饋 0.4%
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
     tags: ["學生卡", "交學費2.4%", "永久免年費"],
     welcomeOfferText: "迎新簽 $2,000 送 $300 獎賞錢 (首60日內)",
@@ -170,13 +170,13 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 特約商戶 5% (需月簽賬滿$4,000)，5% 已包含基本回贈
       // 特約商戶名單及簽賬上限需查閱 sc.com/hk/smartcard
       // 電子錢包消費只適用於月結單上有顯示特約商戶名稱之交易
-      { description: "特約商戶 5% (月簽$4000)", matchType: "merchant", matchValue: ["parknshop", "fusion", "taste", "watsons", "759", "japanhome", "deliveroo", "klook", "decathlon", "netflix", "disney", "spotify", "cmhk"], percentage: 5.0, monthlyMinSpend: 4000, excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      { description: "特約商戶 5% (月簽$4000)", matchType: "merchant", matchValue: ["parknshop", "fusion", "taste", "watsons", "759", "japanhome", "deliveroo", "klook", "decathlon", "netflix", "disney", "spotify", "cmhk"], percentage: 5.0, monthlyMinSpend: 4000, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 八達通自動增值計回贈
       { description: "八達通自動增值 (月簽$4000)", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.56, monthlyMinSpend: 4000 },
       // T&C: 月簽 $15,000+ 基本回贈升至 1.20%
-      { description: "基本回贈 1.20% (月簽$15000+)", matchType: "base", percentage: 1.20, monthlyMinSpend: 15000, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回贈 1.20% (月簽$15000+)", matchType: "base", percentage: 1.20, monthlyMinSpend: 15000, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 月簽 $4,000-$14,999 基本回贈 0.56%
-      { description: "基本回贈 0.56% (月簽$4000-$14999)", matchType: "base", percentage: 0.56, monthlyMinSpend: 4000, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回贈 0.56% (月簽$4000-$14999)", matchType: "base", percentage: 0.56, monthlyMinSpend: 4000, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
     tags: ["特約商戶5%", "永久免年費", "免外幣手續費", "八達通增值", "免現金透支費"],
     feeWaiverCondition: "永久免年費",
@@ -200,7 +200,7 @@ export const HK_CARDS: CreditCard[] = [
       { description: "餐飲/外賣/網上 $4/里", matchType: "category", matchValue: ["dining", "online"], percentage: 2.5 }, 
       // T&C: 八達通自動增值計里數
       { description: "八達通自動增值 $6/里", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 1.67 },
-      { description: "基本回饋 $6/里", matchType: "base", percentage: 1.67, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回饋 $6/里", matchType: "base", percentage: 1.67, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
     tags: ["儲里數", "國泰", "出糧優惠", "八達通增值", "繳稅", "會籍積分"],
     feeWaiverCondition: "首年免年費；優先理財($100萬+)/Premium理財($20萬+)/出糧客戶免年費",
@@ -220,9 +220,9 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rules: [
       // T&C: 外幣簽賬 2%
-      { description: "外幣簽賬 2%", matchType: "base", percentage: 2.0, isForeignCurrency: true, excludePaymentMethods: ["fps", "octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "外幣簽賬 2%", matchType: "base", percentage: 2.0, isForeignCurrency: true, excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
       // T&C: 港幣簽賬 1.5%
-      { description: "港幣簽賬 1.5%", matchType: "base", percentage: 1.5, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "港幣簽賬 1.5%", matchType: "base", percentage: 1.5, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
     tags: ["現金回贈", "無腦刷", "外幣2%"],
     welcomeOfferText: "迎新簽 $8,000 送 $600 現金回贈 (首2個月內)",
@@ -252,7 +252,7 @@ export const HK_CARDS: CreditCard[] = [
       { description: "海外及網上簽賬 5% (月簽$3000)", matchType: "category", matchValue: ["online"], percentage: 5.0, monthlyMinSpend: 3000, cap: 150, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay"], excludeCategories: ["ewallet", "insurance", "utilities", "tax", "government"] },
       { description: "海外簽賬 5% (月簽$3000)", matchType: "base", percentage: 5.0, isForeignCurrency: true, monthlyMinSpend: 3000, cap: 150, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay"] },
       // T&C: 基本回贈 0.4%，排除電子錢包、八達通、繳費等
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
     tags: ["Chill商戶10%", "網購5%", "海外5%"],
     welcomeOfferText: "迎新簽 $5,000 送 $500 現金回贈 (World) / 簽 $3,000 送 $300 (Platinum)",
@@ -274,7 +274,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 週二 SOGO 5% 現金回贈 (每月上限$100)
       { description: "週二 SOGO 5% (上限$100)", matchType: "merchant", matchValue: ["sogo"], percentage: 5.0, validDays: [2], cap: 100, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 基本回贈 0.4%，不適用於八達通增值、電子錢包充值、P2P 轉賬
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
     tags: ["SOGO", "週二SOGO 5%"],
     welcomeOfferText: "迎新簽 $5,000 送 $500 崇光禮券 / 手機簽賬 10% (上限$300)",
@@ -303,7 +303,7 @@ export const HK_CARDS: CreditCard[] = [
       { description: "旅遊/外幣簽賬 10X (4%)", matchType: "category", matchValue: ["travel"], percentage: 4.0, monthlyMinSpend: 5000, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       { description: "外幣簽賬 10X (4%)", matchType: "base", percentage: 4.0, isForeignCurrency: true, monthlyMinSpend: 5000, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 不適用於 Alipay/WeChat Pay/PayMe
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
     tags: ["餐飲4%", "旅遊4%", "高級卡", "機場貴賓室"],
     welcomeOfferText: "迎新高達 810,000 積分 (54,000里/HK$3,240)",
@@ -334,7 +334,7 @@ export const HK_CARDS: CreditCard[] = [
       { description: "旅遊/外幣簽賬 8X (3.2%)", matchType: "category", matchValue: ["travel"], percentage: 3.2, monthlyMinSpend: 5000, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       { description: "外幣簽賬 8X (3.2%)", matchType: "base", percentage: 3.2, isForeignCurrency: true, monthlyMinSpend: 5000, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 不適用於 Alipay/WeChat Pay/PayMe
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
     tags: ["餐飲3.2%", "旅遊3.2%"],
     welcomeOfferText: "迎新高達 390,000 積分 (26,000里/HK$1,560)",
@@ -356,7 +356,7 @@ export const HK_CARDS: CreditCard[] = [
     rules: [
       // T&C: 不適用於 Alipay/WeChat Pay/PayMe
       { description: "內地簽賬 4%", matchType: "base", percentage: 4.0, isForeignCurrency: true, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
     tags: ["大灣區", "北上"],
     welcomeOfferText: "迎新手機簽賬 10% 回贈 (上限$300)",
@@ -376,7 +376,7 @@ export const HK_CARDS: CreditCard[] = [
     rules: [
       // ⚠️ 用戶回報：4% 手機支付回贈已取消
       // 現只有基本回贈 0.4%
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
     tags: ["虛擬卡", "永久免年費", "BoC Pay"],
     welcomeOfferText: "迎新手機簽賬 10% 回贈 (上限$300，首3個月)",
@@ -405,7 +405,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 自選類別 (餐飲/電子產品/娛樂) 1% - 但網上自選會計入網上5%
       { description: "自選類別 1% (餐飲/電子/娛樂)", matchType: "category", matchValue: ["dining", "electronics", "entertainment"], percentage: 1.0, monthlyMinSpend: 5000, excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
       // T&C: 基本回饋 0.4%，排除繳費、保險、Alipay/WeChat Pay、八達通增值
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "octopus"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
     ],
     tags: ["網購5%", "外幣6%", "必須登記"],
     welcomeOfferText: "迎新簽 $5,000 送 $700 +FUN Dollars (全新客戶) / $300 (現有客戶) / 學生簽$2,000送$300 (首60日)",
@@ -440,7 +440,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 八達通自動增值計積分 (0.5%)
       { description: "八達通自動增值 1X yuu積分 (0.5%)", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.5 },
       // T&C: 其他商戶 1X yuu積分 (0.5%)，排除電子錢包充值（八達通自動增值除外）
-      { description: "基本回饋 1X yuu積分 (0.5%)", matchType: "base", percentage: 0.5, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回饋 1X yuu積分 (0.5%)", matchType: "base", percentage: 0.5, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
     tags: ["儲分", "食肆優惠", "yuu積分", "折扣日", "7-Eleven 95折", "八達通增值"],
     sellingPoints: ["7-Eleven 全年 95折 [折扣]", "惠康 92折 (3/13/23號) [折扣]", "萬寧 94折 (1/20號) [折扣]", "指定食肆 4X yuu積分 (2%)", "yuu 積分可當現金使用 (200積分=$1)", "八達通自動增值計積分"],
@@ -466,7 +466,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 本地餐飲 5% (不包括快餐店/酒店內食肆，需月簽賬滿$6,000)
       { description: "本地餐飲 5% (不包括快餐店)", matchType: "category", matchValue: ["dining"], percentage: 5.0, monthlyMinSpend: 6000, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
       // T&C: 基本回饋 0.4%，排除繳費、保險、Alipay/WeChat Pay、八達通增值、電子錢包充值
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "octopus"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
     ],
     tags: ["旅遊7%", "餐飲5%", "交通5%", "必須登記"],
     welcomeOfferText: "迎新簽 $5,000 送 $700 Fun Dollars",
@@ -487,10 +487,10 @@ export const HK_CARDS: CreditCard[] = [
     feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "週五六日食肆 3%", matchType: "category", matchValue: ["dining"], percentage: 3.0, validDays: [5, 6, 0], excludePaymentMethods: ["fps", "octopus"] },
-      { description: "食肆/酒店 2%", matchType: "category", matchValue: ["dining", "travel"], percentage: 2.0, excludePaymentMethods: ["fps", "octopus"] },
+      { description: "週五六日食肆 3%", matchType: "category", matchValue: ["dining"], percentage: 3.0, validDays: [5, 6, 0], excludePaymentMethods: ["octopus"] },
+      { description: "食肆/酒店 2%", matchType: "category", matchValue: ["dining", "travel"], percentage: 2.0, excludePaymentMethods: ["octopus"] },
       { description: "外幣 2%", matchType: "base", percentage: 2.0, isForeignCurrency: true },
-      { description: "基本回饋 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "octopus"] },
+      { description: "基本回饋 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus"] },
     ],
     tags: ["自動回贈", "餐飲2%", "週末餐飲3%"],
     welcomeOfferText: "迎新簽 $5,000 送 $1,200 現金回贈 (首2個月內)",
@@ -512,7 +512,7 @@ export const HK_CARDS: CreditCard[] = [
       // 流動支付 5X (Apple Pay/Google Pay/Samsung Pay，不包括八達通增值/電子錢包增值)
       { description: "流動支付 5X (2% / $3/里)", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 2.0, cap: 50000, capType: "spending", excludeCategories: ["ewallet"], excludePaymentMethods: ["octopus", "payme", "alipay", "wechat_pay"] },
       { description: "超市/百貨 5X (2%)", matchType: "category", matchValue: ["supermarket", "department_store"], percentage: 2.0 },
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"] },
     ],
     tags: ["Apple Pay之選", "積分", "流動支付"],
     welcomeOfferText: "迎新簽 $5,000 送 $1,200 回贈",
@@ -531,7 +531,7 @@ export const HK_CARDS: CreditCard[] = [
     rewardConfig: { method: 'conversion', ratio: 0.0833, currency: 'Points' }, // 12 pts = 1 mile
     rules: [
       { description: "外幣簽賬 $4/里 (3%*)", matchType: "base", percentage: 2.25, isForeignCurrency: true }, // $20000/m for $3/mile promo often active
-      { description: "本地簽賬 $8/里 (1.1%)", matchType: "base", percentage: 1.1, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "octopus"] },
+      { description: "本地簽賬 $8/里 (1.1%)", matchType: "base", percentage: 1.1, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus"] },
     ],
     tags: ["旅遊", "里數"],
     welcomeOfferText: "迎新簽 $5,000 送 240,000積分 (20,000里) (首2個月內)",
@@ -551,7 +551,7 @@ export const HK_CARDS: CreditCard[] = [
     rewardConfig: { method: 'conversion', ratio: 0.0833, currency: 'Points' }, // 12 pts = 1 mile
     rules: [
       { description: "海外簽賬 $4/里", matchType: "base", percentage: 2.5, isForeignCurrency: true }, // 3pts/$ * 0.0833 = 0.25 miles/$ -> $4/mile
-      { description: "本地簽賬 $6/里", matchType: "base", percentage: 1.67, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "octopus"] }, // 2pts/$ * 0.0833 = 0.166 miles/$ -> $6/mile
+      { description: "本地簽賬 $6/里", matchType: "base", percentage: 1.67, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus"] }, // 2pts/$ * 0.0833 = 0.166 miles/$ -> $6/mile
     ],
     tags: ["高端", "年費卡"],
     welcomeOfferText: "迎新繳年費 $3,800 送 360,000積分 (30,000里)",
@@ -582,7 +582,7 @@ export const HK_CARDS: CreditCard[] = [
       // 醫療不包括獸醫
       { description: "醫療 5% (單筆≥$300)", matchType: "category", matchValue: "medical", percentage: 5.0, minSpend: 300, cap: 8000, capType: "spending", excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
       // T&C: 其他零售 1% (包括未滿$300的指定類別)
-      { description: "其他零售 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "payme", "alipay", "wechat_pay", "octopus"] },
+      { description: "其他零售 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
     ],
     tags: ["餐飲5%", "健身5%", "運動服飾5%", "需登記"],
     welcomeOfferText: "迎新高達 $1,000 回贈",
@@ -602,7 +602,7 @@ export const HK_CARDS: CreditCard[] = [
     rewardConfig: { method: 'direct_rate', baseRate: 6, currency: 'DBS$' }, // $6/mile standard
     rules: [
       { description: "外幣簽賬 $4/里", matchType: "base", percentage: 2.5, isForeignCurrency: true }, // ~2.5% value
-      { description: "本地簽賬 $6/里", matchType: "base", percentage: 1.6, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] }, // ~1.6% value
+      { description: "本地簽賬 $6/里", matchType: "base", percentage: 1.6, excludeCategories: ["tax", "utilities", "government", "insurance"] }, // ~1.6% value
     ],
     tags: ["儲里數", "里數神卡"],
     sellingPoints: ["積分無限期", "兌換里數免手續費", "外幣 HK$4/里"],
@@ -624,7 +624,7 @@ export const HK_CARDS: CreditCard[] = [
       // 選項: 娛樂/網上旅遊/美容服飾/指定網上商戶等 (每月自選一項)
       { description: "自選類別 5% [需登記+一扣即享]", matchType: "category", matchValue: ["entertainment", "travel", "online", "fashion", "beauty"], percentage: 5.0, cap: 150, capType: "reward", excludeCategories: ["ewallet", "insurance", "tax"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
       // T&C: 基本回贈 0.4%，排除電子錢包、八達通、繳費等
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
     tags: ["自選5%", "一扣即享", "需登記"],
     sellingPoints: ["自選類別 5% (娛樂/旅遊/美容/服飾等)", "需透過 DBS Card+ App 登記", "每月回贈上限 $150 (即$3,000簽賬)"],
@@ -653,7 +653,7 @@ export const HK_CARDS: CreditCard[] = [
       // Apple Pay/Google Pay/Samsung Pay 可以，支付寶/微信支付/PayMe 不可以
       { description: "週三超市 8% (單筆≥$300)", matchType: "category", matchValue: "supermarket", percentage: 8.0, validDays: [3], minSpend: 300, cap: 2000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // 基本回贈 0.4%
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "payme", "octopus", "alipay", "wechat_pay"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["payme", "octopus", "alipay", "wechat_pay"] },
     ],
     tags: ["週三超市8%", "指定類別2%", "需登記"],
     applyUrl: "https://www.dbs.com.hk/personal-zh/cards/credit-cards/dbs-compass-visa",
@@ -686,7 +686,7 @@ export const HK_CARDS: CreditCard[] = [
       // 包括：酒樓、餐廳、快餐店及酒店餐飲
       { description: "本地餐飲 1%", matchType: "category", matchValue: ["dining"], percentage: 1.0, cap: 200, capType: "reward" },
       // T&C: 其他簽賬 0.4%，排除電子錢包、八達通、保險、AEON Netmember繳費
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
     tags: ["網購6%", "日本3%", "本地餐飲1%", "AEON會員日"],
     welcomeOfferText: "迎新高達 $900 回贈 (Apple Pay/Google Pay 10%上限$500 + 指定類別$200 + App申請$200)",
@@ -710,7 +710,7 @@ export const HK_CARDS: CreditCard[] = [
     rules: [
       { description: "日本簽賬 $6/里", matchType: "base", percentage: 1.67, isForeignCurrency: true },
       { description: "本地餐飲/海外 $8/里", matchType: "category", matchValue: ["dining"], percentage: 1.25 },
-      { description: "基本回饋 $8/里", matchType: "base", percentage: 1.25, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] }
+      { description: "基本回饋 $8/里", matchType: "base", percentage: 1.25, excludeCategories: ["tax", "utilities", "government", "insurance"] }
     ],
     tags: ["日本旅遊", "JAL"],
     sellingPoints: ["日圓簽賬 $6 = 1 里", "JAL 機艙銷售 9 折"],
@@ -726,7 +726,7 @@ export const HK_CARDS: CreditCard[] = [
       // 每月20日 AEON 會員日 95折 - 折扣優惠，非回贈
       { description: "每月20日 AEON 95折", matchType: "merchant", matchValue: ["aeon"], percentage: 5.0, validDates: [20], isDiscount: true },
       // 基本回贈：$1 = 1 積分，250 積分 = $1 回贈 (0.4%)
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
     tags: ["AEON會員日", "永久免年費"],
     feeWaiverCondition: "永久免年費",
@@ -746,7 +746,7 @@ export const HK_CARDS: CreditCard[] = [
       // 每月20日 AEON 會員日 95折 - 折扣優惠，非回贈
       { description: "每月20日 AEON 95折", matchType: "merchant", matchValue: ["aeon"], percentage: 5.0, validDates: [20], isDiscount: true },
       // 基本回贈：$1 = 1 積分，250 積分 = $1 回贈 (0.4%)
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
     tags: ["AEON會員日", "永久免年費"],
     feeWaiverCondition: "永久免年費",
@@ -766,7 +766,7 @@ export const HK_CARDS: CreditCard[] = [
       // 每月20日 AEON 會員日 95折 - 折扣優惠，非回贈
       { description: "每月20日 AEON 95折", matchType: "merchant", matchValue: ["aeon"], percentage: 5.0, validDates: [20], isDiscount: true },
       // 基本回贈：$1 = 1 積分，250 積分 = $1 回贈 (0.4%)
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
     tags: ["AEON會員日", "永久免年費", "銀聯"],
     feeWaiverCondition: "永久免年費",
@@ -786,7 +786,7 @@ export const HK_CARDS: CreditCard[] = [
       // 每月20日 AEON 會員日 95折 - 折扣優惠，非回贈
       { description: "每月20日 AEON 95折", matchType: "merchant", matchValue: ["aeon"], percentage: 5.0, validDates: [20], isDiscount: true },
       // 基本回贈：$1 = 1 積分，250 積分 = $1 回贈 (0.4%)
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
     tags: ["AEON會員日", "永久免年費", "JCB", "日本"],
     feeWaiverCondition: "永久免年費",
@@ -813,11 +813,11 @@ export const HK_CARDS: CreditCard[] = [
       // T&C 2025: 網上簽賬 10X 獎分 (4%)，每月額外獎分上限 10,000 = $40 回贈
       { description: "網上簽賬 10X (4%)", matchType: "category", matchValue: "online", percentage: 4.0, cap: 40, capType: "reward", excludeCategories: ["ewallet", "utilities", "insurance", "supermarket", "government"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C 2025: 本地食肆 5X 獎分 (2%)
-      { description: "本地食肆 5X (2%)", matchType: "category", matchValue: ["dining"], percentage: 2.0, excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      { description: "本地食肆 5X (2%)", matchType: "category", matchValue: ["dining"], percentage: 2.0, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C 2025: 外幣簽賬 5X 獎分 (2%)
       { description: "外幣簽賬 5X (2%)", matchType: "base", percentage: 2.0, isForeignCurrency: true, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 基本獎賞 0.4%
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
     tags: ["網購4%", "食肆2%", "海外2%", "永久免年費"],
     welcomeOfferText: "迎新簽 $3,000 送 $300 現金回贈 (首2個月內)",
@@ -839,11 +839,11 @@ export const HK_CARDS: CreditCard[] = [
     rewardConfig: { method: 'direct_rate', baseRate: 5, currency: 'Miles' }, // $5/里 基本
     rules: [
       // T&C 2025: 本地食肆 $5/里 (即2.4%@$0.12/里)
-      { description: "本地食肆 $5/里 (2.4%)", matchType: "category", matchValue: ["dining"], percentage: 2.4, excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      { description: "本地食肆 $5/里 (2.4%)", matchType: "category", matchValue: ["dining"], percentage: 2.4, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C 2025: 海外簽賬 $2.5/里 (即4.8%@$0.12/里)
       { description: "海外簽賬 $2.5/里 (4.8%)", matchType: "base", percentage: 4.8, isForeignCurrency: true, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 基本獎賞 $5/里 (0.4%)
-      { description: "基本回饋 $5/里 (0.4%)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "基本回饋 $5/里 (0.4%)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
     tags: ["里數", "Flyer", "食肆$5/里", "海外$2.5/里"],
     welcomeOfferText: "迎新簽 $4,000 送 $400 現金回贈 / 簽 $100,000 送 70,000 里 (首3個月)",
@@ -870,11 +870,11 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 海外簽賬 10X 獎分 (4%)，每月回贈上限 $300
       { description: "海外簽賬 10X (4%)", matchType: "base", percentage: 4.0, cap: 300, capType: "reward", isForeignCurrency: true, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 本地食肆 5X 獎分 (2%)
-      { description: "本地食肆 5X (2%)", matchType: "category", matchValue: ["dining"], percentage: 2.0, excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      { description: "本地食肆 5X (2%)", matchType: "category", matchValue: ["dining"], percentage: 2.0, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 網上繳費 1X 獎分 (0.4%)
       { description: "網上繳費 1X (0.4%)", matchType: "category", matchValue: ["utilities"], percentage: 0.4 },
       // T&C: 基本獎賞 1X 獎分 (0.4%)
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "government", "insurance", "ewallet"] },
     ],
     tags: ["網購4%", "手機支付4%", "海外4%", "食肆2%", "永久免年費"],
     applyUrl: "https://www.hkbea.com/html/tc/bea-i-titanium-card.html",
@@ -895,11 +895,11 @@ export const HK_CARDS: CreditCard[] = [
     rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 獎分 = $1 回贈 (0.4%)
     rules: [
       // T&C 2025: 本地食肆 6X 獎分 (2.4%)
-      { description: "本地食肆 6X (2.4%)", matchType: "category", matchValue: ["dining"], percentage: 2.4, excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      { description: "本地食肆 6X (2.4%)", matchType: "category", matchValue: ["dining"], percentage: 2.4, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C 2025: 外幣簽賬 4X 獎分 (1.6%)
       { description: "外幣簽賬 4X (1.6%)", matchType: "base", percentage: 1.6, isForeignCurrency: true, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 基本獎賞 1X 獎分 (0.4%)
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
     tags: ["食肆2.4%", "海外1.6%", "免費旅遊保障"],
     welcomeOfferText: "迎新簽 $4,000 送 $400 現金回贈 (首2個月內)",
@@ -919,13 +919,13 @@ export const HK_CARDS: CreditCard[] = [
     rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 獎分 = $1 回贈 (0.4%)
     rules: [
       // T&C 2025: 本地食肆 3X 獎分 (1.2%)
-      { description: "本地食肆 3X (1.2%)", matchType: "category", matchValue: ["dining"], percentage: 1.2, excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      { description: "本地食肆 3X (1.2%)", matchType: "category", matchValue: ["dining"], percentage: 1.2, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C 2025: 本地零售 2X 獎分 (0.8%)
-      { description: "本地零售 2X (0.8%)", matchType: "base", percentage: 0.8, excludeCategories: ["dining", "tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "本地零售 2X (0.8%)", matchType: "base", percentage: 0.8, excludeCategories: ["dining", "tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 網上繳費 1X 獎分 (0.4%)，每月上限 20,000 獎分 = $80 回贈
       { description: "網上繳費 1X (0.4%)", matchType: "category", matchValue: ["utilities"], percentage: 0.4, cap: 80, capType: "reward" },
       // T&C: 基本獎賞 1X 獎分 (0.4%)
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "government", "insurance", "ewallet"] },
     ],
     tags: ["食肆1.2%", "本地0.8%", "免外幣手續費", "銀聯"],
     welcomeOfferText: "迎新簽 $4,000 送 $400 現金回贈 (首2個月內)",
@@ -944,11 +944,11 @@ export const HK_CARDS: CreditCard[] = [
     rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 獎分 = $1 回贈 (0.4%)
     rules: [
       // T&C 2025: 本地食肆 3X 獎分 (1.2%)
-      { description: "本地食肆 3X (1.2%)", matchType: "category", matchValue: ["dining"], percentage: 1.2, excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      { description: "本地食肆 3X (1.2%)", matchType: "category", matchValue: ["dining"], percentage: 1.2, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C 2025: 本地零售 2X 獎分 (0.8%)
-      { description: "本地零售 2X (0.8%)", matchType: "base", percentage: 0.8, excludeCategories: ["dining", "tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "本地零售 2X (0.8%)", matchType: "base", percentage: 0.8, excludeCategories: ["dining", "tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 基本獎賞 1X 獎分 (0.4%)
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "government", "insurance", "ewallet"] },
     ],
     tags: ["食肆1.2%", "本地0.8%", "免外幣手續費", "銀聯", "低門檻"],
     welcomeOfferText: "迎新簽 $2,000 送 $200 現金回贈 (首2個月內)",
@@ -974,7 +974,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 全方位 2% 現金回贈 (1% 基本 + 1% 加碼)
       // 加碼回贈上限 $1,500/年 (即總簽賬上限 $150,000/年)
       // ❌ 不包括：八達通自動增值、電子錢包充值/繳費、P2P 轉賬
-      { description: "全方位 2%", matchType: "base", percentage: 2.0, cap: 1500, capType: "reward", excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "全方位 2%", matchType: "base", percentage: 2.0, cap: 1500, capType: "reward", excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
     tags: ["全方位2%", "懶人必備", "免外幣手續費"],
     welcomeOfferText: "迎新簽 $8,500 送 $500 回贈 / 洗碗機 (首90天內)",
@@ -1004,7 +1004,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 八達通自動增值計入基本 0.4%（無上限），但不計入玩樂類別 3.6%
       { description: "八達通自動增值 0.4%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
       // T&C: 基本回贈 0.4%（$250=$1），排除電子錢包充值、P2P轉賬、賭場等
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
     tags: ["玩樂3.6%", "旅遊", "海外", "線上娛樂", "八達通增值", "免外幣手續費"],
     welcomeOfferText: "迎新簽 $8,500 送 $500 現金回贈 / 簽 $8,800 送 LG顯示器或Marshall喇叭 (首90天)",
@@ -1025,7 +1025,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-purple-800 to-purple-950", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "全方位 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "全方位 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance"] },
     ],
     tags: ["無腦1%", "現金回贈"],
     sellingPoints: ["本地及外幣簽賬一律 1% 回贈", "無上限"],
@@ -1038,7 +1038,7 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 16.6666, currency: 'Avios' }, // Approx? Need to check strictly.
     rules: [
-      { description: "本地簽賬 $6/Avios", matchType: "base", percentage: 1.67, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "本地簽賬 $6/Avios", matchType: "base", percentage: 1.67, excludeCategories: ["tax", "utilities", "government", "insurance"] },
       { description: "海外簽賬 $4/Avios", matchType: "base", percentage: 2.5, isForeignCurrency: true },
     ],
     tags: ["Avios", "英航"],
@@ -1069,7 +1069,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: Visa 感應式付款 5X 積分 (2%)，每曆年額外4倍積分上限 300,000
       { description: "Visa感應式支付 5X積分 (2%)", matchType: "paymentMethod", matchValue: ["contactless", "apple_pay", "google_pay", "samsung_pay"], percentage: 2.0, cap: 75000, capType: "spending", excludeCategories: ["ewallet", "insurance", "tax", "government"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // 基本回贈 0.4%，排除電子錢包、八達通、繳費等
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
     tags: ["餐飲11%", "交通2%", "網購2%", "需登記", "永久免年費"],
     welcomeOfferText: "迎新簽 $6,000 送 $600 現金回贈 (首2個月) / Chill分期$15,000送$800 (首3個月)",
@@ -1089,7 +1089,7 @@ export const HK_CARDS: CreditCard[] = [
     rules: [
       // T&C: $1 = 1 分，可換現金回贈或飛行里數
       // 國航 8分=1公里，港航 10分=1金鵬里數
-      { description: "本地/海外簽賬 1.5%", matchType: "base", percentage: 1.5, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps"] },
+      { description: "本地/海外簽賬 1.5%", matchType: "base", percentage: 1.5, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"] },
     ],
     tags: ["星座卡", "高回贈", "飛行里數"],
     welcomeOfferText: "迎新簽 $3,000 送 $700 免找數簽賬額 (首2個月內)",
@@ -1111,10 +1111,10 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 食肆及網上簽賬 6%，需每月累積簽滿 $3,800，額外回贈上限 $200
       // 不包括：酒店餐飲、美食廣場/超市/百貨公司內食肆、麵包房、糕點商店
       // 網上不包括：超級市場網上平台
-      { description: "食肆 6% (月簽$3800)", matchType: "category", matchValue: ["dining"], percentage: 6.0, monthlyMinSpend: 3800, cap: 200, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "fps", "octopus"] },
-      { description: "網上簽賬 6% (月簽$3800)", matchType: "category", matchValue: ["online"], percentage: 6.0, monthlyMinSpend: 3800, cap: 200, capType: "reward", excludeCategories: ["ewallet", "supermarket"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "fps", "octopus"] },
+      { description: "食肆 6% (月簽$3800)", matchType: "category", matchValue: ["dining"], percentage: 6.0, monthlyMinSpend: 3800, cap: 200, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "網上簽賬 6% (月簽$3800)", matchType: "category", matchValue: ["online"], percentage: 6.0, monthlyMinSpend: 3800, cap: 200, capType: "reward", excludeCategories: ["ewallet", "supermarket"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 基本回贈 0.55%，排除電子錢包、八達通、繳費等
-      { description: "基本回饋 0.55%", matchType: "base", percentage: 0.55, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回饋 0.55%", matchType: "base", percentage: 0.55, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
     tags: ["餐飲6%", "網購6%", "月簽$3800"],
     sellingPoints: ["食肆及網上簽賬 6% (需月簽$3,800)", "額外回贈每月上限 $200", "基本回贈 0.55%"],
@@ -1141,7 +1141,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 八達通自動增值 1X 積分 = 0.4%
       { description: "八達通自動增值 0.4%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
       // T&C: 本地簽賬 1X 積分 = 0.4%
-      { description: "本地簽賬 0.4% (1X)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "本地簽賬 0.4% (1X)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"] },
     ],
     tags: ["台灣8%", "日韓4%", "網上4%", "八達通增值"],
     sellingPoints: ["🇹🇼 新台幣簽賬 8% (20X)", "🇯🇵🇰🇷 日韓簽賬 4% (10X)", "其他外幣 2%", "本地網上 4% [需登記]", "八達通自動增值 0.4%"],
@@ -1164,7 +1164,7 @@ export const HK_CARDS: CreditCard[] = [
     rules: [
       { description: "指定簽賬 $3.6/里", matchType: "category", matchValue: ["online", "travel", "airline"], percentage: 5.0, excludeCategories: ["ewallet"] }, // 5 pts/$
       { description: "外幣簽賬 $4.8/里", matchType: "base", percentage: 3.75, isForeignCurrency: true }, // 3.75 pts/$
-      { description: "本地簽賬 $6/里", matchType: "base", percentage: 3.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] }, // 3 pts/$
+      { description: "本地簽賬 $6/里", matchType: "base", percentage: 3.0, excludeCategories: ["tax", "utilities", "government", "insurance"] }, // 3 pts/$
     ],
     tags: ["里數", "旅遊保險"],
     sellingPoints: ["積分無限期", "指定簽賬 HK$3.6/里", "免費旅遊保險及貴賓室 (年費豁免)"],
@@ -1192,13 +1192,13 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rules: [
       // T&C: 網上零售簽賬 8% (單筆滿$500，需月簽非網上$1,000)
-      { description: "網購 8% (單筆滿$500)", matchType: "category", matchValue: "online", percentage: 8.0, minSpend: 500, monthlyMinSpend: 1000, cap: 200, capType: "reward", excludeCategories: ["ewallet", "utilities", "insurance"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "fps", "octopus"] },
+      { description: "網購 8% (單筆滿$500)", matchType: "category", matchValue: "online", percentage: 8.0, minSpend: 500, monthlyMinSpend: 1000, cap: 200, capType: "reward", excludeCategories: ["ewallet", "utilities", "insurance"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 指定本地公共交通工具 8% (城巴/九巴/龍運/港鐵/電車/天星小輪)
-      { description: "交通 8% (巴士/港鐵/電車)", matchType: "category", matchValue: ["transport"], percentage: 8.0, monthlyMinSpend: 1000, cap: 200, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "fps", "octopus"] },
+      { description: "交通 8% (巴士/港鐵/電車)", matchType: "category", matchValue: ["transport"], percentage: 8.0, monthlyMinSpend: 1000, cap: 200, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 指定商戶 3%
-      { description: "指定商戶 3%", matchType: "merchant", matchValue: ["mcdonalds", "adidas"], percentage: 3.0, monthlyMinSpend: 1000, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "fps", "octopus"] },
+      { description: "指定商戶 3%", matchType: "merchant", matchValue: ["mcdonalds", "adidas"], percentage: 3.0, monthlyMinSpend: 1000, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 基本回饋 0.4%，排除電子錢包、八達通增值、繳稅、保險
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
     tags: ["網購8%", "交通8%", "需月簽$1,000"],
     sellingPoints: ["網上簽賬 8% (單筆滿$500)", "交通 8% (巴士/港鐵/電車)", "每月回贈上限 $200"],
@@ -1212,13 +1212,13 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rules: [
       // T&C: 網上零售簽賬 8% (單筆滿$500，需月簽非網上$1,000)
-      { description: "網購 8% (單筆滿$500)", matchType: "category", matchValue: "online", percentage: 8.0, minSpend: 500, monthlyMinSpend: 1000, cap: 200, capType: "reward", excludeCategories: ["ewallet", "utilities", "insurance"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "fps", "octopus"] },
+      { description: "網購 8% (單筆滿$500)", matchType: "category", matchValue: "online", percentage: 8.0, minSpend: 500, monthlyMinSpend: 1000, cap: 200, capType: "reward", excludeCategories: ["ewallet", "utilities", "insurance"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 海外零售簽賬 8% (外幣簽賬，需月簽非網上$1,000)
-      { description: "海外簽賬 8%", matchType: "base", percentage: 8.0, isForeignCurrency: true, monthlyMinSpend: 1000, cap: 200, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "fps", "octopus"] },
+      { description: "海外簽賬 8%", matchType: "base", percentage: 8.0, isForeignCurrency: true, monthlyMinSpend: 1000, cap: 200, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 指定商戶 3%
-      { description: "指定商戶 3%", matchType: "merchant", matchValue: ["mcdonalds", "adidas"], percentage: 3.0, monthlyMinSpend: 1000, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "fps", "octopus"] },
+      { description: "指定商戶 3%", matchType: "merchant", matchValue: ["mcdonalds", "adidas"], percentage: 3.0, monthlyMinSpend: 1000, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 基本回饋 0.4%，排除電子錢包、八達通增值、繳稅、保險
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
     tags: ["網購8%", "海外8%", "需月簽$1,000"],
     sellingPoints: ["網上簽賬 8% (單筆滿$500)", "海外簽賬 8%", "每月回贈上限 $200"],
@@ -1237,7 +1237,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 月簽$10,000 可額外獲 5% 隧道/泊車/電車充電回贈，合共上限$500
       { description: "隧道/泊車/電車充電 5% (月簽$10,000) [需登記]", matchType: "category", matchValue: ["tunnel_fee", "parking"], percentage: 5.0, monthlyMinSpend: 10000, cap: 500, capType: "reward" },
       { description: "八達通自動增值 0.5%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.5 },
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
     tags: ["八達通", "交通15%", "需登記"],
     welcomeOfferText: "迎新簽 $5,000 + 1次$500自動增值 送 $2,500 現金回贈 (首2個月內)",
@@ -1309,7 +1309,7 @@ export const HK_CARDS: CreditCard[] = [
       { description: "百佳/屈臣氏/豐澤 VIP 2.4%", matchType: "merchant", matchValue: ["parknshop", "watsons", "fortress"], percentage: 2.4 },
       // 最紅自主獎賞 (需登記) - 回贈
       { description: "最紅自主獎賞 2.4%", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 2.4, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
     tags: ["易賞錢", "百佳", "屈臣氏", "折扣日"],
     feeWaiverCondition: "首兩年免年費",
@@ -1328,7 +1328,7 @@ export const HK_CARDS: CreditCard[] = [
       // HKTVmall 5% (需每月登記)
       { description: "HKTVmall 5%", matchType: "merchant", matchValue: ["hktvmall"], percentage: 5.0, cap: 300, capType: "reward" },
       // 指定日子 HKTVmall 額外優惠
-      { description: "基本回饋 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "octopus"] },
+      { description: "基本回饋 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus"] },
     ],
     tags: ["HKTVmall", "網購"],
     welcomeOfferText: "迎新簽 $5,000 送 $1,000 現金回贈 (首2個月內)",
@@ -1345,11 +1345,11 @@ export const HK_CARDS: CreditCard[] = [
     rewardConfig: { method: 'conversion', ratio: 0.2, currency: 'Club積分' }, // 5 Club積分 = $1
     rules: [
       // T&C: 指定商戶 4% (1% 基本 + 3% 額外)，額外上限 1,500 Club積分 = $300
-      { description: "指定商戶 4%", matchType: "merchant", matchValue: ["csl", "1010", "now_tv", "netvigator", "hkt", "pccw"], percentage: 4.0, cap: 1500, capType: "reward", excludePaymentMethods: ["fps", "octopus"] },
+      { description: "指定商戶 4%", matchType: "merchant", matchValue: ["csl", "1010", "now_tv", "netvigator", "hkt", "pccw"], percentage: 4.0, cap: 1500, capType: "reward", excludePaymentMethods: ["octopus"] },
       // T&C: Club Shopping 4% (1% 基本 + 1% 額外 + 2% The Club)，額外上限 500 Club積分 = $100
-      { description: "Club Shopping 4%", matchType: "merchant", matchValue: ["club_shopping", "theclub"], percentage: 4.0, cap: 500, capType: "reward", excludePaymentMethods: ["fps", "octopus"] },
+      { description: "Club Shopping 4%", matchType: "merchant", matchValue: ["club_shopping", "theclub"], percentage: 4.0, cap: 500, capType: "reward", excludePaymentMethods: ["octopus"] },
       // T&C: 基本 1% 無上限
-      { description: "基本回饋 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "octopus"] },
+      { description: "基本回饋 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus"] },
     ],
     tags: ["The Club", "Club積分", "csl/1010"],
     welcomeOfferText: "迎新簽 $5,000 送 5,000 Club積分 + $1,000 現金回贈 (首2個月內)",
@@ -1375,7 +1375,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 一田信用卡積分 - $1=1分, 25000分=$100 = 0.4%
       { description: "一田積分 0.4%", matchType: "merchant", matchValue: ["yata"], percentage: 0.4 },
       // 其他簽賬基本回饋
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
     tags: ["一田", "百貨公司", "永久免年費", "9折"],
     welcomeOfferText: "迎新送一田購物禮券",
@@ -1408,7 +1408,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 八達通自動增值 1X 積分 = 0.4%
       { description: "八達通自動增值 0.4%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
       // T&C: 本地簽賬 1X 積分 = 0.4%
-      { description: "本地簽賬 0.4% (1X)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "本地簽賬 0.4% (1X)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"] },
     ],
     tags: ["台灣8%", "日韓4%", "網上4%", "八達通增值"],
     sellingPoints: ["🇹🇼 新台幣簽賬 8% (20X)", "🇯🇵🇰🇷 日韓簽賬 4% (10X)", "其他外幣 2%", "本地網上 4% [需登記]", "八達通自動增值 0.4%"],
@@ -1439,7 +1439,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 八達通自動增值 1X 積分 = 0.5%
       { description: "八達通自動增值 0.5%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.5 },
       // T&C: 本地簽賬 1X 積分 = 0.5%
-      { description: "本地簽賬 0.5% (1X)", matchType: "base", percentage: 0.5, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "本地簽賬 0.5% (1X)", matchType: "base", percentage: 0.5, excludeCategories: ["tax", "utilities", "government", "insurance"] },
     ],
     tags: ["台灣10%", "日韓5%", "網購5%", "高端卡", "八達通增值"],
     sellingPoints: ["🇹🇼 新台幣簽賬 10% (月上限$8,000)", "🇯🇵🇰🇷 日韓簽賬 5% (月上限$24,000)", "本地網上 5% [需登記]", "其他外幣 2.5%", "機場貴賓室4次"],
@@ -1460,7 +1460,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 流動支付及八達通自動增值也計積分
       { description: "流動支付 0.4%", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 0.4 },
       { description: "八達通自動增值 0.4%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
     tags: ["網購8%", "年輕人", "無需登記"],
     welcomeOfferText: "迎新簽 $5,000 送 $150 現金回贈 (首3個月)",
@@ -1482,7 +1482,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 單筆滿CNY4,000 額外6% (每月上限$250)
       { description: "單筆滿¥4,000 額外6% (月上限$250)", matchType: "base", percentage: 6.0, isForeignCurrency: true, minSpend: 4000, cap: 250, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 本地簽賬 0.4%，排除繳稅、網上繳費、八達通增值、電子錢包
-      { description: "本地簽賬 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "本地簽賬 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
     tags: ["大灣區", "北上", "免手續費", "人民幣10%"],
     sellingPoints: ["人民幣/雲閃付 4% (月上限$150)", "單筆滿¥4,000 高達10%", "免外幣手續費"],
@@ -1500,7 +1500,7 @@ export const HK_CARDS: CreditCard[] = [
       // AlipayHK 跨境商戶 (北上/淘寶): 20個 A. Point/$1 = 2%
       { description: "AlipayHK 跨境/北上 2% (20 A. Point/$1)", matchType: "paymentMethod", matchValue: ["alipay"], percentage: 2.0, isForeignCurrency: true },
       // 實體卡/電子錢包簽賬: 10個 A. Point/$1 = 1%
-      { description: "實體卡/電子錢包 1% (10 A. Point/$1)", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "實體卡/電子錢包 1% (10 A. Point/$1)", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance"] },
       // AlipayHK 本地合資格簽賬: 2個 A. Point/$1 = 0.2%
       { description: "AlipayHK 本地 0.2% (2 A. Point/$1)", matchType: "paymentMethod", matchValue: ["alipay"], percentage: 0.2 },
     ],
@@ -1519,7 +1519,7 @@ export const HK_CARDS: CreditCard[] = [
     rules: [
       // T&C: 淘寶/天貓簽賬回贈，不適用於 Alipay/WeChat Pay/PayMe
       { description: "淘寶/天貓 4%", matchType: "merchant", matchValue: ["taobao", "tmall"], percentage: 4.0, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
     tags: ["淘寶", "網購", "免外幣手續費"],
     welcomeOfferText: "迎新手機簽賬 10% 回贈 (上限$300)",
@@ -1535,7 +1535,7 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rules: [
       { description: "MUJI 5%", matchType: "merchant", matchValue: ["muji"], percentage: 5.0 },
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"] },
     ],
     tags: ["MUJI", "生活品味"],
     sellingPoints: ["MUJI 簽賬 5% 回贈", "MUJI 專屬優惠", "無印良品愛好者必備"],
@@ -1548,7 +1548,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-gray-500 to-gray-700", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"] },
     ],
     tags: ["基本卡"],
     sellingPoints: ["基本回贈", "入門信用卡"],
