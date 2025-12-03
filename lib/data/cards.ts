@@ -903,27 +903,32 @@ export const HK_CARDS: CreditCard[] = [
   // ========================================================================
   {
     id: "ccb-eye",
-    name: "CCB (Asia) eye Card",
-    bank: "CCB",
+    name: "建行(亞洲) eye 信用卡",
+    bank: "建行(亞洲)",
     style: { bgColor: "bg-gradient-to-br from-pink-300 to-pink-500", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
-    rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 積分 = $1 回贈 (0.4%)
+    annualFee: 0,
+    feeWaiverCondition: "永久免年費",
+    rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 25,000 積分 = $100 回贈 (0.4%)
     rules: [
       // T&C: 本地餐飲/外賣平台 高達11% (需登記，月簽$8,000享9%+2%積分)，推廣期 2025年7月-12月
-      { description: "本地餐飲/外賣 高達11% (需登記)", matchType: "category", matchValue: ["dining"], percentage: 11.0, monthlyMinSpend: 8000, cap: 800, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "本地餐飲/外賣 11% (需登記,月簽$8k)", matchType: "category", matchValue: ["dining"], percentage: 11.0, monthlyMinSpend: 8000, cap: 800, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C: 月簽<$8,000 只享 2%
+      { description: "本地餐飲/外賣 2% (需登記)", matchType: "category", matchValue: ["dining"], percentage: 2.0, cap: 800, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 本地交通 2% (需登記)，推廣期 2025年7月-12月
       { description: "本地交通 2% (需登記)", matchType: "category", matchValue: ["transport"], percentage: 2.0, cap: 400, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
-      // T&C: 網上零售交易 5X 積分 (2%)，每曆年額外4倍積分上限 300,000
-      { description: "網購 5X積分 (2%)", matchType: "category", matchValue: ["online"], percentage: 2.0, excludeCategories: ["ewallet", "insurance", "tax", "government"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C: 網上零售交易 5X 積分 (2%)，每曆年額外4倍積分上限 300,000 (即簽$75,000)
+      { description: "網購 5X積分 (2%)", matchType: "category", matchValue: ["online"], percentage: 2.0, cap: 75000, capType: "spending", excludeCategories: ["ewallet", "insurance", "tax", "government"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: Visa 感應式付款 5X 積分 (2%)，每曆年額外4倍積分上限 300,000
-      { description: "Visa感應式支付 5X積分 (2%)", matchType: "paymentMethod", matchValue: ["contactless", "apple_pay", "google_pay", "samsung_pay"], percentage: 2.0, excludeCategories: ["ewallet", "insurance", "tax", "government"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "Visa感應式支付 5X積分 (2%)", matchType: "paymentMethod", matchValue: ["contactless", "apple_pay", "google_pay", "samsung_pay"], percentage: 2.0, cap: 75000, capType: "spending", excludeCategories: ["ewallet", "insurance", "tax", "government"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // 基本回贈 0.4%，排除電子錢包、八達通、繳費等
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "octopus", "alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["餐飲11%", "交通2%", "網購2%", "需登記"],
+    tags: ["餐飲11%", "交通2%", "網購2%", "需登記", "永久免年費"],
     welcomeOfferText: "迎新簽 $6,000 送 $600 現金回贈 (首2個月) / Chill分期$15,000送$800 (首3個月)",
-    sellingPoints: ["本地餐飲/外賣高達 11% (需登記)", "本地交通 2%", "網購及感應式支付 2%", "迎新高達 $800 現金回贈"],
-    note: "⚠️ 【限時推廣 2025年7月-12月】本地餐飲/外賣高達 11% 需每月經 App 登記（首2,000名），月簽$8,000享9%+2%積分，每階段上限$800。本地交通 2% 每階段上限$400。網購/感應式支付 5X 積分，每曆年額外積分上限 300,000。不適用於電子錢包、酒店/會所餐飲、保險、RentSmart。迎新：(1) Chill分期$15,000送$800；(2) 簽$6,000送$600。兩者只可選一。",
+    applyUrl: "https://www.asia.ccb.com/hongkong/personal/credit-cards/eye-card.html",
+    sellingPoints: ["本地餐飲/外賣高達 11% (需登記)", "本地交通 2%", "網購及感應式支付 2%", "永久免年費"],
+    note: "💡 【限時推廣 2025/7-12月】本地餐飲/外賣：月簽滿$8,000享9%+2%=11%，未滿$8,000只享2%，每階段上限$800，需每月經 App 登記（首2,000名）。本地交通 2% 每階段上限$400。網購/感應式支付 5X 積分 (2%)，每曆年額外積分上限 300,000 (即首$75,000簽賬享2%)。⚠️ 不計回贈：電子錢包充值/轉賬、酒店/會所餐飲、保險、RentSmart。迎新：(1) Chill分期$15,000送$800；(2) 簽$6,000送$600，只可選一。",
   },
   {
     id: "icbc-horoscope",
