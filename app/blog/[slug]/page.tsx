@@ -72,14 +72,17 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 function RankBadge({ rank }: { rank: number }) {
-  if (rank === 1) return <span className="text-4xl">🥇</span>;
-  if (rank === 2) return <span className="text-4xl">🥈</span>;
-  if (rank === 3) return <span className="text-4xl">🥉</span>;
-  return (
-    <span className="w-12 h-12 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-xl font-bold">
-      {rank}
-    </span>
-  );
+  const colors = {
+    1: "bg-gradient-to-br from-amber-400 to-amber-600 text-white shadow-amber-200",
+    2: "bg-gradient-to-br from-gray-300 to-gray-500 text-white shadow-gray-200",
+    3: "bg-gradient-to-br from-orange-400 to-orange-600 text-white shadow-orange-200",
+  };
+  const baseClass = "w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold shadow-lg";
+  
+  if (rank <= 3) {
+    return <span className={`${baseClass} ${colors[rank as 1 | 2 | 3]}`}>{rank}</span>;
+  }
+  return <span className={`${baseClass} bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300`}>{rank}</span>;
 }
 
 function CardDetailSection({ result, rank, showFxInfo = false }: { result: RankingResult; rank: number; showFxInfo?: boolean }) {
@@ -267,10 +270,15 @@ function QuickRankingTable({ rankings, category }: { rankings: RankingResult[]; 
             {rankings.map((result, index) => (
               <tr key={result.card.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                 <td className="px-3 py-3 whitespace-nowrap">
-                  {index === 0 && "🥇"}
-                  {index === 1 && "🥈"}
-                  {index === 2 && "🥉"}
-                  {index > 2 && <span className="text-gray-500">{index + 1}</span>}
+                  {index <= 2 ? (
+                    <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold text-white ${
+                      index === 0 ? 'bg-gradient-to-br from-amber-400 to-amber-600' :
+                      index === 1 ? 'bg-gradient-to-br from-gray-300 to-gray-500' :
+                      'bg-gradient-to-br from-orange-400 to-orange-600'
+                    }`}>{index + 1}</span>
+                  ) : (
+                    <span className="text-gray-500">{index + 1}</span>
+                  )}
                 </td>
                 <td className="px-3 py-3">
                   <Link href={`/cards/${result.card.id}`} className="hover:text-emerald-600">
