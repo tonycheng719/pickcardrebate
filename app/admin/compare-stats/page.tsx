@@ -15,7 +15,7 @@ interface CompareStats {
   topCards: { cardId: string; count: number }[];
   topCardPairs: { pair: string; count: number }[];
   dailyStats: { date: string; count: number }[];
-  recentLogs: { id: string; cardIds: string[]; userId: string | null; createdAt: string }[];
+  recentLogs: { id: string; cardIds: string[]; userId: string | null; userEmail: string | null; createdAt: string }[];
 }
 
 export default function CompareStatsPage() {
@@ -268,7 +268,9 @@ export default function CompareStatsPage() {
                       </td>
                       <td className="py-3 px-4 text-gray-500 dark:text-gray-400">
                         {log.userId ? (
-                          <span className="text-xs">{log.userId.substring(0, 8)}...</span>
+                          <span className="text-xs" title={log.userId}>
+                            {log.userEmail || log.userId.substring(0, 8) + '...'}
+                          </span>
                         ) : (
                           <span className="text-xs text-gray-400">訪客</span>
                         )}

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { adminAuthClient } from "@/lib/supabase/admin-client";
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,10 +9,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid cardIds" }, { status: 400 });
     }
 
-    const supabase = await createClient();
-
-    // Log the comparison
-    const { error } = await supabase.from("compare_logs").insert({
+    // Use admin client to bypass RLS
+    const { error } = await adminAuthClient.from("compare_logs").insert({
       card_ids: cardIds,
       user_id: userId || null,
       created_at: new Date().toISOString(),

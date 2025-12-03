@@ -88,11 +88,27 @@ export async function GET(request: NextRequest) {
       .sort((a, b) => a[0].localeCompare(b[0]))
       .map(([date, count]) => ({ date, count }));
 
-    // Recent logs (last 20)
+    // Get user emails for recent logs
+    const userIds = [...new Set((logs || []).slice(0, 20).filter(l => l.user_id).map(l => l.user_id))];
+    const userEmailMap: Record<string, string> = {};
+    
+    if (userIds.length > 0) {
+      const { data: profiles } = await adminAuthClient
+        .from("profiles")
+        .select("id, email, name")
+        .in("id", userIds);
+      
+      profiles?.forEach(p => {
+        userEmailMap[p.id] = p.email || p.name || p.id.substring(0, 8);
+      });
+    }
+
+    // Recent logs (last 20) with user email
     const recentLogs = (logs || []).slice(0, 20).map(log => ({
       id: log.id,
       cardIds: log.card_ids,
       userId: log.user_id,
+      userEmail: log.user_id ? userEmailMap[log.user_id] || null : null,
       createdAt: log.created_at
     }));
 
