@@ -35,6 +35,16 @@ const GUIDES = [
     imageUrl: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop",
     tags: ["基礎知識", "銀行卡", "海外消費"],
     merchant: "攻略",
+    isNew: false,
+  },
+  {
+    id: "miles-vs-cashback",
+    type: "guide" as const,
+    title: "里數 vs 現金回贈｜儲邊樣最抵？1 里數值幾錢？",
+    description: "儲里數定現金回贈抵？1 里數值幾錢？里數換機票有咩技巧？買里數、里數加現金抵唔抵？用數據分析幫你揀最啱你嘅回贈方式！",
+    imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2074&auto=format&fit=crop",
+    tags: ["里數", "現金回贈", "信用卡攻略"],
+    merchant: "攻略",
     isNew: true,
   },
 ];

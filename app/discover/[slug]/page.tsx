@@ -20,6 +20,7 @@ import { getSystemSetting } from "@/lib/data/settings";
 import { HK_CARDS } from "@/lib/data/cards";
 import { ShareButton } from "@/components/share-button";
 import { DebitCardGuide, debitCardFaqData } from "./debit-card-guide";
+import { MilesVsCashbackGuide, milesVsCashbackFaqData } from "./miles-vs-cashback-guide";
 
 // Revalidate every hour
 export const revalidate = 3600;
@@ -96,6 +97,34 @@ const GUIDES: Record<string, {
     ],
     publishDate: "2025-01-01",
     readTime: "10 分鐘",
+  },
+  "miles-vs-cashback": {
+    id: "miles-vs-cashback",
+    title: "儲里數定現金回贈抵？完全分析指南｜1里數值幾錢？里數換機票攻略",
+    seoTitle: "里數 vs 現金回贈 2025｜1里數幾錢？里數換機票攻略｜里數信用卡比較｜香港",
+    heroTitle: "✈️ 里數 vs 現金回贈",
+    heroSubtitle: "儲邊樣最抵？完全分析指南",
+    description: "儲里數定現金回贈抵？1 里數值幾錢？里數換機票有咩技巧？買里數、里數加現金抵唔抵？本文用數據分析，幫你揀最啱你嘅信用卡回贈方式！",
+    content: "miles-vs-cashback",
+    imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2074&auto=format&fit=crop",
+    tags: ["里數", "現金回贈", "信用卡攻略"],
+    keywords: [
+      "里數vs現金回贈",
+      "里數現金兌換率",
+      "里數價值",
+      "里數換機票",
+      "1里數幾錢",
+      "里數加現金抵唔抵",
+      "里數信用卡",
+      "買里數",
+      "asia miles",
+      "現金回贈信用卡",
+      "儲里數",
+      "信用卡里數",
+      "里數機票",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
   },
 };
 
@@ -665,6 +694,8 @@ function getGuideFaqData(guideId: string) {
       return overseasFeeFaqData;
     case "debit-card-guide":
       return debitCardFaqData;
+    case "miles-vs-cashback":
+      return milesVsCashbackFaqData;
     default:
       return [];
   }
@@ -677,6 +708,8 @@ function renderGuideContent(guideId: string) {
       return <OverseasFeeGuide />;
     case "debit-card-guide":
       return <DebitCardGuide />;
+    case "miles-vs-cashback":
+      return <MilesVsCashbackGuide />;
     default:
       return null;
   }
