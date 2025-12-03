@@ -761,8 +761,8 @@ export const HK_CARDS: CreditCard[] = [
     feeWaiverCondition: "永久免年費",
     rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 獎分 = $1 回贈 (0.4%)
     rules: [
-      // T&C 2025: 網上簽賬 10X 獎分 (4%)，每月額外獎分上限 10,000
-      { description: "網上簽賬 10X (4%)", matchType: "category", matchValue: "online", percentage: 4.0, cap: 10000, capType: "reward_points", excludeCategories: ["ewallet", "utilities", "insurance", "supermarket", "government"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C 2025: 網上簽賬 10X 獎分 (4%)，每月額外獎分上限 10,000 = $40 回贈
+      { description: "網上簽賬 10X (4%)", matchType: "category", matchValue: "online", percentage: 4.0, cap: 40, capType: "reward", excludeCategories: ["ewallet", "utilities", "insurance", "supermarket", "government"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C 2025: 本地食肆 5X 獎分 (2%)
       { description: "本地食肆 5X (2%)", matchType: "category", matchValue: ["dining"], percentage: 2.0, excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
       // T&C 2025: 外幣簽賬 5X 獎分 (2%)
@@ -867,8 +867,8 @@ export const HK_CARDS: CreditCard[] = [
       { description: "本地食肆 3X (1.2%)", matchType: "category", matchValue: ["dining"], percentage: 1.2, excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
       // T&C 2025: 本地零售 2X 獎分 (0.8%)
       { description: "本地零售 2X (0.8%)", matchType: "base", percentage: 0.8, excludeCategories: ["dining", "tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme", "octopus"] },
-      // T&C: 網上繳費 1X 獎分 (0.4%)，每月上限 20,000 獎分
-      { description: "網上繳費 1X (0.4%)", matchType: "category", matchValue: ["utilities"], percentage: 0.4, cap: 20000, capType: "reward_points" },
+      // T&C: 網上繳費 1X 獎分 (0.4%)，每月上限 20,000 獎分 = $80 回贈
+      { description: "網上繳費 1X (0.4%)", matchType: "category", matchValue: ["utilities"], percentage: 0.4, cap: 80, capType: "reward" },
       // T&C: 基本獎賞 1X 獎分 (0.4%)
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps"] },
     ],
