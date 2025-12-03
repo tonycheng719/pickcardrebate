@@ -1,378 +1,185 @@
-"use client";
-
+import { Metadata } from "next";
 import { Navbar } from "@/components/navbar";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useDataset } from "@/lib/admin/data-store";
-import { 
-  Clock, ExternalLink, Tag, Send, Bell, PlusCircle, 
-  Image as ImageIcon, BookOpen, Globe, Sparkles 
-} from "lucide-react";
-import { useState } from "react";
-import { useWallet } from "@/lib/store/wallet-context";
-import Link from "next/link";
-import { motion } from "framer-motion";
+import { DiscoverClient } from "./discover-client";
 import { PROMOS } from "@/lib/data/promos";
 
-// 攻略文章資料
-const GUIDES = [
-  {
-    id: "overseas-fee",
-    type: "guide" as const,
-    title: "海外簽賬手續費完全攻略｜DCC、CBF 陷阱拆解",
-    description: "拆解信用卡海外簽賬 DCC、CBF 陷阱，教你點樣避開隱藏收費！Netflix、Spotify、App Store 都會中招？",
-    imageUrl: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=2070&auto=format&fit=crop",
-    tags: ["海外消費", "網購", "手續費"],
-    merchant: "攻略",
-    isNew: true,
+// SEO Metadata - 針對長尾關鍵字優化
+export const metadata: Metadata = {
+  title: "信用卡優惠攻略｜最新優惠、回贈教學、慳錢技巧｜PickCardRebate",
+  description: "香港信用卡優惠資訊中心！最新銀行優惠、限時回贈、海外簽賬攻略、網購慳錢技巧，幫你揀啱信用卡慳到盡。每日更新 HSBC、Citi、渣打、恒生等銀行優惠！",
+  keywords: [
+    // 主要關鍵字
+    "信用卡優惠",
+    "信用卡回贈",
+    "信用卡攻略",
+    // 銀行相關
+    "HSBC 信用卡優惠",
+    "Citi 信用卡優惠",
+    "渣打信用卡優惠",
+    "恒生信用卡優惠",
+    "中銀信用卡優惠",
+    "DBS 信用卡優惠",
+    // 場景相關
+    "超市信用卡優惠",
+    "餐飲信用卡優惠",
+    "網購信用卡優惠",
+    "旅遊信用卡優惠",
+    "海外簽賬優惠",
+    // 長尾關鍵字
+    "信用卡邊張好",
+    "信用卡回贈比較",
+    "信用卡迎新優惠",
+    "信用卡慳錢攻略",
+    "2025 信用卡優惠",
+  ],
+  openGraph: {
+    title: "信用卡優惠攻略｜最新優惠、回贈教學｜PickCardRebate",
+    description: "香港信用卡優惠資訊中心！最新銀行優惠、海外簽賬攻略、網購慳錢技巧，幫你慳到盡！",
+    type: "website",
+    url: "https://pickcardrebate.com/discover",
+    siteName: "PickCardRebate",
+    locale: "zh_HK",
+    images: [
+      {
+        url: "https://pickcardrebate.com/og-discover.png",
+        width: 1200,
+        height: 630,
+        alt: "PickCardRebate 信用卡優惠攻略",
+      },
+    ],
   },
-];
+  twitter: {
+    card: "summary_large_image",
+    title: "信用卡優惠攻略｜最新優惠、回贈教學",
+    description: "香港信用卡優惠資訊中心！最新銀行優惠、海外簽賬攻略、網購慳錢技巧！",
+  },
+  alternates: {
+    canonical: "https://pickcardrebate.com/discover",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
+    "max-snippet": -1,
+    "max-video-preview": -1,
+  },
+};
 
-type ContentType = "all" | "promo" | "guide";
+// Structured Data for SEO
+function getStructuredData() {
+  const currentYear = new Date().getFullYear();
+  
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      // CollectionPage Schema
+      {
+        "@type": "CollectionPage",
+        "@id": "https://pickcardrebate.com/discover#webpage",
+        "url": "https://pickcardrebate.com/discover",
+        "name": "信用卡優惠攻略｜最新優惠、回贈教學｜PickCardRebate",
+        "description": "香港信用卡優惠資訊中心！最新銀行優惠、限時回贈、海外簽賬攻略、網購慳錢技巧。",
+        "isPartOf": {
+          "@id": "https://pickcardrebate.com/#website"
+        },
+        "inLanguage": "zh-HK",
+        "datePublished": `${currentYear}-01-01`,
+        "dateModified": new Date().toISOString().split('T')[0],
+      },
+      // BreadcrumbList Schema
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "首頁",
+            "item": "https://pickcardrebate.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "探索優惠攻略",
+            "item": "https://pickcardrebate.com/discover"
+          }
+        ]
+      },
+      // ItemList Schema - 列出優惠
+      {
+        "@type": "ItemList",
+        "name": "最新信用卡優惠",
+        "description": "香港最新信用卡優惠資訊",
+        "itemListElement": PROMOS.slice(0, 10).map((promo, index) => ({
+          "@type": "ListItem",
+          "position": index + 1,
+          "item": {
+            "@type": "Offer",
+            "name": promo.title,
+            "description": promo.description,
+            "url": `https://pickcardrebate.com/discover/${promo.id}`,
+            "validThrough": promo.expiryDate,
+            "offeredBy": {
+              "@type": "Organization",
+              "name": promo.merchant
+            }
+          }
+        }))
+      },
+      // FAQPage Schema - 常見問題
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "如何找到最適合我的信用卡優惠？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "使用 PickCardRebate 的篩選功能，可按優惠類型（餐飲、網購、旅遊等）或銀行（HSBC、Citi、渣打等）篩選。我們會每日更新最新優惠資訊，助你找到最適合的信用卡優惠。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "信用卡優惠與信用卡回贈有什麼分別？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "信用卡優惠通常是限時活動，如商戶折扣、額外回贈等；信用卡回贈則是卡的基本特性，如簽賬回贈比率。兩者可以疊加使用，達到最高慳錢效果。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "怎樣知道信用卡優惠的有效期？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "每個優惠卡片都會顯示「剩餘天數」，快將到期的優惠會以紅色標示。你也可以登入後「關注」優惠，我們會在優惠即將到期時提醒你。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "海外簽賬有什麼需要注意？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "海外簽賬需注意：1) 避免 DCC 動態貨幣轉換（堅持用當地貨幣結算）；2) 留意 CBF 跨境手續費（部分銀行會收取 1%）；3) 選擇免外幣手續費的信用卡可慳更多。詳情可查看我們的「海外簽賬攻略」。"
+            }
+          }
+        ]
+      }
+    ]
+  };
+}
 
 export default function DiscoverPage() {
-  const [isReporting, setIsReporting] = useState(false);
-  const { user, followPromo, unfollowPromo, isPromoFollowed } = useWallet();
-  const { promos } = useDataset();
-  const [contentType, setContentType] = useState<ContentType>("all");
-  const [tagFilter, setTagFilter] = useState<string>("all");
-
-  const displayPromos = promos.length > 0 ? promos : PROMOS;
-
-  const handleReportSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert("感謝您的回報！我們將盡快審核此優惠資訊。");
-    setIsReporting(false);
-  };
-
-  const toggleFollow = (id: string) => {
-    if (!user) {
-      alert("請先登入以關注優惠");
-      return;
-    }
-    if (isPromoFollowed(id)) {
-      unfollowPromo(id);
-    } else {
-      followPromo(id);
-    }
-  };
-
-  // 合併優惠和攻略
-  const allContent = [
-    ...GUIDES.map(g => ({ ...g, contentType: "guide" as const })),
-    ...displayPromos.map(p => ({ ...p, contentType: "promo" as const, type: "promo" as const })),
-  ];
-
-  // 根據類型和標籤篩選
-  const filteredContent = allContent.filter(item => {
-    const typeMatch = contentType === "all" || item.contentType === contentType;
-    const tagMatch = tagFilter === "all" || 
-      item.tags.includes(tagFilter) || 
-      ('merchant' in item && item.merchant.toLowerCase() === tagFilter.toLowerCase());
-    return typeMatch && tagMatch;
-  });
-
-  // 將攻略排在最前面
-  const sortedContent = filteredContent.sort((a, b) => {
-    if (a.contentType === "guide" && b.contentType === "promo") return -1;
-    if (a.contentType === "promo" && b.contentType === "guide") return 1;
-    return 0;
-  });
-
-  const contentTypes = [
-    { id: "all", label: "全部", icon: Sparkles },
-    { id: "promo", label: "優惠", icon: Tag },
-    { id: "guide", label: "攻略", icon: BookOpen },
-  ];
-
-  const tagFilters = [
-    { id: "all", label: "全部" },
-    { id: "餐飲", label: "餐飲" },
-    { id: "網購", label: "網購" },
-    { id: "旅遊", label: "旅遊" },
-    { id: "海外消費", label: "海外" },
-    { id: "HSBC", label: "HSBC" },
-  ];
-
+  const structuredData = getStructuredData();
+  
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors pb-24 md:pb-0">
-      <Navbar />
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       
-      {/* Header */}
-      <div className="bg-white dark:bg-gray-900 pt-8 pb-4 px-4 sticky top-0 z-10 border-b dark:border-gray-800">
-        <div className="container mx-auto">
-          <div className="flex justify-between items-end mb-4">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                <Sparkles className="h-7 w-7 text-amber-500" />
-                探索
-              </h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">優惠資訊、慳錢攻略一覽無遺</p>
-            </div>
-            <Button 
-              onClick={() => setIsReporting(!isReporting)} 
-              variant="outline" 
-              size="sm" 
-              className="gap-2 rounded-full dark:border-gray-700 dark:text-gray-300"
-            >
-              <PlusCircle className="h-4 w-4" />
-              {isReporting ? "取消" : "回報"}
-            </Button>
-          </div>
-          
-          {/* Content Type Tabs */}
-          <div className="flex gap-2 mb-3">
-            {contentTypes.map(type => {
-              const Icon = type.icon;
-              return (
-                <button
-                  key={type.id}
-                  onClick={() => setContentType(type.id as ContentType)}
-                  className={`px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 transition-all ${
-                    contentType === type.id 
-                      ? "bg-blue-600 text-white shadow-lg shadow-blue-200 dark:shadow-blue-900/30" 
-                      : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-                  }`}
-                >
-                  <Icon className="h-4 w-4" />
-                  {type.label}
-                </button>
-              );
-            })}
-          </div>
-          
-          {/* Tag Filters */}
-          <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
-            {tagFilters.map(f => (
-              <button
-                key={f.id}
-                onClick={() => setTagFilter(f.id)}
-                className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${
-                  tagFilter === f.id 
-                    ? "bg-black text-white dark:bg-white dark:text-black" 
-                    : "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400"
-                }`}
-              >
-                {f.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <main className="container mx-auto px-4 py-6 flex-1">
-        {/* Report Form */}
-        {isReporting && (
-          <motion.div 
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            className="max-w-xl mx-auto mb-8 bg-white dark:bg-gray-800 p-6 rounded-2xl border dark:border-gray-700 shadow-lg overflow-hidden"
-          >
-            <h3 className="text-lg font-bold mb-4 flex items-center gap-2 dark:text-white">
-              <Send className="h-5 w-5 text-blue-600" /> 提交新優惠
-            </h3>
-            <form onSubmit={handleReportSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">優惠標題</label>
-                <Input placeholder="例如：麥當勞週末滿$100送$10" required className="dark:bg-gray-700 dark:border-gray-600" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">銀行/商戶</label>
-                  <Input placeholder="例如：HSBC" required className="dark:bg-gray-700 dark:border-gray-600" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">截止日期</label>
-                  <Input type="date" required className="dark:bg-gray-700 dark:border-gray-600" />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">詳細內容</label>
-                <textarea 
-                  className="w-full min-h-[80px] rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 dark:text-white resize-none"
-                  placeholder="請簡述優惠詳情..."
-                  required
-                />
-              </div>
-              <Button type="submit" className="w-full rounded-xl">提交審核</Button>
-            </form>
-          </motion.div>
-        )}
-
-        {/* Content Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {sortedContent.map((item, index) => {
-            const isGuide = item.contentType === "guide";
-            const isFollowed = !isGuide && isPromoFollowed(item.id);
-            const daysLeft = !isGuide && 'expiryDate' in item && item.expiryDate 
-              ? Math.ceil((new Date(item.expiryDate).getTime() - new Date().getTime()) / (1000 * 3600 * 24)) 
-              : 0;
-            
-            return (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05, duration: 0.4 }}
-              >
-                <Link 
-                  href={isGuide ? `/discover/${item.id}` : `/discover/${item.id}`} 
-                  className="block h-full"
-                >
-                  <Card className={`flex flex-col h-full hover:shadow-lg transition-all active:scale-[0.98] duration-300 overflow-hidden border-0 ring-1 dark:bg-gray-800 rounded-2xl cursor-pointer ${
-                    isGuide 
-                      ? "ring-emerald-200 dark:ring-emerald-800 bg-gradient-to-br from-emerald-50/50 to-white dark:from-emerald-900/10 dark:to-gray-800" 
-                      : "ring-gray-200 dark:ring-gray-800"
-                  }`}>
-                    {/* Visual Header */}
-                    <div className="h-40 bg-gray-100 dark:bg-gray-900 relative overflow-hidden group">
-                      {'imageUrl' in item && item.imageUrl ? (
-                        <img 
-                          src={item.imageUrl} 
-                          alt={item.title} 
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-                        />
-                      ) : (
-                        <div className="flex items-center justify-center h-full text-gray-300 dark:text-gray-700 bg-gradient-to-br from-gray-50 to-gray-200 dark:from-gray-800 dark:to-gray-900">
-                          <ImageIcon className="h-12 w-12 opacity-50" />
-                        </div>
-                      )}
-                      
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
-
-                      <div className="absolute top-3 right-3 flex gap-2 z-10">
-                        {/* Guide Badge */}
-                        {isGuide && (
-                          <div className="flex items-center text-xs font-bold text-white bg-emerald-500 px-3 py-1 rounded-full shadow-sm">
-                            <BookOpen className="h-3 w-3 mr-1" />
-                            攻略
-                          </div>
-                        )}
-                        
-                        {/* New Badge */}
-                        {'isNew' in item && item.isNew && (
-                          <div className="flex items-center text-xs font-bold text-white bg-red-500 px-2 py-1 rounded-full shadow-sm animate-pulse">
-                            NEW
-                          </div>
-                        )}
-                        
-                        {/* Follow Button (Promo only) */}
-                        {!isGuide && (
-                          <button 
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              toggleFollow(item.id);
-                            }}
-                            className={`p-2 rounded-full backdrop-blur-md transition-colors shadow-sm ${
-                              isFollowed 
-                                ? "bg-yellow-400 text-white" 
-                                : "bg-white/20 text-white hover:bg-white/40"
-                            }`}
-                          >
-                            {isFollowed ? <Bell className="h-4 w-4 fill-current" /> : <Bell className="h-4 w-4" />}
-                          </button>
-                        )}
-                        
-                        {/* Expiry Badge (Promo only) */}
-                        {!isGuide && 'expiryDate' in item && item.expiryDate && (
-                          <div className={`flex items-center text-xs font-bold text-white backdrop-blur-md px-3 py-1 rounded-full shadow-sm ${
-                            daysLeft < 3 ? "bg-red-500/90" : "bg-black/40"
-                          }`}>
-                            <Clock className="h-3 w-3 mr-1" />
-                            剩 {daysLeft} 天
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="absolute bottom-3 left-3 right-3 z-10">
-                        <div className="flex justify-between items-end">
-                          <span className={`text-[10px] font-bold text-white backdrop-blur px-2 py-1 rounded-md uppercase tracking-wider ${
-                            isGuide ? "bg-emerald-600/70" : "bg-black/50"
-                          }`}>
-                            {'merchant' in item ? item.merchant : '攻略'}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <CardHeader className="pb-2 pt-4 px-5">
-                      <CardTitle className="text-lg font-bold leading-snug dark:text-white line-clamp-2">
-                        {item.title}
-                      </CardTitle>
-                    </CardHeader>
-                    
-                    <CardContent className="flex-1 px-5">
-                      <p className="text-gray-500 dark:text-gray-400 text-sm mb-4 leading-relaxed line-clamp-3">
-                        {item.description}
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {item.tags.map(tag => (
-                          <span 
-                            key={tag} 
-                            className={`inline-flex items-center text-xs px-2 py-1 rounded-md ${
-                              isGuide 
-                                ? "text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30" 
-                                : "text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700"
-                            }`}
-                          >
-                            <Tag className="h-3 w-3 mr-1 opacity-50" />
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </CardContent>
-                    
-                    <CardFooter className={`border-t pt-4 px-5 pb-5 mt-auto ${
-                      isGuide 
-                        ? "border-emerald-100 dark:border-emerald-900/50 bg-emerald-50/30 dark:bg-emerald-900/10" 
-                        : "border-gray-100 dark:border-gray-800 bg-gray-50/30 dark:bg-gray-800/50"
-                    }`}>
-                      <div className="w-full flex items-center justify-between text-xs">
-                        <span className="text-gray-400 dark:text-gray-500">
-                          {isGuide ? "📖 閱讀攻略" : `有效期至 ${'expiryDate' in item ? item.expiryDate : ''}`}
-                        </span>
-                        <span className={`font-medium flex items-center ${
-                          isGuide 
-                            ? "text-emerald-600 dark:text-emerald-400" 
-                            : "text-blue-600 dark:text-blue-400"
-                        }`}>
-                          {isGuide ? "查看" : "詳情"} <ExternalLink className="h-3 w-3 ml-1" />
-                        </span>
-                      </div>
-                    </CardFooter>
-                  </Card>
-                </Link>
-              </motion.div>
-            );
-          })}
-        </div>
-
-        {/* Empty State */}
-        {sortedContent.length === 0 && (
-          <div className="text-center py-16">
-            <div className="text-6xl mb-4">🔍</div>
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">暫無相關內容</h3>
-            <p className="text-gray-500 dark:text-gray-400">請嘗試其他篩選條件</p>
-          </div>
-        )}
-
-        {/* Quick Links */}
-        <div className="mt-12 grid grid-cols-2 gap-4">
-          <Link href="/cards" className="bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 p-6 rounded-2xl text-center hover:opacity-90 transition-opacity active:scale-95">
-            <div className="text-2xl mb-2">💳</div>
-            <div className="font-bold text-gray-900 dark:text-white">所有信用卡</div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">查看全港卡片庫</div>
-          </Link>
-          <Link href="/rankings" className="bg-gradient-to-br from-amber-100 to-amber-200 dark:from-amber-900/40 dark:to-amber-800/40 p-6 rounded-2xl text-center hover:opacity-90 transition-opacity active:scale-95">
-            <div className="text-2xl mb-2">🏆</div>
-            <div className="font-bold text-amber-900 dark:text-white">回贈排行榜</div>
-            <div className="text-xs text-amber-600 dark:text-amber-300">揀卡無難度</div>
-          </Link>
-        </div>
-      </main>
+      <Navbar />
+      <DiscoverClient />
     </div>
   );
 }
-

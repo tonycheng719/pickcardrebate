@@ -9,8 +9,8 @@ import {
   AlertTriangle, CheckCircle, XCircle, Info, CreditCard, 
   ShoppingCart, Plane, Calculator, Trophy, Smartphone
 } from "lucide-react";
-import { SharePromoButton } from "@/app/promos/[id]/share-promo-button";
-import { PromoReviews } from "@/app/promos/[id]/promo-reviews";
+import { SharePromoButton } from "@/app/discover/components/share-promo-button";
+import { PromoReviews } from "@/app/discover/components/promo-reviews";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import { Promo, PromoFAQ } from "@/lib/types";
