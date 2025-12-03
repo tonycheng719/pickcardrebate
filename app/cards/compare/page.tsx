@@ -25,6 +25,7 @@ export default function CompareCardsPage() {
   const [selectedCardIds, setSelectedCardIds] = useState<string[]>([]);
   const [showCardPicker, setShowCardPicker] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showAllRules, setShowAllRules] = useState(false);
   
   const selectedCards = useMemo(() => {
     return selectedCardIds.map(id => cards.find(c => c.id === id)).filter(Boolean) as CreditCard[];
@@ -254,7 +255,7 @@ export default function CompareCardsPage() {
                   </tr>
                   
                   {/* Dynamic Rules Rows */}
-                  {allRuleDescriptions.slice(0, 8).map((desc, index) => (
+                  {(showAllRules ? allRuleDescriptions : allRuleDescriptions.slice(0, 8)).map((desc, index) => (
                     <tr key={desc} className={`border-b dark:border-gray-700 ${index % 2 === 0 ? 'bg-gray-50/50 dark:bg-gray-900/30' : ''}`}>
                       <td className="p-4 text-sm text-gray-700 dark:text-gray-300">
                         {desc}
@@ -284,9 +285,15 @@ export default function CompareCardsPage() {
                   ))}
                   
                   {allRuleDescriptions.length > 8 && (
-                    <tr className="border-b dark:border-gray-700">
-                      <td colSpan={selectedCards.length + 1} className="p-3 text-center text-xs text-gray-400">
-                        還有 {allRuleDescriptions.length - 8} 項規則...
+                    <tr className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-colors" onClick={() => setShowAllRules(!showAllRules)}>
+                      <td colSpan={selectedCards.length + 1} className="p-3 text-center">
+                        <button className="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center justify-center gap-1 mx-auto">
+                          {showAllRules ? (
+                            <>收起規則 <ChevronDown className="h-3 w-3 rotate-180" /></>
+                          ) : (
+                            <>展開更多 {allRuleDescriptions.length - 8} 項規則 <ChevronDown className="h-3 w-3" /></>
+                          )}
+                        </button>
                       </td>
                     </tr>
                   )}

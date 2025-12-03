@@ -261,6 +261,53 @@ export default function WalletPage() {
       .catch(err => console.error("Failed to fetch transactions", err));
   }, [user]);
 
+  // Show login prompt for non-logged in users
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col transition-colors">
+        <Navbar />
+        <main className="container mx-auto px-4 py-8 flex-1 flex flex-col items-center justify-center">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-center max-w-md"
+          >
+            <div className="w-20 h-20 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
+              <WalletIcon className="h-10 w-10 text-blue-600 dark:text-blue-400" />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">登入以使用錢包</h1>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
+              登入後您可以：
+            </p>
+            <ul className="text-left text-gray-600 dark:text-gray-400 mb-8 space-y-2">
+              <li className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+                儲存您擁有的信用卡
+              </li>
+              <li className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+                追蹤迎新進度
+              </li>
+              <li className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+                記錄消費獲取回贈提醒
+              </li>
+              <li className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+                跨裝置同步資料
+              </li>
+            </ul>
+            <Link href="/login">
+              <Button size="lg" className="w-full">
+                登入 / 註冊
+              </Button>
+            </Link>
+          </motion.div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col transition-colors">
       <Navbar />
