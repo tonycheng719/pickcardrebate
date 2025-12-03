@@ -188,7 +188,7 @@ export default function CardDetailPage() {
                       <button onClick={() => handleShare('facebook')} className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm">
                         <span className="text-blue-600 font-bold text-sm">f</span> Facebook
                       </button>
-                      {typeof navigator !== 'undefined' && navigator.share && (
+                      {typeof navigator !== 'undefined' && 'share' in navigator && (
                         <button onClick={() => handleShare('native')} className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm">
                           <Share2 className="h-4 w-4" /> 更多...
                         </button>
