@@ -317,6 +317,7 @@ export const HK_CARDS: CreditCard[] = [
     id: "boc-cheers-signature",
     name: "BOC Cheers Visa Signature",
     bank: "BOC",
+    hidden: true,
     style: { bgColor: "bg-gradient-to-br from-gray-700 to-gray-900", textColor: "text-yellow-300" },
     imageUrl: "https://www.bochk.com/dam/more/creditcard/cheers/cheers_visa_signature_card_face.png",
     rewardTimeline: "積分",
@@ -367,6 +368,7 @@ export const HK_CARDS: CreditCard[] = [
     id: "boc-icard",
     name: "中銀 i-card 雙幣鑽石卡",
     bank: "中銀",
+    hidden: true,
     style: { bgColor: "bg-gradient-to-br from-blue-400 to-blue-600", textColor: "text-white" },
     imageUrl: "https://www.bochk.com/dam/more/creditcard/icard/icard_card_face.png",
     annualFee: 0,
@@ -697,6 +699,7 @@ export const HK_CARDS: CreditCard[] = [
     id: "aeon-card-jal",
     name: "AEON Card JAL",
     bank: "AEON",
+    hidden: true,
     style: { bgColor: "bg-gradient-to-br from-red-600 to-red-800", textColor: "text-white" },
     imageUrl: "https://www.aeon.com.hk/tc/privileges/promotion_images/jal_mastercard_card_face.png",
     annualFee: 300,
@@ -887,6 +890,7 @@ export const HK_CARDS: CreditCard[] = [
     id: "bea-visa-signature",
     name: "BEA Visa Signature 卡",
     bank: "東亞銀行",
+    hidden: true,
     style: { bgColor: "bg-gradient-to-br from-slate-700 to-slate-900", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     annualFee: 1800,
@@ -937,6 +941,7 @@ export const HK_CARDS: CreditCard[] = [
     id: "bea-unionpay-platinum",
     name: "BEA 銀聯雙幣白金信用卡",
     bank: "東亞銀行",
+    hidden: true,
     style: { bgColor: "bg-gradient-to-br from-slate-400 to-slate-600", textColor: "text-white" },
     foreignCurrencyFee: 0, // 銀聯卡通常無外幣手續費
     annualFee: 600,
@@ -1022,6 +1027,7 @@ export const HK_CARDS: CreditCard[] = [
     id: "dahsing-one",
     name: "大新 ONE+ 白金卡",
     bank: "大新銀行",
+    hidden: true,
     style: { bgColor: "bg-gradient-to-br from-purple-800 to-purple-950", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
@@ -1034,6 +1040,7 @@ export const HK_CARDS: CreditCard[] = [
     id: "dahsing-ba",
     name: "British Airways Platinum Card",
     bank: "Dah Sing",
+    hidden: true,
     style: { bgColor: "bg-gradient-to-br from-blue-800 to-blue-950", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 16.6666, currency: 'Avios' }, // Approx? Need to check strictly.
@@ -1124,6 +1131,7 @@ export const HK_CARDS: CreditCard[] = [
     id: "fubon-titanium",
     name: "富邦 Titanium 卡",
     bank: "富邦銀行",
+    hidden: true,
     style: { bgColor: "bg-gradient-to-br from-blue-800 to-indigo-900", textColor: "text-white" },
     imageUrl: "https://www.fubonbank.com.hk/web/html/cc_platinum_card_face.png",
     foreignCurrencyFee: 1.95,
@@ -1322,6 +1330,7 @@ export const HK_CARDS: CreditCard[] = [
     id: "citi-hktvmall",
     name: "Citi HKTVmall 信用卡",
     bank: "Citi",
+    hidden: true,
     style: { bgColor: "bg-gradient-to-br from-green-500 to-green-700", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
@@ -1531,6 +1540,7 @@ export const HK_CARDS: CreditCard[] = [
     id: "hangseng-muji",
     name: "恒生 MUJI Card",
     bank: "恒生銀行",
+    hidden: true,
     style: { bgColor: "bg-gradient-to-br from-stone-600 to-stone-800", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
@@ -1545,6 +1555,7 @@ export const HK_CARDS: CreditCard[] = [
     id: "hangseng-platinum",
     name: "恒生白金卡",
     bank: "恒生銀行",
+    hidden: true,
     style: { bgColor: "bg-gradient-to-br from-gray-500 to-gray-700", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
