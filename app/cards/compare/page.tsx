@@ -77,13 +77,30 @@ export default function CompareCardsPage() {
   };
 
   // Get base reward for a card (non-special merchant/category)
-  const getBaseReward = (card: CreditCard) => {
-    const baseRule = card.rules?.find(r => 
+  // Finds the lowest-threshold base reward (preferably one without monthlyMinSpend)
+  const getBaseReward = (card: CreditCard): { percentage: number; condition?: string } => {
+    const baseRules = card.rules?.filter(r => 
       r.matchType === 'base' && 
       !r.isDiscount && 
-      !r.isForeignCurrency
-    );
-    return baseRule?.percentage || 0;
+      !r.isForeignCurrency &&
+      !r.validDays && // Exclude day-specific rules
+      !r.validDates
+    ) || [];
+    
+    if (baseRules.length === 0) return { percentage: 0 };
+    
+    // Prefer rules without monthlyMinSpend, then lowest monthlyMinSpend
+    const sortedRules = baseRules.sort((a, b) => {
+      const aMin = a.monthlyMinSpend || 0;
+      const bMin = b.monthlyMinSpend || 0;
+      return aMin - bMin;
+    });
+    
+    const bestRule = sortedRules[0];
+    return {
+      percentage: bestRule.percentage,
+      condition: bestRule.monthlyMinSpend ? `需月簽$${bestRule.monthlyMinSpend.toLocaleString()}` : undefined
+    };
   };
 
   return (
@@ -270,12 +287,17 @@ export default function CompareCardsPage() {
                       ⭐ 基本回贈（非特約商戶）
                     </td>
                     {selectedCards.map(card => {
-                      const baseReward = getBaseReward(card);
+                      const { percentage, condition } = getBaseReward(card);
                       return (
                         <td key={card.id} className="p-4 text-center">
-                          <span className={`font-bold ${baseReward > 0 ? 'text-blue-600' : 'text-gray-400'}`}>
-                            {baseReward > 0 ? `${baseReward}%` : '0%'}
+                          <span className={`font-bold ${percentage > 0 ? 'text-blue-600' : 'text-gray-400'}`}>
+                            {percentage > 0 ? `${percentage}%` : '0%'}
                           </span>
+                          {condition && (
+                            <p className="text-[10px] text-orange-500 mt-0.5">
+                              {condition}
+                            </p>
+                          )}
                           {card.rewardConfig?.currency && (
                             <p className="text-[10px] text-gray-400 mt-0.5">
                               ({card.rewardConfig.currency})
