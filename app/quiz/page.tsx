@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -9,14 +9,11 @@ import {
   ArrowLeft, ArrowRight, Check, CreditCard, 
   ShoppingBag, Plane, Utensils, Car, Film, 
   Smartphone, Gift, DollarSign, Percent, Star,
-  ChevronRight, RotateCcw
+  ChevronRight, RotateCcw, Loader2
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { Progress } from "@/components/ui/progress";
-
-// HIDDEN FEATURE FLAG - Set to true to enable
-const FEATURE_ENABLED = false;
 
 interface Question {
   id: string;
@@ -100,9 +97,36 @@ export default function CardQuizPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
   const [showResults, setShowResults] = useState(false);
+  const [featureEnabled, setFeatureEnabled] = useState<boolean | null>(null);
+
+  // Fetch feature flag from backend
+  useEffect(() => {
+    async function checkFeature() {
+      try {
+        const res = await fetch('/api/features');
+        const data = await res.json();
+        setFeatureEnabled(data.quiz_enabled);
+      } catch (e) {
+        setFeatureEnabled(false);
+      }
+    }
+    checkFeature();
+  }, []);
+
+  // Loading state
+  if (featureEnabled === null) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
+        <Navbar />
+        <main className="container mx-auto px-4 py-16 flex-1 flex flex-col items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+        </main>
+      </div>
+    );
+  }
 
   // If feature is disabled, show coming soon
-  if (!FEATURE_ENABLED) {
+  if (!featureEnabled) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
         <Navbar />

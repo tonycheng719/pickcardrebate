@@ -5,11 +5,11 @@ import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { ACHIEVEMENTS, ACHIEVEMENTS_ENABLED, Achievement, UserAchievementProgress, checkAchievements } from "@/lib/achievements";
+import { ACHIEVEMENTS, Achievement, UserAchievementProgress, checkAchievements } from "@/lib/achievements";
 import { useWallet } from "@/lib/store/wallet-context";
 import { 
   Trophy, Lock, Star, Flame, CreditCard, Target,
-  ChevronRight, Medal
+  ChevronRight, Medal, Loader2
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -33,6 +33,21 @@ const categoryNames: Record<string, string> = {
 export default function AchievementsPage() {
   const { myCardIds, transactions } = useWallet();
   const [userProgress, setUserProgress] = useState<UserAchievementProgress | null>(null);
+  const [featureEnabled, setFeatureEnabled] = useState<boolean | null>(null);
+
+  // Fetch feature flag from backend
+  useEffect(() => {
+    async function checkFeature() {
+      try {
+        const res = await fetch('/api/features');
+        const data = await res.json();
+        setFeatureEnabled(data.achievements_enabled);
+      } catch (e) {
+        setFeatureEnabled(false);
+      }
+    }
+    checkFeature();
+  }, []);
 
   // Load progress from localStorage
   useEffect(() => {
@@ -76,8 +91,20 @@ export default function AchievementsPage() {
     return checkAchievements(userProgress.progress);
   }, [userProgress]);
 
+  // Loading state
+  if (featureEnabled === null) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
+        <Navbar />
+        <main className="container mx-auto px-4 py-16 flex-1 flex flex-col items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+        </main>
+      </div>
+    );
+  }
+
   // If feature is disabled, show coming soon
-  if (!ACHIEVEMENTS_ENABLED) {
+  if (!featureEnabled) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
         <Navbar />

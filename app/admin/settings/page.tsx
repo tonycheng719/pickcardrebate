@@ -4,12 +4,13 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAdminDataStore } from "@/lib/admin/data-store";
-import { Database, MessageCircle, Save, Key, Eye, EyeOff } from "lucide-react";
+import { Database, MessageCircle, Save, Key, Eye, EyeOff, Sparkles, Trophy, HelpCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DEFAULT_SYSTEM_SETTINGS, SystemSetting } from "@/lib/admin/mock-data";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
+import { Switch } from "@/components/ui/switch";
 
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState<SystemSetting[]>(DEFAULT_SYSTEM_SETTINGS);
@@ -26,6 +27,13 @@ export default function AdminSettingsPage() {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
+  
+  // Feature flags
+  const [featureFlags, setFeatureFlags] = useState({
+    quiz_enabled: false,
+    achievements_enabled: false,
+  });
+  const [isSavingFeatures, setIsSavingFeatures] = useState(false);
 
   useEffect(() => {
     async function fetchSettings() {
@@ -36,6 +44,11 @@ export default function AdminSettingsPage() {
           if (data.settings?.whatsapp_group_url) {
             setWhatsappUrl(data.settings.whatsapp_group_url);
           }
+          // Load feature flags
+          setFeatureFlags({
+            quiz_enabled: data.settings?.quiz_enabled === 'true',
+            achievements_enabled: data.settings?.achievements_enabled === 'true',
+          });
         }
       } catch (error) {
         console.error("Failed to fetch settings", error);
@@ -63,6 +76,31 @@ export default function AdminSettingsPage() {
         }
     } catch (e) {
         toast.error("發生錯誤");
+    }
+  };
+
+  const handleToggleFeature = async (key: string, enabled: boolean) => {
+    setIsSavingFeatures(true);
+    try {
+      const res = await fetch("/api/admin/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          key,
+          value: enabled ? 'true' : 'false'
+        })
+      });
+      
+      if (res.ok) {
+        setFeatureFlags(prev => ({ ...prev, [key]: enabled }));
+        toast.success(`功能已${enabled ? '啟用' : '停用'}`);
+      } else {
+        toast.error("更新失敗");
+      }
+    } catch (e) {
+      toast.error("發生錯誤");
+    } finally {
+      setIsSavingFeatures(false);
     }
   };
 
@@ -317,6 +355,60 @@ export default function AdminSettingsPage() {
             >
               更新商戶資料
             </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Feature Flags Section */}
+      <Card className="dark:bg-gray-800 dark:border-gray-700">
+        <CardHeader>
+          <CardTitle className="text-lg dark:text-white flex items-center gap-2">
+            <Sparkles className="h-5 w-5" /> 隱藏功能開關
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            以下功能已開發完成但預設隱藏。啟用後用戶即可使用。
+          </p>
+          
+          <div className="flex items-center justify-between py-3 border-b dark:border-gray-700">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                <HelpCircle className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+              </div>
+              <div>
+                <p className="font-medium text-gray-900 dark:text-white">信用卡推薦問卷</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  用戶回答消費習慣問卷，系統推薦最適合嘅信用卡
+                </p>
+                <p className="text-xs text-gray-400 mt-1">路徑: /quiz</p>
+              </div>
+            </div>
+            <Switch
+              checked={featureFlags.quiz_enabled}
+              onCheckedChange={(checked) => handleToggleFeature('quiz_enabled', checked)}
+              disabled={isSavingFeatures}
+            />
+          </div>
+          
+          <div className="flex items-center justify-between py-3">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
+                <Trophy className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+              </div>
+              <div>
+                <p className="font-medium text-gray-900 dark:text-white">成就系統 (Gamification)</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  用戶完成任務解鎖成就徽章，增加黏性
+                </p>
+                <p className="text-xs text-gray-400 mt-1">路徑: /achievements</p>
+              </div>
+            </div>
+            <Switch
+              checked={featureFlags.achievements_enabled}
+              onCheckedChange={(checked) => handleToggleFeature('achievements_enabled', checked)}
+              disabled={isSavingFeatures}
+            />
           </div>
         </CardContent>
       </Card>
