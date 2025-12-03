@@ -45,6 +45,16 @@ const GUIDES = [
     imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2074&auto=format&fit=crop",
     tags: ["里數", "現金回贈", "信用卡攻略"],
     merchant: "攻略",
+    isNew: false,
+  },
+  {
+    id: "best-cashback-cards",
+    type: "guide" as const,
+    title: "2025 最高回贈信用卡比較｜邊張信用卡好？",
+    description: "現金回贈信用卡邊張最抵？無上限回贈卡有邊幾張？網購、餐飲、超市信用卡完全比較，教你揀最適合自己嘅信用卡組合！",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["現金回贈", "信用卡比較", "2025"],
+    merchant: "攻略",
     isNew: true,
   },
 ];

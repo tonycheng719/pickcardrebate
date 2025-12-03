@@ -21,6 +21,7 @@ import { HK_CARDS } from "@/lib/data/cards";
 import { ShareButton } from "@/components/share-button";
 import { DebitCardGuide, debitCardFaqData } from "./debit-card-guide";
 import { MilesVsCashbackGuide, milesVsCashbackFaqData } from "./miles-vs-cashback-guide";
+import { BestCashbackCardsGuide, bestCashbackCardsFaqData } from "./best-cashback-cards-guide";
 
 // Revalidate every hour
 export const revalidate = 3600;
@@ -125,6 +126,33 @@ const GUIDES: Record<string, {
     ],
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
+  },
+  "best-cashback-cards": {
+    id: "best-cashback-cards",
+    title: "2025 最高回贈信用卡比較｜現金回贈信用卡推薦組合",
+    seoTitle: "2025 最高回贈信用卡比較｜無上限現金回贈信用卡推薦｜邊張信用卡好｜香港",
+    heroTitle: "💰 2025 最高回贈信用卡",
+    heroSubtitle: "現金回贈信用卡完全比較指南",
+    description: "2025年現金回贈信用卡邊張最抵？無上限現金回贈信用卡有邊幾張？本地消費、網購、餐飲、超市信用卡回贈完全比較，教你揀最適合自己嘅信用卡組合！",
+    content: "best-cashback-cards",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["現金回贈", "信用卡比較", "信用卡攻略"],
+    keywords: [
+      "本地消費信用卡回贈",
+      "現金回贈信用卡",
+      "現金回贈信用卡2025",
+      "無上限現金回贈信用卡",
+      "信用卡回贈2025",
+      "信用卡現金回贈比較",
+      "邊張信用卡好",
+      "網購信用卡",
+      "餐飲信用卡",
+      "超市信用卡",
+      "信用卡推薦",
+      "信用卡組合",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "15 分鐘",
   },
 };
 
@@ -696,6 +724,8 @@ function getGuideFaqData(guideId: string) {
       return debitCardFaqData;
     case "miles-vs-cashback":
       return milesVsCashbackFaqData;
+    case "best-cashback-cards":
+      return bestCashbackCardsFaqData;
     default:
       return [];
   }
@@ -710,6 +740,8 @@ function renderGuideContent(guideId: string) {
       return <DebitCardGuide />;
     case "miles-vs-cashback":
       return <MilesVsCashbackGuide />;
+    case "best-cashback-cards":
+      return <BestCashbackCardsGuide />;
     default:
       return null;
   }
