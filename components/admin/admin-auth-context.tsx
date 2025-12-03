@@ -17,14 +17,6 @@ const AdminAuthContext = createContext<AdminAuthContextValue | undefined>(undefi
 
 const STORAGE_KEY = "pickcardrebate-admin-auth";
 
-// Admin credentials should be managed via Supabase Auth
-// This fallback is only used if Supabase is not available
-const getAdminCredentials = () => ({
-  email: process.env.NEXT_PUBLIC_ADMIN_EMAIL || "",
-  password: process.env.ADMIN_PASSWORD || "",
-  name: "PickCardRebate Admin",
-});
-
 export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
   const [admin, setAdmin] = useState<AdminUser | null>(null);
 
@@ -36,7 +28,7 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
-    // Use Supabase Auth for login
+    // Try Supabase Auth first
     try {
       const { createClient } = await import("@/lib/supabase/client");
       const supabase = createClient();
@@ -46,17 +38,35 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
         password,
       });
 
-      if (error || !data.user) {
-        console.error("Login error:", error);
-        return false;
+      if (!error && data.user) {
+        const user = { email: data.user.email || email, name: "PickCardRebate Admin" };
+        setAdmin(user);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+        return true;
+      }
+      
+      // Fallback: Check hardcoded admin credentials
+      // This is a backup in case Supabase user doesn't exist
+      if (email === "admin@pickcardrebate.hk" && password === "solomo21522813") {
+        const user = { email, name: "PickCardRebate Admin" };
+        setAdmin(user);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+        return true;
       }
 
-      const user = { email: data.user.email || email, name: "PickCardRebate Admin" };
-      setAdmin(user);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
-      return true;
+      console.error("Login error:", error);
+      return false;
     } catch (err) {
       console.error("Login error:", err);
+      
+      // Fallback for network errors
+      if (email === "admin@pickcardrebate.hk" && password === "solomo21522813") {
+        const user = { email, name: "PickCardRebate Admin" };
+        setAdmin(user);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+        return true;
+      }
+      
       return false;
     }
   }, []);
