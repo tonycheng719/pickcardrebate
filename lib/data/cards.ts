@@ -196,6 +196,7 @@ export const HK_CARDS: CreditCard[] = [
     rewardConfig: { method: 'direct_rate', baseRate: 6, currency: 'AM' }, // Direct rate: $6/mile
     rules: [
       { description: "國泰/HK Express 簽賬 $2/里", matchType: "merchant", matchValue: ["cathay", "hkexpress"], percentage: 5.0 },
+      { description: "旅遊/航空簽賬 $4/里", matchType: "category", matchValue: ["travel", "airline"], percentage: 2.5 },
       { description: "餐飲/外賣/網上 $4/里", matchType: "category", matchValue: ["dining", "online"], percentage: 2.5 }, 
       // T&C: 八達通自動增值計里數
       { description: "八達通自動增值 $6/里", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 1.67 },
@@ -299,6 +300,7 @@ export const HK_CARDS: CreditCard[] = [
       // 旅遊上限：250,000 積分/月 = $25,000 簽賬
       // 餐飲+旅遊合共上限：300,000 積分/月 = $30,000 簽賬
       { description: "本地餐飲 10X (4%)", matchType: "category", matchValue: ["dining"], percentage: 4.0, monthlyMinSpend: 5000, cap: 10000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      { description: "旅遊/外幣簽賬 10X (4%)", matchType: "category", matchValue: ["travel"], percentage: 4.0, monthlyMinSpend: 5000, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       { description: "外幣簽賬 10X (4%)", matchType: "base", percentage: 4.0, isForeignCurrency: true, monthlyMinSpend: 5000, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 不適用於 Alipay/WeChat Pay/PayMe
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
@@ -329,6 +331,7 @@ export const HK_CARDS: CreditCard[] = [
       // 旅遊上限：200,000 積分/月 = $25,000 簽賬
       // 餐飲+旅遊合共上限：240,000 積分/月 = $30,000 簽賬
       { description: "本地餐飲 8X (3.2%)", matchType: "category", matchValue: ["dining"], percentage: 3.2, monthlyMinSpend: 5000, cap: 10000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      { description: "旅遊/外幣簽賬 8X (3.2%)", matchType: "category", matchValue: ["travel"], percentage: 3.2, monthlyMinSpend: 5000, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       { description: "外幣簽賬 8X (3.2%)", matchType: "base", percentage: 3.2, isForeignCurrency: true, monthlyMinSpend: 5000, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 不適用於 Alipay/WeChat Pay/PayMe
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
@@ -454,6 +457,7 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rules: [
       // T&C: 指定國家外幣簽賬 7% (日本/韓國/泰國/新加坡/澳洲，需月簽賬滿$6,000)
+      { description: "指定國家旅遊 7% (日韓泰星澳)", matchType: "category", matchValue: ["travel"], percentage: 7.0, monthlyMinSpend: 6000, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
       { description: "指定國家外幣 7% (日韓泰星澳)", matchType: "base", percentage: 7.0, monthlyMinSpend: 6000, isForeignCurrency: true, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
       // T&C: 其他外幣簽賬 5% (需月簽賬滿$6,000)
       { description: "其他外幣簽賬 5%", matchType: "base", percentage: 5.0, monthlyMinSpend: 6000, isForeignCurrency: true, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
