@@ -25,6 +25,16 @@ const GUIDES = [
     imageUrl: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=2070&auto=format&fit=crop",
     tags: ["海外消費", "網購", "手續費"],
     merchant: "攻略",
+    isNew: false,
+  },
+  {
+    id: "debit-card-guide",
+    type: "guide" as const,
+    title: "Debit Card 扣賬卡完全攻略｜香港各銀行比較、海外使用貼士",
+    description: "Debit Card 中文係咩？同 Credit Card 有咩分別？HSBC、恒生、中銀 Debit Card 邊張最抵？日本旅行用 Debit Card 得唔得？",
+    imageUrl: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop",
+    tags: ["基礎知識", "銀行卡", "海外消費"],
+    merchant: "攻略",
     isNew: true,
   },
 ];

@@ -19,6 +19,7 @@ import { WHATSAPP_GROUP_URL } from "@/lib/constants";
 import { getSystemSetting } from "@/lib/data/settings";
 import { HK_CARDS } from "@/lib/data/cards";
 import { ShareButton } from "@/components/share-button";
+import { DebitCardGuide, debitCardFaqData } from "./debit-card-guide";
 
 // Revalidate every hour
 export const revalidate = 3600;
@@ -34,10 +35,13 @@ const GUIDES: Record<string, {
   id: string;
   title: string;
   seoTitle: string;
+  heroTitle: string;
+  heroSubtitle: string;
   description: string;
   content: string; // Will be rendered as component
   imageUrl: string;
   tags: string[];
+  keywords: string[];
   publishDate: string;
   readTime: string;
 }> = {
@@ -45,12 +49,53 @@ const GUIDES: Record<string, {
     id: "overseas-fee",
     title: "海外簽賬手續費完全攻略｜DCC、CBF 陷阱拆解",
     seoTitle: "海外簽賬手續費完全攻略｜DCC、CBF 陷阱拆解｜網購、App Store、Netflix 避雷指南",
+    heroTitle: "💳 海外簽賬手續費完全攻略",
+    heroSubtitle: "DCC、CBF 陷阱大拆解！",
     description: "拆解信用卡海外簽賬 DCC、CBF 陷阱，教你點樣避開隱藏收費！Netflix、Spotify、App Store 都會中招？",
-    content: "overseas-fee", // Special marker for guide component
+    content: "overseas-fee",
     imageUrl: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=2070&auto=format&fit=crop",
     tags: ["海外消費", "網購", "手續費"],
-    publishDate: new Date().toISOString().split('T')[0],
+    keywords: [
+      "DCC 動態貨幣轉換",
+      "CBF 跨境手續費",
+      "海外簽賬手續費",
+      "信用卡外幣手續費",
+      "網購手續費",
+      "App Store 手續費",
+      "Netflix 信用卡收費",
+    ],
+    publishDate: "2025-01-01",
     readTime: "8 分鐘",
+  },
+  "debit-card-guide": {
+    id: "debit-card-guide",
+    title: "Debit Card 扣賬卡完全攻略｜香港銀行比較、海外使用、申請教學",
+    seoTitle: "Debit Card 扣賬卡完全攻略 2025｜中文解釋、vs 信用卡比較、HSBC/恒生/中銀比較｜香港",
+    heroTitle: "💳 Debit Card 扣賬卡完全攻略",
+    heroSubtitle: "香港各銀行比較、海外使用貼士",
+    description: "Debit Card 中文係咩？同 Credit Card 有咩分別？HSBC、恒生、中銀 Debit Card 邊張最抵？日本旅行用 Debit Card 得唔得？本文一一解答！",
+    content: "debit-card-guide",
+    imageUrl: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop",
+    tags: ["基礎知識", "銀行卡", "海外消費"],
+    keywords: [
+      "debit card 中文",
+      "debit card 用法",
+      "debit card hsbc",
+      "debit card hang seng",
+      "debit card 日本",
+      "debit card 海外簽賬",
+      "debit card 中銀",
+      "debit card 好處",
+      "debit card 申請",
+      "debit card 香港",
+      "debit card vs credit card",
+      "debit card 推薦",
+      "debit card meaning",
+      "扣賬卡",
+      "借記卡",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "10 分鐘",
   },
 };
 
@@ -97,22 +142,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return {
       title: guide.seoTitle,
       description: guide.description,
-      keywords: [
-        "DCC 動態貨幣轉換",
-        "CBF 跨境手續費",
-        "海外簽賬手續費",
-        "信用卡外幣手續費",
-        "網購手續費",
-        "App Store 手續費",
-        "Netflix 信用卡收費",
-        ...guide.tags,
-      ],
+      keywords: [...guide.keywords, ...guide.tags],
       openGraph: {
         title: guide.seoTitle,
         description: guide.description,
         images: [{ url: guide.imageUrl }],
         type: 'article',
         url: `https://pickcardrebate.com/discover/${slug}`,
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: guide.seoTitle,
+        description: guide.description,
+        images: [guide.imageUrl],
       },
       alternates: {
         canonical: `https://pickcardrebate.com/discover/${slug}`,
@@ -607,6 +649,39 @@ function FAQSection({ faqs }: { faqs: PromoFAQ[] }) {
   );
 }
 
+// ============ GUIDE FAQ DATA ============
+// Overseas Fee FAQ data for schema
+const overseasFeeFaqData = [
+  { question: "什麼是 DCC 動態貨幣轉換？", answer: "DCC (Dynamic Currency Conversion) 是指在海外實體店消費時，商戶提供以港幣結算的選項。" },
+  { question: "什麼是 CBF 跨境手續費？", answer: "CBF (Cross Border Fee) 是指當你在海外註冊的網站用港幣付款時，部分銀行會收取的 1% 手續費。" },
+  { question: "Netflix、Spotify 會被收取海外手續費嗎？", answer: "會！Netflix 註冊在荷蘭、Spotify 註冊在瑞典，部分銀行會收取 1% CBF。" },
+  { question: "如何避免海外簽賬手續費？", answer: "使用不收 CBF 的銀行信用卡（如中銀、東亞），或用 Gift Card 增值。" },
+];
+
+// Get FAQ data for specific guide
+function getGuideFaqData(guideId: string) {
+  switch (guideId) {
+    case "overseas-fee":
+      return overseasFeeFaqData;
+    case "debit-card-guide":
+      return debitCardFaqData;
+    default:
+      return [];
+  }
+}
+
+// Render guide component
+function renderGuideContent(guideId: string) {
+  switch (guideId) {
+    case "overseas-fee":
+      return <OverseasFeeGuide />;
+    case "debit-card-guide":
+      return <DebitCardGuide />;
+    default:
+      return null;
+  }
+}
+
 // ============ MAIN PAGE COMPONENT ============
 export default async function DiscoverDetailPage({ params }: PageProps) {
   const { slug } = await params;
@@ -616,13 +691,8 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
     const guide = GUIDES[slug];
     const currentYear = new Date().getFullYear();
     
-    // FAQ data for schema
-    const faqData = [
-      { question: "什麼是 DCC 動態貨幣轉換？", answer: "DCC (Dynamic Currency Conversion) 是指在海外實體店消費時，商戶提供以港幣結算的選項。" },
-      { question: "什麼是 CBF 跨境手續費？", answer: "CBF (Cross Border Fee) 是指當你在海外註冊的網站用港幣付款時，部分銀行會收取的 1% 手續費。" },
-      { question: "Netflix、Spotify 會被收取海外手續費嗎？", answer: "會！Netflix 註冊在荷蘭、Spotify 註冊在瑞典，部分銀行會收取 1% CBF。" },
-      { question: "如何避免海外簽賬手續費？", answer: "使用不收 CBF 的銀行信用卡（如中銀、東亞），或用 Gift Card 增值。" },
-    ];
+    // Get FAQ data for this specific guide
+    const faqData = getGuideFaqData(slug);
 
     const structuredData = {
       "@context": "https://schema.org",
@@ -631,10 +701,13 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
           "@type": "Article",
           "headline": guide.title,
           "description": guide.description,
+          "keywords": guide.keywords.join(", "),
           "author": { "@type": "Organization", "name": "PickCardRebate" },
-          "publisher": { "@type": "Organization", "name": "PickCardRebate" },
+          "publisher": { "@type": "Organization", "name": "PickCardRebate", "logo": { "@type": "ImageObject", "url": "https://pickcardrebate.com/logo.png" } },
           "datePublished": guide.publishDate,
+          "dateModified": new Date().toISOString().split('T')[0],
           "image": guide.imageUrl,
+          "mainEntityOfPage": `https://pickcardrebate.com/discover/${slug}`,
         },
         {
           "@type": "FAQPage",
@@ -684,9 +757,9 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
             </div>
             
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
-              💳 海外簽賬手續費完全攻略
+              {guide.heroTitle}
               <br />
-              <span className="text-2xl md:text-3xl text-red-500">DCC、CBF 陷阱大拆解！</span>
+              <span className="text-2xl md:text-3xl text-emerald-600 dark:text-emerald-400">{guide.heroSubtitle}</span>
             </h1>
             
             <p className="text-lg text-gray-600 dark:text-gray-400 mb-4">
@@ -704,13 +777,13 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
           
           {/* Guide Content */}
           <article className="bg-white dark:bg-gray-900 rounded-3xl shadow-sm border dark:border-gray-800 p-6 md:p-10">
-            <OverseasFeeGuide />
+            {renderGuideContent(slug)}
           </article>
           
           {/* Disclaimer */}
           <div className="mt-8 bg-gray-100 dark:bg-gray-800 rounded-xl p-4 text-sm text-gray-600 dark:text-gray-400">
             <strong>免責聲明：</strong>本頁面資料僅供參考，以各發卡機構官方公佈為準。
-            銀行政策可能隨時更改，建議直接向銀行查詢最新收費詳情。
+            銀行政策可能隨時更改，建議直接向銀行查詢最新資訊。
           </div>
         </main>
       </div>
