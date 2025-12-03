@@ -69,6 +69,9 @@ export function Navbar() {
             <Link href="/cards" className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               所有信用卡
             </Link>
+            <Link href="/rankings" className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              🏆 排行榜
+            </Link>
           </div>
 
           {/* Reward Preference Toggle - visible on all sizes */}

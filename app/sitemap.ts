@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 import { HK_CARDS } from '@/lib/data/cards';
 import { PROMOS } from '@/lib/data/promos';
+import { RANKING_CATEGORIES } from '@/lib/logic/rankings';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://pickcardrebate.com';
@@ -21,6 +22,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/promos`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/rankings`,
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.9,
@@ -69,6 +76,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticPages, ...cardPages, ...promoPages];
+  // Blog/Rankings category pages
+  const blogPages: MetadataRoute.Sitemap = RANKING_CATEGORIES.map((category) => ({
+    url: `${baseUrl}/blog/${category.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'daily' as const,
+    priority: 0.85,
+  }));
+
+  return [...staticPages, ...cardPages, ...promoPages, ...blogPages];
 }
 
