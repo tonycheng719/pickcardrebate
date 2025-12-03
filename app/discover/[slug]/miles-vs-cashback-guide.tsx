@@ -45,17 +45,33 @@ export const milesVsCashbackFaqData = [
   }
 ];
 
-// 里數價值比較數據
+// 里數價值比較數據（來回機票）
 export const milesValueData = [
-  { route: "香港 ↔ 東京", class: "經濟艙", miles: 20000, cashPrice: 2500, valuePerMile: 0.125 },
-  { route: "香港 ↔ 東京", class: "商務艙", miles: 40000, cashPrice: 12000, valuePerMile: 0.30 },
-  { route: "香港 ↔ 台北", class: "經濟艙", miles: 15000, cashPrice: 1500, valuePerMile: 0.10 },
-  { route: "香港 ↔ 曼谷", class: "經濟艙", miles: 20000, cashPrice: 2000, valuePerMile: 0.10 },
-  { route: "香港 ↔ 曼谷", class: "商務艙", miles: 40000, cashPrice: 10000, valuePerMile: 0.25 },
-  { route: "香港 ↔ 倫敦", class: "經濟艙", miles: 60000, cashPrice: 6000, valuePerMile: 0.10 },
-  { route: "香港 ↔ 倫敦", class: "商務艙", miles: 100000, cashPrice: 40000, valuePerMile: 0.40 },
-  { route: "香港 ↔ 紐約", class: "經濟艙", miles: 70000, cashPrice: 7000, valuePerMile: 0.10 },
-  { route: "香港 ↔ 紐約", class: "商務艙", miles: 120000, cashPrice: 50000, valuePerMile: 0.42 },
+  // 韓國航線
+  { route: "香港 ↔ 首爾", class: "經濟艙", miles: 18000, cashPrice: 1800, valuePerMile: 0.10, region: "韓國" },
+  { route: "香港 ↔ 首爾", class: "商務艙", miles: 56000, cashPrice: 9000, valuePerMile: 0.16, region: "韓國" },
+  { route: "香港 ↔ 釜山", class: "經濟艙", miles: 18000, cashPrice: 1600, valuePerMile: 0.09, region: "韓國" },
+  // 日本航線
+  { route: "香港 ↔ 東京", class: "經濟艙", miles: 26000, cashPrice: 2800, valuePerMile: 0.11, region: "日本" },
+  { route: "香港 ↔ 東京", class: "商務艙", miles: 64000, cashPrice: 15000, valuePerMile: 0.23, region: "日本" },
+  { route: "香港 ↔ 大阪", class: "經濟艙", miles: 26000, cashPrice: 2500, valuePerMile: 0.10, region: "日本" },
+  { route: "香港 ↔ 大阪", class: "商務艙", miles: 64000, cashPrice: 14000, valuePerMile: 0.22, region: "日本" },
+  { route: "香港 ↔ 福岡", class: "經濟艙", miles: 26000, cashPrice: 2200, valuePerMile: 0.08, region: "日本" },
+  { route: "香港 ↔ 札幌", class: "經濟艙", miles: 26000, cashPrice: 3200, valuePerMile: 0.12, region: "日本" },
+  { route: "香港 ↔ 札幌", class: "商務艙", miles: 64000, cashPrice: 16000, valuePerMile: 0.25, region: "日本" },
+  { route: "香港 ↔ 沖繩", class: "經濟艙", miles: 26000, cashPrice: 2000, valuePerMile: 0.08, region: "日本" },
+  { route: "香港 ↔ 名古屋", class: "經濟艙", miles: 26000, cashPrice: 2400, valuePerMile: 0.09, region: "日本" },
+  // 東南亞航線
+  { route: "香港 ↔ 台北", class: "經濟艙", miles: 15000, cashPrice: 1500, valuePerMile: 0.10, region: "東南亞" },
+  { route: "香港 ↔ 曼谷", class: "經濟艙", miles: 20000, cashPrice: 2000, valuePerMile: 0.10, region: "東南亞" },
+  { route: "香港 ↔ 曼谷", class: "商務艙", miles: 50000, cashPrice: 12000, valuePerMile: 0.24, region: "東南亞" },
+  { route: "香港 ↔ 新加坡", class: "經濟艙", miles: 20000, cashPrice: 2200, valuePerMile: 0.11, region: "東南亞" },
+  { route: "香港 ↔ 新加坡", class: "商務艙", miles: 50000, cashPrice: 13000, valuePerMile: 0.26, region: "東南亞" },
+  // 長途航線
+  { route: "香港 ↔ 倫敦", class: "經濟艙", miles: 60000, cashPrice: 6000, valuePerMile: 0.10, region: "歐美" },
+  { route: "香港 ↔ 倫敦", class: "商務艙", miles: 140000, cashPrice: 45000, valuePerMile: 0.32, region: "歐美" },
+  { route: "香港 ↔ 紐約", class: "經濟艙", miles: 70000, cashPrice: 7000, valuePerMile: 0.10, region: "歐美" },
+  { route: "香港 ↔ 紐約", class: "商務艙", miles: 160000, cashPrice: 55000, valuePerMile: 0.34, region: "歐美" },
 ];
 
 // 信用卡比較數據
@@ -165,7 +181,11 @@ export function MilesVsCashbackGuide() {
           </p>
         </div>
 
-        <h3 className="text-xl font-bold mt-6 mb-3">📊 Asia Miles 里數價值參考表</h3>
+        <h3 className="text-xl font-bold mt-6 mb-3">📊 Asia Miles 里數價值參考表（來回機票）</h3>
+        
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+          以下為 2025 年最新 Asia Miles 兌換標準，里數為來回機票所需。現金價為淡季參考價。
+        </p>
 
         <div className="not-prose bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden my-6">
           <div className="overflow-x-auto">
@@ -180,8 +200,12 @@ export function MilesVsCashbackGuide() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-                {milesValueData.map((row, index) => (
-                  <tr key={index} className={row.class === "商務艙" ? "bg-amber-50/50 dark:bg-amber-900/10" : ""}>
+                {/* 韓國航線 */}
+                <tr className="bg-blue-50/50 dark:bg-blue-900/10">
+                  <td colSpan={5} className="px-4 py-2 font-bold text-blue-700 dark:text-blue-300">🇰🇷 韓國航線</td>
+                </tr>
+                {milesValueData.filter(r => r.region === "韓國").map((row, index) => (
+                  <tr key={`kr-${index}`} className={row.class === "商務艙" ? "bg-amber-50/50 dark:bg-amber-900/10" : ""}>
                     <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">{row.route}</td>
                     <td className="px-4 py-3 text-center">
                       {row.class === "商務艙" ? (
@@ -195,7 +219,82 @@ export function MilesVsCashbackGuide() {
                     <td className="px-4 py-3 text-center text-gray-900 dark:text-white">{row.miles.toLocaleString()}</td>
                     <td className="px-4 py-3 text-center text-gray-900 dark:text-white">${row.cashPrice.toLocaleString()}</td>
                     <td className="px-4 py-3 text-center">
-                      <span className={`font-bold ${row.valuePerMile >= 0.20 ? 'text-green-600 dark:text-green-400' : row.valuePerMile >= 0.12 ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400'}`}>
+                      <span className={`font-bold ${row.valuePerMile >= 0.15 ? 'text-green-600 dark:text-green-400' : row.valuePerMile >= 0.10 ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400'}`}>
+                        ${row.valuePerMile.toFixed(2)}/里
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+                {/* 日本航線 */}
+                <tr className="bg-red-50/50 dark:bg-red-900/10">
+                  <td colSpan={5} className="px-4 py-2 font-bold text-red-700 dark:text-red-300">🇯🇵 日本航線</td>
+                </tr>
+                {milesValueData.filter(r => r.region === "日本").map((row, index) => (
+                  <tr key={`jp-${index}`} className={row.class === "商務艙" ? "bg-amber-50/50 dark:bg-amber-900/10" : ""}>
+                    <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">{row.route}</td>
+                    <td className="px-4 py-3 text-center">
+                      {row.class === "商務艙" ? (
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+                          {row.class}
+                        </span>
+                      ) : (
+                        <span className="text-gray-600 dark:text-gray-400">{row.class}</span>
+                      )}
+                    </td>
+                    <td className="px-4 py-3 text-center text-gray-900 dark:text-white">{row.miles.toLocaleString()}</td>
+                    <td className="px-4 py-3 text-center text-gray-900 dark:text-white">${row.cashPrice.toLocaleString()}</td>
+                    <td className="px-4 py-3 text-center">
+                      <span className={`font-bold ${row.valuePerMile >= 0.15 ? 'text-green-600 dark:text-green-400' : row.valuePerMile >= 0.10 ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400'}`}>
+                        ${row.valuePerMile.toFixed(2)}/里
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+                {/* 東南亞航線 */}
+                <tr className="bg-green-50/50 dark:bg-green-900/10">
+                  <td colSpan={5} className="px-4 py-2 font-bold text-green-700 dark:text-green-300">🌴 東南亞航線</td>
+                </tr>
+                {milesValueData.filter(r => r.region === "東南亞").map((row, index) => (
+                  <tr key={`sea-${index}`} className={row.class === "商務艙" ? "bg-amber-50/50 dark:bg-amber-900/10" : ""}>
+                    <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">{row.route}</td>
+                    <td className="px-4 py-3 text-center">
+                      {row.class === "商務艙" ? (
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+                          {row.class}
+                        </span>
+                      ) : (
+                        <span className="text-gray-600 dark:text-gray-400">{row.class}</span>
+                      )}
+                    </td>
+                    <td className="px-4 py-3 text-center text-gray-900 dark:text-white">{row.miles.toLocaleString()}</td>
+                    <td className="px-4 py-3 text-center text-gray-900 dark:text-white">${row.cashPrice.toLocaleString()}</td>
+                    <td className="px-4 py-3 text-center">
+                      <span className={`font-bold ${row.valuePerMile >= 0.15 ? 'text-green-600 dark:text-green-400' : row.valuePerMile >= 0.10 ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400'}`}>
+                        ${row.valuePerMile.toFixed(2)}/里
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+                {/* 歐美長途航線 */}
+                <tr className="bg-purple-50/50 dark:bg-purple-900/10">
+                  <td colSpan={5} className="px-4 py-2 font-bold text-purple-700 dark:text-purple-300">🌍 歐美長途航線</td>
+                </tr>
+                {milesValueData.filter(r => r.region === "歐美").map((row, index) => (
+                  <tr key={`eu-${index}`} className={row.class === "商務艙" ? "bg-amber-50/50 dark:bg-amber-900/10" : ""}>
+                    <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">{row.route}</td>
+                    <td className="px-4 py-3 text-center">
+                      {row.class === "商務艙" ? (
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+                          {row.class}
+                        </span>
+                      ) : (
+                        <span className="text-gray-600 dark:text-gray-400">{row.class}</span>
+                      )}
+                    </td>
+                    <td className="px-4 py-3 text-center text-gray-900 dark:text-white">{row.miles.toLocaleString()}</td>
+                    <td className="px-4 py-3 text-center text-gray-900 dark:text-white">${row.cashPrice.toLocaleString()}</td>
+                    <td className="px-4 py-3 text-center">
+                      <span className={`font-bold ${row.valuePerMile >= 0.15 ? 'text-green-600 dark:text-green-400' : row.valuePerMile >= 0.10 ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400'}`}>
                         ${row.valuePerMile.toFixed(2)}/里
                       </span>
                     </td>
@@ -205,13 +304,19 @@ export function MilesVsCashbackGuide() {
             </table>
           </div>
         </div>
+        
+        <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+          * 里數資料參考 <a href="https://www.asiamiles.com" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">Asia Miles 官網</a> 2025年4月生效之兌換標準。實際所需里數可能因航班供應而異。
+        </p>
 
         <div className="not-prose bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
           <h4 className="font-bold text-amber-800 dark:text-amber-200 mb-2">⭐ 重點發現</h4>
           <ul className="text-amber-700 dark:text-amber-300 text-sm space-y-1">
-            <li>• <strong>商務艙</strong>里數價值通常比經濟艙<strong>高 2-4 倍</strong></li>
-            <li>• <strong>長途航線</strong>（歐美）里數價值最高，可達 <strong>$0.40/里</strong></li>
-            <li>• <strong>短途經濟艙</strong>（台北、東京）價值約 <strong>$0.08-0.12/里</strong></li>
+            <li>• <strong>商務艙</strong>里數價值通常比經濟艙<strong>高 2-3 倍</strong></li>
+            <li>• <strong>長途商務艙</strong>（歐美）里數價值最高，可達 <strong>$0.32-0.34/里</strong></li>
+            <li>• <strong>韓國航線</strong>里數最抵：經濟艙只需 <strong>18,000 里</strong>來回</li>
+            <li>• <strong>日本航線</strong>：經濟艙 <strong>26,000 里</strong>、商務艙約 <strong>$0.22-0.25/里</strong></li>
+            <li>• <strong>短途經濟艙</strong>價值約 <strong>$0.08-0.12/里</strong>，商務艙更抵</li>
           </ul>
         </div>
       </section>
