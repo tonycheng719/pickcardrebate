@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, Wallet, Compass, Repeat, CreditCard, Gift, Trophy } from "lucide-react";
+import { Search, Wallet, Compass, Repeat, CreditCard, Sparkles, Trophy } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -15,7 +15,7 @@ export function BottomNav() {
     { name: "計算", href: "/", icon: Repeat, active: pathname === "/" || pathname.startsWith("/calculator") },
     { name: "排行榜", href: "/rankings", icon: Trophy, active: pathname.startsWith("/rankings") || pathname.startsWith("/blog") },
     { name: "信用卡", href: "/cards", icon: CreditCard, active: pathname.startsWith("/cards") },
-    { name: "優惠", href: "/promos", icon: Gift, active: pathname.startsWith("/promos") },
+    { name: "探索", href: "/discover", icon: Sparkles, active: pathname.startsWith("/discover") },
     { name: "錢包", href: "/wallet", icon: Wallet, active: pathname.startsWith("/wallet") },
   ];
 
