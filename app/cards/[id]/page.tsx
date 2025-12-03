@@ -153,7 +153,7 @@ export default function CardDetailPage() {
                       toast.error('請先登入');
                       return;
                     }
-                    addCard(card);
+                    addCard(card.id);
                     toast.success(isInWallet ? '已從錢包移除' : '已加入錢包');
                   }}
                 >
