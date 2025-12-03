@@ -35,7 +35,6 @@ const PAYMENT_OPTIONS = [
   { id: "online", label: "網上輸入信用卡" },
   { id: "apple_pay", label: "Apple Pay" },
   { id: "google_pay", label: "Google Pay" },
-  { id: "payme", label: "PayMe" },
   { id: "alipay", label: "AlipayHK" },
   { id: "wechat_pay", label: "WeChat Pay HK" },
   { id: "unionpay_qr", label: "雲閃付 App" },
@@ -43,7 +42,7 @@ const PAYMENT_OPTIONS = [
 ];
 
 // Payment methods that might be used online or offline
-const AMBIGUOUS_PAYMENT_METHODS = ["apple_pay", "google_pay", "alipay", "wechat_pay", "payme", "unionpay_qr", "boc_pay"];
+const AMBIGUOUS_PAYMENT_METHODS = ["apple_pay", "google_pay", "alipay", "wechat_pay", "unionpay_qr", "boc_pay"];
 
 const categoryNameMap = Object.fromEntries(CATEGORIES.map((cat) => [cat.id, cat.name]));
 
