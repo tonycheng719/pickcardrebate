@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminAuthClient } from "@/lib/supabase/admin-client";
 
-// This is a one-time use endpoint to reset admin password
+// This is a one-time use endpoint to reset/create admin password
 // Should be removed after use for security
 export async function POST(request: NextRequest) {
   try {
@@ -27,7 +27,24 @@ export async function POST(request: NextRequest) {
     const user = users.users.find(u => u.email === email);
     
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      // User doesn't exist, create new user
+      const { data: newUser, error: createError } = await adminAuthClient.auth.admin.createUser({
+        email,
+        password: newPassword,
+        email_confirm: true, // Auto-confirm email
+      });
+
+      if (createError) {
+        console.error("Create user error:", createError);
+        return NextResponse.json({ error: createError.message }, { status: 500 });
+      }
+
+      return NextResponse.json({ 
+        success: true, 
+        message: "Admin user created successfully",
+        userId: newUser.user.id,
+        action: "created"
+      });
     }
 
     // Update the user's password
@@ -44,7 +61,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ 
       success: true, 
       message: "Password updated successfully",
-      userId: user.id 
+      userId: user.id,
+      action: "updated"
     });
   } catch (error: any) {
     console.error("API error:", error);
