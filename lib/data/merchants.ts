@@ -56,6 +56,17 @@ export const POPULAR_MERCHANTS: Merchant[] = [
   { id: "towngas", name: "Towngas 煤氣", categoryIds: ["utilities"], aliases: ["煤氣", "towngas"], logo: "https://logo.clearbit.com/towngas.com", accentColor: "#ea580c", isOnlineOnly: true },
   { id: "wechat-pay-hk", name: "WeChat Pay HK", categoryIds: ["ewallet"], aliases: ["wechat", "微信支付"], logo: "https://logo.clearbit.com/wechat.com", accentColor: "#16a34a", isOnlineOnly: true },
   
+  // 跨境電商 Cross-border E-commerce
+  { id: "taobao", name: "淘寶 Taobao", categoryIds: ["online"], aliases: ["淘寶", "taobao", "tb"], logo: "https://logo.clearbit.com/taobao.com", accentColor: "#ff5000", isOnlineOnly: true },
+  { id: "tmall", name: "天貓 Tmall", categoryIds: ["online"], aliases: ["天貓", "tmall"], logo: "https://logo.clearbit.com/tmall.com", accentColor: "#ff0036", isOnlineOnly: true },
+  { id: "jd", name: "京東 JD.com", categoryIds: ["online"], aliases: ["京東", "jd", "jd.com"], logo: "https://logo.clearbit.com/jd.com", accentColor: "#e2231a", isOnlineOnly: true },
+  { id: "pinduoduo", name: "拼多多 Pinduoduo", categoryIds: ["online"], aliases: ["拼多多", "pdd", "pinduoduo"], logo: "https://logo.clearbit.com/pinduoduo.com", accentColor: "#e02e24", isOnlineOnly: true },
+  { id: "xiaohongshu", name: "小紅書 RED", categoryIds: ["online"], aliases: ["小紅書", "red", "xiaohongshu"], logo: "https://logo.clearbit.com/xiaohongshu.com", accentColor: "#fe2c55", isOnlineOnly: true },
+  { id: "amazon", name: "Amazon 亞馬遜", categoryIds: ["online"], aliases: ["amazon", "亞馬遜"], logo: "https://logo.clearbit.com/amazon.com", accentColor: "#ff9900", isOnlineOnly: true },
+  { id: "ebay", name: "eBay", categoryIds: ["online"], aliases: ["ebay"], logo: "https://logo.clearbit.com/ebay.com", accentColor: "#0064d2", isOnlineOnly: true },
+  { id: "shein", name: "SHEIN", categoryIds: ["online"], aliases: ["shein", "希音"], logo: "https://logo.clearbit.com/shein.com", accentColor: "#000000", isOnlineOnly: true },
+  { id: "temu", name: "Temu", categoryIds: ["online"], aliases: ["temu"], logo: "https://logo.clearbit.com/temu.com", accentColor: "#f97316", isOnlineOnly: true },
+
   // Government / Utilities
   { id: "wsd", name: "Water Supplies Department 水務署", categoryIds: ["utilities", "government"], aliases: ["水費", "水務署", "wsd", "water"], logo: "https://logo.clearbit.com/wsd.gov.hk", accentColor: "#0ea5e9", isOnlineOnly: true },
   { id: "housing-authority", name: "房屋署 Housing Authority", categoryIds: ["government"], aliases: ["公屋租", "公屋", "房屋署", "房署", "housing", "租金"], logo: "🏠", accentColor: "#4b5563", isOnlineOnly: true },
