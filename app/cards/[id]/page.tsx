@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { HK_CARDS } from "@/lib/data/cards";
 import { useWallet } from "@/lib/store/wallet-context";
+import { useReviews } from "@/lib/store/reviews-context";
 import { useDataset } from "@/lib/admin/data-store";
 import { 
   ArrowLeft, Plus, Check, ExternalLink, Share2, 
@@ -15,7 +16,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Head from "next/head";
 import Script from "next/script";
 import { CreditCard } from "@/lib/types";
@@ -55,6 +56,7 @@ export default function CardDetailPage() {
   const cardId = params.id as string;
   const { cards } = useDataset();
   const { addCard, hasCard, user } = useWallet();
+  const { getReviewsByCardId, fetchReviewsForCard } = useReviews();
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [cardImageError, setCardImageError] = useState(false);
   
@@ -62,6 +64,20 @@ export default function CardDetailPage() {
   const card = useMemo(() => {
     return cards.find(c => c.id === cardId) || HK_CARDS.find(c => c.id === cardId);
   }, [cards, cardId]);
+  
+  // Fetch reviews on page load for SEO Schema
+  useEffect(() => {
+    if (cardId) {
+      fetchReviewsForCard(cardId);
+    }
+  }, [cardId, fetchReviewsForCard]);
+  
+  // Get reviews and calculate rating stats
+  const reviews = getReviewsByCardId(cardId);
+  const reviewCount = reviews.length;
+  const avgRating = reviewCount > 0 
+    ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviewCount)
+    : 0;
   
   // Get related cards (same bank or same tags)
   const relatedCards = useMemo(() => {
@@ -122,8 +138,8 @@ export default function CardDetailPage() {
     }
   ];
   
-  // Generate structured data for SEO - Product Schema
-  const productSchema = {
+  // Generate structured data for SEO - Product Schema with AggregateRating
+  const productSchema: Record<string, any> = {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": card.name,
@@ -141,6 +157,18 @@ export default function CardDetailPage() {
       "description": card.feeWaiverCondition || "年費詳情請參閱官網"
     }
   };
+  
+  // Add AggregateRating if there are reviews (SEO: Star ratings in search results)
+  if (reviewCount > 0) {
+    productSchema.aggregateRating = {
+      "@type": "AggregateRating",
+      "ratingValue": avgRating.toFixed(1),
+      "bestRating": "5",
+      "worstRating": "1",
+      "ratingCount": reviewCount,
+      "reviewCount": reviewCount
+    };
+  }
   
   // BreadcrumbList Schema
   const breadcrumbSchema = {
