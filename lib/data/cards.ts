@@ -825,6 +825,79 @@ export const HK_CARDS: CreditCard[] = [
     sellingPoints: ["網上及海外簽賬 10X 獎分 (4%)", "本地食肆 5X 獎分 (2%)", "每月額外獎分上限 10,000", "優先預訂演唱會票"],
     note: "💡 【推廣期 2025/1/1-12/31】網上/海外簽賬 10X 獎分 (4%)，本地食肆 5X (2%)，每月額外獎分上限 10,000。⚠️ 不計回贈：電子錢包充值、保費、透過電子網絡繳款。八達通自動增值/政府部門簽賬每月上限 $40 回贈。",
   },
+  {
+    id: "bea-visa-signature",
+    name: "BEA Visa Signature 卡",
+    bank: "東亞銀行",
+    style: { bgColor: "bg-gradient-to-br from-slate-700 to-slate-900", textColor: "text-white" },
+    foreignCurrencyFee: 1.95,
+    annualFee: 1800,
+    feeWaiverCondition: "首年免年費",
+    minIncome: 300000,
+    rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 獎分 = $1 回贈 (0.4%)
+    rules: [
+      // T&C 2025: 本地食肆 6X 獎分 (2.4%)
+      { description: "本地食肆 6X (2.4%)", matchType: "category", matchValue: ["dining"], percentage: 2.4, excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      // T&C 2025: 外幣簽賬 4X 獎分 (1.6%)
+      { description: "外幣簽賬 4X (1.6%)", matchType: "base", percentage: 1.6, isForeignCurrency: true, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      // T&C: 基本獎賞 1X 獎分 (0.4%)
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme", "octopus"] },
+    ],
+    tags: ["食肆2.4%", "海外1.6%", "免費旅遊保障"],
+    welcomeOfferText: "迎新簽 $4,000 送 $400 現金回贈 (首2個月內)",
+    applyUrl: "https://www.hkbea.com/html/tc/bea-visa-signature-card.html",
+    sellingPoints: ["本地食肆 6X 獎分 (2.4%)", "外幣簽賬 4X 獎分 (1.6%)", "年簽$60,000享免費旅遊保障", "機場貴賓室優惠"],
+    note: "💡 【推廣期 2025/1/1-12/31】本地食肆 6X (2.4%)，外幣簽賬 4X (1.6%)。年簽$60,000/$90,000享1/2次免費7天家庭旅遊保障。⚠️ 不計回贈：電子錢包充值(Alipay/PayMe/WeChat Pay)、保費、透過電子網絡繳款。八達通自動增值/政府部門簽賬每月上限 $40 回贈。年費 $1,800，首年免。年薪要求 $300,000。",
+  },
+  {
+    id: "bea-unionpay-diamond",
+    name: "BEA 銀聯雙幣鑽石信用卡",
+    bank: "東亞銀行",
+    style: { bgColor: "bg-gradient-to-br from-cyan-600 to-blue-800", textColor: "text-white" },
+    foreignCurrencyFee: 0, // 銀聯卡通常無外幣手續費
+    annualFee: 1800,
+    feeWaiverCondition: "首年免年費",
+    minIncome: 150000,
+    rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 獎分 = $1 回贈 (0.4%)
+    rules: [
+      // T&C 2025: 本地食肆 3X 獎分 (1.2%)
+      { description: "本地食肆 3X (1.2%)", matchType: "category", matchValue: ["dining"], percentage: 1.2, excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      // T&C 2025: 本地零售 2X 獎分 (0.8%)
+      { description: "本地零售 2X (0.8%)", matchType: "base", percentage: 0.8, excludeCategories: ["dining", "tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C: 網上繳費 1X 獎分 (0.4%)，每月上限 20,000 獎分
+      { description: "網上繳費 1X (0.4%)", matchType: "category", matchValue: ["utilities"], percentage: 0.4, cap: 20000, capType: "reward_points" },
+      // T&C: 基本獎賞 1X 獎分 (0.4%)
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps"] },
+    ],
+    tags: ["食肆1.2%", "本地0.8%", "免外幣手續費", "銀聯"],
+    welcomeOfferText: "迎新簽 $4,000 送 $400 現金回贈 (首2個月內)",
+    applyUrl: "https://www.hkbea.com/html/tc/bea-unionpay-dual-currency-diamond-credit-card.html",
+    sellingPoints: ["本地食肆 3X 獎分 (1.2%)", "本地零售 2X 獎分 (0.8%)", "免外幣手續費", "內地消費免貨幣兌換費"],
+    note: "💡 【推廣期 2025/1/1-12/31】本地食肆 3X (1.2%)，本地零售 2X (0.8%)。網上繳費每月上限 20,000 獎分。銀聯卡內地消費免貨幣兌換費。⚠️ 不計回贈：電子錢包充值(Alipay/PayMe/WeChat Pay)、保費、透過電子網絡繳款。八達通自動增值/政府部門簽賬每月上限 $40 回贈。年費 $1,800，首年免。",
+  },
+  {
+    id: "bea-unionpay-platinum",
+    name: "BEA 銀聯雙幣白金信用卡",
+    bank: "東亞銀行",
+    style: { bgColor: "bg-gradient-to-br from-slate-400 to-slate-600", textColor: "text-white" },
+    foreignCurrencyFee: 0, // 銀聯卡通常無外幣手續費
+    annualFee: 600,
+    feeWaiverCondition: "首年免年費",
+    rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 獎分 = $1 回贈 (0.4%)
+    rules: [
+      // T&C 2025: 本地食肆 3X 獎分 (1.2%)
+      { description: "本地食肆 3X (1.2%)", matchType: "category", matchValue: ["dining"], percentage: 1.2, excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      // T&C 2025: 本地零售 2X 獎分 (0.8%)
+      { description: "本地零售 2X (0.8%)", matchType: "base", percentage: 0.8, excludeCategories: ["dining", "tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C: 基本獎賞 1X 獎分 (0.4%)
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps"] },
+    ],
+    tags: ["食肆1.2%", "本地0.8%", "免外幣手續費", "銀聯", "低門檻"],
+    welcomeOfferText: "迎新簽 $2,000 送 $200 現金回贈 (首2個月內)",
+    applyUrl: "https://www.hkbea.com/html/tc/bea-unionpay-dual-currency-platinum-credit-card.html",
+    sellingPoints: ["本地食肆 3X 獎分 (1.2%)", "本地零售 2X 獎分 (0.8%)", "免外幣手續費", "內地消費免貨幣兌換費"],
+    note: "💡 【推廣期 2025/1/1-12/31】本地食肆 3X (1.2%)，本地零售 2X (0.8%)。銀聯卡內地消費免貨幣兌換費。⚠️ 不計回贈：電子錢包充值(Alipay/PayMe/WeChat Pay)、保費、透過電子網絡繳款。八達通自動增值/政府部門簽賬每月上限 $40 回贈。年費 $600，首年免。",
+  },
 
   // ========================================================================
   // PrimeCredit 安信 / WeWa
