@@ -19,6 +19,7 @@ import {
   BookOpen,
   GitCommit,
   Calculator,
+  Scale,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AdminAuthProvider, useAdminAuth } from "@/components/admin/admin-auth-context";
@@ -33,6 +34,7 @@ const menuItems = [
   { name: "優惠活動", href: "/admin/promos", icon: Tag },
   { name: "搜尋分析", href: "/admin/analytics", icon: BarChart3 },
   { name: "計算機記錄", href: "/admin/search-logs", icon: Calculator },
+  { name: "比較功能統計", href: "/admin/compare-stats", icon: Scale },
   { name: "回報審核", href: "/admin/moderation", icon: MessageSquare },
   { name: "信用卡評論", href: "/admin/comments", icon: MessageCircle },
   { name: "操作日誌", href: "/admin/logs", icon: History },

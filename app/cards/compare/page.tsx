@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { HK_CARDS } from "@/lib/data/cards";
 import { useDataset } from "@/lib/admin/data-store";
+import { useWallet } from "@/lib/store/wallet-context";
 import { CreditCard } from "@/lib/types";
 import { 
   ArrowLeft, Plus, X, Check, Search, 
@@ -20,12 +21,34 @@ const MAX_COMPARE = 3;
 
 export default function CompareCardsPage() {
   const { cards: datasetCards } = useDataset();
+  const { user } = useWallet();
   const cards = datasetCards.length > 0 ? datasetCards : HK_CARDS;
   
   const [selectedCardIds, setSelectedCardIds] = useState<string[]>([]);
   const [showCardPicker, setShowCardPicker] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showAllRules, setShowAllRules] = useState(false);
+  const hasLoggedRef = useRef<string>("");
+
+  // Log comparison when user has selected 2+ cards
+  useEffect(() => {
+    if (selectedCardIds.length >= 2) {
+      const sortedIds = [...selectedCardIds].sort().join(',');
+      // Only log if this is a new combination
+      if (sortedIds !== hasLoggedRef.current) {
+        hasLoggedRef.current = sortedIds;
+        // Fire and forget - don't await
+        fetch('/api/compare/log', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            cardIds: selectedCardIds,
+            userId: user?.id || null
+          })
+        }).catch(err => console.warn('Failed to log comparison:', err));
+      }
+    }
+  }, [selectedCardIds, user?.id]);
   
   const selectedCards = useMemo(() => {
     return selectedCardIds.map(id => cards.find(c => c.id === id)).filter(Boolean) as CreditCard[];
