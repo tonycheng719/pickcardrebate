@@ -538,7 +538,7 @@ export const HK_CARDS: CreditCard[] = [
     tags: ["餐飲5%", "健身5%", "運動服飾5%", "需登記"],
     welcomeOfferText: "迎新高達 $1,000 回贈",
     sellingPoints: ["餐飲/運動服飾/健身/醫療 5% (單筆≥$300)", "其他零售 1%", "需透過 DBS Card+ App 登記"],
-    note: "⚠️ 指定類別 5% 需單筆消費滿 $300 並透過 DBS Card+ App 登記！未滿 $300 只有 1%。Signature卡每月首 $8,000 享 5%。餐飲不包括酒席宴會/酒店內食肆。醫療不包括獸醫。不適用於：八達通自動增值、電子錢包增值（PayMe/支付寶/微信支付）、繳稅、繳費、保費。",
+    note: "⚠️ 指定類別 5% 需單筆消費滿 $300 並透過 DBS Card+ App 登記！未滿 $300 只有 1%。Signature卡每月首 $8,000 享 5%。餐飲不包括酒席宴會/酒店內食肆。醫療不包括獸醫。✅ DBS$ 積分無限期！⚠️ 電子錢包（八達通增值/PayMe/支付寶/微信支付增值及簽賬）**每月首 $5,000 可獲 DBS$**，超過不計。Apple Pay/Google Pay/Samsung Pay 不受此限。❌ 不計回贈：繳稅、繳費、保費、籌碼、外幣兌換、信用卡年費、結餘轉戶。",
   },
   {
     id: "dbs-black",
@@ -556,6 +556,7 @@ export const HK_CARDS: CreditCard[] = [
     ],
     tags: ["儲里數", "里數神卡"],
     sellingPoints: ["積分無限期", "兌換里數免手續費", "外幣 HK$4/里"],
+    note: "⚠️ Black Card 有獨立 DBS$ 兌換比率，詳情見官網。✅ DBS$ 積分無限期！⚠️ 電子錢包（八達通增值/PayMe/支付寶/微信支付增值及簽賬）**每月首 $5,000 可獲 DBS$**，超過不計。Apple Pay/Google Pay/Samsung Pay 不受此限。❌ 不計回贈：繳稅、繳費、保費、籌碼、外幣兌換、信用卡年費、結餘轉戶。",
   },
   {
     id: "dbs-live-fresh",
@@ -575,7 +576,7 @@ export const HK_CARDS: CreditCard[] = [
     ],
     tags: ["自選5%", "一扣即享", "需登記"],
     sellingPoints: ["自選類別 5% (娛樂/旅遊/美容/服飾等)", "需透過 DBS Card+ App 登記", "每月回贈上限 $150 (即$3,000簽賬)"],
-    note: "⚠️ 【推廣期 2025/4/1-12/31】自選類別 5% 需：(1) 安裝 DBS Card+ App；(2) 開啟「一扣即享」通知；(3) 於 App 內登記及選擇類別；(4) 簽賬後 45 日內按「一扣即享」按鈕！逾期未按視作放棄獎賞。每月可重新選擇類別，未選擇則自動延續上月。不適用於電子錢包增值、八達通增值、繳費、保險、稅項。",
+    note: "⚠️ 【推廣期 2025/4/1-12/31】自選類別 5% 需：(1) 安裝 DBS Card+ App；(2) 開啟「一扣即享」通知；(3) 於 App 內登記及選擇類別；(4) 簽賬後 45 日內按「一扣即享」按鈕！逾期未按視作放棄獎賞。每月可重新選擇類別，未選擇則自動延續上月。✅ DBS$ 積分無限期！⚠️ 電子錢包（八達通增值/PayMe/支付寶/微信支付）**每月首 $5,000 可獲 DBS$**，超過不計。Apple Pay/Google Pay/Samsung Pay 不受此限。❌ 不計回贈：繳稅、繳費、保費。",
   },
   {
     id: "dbs-compass",
@@ -602,7 +603,7 @@ export const HK_CARDS: CreditCard[] = [
     tags: ["週三超市8%", "指定類別2%", "需登記"],
     applyUrl: "https://www.dbs.com.hk/personal-zh/cards/credit-cards/dbs-compass-visa",
     sellingPoints: ["🔥 週三超市 8% (單筆≥$300)", "指定類別 2% (百貨/家居/油站/AliPay/WeChat Pay) [需登記]", "每月首 $2,000 超市 / $12,500 指定類別"],
-    note: "⚠️ 【週三大折日 2025/7/2-12/31】全港超市 8% (單筆≥$300，每月首$2,000)，✅ Apple Pay/Google Pay/Samsung Pay 可以，❌ 支付寶/微信支付/PayMe/八達通增值 不可以。【四圍簽，好 COM 賺】需透過 DBS Card+ App 登記！指定類別 2% (單筆≥$300，每月首$12,500)：AliPay/WeChat Pay、百貨公司、家居傢俬、油站。不適用於：PayMe、八達通增值、電子錢包增值、繳費、保費、繳稅。",
+    note: "⚠️ COMPASS VISA 使用 COMPASS Dollar（非 DBS$），獎賞系統不同！【週三大折日 2025/7/2-12/31】全港超市 8% (單筆≥$300，每月首$2,000)，✅ Apple Pay/Google Pay/Samsung Pay 可以，❌ 支付寶/微信支付/PayMe/八達通增值 不可以。【四圍簽，好 COM 賺】需透過 DBS Card+ App 登記！指定類別 2% (單筆≥$300，每月首$12,500)：AliPay/WeChat Pay、百貨公司、家居傢俬、油站。❌ 不計回贈：PayMe、八達通增值、電子錢包增值、繳費、保費、繳稅。",
   },
 
   // ========================================================================
