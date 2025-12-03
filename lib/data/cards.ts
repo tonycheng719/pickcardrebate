@@ -1202,21 +1202,28 @@ export const HK_CARDS: CreditCard[] = [
   {
     id: "fubon-yata",
     name: "富邦一田 Visa 白金卡",
-    bank: "Fubon",
+    bank: "富邦銀行",
     style: { bgColor: "bg-gradient-to-br from-purple-600 to-purple-800", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
+    annualFee: 0,
+    feeWaiverCondition: "永久免年費",
     rules: [
-      // 一田 VIP Day 95折 - 折扣優惠，非回贈
-      { description: "一田 VIP Day 95折", matchType: "merchant", matchValue: ["yata"], percentage: 5.0, isDiscount: true },
-      // 一田平日 2% 回贈
-      { description: "一田 2%", matchType: "merchant", matchValue: ["yata"], percentage: 2.0 },
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
+      // T&C: 服裝及家庭用品正價 9折 - 折扣優惠，非回贈
+      { description: "一田服裝/家品正價 9折 [折扣]", matchType: "merchant", matchValue: ["yata"], percentage: 10.0, isDiscount: true },
+      // T&C: 週一超市 95折 - 折扣優惠
+      { description: "一田超市週一 95折 [折扣]", matchType: "merchant", matchValue: ["yata"], percentage: 5.0, isDiscount: true, validDays: [1] },
+      // T&C: 月月多簽多賞 - 每月滿$2000送$50禮券 = 2.5%
+      { description: "一田月滿$2000 送$50禮券 (2.5%)", matchType: "merchant", matchValue: ["yata"], percentage: 2.5, monthlyMinSpend: 2000 },
+      // T&C: 一田信用卡積分 - $1=1分, 25000分=$100 = 0.4%
+      { description: "一田積分 0.4%", matchType: "merchant", matchValue: ["yata"], percentage: 0.4 },
+      // 其他簽賬基本回饋
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["一田", "百貨公司", "VIP Day"],
+    tags: ["一田", "百貨公司", "永久免年費", "9折"],
     welcomeOfferText: "迎新送一田購物禮券",
     applyUrl: "https://www.fubonbank.com.hk/tc/cards/bonus-points-program/yata-credit-card.html",
-    sellingPoints: ["一田 VIP Day 95折 [折扣]", "一田平日 2% 回贈", "一田專屬優惠"],
-    note: "⚠️ 一田 VIP Day 95折是購物時直接減價，非事後回贈。一田平日消費享 2% 回贈。需配合一田會員使用。",
+    sellingPoints: ["一田服裝/家品正價 9折 [折扣]", "一田週一超市 95折 [折扣]", "月滿$2000送$50禮券 (2.5%)", "永久免年費"],
+    note: "💡 一田三重獎賞：(1) 月月多簽多賞：每月一田滿 $2,000 送 $50 禮券 (2.5%)，截數日每月15日；(2) 累積結餘獎賞：半年滿 $5,000 送 $50 禮券 (1%)，截數日4月/10月15日；(3) 積分 0.4%。折扣優惠：服裝/家品正價9折、週一超市95折。⚠️ 不適用於儲值支付工具充值。積分有效期一年。",
   },
 
   // ========================================================================
