@@ -1187,7 +1187,7 @@ export const HK_CARDS: CreditCard[] = [
   {
     id: "sim-credit-card",
     name: "sim Credit Card",
-    bank: "sim",
+    bank: "亞洲聯合財務",
     style: { bgColor: "bg-gradient-to-br from-purple-800 to-purple-950", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
@@ -1207,7 +1207,7 @@ export const HK_CARDS: CreditCard[] = [
   {
     id: "sim-world-mastercard",
     name: "sim World Mastercard",
-    bank: "sim",
+    bank: "亞洲聯合財務",
     style: { bgColor: "bg-gradient-to-br from-indigo-800 to-indigo-950", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
