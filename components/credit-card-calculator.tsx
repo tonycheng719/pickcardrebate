@@ -305,18 +305,21 @@ export function CreditCardCalculator({
   // Filter Logic for Display
   const otherResults = results.slice(1);
   
+  // Only consider owned cards if user is logged in
+  const effectiveMyCardIds = user ? myCardIds : [];
+  
   // 1. My Best Card (if 'best' is not owned)
   // Find the first card in 'others' that is owned by user
-  const myBestCardIndex = otherResults.findIndex(r => myCardIds.includes(r.card.id));
+  const myBestCardIndex = otherResults.findIndex(r => effectiveMyCardIds.includes(r.card.id));
   const myBestCard = myBestCardIndex !== -1 ? otherResults[myBestCardIndex] : null;
 
   // 2. My Other Cards (owned cards that are not 'best' and not 'myBestCard')
   const myOtherCards = otherResults.filter((r, index) => 
-      myCardIds.includes(r.card.id) && index !== myBestCardIndex
+      effectiveMyCardIds.includes(r.card.id) && index !== myBestCardIndex
   );
 
   // 3. The Rest (unowned cards, filtered out by default)
-  const unownedCards = otherResults.filter(r => !myCardIds.includes(r.card.id));
+  const unownedCards = otherResults.filter(r => !effectiveMyCardIds.includes(r.card.id));
 
   // Generate "Why this card" analysis text - now accepts a result parameter
   const generateWhyAnalysis = (result: CalculationResult | null) => {
@@ -383,7 +386,7 @@ export function CreditCardCalculator({
       
       const isRecording = recordingCardId === result.card.id;
       const isRecorded = recordedCardIds.has(result.card.id);
-      const isOwned = myCardIds.includes(result.card.id);
+      const isOwned = effectiveMyCardIds.includes(result.card.id);
 
       return (
       <div
@@ -539,7 +542,7 @@ export function CreditCardCalculator({
     
     const isBestRecording = best && recordingCardId === best.card.id;
     const isBestRecorded = best && recordedCardIds.has(best.card.id);
-    const isBestOwned = myCardIds.includes(best.card.id);
+    const isBestOwned = effectiveMyCardIds.includes(best.card.id);
     
     // 方案 C: 智能建議 - 計算差距
     const rewardDifference = myBestCard && best && !isBestOwned 
