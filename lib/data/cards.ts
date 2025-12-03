@@ -949,24 +949,25 @@ export const HK_CARDS: CreditCard[] = [
     feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 0,
     rules: [
-      // T&C: 玩樂類別 4 選 1 (3.6% 額外 + 0.4% 基本 = 4%)，需月簽$1,500，每月回贈上限 $200
-      // 1. 手機支付 (Apple Pay/銀聯手機閃付/銀聯二維碼)
-      { description: "手機支付 4% (需月簽$1500)", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay"], percentage: 4.0, monthlyMinSpend: 1500, cap: 200, capType: "reward", excludeCategories: ["ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
-      // 2. 旅遊簽賬 (旅行社/航空公司/酒店客房)
-      { description: "旅遊 4% (需月簽$1500)", matchType: "category", matchValue: ["travel"], percentage: 4.0, monthlyMinSpend: 1500, cap: 200, capType: "reward", excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
-      // 3. 海外簽賬 (外幣交易)
-      { description: "海外 4% (需月簽$1500)", matchType: "base", percentage: 4.0, isForeignCurrency: true, monthlyMinSpend: 1500, cap: 200, capType: "reward", excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
-      // 4. 線上娛樂 (Netflix/Spotify/Disney+/YouTube/Steam/PlayStation/Xbox等)
-      { description: "線上娛樂 4% (需月簽$1500)", matchType: "merchant", matchValue: ["netflix", "spotify", "disney-plus", "youtube", "steam", "playstation", "xbox", "nintendo", "kkbox", "joox", "mytv-super", "patreon", "apple-app-store", "google-play"], percentage: 4.0, monthlyMinSpend: 1500, cap: 200, capType: "reward", excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
-      // T&C: 八達通自動增值 0.4% (合資格交易)
-      { description: "八達通自動增值 0.4%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
-      // T&C: 基本回贈 0.4%，排除電子錢包充值、P2P轉賬、賭場等
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      // T&C 2025/7/1-2026/6/30: 玩樂類別 4 選 1 (3.6% 額外)，需月簽$1,500，每月回贈上限 $200
+      // 1. 手機支付 (Apple Pay/銀聯手機閃付/銀聯二維碼) - ⚠️ WeWa Visa + Android 暫不支援
+      { description: "手機支付 3.6% (需月簽$1500)", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay"], percentage: 3.6, monthlyMinSpend: 1500, cap: 200, capType: "reward", excludeCategories: ["ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
+      // 2. 旅遊簽賬 (旅行社/航空公司/酒店客房住宿)
+      { description: "旅遊 3.6% (需月簽$1500)", matchType: "category", matchValue: ["travel"], percentage: 3.6, monthlyMinSpend: 1500, cap: 200, capType: "reward", excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
+      // 3. 海外簽賬 (非香港登記商戶 + 外幣交易)
+      { description: "海外 3.6% (需月簽$1500)", matchType: "base", percentage: 3.6, isForeignCurrency: true, monthlyMinSpend: 1500, cap: 200, capType: "reward", excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
+      // 4. 線上娛樂 (Apple App Store/Disney+/Google Play/JOOX/KKBOX/MyTV SUPER/Netflix/Nintendo/Patreon/PlayStation/Spotify/Steam/Xbox/YouTube)
+      { description: "線上娛樂 3.6% (需月簽$1500)", matchType: "merchant", matchValue: ["netflix", "spotify", "disney-plus", "youtube", "steam", "playstation", "xbox", "nintendo", "kkbox", "joox", "mytv-super", "patreon", "apple-app-store", "google-play"], percentage: 3.6, monthlyMinSpend: 1500, cap: 200, capType: "reward", excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
+      // T&C: 基本回贈 0.4%，排除電子錢包充值、八達通增值、P2P轉賬、賭場等
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "octopus", "alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["玩樂4%", "旅遊4%", "海外4%", "線上娛樂4%", "八達通增值"],
+    tags: ["玩樂3.6%", "旅遊", "海外", "線上娛樂", "免外幣手續費"],
     welcomeOfferText: "迎新簽 $8,500 送 $500 現金回贈 / 簽 $8,800 送 LG顯示器或Marshall喇叭 (首90天)",
-    sellingPoints: ["玩樂類別 4% (4選1: 手機支付/旅遊/海外/線上娛樂)", "每月回贈上限 $200", "免外幣手續費", "八達通增值 0.4%"],
-    note: "⚠️ 玩樂類別 4% 需 4 選 1，需每月簽滿 $1,500，每月回贈上限 $200。如未選擇，自動選擇「手機支付」。線上娛樂包括：Netflix/Spotify/Disney+/YouTube/Steam/PlayStation/Xbox/Nintendo/KKBOX/JOOX/MyTV SUPER。⚠️ 手機支付暫不支援 WeWa Visa + Android 組合。✅ 八達通自動增值計 0.4% 基本回贈（無上限）！不適用於電子錢包充值/P2P轉賬（Alipay/WeChat Pay/PayMe）、賭場交易、分期計劃。",
+    applyUrl: "https://www.wewacard.com/",
+    sellingPoints: ["玩樂類別 3.6% (4選1: 手機支付/旅遊/海外/線上娛樂)", "每月回贈上限 $200", "免外幣手續費", "基本回贈 0.4%"],
+    note: "💡 【推廣期 2025/7/1-2026/6/30】玩樂類別 3.6% 需 4 選 1（透過 OmyCard App 自選），需每月簽滿 $1,500，每月回贈上限 $200。如未選擇，自動選擇「手機支付」。線上娛樂包括：Apple App Store (APPLE.COM/BILL) / Disney+ / Google Play / JOOX / KKBOX / MyTV SUPER / Netflix / Nintendo / Patreon / PlayStation / Spotify / Steam / Xbox / YouTube。⚠️ 手機支付暫不支援 WeWa Visa + Android 組合！❌ 不計回贈：八達通自動增值、電子錢包充值/轉賬、分期計劃、賭場交易、繳費。",
+    promoEndDate: "2026-06-30",
+    promoName: "WeWa 玩樂類別 4 選 1 優惠",
   },
 
   // ========================================================================
