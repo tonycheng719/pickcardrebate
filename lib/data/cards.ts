@@ -319,24 +319,24 @@ export const HK_CARDS: CreditCard[] = [
   },
   {
     id: "boc-icard",
-    name: "BOC i-card",
-    bank: "BOC",
+    name: "中銀 i-card 雙幣鑽石卡",
+    bank: "中銀",
     style: { bgColor: "bg-gradient-to-br from-blue-400 to-blue-600", textColor: "text-white" },
     imageUrl: "https://www.bochk.com/dam/more/creditcard/icard/icard_card_face.png",
-    annualFee: 600,
-    feeWaiverCondition: "首年免年費",
+    annualFee: 0,
+    feeWaiverCondition: "永久免年費",
     foreignCurrencyFee: 1.95,
-    rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' },
+    rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 積分 = $1 (0.4%)
     rules: [
-      // T&C: 不適用於 Alipay/WeChat Pay/PayMe
-      { description: "網購/手機支付 4% (10X積分)", matchType: "category", matchValue: ["online"], percentage: 4.0, cap: 11111, capType: "spending", excludeCategories: ["ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] }, 
-      { description: "手機支付 4% (BoC Pay/Apple Pay等)", matchType: "paymentMethod", matchValue: ["mobile", "boc_pay", "apple_pay", "google_pay"], percentage: 4.0, cap: 11111, capType: "spending", excludeCategories: ["ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] }, 
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      // ⚠️ 用戶回報：4% 手機支付回贈已取消
+      // 現只有基本回贈 0.4%
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["網購4%", "手機支付4%", "BoC Pay"],
-    welcomeOfferText: "迎新手機簽賬 10% 回贈 (上限$300)",
-    sellingPoints: ["網購 4% (10X積分)", "手機支付 4% (BoC Pay/Apple Pay等)", "每月額外積分上限 10,000 分"],
-    note: "⚠️ 網購及手機支付 4% 需使用 BoC Pay/Apple Pay/Google Pay/Samsung Pay。不適用於 Alipay/WeChat Pay/PayMe。每月額外積分上限 10,000 分 (約 $11,111 簽賬)。迎新：手機簽賬 10% 回贈，上限 $300。",
+    tags: ["虛擬卡", "永久免年費", "BoC Pay"],
+    welcomeOfferText: "迎新手機簽賬 10% 回贈 (上限$300，首3個月)",
+    applyUrl: "https://www.bochk.com/tc/creditcard/products/icard.html",
+    sellingPoints: ["永久免年費", "虛擬卡即時使用", "支援 BoC Pay/Apple Pay/Google Pay"],
+    note: "💡 虛擬卡，永久免年費。迎新：首3個月手機簽賬（Apple Pay/Google Pay/Samsung Pay/Huawei Pay/雲閃付）享 10% 現金回贈，上限 $300。⚠️ 注意：4% 手機支付常規回贈已取消，現只有基本 0.4% 回贈。不計回贈：Alipay/WeChat Pay/PayMe、繳費、八達通增值。",
   },
 
   // ========================================================================
