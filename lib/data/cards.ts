@@ -1075,15 +1075,17 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 非港幣簽賬 5X 積分 = 2%
       { description: "其他外幣簽賬 2% (5X)", matchType: "base", percentage: 2.0, isForeignCurrency: true },
       // T&C: 本地網上商戶 高達 10X 積分 = 4% (需登記)
-      { description: "本地網上 4% [需登記]", matchType: "category", matchValue: "online", percentage: 4.0 },
+      { description: "本地網上 4% [需登記]", matchType: "category", matchValue: "online", percentage: 4.0, cap: 6250, capType: "spending", excludeCategories: ["tax", "utilities", "insurance", "ewallet"] },
       // T&C: 星期六日滿$300 2X 積分 = 0.8%
       { description: "週六日滿$300 0.8% (2X)", matchType: "base", percentage: 0.8, validDays: [0, 6], minSpend: 300 },
-      // T&C: 本地簽賬/八達通自動增值 1X 積分 = 0.4%
+      // T&C: 八達通自動增值 1X 積分 = 0.4%
+      { description: "八達通自動增值 0.4%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
+      // T&C: 本地簽賬 1X 積分 = 0.4%
       { description: "本地簽賬 0.4% (1X)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
-    tags: ["台灣8%", "日韓4%", "網上4%"],
-    sellingPoints: ["🇹🇼 新台幣簽賬 8% (20X)", "🇯🇵🇰🇷 日韓簽賬 4% (10X)", "其他外幣 2%", "本地網上 4% [需登記]"],
-    note: "⚠️ 台幣/日韓額外積分每月上限 80,000 (全年 240,000)。本地網上 4% 需致電 2566 8181 登記 (按1>7>2)。週六日滿 $300 享額外積分。積分可兌換現金回贈或亞洲萬里通里數 (15分=1里)。不適用於：稅務、保險、水電費繳費、分期付款。",
+    tags: ["台灣8%", "日韓4%", "網上4%", "八達通增值"],
+    sellingPoints: ["🇹🇼 新台幣簽賬 8% (20X)", "🇯🇵🇰🇷 日韓簽賬 4% (10X)", "其他外幣 2%", "本地網上 4% [需登記]", "八達通自動增值 0.4%"],
+    note: "⚠️ 台幣/日韓額外積分每月上限 80,000 (全年 240,000)。本地網上 4% 需致電 2566 8181 登記 (按1>7>2)，每月上限 50,000 積分 (即 $6,250 簽賬)。週六日滿 $300 享額外積分。✅ 八達通自動增值計 0.4% 積分！積分可兌換現金回贈或亞洲萬里通里數 (15分=1里)。不適用於：稅務、保險、水電費繳費、分期付款。",
   },
   {
     id: "amex-explorer",
@@ -1329,24 +1331,27 @@ export const HK_CARDS: CreditCard[] = [
     bank: "富邦銀行",
     style: { bgColor: "bg-gradient-to-br from-blue-700 to-blue-900", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
+    rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 25,000 分 = $100 (即 250 分 = $1, 0.4%)
     rules: [
-      // T&C: 新台幣簽賬 20X 積分 = 8%，每月上限 80,000 額外積分，全年 240,000
-      { description: "新台幣簽賬 8% (20X)", matchType: "base", percentage: 8.0, isForeignCurrency: true, cap: 80000, capType: "reward" },
-      // T&C: 日圓/韓圜簽賬 10X 積分 = 4%，每月上限 80,000 額外積分
-      { description: "日圓/韓圜簽賬 4% (10X)", matchType: "base", percentage: 4.0, isForeignCurrency: true, cap: 80000, capType: "reward" },
+      // T&C: 新台幣簽賬 20X 積分 = 8%，每月上限 80,000 額外積分 = $5,333 簽賬
+      { description: "新台幣簽賬 8% (20X)", matchType: "base", percentage: 8.0, isForeignCurrency: true, cap: 5333, capType: "spending" },
+      // T&C: 日圓/韓圜簽賬 10X 積分 = 4%，每月上限 80,000 額外積分 = $16,000 簽賬
+      { description: "日圓/韓圜簽賬 4% (10X)", matchType: "base", percentage: 4.0, isForeignCurrency: true, cap: 16000, capType: "spending" },
       // T&C: 非港幣簽賬 5X 積分 = 2%
       { description: "其他外幣簽賬 2% (5X)", matchType: "base", percentage: 2.0, isForeignCurrency: true },
-      // T&C: 本地網上商戶 高達 10X 積分 = 4% (需登記)
-      { description: "本地網上 4% [需登記]", matchType: "category", matchValue: "online", percentage: 4.0 },
+      // T&C: 本地網上商戶 高達 10X 積分 = 4% (需登記)，每月上限 50,000 積分 = $6,250 簽賬
+      { description: "本地網上 4% [需登記]", matchType: "category", matchValue: "online", percentage: 4.0, cap: 6250, capType: "spending", excludeCategories: ["tax", "utilities", "insurance", "ewallet"] },
       // T&C: 星期六日滿$300 2X 積分 = 0.8%
       { description: "週六日滿$300 0.8% (2X)", matchType: "base", percentage: 0.8, validDays: [0, 6], minSpend: 300 },
-      // T&C: 本地簽賬/八達通自動增值 1X 積分 = 0.4%
+      // T&C: 八達通自動增值 1X 積分 = 0.4%
+      { description: "八達通自動增值 0.4%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
+      // T&C: 本地簽賬 1X 積分 = 0.4%
       { description: "本地簽賬 0.4% (1X)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
-    tags: ["台灣8%", "日韓4%", "網上4%"],
-    sellingPoints: ["🇹🇼 新台幣簽賬 8% (20X)", "🇯🇵🇰🇷 日韓簽賬 4% (10X)", "其他外幣 2%", "本地網上 4% [需登記]"],
+    tags: ["台灣8%", "日韓4%", "網上4%", "八達通增值"],
+    sellingPoints: ["🇹🇼 新台幣簽賬 8% (20X)", "🇯🇵🇰🇷 日韓簽賬 4% (10X)", "其他外幣 2%", "本地網上 4% [需登記]", "八達通自動增值 0.4%"],
     applyUrl: "https://www.fubonbank.com.hk/tc/cards/credit-card-products/platinum-card.html",
-    note: "⚠️ 台幣/日韓額外積分每月上限 80,000 (全年 240,000)。本地網上 4% 需致電 2566 8181 登記 (按1>7>2)。週六日滿 $300 享額外積分。積分可兌換現金回贈或亞洲萬里通里數 (15分=1里)。不適用於：稅務、保險、水電費繳費、分期付款。",
+    note: "⚠️ 台幣額外積分每月上限 80,000 (即 $5,333 簽賬享 8%)。日韓每月上限 80,000 (即 $16,000 簽賬享 4%)。本地網上 4% 需致電 2566 8181 登記，每月上限 50,000 積分 ($6,250)。週六日滿 $300 享額外積分。✅ 八達通自動增值計 0.4% 積分！積分可兌換現金回贈 (250分=$1) 或亞洲萬里通里數 (15分=1里)。不適用於：稅務、保險、水電費繳費、分期付款。",
   },
   {
     id: "fubon-visa-infinite",
@@ -1369,10 +1374,12 @@ export const HK_CARDS: CreditCard[] = [
       { description: "本地網上 5% [需登記]", matchType: "category", matchValue: "online", percentage: 5.0, cap: 10000, capType: "spending", excludeCategories: ["tax", "utilities", "insurance", "ewallet"] },
       // T&C: 星期六日滿$300 2X 積分 = 1%
       { description: "週六日滿$300 1% (2X)", matchType: "base", percentage: 1.0, validDays: [0, 6], minSpend: 300 },
-      // T&C: 本地簽賬/八達通自動增值 1X 積分 = 0.5%
+      // T&C: 八達通自動增值 1X 積分 = 0.5%
+      { description: "八達通自動增值 0.5%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.5 },
+      // T&C: 本地簽賬 1X 積分 = 0.5%
       { description: "本地簽賬 0.5% (1X)", matchType: "base", percentage: 0.5, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
-    tags: ["台灣10%", "日韓5%", "網購5%", "高端卡"],
+    tags: ["台灣10%", "日韓5%", "網購5%", "高端卡", "八達通增值"],
     sellingPoints: ["🇹🇼 新台幣簽賬 10% (月上限$8,000)", "🇯🇵🇰🇷 日韓簽賬 5% (月上限$24,000)", "本地網上 5% [需登記]", "其他外幣 2.5%", "機場貴賓室4次"],
     applyUrl: "https://www.fubonbank.com.hk/tc/cards/credit-card-products/visa-infinite-card.html",
     note: "💡 【推廣期 2025/1/1-12/31】🇹🇼 新台幣 10% (20X)，每月首 $8,000 簽賬享額外積分（全年上限 $32,000）。🇯🇵🇰🇷 日韓 5% (10X)，每月首 $24,000 簽賬享額外積分。本地網上 5% 需致電 2566 8181 登記 (按1>7>2)，每月上限 $10,000 簽賬。週六日滿 $300 享 2X。積分可兌換現金 (200分=$1) 或里數 (15分=1里，手續費$250-$500)。⚠️ 不適用於：稅務、保險、水電費繳費、分期付款。年費 $3,600，年薪要求 $600,000。",
