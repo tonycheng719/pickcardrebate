@@ -9,6 +9,7 @@ export default async function AdminUsersPage() {
   const supabase = adminAuthClient;
 
   try {
+    // Fetch profiles
     const { data, error } = await supabase
       .from("profiles")
       .select("*")
@@ -19,6 +20,19 @@ export default async function AdminUsersPage() {
         throw error;
     }
 
+    // Fetch card counts for all users
+    const { data: cardData, error: cardError } = await supabase
+      .from("user_cards")
+      .select("user_id");
+
+    // Count cards per user
+    const cardCountMap: Record<string, number> = {};
+    if (!cardError && cardData) {
+      cardData.forEach((row: any) => {
+        cardCountMap[row.user_id] = (cardCountMap[row.user_id] || 0) + 1;
+      });
+    }
+
     const users: AdminUser[] = (data || []).map((profile: any) => ({
         id: profile.id,
         name: profile.name || "Unknown",
@@ -26,7 +40,8 @@ export default async function AdminUsersPage() {
         role: "member", 
         status: "active",
         joinDate: profile.created_at ? new Date(profile.created_at).toISOString().split("T")[0] : new Date().toISOString().split("T")[0],
-        lastIp: profile.last_ip
+        lastIp: profile.last_ip,
+        cardCount: cardCountMap[profile.id] || 0
     }));
 
     return <UserTable initialUsers={users} />;

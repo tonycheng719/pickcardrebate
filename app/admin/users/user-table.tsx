@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, MoreHorizontal, Shield, Ban, CheckCircle } from "lucide-react";
+import { Search, MoreHorizontal, Shield, Ban, CheckCircle, CreditCard } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -22,6 +22,7 @@ export interface AdminUser {
   status: "active" | "suspended";
   joinDate: string;
   lastIp?: string;
+  cardCount?: number;
 }
 
 interface UserTableProps {
@@ -74,6 +75,7 @@ export function UserTable({ initialUsers }: UserTableProps) {
             <tr>
               <th className="px-6 py-4 font-medium">用戶</th>
               <th className="px-6 py-4 font-medium">角色</th>
+              <th className="px-6 py-4 font-medium">持有卡數</th>
               <th className="px-6 py-4 font-medium">狀態</th>
               <th className="px-6 py-4 font-medium">最後 IP</th>
               <th className="px-6 py-4 font-medium text-right">操作</th>
@@ -82,7 +84,7 @@ export function UserTable({ initialUsers }: UserTableProps) {
           <tbody className="divide-y dark:divide-gray-700">
             {filteredUsers.length === 0 ? (
                 <tr>
-                    <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
+                    <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
                         沒有找到相符的會員。
                     </td>
                 </tr>
@@ -102,6 +104,16 @@ export function UserTable({ initialUsers }: UserTableProps) {
                         {user.role === 'admin' && <Shield className="w-3 h-3 mr-1" />}
                         {user.role === 'admin' ? '管理員' : '一般會員'}
                     </span>
+                    </td>
+                    <td className="px-6 py-4">
+                    {user.cardCount !== undefined && user.cardCount > 0 ? (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+                        <CreditCard className="w-3 h-3" />
+                        {user.cardCount} 張
+                      </span>
+                    ) : (
+                      <span className="text-gray-400 text-xs">未加入</span>
+                    )}
                     </td>
                     <td className="px-6 py-4">
                     <span className={`inline-flex items-center gap-1.5 ${
