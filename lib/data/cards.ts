@@ -1354,24 +1354,28 @@ export const HK_CARDS: CreditCard[] = [
     bank: "富邦銀行",
     style: { bgColor: "bg-gradient-to-br from-slate-800 to-black", textColor: "text-yellow-400" },
     foreignCurrencyFee: 1.95,
+    annualFee: 3600,
+    feeWaiverCondition: "年簽滿 $180,000 免翌年年費",
+    minIncome: 600000,
+    rewardConfig: { method: 'conversion', ratio: 200, currency: 'Points' }, // 40,000 分 = $200 (即 200 分 = $1, 0.5%)
     rules: [
-      // T&C: 新台幣簽賬 20X 積分 = 10%，每月上限 120,000 額外積分，全年 480,000
-      { description: "新台幣簽賬 10% (20X)", matchType: "base", percentage: 10.0, isForeignCurrency: true, cap: 120000, capType: "reward" },
-      // T&C: 日圓/韓圜簽賬 10X 積分 = 5%，每月上限 120,000 額外積分
-      { description: "日圓/韓圜簽賬 5% (10X)", matchType: "base", percentage: 5.0, isForeignCurrency: true, cap: 120000, capType: "reward" },
-      // T&C: 非港幣簽賬 5X 積分 = 2.5%
+      // T&C: 新台幣簽賬 20X 積分 (5X基本+15X額外) = 10%，每月額外積分上限 120,000 (即 $8,000 簽賬)
+      { description: "新台幣簽賬 10% (20X)", matchType: "base", percentage: 10.0, isForeignCurrency: true, cap: 8000, capType: "spending" },
+      // T&C: 日圓/韓圜簽賬 10X 積分 (5X基本+5X額外) = 5%，每月額外積分上限 120,000 (即 $24,000 簽賬)
+      { description: "日圓/韓圜簽賬 5% (10X)", matchType: "base", percentage: 5.0, isForeignCurrency: true, cap: 24000, capType: "spending" },
+      // T&C: 非港幣簽賬 5X 積分 = 2.5%，無上限
       { description: "其他外幣簽賬 2.5% (5X)", matchType: "base", percentage: 2.5, isForeignCurrency: true },
-      // T&C: 本地網上商戶 高達 10X 積分 = 5% (需登記)
-      { description: "本地網上 5% [需登記]", matchType: "category", matchValue: "online", percentage: 5.0 },
+      // T&C: 本地網上商戶 高達 10X 積分 (1X基本+8X額外+1X週末) = 5%，需登記，每月額外上限 80,000 積分 (即 $10,000 簽賬)
+      { description: "本地網上 5% [需登記]", matchType: "category", matchValue: "online", percentage: 5.0, cap: 10000, capType: "spending", excludeCategories: ["tax", "utilities", "insurance", "ewallet"] },
       // T&C: 星期六日滿$300 2X 積分 = 1%
       { description: "週六日滿$300 1% (2X)", matchType: "base", percentage: 1.0, validDays: [0, 6], minSpend: 300 },
       // T&C: 本地簽賬/八達通自動增值 1X 積分 = 0.5%
       { description: "本地簽賬 0.5% (1X)", matchType: "base", percentage: 0.5, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps"] },
     ],
-    tags: ["台灣10%", "日韓5%", "高端卡"],
-    sellingPoints: ["🇹🇼 新台幣簽賬 10% (20X)", "🇯🇵🇰🇷 日韓簽賬 5% (10X)", "其他外幣 2.5%", "本地網上 5% [需登記]", "機場貴賓室"],
+    tags: ["台灣10%", "日韓5%", "網購5%", "高端卡"],
+    sellingPoints: ["🇹🇼 新台幣簽賬 10% (月上限$8,000)", "🇯🇵🇰🇷 日韓簽賬 5% (月上限$24,000)", "本地網上 5% [需登記]", "其他外幣 2.5%", "機場貴賓室4次"],
     applyUrl: "https://www.fubonbank.com.hk/tc/cards/credit-card-products/visa-infinite-card.html",
-    note: "⚠️ 台幣/日韓額外積分每月上限 120,000 (全年 480,000)。本地網上 5% 需致電 2566 8181 登記 (按1>7>2)。週六日滿 $300 享額外積分。積分可兌換現金回贈或亞洲萬里通里數 (15分=1里，手續費$250-$500)。不適用於：稅務、保險、水電費繳費、分期付款。",
+    note: "💡 【推廣期 2025/1/1-12/31】🇹🇼 新台幣 10% (20X)，每月首 $8,000 簽賬享額外積分（全年上限 $32,000）。🇯🇵🇰🇷 日韓 5% (10X)，每月首 $24,000 簽賬享額外積分。本地網上 5% 需致電 2566 8181 登記 (按1>7>2)，每月上限 $10,000 簽賬。週六日滿 $300 享 2X。積分可兌換現金 (200分=$1) 或里數 (15分=1里，手續費$250-$500)。⚠️ 不適用於：稅務、保險、水電費繳費、分期付款。年費 $3,600，年薪要求 $600,000。",
   },
   {
     id: "fubon-incard",
