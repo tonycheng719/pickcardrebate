@@ -753,23 +753,28 @@ export const HK_CARDS: CreditCard[] = [
   // ========================================================================
   {
     id: "bea-goal",
-    name: "BEA GOAL Credit Card",
+    name: "BEA GOAL 信用卡",
     bank: "東亞銀行",
     style: { bgColor: "bg-gradient-to-br from-purple-500 to-purple-700", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
+    annualFee: 0,
+    feeWaiverCondition: "永久免年費",
+    rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 獎分 = $1 回贈 (0.4%)
     rules: [
-      // T&C: 手機支付/網購 4.4% (每月消費 $2,000-$5,000)
-      // 電子錢包充值不計 (PayMe/八達通自動增值除外)
-      { description: "手機支付 4.4% (月消費$2000-$5000)", matchType: "paymentMethod", matchValue: ["mobile"], percentage: 4.4, monthlyMinSpend: 2000, cap: 5000, capType: "spending", excludeCategories: ["ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
-      { description: "網購 4.4% (月消費$2000-$5000)", matchType: "category", matchValue: "online", percentage: 4.4, monthlyMinSpend: 2000, cap: 5000, capType: "spending", excludeCategories: ["ewallet", "utilities", "insurance", "supermarket", "government"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C 2025: 網上簽賬 10X 獎分 (4%)，每月額外獎分上限 10,000
+      { description: "網上簽賬 10X (4%)", matchType: "category", matchValue: "online", percentage: 4.0, cap: 10000, capType: "reward_points", excludeCategories: ["ewallet", "utilities", "insurance", "supermarket", "government"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C 2025: 本地食肆 5X 獎分 (2%)
+      { description: "本地食肆 5X (2%)", matchType: "category", matchValue: ["dining"], percentage: 2.0, excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      // T&C 2025: 外幣簽賬 5X 獎分 (2%)
+      { description: "外幣簽賬 5X (2%)", matchType: "base", percentage: 2.0, isForeignCurrency: true, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 基本獎賞 0.4%
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme", "octopus"] },
     ],
-    tags: ["手機支付", "網購", "4.4%"],
+    tags: ["網購4%", "食肆2%", "海外2%", "永久免年費"],
     welcomeOfferText: "迎新簽 $3,000 送 $300 現金回贈 (首2個月內)",
     applyUrl: "https://www.hkbea.com/html/tc/bea-goal-credit-card.html",
-    sellingPoints: ["手機支付及網購 4.4% 回贈", "每月消費 $2,000-$5,000 享優惠", "無需登記"],
-    note: "⚠️ 手機支付/網購 4.4% 需每月消費 $2,000-$5,000！未滿 $2,000 或超過 $5,000 部分只有 0.4%。迎新：首2個月簽滿 $3,000 送 $300 現金回贈（2026年5月31日前存入）。迎新不適用於：超級市場、政府部門、電子錢包(AlipayHK/PayMe/WeChat Pay)、八達通增值。開卡後 12 個月內取消卡將被扣除迎新獎賞。",
+    sellingPoints: ["網上簽賬 10X 獎分 (4%)", "本地食肆 5X 獎分 (2%)", "外幣簽賬 5X 獎分 (2%)", "永久免年費"],
+    note: "💡 【推廣期 2025/1/1-12/31】網上簽賬 10X 獎分 (4%)，每月額外獎分上限 10,000。本地食肆/外幣簽賬 5X (2%)。⚠️ 不計回贈：電子錢包充值(Alipay/PayMe/WeChat Pay)、保費、透過電子網絡繳款。八達通自動增值/政府部門簽賬每月上限 $40 回贈。迎新：首2個月簽滿 $3,000 送 $300。12個月內取消扣回迎新。",
   },
   {
     id: "bea-world-master",
@@ -777,40 +782,48 @@ export const HK_CARDS: CreditCard[] = [
     bank: "東亞銀行",
     style: { bgColor: "bg-gradient-to-br from-sky-600 to-blue-800", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
-    rewardConfig: { method: 'direct_rate', baseRate: 5, currency: 'Miles' }, // $5/mile base, better for dining/overseas
+    annualFee: 1800,
+    feeWaiverCondition: "首年免年費",
+    minIncome: 150000,
+    rewardConfig: { method: 'direct_rate', baseRate: 5, currency: 'Miles' }, // $5/里 基本
     rules: [
-      // T&C: 本地食肆 6X 獎分 (2.4%)
-      { description: "本地食肆 6X (2.4%)", matchType: "category", matchValue: ["dining"], percentage: 2.4, excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
-      // T&C: 外幣簽賬 4X 獎分 (1.6%)
-      { description: "外幣簽賬 4X (1.6%)", matchType: "base", percentage: 1.6, isForeignCurrency: true, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
-      // T&C: 基本獎賞 1X 獎分 (0.4%)
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C 2025: 本地食肆 $5/里 (即2.4%@$0.12/里)
+      { description: "本地食肆 $5/里 (2.4%)", matchType: "category", matchValue: ["dining"], percentage: 2.4, excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
+      // T&C 2025: 海外簽賬 $2.5/里 (即4.8%@$0.12/里)
+      { description: "海外簽賬 $2.5/里 (4.8%)", matchType: "base", percentage: 4.8, isForeignCurrency: true, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      // T&C: 基本獎賞 $5/里 (0.4%)
+      { description: "基本回饋 $5/里 (0.4%)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme", "octopus"] },
     ],
-    tags: ["里數", "Flyer", "食肆6X", "外幣4X"],
+    tags: ["里數", "Flyer", "食肆$5/里", "海外$2.5/里"],
     welcomeOfferText: "迎新簽 $4,000 送 $400 現金回贈 / 簽 $100,000 送 70,000 里 (首3個月)",
-    sellingPoints: ["本地食肆 6X 獎分 (2.4%)", "外幣簽賬 4X 獎分 (1.6%)", "積分無限期", "亞洲萬里通直接入賬"],
+    sellingPoints: ["海外簽賬 $2.5/里 (4.8%)", "本地食肆 $5/里 (2.4%)", "積分無限期", "亞洲萬里通直接入賬"],
     applyUrl: "https://www.hkbea.com/html/tc/bea-flyer-world-mastercard.html",
-    note: "⚠️ 迎新：簽$4,000送$400回贈 或 簽$5,000-$100,000送5,000-70,000里 (首3個月)。迎新不計：超市、政府部門、電子錢包(Alipay/PayMe/WeChat Pay)、八達通增值、保險、售票網絡。12個月內取消會扣回迎新獎賞！不適用於：電子錢包充值、保費、透過電子網絡繳款。八達通自動增值/政府部門簽賬每月上限 $40 回贈。",
+    note: "💡 【推廣期 2025/1/1-12/31】海外簽賬 $2.5/里 (4.8%@$0.12/里估值)，本地食肆 $5/里 (2.4%)，其他本地 $5/里 (0.4%)。⚠️ 不計回贈：電子錢包充值(Alipay/PayMe/WeChat Pay)、保費、透過電子網絡繳款。八達通自動增值/政府部門簽賬每月上限 $40 回贈。迎新：簽$4,000送$400回贈 或 簽$5,000-$100,000送5,000-70,000里。12個月內取消扣回迎新。年費 $1,800，首年免。",
   },
   {
     id: "bea-i-titanium",
-    name: "BEA i-Titanium Card",
+    name: "BEA i-Titanium 信用卡",
     bank: "東亞銀行",
     style: { bgColor: "bg-gradient-to-br from-gray-400 to-gray-600", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
+    annualFee: 0,
+    feeWaiverCondition: "永久免年費",
+    rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 獎分 = $1 回贈 (0.4%)
     rules: [
-      // T&C: 網上簽賬 5X 獎分 (每月上限 20,000 獎分)
-      // 5X = 5 獎分/$1 = 2% (以 250分=$1 計)
-      { description: "網上簽賬 5X (2%)", matchType: "category", matchValue: "online", percentage: 2.0, cap: 20000, capType: "reward", excludeCategories: ["ewallet", "utilities", "insurance"] },
+      // T&C 2025: 網上簽賬/海外簽賬 10X 獎分 (4%)，每月額外獎分上限 10,000
+      { description: "網上簽賬 10X (4%)", matchType: "category", matchValue: "online", percentage: 4.0, cap: 10000, capType: "reward_points", excludeCategories: ["ewallet", "utilities", "insurance"] },
+      { description: "海外簽賬 10X (4%)", matchType: "base", percentage: 4.0, cap: 10000, capType: "reward_points", isForeignCurrency: true, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      // T&C 2025: 本地食肆 5X 獎分 (2%)
+      { description: "本地食肆 5X (2%)", matchType: "category", matchValue: ["dining"], percentage: 2.0, excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
       // T&C: 網上繳費 1X 獎分 (0.4%)
       { description: "網上繳費 1X (0.4%)", matchType: "category", matchValue: ["utilities"], percentage: 0.4 },
       // T&C: 基本獎賞 1X 獎分 (0.4%)
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps"] },
     ],
-    tags: ["網購5X", "老牌"],
+    tags: ["網購4%", "海外4%", "食肆2%", "永久免年費"],
     applyUrl: "https://www.hkbea.com/html/tc/bea-i-titanium-card.html",
-    sellingPoints: ["網上簽賬 5X 獎分 (2%)", "每月網上獎分上限 20,000", "優先預訂演唱會票"],
-    note: "⚠️ 網上簽賬 5X 每月獎分上限 20,000。不適用於：電子錢包充值、保費、透過電子網絡繳款。八達通自動增值/政府部門簽賬每月上限 $40 回贈。",
+    sellingPoints: ["網上及海外簽賬 10X 獎分 (4%)", "本地食肆 5X 獎分 (2%)", "每月額外獎分上限 10,000", "優先預訂演唱會票"],
+    note: "💡 【推廣期 2025/1/1-12/31】網上/海外簽賬 10X 獎分 (4%)，本地食肆 5X (2%)，每月額外獎分上限 10,000。⚠️ 不計回贈：電子錢包充值、保費、透過電子網絡繳款。八達通自動增值/政府部門簽賬每月上限 $40 回贈。",
   },
 
   // ========================================================================
