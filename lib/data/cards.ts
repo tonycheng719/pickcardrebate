@@ -31,6 +31,8 @@ export const HK_CARDS: CreditCard[] = [
     applyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/visa-signature/",
     sellingPoints: ["最紅自主獎賞 6X (2.4%)，5大類別自由分配", "首 $100,000 簽賬享額外獎賞", "首兩年免年費"],
     note: "⚠️ 【最紅自主獎賞 2026】需於 2026/10/31 前登記！6X = 5X額外 + 1X基本 = 2.4%。5大類別：賞滋味/賞家居/賞享受/賞購物/賞世界，可自由分配 5X 額外倍數。首 $100,000 簽賬享額外獎賞。登記後 3 個工作天內生效，一經登記不能更改！⚠️ 賞滋味限制：不包括酒席宴會、私人宴會、包場派對、酒店/百貨公司/俱樂部內飲食專櫃。⚠️ 賞世界限制：不包括香港進行或以港幣交易的簽賬。❌ 不適用於電子錢包（Alipay/WeChat Pay/PayMe）、八達通增值、繳稅、網上繳費。",
+    promoEndDate: "2026-10-31",
+    promoName: "最紅自主獎賞 2026",
   },
   {
     id: "hsbc-red",
@@ -60,6 +62,8 @@ export const HK_CARDS: CreditCard[] = [
     applyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/red/",
     sellingPoints: ["指定商戶 8% (壽司郎/譚仔/GU/Decathlon/lululemon)", "網上簽賬 4% (每月首$10,000)", "永久免年費"],
     note: "⚠️ 【推廣期 2025/9/1-2026/3/31】指定商戶 8%：🍽️ 壽司郎/譚仔三哥/譚仔雲南/The Coffee Academïcs；👕 GU/Decathlon/lululemon；🎮 NAMCO/TAITO STATION（只限香港分店，百貨公司專櫃除外）。每月上限 $100 獎賞錢（首 $1,250）。網上簽賬 4% 每月上限 $400（首 $10,000）。網上不計：網上繳費、電子錢包簽賬、保費、證券、租金、廣告、八達通增值。實體超市只有 0.4%！",
+    promoEndDate: "2026-03-31",
+    promoName: "指定商戶 8% 推廣",
   },
   {
     id: "hsbc-everymile",
@@ -582,6 +586,8 @@ export const HK_CARDS: CreditCard[] = [
     tags: ["自選5%", "一扣即享", "需登記"],
     sellingPoints: ["自選類別 5% (娛樂/旅遊/美容/服飾等)", "需透過 DBS Card+ App 登記", "每月回贈上限 $150 (即$3,000簽賬)"],
     note: "⚠️ 【推廣期 2025/4/1-12/31】自選類別 5% 需：(1) 安裝 DBS Card+ App；(2) 開啟「一扣即享」通知；(3) 於 App 內登記及選擇類別；(4) 簽賬後 45 日內按「一扣即享」按鈕！逾期未按視作放棄獎賞。每月可重新選擇類別，未選擇則自動延續上月。✅ DBS$ 積分無限期！⚠️ 電子錢包（八達通增值/PayMe/支付寶/微信支付）**每月首 $5,000 可獲 DBS$**，超過不計。Apple Pay/Google Pay/Samsung Pay 不受此限。❌ 不計回贈：繳稅、繳費、保費。",
+    promoEndDate: "2025-12-31",
+    promoName: "DBS Live Fresh 自選類別 5% 推廣",
   },
   {
     id: "dbs-compass",
@@ -775,6 +781,8 @@ export const HK_CARDS: CreditCard[] = [
     applyUrl: "https://www.hkbea.com/html/tc/bea-goal-credit-card.html",
     sellingPoints: ["網上簽賬 10X 獎分 (4%)", "本地食肆 5X 獎分 (2%)", "外幣簽賬 5X 獎分 (2%)", "永久免年費"],
     note: "💡 【推廣期 2025/1/1-12/31】網上簽賬 10X 獎分 (4%)，每月額外獎分上限 10,000。本地食肆/外幣簽賬 5X (2%)。⚠️ 不計回贈：電子錢包充值(Alipay/PayMe/WeChat Pay)、保費、透過電子網絡繳款。八達通自動增值/政府部門簽賬每月上限 $40 回贈。迎新：首2個月簽滿 $3,000 送 $300。12個月內取消扣回迎新。",
+    promoEndDate: "2025-12-31",
+    promoName: "BEA GOAL 額外獎分推廣",
   },
   {
     id: "bea-world-master",
@@ -799,6 +807,8 @@ export const HK_CARDS: CreditCard[] = [
     sellingPoints: ["海外簽賬 $2.5/里 (4.8%)", "本地食肆 $5/里 (2.4%)", "積分無限期", "亞洲萬里通直接入賬"],
     applyUrl: "https://www.hkbea.com/html/tc/bea-flyer-world-mastercard.html",
     note: "💡 【推廣期 2025/1/1-12/31】海外簽賬 $2.5/里 (4.8%@$0.12/里估值)，本地食肆 $5/里 (2.4%)，其他本地 $5/里 (0.4%)。⚠️ 不計回贈：電子錢包充值(Alipay/PayMe/WeChat Pay)、保費、透過電子網絡繳款。八達通自動增值/政府部門簽賬每月上限 $40 回贈。迎新：簽$4,000送$400回贈 或 簽$5,000-$100,000送5,000-70,000里。12個月內取消扣回迎新。年費 $1,800，首年免。",
+    promoEndDate: "2025-12-31",
+    promoName: "BEA Flyer World 額外獎分推廣",
   },
   {
     id: "bea-i-titanium",
@@ -827,6 +837,8 @@ export const HK_CARDS: CreditCard[] = [
     applyUrl: "https://www.hkbea.com/html/tc/bea-i-titanium-card.html",
     sellingPoints: ["網上/手機支付 10X 獎分 (4%)", "海外簽賬 10X 獎分 (4%)", "本地食肆 5X 獎分 (2%)", "每月回贈上限 $300"],
     note: "💡 【推廣期 2025/1/1-12/31】網上/手機支付/海外簽賬 10X 獎分 (4%)，每月回贈上限 $300 (即首 $8,333 簽賬享 4%)。本地食肆 5X (2%)。⚠️ 不計回贈：超市、旅行社、政府部門、電子錢包充值、保費、透過電子網絡繳款。八達通自動增值/政府部門簽賬每月上限 $40 回贈。",
+    promoEndDate: "2025-12-31",
+    promoName: "BEA i-Titanium 額外獎分推廣",
   },
   {
     id: "bea-visa-signature",
@@ -1018,6 +1030,8 @@ export const HK_CARDS: CreditCard[] = [
     applyUrl: "https://www.asia.ccb.com/hongkong/personal/credit-cards/eye-card.html",
     sellingPoints: ["本地餐飲/外賣高達 11% (需登記)", "本地交通 2%", "網購及感應式支付 2%", "永久免年費"],
     note: "💡 【限時推廣 2025/7-12月】本地餐飲/外賣：月簽滿$8,000享9%+2%=11%，未滿$8,000只享2%，每階段上限$800，需每月經 App 登記（首2,000名）。本地交通 2% 每階段上限$400。網購/感應式支付 5X 積分 (2%)，每曆年額外積分上限 300,000 (即首$75,000簽賬享2%)。⚠️ 不計回贈：電子錢包充值/轉賬、酒店/會所餐飲、保險、RentSmart。迎新：(1) Chill分期$15,000送$800；(2) 簽$6,000送$600，只可選一。",
+    promoEndDate: "2025-12-31",
+    promoName: "建行 eye 本地餐飲/交通回贈推廣",
   },
   {
     id: "icbc-horoscope",
@@ -1184,6 +1198,8 @@ export const HK_CARDS: CreditCard[] = [
     applyUrl: "https://www.citibank.com.hk/chinese/credit-cards/citi-octopus-card.html",
     sellingPoints: ["🔥 交通 15% 回贈 (限時至2026/3/31)", "內置八達通功能", "隧道/泊車 5% (月簽$10,000)"],
     note: "⚠️ 【限時推廣 2025/10/1-2026/3/31】交通 15% 回贈需登記 (citibank.hk/transreg)，月簽滿 $4,000 可獲 15% 車費回贈 (上限$300)；月簽滿 $10,000 可額外獲 5% 隧道/泊車/電車充電回贈 (合共上限$500)。合資格交通：港鐵、九巴、龍運、城巴、渡輪、綠色專線小巴、電車、的士。不適用於：FPS、繳稅、保費、電子錢包增值/轉賬、八達通自動增值（計算門檻）。",
+    promoEndDate: "2026-03-31",
+    promoName: "Citi 八達通卡交通 15% 回贈推廣",
   },
   {
     id: "ccb-travo",
@@ -1383,6 +1399,8 @@ export const HK_CARDS: CreditCard[] = [
     sellingPoints: ["🇹🇼 新台幣簽賬 10% (月上限$8,000)", "🇯🇵🇰🇷 日韓簽賬 5% (月上限$24,000)", "本地網上 5% [需登記]", "其他外幣 2.5%", "機場貴賓室4次"],
     applyUrl: "https://www.fubonbank.com.hk/tc/cards/credit-card-products/visa-infinite-card.html",
     note: "💡 【推廣期 2025/1/1-12/31】🇹🇼 新台幣 10% (20X)，每月首 $8,000 簽賬享額外積分（全年上限 $32,000）。🇯🇵🇰🇷 日韓 5% (10X)，每月首 $24,000 簽賬享額外積分。本地網上 5% 需致電 2566 8181 登記 (按1>7>2)，每月上限 $10,000 簽賬。週六日滿 $300 享 2X。積分可兌換現金 (200分=$1) 或里數 (15分=1里，手續費$250-$500)。⚠️ 不適用於：稅務、保險、水電費繳費、分期付款。年費 $3,600，年薪要求 $600,000。",
+    promoEndDate: "2025-12-31",
+    promoName: "富邦 Visa Infinite 海外額外積分推廣",
   },
   {
     id: "fubon-incard",
@@ -1403,6 +1421,8 @@ export const HK_CARDS: CreditCard[] = [
     sellingPoints: ["網上簽賬 8% 回贈 (無需登記)", "每月簽賬上限 $3,947", "永久免年費", "流動支付/八達通增值計積分"],
     applyUrl: "https://www.fubonbank.com.hk/tc/cards/credit-card-products/incard.html",
     note: "💡 【推廣期 2025/4/28-12/31】網上簽賬 8% (1X基本+19X額外=20X積分) 無需登記！每月額外積分上限 75,000 (即每月首 $3,947 網上簽賬享 8%)。流動支付及八達通自動增值也計 0.4% 積分。不計回贈：Alipay/WeChat Pay/PayMe 充值、保險、稅務。迎新：首3個月簽 $5,000 送 $150 現金回贈。14個月內取消扣回迎新。積分有效期一年，250分=$1。",
+    promoEndDate: "2025-12-31",
+    promoName: "富邦 iN VISA 網上簽賬 8% 推廣",
   },
   {
     id: "cncbi-gba",

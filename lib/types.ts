@@ -67,6 +67,10 @@ export interface CreditCard {
   hidden?: boolean; // Hide from frontend (but keep data for existing users)
   minIncome?: number; // Minimum annual income requirement (HKD)
   incomeNote?: string; // Special notes for income requirement
+  
+  // Promo Period Tracking
+  promoEndDate?: string; // Overall promo end date (ISO date: "2025-12-31")
+  promoName?: string; // Name of the promo for display
 }
 
 export interface Merchant {

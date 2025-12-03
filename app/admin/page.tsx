@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Search, CreditCard, AlertCircle, Loader2 } from "lucide-react";
+import { Users, Search, CreditCard, AlertCircle, Loader2, Calendar, Clock } from "lucide-react";
+import Link from "next/link";
+import { HK_CARDS } from "@/lib/data/cards";
 import { createClient } from "@/lib/supabase/client";
 
 export default function AdminDashboard() {
@@ -87,6 +89,51 @@ export default function AdminDashboard() {
           </Card>
         ))}
       </div>
+
+      {/* Promo Expiry Alert */}
+      {(() => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const expiredCount = HK_CARDS.filter(c => {
+          if (!c.promoEndDate) return false;
+          const endDate = new Date(c.promoEndDate);
+          return endDate < today;
+        }).length;
+        const expiringSoonCount = HK_CARDS.filter(c => {
+          if (!c.promoEndDate) return false;
+          const endDate = new Date(c.promoEndDate);
+          const diffDays = Math.ceil((endDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+          return diffDays >= 0 && diffDays <= 30;
+        }).length;
+        
+        if (expiredCount > 0 || expiringSoonCount > 0) {
+          return (
+            <Link href="/admin/expiring-promos">
+              <Card className={`cursor-pointer transition-all hover:shadow-lg ${expiredCount > 0 ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800' : 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800'}`}>
+                <CardContent className="p-4 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className={`p-2 rounded-full ${expiredCount > 0 ? 'bg-red-100 dark:bg-red-900/30' : 'bg-yellow-100 dark:bg-yellow-900/30'}`}>
+                      {expiredCount > 0 ? <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" /> : <Clock className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />}
+                    </div>
+                    <div>
+                      <p className={`font-medium ${expiredCount > 0 ? 'text-red-700 dark:text-red-400' : 'text-yellow-700 dark:text-yellow-400'}`}>
+                        📅 推廣到期提示
+                      </p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        {expiredCount > 0 && <span className="text-red-600 dark:text-red-400 font-medium">{expiredCount} 個已過期</span>}
+                        {expiredCount > 0 && expiringSoonCount > 0 && " · "}
+                        {expiringSoonCount > 0 && <span className="text-yellow-600 dark:text-yellow-400">{expiringSoonCount} 個 30 天內到期</span>}
+                      </p>
+                    </div>
+                  </div>
+                  <span className="text-sm text-gray-400">點擊查看 →</span>
+                </CardContent>
+              </Card>
+            </Link>
+          );
+        }
+        return null;
+      })()}
 
       {/* Recent Activity Section */}
       <div className="grid md:grid-cols-2 gap-8">
