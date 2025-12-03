@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { HK_CARDS } from "@/lib/data/cards";
 import { useWallet } from "@/lib/store/wallet-context";
+import { useDataset } from "@/lib/admin/data-store";
 import { 
   ArrowLeft, Plus, Check, ExternalLink, Share2, 
   CreditCard as CardIcon, Percent, Calendar, AlertCircle,
@@ -13,7 +14,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import Head from "next/head";
 import Script from "next/script";
 import { CreditCard } from "@/lib/types";
@@ -51,10 +52,15 @@ export default function CardDetailPage() {
   const params = useParams();
   const router = useRouter();
   const cardId = params.id as string;
-  const card = HK_CARDS.find(c => c.id === cardId);
+  const { cards } = useDataset();
   const { addCard, hasCard, user } = useWallet();
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [cardImageError, setCardImageError] = useState(false);
+  
+  // Find card from dataset (includes DB images) or fallback to static data
+  const card = useMemo(() => {
+    return cards.find(c => c.id === cardId) || HK_CARDS.find(c => c.id === cardId);
+  }, [cards, cardId]);
 
   if (!card) {
     return (

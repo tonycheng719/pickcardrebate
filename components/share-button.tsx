@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { 
   Share2, Copy, MessageCircle, Check,
@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
+import { createPortal } from "react-dom";
 
 interface ShareButtonProps {
   title: string;
@@ -28,6 +29,23 @@ export function ShareButton({
 }: ShareButtonProps) {
   const [showMenu, setShowMenu] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (showMenu && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      setMenuPosition({
+        top: rect.bottom + 8,
+        right: window.innerWidth - rect.right
+      });
+    }
+  }, [showMenu]);
 
   const handleShare = async (platform: string) => {
     const shareUrl = url || (typeof window !== 'undefined' ? window.location.href : '');
@@ -74,35 +92,23 @@ export function ShareButton({
     setShowMenu(false);
   };
 
-  return (
-    <div className="relative">
-      <Button
-        variant={variant}
-        size={size}
-        onClick={() => setShowMenu(!showMenu)}
-        className={className}
+  const menuContent = showMenu && mounted ? (
+    <>
+      {/* Backdrop */}
+      <div 
+        className="fixed inset-0 z-[9998]" 
+        onClick={() => setShowMenu(false)}
+      />
+      
+      {/* Menu */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: -10 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: -10 }}
+        transition={{ duration: 0.15 }}
+        className="fixed bg-white dark:bg-gray-800 rounded-xl shadow-xl border dark:border-gray-700 p-2 z-[9999] min-w-[180px]"
+        style={{ top: menuPosition.top, right: menuPosition.right }}
       >
-        <Share2 className="h-4 w-4" />
-        {size !== "icon" && <span className="ml-2">分享</span>}
-      </Button>
-
-      <AnimatePresence>
-        {showMenu && (
-          <>
-            {/* Backdrop */}
-            <div 
-              className="fixed inset-0 z-40" 
-              onClick={() => setShowMenu(false)}
-            />
-            
-            {/* Menu */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: -10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: -10 }}
-              transition={{ duration: 0.15 }}
-              className="absolute right-0 top-full mt-2 bg-white dark:bg-gray-800 rounded-xl shadow-xl border dark:border-gray-700 p-2 z-50 min-w-[180px]"
-            >
               <div className="text-xs font-medium text-gray-500 dark:text-gray-400 px-3 py-2">
                 分享至
               </div>
@@ -184,9 +190,28 @@ export function ShareButton({
               )}
             </motion.div>
           </>
-        )}
-      </AnimatePresence>
-    </div>
+        ) : null;
+
+  return (
+    <>
+      <Button
+        ref={buttonRef}
+        variant={variant}
+        size={size}
+        onClick={() => setShowMenu(!showMenu)}
+        className={className}
+      >
+        <Share2 className="h-4 w-4" />
+        {size !== "icon" && <span className="ml-2">分享</span>}
+      </Button>
+
+      {mounted && createPortal(
+        <AnimatePresence>
+          {menuContent}
+        </AnimatePresence>,
+        document.body
+      )}
+    </>
   );
 }
 
