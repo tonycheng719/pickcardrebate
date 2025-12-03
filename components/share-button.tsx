@@ -29,7 +29,7 @@ export function ShareButton({
 }: ShareButtonProps) {
   const [showMenu, setShowMenu] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
+  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [mounted, setMounted] = useState(false);
 
@@ -40,9 +40,22 @@ export function ShareButton({
   useEffect(() => {
     if (showMenu && buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
+      const menuWidth = 220; // Approximate menu width
+      
+      // Calculate left position, ensure menu stays within viewport
+      let left = rect.left;
+      
+      // If menu would overflow right edge, align to right of button
+      if (left + menuWidth > window.innerWidth - 16) {
+        left = rect.right - menuWidth;
+      }
+      
+      // Ensure left is at least 8px from left edge
+      left = Math.max(8, left);
+      
       setMenuPosition({
         top: rect.bottom + 8,
-        right: window.innerWidth - rect.right
+        left: left
       });
     }
   }, [showMenu]);
@@ -145,7 +158,7 @@ export function ShareButton({
         <div 
           data-share-menu
           className="fixed bg-white dark:bg-gray-800 rounded-xl shadow-2xl border dark:border-gray-700 p-2 z-[9999] min-w-[200px]"
-          style={{ top: menuPosition.top, right: Math.max(8, menuPosition.right) }}
+          style={{ top: menuPosition.top, left: menuPosition.left }}
           onClick={(e) => e.stopPropagation()}
         >
           <div className="text-xs font-medium text-gray-500 dark:text-gray-400 px-3 py-2">
