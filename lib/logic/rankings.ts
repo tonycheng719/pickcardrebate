@@ -192,7 +192,7 @@ function matchesCategory(rule: RewardRule, category: CategoryConfig): boolean {
 
 export function getRankingsByCategory(
   categoryId: RankingCategory,
-  limit: number = 10,
+  limit: number = 15,
   cardsData: CreditCard[] = HK_CARDS
 ): RankingResult[] {
   const category = RANKING_CATEGORIES.find(c => c.id === categoryId);
@@ -284,7 +284,7 @@ export function getRankingsByCategory(
 }
 
 export function getAllRankings(
-  limit: number = 10,
+  limit: number = 15,
   cardsData: CreditCard[] = HK_CARDS
 ): Record<RankingCategory, RankingResult[]> {
   const result: Partial<Record<RankingCategory, RankingResult[]>> = {};

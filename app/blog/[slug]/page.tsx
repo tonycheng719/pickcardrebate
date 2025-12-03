@@ -37,12 +37,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return { title: "頁面不存在" };
   }
   
-  const rankings = getRankingsByCategory(category.id, 10);
+  const rankings = getRankingsByCategory(category.id, 15);
   const topCard = rankings[0];
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
   
-  const title = `${currentYear} 最抵${category.name}信用卡 Top 10 | ${currentMonth}月更新`;
+  const title = `${currentYear} 最抵${category.name}信用卡 Top 15 | ${currentMonth}月更新`;
   const description = `${currentYear}年${currentMonth}月最新！${category.name}信用卡回贈排行榜。第一名：${topCard?.card.name} ${topCard?.percentage}% 回贈。比較香港各大銀行${category.name}信用卡優惠。`;
   
   return {
@@ -236,10 +236,10 @@ function QuickRankingTable({ rankings, category }: { rankings: RankingResult[]; 
       <div className="p-4 border-b border-gray-100 dark:border-gray-800 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20">
         <div className="flex items-center justify-between">
           <h2 className="font-bold text-gray-900 dark:text-white">
-            📊 {category.name} Top 10 快速一覽
+            📊 {category.name} Top 15 快速一覽
           </h2>
           <ShareButton
-            title={`${currentYear} 最抵${category.name}信用卡 Top 10`}
+            title={`${currentYear} 最抵${category.name}信用卡 Top 15`}
             text={`${category.icon} ${category.name}信用卡排行榜\n\n${shareText}\n\n👉 完整排名：`}
             size="sm"
             variant="ghost"
@@ -329,7 +329,7 @@ export default async function BlogCategoryPage({ params }: { params: Promise<{ s
     notFound();
   }
   
-  const rankings = getRankingsByCategory(category.id, 10);
+  const rankings = getRankingsByCategory(category.id, 15);
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
   const lastUpdated = new Date().toLocaleDateString('zh-HK', { 
@@ -342,7 +342,7 @@ export default async function BlogCategoryPage({ params }: { params: Promise<{ s
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": `${currentYear} 最抵${category.name}信用卡 Top 10`,
+    "headline": `${currentYear} 最抵${category.name}信用卡 Top 15`,
     "description": `${category.name}信用卡回贈排行榜，第一名：${rankings[0]?.card.name} ${rankings[0]?.percentage}% 回贈`,
     "datePublished": new Date().toISOString(),
     "dateModified": new Date().toISOString(),
@@ -388,7 +388,7 @@ export default async function BlogCategoryPage({ params }: { params: Promise<{ s
             最後更新：{lastUpdated}
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
-            {category.icon} {currentYear} 最抵{category.name}信用卡 Top 10
+            {category.icon} {currentYear} 最抵{category.name}信用卡 Top 15
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400">
             {category.description}。根據官方條款自動計算，助你搵到最高回贈！
@@ -397,7 +397,7 @@ export default async function BlogCategoryPage({ params }: { params: Promise<{ s
           {/* Share */}
           <div className="flex items-center gap-3 mt-4">
             <ShareButton
-              title={`${currentYear} 最抵${category.name}信用卡 Top 10`}
+              title={`${currentYear} 最抵${category.name}信用卡 Top 15`}
               text={`${category.name}信用卡排行榜：第一名 ${rankings[0]?.card.name} ${rankings[0]?.percentage}% 回贈`}
               size="sm"
             />
