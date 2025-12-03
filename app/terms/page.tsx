@@ -9,7 +9,7 @@ export default function TermsPage() {
         <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border dark:border-gray-800 p-8 md:p-12 space-y-8">
           <div className="border-b dark:border-gray-800 pb-6">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">服務條款</h1>
-            <p className="text-gray-500 dark:text-gray-400 text-sm">最後更新日期：2024年11月27日</p>
+            <p className="text-gray-500 dark:text-gray-400 text-sm">最後更新日期：2025年6月3日</p>
           </div>
 
           <div className="prose dark:prose-invert max-w-none space-y-6 text-gray-700 dark:text-gray-300">
@@ -43,6 +43,11 @@ export default function TermsPage() {
 
             <section>
               <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3">5. 免責聲明</h2>
+              <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mb-4">
+                <p className="text-amber-800 dark:text-amber-200 font-medium">
+                  本網站所載之信用卡優惠資料僅供參考，資料來源為公開網上資訊。本網站不保證資料之準確性、完整性或時效性。如資料與發卡機構官方公佈有任何差異，一切以官方資料為準。用戶因使用本網站資料而作出之任何決定或蒙受之任何損失，本網站概不負責。
+                </p>
+              </div>
               <ul className="list-disc pl-5 space-y-2">
                 <li>本服務所提供的信用卡資訊、優惠活動、回贈比例等，均來自銀行或公開資訊。由於銀行政策可能隨時變更，我們不保證所有資訊的即時性與絕對正確性。</li>
                 <li>本服務不提供任何金融產品的直接銷售或核批服務。所有信用卡申請與核准與否，均由發卡機構全權決定。</li>
