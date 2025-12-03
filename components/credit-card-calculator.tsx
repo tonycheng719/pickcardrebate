@@ -540,6 +540,11 @@ export function CreditCardCalculator({
     const isBestRecording = best && recordingCardId === best.card.id;
     const isBestRecorded = best && recordedCardIds.has(best.card.id);
     const isBestOwned = myCardIds.includes(best.card.id);
+    
+    // 方案 C: 智能建議 - 計算差距
+    const rewardDifference = myBestCard && best && !isBestOwned 
+        ? (best.rewardAmount - myBestCard.rewardAmount).toFixed(1) 
+        : null;
 
     return (
     <div className="space-y-4 p-4 pb-8">
@@ -558,256 +563,372 @@ export function CreditCardCalculator({
               </div>
           )}
 
-          {/* 1. HERO CARD: The Absolute Best Option */}
-          <div className="rounded-2xl border-2 border-emerald-200 p-4 bg-emerald-50 relative overflow-hidden shadow-sm">
-            {best.isCapped && (
-              <div className="absolute top-0 right-0 bg-amber-100 text-amber-700 text-[10px] px-2 py-1 rounded-bl-lg font-medium flex items-center gap-1">
-                <AlertCircle className="w-3 h-3" /> 已達上限
+          {/* 方案 C: 智能建議模式 */}
+          
+          {/* CASE 1: 用戶已持有全場最抵卡 - 顯示恭喜訊息 */}
+          {isBestOwned ? (
+            <div className="rounded-2xl border-2 border-emerald-400 p-4 bg-gradient-to-br from-emerald-50 to-green-50 relative overflow-hidden shadow-md">
+              {/* 恭喜標籤 */}
+              <div className="absolute -top-1 -right-1 bg-gradient-to-r from-emerald-500 to-green-500 text-white text-[10px] px-3 py-1.5 rounded-bl-xl font-bold flex items-center gap-1 shadow-lg">
+                🎉 恭喜！你已持有最抵卡
               </div>
-            )}
-            <div className="text-xs uppercase text-emerald-600 font-bold mb-2 flex justify-between">
-                <span>全場最抵</span>
-                {!isBestOwned && <span className="text-orange-500">你未持有</span>}
-            </div>
-            
-            <div className="flex items-start justify-between gap-3">
-              {/* Card Image for Hero */}
-              {best.card.imageUrl ? (
-                <div className="w-16 h-10 rounded border bg-white flex items-center justify-center overflow-hidden shrink-0 shadow-sm">
-                    <img src={best.card.imageUrl} alt={best.card.name} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
+              
+              {best.isCapped && (
+                <div className="absolute top-0 left-0 bg-amber-100 text-amber-700 text-[10px] px-2 py-1 rounded-br-lg font-medium flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3" /> 已達上限
                 </div>
-              ) : (
-                <div className={`w-16 h-10 rounded border ${best.card.style?.bgColor || 'bg-gray-500'} shrink-0 shadow-sm`}></div>
               )}
+              
+              <div className="text-xs uppercase text-emerald-700 font-bold mb-3 flex items-center gap-2">
+                <span className="bg-emerald-100 px-2 py-1 rounded-lg">🏆 推薦使用</span>
+              </div>
+              
+              <div className="flex items-start justify-between gap-3">
+                {/* Card Image */}
+                {best.card.imageUrl ? (
+                  <div className="w-20 h-12 rounded-lg border-2 border-emerald-200 bg-white flex items-center justify-center overflow-hidden shrink-0 shadow-sm">
+                    <img src={best.card.imageUrl} alt={best.card.name} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
+                  </div>
+                ) : (
+                  <div className={`w-20 h-12 rounded-lg border-2 border-emerald-200 ${best.card.style?.bgColor || 'bg-gray-500'} shrink-0 shadow-sm`}></div>
+                )}
 
-              <div className="flex-1 min-w-0">
-                <p className="text-xs text-gray-500">{best.card.bank}</p>
-                <h3 className="text-lg font-bold flex items-center gap-1 leading-tight">
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-gray-500">{best.card.bank}</p>
+                  <h3 className="text-lg font-bold flex items-center gap-1 leading-tight text-emerald-800">
                     {best.card.name}
                     {isBestVerified && <BadgeCheck className="w-4 h-4 text-green-600 shrink-0" />}
-                </h3>
-                <p className="text-sm text-gray-600 mt-0.5">{best.matchedRule.description}</p>
-                
-                {/* Condition & Cap Tags */}
-                <div className="flex flex-wrap gap-1 mt-2">
+                  </h3>
+                  <p className="text-sm text-gray-600 mt-0.5">{best.matchedRule.description}</p>
+                  
+                  {/* Condition & Cap Tags */}
+                  <div className="flex flex-wrap gap-1 mt-2">
                     {isBestVerified && (
-                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-green-100 text-green-700 rounded text-[10px] font-medium border border-green-200">
-                            <BadgeCheck className="w-3 h-3" /> 社群已驗證
-                        </span>
+                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-green-100 text-green-700 rounded text-[10px] font-medium border border-green-200">
+                        <BadgeCheck className="w-3 h-3" /> 社群已驗證
+                      </span>
                     )}
-                   {best.matchedRule.validDays && (
-                       <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded text-[10px] font-medium border border-blue-100">
-                           <Calendar className="w-3 h-3" /> 
-                           僅限 {best.matchedRule.validDays.map(d => DAYS_MAP[d]).join("/")}
-                       </span>
-                   )}
-                   {best.matchedRule.cap && (
-                       <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-orange-50 text-orange-600 rounded text-[10px] font-medium border border-orange-100">
-                           <Info className="w-3 h-3" /> 
-                           上限: {best.matchedRule.capType === 'spending' ? '簽賬' : '回贈'} ${best.matchedRule.cap}
-                       </span>
-                   )}
+                    {best.matchedRule.validDays && (
+                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded text-[10px] font-medium border border-blue-100">
+                        <Calendar className="w-3 h-3" /> 僅限 {best.matchedRule.validDays.map(d => DAYS_MAP[d]).join("/")}
+                      </span>
+                    )}
+                    {best.matchedRule.cap && (
+                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-orange-50 text-orange-600 rounded text-[10px] font-medium border border-orange-100">
+                        <Info className="w-3 h-3" /> 上限 ${best.matchedRule.cap}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-2 mt-3 flex-wrap">
+                    <button 
+                      className="text-xs border border-emerald-200 rounded-lg px-2 py-1 flex items-center gap-1 text-emerald-700 hover:bg-emerald-100 transition-colors"
+                      onClick={() => handleWhyClick(best)}
+                    >
+                      <HelpCircle className="w-3 h-3" /> 點解係呢張？
+                    </button>
+                    
+                    {user && (
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className={`h-8 text-xs gap-1 border-emerald-300 bg-white hover:bg-emerald-50 text-emerald-700 ${isBestRecorded ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        onClick={() => !isBestRecorded && !isBestRecording && handleRecordTransaction(best)}
+                        disabled={isBestRecorded || isBestRecording}
+                      >
+                        {isBestRecording ? <Loader2 className="w-3 h-3 animate-spin" /> : isBestRecorded ? <CheckCircle2 className="w-3 h-3" /> : <PlusCircle className="w-3 h-3" />}
+                        {isBestRecorded ? "已記錄" : "一鍵記賬"}
+                      </Button>
+                    )}
+                  </div>
                 </div>
 
-                <div className="flex flex-col items-start gap-2 mt-3">
-                    {isBestOwned && (
-                    <span className="inline-flex items-center gap-1 text-xs text-emerald-600 font-medium">
-                        <CheckCircle2 className="h-3 w-3" /> 你已持有，用這張！
-                    </span>
-                    )}
-                    {!isBestOwned && (
-                    <span className="inline-flex items-center gap-1 text-xs text-red-500 font-medium">
-                        <X className="h-3 w-3" /> 你錢包未有此卡
-                    </span>
-                    )}
-                    
-                    <div className="flex items-center gap-2 flex-wrap">
-                        {/* Why This Card Button */}
-                        <button 
-                            className="text-xs border border-gray-200 rounded-lg px-2 py-1 flex items-center gap-1 text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-colors"
-                            onClick={() => handleWhyClick(best)}
-                        >
-                            <HelpCircle className="w-3 h-3" /> 點解係呢張？
-                        </button>
-                        
-                        {/* Record Transaction Button (Hero) - Only show if owned */}
-                        {isBestOwned && (
-                            <Button 
-                                variant="outline" 
-                                size="sm" 
-                                className={`h-8 text-xs gap-1 border-emerald-200 bg-white hover:bg-emerald-50 text-emerald-700 ${isBestRecorded ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                onClick={() => !isBestRecorded && !isBestRecording && handleRecordTransaction(best)}
-                                disabled={isBestRecorded || isBestRecording}
-                            >
-                                {isBestRecording ? <Loader2 className="w-3 h-3 animate-spin" /> : isBestRecorded ? <CheckCircle2 className="w-3 h-3" /> : <PlusCircle className="w-3 h-3" />}
-                                {isBestRecorded ? "已記錄消費" : "一鍵記賬"}
-                            </Button>
-                        )}
-                        
-                        {/* Login to record button - show if not owned */}
-                        {!isBestOwned && !user && (
-                            <Button 
-                                variant="outline" 
-                                size="sm" 
-                                className="h-8 text-xs gap-1 border-gray-200 bg-white hover:bg-gray-50 text-gray-600"
-                                onClick={() => setShowLoginPrompt(true)}
-                            >
-                                <LogIn className="w-3 h-3" /> 登入以紀錄
-                            </Button>
-                        )}
+                <div className="text-right shrink-0">
+                  {best.discountRule && best.discountAmount ? (
+                    <div className="mb-2">
+                      <div className="text-2xl font-bold text-orange-600 tracking-tight">{100 - best.discountPercentage!}折</div>
+                      <div className="text-xs text-orange-500 mt-0.5">即減 ${best.discountAmount.toFixed(0)}</div>
                     </div>
+                  ) : null}
+                  
+                  {best.pointsAmount && best.pointsCurrency ? (
+                    <>
+                      <div className="text-3xl font-bold text-emerald-600 tracking-tight">{best.pointsAmount.toLocaleString()} {best.pointsCurrency}</div>
+                      <div className="text-xs text-gray-500 mt-1">≈ ${best.pointsCashValue?.toFixed(1)} · {best.percentage}%</div>
+                    </>
+                  ) : (
+                    <>
+                      <div className={`text-3xl font-bold ${isBestCashFallback ? 'text-gray-400' : 'text-emerald-700'} tracking-tight`}>
+                        {bestMilesText || (best.rewardAmount > 0 ? `+$${best.rewardAmount.toFixed(1)}` : `${best.percentage}%`)}
+                      </div>
+                      {isBestCashFallback && <div className="text-xs text-gray-400 font-medium mt-1">現金回贈</div>}
+                      {!isBestCashFallback && !bestMilesText && best.rewardAmount > 0 && (
+                        <div className="text-xs text-gray-500 mt-1">{best.percentage}% 回贈</div>
+                      )}
+                    </>
+                  )}
                 </div>
               </div>
+              
+              {/* Tips & Notes */}
+              {best.missedDiscountRule && best.missedDiscountAmount && best.missedDiscountAmount > 0 && (
+                <div className="mt-3 p-3 bg-orange-50 border border-orange-100 rounded-xl flex items-start gap-2">
+                  <Lightbulb className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" />
+                  <div className="text-xs text-orange-700">
+                    <span className="font-bold">💡 折扣日提示：</span>
+                    {best.missedDiscountRule.validDays?.length ? (
+                      <>在 <span className="font-bold">{best.missedDiscountRule.validDays.map(d => DAYS_MAP[d]).join("/")}</span> 消費，</>
+                    ) : best.missedDiscountRule.validDates?.length ? (
+                      <>在 <span className="font-bold">每月 {best.missedDiscountRule.validDates.join("/")} 號</span> 消費，</>
+                    ) : <>在特定日子消費，</>}
+                    可享 <span className="font-bold">{100 - (best.missedDiscountPercentage || 0)}折</span>！
+                  </div>
+                </div>
+              )}
+              
+              {best.dateSuggestion && (
+                <div className="mt-3 p-3 bg-blue-50 border border-blue-100 rounded-xl flex items-start gap-2">
+                  <Lightbulb className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
+                  <div className="text-xs text-blue-700">
+                    <span className="font-bold">小貼士：</span>
+                    {best.dateSuggestion.validDays?.length ? (
+                      <>在 <span className="font-bold">{best.dateSuggestion.validDays.map(d => DAYS_MAP[d]).join("/")}</span> 消費，</>
+                    ) : best.dateSuggestion.validDates?.length ? (
+                      <>在 <span className="font-bold">每月 {best.dateSuggestion.validDates.join("/")} 號</span> 消費，</>
+                    ) : <>在特定日子消費，</>}
+                    回贈可達 <span className="font-bold">+${best.dateSuggestion.newRewardAmount.toFixed(1)} ({best.dateSuggestion.newPercentage}%)</span>！
+                  </div>
+                </div>
+              )}
 
-              <div className="text-right shrink-0">
-                {/* Discount display (購物時直接減價) */}
-                {best.discountRule && best.discountAmount ? (
-                  <div className="mb-2">
-                    <div className="text-2xl font-bold text-orange-600 tracking-tight">
-                      {100 - best.discountPercentage!}折
+              {best.card.note && (
+                <div className="mt-2 p-2.5 bg-amber-50 border border-amber-100 rounded-xl flex items-start gap-2">
+                  <Info className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                  <div className="text-[11px] text-amber-800 leading-snug">{best.card.note}</div>
+                </div>
+              )}
+
+              <div className="flex gap-2 mt-3">
+                <ShareButton
+                  title={`PickCardRebate 計算結果`}
+                  text={`💳 ${selectedMerchant?.name || '消費'} $${amount}\n🏆 最佳信用卡：${best.card.name}\n💰 回贈：$${best.rewardAmount.toFixed(2)} (${best.percentage}%)`}
+                  url="https://pickcardrebate.com"
+                  variant="outline"
+                  size="md"
+                  className="flex-1"
+                />
+              </div>
+            </div>
+          ) : (
+            /* CASE 2: 用戶未持有全場最抵卡 - 顯示推薦 + 全場最抵 */
+            <>
+              {/* 2A. 推薦使用：你持有的最抵卡 */}
+              {myBestCard && (
+                <div className="rounded-2xl border-2 border-emerald-300 p-4 bg-gradient-to-br from-emerald-50 to-green-50 relative overflow-hidden shadow-sm">
+                  <div className="text-xs uppercase text-emerald-700 font-bold mb-2 flex items-center gap-2">
+                    <span className="bg-emerald-100 px-2 py-1 rounded-lg">🏆 推薦使用</span>
+                    <span className="text-emerald-500 font-normal">你已持有</span>
+                  </div>
+                  
+                  <div className="flex items-start justify-between gap-3">
+                    {myBestCard.card.imageUrl ? (
+                      <div className="w-16 h-10 rounded-lg border border-emerald-200 bg-white flex items-center justify-center overflow-hidden shrink-0">
+                        <img src={myBestCard.card.imageUrl} alt={myBestCard.card.name} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
+                      </div>
+                    ) : (
+                      <div className={`w-16 h-10 rounded-lg border ${myBestCard.card.style?.bgColor || 'bg-gray-500'} shrink-0`}></div>
+                    )}
+
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-gray-500">{myBestCard.card.bank}</p>
+                      <h3 className="text-lg font-bold leading-tight text-emerald-800">{myBestCard.card.name}</h3>
+                      <p className="text-sm text-gray-600 mt-0.5">{myBestCard.matchedRule.description}</p>
+                      
+                      {rewardDifference && parseFloat(rewardDifference) > 0 && (
+                        <div className="mt-2 text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-lg inline-block">
+                          比全場最抵少賺 <span className="text-orange-600 font-bold">${rewardDifference}</span>，但你已持有
+                        </div>
+                      )}
+                      
+                      <div className="flex items-center gap-2 mt-2 flex-wrap">
+                        <button 
+                          className="text-xs border border-emerald-200 rounded px-2 py-0.5 flex items-center gap-1 text-emerald-700 hover:bg-emerald-100 transition-colors"
+                          onClick={() => handleWhyClick(myBestCard)}
+                        >
+                          <HelpCircle className="w-3 h-3" /> 點解係呢張？
+                        </button>
+                        {user && (
+                          <button 
+                            className={`text-xs border rounded px-2 py-0.5 flex items-center gap-1 transition-colors ${
+                              recordedCardIds.has(myBestCard.card.id) 
+                              ? "bg-gray-100 text-gray-500 border-gray-200" 
+                              : "bg-white hover:bg-emerald-50 text-emerald-600 border-emerald-200"
+                            }`}
+                            onClick={() => !recordedCardIds.has(myBestCard.card.id) && handleRecordTransaction(myBestCard)}
+                            disabled={recordedCardIds.has(myBestCard.card.id)}
+                          >
+                            {recordingCardId === myBestCard.card.id ? <Loader2 className="w-3 h-3 animate-spin" /> : recordedCardIds.has(myBestCard.card.id) ? <CheckCircle2 className="w-3 h-3" /> : <PlusCircle className="w-3 h-3" />}
+                            {recordedCardIds.has(myBestCard.card.id) ? "已記錄" : "記賬"}
+                          </button>
+                        )}
+                      </div>
                     </div>
-                    <div className="text-xs text-orange-500 mt-0.5">
-                      即減 ${best.discountAmount.toFixed(0)} <span className="text-[10px] px-1.5 py-0.5 bg-orange-100 text-orange-600 rounded-full ml-1">折扣</span>
+
+                    <div className="text-right shrink-0">
+                      {myBestCard.pointsAmount && myBestCard.pointsCurrency ? (
+                        <>
+                          <div className="text-2xl font-bold text-emerald-600">{myBestCard.pointsAmount.toLocaleString()} {myBestCard.pointsCurrency}</div>
+                          <div className="text-xs text-gray-500">≈ ${myBestCard.pointsCashValue?.toFixed(1)} · {myBestCard.percentage}%</div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="text-2xl font-bold text-emerald-700">
+                            {myBestCard.milesReturn ? `$${myBestCard.milesReturn.toFixed(1)}/里` : (myBestCard.rewardAmount > 0 ? `+$${myBestCard.rewardAmount.toFixed(1)}` : `${myBestCard.percentage}%`)}
+                          </div>
+                          {myBestCard.rewardAmount > 0 && <div className="text-xs text-gray-500">{myBestCard.percentage}%</div>}
+                        </>
+                      )}
                     </div>
                   </div>
-                ) : null}
+                </div>
+              )}
+
+              {/* 2B. 全場最抵（如果申請新卡） */}
+              <div className="rounded-xl border border-orange-200 p-3 bg-orange-50/50 relative">
+                <div className="text-xs uppercase text-orange-600 font-bold mb-2 flex items-center gap-2">
+                  <span className="bg-orange-100 px-2 py-0.5 rounded">💡 如果申請新卡</span>
+                  <span className="text-orange-400 font-normal">全場最抵</span>
+                </div>
                 
-                {/* Points display for Hero (e.g. yuu積分) */}
-                {best.pointsAmount && best.pointsCurrency ? (
-                  <>
-                    <div className={`${best.discountRule ? 'text-xl' : 'text-3xl'} font-bold text-emerald-600 tracking-tight`}>
-                      {best.pointsAmount.toLocaleString()} {best.pointsCurrency}
+                <div className="flex items-start justify-between gap-3">
+                  {best.card.imageUrl ? (
+                    <div className="w-14 h-9 rounded border border-orange-200 bg-white flex items-center justify-center overflow-hidden shrink-0">
+                      <img src={best.card.imageUrl} alt={best.card.name} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
                     </div>
-                    <div className="text-xs text-gray-500 mt-1">
-                      ≈ ${best.pointsCashValue?.toFixed(1)} 回贈 · {best.percentage}%
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className={`${best.discountRule ? 'text-xl' : 'text-3xl'} font-bold ${isBestCashFallback ? 'text-gray-400' : 'text-emerald-700'} tracking-tight`}>
-                      {bestMilesText || (best.rewardAmount > 0 ? `+$${best.rewardAmount.toFixed(1)}` : `${best.percentage}%`)}
-                    </div>
-                    {isBestCashFallback && <div className="text-xs text-gray-400 font-medium mt-1">現金回贈</div>}
-                    {!isBestCashFallback && !bestMilesText && best.rewardAmount > 0 && (
-                      <div className="text-xs text-gray-500 mt-1">{best.percentage}% 回贈</div>
+                  ) : (
+                    <div className={`w-14 h-9 rounded border ${best.card.style?.bgColor || 'bg-gray-500'} shrink-0`}></div>
+                  )}
+
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs text-gray-500">{best.card.bank}</p>
+                    <h3 className="font-bold leading-tight">{best.card.name}</h3>
+                    <p className="text-xs text-gray-600">{best.matchedRule.description}</p>
+                    
+                    {myBestCard && rewardDifference && parseFloat(rewardDifference) > 0 && (
+                      <div className="mt-1 text-xs text-orange-600 font-medium">
+                        比你現有卡多賺 <span className="font-bold">${rewardDifference}</span>
+                      </div>
                     )}
-                  </>
-                )}
-                {best.card.welcomeOfferText && !isBestOwned && (
-                  <div className="text-xs text-orange-500 mt-2 font-medium max-w-[80px] ml-auto">{best.card.welcomeOfferText}</div>
+                    
+                    <div className="flex items-center gap-2 mt-2 flex-wrap">
+                      <button 
+                        className="text-xs border border-orange-200 rounded px-2 py-0.5 flex items-center gap-1 text-orange-600 hover:bg-orange-100 transition-colors"
+                        onClick={() => handleWhyClick(best)}
+                      >
+                        <HelpCircle className="w-3 h-3" /> 點解係呢張？
+                      </button>
+                      {best.card.applyUrl && (
+                        <Button
+                          size="sm"
+                          className="h-7 text-xs bg-orange-500 hover:bg-orange-600"
+                          onClick={() => window.open(best.card.applyUrl, "_blank")}
+                        >
+                          立即申請
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="text-right shrink-0">
+                    {best.discountRule && best.discountAmount ? (
+                      <div className="mb-1">
+                        <div className="text-xl font-bold text-orange-600">{100 - best.discountPercentage!}折</div>
+                        <div className="text-[10px] text-orange-500">即減 ${best.discountAmount.toFixed(0)}</div>
+                      </div>
+                    ) : null}
+                    
+                    {best.pointsAmount && best.pointsCurrency ? (
+                      <>
+                        <div className="text-xl font-bold text-orange-600">{best.pointsAmount.toLocaleString()} {best.pointsCurrency}</div>
+                        <div className="text-[10px] text-gray-500">≈ ${best.pointsCashValue?.toFixed(1)} · {best.percentage}%</div>
+                      </>
+                    ) : (
+                      <>
+                        <div className={`text-xl font-bold ${isBestCashFallback ? 'text-gray-400' : 'text-orange-600'}`}>
+                          {bestMilesText || (best.rewardAmount > 0 ? `+$${best.rewardAmount.toFixed(1)}` : `${best.percentage}%`)}
+                        </div>
+                        {best.rewardAmount > 0 && <div className="text-[10px] text-gray-500">{best.percentage}%</div>}
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Share Button */}
+              <div className="flex gap-2">
+                <ShareButton
+                  title={`PickCardRebate 計算結果`}
+                  text={`💳 ${selectedMerchant?.name || '消費'} $${amount}\n🏆 最佳信用卡：${best.card.name}\n💰 回贈：$${best.rewardAmount.toFixed(2)} (${best.percentage}%)`}
+                  url="https://pickcardrebate.com"
+                  variant="outline"
+                  size="md"
+                  className="flex-1"
+                />
+              </div>
+            </>
+          )}
+
+          {/* 其他卡片區域 */}
+          <div className="space-y-3 max-h-[35vh] overflow-y-auto pr-1">
+            
+            {/* 你持有的其他卡 (折疊) */}
+            {myOtherCards.length > 0 && (
+              <div className="pt-2">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="w-full text-xs text-gray-500 hover:text-gray-700 h-8 justify-start"
+                  onClick={() => setShowAllResults(prev => !prev)}
+                >
+                  <span className="flex items-center gap-1">
+                    <CreditCard className="w-3 h-3" />
+                    你持有的其他卡 ({myOtherCards.length}) 
+                    {showAllResults ? <ChevronUp className="w-3 h-3 ml-1"/> : <ChevronDown className="w-3 h-3 ml-1"/>}
+                  </span>
+                </Button>
+                
+                {showAllResults && (
+                  <div className="space-y-2 mt-2 animate-in fade-in slide-in-from-top-2">
+                    {myOtherCards.map(card => (
+                      <ResultRow key={card.card.id} result={card} />
+                    ))}
+                  </div>
                 )}
               </div>
-            </div>
-            
-            {/* Missed Discount Suggestion (折扣日期建議) */}
-            {best.missedDiscountRule && best.missedDiscountAmount && best.missedDiscountAmount > 0 && (
-                <div className="mt-3 p-3 bg-orange-50 border border-orange-100 rounded-xl flex items-start gap-2 animate-in fade-in slide-in-from-bottom-2">
-                    <Lightbulb className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" />
-                    <div className="text-xs text-orange-700">
-                        <span className="font-bold">💡 折扣日提示：</span>
-                        {best.missedDiscountRule.validDays && best.missedDiscountRule.validDays.length > 0 ? (
-                            <>如果在 <span className="font-bold">{best.missedDiscountRule.validDays.map(d => DAYS_MAP[d]).join("/")}</span> 消費，</>
-                        ) : best.missedDiscountRule.validDates && best.missedDiscountRule.validDates.length > 0 ? (
-                            <>如果在 <span className="font-bold">每月 {best.missedDiscountRule.validDates.join("/")} 號</span> 消費，</>
-                        ) : (
-                            <>如果在特定日子消費，</>
-                        )}
-                        可享 <span className="font-bold">{100 - (best.missedDiscountPercentage || 0)}折</span>（即減 ${best.missedDiscountAmount.toFixed(0)}）！
-                    </div>
-                </div>
             )}
 
-            {/* Date Suggestion Logic (回贈日期建議) */}
-            {best.dateSuggestion && (
-                <div className="mt-3 p-3 bg-blue-50 border border-blue-100 rounded-xl flex items-start gap-2 animate-in fade-in slide-in-from-bottom-2">
-                    <Lightbulb className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
-                    <div className="text-xs text-blue-700">
-                        <span className="font-bold">小貼士：</span>
-                        {best.dateSuggestion.validDays && best.dateSuggestion.validDays.length > 0 ? (
-                            <>如果在 <span className="font-bold">{best.dateSuggestion.validDays.map(d => DAYS_MAP[d]).join("/")}</span> 消費，</>
-                        ) : best.dateSuggestion.validDates && best.dateSuggestion.validDates.length > 0 ? (
-                            <>如果在 <span className="font-bold">每月 {best.dateSuggestion.validDates.join("/")} 號</span> 消費，</>
-                        ) : (
-                            <>如果在特定日子消費，</>
-                        )}
-                        回贈可達 <span className="font-bold">+${best.dateSuggestion.newRewardAmount.toFixed(1)} ({best.dateSuggestion.newPercentage}%)</span>！
-                    </div>
-                </div>
-            )}
-
-            {/* Card Specific Note (e.g. SC Smart tiers) */}
-            {best.card.note && (
-                <div className="mt-2 p-2.5 bg-amber-50 border border-amber-100 rounded-xl flex items-start gap-2">
-                    <Info className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                    <div className="text-[11px] text-amber-800 leading-snug">
-                        {best.card.note}
-                    </div>
-                </div>
-            )}
-
-            <div className="flex gap-2 mt-3">
-              {!isBestOwned && best.card.applyUrl && (
-                <Button
-                  className="flex-1 bg-orange-500 hover:bg-orange-600 h-9 text-sm"
-                  onClick={() => window.open(best.card.applyUrl, "_blank")}
-                >
-                  立即申請
-                </Button>
-              )}
-              <ShareButton
-                title={`PickCardRebate 計算結果`}
-                text={`💳 ${selectedMerchant?.name || '消費'} $${amount}\n🏆 最佳信用卡：${best.card.name}\n💰 回贈：$${best.rewardAmount.toFixed(2)} (${best.percentage}%)`}
-                url="https://pickcardrebate.com"
-                variant="outline"
-                size="md"
-                className={isBestOwned ? "flex-1" : ""}
-              />
-            </div>
-          </div>
-
-          <div className="space-y-3 max-h-[40vh] overflow-y-auto pr-1">
-            
-            {/* 2. My Best Card (If the best card above is NOT owned) */}
-            {(!isBestOwned && myBestCard) && (
-                <div className="space-y-1">
-                    <div className="text-xs text-gray-500 font-medium px-1">你的錢包中最抵：</div>
-                    <ResultRow result={myBestCard} isBest={false} />
-                </div>
-            )}
-
-            {/* 3. My Other Cards */}
-            {myOtherCards.length > 0 && (
-                <div className="space-y-1 pt-2">
-                    <div className="text-xs text-gray-500 font-medium px-1">你持有的其他卡：</div>
-                    {myOtherCards.map(card => (
-                        <ResultRow key={card.card.id} result={card} />
-                    ))}
-                </div>
-            )}
-
-            {/* 4. Toggle for Unowned Cards */}
+            {/* 其他未持有的卡 (折疊) */}
             {unownedCards.length > 0 && (
-                <div className="pt-2">
-                    <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="w-full text-xs text-gray-400 hover:text-gray-600 h-8"
-                        onClick={() => setShowAllResults(!showAllResults)}
-                    >
-                        {showAllResults ? (
-                            <span className="flex items-center gap-1">收起其他結果 <ChevronUp className="w-3 h-3"/></span>
-                        ) : (
-                            <span className="flex items-center gap-1">查看其他未持有的卡 ({unownedCards.length}) <ChevronDown className="w-3 h-3"/></span>
-                        )}
-                    </Button>
-                    
-                    {showAllResults && (
-                        <div className="space-y-2 mt-2 animate-in fade-in slide-in-from-top-2">
-                            {unownedCards.map(card => (
-                                <ResultRow key={card.card.id} result={card} />
-                            ))}
-                        </div>
-                    )}
+              <div className="pt-2 border-t border-gray-100 dark:border-gray-800">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="w-full text-xs text-gray-400 hover:text-gray-600 h-8 justify-start"
+                  onClick={() => setShowAllResults(prev => !prev)}
+                >
+                  <span className="flex items-center gap-1">
+                    查看其他未持有的卡 ({unownedCards.length}) 
+                    {showAllResults ? <ChevronUp className="w-3 h-3 ml-1"/> : <ChevronDown className="w-3 h-3 ml-1"/>}
+                  </span>
+                </Button>
+                
+                {showAllResults && (
+                  <div className="space-y-2 mt-2 animate-in fade-in slide-in-from-top-2">
+                    {unownedCards.map(card => (
+                      <ResultRow key={card.card.id} result={card} />
+                    ))}
+                  </div>
+                )}
                 </div>
             )}
           </div>
