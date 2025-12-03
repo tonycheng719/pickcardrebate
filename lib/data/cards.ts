@@ -293,14 +293,22 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.125, currency: 'Points' }, // 8 pts = 1 mile -> ratio 0.125
     rules: [
+      // T&C 2025/7/1-2025/12/31: 需每月簽滿 $5,000，餐飲+旅遊可享 10X 積分 (4%)
+      // 餐飲上限：100,000 積分/月 = $10,000 簽賬
+      // 旅遊上限：250,000 積分/月 = $25,000 簽賬
+      // 餐飲+旅遊合共上限：300,000 積分/月 = $30,000 簽賬
+      { description: "本地餐飲 10X (4%)", matchType: "category", matchValue: ["dining"], percentage: 4.0, monthlyMinSpend: 5000, cap: 10000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      { description: "外幣簽賬 10X (4%)", matchType: "base", percentage: 4.0, isForeignCurrency: true, monthlyMinSpend: 5000, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 不適用於 Alipay/WeChat Pay/PayMe
-      { description: "餐飲/旅遊 10X (4% / $1.5/里)", matchType: "category", matchValue: ["dining", "travel"], percentage: 4.0, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
     ],
     tags: ["餐飲4%", "旅遊4%", "高級卡"],
     welcomeOfferText: "迎新簽 $12,000 送 225,000 積分 (私人財富客戶額外 +75,000)",
-    sellingPoints: ["餐飲及旅遊簽賬 10X 積分 ($1.5/里)", "每年免費享用貴賓室"],
-    note: "⚠️ 不適用於 Alipay/WeChat Pay/PayMe 簽賬。迎新：簽賬期內 (發卡當月+首2個曆月) 累積簽滿 $12,000 送 225,000 積分。同時持有「私人財富」或「中銀理財」賬戶可額外獲 75,000 積分。",
+    applyUrl: "https://www.bochk.com/tc/creditcard/cheers.html",
+    sellingPoints: ["本地餐飲 10X (4%)", "外幣簽賬 10X (4%)", "需每月簽滿 $5,000", "免費旅遊保險"],
+    note: "💡 【推廣期 2025/7/1-2025/12/31】需每月簽滿 $5,000 方可享餐飲/外幣 10X 積分 (4%)！📊 每月上限：餐飲 $10,000 + 外幣 $25,000（合共 $30,000）。⚠️ 不適用於 Alipay/WeChat Pay/PayMe。✈️ 免費旅遊保險：憑卡支付機票/酒店/套票，即享高達 $780萬人身意外保障。迎新：簽 $12,000 送 225,000 積分，私人財富/中銀理財客戶額外 +75,000 積分。",
+    promoEndDate: "2025-12-31",
+    promoName: "餐飲及旅遊簽賬 10X 積分優惠",
   },
   {
     id: "boc-gba",
