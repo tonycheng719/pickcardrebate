@@ -14,12 +14,17 @@ CREATE INDEX IF NOT EXISTS idx_compare_logs_card_ids ON compare_logs USING GIN(c
 -- Enable RLS
 ALTER TABLE compare_logs ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policies first (idempotent)
+DROP POLICY IF EXISTS "Allow insert for all" ON compare_logs;
+DROP POLICY IF EXISTS "Allow select for authenticated" ON compare_logs;
+DROP POLICY IF EXISTS "Allow all for service role" ON compare_logs;
+
 -- Allow inserts from anyone (anonymous users can log comparisons)
 CREATE POLICY "Allow insert for all" ON compare_logs
     FOR INSERT
     WITH CHECK (true);
 
--- Only allow select for authenticated users (admin)
+-- Allow select for authenticated users (admin)
 CREATE POLICY "Allow select for authenticated" ON compare_logs
     FOR SELECT
     USING (auth.role() = 'authenticated');

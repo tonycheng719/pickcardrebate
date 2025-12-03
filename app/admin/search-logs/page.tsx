@@ -18,6 +18,7 @@ interface SearchLog {
   best_card_id: string;
   best_reward_amount: number;
   user_id: string | null;
+  user_email: string | null;
   created_at: string;
 }
 
@@ -277,8 +278,11 @@ export default function AdminSearchLogsPage() {
                     </td>
                     <td className="px-4 py-3 text-gray-500 dark:text-gray-400 text-xs">
                       {log.user_id ? (
-                        <span className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2 py-0.5 rounded text-xs">
-                          會員
+                        <span 
+                          className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2 py-0.5 rounded text-xs cursor-help"
+                          title={log.user_id}
+                        >
+                          {log.user_email || '會員'}
                         </span>
                       ) : (
                         <span className="bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400 px-2 py-0.5 rounded text-xs">

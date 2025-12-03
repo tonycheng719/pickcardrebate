@@ -59,7 +59,28 @@ export async function GET() {
       last30days: last30Count || 0,
     };
 
-    return NextResponse.json({ logs: logs || [], stats });
+    // Get user emails for logs with user_id
+    const userIds = [...new Set((logs || []).filter(l => l.user_id).map(l => l.user_id))];
+    const userEmailMap: Record<string, string> = {};
+    
+    if (userIds.length > 0) {
+      const { data: profiles } = await adminAuthClient
+        .from("profiles")
+        .select("id, email, name")
+        .in("id", userIds);
+      
+      profiles?.forEach(p => {
+        userEmailMap[p.id] = p.email || p.name || p.id.substring(0, 8);
+      });
+    }
+
+    // Add user_email to logs
+    const logsWithEmail = (logs || []).map(log => ({
+      ...log,
+      user_email: log.user_id ? userEmailMap[log.user_id] || null : null
+    }));
+
+    return NextResponse.json({ logs: logsWithEmail, stats });
   } catch (error: any) {
     console.error("API Error fetching search logs:", error);
     return NextResponse.json({ logs: [], stats: null }, { status: 500 });
