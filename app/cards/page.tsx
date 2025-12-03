@@ -264,12 +264,6 @@ function CardItem({ card }: { card: CreditCard }) {
                     <p className="text-sm text-amber-900 dark:text-amber-100 leading-relaxed">
                       {card.welcomeOfferText}
                     </p>
-                    {(card.welcomeOfferReward || card.welcomeOfferDeadline) && (
-                      <div className="mt-3 text-xs text-amber-800/80 dark:text-amber-200/80 space-y-1">
-                        {card.welcomeOfferReward && <p>獎賞：{card.welcomeOfferReward}</p>}
-                        {card.welcomeOfferDeadline && <p>截止：{card.welcomeOfferDeadline}</p>}
-                      </div>
-                    )}
                     {card.applyUrl && (
                       <a
                         href={card.applyUrl}
