@@ -14,7 +14,7 @@ interface ShareButtonProps {
   text: string;
   url?: string;
   variant?: "default" | "outline" | "ghost";
-  size?: "default" | "sm" | "lg" | "icon";
+  size?: "sm" | "md" | "lg" | "icon";
   className?: string;
 }
 
@@ -23,7 +23,7 @@ export function ShareButton({
   text, 
   url = typeof window !== 'undefined' ? window.location.href : '',
   variant = "outline",
-  size = "default",
+  size = "md",
   className = ""
 }: ShareButtonProps) {
   const [showMenu, setShowMenu] = useState(false);
