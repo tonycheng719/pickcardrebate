@@ -18,6 +18,7 @@ import {
 } from "@/lib/logic/rankings";
 import { Navbar } from "@/components/navbar";
 import { BottomNav } from "@/components/bottom-nav";
+import { ShareButton } from "@/components/share-button";
 
 const categoryIcons: Record<RankingCategory, React.ReactNode> = {
   dining: <Utensils className="h-5 w-5" />,
@@ -97,8 +98,14 @@ function CategorySection({ categoryId }: { categoryId: RankingCategory }) {
   if (!category) return null;
   
   const rankings = getRankingsByCategory(categoryId, 5);
+  const currentYear = new Date().getFullYear();
   
   if (rankings.length === 0) return null;
+  
+  // Generate share text
+  const shareText = rankings.slice(0, 5).map((r, i) => 
+    `${i + 1}. ${r.card.name} ${r.netPercentage !== undefined ? r.netPercentage.toFixed(1) : r.percentage}%`
+  ).join('\n');
   
   return (
     <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
@@ -117,11 +124,19 @@ function CategorySection({ categoryId }: { categoryId: RankingCategory }) {
               </p>
             </div>
           </div>
-          <Link href={`/blog/${category.slug}`}>
-            <Button variant="ghost" size="sm" className="text-emerald-600 hover:text-emerald-700">
-              查看詳情 <ChevronRight className="h-4 w-4 ml-1" />
-            </Button>
-          </Link>
+          <div className="flex items-center gap-1">
+            <ShareButton
+              title={`${currentYear} 最抵${category.name}信用卡 Top 5`}
+              text={`${category.icon} ${category.name}信用卡排行榜\n\n${shareText}\n\n👉 完整排名：`}
+              size="icon"
+              variant="ghost"
+            />
+            <Link href={`/blog/${category.slug}`}>
+              <Button variant="ghost" size="sm" className="text-emerald-600 hover:text-emerald-700">
+                詳情 <ChevronRight className="h-4 w-4 ml-1" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
       
@@ -155,11 +170,16 @@ export default function RankingsPage() {
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
             🏆 信用卡回贈排行榜
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-4">
             根據官方條款自動計算，每日更新。
             <br className="hidden md:block" />
             助你快速搵到每個消費類別最抵嘅信用卡！
           </p>
+          <ShareButton
+            title="🏆 2025 信用卡回贈排行榜"
+            text="信用卡回贈排行榜 - 食飯、網購、超市、旅遊、海外簽賬各類別最抵卡\n\n👉 即睇完整排名："
+            size="sm"
+          />
         </div>
         
         {/* Category Filter */}

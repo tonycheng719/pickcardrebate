@@ -224,13 +224,27 @@ function CardDetailSection({ result, rank, showFxInfo = false }: { result: Ranki
 
 function QuickRankingTable({ rankings, category }: { rankings: RankingResult[]; category: CategoryConfig }) {
   const isOverseas = category.isForeignCurrency;
+  const currentYear = new Date().getFullYear();
+  
+  // Generate share text
+  const shareText = rankings.slice(0, 5).map((r, i) => 
+    `${i + 1}. ${r.card.name} ${r.netPercentage !== undefined ? r.netPercentage.toFixed(1) : r.percentage}%`
+  ).join('\n');
   
   return (
     <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden mb-8">
       <div className="p-4 border-b border-gray-100 dark:border-gray-800 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20">
-        <h2 className="font-bold text-gray-900 dark:text-white">
-          📊 {category.name} Top 10 快速一覽
-        </h2>
+        <div className="flex items-center justify-between">
+          <h2 className="font-bold text-gray-900 dark:text-white">
+            📊 {category.name} Top 10 快速一覽
+          </h2>
+          <ShareButton
+            title={`${currentYear} 最抵${category.name}信用卡 Top 10`}
+            text={`${category.icon} ${category.name}信用卡排行榜\n\n${shareText}\n\n👉 完整排名：`}
+            size="sm"
+            variant="ghost"
+          />
+        </div>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
