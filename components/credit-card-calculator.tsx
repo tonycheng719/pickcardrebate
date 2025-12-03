@@ -759,7 +759,7 @@ export function CreditCardCalculator({
                 text={`💳 ${selectedMerchant?.name || '消費'} $${amount}\n🏆 最佳信用卡：${best.card.name}\n💰 回贈：$${best.rewardAmount.toFixed(2)} (${best.percentage}%)`}
                 url="https://pickcardrebate.com"
                 variant="outline"
-                size="default"
+                size="md"
                 className={isBestOwned ? "flex-1" : ""}
               />
             </div>
