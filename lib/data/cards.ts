@@ -12,6 +12,7 @@ export const HK_CARDS: CreditCard[] = [
     rewardTimeline: "獎賞錢即時入賬",
     foreignCurrencyFee: 1.95,
     annualFee: 2000,
+    minIncome: 240000,
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' }, // $10 = $1 RC = 0.4%
     rules: [
       // T&C: 最紅自主獎賞 6X (2.4%)，需登記，額外「獎賞錢」簽賬上限 $100,000
@@ -73,6 +74,8 @@ export const HK_CARDS: CreditCard[] = [
     rewardTimeline: "獎賞錢即時入賬",
     foreignCurrencyFee: 1.95,
     annualFee: 2000,
+    minIncome: 240000,
+    feeWaiverCondition: "首兩年免年費",
     rewardConfig: { method: 'conversion', ratio: 20, currency: 'RC' }, // 1 RC = 20 Miles (Special rate for EveryMile)
     rules: [
       // T&C: 指定商戶/交通 $2/里 (2.5%)
@@ -95,6 +98,8 @@ export const HK_CARDS: CreditCard[] = [
     rewardTimeline: "獎賞錢即時入賬",
     foreignCurrencyFee: 0,
     annualFee: 1800,
+    minIncome: 150000,
+    feeWaiverCondition: "首兩年免年費",
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' },
     rules: [
       // T&C 2025: 內地/澳門 QR Code/流動支付 額外5倍 (2%) + 基本0.4% + 賞世界2% = 4.4%
@@ -119,6 +124,9 @@ export const HK_CARDS: CreditCard[] = [
     rewardTimeline: "獎賞錢即時入賬",
     foreignCurrencyFee: 1.95,
     annualFee: 2000,
+    minIncome: 1000000,
+    feeWaiverCondition: "卓越理財客戶豁免年費",
+    incomeNote: "或持有 HK$1,000,000 全面理財總值",
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' },
     rules: [
       // T&C: 最紅自主獎賞適用
@@ -192,6 +200,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-teal-700 to-teal-900", textColor: "text-white" },
     rewardTimeline: "里數自動存入 (月結單後7個工作天)",
     annualFee: 1800,
+    minIncome: 240000,
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'direct_rate', baseRate: 6, currency: 'AM' }, // Direct rate: $6/mile
     rules: [
@@ -216,6 +225,7 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://av.sc.com/hk/content/images/hk-simply-cash-visa-card-masthead-400x255.png",
     rewardTimeline: "現金回贈於下期賬單顯示，需手動換領 ($50倍數)",
     annualFee: 2000,
+    minIncome: 96000,
     feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rules: [
@@ -397,6 +407,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-purple-600 via-pink-600 to-red-500", textColor: "text-white" },
     imageUrl: "https://www.hangseng.com/content/dam/hase/config/personal/credit-cards/mmpower-card/images/mmpower-card-face.png",
     annualFee: 2000,
+    minIncome: 150000,
     feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rules: [
@@ -455,6 +466,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-sky-500 to-blue-600", textColor: "text-white" },
     imageUrl: "https://www.hangseng.com/content/dam/hase/config/personal/credit-cards/travel-plus-card/images/travel-plus-card-face.png",
     annualFee: 2000,
+    minIncome: 150000,
     feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rules: [
@@ -486,6 +498,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-blue-700 to-blue-900", textColor: "text-white" },
     imageUrl: "https://www.citibank.com.hk/chinese/credit-cards/images/cash-back-card.png",
     annualFee: 1200,
+    minIncome: 120000,
     feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rules: [
@@ -507,6 +520,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-r from-blue-400 to-cyan-500", textColor: "text-white" },
     imageUrl: "https://www.citibank.com.hk/chinese/credit-cards/images/rewards-card.png",
     annualFee: 1800,
+    minIncome: 120000,
     feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' }, // 15 pts = 1 mile
@@ -528,6 +542,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-slate-600 to-slate-800", textColor: "text-white" },
     imageUrl: "https://www.citibank.com.hk/chinese/credit-cards/images/premiermiles-card.png",
     annualFee: 1800,
+    minIncome: 150000,
     feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.0833, currency: 'Points' }, // 12 pts = 1 mile
@@ -548,6 +563,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-gray-700 to-gray-900", textColor: "text-white" },
     imageUrl: "https://www.citibank.com.hk/chinese/credit-cards/images/prestige-card.png",
     annualFee: 3800,
+    minIncome: 600000,
     feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.0833, currency: 'Points' }, // 12 pts = 1 mile
