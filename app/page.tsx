@@ -7,6 +7,91 @@ import { useWallet } from "@/lib/store/wallet-context";
 import { Zap, ShieldCheck, PieChart, BadgeCheck, Plane, RefreshCw, Smartphone, Calendar, Layers } from "lucide-react";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
+import Script from "next/script";
+
+// HowTo Schema for calculator usage
+const howToSchema = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "如何使用信用卡回贈計算機",
+  "description": "使用 PickCardRebate 信用卡回贈計算機，只需 3 步即可找出最高回贈的信用卡。",
+  "totalTime": "PT1M",
+  "estimatedCost": {
+    "@type": "MonetaryAmount",
+    "currency": "HKD",
+    "value": "0"
+  },
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "選擇商戶",
+      "text": "在搜尋欄輸入或選擇你要消費的商戶名稱，例如「百佳」、「惠康」、「麥當勞」等。",
+      "url": "https://pickcardrebate.com/#step1"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "輸入消費金額",
+      "text": "輸入你預計的消費金額（港幣），系統會根據金額計算實際回贈。",
+      "url": "https://pickcardrebate.com/#step2"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "選擇支付方式",
+      "text": "選擇你的付款方式，如實體卡、Apple Pay、Google Pay 等，不同支付方式可能影響回贈。",
+      "url": "https://pickcardrebate.com/#step3"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "查看結果",
+      "text": "系統會自動顯示回贈最高的信用卡排名，包括回贈率、回贈金額及任何限制條件。",
+      "url": "https://pickcardrebate.com/#results"
+    }
+  ]
+};
+
+// FAQ Schema for homepage
+const homeFaqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "PickCardRebate 是什麼？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "PickCardRebate 是香港首個信用卡回贈比較計算機，幫助消費者即時找出在特定商戶消費時，哪張信用卡可獲得最高回贈。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "計算結果準確嗎？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "我們的數據來自各銀行官方條款，並定期更新。同時設有社群驗證功能，用戶可回報實際回贈情況，確保數據準確。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "需要收費嗎？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "完全免費！PickCardRebate 提供免費的信用卡回贈計算服務，無任何隱藏收費。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "支援哪些信用卡？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "我們收錄了香港主流銀行的信用卡，包括 HSBC、恒生、渣打、Citi、DBS、中銀、東亞、大新、富邦等。"
+      }
+    }
+  ]
+};
 
 // Get greeting based on current time (Hong Kong Time)
 function getGreeting(): string {
@@ -82,6 +167,19 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950">
+      {/* HowTo Schema for calculator */}
+      <Script
+        id="howto-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+      />
+      {/* FAQ Schema for homepage */}
+      <Script
+        id="home-faq-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeFaqSchema) }}
+      />
+      
       <Navbar />
 
       <main className="flex-1 container mx-auto px-4 pt-6 pb-24">

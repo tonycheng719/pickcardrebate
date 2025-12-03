@@ -582,6 +582,30 @@ export default async function BlogCategoryPage({ params }: { params: Promise<{ s
           排名根據公開資料自動計算，不構成任何投資或申請建議。
         </div>
         
+        {/* Related Categories - Internal Link Optimization */}
+        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6 mb-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">📊 其他熱門排行榜</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {RANKING_CATEGORIES
+              .filter(cat => cat.slug !== slug)
+              .slice(0, 6)
+              .map(cat => (
+                <Link key={cat.id} href={`/blog/${cat.slug}`}>
+                  <div className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 dark:border-gray-800 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 dark:hover:border-emerald-800 transition-colors group">
+                    <span className="text-2xl">{cat.icon}</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900 dark:text-white truncate group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
+                        {cat.name}信用卡
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{cat.description.slice(0, 20)}...</p>
+                    </div>
+                    <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 flex-shrink-0" />
+                  </div>
+                </Link>
+              ))}
+          </div>
+        </div>
+        
         {/* Related Links */}
         <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">🔗 相關連結</h2>
@@ -610,7 +634,7 @@ export default async function BlogCategoryPage({ params }: { params: Promise<{ s
             <Link href="/rankings">
               <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                 <Trophy className="h-5 w-5 text-emerald-600" />
-                <span>其他類別排行榜</span>
+                <span>全部排行榜</span>
                 <ChevronRight className="h-4 w-4 ml-auto text-gray-400" />
               </div>
             </Link>

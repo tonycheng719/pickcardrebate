@@ -1,6 +1,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,7 +11,7 @@ import { useDataset } from "@/lib/admin/data-store";
 import { 
   ArrowLeft, Plus, Check, ExternalLink, Share2, 
   CreditCard as CardIcon, Percent, Calendar, AlertCircle,
-  Copy, MessageCircle
+  Copy, MessageCircle, ChevronRight, Trophy, Scale
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
@@ -61,6 +62,19 @@ export default function CardDetailPage() {
   const card = useMemo(() => {
     return cards.find(c => c.id === cardId) || HK_CARDS.find(c => c.id === cardId);
   }, [cards, cardId]);
+  
+  // Get related cards (same bank or same tags)
+  const relatedCards = useMemo(() => {
+    if (!card) return [];
+    const cardList = cards.length ? cards : HK_CARDS;
+    return cardList
+      .filter(c => 
+        c.id !== card.id && 
+        !c.hidden &&
+        (c.bank === card.bank || c.tags?.some(tag => card.tags?.includes(tag)))
+      )
+      .slice(0, 4);
+  }, [card, cards]);
 
   if (!card) {
     return (
@@ -534,6 +548,87 @@ export default function CardDetailPage() {
                         </p>
                       </div>
                     ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+            
+            {/* Related Cards Section - Internal Link Optimization */}
+            {relatedCards.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.45 }}
+              >
+                <Card>
+                  <CardContent className="p-5">
+                    <h2 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                      <CardIcon className="h-5 w-5 text-purple-500" />
+                      相關信用卡
+                    </h2>
+                    <div className="grid sm:grid-cols-2 gap-3">
+                      {relatedCards.map((relatedCard) => (
+                        <Link 
+                          key={relatedCard.id}
+                          href={`/cards/${relatedCard.id}`}
+                          className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group"
+                        >
+                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-white text-xs font-bold ${relatedCard.style?.bgColor || 'bg-gray-600'}`}>
+                            {relatedCard.bank.slice(0, 2)}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 dark:text-white truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                              {relatedCard.name}
+                            </p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">{relatedCard.bank}</p>
+                          </div>
+                          <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" />
+                        </Link>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+            
+            {/* Quick Links Section - Internal Link Optimization */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <Card>
+                <CardContent className="p-5">
+                  <h2 className="font-semibold text-gray-900 dark:text-white mb-4">🔗 快速導航</h2>
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    <Link href="/">
+                      <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                        <CardIcon className="h-5 w-5 text-emerald-600" />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">回贈計算機</span>
+                        <ChevronRight className="h-4 w-4 ml-auto text-gray-400" />
+                      </div>
+                    </Link>
+                    <Link href="/cards/compare">
+                      <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                        <Scale className="h-5 w-5 text-emerald-600" />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">信用卡比較</span>
+                        <ChevronRight className="h-4 w-4 ml-auto text-gray-400" />
+                      </div>
+                    </Link>
+                    <Link href="/cards">
+                      <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                        <CardIcon className="h-5 w-5 text-emerald-600" />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">所有信用卡</span>
+                        <ChevronRight className="h-4 w-4 ml-auto text-gray-400" />
+                      </div>
+                    </Link>
+                    <Link href="/rankings">
+                      <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                        <Trophy className="h-5 w-5 text-emerald-600" />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">回贈排行榜</span>
+                        <ChevronRight className="h-4 w-4 ml-auto text-gray-400" />
+                      </div>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>

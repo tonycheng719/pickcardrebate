@@ -89,6 +89,36 @@ export const metadata: Metadata = {
   },
 };
 
+// WebSite Schema for site-wide SEO (including sitelinks search box)
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "PickCardRebate",
+  "alternateName": "信用卡回贈計算機",
+  "url": "https://pickcardrebate.com",
+  "description": "香港最強信用卡回贈計算機！即時比較全港信用卡優惠，輸入商戶金額即知邊張卡最抵。",
+  "inLanguage": "zh-HK",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://pickcardrebate.com/cards?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+};
+
+// Organization Schema
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "PickCardRebate",
+  "url": "https://pickcardrebate.com",
+  "logo": "https://pickcardrebate.com/og-image.png",
+  "description": "香港信用卡回贈比較平台，幫助消費者找出最高回贈的信用卡。",
+  "sameAs": []
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -97,6 +127,16 @@ export default function RootLayout({
   return (
     <html lang="zh-HK" suppressHydrationWarning>
       <head>
+        {/* WebSite Schema for Sitelinks Search Box */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+        {/* Organization Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
         {/* Google Analytics */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0ST5J83F7"></script>
         <script
