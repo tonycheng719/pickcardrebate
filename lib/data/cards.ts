@@ -524,6 +524,8 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://www.dbs.com.hk/personal/credit-cards/credit-cards/eminent-card/images/card_face_eminent_visa_signature.png",
     annualFee: 1800,
     feeWaiverCondition: "首年免年費",
+    minIncome: 360000,
+    incomeNote: "Visa Signature 需年薪 $360,000；未達要求會自動當作 Platinum ($150,000) 申請",
     foreignCurrencyFee: 1.95,
     rules: [
       // T&C: 指定類別 5%: 餐飲/運動服飾/健身中心/醫療 (單筆≥$300，Signature卡每月首$8,000)
@@ -548,6 +550,7 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://www.dbs.com.hk/personal/credit-cards/credit-cards/black-card/images/card_face_black_world_master.png",
     annualFee: 1800,
     feeWaiverCondition: "首年免年費",
+    minIncome: 240000,
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'direct_rate', baseRate: 6, currency: 'DBS$' }, // $6/mile standard
     rules: [
@@ -566,6 +569,8 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://www.dbs.com.hk/personal/credit-cards/credit-cards/live-fresh-card/images/card_face_live_fresh.png",
     annualFee: 600,
     feeWaiverCondition: "首年免年費",
+    minIncome: 150000,
+    incomeNote: "全日制學生可豁免入息要求",
     foreignCurrencyFee: 1.95,
     rules: [
       // T&C: 自選類別 5%，需透過 DBS Card+ App 登記及 45 日內按「一扣即享」
@@ -586,6 +591,7 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://www.dbs.com.hk/personal/credit-cards/credit-cards/compass-visa/images/card_face_compass_visa.png",
     annualFee: 600,
     feeWaiverCondition: "首年免年費",
+    minIncome: 100000,
     foreignCurrencyFee: 1.95,
     rules: [
       // T&C「四圍簽，好 COM 賺」: 指定類別 2% (0.4% 基本 + 1.6% 額外)

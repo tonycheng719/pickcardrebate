@@ -65,6 +65,8 @@ export interface CreditCard {
     baseRate?: number; // For direct_rate: e.g. 6 ($6/Mile)
   };
   hidden?: boolean; // Hide from frontend (but keep data for existing users)
+  minIncome?: number; // Minimum annual income requirement (HKD)
+  incomeNote?: string; // Special notes for income requirement
 }
 
 export interface Merchant {

@@ -409,6 +409,19 @@ export default function CardDetailPage() {
                         </p>
                       </div>
                     )}
+                    {card.minIncome && (
+                      <div>
+                        <p className="text-gray-500 dark:text-gray-400">最低年薪</p>
+                        <div className="font-medium text-gray-900 dark:text-white">
+                          HK${card.minIncome.toLocaleString()}
+                          {card.incomeNote && (
+                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                              {card.incomeNote}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    )}
                     {card.rewardTimeline && (
                       <div>
                         <p className="text-gray-500 dark:text-gray-400">回贈入賬</p>
