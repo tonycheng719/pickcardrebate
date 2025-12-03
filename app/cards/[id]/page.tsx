@@ -16,6 +16,36 @@ import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import Head from "next/head";
 import Script from "next/script";
+import { CreditCard } from "@/lib/types";
+
+// Card Image component with error handling
+function CardImage({ card, onError }: { card: CreditCard; onError?: () => void }) {
+  const [imageError, setImageError] = useState(false);
+
+  const handleError = () => {
+    setImageError(true);
+    onError?.();
+  };
+
+  if (imageError || !card.imageUrl) {
+    return (
+      <div className={`text-center ${card.style?.textColor || 'text-white'}`}>
+        <p className="text-sm opacity-80 uppercase tracking-wider">{card.bank}</p>
+        <p className="text-2xl font-bold mt-1">{card.name}</p>
+      </div>
+    );
+  }
+
+  return (
+    <img 
+      src={card.imageUrl} 
+      alt={card.name}
+      className="max-h-full max-w-full object-contain drop-shadow-lg"
+      referrerPolicy="no-referrer"
+      onError={handleError}
+    />
+  );
+}
 
 export default function CardDetailPage() {
   const params = useParams();
@@ -24,6 +54,7 @@ export default function CardDetailPage() {
   const card = HK_CARDS.find(c => c.id === cardId);
   const { addCard, hasCard, user } = useWallet();
   const [showShareMenu, setShowShareMenu] = useState(false);
+  const [cardImageError, setCardImageError] = useState(false);
 
   if (!card) {
     return (
@@ -127,13 +158,9 @@ export default function CardDetailPage() {
             >
               {/* Card Image */}
               <Card className="overflow-hidden border-0 shadow-xl">
-                <div className={`relative h-56 ${card.imageUrl ? 'bg-white dark:bg-gray-900' : (card.style?.bgColor || 'bg-gradient-to-br from-gray-700 to-gray-900')} flex items-center justify-center p-6`}>
-                  {card.imageUrl ? (
-                    <img 
-                      src={card.imageUrl} 
-                      alt={card.name}
-                      className="max-h-full max-w-full object-contain drop-shadow-lg"
-                    />
+                <div className={`relative h-56 ${(card.imageUrl && !cardImageError) ? 'bg-white dark:bg-gray-900' : (card.style?.bgColor || 'bg-gradient-to-br from-gray-700 to-gray-900')} flex items-center justify-center p-6`}>
+                  {card.imageUrl && !cardImageError ? (
+                    <CardImage card={card} onError={() => setCardImageError(true)} />
                   ) : (
                     <div className={`text-center ${card.style?.textColor || 'text-white'}`}>
                       <p className="text-sm opacity-80 uppercase tracking-wider">{card.bank}</p>
