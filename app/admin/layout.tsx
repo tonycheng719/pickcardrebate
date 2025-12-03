@@ -20,6 +20,7 @@ import {
   GitCommit,
   Calculator,
   Scale,
+  Gift,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AdminAuthProvider, useAdminAuth } from "@/components/admin/admin-auth-context";
@@ -30,6 +31,7 @@ const menuItems = [
   { name: "更新日誌", href: "/admin/changelog", icon: GitCommit },
   { name: "會員管理", href: "/admin/users", icon: Users },
   { name: "信用卡庫", href: "/admin/cards", icon: CreditCard },
+  { name: "合作夥伴迎新", href: "/admin/partner-offers", icon: Gift },
   { name: "商戶資料", href: "/admin/merchants", icon: Store },
   { name: "優惠活動", href: "/admin/promos", icon: Tag },
   { name: "搜尋分析", href: "/admin/analytics", icon: BarChart3 },

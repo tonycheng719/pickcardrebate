@@ -45,6 +45,7 @@ function mapCardFromDB(dbCard: any): CreditCard {
         annualFee: localCard?.annualFee ?? dbCard.annual_fee, // Prefer local annualFee
         promoEndDate: localCard?.promoEndDate, // Preserve promoEndDate from local
         promoName: localCard?.promoName, // Preserve promoName from local
+        partnerOffer: dbCard.partner_offer || localCard?.partnerOffer, // Partner offer from DB or local
     };
 }
 

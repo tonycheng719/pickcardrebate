@@ -71,6 +71,9 @@ export interface CreditCard {
   // Promo Period Tracking
   promoEndDate?: string; // Overall promo end date (ISO date: "2025-12-31")
   promoName?: string; // Name of the promo for display
+  
+  // Partner Offer (經本網指定連結申請額外獎賞)
+  partnerOffer?: PartnerOffer;
 }
 
 export interface Merchant {
@@ -201,4 +204,19 @@ export interface CardPriority {
   priority: number; // Lower = higher priority
   featured: boolean;
   updatedAt: string;
+}
+
+// Partner Offer (經本網指定連結申請額外獎賞)
+export interface PartnerOffer {
+  enabled: boolean; // 是否啟用顯示
+  applyUrl: string; // 申請連結
+  bonusValue: number; // 額外獎賞現金價值（港幣）
+  bonusDescription: string; // 獎賞描述 (e.g. "$500現金回贈")
+  bonusItems?: string[]; // 可選獎賞列表 (e.g. ["$500現金回贈", "$500 Apple禮品卡", "$500惠康禮券"])
+  validFrom: string; // 有效期開始 (ISO date)
+  validTo: string; // 有效期結束 (ISO date)
+  requirements?: string[]; // 額外申請要求
+  minSpend?: number; // 最低簽賬要求
+  minSpendDays?: number; // 簽賬期限（天）
+  notes?: string; // 其他備註
 }

@@ -20,6 +20,7 @@ import { useState, useMemo, useEffect } from "react";
 import Head from "next/head";
 import Script from "next/script";
 import { CreditCard } from "@/lib/types";
+import { PartnerOfferCard } from "@/components/partner-offer-card";
 
 // Card Image component with error handling
 function CardImage({ card, onError }: { card: CreditCard; onError?: () => void }) {
@@ -400,6 +401,25 @@ export default function CardDetailPage() {
                     </div>
                   </CardContent>
                 </Card>
+              </motion.div>
+            )}
+
+            {/* Partner Offer - 經本網指定連結申請額外獎賞 */}
+            {card.partnerOffer && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.17 }}
+              >
+                <PartnerOfferCard 
+                  card={card} 
+                  bankWelcomeValue={
+                    // 嘗試從 welcomeOfferReward 解析數值
+                    card.welcomeOfferReward 
+                      ? parseInt(card.welcomeOfferReward.replace(/[^0-9]/g, '')) || 0
+                      : 0
+                  }
+                />
               </motion.div>
             )}
 
