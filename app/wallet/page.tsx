@@ -5,7 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useWallet } from "@/lib/store/wallet-context";
 import { useDataset } from "@/lib/admin/data-store";
-import { Plus, Wallet as WalletIcon, Trophy, Calendar, AlertCircle, ChevronRight, Settings2, Trash2, TrendingUp, Receipt, ArrowUpRight } from "lucide-react";
+import { Plus, Wallet as WalletIcon, Trophy, Calendar, AlertCircle, ChevronRight, Settings2, Trash2, TrendingUp, Receipt, ArrowUpRight, Gift, Bell } from "lucide-react";
+import { WelcomeOfferTracker } from "@/components/welcome-offer-tracker";
+import { SpendingReminders } from "@/components/spending-reminders";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -298,6 +300,12 @@ export default function WalletPage() {
           </motion.div>
         ) : (
           <div className="space-y-8">
+            {/* Spending Reminders & Welcome Offer Tracker */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <SpendingReminders userCards={myCardIds} />
+              <WelcomeOfferTracker userCards={myCardIds} />
+            </div>
+
             {/* 錢包摘要 - Monthly Dashboard */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}

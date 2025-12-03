@@ -160,3 +160,38 @@ export interface UserReputation {
   level: number;
   badges: string[];
 }
+
+// Welcome Offer Tracker
+export interface WelcomeOfferProgress {
+  cardId: string;
+  targetAmount: number; // 迎新目標金額
+  currentAmount: number; // 已簽金額
+  deadline: string; // 截止日期
+  startDate: string; // 開始日期
+  transactions: {
+    date: string;
+    amount: number;
+    merchant?: string;
+  }[];
+}
+
+// Spending Reminder
+export interface SpendingReminder {
+  id: string;
+  cardId: string;
+  type: 'monthly_min' | 'promo_deadline' | 'welcome_offer';
+  title: string;
+  description: string;
+  targetDate?: string;
+  targetAmount?: number;
+  currentAmount?: number;
+  isEnabled: boolean;
+}
+
+// Card Priority for Admin
+export interface CardPriority {
+  cardId: string;
+  priority: number; // Lower = higher priority
+  featured: boolean;
+  updatedAt: string;
+}

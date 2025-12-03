@@ -17,7 +17,8 @@ import { HK_CARDS } from "@/lib/data/cards";
 import { findBestCards, CalculationResult } from "@/lib/logic/calculator";
 import { CreditCard as CreditCardType } from "@/lib/types";
 import { useWallet } from "@/lib/store/wallet-context";
-  import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle, Lightbulb, Store, Globe, ChevronDown, ChevronUp, BadgeCheck, Tag, AlertTriangle, Search, LogIn, PlusCircle, Loader2, History, HelpCircle, Swords, X } from "lucide-react";
+  import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle, Lightbulb, Store, Globe, ChevronDown, ChevronUp, BadgeCheck, Tag, AlertTriangle, Search, LogIn, PlusCircle, Loader2, History, HelpCircle, Swords, X, Share2 } from "lucide-react";
+import { ShareButton } from "@/components/share-button";
 import { DynamicIcon } from "@/components/dynamic-icon";
 import { useDataset } from "@/lib/admin/data-store";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -744,14 +745,24 @@ export function CreditCardCalculator({
                 </div>
             )}
 
-            {!isBestOwned && best.card.applyUrl && (
-              <Button
-                className="w-full mt-3 bg-orange-500 hover:bg-orange-600 h-9 text-sm"
-                onClick={() => window.open(best.card.applyUrl, "_blank")}
-              >
-                立即申請
-              </Button>
-            )}
+            <div className="flex gap-2 mt-3">
+              {!isBestOwned && best.card.applyUrl && (
+                <Button
+                  className="flex-1 bg-orange-500 hover:bg-orange-600 h-9 text-sm"
+                  onClick={() => window.open(best.card.applyUrl, "_blank")}
+                >
+                  立即申請
+                </Button>
+              )}
+              <ShareButton
+                title={`PickCardRebate 計算結果`}
+                text={`💳 ${selectedMerchant?.name || '消費'} $${amount}\n🏆 最佳信用卡：${best.card.name}\n💰 回贈：$${best.rewardAmount.toFixed(2)} (${best.percentage}%)`}
+                url="https://pickcardrebate.com"
+                variant="outline"
+                size="default"
+                className={isBestOwned ? "flex-1" : ""}
+              />
+            </div>
           </div>
 
           <div className="space-y-3 max-h-[40vh] overflow-y-auto pr-1">

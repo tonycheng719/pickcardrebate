@@ -7,7 +7,7 @@ import { useWallet } from "@/lib/store/wallet-context";
 import { useReviews } from "@/lib/store/reviews-context";
 import type { CreditCard } from "@/lib/types";
 import { 
-    Plus, Check, ExternalLink, MessageSquare, Star, Search, X
+    Plus, Check, ExternalLink, MessageSquare, Star, Search, X, Info
 } from "lucide-react";
 import {
   Dialog,
@@ -218,10 +218,10 @@ function CardItem({ card }: { card: CreditCard }) {
 
             <CardContent className="flex-1 flex flex-col pt-2 pb-6 px-6"> {/* Adjusted padding */}
                 {/* Always show Card Name & Bank below visual */}
-                <div className="mb-4">
+                <Link href={`/cards/${card.id}`} className="mb-4 group/title">
                     <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{card.bank}</div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white leading-tight">{card.name}</h3>
-                </div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white leading-tight group-hover/title:text-blue-600 dark:group-hover/title:text-blue-400 transition-colors">{card.name}</h3>
+                </Link>
 
                 <div className="flex flex-wrap gap-2 mb-4">
                 {card.tags.map(tag => (
@@ -321,9 +321,15 @@ function CardItem({ card }: { card: CreditCard }) {
                         </Button>
                     </ReviewsDialog>
                     
+                    <Link href={`/cards/${card.id}`}>
+                        <Button variant="ghost" size="icon" className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20" title="查看詳情">
+                            <Info className="h-4 w-4" />
+                        </Button>
+                    </Link>
+                    
                     {card.applyUrl && (
                         <a href={card.applyUrl} target="_blank" rel="noopener noreferrer">
-                            <Button variant="ghost" size="icon" className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20">
+                            <Button variant="ghost" size="icon" className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20" title="申請此卡">
                                 <ExternalLink className="h-4 w-4" />
                             </Button>
                         </a>

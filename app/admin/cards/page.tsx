@@ -2,56 +2,140 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Edit, ExternalLink, Image, Info } from "lucide-react";
+import { Search, Edit, ExternalLink, Image, Info, Star, ArrowUp, ArrowDown, GripVertical } from "lucide-react";
 import { useMemo, useState, useEffect } from "react";
 import Link from "next/link";
 import { HK_CARDS } from "@/lib/data/cards";
 import { createClient } from "@/lib/supabase/client";
 import type { CreditCard } from "@/lib/types";
+import { toast } from "sonner";
+
+interface CardWithPriority extends CreditCard {
+  priority: number;
+  featured: boolean;
+}
 
 export default function AdminCardsPage() {
   // 使用 cards.ts 作為唯一來源
-  const [dbImages, setDbImages] = useState<Record<string, string>>({});
+  const [dbData, setDbData] = useState<Record<string, { image_url?: string; priority?: number; featured?: boolean }>>({});
   const [search, setSearch] = useState("");
   const [bankFilter, setBankFilter] = useState("所有銀行");
+  const [sortMode, setSortMode] = useState<"default" | "priority">("default");
 
-  // 從數據庫獲取圖片 URL
+  // 從數據庫獲取圖片 URL 和優先級
   useEffect(() => {
-    async function fetchImages() {
+    async function fetchData() {
       const supabase = createClient();
-      const { data } = await supabase.from("cards").select("id, image_url");
+      const { data } = await supabase.from("cards").select("id, image_url, priority, featured");
       if (data) {
-        const imageMap: Record<string, string> = {};
+        const dataMap: Record<string, { image_url?: string; priority?: number; featured?: boolean }> = {};
         data.forEach((card: any) => {
-          if (card.image_url) {
-            imageMap[card.id] = card.image_url;
-          }
+          dataMap[card.id] = {
+            image_url: card.image_url,
+            priority: card.priority ?? 100,
+            featured: card.featured ?? false
+          };
         });
-        setDbImages(imageMap);
+        setDbData(dataMap);
       }
     }
-    fetchImages();
+    fetchData();
   }, []);
 
-  // 合併 cards.ts 同數據庫圖片
-  const cards: CreditCard[] = useMemo(() => {
+  // 合併 cards.ts 同數據庫圖片/優先級
+  const cards: CardWithPriority[] = useMemo(() => {
     return HK_CARDS.map(card => ({
       ...card,
-      imageUrl: dbImages[card.id] || card.imageUrl
+      imageUrl: dbData[card.id]?.image_url || card.imageUrl,
+      priority: dbData[card.id]?.priority ?? 100,
+      featured: dbData[card.id]?.featured ?? false
     }));
-  }, [dbImages]);
+  }, [dbData]);
 
   const bankOptions = useMemo(() => ["所有銀行", ...Array.from(new Set(cards.map((card) => card.bank)))], [cards]);
 
   const filteredCards = useMemo(() => {
-    return cards.filter((card) => {
+    let result = cards.filter((card) => {
       const matchesBank = bankFilter === "所有銀行" || card.bank === bankFilter;
       const matchesKeyword =
         card.name.toLowerCase().includes(search.toLowerCase()) ||
         card.bank.toLowerCase().includes(search.toLowerCase());
       return matchesBank && matchesKeyword;
     });
-  }, [cards, search, bankFilter]);
+
+    // Sort by priority if in priority mode
+    if (sortMode === "priority") {
+      result = [...result].sort((a, b) => {
+        // Featured cards first
+        if (a.featured !== b.featured) return a.featured ? -1 : 1;
+        // Then by priority (lower = higher priority)
+        return a.priority - b.priority;
+      });
+    }
+
+    return result;
+  }, [cards, search, bankFilter, sortMode]);
+
+  // Update card priority
+  const updatePriority = async (cardId: string, newPriority: number) => {
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("cards")
+      .update({ priority: newPriority })
+      .eq("id", cardId);
+
+    if (error) {
+      // If card doesn't exist in DB, insert it
+      if (error.code === "PGRST116") {
+        const card = HK_CARDS.find(c => c.id === cardId);
+        if (card) {
+          await supabase.from("cards").insert({
+            id: cardId,
+            name: card.name,
+            bank: card.bank,
+            priority: newPriority
+          });
+        }
+      } else {
+        toast.error("更新失敗");
+        return;
+      }
+    }
+
+    setDbData(prev => ({
+      ...prev,
+      [cardId]: { ...prev[cardId], priority: newPriority }
+    }));
+    toast.success("優先級已更新");
+  };
+
+  // Toggle featured status
+  const toggleFeatured = async (cardId: string, currentFeatured: boolean) => {
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("cards")
+      .update({ featured: !currentFeatured })
+      .eq("id", cardId);
+
+    if (error) {
+      // If card doesn't exist in DB, insert it
+      const card = HK_CARDS.find(c => c.id === cardId);
+      if (card) {
+        await supabase.from("cards").insert({
+          id: cardId,
+          name: card.name,
+          bank: card.bank,
+          featured: !currentFeatured
+        });
+      }
+    }
+
+    setDbData(prev => ({
+      ...prev,
+      [cardId]: { ...prev[cardId], featured: !currentFeatured }
+    }));
+    toast.success(currentFeatured ? "已取消推薦" : "已設為推薦");
+  };
 
   return (
     <div className="space-y-6">
@@ -89,6 +173,14 @@ export default function AdminCardsPage() {
             </option>
           ))}
         </select>
+        <Button
+          variant={sortMode === "priority" ? "default" : "outline"}
+          onClick={() => setSortMode(sortMode === "priority" ? "default" : "priority")}
+          className="whitespace-nowrap"
+        >
+          <GripVertical className="h-4 w-4 mr-2" />
+          {sortMode === "priority" ? "優先級排序中" : "按優先級排序"}
+        </Button>
       </div>
 
       <div className="bg-white dark:bg-gray-800 rounded-xl border dark:border-gray-700 overflow-hidden shadow-sm">
@@ -98,14 +190,18 @@ export default function AdminCardsPage() {
               <th className="px-6 py-4 font-medium">卡片名稱</th>
               <th className="px-6 py-4 font-medium">銀行</th>
               <th className="px-6 py-4 font-medium">標籤</th>
+              <th className="px-6 py-4 font-medium">優先級</th>
               <th className="px-6 py-4 font-medium">操作</th>
             </tr>
           </thead>
           <tbody className="divide-y dark:divide-gray-700">
-            {filteredCards.map((card) => (
-              <tr key={card.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+            {filteredCards.map((card, index) => (
+              <tr key={card.id} className={`hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors ${card.featured ? 'bg-amber-50 dark:bg-amber-900/10' : ''}`}>
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
+                    {card.featured && (
+                      <Star className="h-4 w-4 text-amber-500 fill-amber-500" />
+                    )}
                     {card.imageUrl ? (
                         <div className="w-8 h-5 rounded overflow-hidden border border-gray-100 dark:border-gray-600 bg-white">
                             <img src={card.imageUrl} alt={card.name} className="w-full h-full object-contain" />
@@ -128,7 +224,46 @@ export default function AdminCardsPage() {
                   </div>
                 </td>
                 <td className="px-6 py-4">
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type="number"
+                      value={card.priority}
+                      onChange={(e) => updatePriority(card.id, parseInt(e.target.value) || 100)}
+                      className="w-20 h-8 text-center text-sm"
+                      min={1}
+                      max={999}
+                    />
+                    <div className="flex flex-col">
+                      <button
+                        onClick={() => updatePriority(card.id, Math.max(1, card.priority - 10))}
+                        className="p-0.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+                        title="提高優先級"
+                      >
+                        <ArrowUp className="h-3 w-3 text-gray-400" />
+                      </button>
+                      <button
+                        onClick={() => updatePriority(card.id, Math.min(999, card.priority + 10))}
+                        className="p-0.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+                        title="降低優先級"
+                      >
+                        <ArrowDown className="h-3 w-3 text-gray-400" />
+                      </button>
+                    </div>
+                  </div>
+                </td>
+                <td className="px-6 py-4">
                   <div className="flex gap-2">
+                    <button
+                      onClick={() => toggleFeatured(card.id, card.featured)}
+                      className={`p-2 rounded transition-colors ${
+                        card.featured 
+                          ? 'bg-amber-100 text-amber-600 hover:bg-amber-200 dark:bg-amber-900/30 dark:text-amber-400' 
+                          : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-400'
+                      }`}
+                      title={card.featured ? "取消推薦" : "設為推薦"}
+                    >
+                      <Star className={`h-4 w-4 ${card.featured ? 'fill-current' : ''}`} />
+                    </button>
                     <Link
                       href={`/admin/cards/edit?id=${card.id}`}
                       className="p-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 rounded transition-colors"
@@ -147,6 +282,16 @@ export default function AdminCardsPage() {
             ))}
           </tbody>
         </table>
+      </div>
+      
+      <div className="text-sm text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
+        <p className="font-medium mb-2">💡 優先級說明：</p>
+        <ul className="list-disc list-inside space-y-1">
+          <li>數字越小，排序越前（1 = 最高優先）</li>
+          <li>預設值為 100</li>
+          <li>點擊 ⭐ 可將卡片設為「推薦」，推薦卡片會優先顯示</li>
+          <li>優先級會影響前台 /cards 頁面的排序</li>
+        </ul>
       </div>
     </div>
   );

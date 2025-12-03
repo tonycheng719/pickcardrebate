@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { adminAuthClient } from "@/lib/supabase/admin-client";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Calendar, Tag, Clock, ArrowLeft, MessageCircle, ChevronDown } from "lucide-react";
+import { ExternalLink, Calendar, Tag, Clock, ArrowLeft, MessageCircle, ChevronDown, Share2 } from "lucide-react";
+import { SharePromoButton } from "./share-promo-button";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import { Promo, PromoFAQ } from "@/lib/types";
@@ -271,16 +272,23 @@ export default async function PromoDetailPage({ params }: PageProps) {
 
           <div className="p-6 md:p-10">
             {/* Meta Info */}
-            <div className="flex flex-wrap gap-4 mb-8 text-sm text-gray-500 dark:text-gray-400 border-b dark:border-gray-800 pb-6">
-              <div className="flex items-center">
-                <Calendar className="h-4 w-4 mr-2" />
-                <span>有效期至：</span>
-                <time itemProp="validThrough" dateTime={promo.expiryDate}>{promo.expiryDate}</time>
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-8 text-sm text-gray-500 dark:text-gray-400 border-b dark:border-gray-800 pb-6">
+              <div className="flex flex-wrap gap-4">
+                <div className="flex items-center">
+                  <Calendar className="h-4 w-4 mr-2" />
+                  <span>有效期至：</span>
+                  <time itemProp="validThrough" dateTime={promo.expiryDate}>{promo.expiryDate}</time>
+                </div>
+                <div className="flex items-center">
+                  <Tag className="h-4 w-4 mr-2" />
+                  {promo.tags.join(" · ")}
+                </div>
               </div>
-              <div className="flex items-center">
-                <Tag className="h-4 w-4 mr-2" />
-                {promo.tags.join(" · ")}
-              </div>
+              <SharePromoButton 
+                title={promo.title}
+                description={promo.description}
+                promoId={promo.id}
+              />
             </div>
 
             {/* Description */}
