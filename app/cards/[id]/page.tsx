@@ -380,10 +380,25 @@ export default function CardDetailPage() {
                 <CardContent className="p-5">
                   <h2 className="font-semibold text-gray-900 dark:text-white mb-4">卡片資訊</h2>
                   <div className="grid sm:grid-cols-2 gap-4 text-sm">
-                    {card.feeWaiverCondition && (
+                    {(card.annualFee !== undefined || card.feeWaiverCondition) && (
                       <div>
                         <p className="text-gray-500 dark:text-gray-400">年費</p>
-                        <p className="font-medium text-gray-900 dark:text-white">{card.feeWaiverCondition}</p>
+                        <div className="font-medium text-gray-900 dark:text-white">
+                          {card.annualFee !== undefined && card.annualFee > 0 ? (
+                            <span className="text-lg font-bold text-orange-600 dark:text-orange-400">
+                              HK${card.annualFee.toLocaleString()}
+                            </span>
+                          ) : card.annualFee === 0 ? (
+                            <span className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
+                              永久免年費
+                            </span>
+                          ) : null}
+                          {card.feeWaiverCondition && card.annualFee !== 0 && (
+                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                              {card.feeWaiverCondition}
+                            </p>
+                          )}
+                        </div>
                       </div>
                     )}
                     {card.foreignCurrencyFee !== undefined && (

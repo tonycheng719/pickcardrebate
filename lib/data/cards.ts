@@ -11,6 +11,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-red-700 via-red-800 to-black", textColor: "text-white" },
     rewardTimeline: "獎賞錢即時入賬",
     foreignCurrencyFee: 1.95,
+    annualFee: 2000,
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' }, // $10 = $1 RC = 0.4%
     rules: [
       // T&C: 最紅自主獎賞 6X (2.4%)，需登記，額外「獎賞錢」簽賬上限 $100,000
@@ -53,6 +54,7 @@ export const HK_CARDS: CreditCard[] = [
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps", "payme", "alipay", "wechat_pay", "octopus"] }, 
     ],
     tags: ["網購神卡", "永久免年費", "指定商戶8%"],
+    annualFee: 0,
     feeWaiverCondition: "永久免年費",
     welcomeOfferText: "迎新簽 $3,000 送 $300 獎賞錢 (首60日)",
     applyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/red/",
@@ -66,6 +68,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-stone-700 to-stone-900", textColor: "text-white" },
     rewardTimeline: "獎賞錢即時入賬",
     foreignCurrencyFee: 1.95,
+    annualFee: 2000,
     rewardConfig: { method: 'conversion', ratio: 20, currency: 'RC' }, // 1 RC = 20 Miles (Special rate for EveryMile)
     rules: [
       // T&C: 指定商戶/交通 $2/里 (2.5%)
@@ -87,6 +90,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-red-400 to-red-600", textColor: "text-white" },
     rewardTimeline: "獎賞錢即時入賬",
     foreignCurrencyFee: 0,
+    annualFee: 1800,
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' },
     rules: [
       // T&C 2025: 內地/澳門 QR Code/流動支付 額外5倍 (2%) + 基本0.4% + 賞世界2% = 4.4%
@@ -110,6 +114,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-slate-800 to-black", textColor: "text-white" },
     rewardTimeline: "獎賞錢即時入賬",
     foreignCurrencyFee: 1.95,
+    annualFee: 2000,
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' },
     rules: [
       // T&C: 最紅自主獎賞適用
@@ -128,6 +133,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-amber-400 to-amber-600", textColor: "text-white" },
     rewardTimeline: "獎賞錢即時入賬",
     foreignCurrencyFee: 1.95,
+    annualFee: 0,
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' },
     rules: [
       // T&C: 網上繳付指定學院學費 2.4% 額外獎賞錢 (每階段上限$200，全期$400)
@@ -154,6 +160,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-r from-emerald-400 to-cyan-600", textColor: "text-white" },
     imageUrl: "https://av.sc.com/hk/content/images/hk-smart-card-masthead-400x255.png",
     rewardTimeline: "現金回贈於「360°全面賞」平台顯示，需手動換領 (最低$50)",
+    annualFee: 0,
     foreignCurrencyFee: 0, // T&C: 外幣交易手續費全免 (本地+海外)
     rules: [
       // T&C: 特約商戶 5% (需月簽賬滿$4,000)，5% 已包含基本回贈
@@ -180,6 +187,7 @@ export const HK_CARDS: CreditCard[] = [
     bank: "Standard Chartered",
     style: { bgColor: "bg-gradient-to-br from-teal-700 to-teal-900", textColor: "text-white" },
     rewardTimeline: "里數自動存入 (月結單後7個工作天)",
+    annualFee: 1800,
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'direct_rate', baseRate: 6, currency: 'AM' }, // Direct rate: $6/mile
     rules: [
@@ -202,6 +210,8 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-blue-500 to-blue-700", textColor: "text-white" },
     imageUrl: "https://av.sc.com/hk/content/images/hk-simply-cash-visa-card-masthead-400x255.png",
     rewardTimeline: "現金回贈於下期賬單顯示，需手動換領 ($50倍數)",
+    annualFee: 2000,
+    feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rules: [
       // T&C: 外幣簽賬 2%
@@ -226,6 +236,8 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500", textColor: "text-white" },
     imageUrl: "https://www.bochk.com/dam/more/creditcard/chill/chill_card_face.png",
     rewardTimeline: "現金回贈",
+    annualFee: 600,
+    feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' }, // 15 pts = 1 mile -> ratio 0.0666
     rules: [
@@ -249,6 +261,8 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-blue-700 to-blue-900", textColor: "text-white" },
     imageUrl: "https://www.bochk.com/dam/more/creditcard/sogo/sogo_visa_signature_card_face.png",
     rewardTimeline: "現金回贈 (下個月內入賬)",
+    annualFee: 600,
+    feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' },
     rules: [
@@ -270,6 +284,8 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-neutral-800 to-black", textColor: "text-yellow-400" },
     imageUrl: "https://www.bochk.com/dam/more/creditcard/cheers/cheers_visa_infinite_card_face.png",
     rewardTimeline: "積分",
+    annualFee: 1800,
+    feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.125, currency: 'Points' }, // 8 pts = 1 mile -> ratio 0.125
     rules: [
@@ -288,6 +304,8 @@ export const HK_CARDS: CreditCard[] = [
     bank: "BOC",
     style: { bgColor: "bg-gradient-to-br from-blue-600 to-cyan-600", textColor: "text-white" },
     imageUrl: "https://www.bochk.com/dam/more/creditcard/gba/gba_diamond_card_face.png",
+    annualFee: 800,
+    feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 0,
     rules: [
       // T&C: 不適用於 Alipay/WeChat Pay/PayMe
@@ -305,6 +323,8 @@ export const HK_CARDS: CreditCard[] = [
     bank: "BOC",
     style: { bgColor: "bg-gradient-to-br from-blue-400 to-blue-600", textColor: "text-white" },
     imageUrl: "https://www.bochk.com/dam/more/creditcard/icard/icard_card_face.png",
+    annualFee: 600,
+    feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' },
     rules: [
@@ -328,6 +348,8 @@ export const HK_CARDS: CreditCard[] = [
     bank: "Hang Seng",
     style: { bgColor: "bg-gradient-to-br from-purple-600 via-pink-600 to-red-500", textColor: "text-white" },
     imageUrl: "https://www.hangseng.com/content/dam/hase/config/personal/credit-cards/mmpower-card/images/mmpower-card-face.png",
+    annualFee: 2000,
+    feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rules: [
       // T&C: 海外外幣 6% (需月簽賬滿$5,000，每月上限$500回贈)
@@ -350,6 +372,8 @@ export const HK_CARDS: CreditCard[] = [
     bank: "Hang Seng",
     style: { bgColor: "bg-gradient-to-br from-red-500 to-red-700", textColor: "text-white" },
     imageUrl: "https://www.hangseng.com/content/dam/hase/config/personal/credit-cards/enjoy-card/images/enjoy-card-face.png",
+    annualFee: 0,
+    feeWaiverCondition: "永久免年費",
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 200, currency: 'yuu積分' }, // 200 yuu points = $1 cash
     rules: [
@@ -382,6 +406,8 @@ export const HK_CARDS: CreditCard[] = [
     bank: "Hang Seng",
     style: { bgColor: "bg-gradient-to-br from-sky-500 to-blue-600", textColor: "text-white" },
     imageUrl: "https://www.hangseng.com/content/dam/hase/config/personal/credit-cards/travel-plus-card/images/travel-plus-card-face.png",
+    annualFee: 2000,
+    feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rules: [
       // T&C: 指定國家外幣簽賬 7% (日本/韓國/泰國/新加坡/澳洲，需月簽賬滿$6,000)
@@ -410,6 +436,8 @@ export const HK_CARDS: CreditCard[] = [
     bank: "Citi",
     style: { bgColor: "bg-gradient-to-br from-blue-700 to-blue-900", textColor: "text-white" },
     imageUrl: "https://www.citibank.com.hk/chinese/credit-cards/images/cash-back-card.png",
+    annualFee: 1200,
+    feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rules: [
       { description: "週五六日食肆 3%", matchType: "category", matchValue: ["dining"], percentage: 3.0, validDays: [5, 6, 0], excludePaymentMethods: ["fps", "octopus"] },
@@ -429,6 +457,8 @@ export const HK_CARDS: CreditCard[] = [
     bank: "Citi",
     style: { bgColor: "bg-gradient-to-r from-blue-400 to-cyan-500", textColor: "text-white" },
     imageUrl: "https://www.citibank.com.hk/chinese/credit-cards/images/rewards-card.png",
+    annualFee: 1800,
+    feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' }, // 15 pts = 1 mile
     rules: [
@@ -448,6 +478,8 @@ export const HK_CARDS: CreditCard[] = [
     bank: "Citi",
     style: { bgColor: "bg-gradient-to-br from-slate-600 to-slate-800", textColor: "text-white" },
     imageUrl: "https://www.citibank.com.hk/chinese/credit-cards/images/premiermiles-card.png",
+    annualFee: 1800,
+    feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.0833, currency: 'Points' }, // 12 pts = 1 mile
     rules: [
@@ -466,6 +498,8 @@ export const HK_CARDS: CreditCard[] = [
     bank: "Citi",
     style: { bgColor: "bg-gradient-to-br from-gray-700 to-gray-900", textColor: "text-white" },
     imageUrl: "https://www.citibank.com.hk/chinese/credit-cards/images/prestige-card.png",
+    annualFee: 3800,
+    feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.0833, currency: 'Points' }, // 12 pts = 1 mile
     rules: [
@@ -488,6 +522,8 @@ export const HK_CARDS: CreditCard[] = [
     bank: "DBS",
     style: { bgColor: "bg-gradient-to-br from-gray-600 to-gray-900", textColor: "text-white" },
     imageUrl: "https://www.dbs.com.hk/personal/credit-cards/credit-cards/eminent-card/images/card_face_eminent_visa_signature.png",
+    annualFee: 1800,
+    feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rules: [
       // T&C: 指定類別 5%: 餐飲/運動服飾/健身中心/醫療 (單筆≥$300，Signature卡每月首$8,000)
@@ -510,6 +546,8 @@ export const HK_CARDS: CreditCard[] = [
     bank: "DBS",
     style: { bgColor: "bg-black", textColor: "text-white" },
     imageUrl: "https://www.dbs.com.hk/personal/credit-cards/credit-cards/black-card/images/card_face_black_world_master.png",
+    annualFee: 1800,
+    feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'direct_rate', baseRate: 6, currency: 'DBS$' }, // $6/mile standard
     rules: [
@@ -525,6 +563,8 @@ export const HK_CARDS: CreditCard[] = [
     bank: "DBS",
     style: { bgColor: "bg-gradient-to-br from-lime-300 to-lime-500", textColor: "text-black" },
     imageUrl: "https://www.dbs.com.hk/personal/credit-cards/credit-cards/live-fresh-card/images/card_face_live_fresh.png",
+    annualFee: 600,
+    feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rules: [
       // T&C: 自選類別 5%，需透過 DBS Card+ App 登記及 45 日內按「一扣即享」
@@ -543,6 +583,8 @@ export const HK_CARDS: CreditCard[] = [
     bank: "DBS",
     style: { bgColor: "bg-gradient-to-br from-red-500 to-red-700", textColor: "text-white" },
     imageUrl: "https://www.dbs.com.hk/personal/credit-cards/credit-cards/compass-visa/images/card_face_compass_visa.png",
+    annualFee: 600,
+    feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rules: [
       // T&C「四圍簽，好 COM 賺」: 指定類別 2% (0.4% 基本 + 1.6% 額外)
@@ -572,6 +614,8 @@ export const HK_CARDS: CreditCard[] = [
     bank: "AEON",
     style: { bgColor: "bg-gradient-to-br from-pink-400 to-pink-600", textColor: "text-white" },
     imageUrl: "https://www.aeon.com.hk/wakuwaku/images/card_face.png",
+    annualFee: 0,
+    feeWaiverCondition: "永久免年費",
     foreignCurrencyFee: 1.95,
     rules: [
       // 每月20日 AEON 會員日 95折 - 折扣優惠，非回贈
@@ -599,6 +643,8 @@ export const HK_CARDS: CreditCard[] = [
     bank: "AEON",
     style: { bgColor: "bg-gradient-to-br from-red-600 to-red-800", textColor: "text-white" },
     imageUrl: "https://www.aeon.com.hk/tc/privileges/promotion_images/jal_mastercard_card_face.png",
+    annualFee: 300,
+    feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 0,
     rewardConfig: { method: 'conversion', ratio: 12.5, currency: 'Points' }, // AEON Points -> JAL Miles? No, usually direct JAL miles $8/mile
     // Actually AEON JAL has separate program. $8 = 1 Mile. $6 = 1 Mile overseas.
@@ -770,6 +816,8 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-blue-600 to-indigo-700", textColor: "text-white" },
     imageUrl: "https://www.primecredit.com/credit-card/images/earnmore_card_face.png",
     rewardTimeline: "現金回贈下期月結單入賬",
+    annualFee: 250,
+    feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 0,
     rules: [
       // T&C: 全方位 2% 現金回贈 (1% 基本 + 1% 加碼)
@@ -789,6 +837,8 @@ export const HK_CARDS: CreditCard[] = [
     bank: "安信",
     style: { bgColor: "bg-gradient-to-br from-yellow-300 to-yellow-500", textColor: "text-black" },
     imageUrl: "https://www.wewacard.com/images/card_face.png",
+    annualFee: 600,
+    feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 0,
     rules: [
       // T&C: 玩樂類別 4 選 1 (3.6% 額外 + 0.4% 基本 = 4%)，需月簽$1,500，每月回贈上限 $200
