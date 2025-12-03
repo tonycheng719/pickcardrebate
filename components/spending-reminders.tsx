@@ -5,15 +5,20 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
   Bell, AlertTriangle, Calendar, CreditCard, ChevronDown, ChevronUp,
-  Clock, Target, X
+  Clock, Target, X, DollarSign
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HK_CARDS } from "@/lib/data/cards";
 import { PROMOS } from "@/lib/data/promos";
 
+interface CardSettings {
+  annualFeeDate?: string;
+  [key: string]: any;
+}
+
 interface Reminder {
   id: string;
-  type: 'monthly_min' | 'promo_deadline' | 'registration';
+  type: 'monthly_min' | 'promo_deadline' | 'registration' | 'annual_fee';
   title: string;
   description: string;
   cardId?: string;
@@ -23,7 +28,12 @@ interface Reminder {
   urgency: 'high' | 'medium' | 'low';
 }
 
-export function SpendingReminders({ userCards }: { userCards: string[] }) {
+interface SpendingRemindersProps {
+  userCards: string[];
+  cardSettings?: Record<string, CardSettings>;
+}
+
+export function SpendingReminders({ userCards, cardSettings = {} }: SpendingRemindersProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [dismissedIds, setDismissedIds] = useState<string[]>([]);
 
@@ -103,6 +113,37 @@ export function SpendingReminders({ userCards }: { userCards: string[] }) {
           title: promo.title,
           description: `優惠將於 ${daysToExpiry} 天後截止 (${promo.expiryDate})`,
           deadline: promo.expiryDate,
+          urgency,
+        });
+      }
+    });
+
+    // Check for annual fee due dates
+    userCards.forEach(cardId => {
+      const card = HK_CARDS.find(c => c.id === cardId);
+      const settings = cardSettings[cardId];
+      if (!card || !settings?.annualFeeDate) return;
+
+      // Only remind if card has annual fee
+      if (!card.annualFee || card.annualFee <= 0) return;
+
+      const feeDate = new Date(settings.annualFeeDate);
+      const daysToFee = Math.ceil((feeDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+      // Remind 60 days before, 30 days before, 14 days before, 7 days before
+      if (daysToFee > 0 && daysToFee <= 60) {
+        const urgency = daysToFee <= 7 ? 'high' : daysToFee <= 14 ? 'medium' : 'low';
+        result.push({
+          id: `annual-fee-${cardId}`,
+          type: 'annual_fee',
+          title: `${card.name} 年費到期提醒`,
+          description: daysToFee <= 7 
+            ? `年費 $${card.annualFee} 將於 ${daysToFee} 天後到期！${card.feeWaiverCondition ? `豁免條件：${card.feeWaiverCondition}` : '請聯絡銀行查詢豁免方法。'}`
+            : `年費 $${card.annualFee} 將於 ${daysToFee} 天後 (${settings.annualFeeDate}) 到期。${card.feeWaiverCondition || ''}`,
+          cardId,
+          cardName: card.name,
+          deadline: settings.annualFeeDate,
+          targetAmount: card.annualFee,
           urgency,
         });
       }
@@ -188,6 +229,10 @@ export function SpendingReminders({ userCards }: { userCards: string[] }) {
                         }`} />
                       ) : reminder.type === 'promo_deadline' ? (
                         <Clock className={`h-4 w-4 ${
+                          reminder.urgency === 'high' ? 'text-red-700 dark:text-red-200' : 'text-amber-700 dark:text-amber-200'
+                        }`} />
+                      ) : reminder.type === 'annual_fee' ? (
+                        <DollarSign className={`h-4 w-4 ${
                           reminder.urgency === 'high' ? 'text-red-700 dark:text-red-200' : 'text-amber-700 dark:text-amber-200'
                         }`} />
                       ) : (

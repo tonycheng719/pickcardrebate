@@ -7,7 +7,7 @@ import { useWallet } from "@/lib/store/wallet-context";
 import { useReviews } from "@/lib/store/reviews-context";
 import type { CreditCard } from "@/lib/types";
 import { 
-    Plus, Check, ExternalLink, MessageSquare, Star, Search, X, Info
+    Plus, Check, ExternalLink, MessageSquare, Star, Search, X, Info, Scale
 } from "lucide-react";
 import {
   Dialog,
@@ -414,9 +414,9 @@ export default function AllCardsPage() {
               <p className="text-gray-600 dark:text-gray-400">收錄香港主流信用卡，查看優惠詳情並加入您的錢包。</p>
             </div>
 
-            {/* Search Bar */}
-            <div className="mb-6">
-              <div className="relative max-w-md">
+            {/* Search Bar & Compare Button */}
+            <div className="mb-6 flex flex-col sm:flex-row gap-3">
+              <div className="relative flex-1 max-w-md">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
                   type="text"
@@ -434,12 +434,18 @@ export default function AllCardsPage() {
                   </button>
                 )}
               </div>
-              {searchQuery && (
-                <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                  找到 <span className="font-bold text-emerald-600">{filteredCards.length}</span> 張信用卡
-                </p>
-              )}
+              <Link href="/cards/compare">
+                <Button variant="outline" className="h-11 gap-2 whitespace-nowrap">
+                  <Scale className="h-4 w-4" />
+                  比較信用卡
+                </Button>
+              </Link>
             </div>
+            {searchQuery && (
+              <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">
+                找到 <span className="font-bold text-emerald-600">{filteredCards.length}</span> 張信用卡
+              </p>
+            )}
 
             {isLoading ? (
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

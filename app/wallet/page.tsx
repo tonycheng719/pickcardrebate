@@ -302,7 +302,7 @@ export default function WalletPage() {
           <div className="space-y-8">
             {/* Spending Reminders & Welcome Offer Tracker */}
             <div className="grid md:grid-cols-2 gap-6">
-              <SpendingReminders userCards={myCardIds} />
+              <SpendingReminders userCards={myCardIds} cardSettings={cardSettings} />
               <WelcomeOfferTracker userCards={myCardIds} />
             </div>
 
