@@ -76,6 +76,16 @@ export default function CompareCardsPage() {
     };
   };
 
+  // Get base reward for a card (non-special merchant/category)
+  const getBaseReward = (card: CreditCard) => {
+    const baseRule = card.rules?.find(r => 
+      r.matchType === 'base' && 
+      !r.isDiscount && 
+      !r.isForeignCurrency
+    );
+    return baseRule?.percentage || 0;
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
       <Navbar />
@@ -252,6 +262,28 @@ export default function CompareCardsPage() {
                       <Percent className="h-4 w-4" />
                       回贈規則
                     </td>
+                  </tr>
+
+                  {/* Base Reward - Important for non-special merchants */}
+                  <tr className="border-b dark:border-gray-700 bg-blue-50 dark:bg-blue-900/20">
+                    <td className="p-4 text-sm font-medium text-blue-700 dark:text-blue-300">
+                      ⭐ 基本回贈（非特約商戶）
+                    </td>
+                    {selectedCards.map(card => {
+                      const baseReward = getBaseReward(card);
+                      return (
+                        <td key={card.id} className="p-4 text-center">
+                          <span className={`font-bold ${baseReward > 0 ? 'text-blue-600' : 'text-gray-400'}`}>
+                            {baseReward > 0 ? `${baseReward}%` : '0%'}
+                          </span>
+                          {card.rewardConfig?.currency && (
+                            <p className="text-[10px] text-gray-400 mt-0.5">
+                              ({card.rewardConfig.currency})
+                            </p>
+                          )}
+                        </td>
+                      );
+                    })}
                   </tr>
                   
                   {/* Dynamic Rules Rows */}
