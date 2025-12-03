@@ -810,20 +810,23 @@ export const HK_CARDS: CreditCard[] = [
     feeWaiverCondition: "永久免年費",
     rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 獎分 = $1 回贈 (0.4%)
     rules: [
-      // T&C 2025: 網上簽賬/海外簽賬 10X 獎分 (4%)，每月額外獎分上限 10,000
-      { description: "網上簽賬 10X (4%)", matchType: "category", matchValue: "online", percentage: 4.0, cap: 10000, capType: "reward_points", excludeCategories: ["ewallet", "utilities", "insurance"] },
-      { description: "海外簽賬 10X (4%)", matchType: "base", percentage: 4.0, cap: 10000, capType: "reward_points", isForeignCurrency: true, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
-      // T&C 2025: 本地食肆 5X 獎分 (2%)
+      // T&C: 網上簽賬/手機支付 10X 獎分 (4%)，每月回贈上限 $300 (即首 $8,333 簽賬)
+      // ❗ 超市/旅行社/政府 除外
+      { description: "網上簽賬 10X (4%)", matchType: "category", matchValue: "online", percentage: 4.0, cap: 300, capType: "reward", excludeCategories: ["ewallet", "utilities", "insurance", "supermarket", "travel", "government"] },
+      { description: "手機支付 10X (4%)", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 4.0, cap: 300, capType: "reward", excludeCategories: ["ewallet", "utilities", "insurance", "supermarket", "travel", "government"] },
+      // T&C: 海外簽賬 10X 獎分 (4%)，每月回贈上限 $300
+      { description: "海外簽賬 10X (4%)", matchType: "base", percentage: 4.0, cap: 300, capType: "reward", isForeignCurrency: true, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      // T&C: 本地食肆 5X 獎分 (2%)
       { description: "本地食肆 5X (2%)", matchType: "category", matchValue: ["dining"], percentage: 2.0, excludePaymentMethods: ["fps", "alipay", "wechat_pay", "payme"] },
       // T&C: 網上繳費 1X 獎分 (0.4%)
       { description: "網上繳費 1X (0.4%)", matchType: "category", matchValue: ["utilities"], percentage: 0.4 },
       // T&C: 基本獎賞 1X 獎分 (0.4%)
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "government", "insurance", "ewallet"], excludePaymentMethods: ["fps"] },
     ],
-    tags: ["網購4%", "海外4%", "食肆2%", "永久免年費"],
+    tags: ["網購4%", "手機支付4%", "海外4%", "食肆2%", "永久免年費"],
     applyUrl: "https://www.hkbea.com/html/tc/bea-i-titanium-card.html",
-    sellingPoints: ["網上及海外簽賬 10X 獎分 (4%)", "本地食肆 5X 獎分 (2%)", "每月額外獎分上限 10,000", "優先預訂演唱會票"],
-    note: "💡 【推廣期 2025/1/1-12/31】網上/海外簽賬 10X 獎分 (4%)，本地食肆 5X (2%)，每月額外獎分上限 10,000。⚠️ 不計回贈：電子錢包充值、保費、透過電子網絡繳款。八達通自動增值/政府部門簽賬每月上限 $40 回贈。",
+    sellingPoints: ["網上/手機支付 10X 獎分 (4%)", "海外簽賬 10X 獎分 (4%)", "本地食肆 5X 獎分 (2%)", "每月回贈上限 $300"],
+    note: "💡 【推廣期 2025/1/1-12/31】網上/手機支付/海外簽賬 10X 獎分 (4%)，每月回贈上限 $300 (即首 $8,333 簽賬享 4%)。本地食肆 5X (2%)。⚠️ 不計回贈：超市、旅行社、政府部門、電子錢包充值、保費、透過電子網絡繳款。八達通自動增值/政府部門簽賬每月上限 $40 回贈。",
   },
   {
     id: "bea-visa-signature",
