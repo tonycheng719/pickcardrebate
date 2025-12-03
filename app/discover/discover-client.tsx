@@ -98,7 +98,7 @@ export function DiscoverClient() {
   return (
     <>
       {/* Header */}
-      <div className="bg-white dark:bg-gray-900 pt-8 pb-4 px-4 sticky top-0 z-10 border-b dark:border-gray-800">
+      <div className="bg-white dark:bg-gray-900 pt-8 pb-4 px-4 sticky top-0 z-40 border-b dark:border-gray-800">
         <div className="container mx-auto">
           <div className="flex justify-between items-end mb-4">
             <div>
@@ -159,7 +159,7 @@ export function DiscoverClient() {
         </div>
       </div>
 
-      <main className="container mx-auto px-4 py-6 flex-1">
+      <main className="container mx-auto px-4 py-6 flex-1 relative z-0">
         {/* Report Form */}
         {isReporting && (
           <motion.div 
