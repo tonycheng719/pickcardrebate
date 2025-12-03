@@ -5,6 +5,7 @@ import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Calendar, Tag, Clock, ArrowLeft, MessageCircle, ChevronDown, Share2 } from "lucide-react";
 import { SharePromoButton } from "./share-promo-button";
+import { PromoReviews } from "./promo-reviews";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import { Promo, PromoFAQ } from "@/lib/types";
@@ -342,6 +343,9 @@ export default async function PromoDetailPage({ params }: PageProps) {
 
             {/* FAQ Section */}
             <FAQSection faqs={promo.faqs || []} />
+            
+            {/* User Reviews Section with AggregateRating Schema */}
+            <PromoReviews promoId={promo.id} promoTitle={promo.title} />
 
             {/* WhatsApp CTA */}
             <div className="mt-8 bg-green-50 dark:bg-green-900/10 border border-green-100 dark:border-green-900/30 rounded-xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
