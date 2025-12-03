@@ -29,16 +29,22 @@ function mapCardFromDB(dbCard: any): CreditCard {
         welcomeOfferDeadline: dbCard.welcome_offer_deadline,
         applyUrl: dbCard.apply_url || localCard?.applyUrl,
         sellingPoints: localCard?.sellingPoints || dbCard.selling_points, // Prefer local for up-to-date selling points
-        feeWaiverCondition: dbCard.fee_waiver_condition,
+        feeWaiverCondition: localCard?.feeWaiverCondition || dbCard.fee_waiver_condition, // Prefer local
         waiverMethod: dbCard.waiver_method,
         rewardTimeline: localCard?.rewardTimeline || dbCard.reward_timeline, // Prefer local
         style: dbCard.style || localCard?.style || { bgColor: "bg-gray-800", textColor: "text-white" },
         // IMPORTANT: LOCAL rules take priority (most up-to-date calculations)
         rules: localCard?.rules || dbCard.rules || [],
         tags: localCard?.tags || dbCard.tags || [],
-        // Fields only in local static data
+        // Fields only in local static data - MUST preserve these from local
         note: localCard?.note,
         rewardConfig: localCard?.rewardConfig,
+        hidden: localCard?.hidden, // IMPORTANT: Preserve hidden status from local
+        minIncome: localCard?.minIncome, // Preserve minIncome from local
+        incomeNote: localCard?.incomeNote, // Preserve incomeNote from local
+        annualFee: localCard?.annualFee ?? dbCard.annual_fee, // Prefer local annualFee
+        promoEndDate: localCard?.promoEndDate, // Preserve promoEndDate from local
+        promoName: localCard?.promoName, // Preserve promoName from local
     };
 }
 
