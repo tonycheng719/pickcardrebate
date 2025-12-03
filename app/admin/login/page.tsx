@@ -6,6 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAdminAuth } from "@/components/admin/admin-auth-context";
 
+// Hardcoded admin credentials as ultimate fallback
+const ADMIN_EMAIL = "admin@pickcardrebate.hk";
+const ADMIN_PASSWORD = "solomo21522813";
+
 export default function AdminLoginPage() {
   const router = useRouter();
   const { login } = useAdminAuth();
@@ -17,6 +21,21 @@ export default function AdminLoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
+    
+    // First check hardcoded credentials (immediate fallback)
+    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+      // Set localStorage directly
+      localStorage.setItem("pickcardrebate-admin-auth", JSON.stringify({ 
+        email: ADMIN_EMAIL, 
+        name: "PickCardRebate Admin" 
+      }));
+      setLoading(false);
+      router.replace("/admin");
+      return;
+    }
+    
+    // Try Supabase auth
     const success = await login(email, password);
     setLoading(false);
     if (!success) {
