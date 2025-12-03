@@ -36,7 +36,7 @@ function RankBadge({ rank }: { rank: number }) {
   return <span className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-sm font-bold">{rank}</span>;
 }
 
-function CardRow({ result, rank }: { result: RankingResult; rank: number }) {
+function CardRow({ result, rank, showFxFee = false }: { result: RankingResult; rank: number; showFxFee?: boolean }) {
   return (
     <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
       <RankBadge rank={rank} />
@@ -47,18 +47,42 @@ function CardRow({ result, rank }: { result: RankingResult; rank: number }) {
             {result.card.name}
           </span>
         </div>
-        <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
-          {result.rule.description}
+        <div className="text-xs text-gray-500 dark:text-gray-400 flex flex-wrap gap-x-2 gap-y-0.5">
+          {result.capAsSpending && (
+            <span>上限 ${result.capAsSpending.toLocaleString()}</span>
+          )}
+          {result.minSpend && (
+            <span>單筆滿${result.minSpend}</span>
+          )}
+          {result.monthlyMinSpend && (
+            <span>月簽${result.monthlyMinSpend.toLocaleString()}</span>
+          )}
+          {!result.capAsSpending && !result.minSpend && !result.monthlyMinSpend && (
+            <span className="text-green-600 dark:text-green-400">無限制</span>
+          )}
         </div>
       </div>
       
       <div className="text-right">
-        <div className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
-          {result.percentage}%
-        </div>
-        <div className="text-xs text-gray-500 dark:text-gray-400">
-          {formatCapAsSpendingLimit(result)}
-        </div>
+        {showFxFee && result.netPercentage !== undefined ? (
+          <>
+            <div className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
+              {result.netPercentage.toFixed(1)}%
+            </div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">
+              {result.percentage}% - {result.foreignCurrencyFee === 0 ? '0%' : `${result.foreignCurrencyFee}%`}費
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
+              {result.percentage}%
+            </div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">
+              回贈
+            </div>
+          </>
+        )}
       </div>
       
       <Link href={`/cards/${result.card.id}`}>
@@ -103,7 +127,7 @@ function CategorySection({ categoryId }: { categoryId: RankingCategory }) {
       
       <div className="divide-y divide-gray-100 dark:divide-gray-800">
         {rankings.map((result, index) => (
-          <CardRow key={result.card.id} result={result} rank={index + 1} />
+          <CardRow key={result.card.id} result={result} rank={index + 1} showFxFee={category.isForeignCurrency} />
         ))}
       </div>
     </div>

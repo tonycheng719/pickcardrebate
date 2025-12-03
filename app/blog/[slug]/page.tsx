@@ -82,7 +82,7 @@ function RankBadge({ rank }: { rank: number }) {
   );
 }
 
-function CardDetailSection({ result, rank }: { result: RankingResult; rank: number }) {
+function CardDetailSection({ result, rank, showFxInfo = false }: { result: RankingResult; rank: number; showFxInfo?: boolean }) {
   const suitableFor = generateSuitableFor(result);
   const warnings = generateWarnings(result);
   
@@ -102,7 +102,7 @@ function CardDetailSection({ result, rank }: { result: RankingResult; rank: numb
               {result.card.name}
             </h3>
             
-            <div className="flex flex-wrap items-center gap-4 mb-4">
+            <div className="flex flex-wrap items-center gap-3 mb-4">
               <div className="bg-emerald-100 dark:bg-emerald-900/30 px-4 py-2 rounded-xl">
                 <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
                   {result.percentage}%
@@ -110,19 +110,40 @@ function CardDetailSection({ result, rank }: { result: RankingResult; rank: numb
                 <div className="text-xs text-emerald-700 dark:text-emerald-300">回贈率</div>
               </div>
               
+              {/* FX Fee & Net Percentage for overseas */}
+              {showFxInfo && result.foreignCurrencyFee !== undefined && (
+                <>
+                  <div className="bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-xl">
+                    <div className={`text-lg font-bold ${result.foreignCurrencyFee === 0 ? 'text-green-600 dark:text-green-400' : 'text-gray-700 dark:text-gray-300'}`}>
+                      {result.foreignCurrencyFee === 0 ? '豁免' : `${result.foreignCurrencyFee}%`}
+                    </div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">手續費</div>
+                  </div>
+                  
+                  <div className="bg-blue-100 dark:bg-blue-900/30 px-4 py-2 rounded-xl">
+                    <div className={`text-2xl font-bold ${(result.netPercentage ?? 0) >= 3 ? 'text-blue-600 dark:text-blue-400' : 'text-orange-600 dark:text-orange-400'}`}>
+                      {result.netPercentage?.toFixed(2)}%
+                    </div>
+                    <div className="text-xs text-blue-700 dark:text-blue-300">淨回贈</div>
+                  </div>
+                </>
+              )}
+              
               <div className="bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-xl">
                 <div className="text-lg font-bold text-gray-700 dark:text-gray-300">
-                  {formatCapAsSpendingLimit(result)}
+                  {result.capAsSpending ? `$${result.capAsSpending.toLocaleString()}` : '無上限'}
                 </div>
                 <div className="text-xs text-gray-500 dark:text-gray-400">簽賬上限</div>
               </div>
               
-              {result.card.foreignCurrencyFee !== undefined && (
+              {(result.minSpend || result.monthlyMinSpend) && (
                 <div className="bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-xl">
                   <div className="text-lg font-bold text-gray-700 dark:text-gray-300">
-                    {result.card.foreignCurrencyFee === 0 ? '豁免' : `${result.card.foreignCurrencyFee}%`}
+                    {result.minSpend ? `$${result.minSpend}` : `$${result.monthlyMinSpend?.toLocaleString()}`}
                   </div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">外幣手續費</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">
+                    {result.minSpend ? '單筆最低' : '月簽要求'}
+                  </div>
                 </div>
               )}
             </div>
@@ -202,6 +223,8 @@ function CardDetailSection({ result, rank }: { result: RankingResult; rank: numb
 }
 
 function QuickRankingTable({ rankings, category }: { rankings: RankingResult[]; category: CategoryConfig }) {
+  const isOverseas = category.isForeignCurrency;
+  
   return (
     <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden mb-8">
       <div className="p-4 border-b border-gray-100 dark:border-gray-800 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20">
@@ -210,35 +233,70 @@ function QuickRankingTable({ rankings, category }: { rankings: RankingResult[]; 
         </h2>
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full">
+        <table className="w-full text-sm">
           <thead className="bg-gray-50 dark:bg-gray-800">
             <tr>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">排名</th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">信用卡</th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400">回贈</th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400">簽賬上限</th>
+              <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">#</th>
+              <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">信用卡</th>
+              <th className="px-3 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">回贈</th>
+              {isOverseas && (
+                <>
+                  <th className="px-3 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">手續費</th>
+                  <th className="px-3 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">淨回贈</th>
+                </>
+              )}
+              <th className="px-3 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">簽賬上限</th>
+              <th className="px-3 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">最低消費</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
             {rankings.map((result, index) => (
               <tr key={result.card.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                <td className="px-4 py-3">
+                <td className="px-3 py-3 whitespace-nowrap">
                   {index === 0 && "🥇"}
                   {index === 1 && "🥈"}
                   {index === 2 && "🥉"}
                   {index > 2 && <span className="text-gray-500">{index + 1}</span>}
                 </td>
-                <td className="px-4 py-3">
+                <td className="px-3 py-3">
                   <Link href={`/cards/${result.card.id}`} className="hover:text-emerald-600">
                     <div className="font-medium text-gray-900 dark:text-white">{result.card.name}</div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">{result.card.bank}</div>
                   </Link>
                 </td>
-                <td className="px-4 py-3 text-right">
+                <td className="px-3 py-3 text-right whitespace-nowrap">
                   <span className="font-bold text-emerald-600 dark:text-emerald-400">{result.percentage}%</span>
                 </td>
-                <td className="px-4 py-3 text-right text-sm text-gray-500 dark:text-gray-400">
-                  {formatCapAsSpendingLimit(result)}
+                {isOverseas && (
+                  <>
+                    <td className="px-3 py-3 text-right whitespace-nowrap">
+                      {result.foreignCurrencyFee === 0 ? (
+                        <span className="text-green-600 dark:text-green-400 font-medium">豁免</span>
+                      ) : (
+                        <span className="text-gray-600 dark:text-gray-400">{result.foreignCurrencyFee}%</span>
+                      )}
+                    </td>
+                    <td className="px-3 py-3 text-right whitespace-nowrap">
+                      <span className={`font-bold ${(result.netPercentage ?? 0) >= 3 ? 'text-emerald-600 dark:text-emerald-400' : 'text-orange-600 dark:text-orange-400'}`}>
+                        {result.netPercentage?.toFixed(2)}%
+                      </span>
+                    </td>
+                  </>
+                )}
+                <td className="px-3 py-3 text-right text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                  {result.capAsSpending ? (
+                    `$${result.capAsSpending.toLocaleString()}`
+                  ) : (
+                    <span className="text-green-600 dark:text-green-400">無上限</span>
+                  )}
+                </td>
+                <td className="px-3 py-3 text-right text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                  {result.minSpend ? (
+                    `單筆$${result.minSpend.toLocaleString()}`
+                  ) : result.monthlyMinSpend ? (
+                    `月簽$${result.monthlyMinSpend.toLocaleString()}`
+                  ) : (
+                    <span className="text-green-600 dark:text-green-400">無</span>
+                  )}
                 </td>
               </tr>
             ))}
@@ -358,7 +416,7 @@ export default async function BlogCategoryPage({ params }: { params: Promise<{ s
           
           <div className="space-y-6">
             {rankings.map((result, index) => (
-              <CardDetailSection key={result.card.id} result={result} rank={index + 1} />
+              <CardDetailSection key={result.card.id} result={result} rank={index + 1} showFxInfo={category.isForeignCurrency} />
             ))}
           </div>
         </div>

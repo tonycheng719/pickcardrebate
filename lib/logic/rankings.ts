@@ -14,8 +14,11 @@ export interface RankingResult {
   card: CreditCard;
   rule: RewardRule;
   percentage: number;
+  netPercentage?: number; // After FX fee deduction
+  foreignCurrencyFee?: number;
   cap?: number;
   capType?: string;
+  capAsSpending?: number; // Cap converted to spending limit
   minSpend?: number;
   monthlyMinSpend?: number;
   conditions: string[];
@@ -225,12 +228,31 @@ export function getRankingsByCategory(
     }
     
     if (bestRule && bestPercentage > 0) {
+      // Calculate net percentage for overseas category
+      const fxFee = category.isForeignCurrency ? (card.foreignCurrencyFee || 1.95) : undefined;
+      const netPct = category.isForeignCurrency && fxFee !== undefined 
+        ? Math.max(0, bestRule.percentage - fxFee) 
+        : undefined;
+      
+      // Calculate cap as spending limit
+      let capAsSpending: number | undefined;
+      if (bestRule.cap) {
+        if (bestRule.capType === "reward") {
+          capAsSpending = Math.round((bestRule.cap / bestRule.percentage) * 100);
+        } else if (bestRule.capType === "spending") {
+          capAsSpending = bestRule.cap;
+        }
+      }
+      
       results.push({
         card,
         rule: bestRule,
-        percentage: bestRule.percentage, // Original percentage before FX fee
+        percentage: bestRule.percentage,
+        netPercentage: netPct,
+        foreignCurrencyFee: fxFee,
         cap: bestRule.cap,
         capType: bestRule.capType,
+        capAsSpending,
         minSpend: bestRule.minSpend,
         monthlyMinSpend: bestRule.monthlyMinSpend,
         conditions: extractConditions(bestRule, card),
@@ -239,14 +261,18 @@ export function getRankingsByCategory(
   }
   
   // Sort by percentage (highest first)
+  // For overseas category, sort by netPercentage
   results.sort((a, b) => {
-    // Primary sort: percentage
-    if (b.percentage !== a.percentage) {
-      return b.percentage - a.percentage;
+    // Primary sort: use netPercentage if available (overseas), otherwise percentage
+    const aPct = a.netPercentage ?? a.percentage;
+    const bPct = b.netPercentage ?? b.percentage;
+    
+    if (bPct !== aPct) {
+      return bPct - aPct;
     }
     // Secondary sort: higher cap is better (more room to earn)
-    if (a.cap && b.cap) {
-      return b.cap - a.cap;
+    if (a.capAsSpending && b.capAsSpending) {
+      return b.capAsSpending - a.capAsSpending;
     }
     // Cards without cap are better
     if (a.cap && !b.cap) return 1;
