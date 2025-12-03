@@ -64,6 +64,7 @@ export interface CreditCard {
     ratio?: number; // e.g. 10 (1 RC = 10 Miles) or 0.0833 (12 Points = 1 Mile)
     baseRate?: number; // For direct_rate: e.g. 6 ($6/Mile)
   };
+  hidden?: boolean; // Hide from frontend (but keep data for existing users)
 }
 
 export interface Merchant {

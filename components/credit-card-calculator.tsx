@@ -79,8 +79,8 @@ export function CreditCardCalculator({
   const cardList = useMemo(() => {
     const cardMap = new Map<string, CreditCardType>();
     
-    // Start with HK_CARDS (has all latest rules)
-    HK_CARDS.forEach(card => cardMap.set(card.id, card));
+    // Start with HK_CARDS (has all latest rules), excluding hidden cards
+    HK_CARDS.filter(c => !c.hidden).forEach(card => cardMap.set(card.id, card));
     
     // Overlay with dataset cards (for updated images, etc.) but keep rules from HK_CARDS
     cards.forEach(card => {

@@ -193,7 +193,9 @@ export default function CardQuizPage() {
 
     const scores: Record<string, number> = {};
     
-    HK_CARDS.forEach(card => {
+    // Filter out hidden cards
+    const visibleCards = HK_CARDS.filter(c => !c.hidden);
+    visibleCards.forEach(card => {
       let score = 0;
       
       // Score based on reward preference
@@ -243,7 +245,7 @@ export default function CardQuizPage() {
     });
 
     // Sort by score and return top 5
-    return HK_CARDS
+    return visibleCards
       .map(card => ({ card, score: scores[card.id] }))
       .sort((a, b) => b.score - a.score)
       .slice(0, 5);

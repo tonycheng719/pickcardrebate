@@ -955,6 +955,7 @@ export const HK_CARDS: CreditCard[] = [
     ],
     tags: ["里數", "旅遊保險"],
     sellingPoints: ["積分無限期", "指定簽賬 HK$3.6/里", "免費旅遊保險及貴賓室 (年費豁免)"],
+    hidden: true, // 暫時隱藏
   },
   {
     id: "mox-credit",

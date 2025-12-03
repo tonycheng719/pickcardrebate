@@ -392,8 +392,10 @@ export default function AllCardsPage() {
     const [searchQuery, setSearchQuery] = useState("");
     const cardList = cards.length ? cards : HK_CARDS;
     
-    // Filter cards based on search query
+    // Filter cards based on search query and hidden status
     const filteredCards = cardList.filter(card => {
+        // Skip hidden cards
+        if (card.hidden) return false;
         if (!searchQuery.trim()) return true;
         const query = searchQuery.toLowerCase();
         return (

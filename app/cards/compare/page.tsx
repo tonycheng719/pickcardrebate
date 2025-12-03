@@ -55,9 +55,11 @@ export default function CompareCardsPage() {
   }, [selectedCardIds, cards]);
   
   const filteredCards = useMemo(() => {
-    if (!searchQuery.trim()) return cards;
+    // Filter out hidden cards first
+    const visibleCards = cards.filter(c => !c.hidden);
+    if (!searchQuery.trim()) return visibleCards;
     const q = searchQuery.toLowerCase();
-    return cards.filter(c => 
+    return visibleCards.filter(c => 
       c.name.toLowerCase().includes(q) || 
       c.bank.toLowerCase().includes(q) ||
       c.tags?.some(t => t.toLowerCase().includes(q))

@@ -51,13 +51,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // Card detail pages
-  const cardPages: MetadataRoute.Sitemap = HK_CARDS.map((card) => ({
-    url: `${baseUrl}/cards/${card.id}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.8,
-  }));
+  // Card detail pages (exclude hidden cards)
+  const cardPages: MetadataRoute.Sitemap = HK_CARDS
+    .filter(card => !card.hidden)
+    .map((card) => ({
+      url: `${baseUrl}/cards/${card.id}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    }));
 
   // Promo detail pages
   const promoPages: MetadataRoute.Sitemap = PROMOS.map((promo) => ({
