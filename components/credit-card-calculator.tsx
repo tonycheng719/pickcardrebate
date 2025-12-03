@@ -40,7 +40,6 @@ const PAYMENT_OPTIONS = [
   { id: "wechat_pay", label: "WeChat Pay HK" },
   { id: "unionpay_qr", label: "雲閃付 App" },
   { id: "boc_pay", label: "BoC Pay" },
-  { id: "fps", label: "FPS" },
 ];
 
 // Payment methods that might be used online or offline
