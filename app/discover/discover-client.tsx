@@ -117,6 +117,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "supermarket-guide",
+    type: "guide" as const,
+    title: "超市信用卡攻略｜百佳/惠康/HKTVmall 最高5%回贈",
+    description: "超市信用卡邊張回贈最高？百佳、惠康、HKTVmall、AEON 都可以賺高達 5% 回贈！92 折優惠日攻略。",
+    imageUrl: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?q=80&w=2070&auto=format&fit=crop",
+    tags: ["超市", "百佳", "惠康"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";

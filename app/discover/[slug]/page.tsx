@@ -28,6 +28,7 @@ import { TaxPaymentGuide, taxPaymentFaqData } from "./tax-payment-guide";
 import { OnlineShoppingGuide, onlineShoppingFaqData } from "./online-shopping-guide";
 import { DiningGuide, diningFaqData } from "./dining-guide";
 import { OverseasSpendingGuide, overseasSpendingFaqData } from "./overseas-spending-guide";
+import { SupermarketGuide, supermarketFaqData } from "./supermarket-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -329,6 +330,34 @@ const GUIDES: Record<string, {
       "旅行信用卡比較",
       "日本旅行信用卡",
       "韓國旅行信用卡",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
+  "supermarket-guide": {
+    id: "supermarket-guide",
+    title: "超市信用卡攻略｜百佳/惠康/HKTVmall 最高5%回贈",
+    seoTitle: "超市信用卡攻略 2025｜百佳/惠康/HKTVmall/AEON 信用卡優惠比較",
+    heroTitle: "🛒 超市信用卡攻略",
+    heroSubtitle: "百佳/惠康/HKTVmall/AEON 最高5%回贈",
+    description: "超市信用卡邊張回贈最高？百佳、惠康有咩信用卡優惠？本文教你超市信用卡攻略，HKTVmall、AEON 都可以賺高達 5% 回贈！92 折優惠日攻略。",
+    content: "supermarket-guide",
+    imageUrl: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?q=80&w=2070&auto=format&fit=crop",
+    tags: ["超市", "百佳", "惠康", "HKTVmall", "信用卡攻略"],
+    keywords: [
+      "超市信用卡lihkg",
+      "超市信用卡回贈",
+      "AEON超市信用卡",
+      "超市信用卡里數",
+      "HKTVmall信用卡",
+      "大生超市信用卡優惠",
+      "惠康信用卡優惠",
+      "HKTVmall信用卡95折",
+      "百佳信用卡優惠",
+      "百佳信用卡優惠2025",
+      "百佳92折優惠日",
+      "惠康信用卡優惠2025",
+      "惠康92折",
     ],
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
@@ -924,6 +953,8 @@ function getGuideFaqData(guideId: string) {
       return diningFaqData;
     case "overseas-spending-guide":
       return overseasSpendingFaqData;
+    case "supermarket-guide":
+      return supermarketFaqData;
     default:
       return [];
   }
@@ -952,6 +983,8 @@ function renderGuideContent(guideId: string) {
       return <DiningGuide />;
     case "overseas-spending-guide":
       return <OverseasSpendingGuide />;
+    case "supermarket-guide":
+      return <SupermarketGuide />;
     default:
       return null;
   }
