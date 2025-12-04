@@ -33,6 +33,7 @@ import { TaobaoGuide, taobaoFaqData } from "./taobao-guide";
 import { NoAnnualFeeGuide, noAnnualFeeFaqData } from "./no-annual-fee-guide";
 import { StudentCardGuide, studentCardFaqData } from "./student-card-guide";
 import { LargePurchaseGuide, largePurchaseFaqData } from "./large-purchase-guide";
+import { OctopusGuide, octopusFaqData } from "./octopus-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -462,6 +463,31 @@ const GUIDES: Record<string, {
       "裝修信用卡分期",
       "信用卡迎新",
       "拆單大法",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
+  "octopus-guide": {
+    id: "octopus-guide",
+    title: "八達通增值信用卡攻略｜自動增值/O!ePay 回贈比較",
+    seoTitle: "八達通增值信用卡攻略 2025｜自動增值/O!ePay 回贈比較｜Chok 回贈教學",
+    heroTitle: "🚇 八達通增值信用卡攻略",
+    heroSubtitle: "自動增值/O!ePay 回贈比較",
+    description: "八達通自動增值信用卡邊張有回贈？八達通 App（O!ePay）增值點樣 Chok 回贈？本文教你八達通增值信用卡攻略，比較自動增值同手動增值回贈！",
+    content: "octopus-guide",
+    imageUrl: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=2069&auto=format&fit=crop",
+    tags: ["八達通", "自動增值", "O!ePay", "信用卡攻略"],
+    keywords: [
+      "八達通自動增值信用卡",
+      "八達通自動增值信用卡優惠",
+      "八達通自動增值信用卡到期",
+      "八達通自動增值信用卡回贈比較",
+      "八達通手動增值信用卡回贈",
+      "八達通自動增值信用卡hsbc",
+      "八達通增值信用卡回贈",
+      "八達通自動增值信用卡積分",
+      "O!ePay信用卡",
+      "八達通銀包信用卡",
     ],
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
@@ -1067,6 +1093,8 @@ function getGuideFaqData(guideId: string) {
       return studentCardFaqData;
     case "large-purchase-guide":
       return largePurchaseFaqData;
+    case "octopus-guide":
+      return octopusFaqData;
     default:
       return [];
   }
@@ -1105,6 +1133,8 @@ function renderGuideContent(guideId: string) {
       return <StudentCardGuide />;
     case "large-purchase-guide":
       return <LargePurchaseGuide />;
+    case "octopus-guide":
+      return <OctopusGuide />;
     default:
       return null;
   }

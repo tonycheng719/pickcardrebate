@@ -167,6 +167,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "octopus-guide",
+    type: "guide" as const,
+    title: "八達通增值信用卡攻略｜自動增值/O!ePay 回贈",
+    description: "八達通自動增值有回贈嗎？O!ePay 增值點樣 Chok 回贈？比較各銀行八達通增值回贈！",
+    imageUrl: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=2069&auto=format&fit=crop",
+    tags: ["八達通", "自動增值", "O!ePay"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";
