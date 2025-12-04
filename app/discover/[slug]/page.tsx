@@ -38,6 +38,7 @@ import { MobilePaymentGuide, mobilePaymentFaqData } from "./mobile-payment-guide
 import { LowIncomeGuide, lowIncomeFaqData } from "./low-income-guide";
 import { FoodDeliveryGuide, foodDeliveryFaqData } from "./food-delivery-guide";
 import { StreamingGuide, streamingFaqData } from "./streaming-guide";
+import { DrivingGuide, drivingFaqData } from "./driving-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -590,6 +591,30 @@ const GUIDES: Record<string, {
       "Netflix信用卡手續費",
       "Spotify信用卡",
       "Disney+信用卡",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
+  "driving-guide": {
+    id: "driving-guide",
+    title: "揸車必備信用卡攻略｜入油、易通行、停車場高達8%回贈",
+    seoTitle: "揸車信用卡攻略 2025｜入油/易通行/停車場/牌費最高 8% 回贈",
+    heroTitle: "🚗 揸車必備信用卡攻略",
+    heroSubtitle: "入油、易通行、停車場高達8%回贈",
+    description: "揸車入油、易通行、停車場用邊張信用卡最抵？本文教你揸車信用卡攻略，入油最高 8% 回贈！",
+    content: "driving-guide",
+    imageUrl: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["入油", "易通行", "停車場", "車主", "信用卡攻略"],
+    keywords: [
+      "易通行信用卡2025",
+      "易通行信用卡回贈",
+      "車主信用卡",
+      "泊車信用卡",
+      "大新myauto車主信用卡",
+      "入油信用卡優惠",
+      "停車場信用卡回贈",
+      "入油信用卡2025",
+      "入油攻略",
     ],
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
@@ -1205,6 +1230,8 @@ function getGuideFaqData(guideId: string) {
       return foodDeliveryFaqData;
     case "streaming-guide":
       return streamingFaqData;
+    case "driving-guide":
+      return drivingFaqData;
     default:
       return [];
   }
@@ -1253,6 +1280,8 @@ function renderGuideContent(guideId: string) {
       return <FoodDeliveryGuide />;
     case "streaming-guide":
       return <StreamingGuide />;
+    case "driving-guide":
+      return <DrivingGuide />;
     default:
       return null;
   }

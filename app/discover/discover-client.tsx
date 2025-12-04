@@ -217,6 +217,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "driving-guide",
+    type: "guide" as const,
+    title: "揸車必備信用卡攻略｜入油/易通行/停車場高達8%回贈",
+    description: "揸車入油、易通行、停車場用邊張信用卡最抵？入油最高 8% 回贈！",
+    imageUrl: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["入油", "易通行", "車主"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";
