@@ -7,6 +7,7 @@ import { useWallet } from "@/lib/store/wallet-context";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { trackLogin, trackSignUp } from "@/lib/analytics";
 
 import Link from "next/link";
 
@@ -29,6 +30,8 @@ export default function LoginPage() {
     try {
       setIsLoading(true);
       await loginWithOAuth(provider);
+      // Track login event (will be tracked after redirect back)
+      trackLogin(provider);
     } catch (error: any) {
       toast.error(error.message || "登入失敗，請重試");
       setIsLoading(false);
@@ -58,6 +61,8 @@ export default function LoginPage() {
     try {
       setIsSmsLoading(true);
       await verifySmsOtp(sanitized, smsCode.trim());
+      // Track login event
+      trackLogin("sms");
       toast.success("驗證成功，正在為您登入");
       router.replace("/");
     } catch (error: any) {

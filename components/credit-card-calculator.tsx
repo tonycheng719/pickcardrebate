@@ -25,6 +25,7 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { ReportErrorDialog } from "@/components/report-error-dialog";
 import { logSearch } from "@/app/actions/log-search";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { trackSearch, trackCalculateRebate, trackSelectCategory } from "@/lib/analytics";
 import { Label } from "@/components/ui/label";
 import { useMerchantCommunityData } from "@/hooks/use-merchant-community-data";
 import { LoginPromptDialog } from "@/components/login-prompt-dialog";
@@ -236,6 +237,11 @@ export function CreditCardCalculator({
     setSelectedCategory(catId);
     setSelectedMerchantId(null);
     setSearchQuery(""); // Reset search on category change
+    
+    // Track category selection
+    const categoryName = categoryList.find(c => c.id === catId)?.name || catId;
+    trackSelectCategory(categoryName);
+    
     setTimeout(() => {
       merchantsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
@@ -271,6 +277,15 @@ export function CreditCardCalculator({
     );
     
     const bestResult = res[0];
+    
+    // Track search and calculate events
+    trackSearch(selectedMerchant.name);
+    trackCalculateRebate({
+      amount: parseFloat(amount),
+      paymentMethod,
+      merchant: selectedMerchant.name,
+      category: categoryList.find(c => c.id === selectedCategory)?.name,
+    });
     
     // Log Search via API Route (Safe from Server Action errors)
     try {

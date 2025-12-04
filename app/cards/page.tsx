@@ -27,6 +27,7 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { LoginPromptDialog } from "@/components/login-prompt-dialog";
 import { Skeleton } from "@/components/ui/skeleton";
+import { trackViewCard, trackClickApply, trackAddToWallet } from "@/lib/analytics";
 
 function ReviewsDialog({ card, children }: { card: CreditCard; children: React.ReactNode }) {
     const { user } = useWallet();
@@ -172,6 +173,11 @@ function CardItem({ card }: { card: CreditCard }) {
             return;
         }
         addCard(card.id);
+        // Track add to wallet event
+        trackAddToWallet({
+            cardId: card.id,
+            cardName: card.name,
+        });
         toast.success(`已加入 ${card.name}`, {
             description: "您現在可以在「我的錢包」中查看此卡片。",
             icon: <Check className="h-4 w-4 text-emerald-500" />,
@@ -328,7 +334,17 @@ function CardItem({ card }: { card: CreditCard }) {
                     </Link>
                     
                     {card.applyUrl && (
-                        <a href={card.applyUrl} target="_blank" rel="noopener noreferrer">
+                        <a 
+                            href={card.applyUrl} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            onClick={() => trackClickApply({
+                                cardId: card.id,
+                                cardName: card.name,
+                                cardBank: card.bank,
+                                applyUrl: card.applyUrl,
+                            })}
+                        >
                             <Button variant="ghost" size="icon" className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20" title="申請此卡">
                                 <ExternalLink className="h-4 w-4" />
                             </Button>

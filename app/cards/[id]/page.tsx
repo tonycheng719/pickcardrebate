@@ -21,6 +21,7 @@ import Head from "next/head";
 import Script from "next/script";
 import { CreditCard } from "@/lib/types";
 import { PartnerOfferCard } from "@/components/partner-offer-card";
+import { trackViewCard, trackClickApply, trackAddToWallet } from "@/lib/analytics";
 
 // Card Image component with error handling
 function CardImage({ card, onError }: { card: CreditCard; onError?: () => void }) {
@@ -72,6 +73,17 @@ export default function CardDetailPage() {
       fetchReviewsForCard(cardId);
     }
   }, [cardId, fetchReviewsForCard]);
+  
+  // Track view card event
+  useEffect(() => {
+    if (card) {
+      trackViewCard({
+        cardId: card.id,
+        cardName: card.name,
+        cardBank: card.bank,
+      });
+    }
+  }, [card]);
   
   // Get reviews and calculate rating stats
   const reviews = getReviewsByCardId(cardId);
@@ -349,7 +361,18 @@ export default function CardDetailPage() {
 
               {/* Apply Button */}
               {card.applyUrl && (
-                <a href={card.applyUrl} target="_blank" rel="noopener noreferrer" className="block">
+                <a 
+                  href={card.applyUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="block"
+                  onClick={() => trackClickApply({
+                    cardId: card.id,
+                    cardName: card.name,
+                    cardBank: card.bank,
+                    applyUrl: card.applyUrl,
+                  })}
+                >
                   <Button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
                     立即申請 <ExternalLink className="h-4 w-4 ml-2" />
                   </Button>

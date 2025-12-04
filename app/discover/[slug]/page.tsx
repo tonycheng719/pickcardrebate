@@ -51,6 +51,7 @@ import { Ps5Guide, ps5FaqData } from "./ps5-guide";
 import { XboxGuide, xboxFaqData } from "./xbox-guide";
 import { SwitchGuide, switchFaqData } from "./switch-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
+import { ArticleTracker } from "@/app/discover/components/article-tracker";
 
 // Revalidate every hour
 export const revalidate = 3600;
@@ -1644,6 +1645,7 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-900">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+        <ArticleTracker articleSlug={slug} articleTitle={guide.title} />
         <Navbar />
         
         <main className="container mx-auto px-4 py-6 pb-24 md:pb-8 max-w-4xl">
