@@ -43,6 +43,7 @@ import { InsuranceGuide, insuranceFaqData } from "./insurance-guide";
 import { PinduoduoGuide, pinduoduoFaqData } from "./pinduoduo-guide";
 import { UberGuide, uberFaqData } from "./uber-guide";
 import { IherbGuide, iherbFaqData } from "./iherb-guide";
+import { IphoneGuide, iphoneFaqData } from "./iphone-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -715,6 +716,29 @@ const GUIDES: Record<string, {
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
   },
+  "iphone-guide": {
+    id: "iphone-guide",
+    title: "iPhone 17 信用卡攻略｜食迎新買 iPhone 慳 $2,000！",
+    seoTitle: "iPhone 17 信用卡攻略 2025｜食迎新優惠買 iPhone 慳 $2,000！連拆單大法",
+    heroTitle: "📱 iPhone 17 信用卡攻略",
+    heroSubtitle: "食迎新買 iPhone 慳 $2,000！",
+    description: "買 iPhone 17 用邊張信用卡最抵？食迎新可以慳幾多？本文教你 iPhone 信用卡攻略，食迎新買 iPhone 慳 $2,000！連拆單大法！",
+    content: "iphone-guide",
+    imageUrl: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?q=80&w=2070&auto=format&fit=crop",
+    tags: ["iPhone", "Apple", "信用卡攻略", "迎新"],
+    keywords: [
+      "信用卡買iPhone優惠2025",
+      "買iPhone信用卡優惠",
+      "iPhone信用卡回贈",
+      "Apple信用卡優惠2025",
+      "iPhone17信用卡優惠",
+      "iPhone16信用卡優惠",
+      "iPhone17信用卡優惠2025",
+      "iPhone16信用卡優惠2025",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "15 分鐘",
+  },
 };
 
 // Generate static params for both promos and guides
@@ -1336,6 +1360,8 @@ function getGuideFaqData(guideId: string) {
       return uberFaqData;
     case "iherb-guide":
       return iherbFaqData;
+    case "iphone-guide":
+      return iphoneFaqData;
     default:
       return [];
   }
@@ -1394,6 +1420,8 @@ function renderGuideContent(guideId: string) {
       return <UberGuide />;
     case "iherb-guide":
       return <IherbGuide />;
+    case "iphone-guide":
+      return <IphoneGuide />;
     default:
       return null;
   }

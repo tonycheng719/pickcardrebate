@@ -267,6 +267,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "iphone-guide",
+    type: "guide" as const,
+    title: "iPhone 17 信用卡攻略｜食迎新買 iPhone 慳 $2,000！",
+    description: "買 iPhone 用邊張信用卡最抵？食迎新 + 拆單大法慳 $2,000！",
+    imageUrl: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?q=80&w=2070&auto=format&fit=crop",
+    tags: ["iPhone", "Apple", "迎新"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";
