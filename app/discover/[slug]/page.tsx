@@ -36,6 +36,7 @@ import { LargePurchaseGuide, largePurchaseFaqData } from "./large-purchase-guide
 import { OctopusGuide, octopusFaqData } from "./octopus-guide";
 import { MobilePaymentGuide, mobilePaymentFaqData } from "./mobile-payment-guide";
 import { LowIncomeGuide, lowIncomeFaqData } from "./low-income-guide";
+import { FoodDeliveryGuide, foodDeliveryFaqData } from "./food-delivery-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -540,6 +541,30 @@ const GUIDES: Record<string, {
       "信用卡年薪證明",
       "信用卡年薪唔夠",
       "信用卡即批即用",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
+  "food-delivery-guide": {
+    id: "food-delivery-guide",
+    title: "外賣平台信用卡攻略｜Foodpanda/Keeta 高達5%回贈",
+    seoTitle: "外賣信用卡攻略 2025｜Foodpanda/Keeta/Deliveroo 信用卡優惠｜高達5%回贈",
+    heroTitle: "🍕 外賣平台信用卡攻略",
+    heroSubtitle: "Foodpanda/Keeta/Deliveroo 高達5%回贈",
+    description: "Foodpanda、Keeta、Deliveroo 用邊張信用卡最抵？外賣當網購定餐飲？本文教你外賣平台信用卡攻略，高達 5% 回贈！",
+    content: "food-delivery-guide",
+    imageUrl: "https://images.unsplash.com/photo-1526367790999-0150786686a2?q=80&w=2071&auto=format&fit=crop",
+    tags: ["Foodpanda", "Keeta", "Deliveroo", "外賣", "信用卡攻略"],
+    keywords: [
+      "Foodpanda信用卡回贈",
+      "網上消費信用卡回贈",
+      "網購信用卡回贈2025",
+      "食飯信用卡2025",
+      "Keeta信用卡優惠",
+      "網購信用卡比較",
+      "外賣信用卡",
+      "Deliveroo信用卡",
+      "外賣優惠碼",
     ],
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
@@ -1151,6 +1176,8 @@ function getGuideFaqData(guideId: string) {
       return mobilePaymentFaqData;
     case "low-income-guide":
       return lowIncomeFaqData;
+    case "food-delivery-guide":
+      return foodDeliveryFaqData;
     default:
       return [];
   }
@@ -1195,6 +1222,8 @@ function renderGuideContent(guideId: string) {
       return <MobilePaymentGuide />;
     case "low-income-guide":
       return <LowIncomeGuide />;
+    case "food-delivery-guide":
+      return <FoodDeliveryGuide />;
     default:
       return null;
   }
