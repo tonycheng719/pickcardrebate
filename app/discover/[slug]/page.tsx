@@ -24,6 +24,7 @@ import { MilesVsCashbackGuide, milesVsCashbackFaqData } from "./miles-vs-cashbac
 import { BestCashbackCardsGuide, bestCashbackCardsFaqData } from "./best-cashback-cards-guide";
 import { UtilityBillGuide, utilityBillFaqData } from "./utility-bill-guide";
 import { RentPaymentGuide, rentPaymentFaqData } from "./rent-payment-guide";
+import { TaxPaymentGuide, taxPaymentFaqData } from "./tax-payment-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -213,6 +214,34 @@ const GUIDES: Record<string, {
       "KeyChain Pay",
       "信用卡交租迎新",
       "交租平台比較",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
+  "tax-payment-guide": {
+    id: "tax-payment-guide",
+    title: "信用卡交稅攻略｜AlipayHK/雲閃付/BoC Pay 交稅賺高達2%回贈",
+    seoTitle: "信用卡交稅攻略 2025/2026｜AlipayHK/雲閃付交稅賺2%回贈｜免息分期",
+    heroTitle: "📋 信用卡交稅攻略",
+    heroSubtitle: "AlipayHK/雲閃付/BoC Pay 交稅賺高達2%回贈",
+    description: "信用卡交稅有回贈嗎？透過 AlipayHK、雲閃付、BoC Pay 交稅可賺高達 2% 回贈！本文教你交稅信用卡攻略、各銀行交稅優惠、免息分期計劃比較。",
+    content: "tax-payment-guide",
+    imageUrl: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2070&auto=format&fit=crop",
+    tags: ["交稅", "AlipayHK", "雲閃付", "信用卡攻略"],
+    keywords: [
+      "交稅信用卡優惠",
+      "交稅信用卡回贈",
+      "信用卡交稅優惠2026",
+      "交稅信用卡2025",
+      "交稅信用卡hsbc",
+      "渣打信用卡交稅",
+      "中銀信用卡交稅",
+      "恒生信用卡交稅",
+      "AlipayHK交稅",
+      "雲閃付交稅",
+      "BoC Pay交稅",
+      "交稅分期",
+      "免息交稅分期",
     ],
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
@@ -800,6 +829,8 @@ function getGuideFaqData(guideId: string) {
       return utilityBillFaqData;
     case "rent-payment-guide":
       return rentPaymentFaqData;
+    case "tax-payment-guide":
+      return taxPaymentFaqData;
     default:
       return [];
   }
@@ -820,6 +851,8 @@ function renderGuideContent(guideId: string) {
       return <UtilityBillGuide />;
     case "rent-payment-guide":
       return <RentPaymentGuide />;
+    case "tax-payment-guide":
+      return <TaxPaymentGuide />;
     default:
       return null;
   }

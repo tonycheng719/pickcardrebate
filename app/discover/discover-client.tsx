@@ -77,6 +77,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "tax-payment-guide",
+    type: "guide" as const,
+    title: "信用卡交稅攻略｜AlipayHK/雲閃付交稅賺2%回贈",
+    description: "信用卡交稅有回贈嗎？透過 AlipayHK、雲閃付、BoC Pay 交稅可賺高達 2% 回贈！各銀行交稅優惠及免息分期計劃比較。",
+    imageUrl: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2070&auto=format&fit=crop",
+    tags: ["交稅", "AlipayHK", "雲閃付"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";
