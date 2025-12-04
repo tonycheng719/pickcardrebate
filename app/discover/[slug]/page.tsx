@@ -31,6 +31,7 @@ import { OverseasSpendingGuide, overseasSpendingFaqData } from "./overseas-spend
 import { SupermarketGuide, supermarketFaqData } from "./supermarket-guide";
 import { TaobaoGuide, taobaoFaqData } from "./taobao-guide";
 import { NoAnnualFeeGuide, noAnnualFeeFaqData } from "./no-annual-fee-guide";
+import { StudentCardGuide, studentCardFaqData } from "./student-card-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -411,6 +412,30 @@ const GUIDES: Record<string, {
       "waive年費hsbc",
       "waive年費citi",
       "信用卡年費幾時收",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
+  "student-card-guide": {
+    id: "student-card-guide",
+    title: "學生信用卡攻略｜大學生必備免入息證明信用卡推薦",
+    seoTitle: "學生信用卡攻略 2025｜大學生信用卡推薦｜免入息證明信用卡比較",
+    heroTitle: "🎓 學生信用卡攻略",
+    heroSubtitle: "大學生必備免入息證明信用卡推薦",
+    description: "大學生可以申請信用卡嗎？學生信用卡邊張最好？本文教你學生信用卡攻略，免入息證明信用卡推薦，建立信用記錄、網購/交學費賺回贈！",
+    content: "student-card-guide",
+    imageUrl: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop",
+    tags: ["學生", "大學生", "免入息", "信用卡攻略"],
+    keywords: [
+      "大學生信用卡邊張好",
+      "大學生信用卡額度",
+      "大學生信用卡中銀",
+      "學生信用卡lihkg",
+      "學生信用卡申請條件",
+      "大學生信用卡免年費",
+      "學生信用卡visa",
+      "免入息證明信用卡",
+      "學生信用卡2025",
     ],
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
@@ -1012,6 +1037,8 @@ function getGuideFaqData(guideId: string) {
       return taobaoFaqData;
     case "no-annual-fee-guide":
       return noAnnualFeeFaqData;
+    case "student-card-guide":
+      return studentCardFaqData;
     default:
       return [];
   }
@@ -1046,6 +1073,8 @@ function renderGuideContent(guideId: string) {
       return <TaobaoGuide />;
     case "no-annual-fee-guide":
       return <NoAnnualFeeGuide />;
+    case "student-card-guide":
+      return <StudentCardGuide />;
     default:
       return null;
   }

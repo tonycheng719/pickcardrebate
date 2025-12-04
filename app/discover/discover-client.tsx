@@ -147,6 +147,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "student-card-guide",
+    type: "guide" as const,
+    title: "學生信用卡攻略｜大學生必備免入息證明信用卡",
+    description: "大學生可以申請信用卡嗎？學生信用卡邊張最好？免入息證明信用卡推薦！",
+    imageUrl: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop",
+    tags: ["學生", "大學生", "免入息"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";
