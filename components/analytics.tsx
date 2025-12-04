@@ -5,8 +5,8 @@ import { useWallet } from "@/lib/store/wallet-context";
 
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void;
-    dataLayer: any[];
+    gtag: (...args: unknown[]) => void;
+    dataLayer: unknown[];
   }
 }
 
