@@ -30,6 +30,7 @@ import { DiningGuide, diningFaqData } from "./dining-guide";
 import { OverseasSpendingGuide, overseasSpendingFaqData } from "./overseas-spending-guide";
 import { SupermarketGuide, supermarketFaqData } from "./supermarket-guide";
 import { TaobaoGuide, taobaoFaqData } from "./taobao-guide";
+import { NoAnnualFeeGuide, noAnnualFeeFaqData } from "./no-annual-fee-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -384,6 +385,32 @@ const GUIDES: Record<string, {
       "淘寶信用卡回贈",
       "天貓信用卡",
       "AlipayHK淘寶",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
+  "no-annual-fee-guide": {
+    id: "no-annual-fee-guide",
+    title: "永久免年費信用卡推薦｜年費豁免攻略｜waive年費方法",
+    seoTitle: "永久免年費信用卡推薦 2025｜年費豁免攻略｜HSBC/Citi waive 年費方法",
+    heroTitle: "💳 永久免年費信用卡攻略",
+    heroSubtitle: "年費豁免攻略｜waive 年費方法",
+    description: "邊張信用卡永久免年費？信用卡年費可以 waive 嗎？本文教你永久免年費信用卡推薦，仲有 HSBC、Citi 年費豁免攻略！",
+    content: "no-annual-fee-guide",
+    imageUrl: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop",
+    tags: ["免年費", "年費豁免", "waive年費", "信用卡攻略"],
+    keywords: [
+      "永久免年費信用卡2025",
+      "免年費信用卡hsbc",
+      "免年費信用卡學生",
+      "信用卡永久免年費",
+      "免年費信用卡比較",
+      "匯豐信用卡年費豁免申請",
+      "免年費信用卡中銀",
+      "免年費信用卡迎新",
+      "waive年費hsbc",
+      "waive年費citi",
+      "信用卡年費幾時收",
     ],
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
@@ -983,6 +1010,8 @@ function getGuideFaqData(guideId: string) {
       return supermarketFaqData;
     case "taobao-guide":
       return taobaoFaqData;
+    case "no-annual-fee-guide":
+      return noAnnualFeeFaqData;
     default:
       return [];
   }
@@ -1015,6 +1044,8 @@ function renderGuideContent(guideId: string) {
       return <SupermarketGuide />;
     case "taobao-guide":
       return <TaobaoGuide />;
+    case "no-annual-fee-guide":
+      return <NoAnnualFeeGuide />;
     default:
       return null;
   }

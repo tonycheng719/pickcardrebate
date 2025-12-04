@@ -137,6 +137,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "no-annual-fee-guide",
+    type: "guide" as const,
+    title: "永久免年費信用卡推薦｜年費豁免攻略",
+    description: "邊張信用卡永久免年費？HSBC、Citi 年費點 waive？本文教你年費豁免攻略！",
+    imageUrl: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop",
+    tags: ["免年費", "年費豁免", "waive"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";
