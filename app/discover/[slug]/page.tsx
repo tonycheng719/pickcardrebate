@@ -40,6 +40,7 @@ import { FoodDeliveryGuide, foodDeliveryFaqData } from "./food-delivery-guide";
 import { StreamingGuide, streamingFaqData } from "./streaming-guide";
 import { DrivingGuide, drivingFaqData } from "./driving-guide";
 import { InsuranceGuide, insuranceFaqData } from "./insurance-guide";
+import { PinduoduoGuide, pinduoduoFaqData } from "./pinduoduo-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -640,6 +641,29 @@ const GUIDES: Record<string, {
       "信用卡交保費回贈",
       "中銀信用卡交保費積分上限",
       "交保費信用卡2025",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
+  "pinduoduo-guide": {
+    id: "pinduoduo-guide",
+    title: "拼多多信用卡攻略｜免手續費兼賺高達5%回贈",
+    seoTitle: "拼多多信用卡攻略 2025｜免手續費付款方法｜AlipayHK 回贈最高5%",
+    heroTitle: "🛒 拼多多信用卡攻略",
+    heroSubtitle: "免手續費兼賺高達5%回贈",
+    description: "拼多多購物用邊張信用卡最抵？有手續費嗎？本文教你拼多多信用卡攻略，用 AlipayHK 免手續費兼賺高達 5% 回贈！",
+    content: "pinduoduo-guide",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["拼多多", "網購", "AlipayHK", "信用卡攻略"],
+    keywords: [
+      "拼多多信用卡推薦",
+      "拼多多信用卡回饋",
+      "拼多多信用卡付款",
+      "拼多多香港信用卡手續費",
+      "拼多多alipayhk手續費",
+      "多多支付信用卡",
+      "拼多多優惠",
+      "拼多多百億補貼",
     ],
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
@@ -1259,6 +1283,8 @@ function getGuideFaqData(guideId: string) {
       return drivingFaqData;
     case "insurance-guide":
       return insuranceFaqData;
+    case "pinduoduo-guide":
+      return pinduoduoFaqData;
     default:
       return [];
   }
@@ -1311,6 +1337,8 @@ function renderGuideContent(guideId: string) {
       return <DrivingGuide />;
     case "insurance-guide":
       return <InsuranceGuide />;
+    case "pinduoduo-guide":
+      return <PinduoduoGuide />;
     default:
       return null;
   }

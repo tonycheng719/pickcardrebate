@@ -237,6 +237,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "pinduoduo-guide",
+    type: "guide" as const,
+    title: "拼多多信用卡攻略｜免手續費兼賺高達5%回贈",
+    description: "拼多多購物用邊張信用卡最抵？用 AlipayHK 免手續費兼賺高達 5% 回贈！",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["拼多多", "網購", "AlipayHK"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";
