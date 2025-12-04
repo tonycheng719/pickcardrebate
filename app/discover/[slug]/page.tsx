@@ -23,6 +23,7 @@ import { DebitCardGuide, debitCardFaqData } from "./debit-card-guide";
 import { MilesVsCashbackGuide, milesVsCashbackFaqData } from "./miles-vs-cashback-guide";
 import { BestCashbackCardsGuide, bestCashbackCardsFaqData } from "./best-cashback-cards-guide";
 import { UtilityBillGuide, utilityBillFaqData } from "./utility-bill-guide";
+import { RentPaymentGuide, rentPaymentFaqData } from "./rent-payment-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -187,6 +188,34 @@ const GUIDES: Record<string, {
     ],
     publishDate: "2025-01-01",
     readTime: "10 分鐘",
+  },
+  "rent-payment-guide": {
+    id: "rent-payment-guide",
+    title: "信用卡交租攻略｜公屋/私樓用 RentSmart 交租賺回贈",
+    seoTitle: "信用卡交租攻略 2025｜公屋/私樓用 RentSmart 交租賺回贈｜食迎新必睇",
+    heroTitle: "🏠 信用卡交租攻略",
+    heroSubtitle: "公屋/私樓都可以用信用卡交租賺回贈",
+    description: "信用卡交租有回贈嗎？公屋、私樓可以用信用卡交租嗎？本文教你透過 RentSmart、KeyChain Pay 用信用卡交租，仲可以食迎新！交租信用卡推薦及回贈計算。",
+    content: "rent-payment-guide",
+    imageUrl: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2070&auto=format&fit=crop",
+    tags: ["交租", "公屋", "私樓", "信用卡攻略"],
+    keywords: [
+      "公屋交租信用卡",
+      "交租信用卡2025",
+      "RentSmart交租信用卡",
+      "信用卡交租lihkg",
+      "公屋交租信用卡2025",
+      "RentSmart信用卡",
+      "RentSmart呃人",
+      "HSBC信用卡交租",
+      "私樓交租信用卡",
+      "交租信用卡回贈",
+      "KeyChain Pay",
+      "信用卡交租迎新",
+      "交租平台比較",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
   },
 };
 
@@ -769,6 +798,8 @@ function getGuideFaqData(guideId: string) {
       return bestCashbackCardsFaqData;
     case "utility-bill-guide":
       return utilityBillFaqData;
+    case "rent-payment-guide":
+      return rentPaymentFaqData;
     default:
       return [];
   }
@@ -787,6 +818,8 @@ function renderGuideContent(guideId: string) {
       return <BestCashbackCardsGuide />;
     case "utility-bill-guide":
       return <UtilityBillGuide />;
+    case "rent-payment-guide":
+      return <RentPaymentGuide />;
     default:
       return null;
   }

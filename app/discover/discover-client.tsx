@@ -67,6 +67,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "rent-payment-guide",
+    type: "guide" as const,
+    title: "信用卡交租攻略｜公屋/私樓用 RentSmart 交租賺回贈",
+    description: "信用卡交租有回贈嗎？公屋、私樓可以用信用卡交租嗎？透過 RentSmart 用信用卡交租，仲可以食迎新！",
+    imageUrl: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2070&auto=format&fit=crop",
+    tags: ["交租", "公屋", "私樓"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";
