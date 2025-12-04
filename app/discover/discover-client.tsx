@@ -207,6 +207,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "streaming-guide",
+    type: "guide" as const,
+    title: "串流平台信用卡攻略｜Netflix/Spotify/Disney+ 回贈比較",
+    description: "Netflix、Spotify、Disney+ 用邊張信用卡最抵？CBF 手續費點樣避？串流平台信用卡攻略！",
+    imageUrl: "https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?q=80&w=2070&auto=format&fit=crop",
+    tags: ["Netflix", "Spotify", "Disney+"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";

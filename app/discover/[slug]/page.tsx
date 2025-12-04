@@ -37,6 +37,7 @@ import { OctopusGuide, octopusFaqData } from "./octopus-guide";
 import { MobilePaymentGuide, mobilePaymentFaqData } from "./mobile-payment-guide";
 import { LowIncomeGuide, lowIncomeFaqData } from "./low-income-guide";
 import { FoodDeliveryGuide, foodDeliveryFaqData } from "./food-delivery-guide";
+import { StreamingGuide, streamingFaqData } from "./streaming-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -565,6 +566,30 @@ const GUIDES: Record<string, {
       "外賣信用卡",
       "Deliveroo信用卡",
       "外賣優惠碼",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
+  "streaming-guide": {
+    id: "streaming-guide",
+    title: "串流平台信用卡攻略｜Netflix/Spotify/Disney+ 回贈比較",
+    seoTitle: "串流平台信用卡攻略 2025｜Netflix/Spotify/Disney+ 信用卡優惠｜CBF 手續費拆解",
+    heroTitle: "📺 串流平台信用卡攻略",
+    heroSubtitle: "Netflix/Spotify/Disney+ 回贈比較",
+    description: "Netflix、Spotify、Disney+ 用邊張信用卡最抵？串流平台有 CBF 手續費？本文教你串流平台信用卡攻略！",
+    content: "streaming-guide",
+    imageUrl: "https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?q=80&w=2070&auto=format&fit=crop",
+    tags: ["Netflix", "Spotify", "Disney+", "串流", "信用卡攻略"],
+    keywords: [
+      "Netflix信用卡回贈",
+      "網上消費信用卡回贈",
+      "Youtube premium信用卡回贈香港",
+      "Youtube premium信用卡香港",
+      "Netflix信用卡優惠2025",
+      "Netflix信用卡優惠香港",
+      "Netflix信用卡手續費",
+      "Spotify信用卡",
+      "Disney+信用卡",
     ],
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
@@ -1178,6 +1203,8 @@ function getGuideFaqData(guideId: string) {
       return lowIncomeFaqData;
     case "food-delivery-guide":
       return foodDeliveryFaqData;
+    case "streaming-guide":
+      return streamingFaqData;
     default:
       return [];
   }
@@ -1224,6 +1251,8 @@ function renderGuideContent(guideId: string) {
       return <LowIncomeGuide />;
     case "food-delivery-guide":
       return <FoodDeliveryGuide />;
+    case "streaming-guide":
+      return <StreamingGuide />;
     default:
       return null;
   }
