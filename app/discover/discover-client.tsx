@@ -257,6 +257,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "iherb-guide",
+    type: "guide" as const,
+    title: "iHerb 信用卡攻略｜扣埋 CBF 手續費仲淨賺2%回贈",
+    description: "iHerb 買保健品用邊張信用卡最抵？用免 CBF 卡淨賺 2% 回贈！",
+    imageUrl: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=2070&auto=format&fit=crop",
+    tags: ["iHerb", "保健品", "免 CBF"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";

@@ -42,6 +42,7 @@ import { DrivingGuide, drivingFaqData } from "./driving-guide";
 import { InsuranceGuide, insuranceFaqData } from "./insurance-guide";
 import { PinduoduoGuide, pinduoduoFaqData } from "./pinduoduo-guide";
 import { UberGuide, uberFaqData } from "./uber-guide";
+import { IherbGuide, iherbFaqData } from "./iherb-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -691,6 +692,29 @@ const GUIDES: Record<string, {
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
   },
+  "iherb-guide": {
+    id: "iherb-guide",
+    title: "iHerb 信用卡攻略｜扣埋 CBF 手續費仲淨賺2%回贈",
+    seoTitle: "iHerb 信用卡攻略 2025｜免 CBF 手續費信用卡推薦｜保健品網購回贈",
+    heroTitle: "💊 iHerb 信用卡攻略",
+    heroSubtitle: "扣埋 CBF 手續費仲淨賺2%回贈",
+    description: "iHerb 買保健品用邊張信用卡最抵？有 CBF 手續費嗎？本文教你 iHerb 信用卡攻略，扣埋手續費仲淨賺 2% 回贈！",
+    content: "iherb-guide",
+    imageUrl: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=2070&auto=format&fit=crop",
+    tags: ["iHerb", "保健品", "網購", "信用卡攻略"],
+    keywords: [
+      "iHerb信用卡優惠",
+      "iHerb信用卡香港",
+      "iHerb信用卡手續費",
+      "iHerb信用卡2025",
+      "網上消費信用卡回贈",
+      "iHerb折扣碼75折",
+      "iHerb優惠碼76折",
+      "iHerb折扣碼7折",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
 };
 
 // Generate static params for both promos and guides
@@ -1310,6 +1334,8 @@ function getGuideFaqData(guideId: string) {
       return pinduoduoFaqData;
     case "uber-guide":
       return uberFaqData;
+    case "iherb-guide":
+      return iherbFaqData;
     default:
       return [];
   }
@@ -1366,6 +1392,8 @@ function renderGuideContent(guideId: string) {
       return <PinduoduoGuide />;
     case "uber-guide":
       return <UberGuide />;
+    case "iherb-guide":
+      return <IherbGuide />;
     default:
       return null;
   }
