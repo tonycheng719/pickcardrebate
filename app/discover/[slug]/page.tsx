@@ -32,6 +32,7 @@ import { SupermarketGuide, supermarketFaqData } from "./supermarket-guide";
 import { TaobaoGuide, taobaoFaqData } from "./taobao-guide";
 import { NoAnnualFeeGuide, noAnnualFeeFaqData } from "./no-annual-fee-guide";
 import { StudentCardGuide, studentCardFaqData } from "./student-card-guide";
+import { LargePurchaseGuide, largePurchaseFaqData } from "./large-purchase-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -436,6 +437,31 @@ const GUIDES: Record<string, {
       "學生信用卡visa",
       "免入息證明信用卡",
       "學生信用卡2025",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
+  "large-purchase-guide": {
+    id: "large-purchase-guide",
+    title: "大額簽賬信用卡攻略｜結婚/裝修/醫療賺盡迎新優惠",
+    seoTitle: "大額簽賬信用卡攻略 2025｜結婚擺酒/裝修/醫療賺盡迎新優惠｜拆單大法",
+    heroTitle: "💰 大額簽賬信用卡攻略",
+    heroSubtitle: "結婚/裝修/醫療賺盡迎新優惠",
+    description: "大額簽賬用邊張信用卡最抵？結婚擺酒、裝修、私家醫院點樣賺盡迎新優惠？本文教你大額簽賬信用卡攻略，拆單大法賺幾千蚊回贈！",
+    content: "large-purchase-guide",
+    imageUrl: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2070&auto=format&fit=crop",
+    tags: ["大額簽賬", "迎新", "結婚", "裝修", "信用卡攻略"],
+    keywords: [
+      "大額簽賬迎新信用卡",
+      "大額簽賬信用卡2025",
+      "醫院信用卡回贈",
+      "大額簽賬優惠",
+      "醫療簽賬信用卡",
+      "婚宴信用卡",
+      "結婚宴信用卡",
+      "裝修信用卡分期",
+      "信用卡迎新",
+      "拆單大法",
     ],
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
@@ -1039,6 +1065,8 @@ function getGuideFaqData(guideId: string) {
       return noAnnualFeeFaqData;
     case "student-card-guide":
       return studentCardFaqData;
+    case "large-purchase-guide":
+      return largePurchaseFaqData;
     default:
       return [];
   }
@@ -1075,6 +1103,8 @@ function renderGuideContent(guideId: string) {
       return <NoAnnualFeeGuide />;
     case "student-card-guide":
       return <StudentCardGuide />;
+    case "large-purchase-guide":
+      return <LargePurchaseGuide />;
     default:
       return null;
   }

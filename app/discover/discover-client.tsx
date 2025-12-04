@@ -157,6 +157,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "large-purchase-guide",
+    type: "guide" as const,
+    title: "大額簽賬信用卡攻略｜結婚/裝修/醫療賺盡迎新",
+    description: "大額簽賬點樣賺盡信用卡優惠？結婚擺酒、裝修、私家醫院拆單大法！",
+    imageUrl: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2070&auto=format&fit=crop",
+    tags: ["大額簽賬", "迎新", "結婚"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";
