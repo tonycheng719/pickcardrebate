@@ -27,6 +27,7 @@ import { RentPaymentGuide, rentPaymentFaqData } from "./rent-payment-guide";
 import { TaxPaymentGuide, taxPaymentFaqData } from "./tax-payment-guide";
 import { OnlineShoppingGuide, onlineShoppingFaqData } from "./online-shopping-guide";
 import { DiningGuide, diningFaqData } from "./dining-guide";
+import { OverseasSpendingGuide, overseasSpendingFaqData } from "./overseas-spending-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -299,6 +300,35 @@ const GUIDES: Record<string, {
       "Keeta信用卡",
       "酒樓信用卡",
       "Apple Pay食飯",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
+  "overseas-spending-guide": {
+    id: "overseas-spending-guide",
+    title: "海外簽賬信用卡攻略｜旅行最高7%回贈｜日本/韓國/台灣",
+    seoTitle: "海外簽賬信用卡攻略 2025｜旅行信用卡比較｜日本/韓國/台灣最高7%回贈",
+    heroTitle: "✈️ 海外簽賬信用卡攻略",
+    heroSubtitle: "旅行最高7%回贈｜日本/韓國/台灣/歐美",
+    description: "海外簽賬信用卡邊張最抵？旅行用邊張卡？本文教你海外簽賬信用卡攻略，比較手續費、回贈率，日本、韓國、台灣、泰國、歐美旅行都適用！",
+    content: "overseas-spending-guide",
+    imageUrl: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=2070&auto=format&fit=crop",
+    tags: ["海外簽賬", "旅行", "日本", "韓國", "信用卡攻略"],
+    keywords: [
+      "海外簽賬信用卡優惠",
+      "海外簽賬信用卡免手續費",
+      "海外簽賬信用卡匯率",
+      "海外簽賬信用卡最好",
+      "海外簽賬信用卡比較",
+      "海外簽賬信用卡手續費",
+      "海外簽賬信用卡2025",
+      "旅行信用卡2025",
+      "旅行信用卡推薦",
+      "旅行信用卡lihkg",
+      "旅行信用卡學生",
+      "旅行信用卡比較",
+      "日本旅行信用卡",
+      "韓國旅行信用卡",
     ],
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
@@ -892,6 +922,8 @@ function getGuideFaqData(guideId: string) {
       return onlineShoppingFaqData;
     case "dining-guide":
       return diningFaqData;
+    case "overseas-spending-guide":
+      return overseasSpendingFaqData;
     default:
       return [];
   }
@@ -918,6 +950,8 @@ function renderGuideContent(guideId: string) {
       return <OnlineShoppingGuide />;
     case "dining-guide":
       return <DiningGuide />;
+    case "overseas-spending-guide":
+      return <OverseasSpendingGuide />;
     default:
       return null;
   }

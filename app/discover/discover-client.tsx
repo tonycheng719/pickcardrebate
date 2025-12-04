@@ -107,6 +107,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "overseas-spending-guide",
+    type: "guide" as const,
+    title: "海外簽賬信用卡攻略｜旅行最高7%回贈",
+    description: "海外簽賬信用卡邊張最抵？日本、韓國、台灣、泰國、歐美旅行都適用！比較手續費及回贈率。",
+    imageUrl: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=2070&auto=format&fit=crop",
+    tags: ["海外簽賬", "旅行", "日本"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";
