@@ -25,6 +25,7 @@ import { BestCashbackCardsGuide, bestCashbackCardsFaqData } from "./best-cashbac
 import { UtilityBillGuide, utilityBillFaqData } from "./utility-bill-guide";
 import { RentPaymentGuide, rentPaymentFaqData } from "./rent-payment-guide";
 import { TaxPaymentGuide, taxPaymentFaqData } from "./tax-payment-guide";
+import { OnlineShoppingGuide, onlineShoppingFaqData } from "./online-shopping-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -242,6 +243,34 @@ const GUIDES: Record<string, {
       "BoC Pay交稅",
       "交稅分期",
       "免息交稅分期",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
+  "online-shopping-guide": {
+    id: "online-shopping-guide",
+    title: "網購信用卡攻略｜HKTVmall/淘寶/Amazon 最高5%回贈",
+    seoTitle: "網購信用卡攻略 2025｜網上簽賬信用卡比較｜HKTVmall/淘寶最高5%回贈",
+    heroTitle: "🛒 網購信用卡攻略",
+    heroSubtitle: "HKTVmall/淘寶/Amazon 最高5%回贈",
+    description: "網購信用卡邊張回贈最高？網上簽賬定義係咩？本文教你網購信用卡攻略，HKTVmall、淘寶、Amazon 都可以賺高達 5% 回贈！外幣網購注意事項及 Apple Pay 網購攻略。",
+    content: "online-shopping-guide",
+    imageUrl: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?q=80&w=2070&auto=format&fit=crop",
+    tags: ["網購", "網上簽賬", "HKTVmall", "淘寶", "信用卡攻略"],
+    keywords: [
+      "網上簽賬定義",
+      "網上簽賬現金回贈",
+      "網上簽賬回贈信用卡",
+      "網上簽賬外幣",
+      "網上簽賬高達5現金回贈",
+      "外幣網上簽賬信用卡",
+      "信用卡網上簽賬定義",
+      "網上簽賬信用卡比較",
+      "網購信用卡2025",
+      "HKTVmall信用卡",
+      "淘寶信用卡",
+      "Amazon信用卡",
+      "Apple Pay網購",
     ],
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
@@ -831,6 +860,8 @@ function getGuideFaqData(guideId: string) {
       return rentPaymentFaqData;
     case "tax-payment-guide":
       return taxPaymentFaqData;
+    case "online-shopping-guide":
+      return onlineShoppingFaqData;
     default:
       return [];
   }
@@ -853,6 +884,8 @@ function renderGuideContent(guideId: string) {
       return <RentPaymentGuide />;
     case "tax-payment-guide":
       return <TaxPaymentGuide />;
+    case "online-shopping-guide":
+      return <OnlineShoppingGuide />;
     default:
       return null;
   }

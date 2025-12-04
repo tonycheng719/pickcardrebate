@@ -87,6 +87,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "online-shopping-guide",
+    type: "guide" as const,
+    title: "網購信用卡攻略｜HKTVmall/淘寶/Amazon 最高5%回贈",
+    description: "網購信用卡邊張回贈最高？HKTVmall、淘寶、Amazon 都可以賺高達 5% 回贈！外幣網購注意事項及 Apple Pay 網購攻略。",
+    imageUrl: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?q=80&w=2070&auto=format&fit=crop",
+    tags: ["網購", "HKTVmall", "淘寶"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";
