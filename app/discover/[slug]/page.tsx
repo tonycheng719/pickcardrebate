@@ -41,6 +41,7 @@ import { StreamingGuide, streamingFaqData } from "./streaming-guide";
 import { DrivingGuide, drivingFaqData } from "./driving-guide";
 import { InsuranceGuide, insuranceFaqData } from "./insurance-guide";
 import { PinduoduoGuide, pinduoduoFaqData } from "./pinduoduo-guide";
+import { UberGuide, uberFaqData } from "./uber-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -668,6 +669,28 @@ const GUIDES: Record<string, {
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
   },
+  "uber-guide": {
+    id: "uber-guide",
+    title: "Uber 信用卡攻略｜扣埋 CBF 手續費仲淨賺2%回贈",
+    seoTitle: "Uber 信用卡攻略 2025｜免 CBF 手續費信用卡推薦｜Uber Eats 回贈",
+    heroTitle: "🚗 Uber 信用卡攻略",
+    heroSubtitle: "扣埋 CBF 手續費仲淨賺2%回贈",
+    description: "Uber 用邊張信用卡最抵？有 CBF 手續費嗎？本文教你 Uber 信用卡攻略，扣埋手續費仲淨賺 2% 回贈！",
+    content: "uber-guide",
+    imageUrl: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["Uber", "Uber Eats", "交通", "信用卡攻略"],
+    keywords: [
+      "Uber信用卡回贈",
+      "Uber mastercard優惠",
+      "Uber信用卡2025",
+      "Uber機場優惠碼2025",
+      "Uber信用卡香港",
+      "Uber信用卡手續費",
+      "Uber優惠碼2025",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
 };
 
 // Generate static params for both promos and guides
@@ -1285,6 +1308,8 @@ function getGuideFaqData(guideId: string) {
       return insuranceFaqData;
     case "pinduoduo-guide":
       return pinduoduoFaqData;
+    case "uber-guide":
+      return uberFaqData;
     default:
       return [];
   }
@@ -1339,6 +1364,8 @@ function renderGuideContent(guideId: string) {
       return <InsuranceGuide />;
     case "pinduoduo-guide":
       return <PinduoduoGuide />;
+    case "uber-guide":
+      return <UberGuide />;
     default:
       return null;
   }

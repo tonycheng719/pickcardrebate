@@ -247,6 +247,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "uber-guide",
+    type: "guide" as const,
+    title: "Uber 信用卡攻略｜扣埋 CBF 手續費仲淨賺2%回贈",
+    description: "Uber 用邊張信用卡最抵？有 CBF 手續費嗎？用免 CBF 卡淨賺 2% 回贈！",
+    imageUrl: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["Uber", "交通", "免 CBF"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";
