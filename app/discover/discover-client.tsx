@@ -287,6 +287,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "macbook-guide",
+    type: "guide" as const,
+    title: "MacBook 出機攻略｜食迎新買 MacBook 慳 $2,000！",
+    description: "買 MacBook 用邊張信用卡最抵？連 M4/M5 MacBook Pro 價錢！",
+    imageUrl: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=2070&auto=format&fit=crop",
+    tags: ["MacBook", "Apple", "迎新"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";

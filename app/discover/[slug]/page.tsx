@@ -45,6 +45,7 @@ import { UberGuide, uberFaqData } from "./uber-guide";
 import { IherbGuide, iherbFaqData } from "./iherb-guide";
 import { IphoneGuide, iphoneFaqData } from "./iphone-guide";
 import { IpadGuide, ipadFaqData } from "./ipad-guide";
+import { MacbookGuide, macbookFaqData } from "./macbook-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -763,6 +764,29 @@ const GUIDES: Record<string, {
     publishDate: "2025-01-01",
     readTime: "15 分鐘",
   },
+  "macbook-guide": {
+    id: "macbook-guide",
+    title: "MacBook 出機攻略｜食迎新買 MacBook 慳 $2,000！連 M4/M5 價錢",
+    seoTitle: "MacBook 出機攻略 2025｜食迎新優惠買 MacBook 慳 $2,000！連 M4/M5 MacBook Pro 價錢",
+    heroTitle: "💻 MacBook 出機攻略",
+    heroSubtitle: "食迎新買 MacBook 慳 $2,000！",
+    description: "買 MacBook 用邊張信用卡最抵？MacBook Air 定 Pro？本文教你 MacBook 出機攻略，食迎新買 MacBook 慳 $2,000！連 M4/M5 MacBook Pro 價錢！",
+    content: "macbook-guide",
+    imageUrl: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=2070&auto=format&fit=crop",
+    tags: ["MacBook", "Apple", "信用卡攻略", "迎新"],
+    keywords: [
+      "MacBook信用卡優惠",
+      "MacBook信用卡分期",
+      "買MacBook優惠",
+      "Apple信用卡優惠2025",
+      "MacBook免息分期",
+      "買MacBook分期",
+      "邊度買MacBook最平",
+      "AppStore信用卡回贈",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "15 分鐘",
+  },
 };
 
 // Generate static params for both promos and guides
@@ -1388,6 +1412,8 @@ function getGuideFaqData(guideId: string) {
       return iphoneFaqData;
     case "ipad-guide":
       return ipadFaqData;
+    case "macbook-guide":
+      return macbookFaqData;
     default:
       return [];
   }
@@ -1450,6 +1476,8 @@ function renderGuideContent(guideId: string) {
       return <IphoneGuide />;
     case "ipad-guide":
       return <IpadGuide />;
+    case "macbook-guide":
+      return <MacbookGuide />;
     default:
       return null;
   }
