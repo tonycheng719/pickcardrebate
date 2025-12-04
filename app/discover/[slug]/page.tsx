@@ -47,6 +47,7 @@ import { IphoneGuide, iphoneFaqData } from "./iphone-guide";
 import { IpadGuide, ipadFaqData } from "./ipad-guide";
 import { MacbookGuide, macbookFaqData } from "./macbook-guide";
 import { AppleWatchGuide, appleWatchFaqData } from "./apple-watch-guide";
+import { Ps5Guide, ps5FaqData } from "./ps5-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -811,6 +812,29 @@ const GUIDES: Record<string, {
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
   },
+  "ps5-guide": {
+    id: "ps5-guide",
+    title: "PS5 出機攻略｜食迎新買 PS5 最平 $1,400 起！",
+    seoTitle: "PS5 出機攻略 2025｜PS5 Slim / Pro 價錢比較｜信用卡優惠食迎新",
+    heroTitle: "🎮 PS5 出機攻略",
+    heroSubtitle: "食迎新買 PS5 最平 $1,400 起！",
+    description: "買 PS5 用邊張信用卡最抵？PS5 Slim 定 Pro？數位版定光碟版？本文教你 PS5 出機攻略，食迎新買 PS5 最平 $1,400 起！",
+    content: "ps5-guide",
+    imageUrl: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?q=80&w=2070&auto=format&fit=crop",
+    tags: ["PS5", "PlayStation", "信用卡攻略", "遊戲"],
+    keywords: [
+      "PS5信用卡優惠",
+      "PS5信用卡設定",
+      "PS5信用卡分期",
+      "PS5分期付款",
+      "PS5優惠2025",
+      "PS5現貨哪裡買",
+      "百老匯PS5現貨",
+      "PS5香港現貨",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
 };
 
 // Generate static params for both promos and guides
@@ -1440,6 +1464,8 @@ function getGuideFaqData(guideId: string) {
       return macbookFaqData;
     case "apple-watch-guide":
       return appleWatchFaqData;
+    case "ps5-guide":
+      return ps5FaqData;
     default:
       return [];
   }
@@ -1506,6 +1532,8 @@ function renderGuideContent(guideId: string) {
       return <MacbookGuide />;
     case "apple-watch-guide":
       return <AppleWatchGuide />;
+    case "ps5-guide":
+      return <Ps5Guide />;
     default:
       return null;
   }

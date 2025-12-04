@@ -307,6 +307,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "ps5-guide",
+    type: "guide" as const,
+    title: "PS5 出機攻略｜食迎新買 PS5 最平 $1,400 起！",
+    description: "買 PS5 用邊張信用卡最抵？Slim 定 Pro？數位版定光碟版？",
+    imageUrl: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?q=80&w=2070&auto=format&fit=crop",
+    tags: ["PS5", "PlayStation", "遊戲"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";
