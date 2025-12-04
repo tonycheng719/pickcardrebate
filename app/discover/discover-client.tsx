@@ -227,6 +227,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "insurance-guide",
+    type: "guide" as const,
+    title: "信用卡交保費攻略｜AIA/保誠/宏利保費回贈高達2%",
+    description: "交保費都可以賺信用卡回贈？邊張卡交保費最抵？保費回贈高達 2%！",
+    imageUrl: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=2070&auto=format&fit=crop",
+    tags: ["保費", "保險", "AIA"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";

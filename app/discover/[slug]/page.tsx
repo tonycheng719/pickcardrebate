@@ -39,6 +39,7 @@ import { LowIncomeGuide, lowIncomeFaqData } from "./low-income-guide";
 import { FoodDeliveryGuide, foodDeliveryFaqData } from "./food-delivery-guide";
 import { StreamingGuide, streamingFaqData } from "./streaming-guide";
 import { DrivingGuide, drivingFaqData } from "./driving-guide";
+import { InsuranceGuide, insuranceFaqData } from "./insurance-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -615,6 +616,30 @@ const GUIDES: Record<string, {
       "停車場信用卡回贈",
       "入油信用卡2025",
       "入油攻略",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
+  "insurance-guide": {
+    id: "insurance-guide",
+    title: "信用卡交保費攻略｜AIA/保誠/宏利保費回贈高達2%",
+    seoTitle: "信用卡交保費攻略 2025｜AIA/保誠/宏利保費信用卡回贈｜最高2%",
+    heroTitle: "🛡️ 信用卡交保費攻略",
+    heroSubtitle: "AIA/保誠/宏利保費回贈高達2%",
+    description: "交保費都可以賺信用卡回贈？邊張卡交保費最抵？本文教你信用卡交保費攻略，保費回贈高達 2%！",
+    content: "insurance-guide",
+    imageUrl: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=2070&auto=format&fit=crop",
+    tags: ["保費", "保險", "AIA", "保誠", "信用卡攻略"],
+    keywords: [
+      "信用卡交保費攻略",
+      "AIA保費信用卡",
+      "HSBC信用卡交保費",
+      "恒生信用卡交保費積分",
+      "宏利交保費信用卡",
+      "網上交保費信用卡",
+      "信用卡交保費回贈",
+      "中銀信用卡交保費積分上限",
+      "交保費信用卡2025",
     ],
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
@@ -1232,6 +1257,8 @@ function getGuideFaqData(guideId: string) {
       return streamingFaqData;
     case "driving-guide":
       return drivingFaqData;
+    case "insurance-guide":
+      return insuranceFaqData;
     default:
       return [];
   }
@@ -1282,6 +1309,8 @@ function renderGuideContent(guideId: string) {
       return <StreamingGuide />;
     case "driving-guide":
       return <DrivingGuide />;
+    case "insurance-guide":
+      return <InsuranceGuide />;
     default:
       return null;
   }
