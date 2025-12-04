@@ -201,7 +201,7 @@ const GUIDES = [
     id: "food-delivery-guide",
     type: "guide" as const,
     title: "外賣平台信用卡攻略｜Foodpanda/Keeta 高達5%回贈",
-    description: "Foodpanda、Keeta、Deliveroo 用邊張信用卡最抵？外賣都可以賺高達 5% 回贈！",
+    description: "Foodpanda、KeeTa 用邊張信用卡最抵？外賣都可以賺高達 5% 回贈！",
     imageUrl: "https://images.unsplash.com/photo-1526367790999-0150786686a2?q=80&w=2071&auto=format&fit=crop",
     tags: ["Foodpanda", "Keeta", "外賣"],
     merchant: "攻略",

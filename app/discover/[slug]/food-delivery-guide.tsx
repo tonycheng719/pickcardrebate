@@ -21,8 +21,8 @@ export const foodDeliveryFaqData = [
     answer: "Keeta 最抵信用卡：恒生 MMPOWER（網購 5%）、HSBC Red Card（網購 4%）。Keeta 當網上簽賬處理，網購卡有高回贈。另外 Keeta 經常有新用戶優惠碼。"
   },
   {
-    question: "Deliveroo 用邊張信用卡最抵？",
-    answer: "Deliveroo 最抵信用卡：恒生 MMPOWER（網購 5%）、HSBC Red Card（網購 4%）。Deliveroo 當網上簽賬，建議用網購高回贈信用卡。"
+    question: "KeeTa 同 Foodpanda 邊個抵啲？",
+    answer: "兩者都係網上簽賬，信用卡回贈一樣。但 Keeta 新用戶優惠通常較大，價格可能較平。建議比較同一餐廳喺兩個平台嘅價格。"
   },
   {
     question: "外賣 App 用信用卡定電子錢包？",
@@ -34,7 +34,7 @@ export const foodDeliveryFaqData = [
   },
   {
     question: "外賣當網上簽賬定餐飲簽賬？",
-    answer: "外賣 App（Foodpanda、Keeta、Deliveroo）通常當「網上簽賬」處理，唔係「餐飲簽賬」。所以用網購高回贈卡（如 Red Card 4%）會比餐飲卡更抵。"
+    answer: "外賣 App（Foodpanda、Keeta）通常當「網上簽賬」處理，唔係「餐飲簽賬」。所以用網購高回贈卡（如 Red Card 4%）會比餐飲卡更抵。"
   },
   {
     question: "Foodpanda Pro 值唔值得訂？",
@@ -42,7 +42,7 @@ export const foodDeliveryFaqData = [
   },
   {
     question: "外賣平台有咩信用卡優惠？",
-    answer: "各銀行經常推出外賣平台優惠，例如 HSBC 有 Foodpanda 折扣、Citi 有 Deliveroo 優惠等。建議留意銀行 App 嘅最新優惠。"
+    answer: "各銀行經常推出外賣平台優惠，例如 HSBC 有 Foodpanda 折扣、恒生 MMPOWER 有網購高回贈等。建議留意銀行 App 嘅最新優惠。"
   }
 ];
 
@@ -57,7 +57,7 @@ const deliveryPlatforms = [
     bestCards: ["hangseng-mmpower", "hsbc-red", "earnmore"],
   },
   {
-    name: "Keeta",
+    name: "KeeTa",
     icon: "🛵",
     paymentType: "網上簽賬",
     supportedPayments: ["信用卡", "Apple Pay", "Google Pay", "AlipayHK"],
@@ -65,20 +65,20 @@ const deliveryPlatforms = [
     bestCards: ["hangseng-mmpower", "hsbc-red", "earnmore"],
   },
   {
-    name: "Deliveroo",
-    icon: "🦘",
-    paymentType: "網上簽賬",
-    supportedPayments: ["信用卡", "Apple Pay", "Google Pay"],
-    features: ["高級餐廳選擇", "Deliveroo Plus 會員"],
-    bestCards: ["hangseng-mmpower", "hsbc-red", "earnmore"],
-  },
-  {
-    name: "OpenRice",
+    name: "OpenRice 外賣自取",
     icon: "🍽️",
     paymentType: "網上簽賬",
     supportedPayments: ["信用卡", "Apple Pay"],
-    features: ["餐廳評價", "外賣 + 堂食訂位"],
+    features: ["餐廳評價", "外賣自取", "堂食訂位"],
     bestCards: ["hangseng-mmpower", "hsbc-red"],
+  },
+  {
+    name: "HKTVmall 外賣",
+    icon: "🛒",
+    paymentType: "網上簽賬",
+    supportedPayments: ["信用卡", "Apple Pay", "AlipayHK"],
+    features: ["超市 + 外賣", "VIP 會員優惠"],
+    bestCards: ["hsbc-red", "hangseng-mmpower"],
   },
 ];
 
@@ -141,17 +141,17 @@ const savingTips = [
   {
     tip: "善用新用戶優惠",
     icon: "🎁",
-    description: "首單優惠、新用戶折扣碼",
+    description: "KeeTa 新用戶優惠碼非常吸引",
   },
   {
     tip: "訂閱會員計劃",
     icon: "👑",
-    description: "pandapro / Deliveroo Plus 免運費",
+    description: "pandapro 免運費 + 餐廳折扣",
   },
   {
     tip: "比較唔同平台",
     icon: "🔍",
-    description: "同一餐廳喺唔同平台價格可能唔同",
+    description: "同一餐廳喺 Foodpanda / KeeTa 價格可能唔同",
   },
   {
     tip: "留意銀行優惠",
@@ -172,7 +172,7 @@ export function FoodDeliveryGuide() {
     <div className="prose prose-lg dark:prose-invert max-w-none">
       {/* 引言 */}
       <p className="lead text-xl text-gray-600 dark:text-gray-300 mb-6">
-        Foodpanda、Keeta、Deliveroo 用邊張信用卡最抵？
+        Foodpanda、KeeTa 用邊張信用卡最抵？
         本文教你 <strong>{currentYear} 外賣平台信用卡攻略</strong>，
         外賣都可以賺高達 <strong>5% 回贈</strong>！
       </p>
@@ -187,12 +187,11 @@ export function FoodDeliveryGuide() {
           <li><a href="#platforms" className="text-blue-600 dark:text-blue-400 hover:underline">2. 外賣平台比較</a></li>
           <li><a href="#card-comparison" className="text-blue-600 dark:text-blue-400 hover:underline">3. 外賣信用卡回贈比較</a></li>
           <li><a href="#foodpanda" className="text-blue-600 dark:text-blue-400 hover:underline">4. Foodpanda 攻略</a></li>
-          <li><a href="#keeta" className="text-blue-600 dark:text-blue-400 hover:underline">5. Keeta 攻略</a></li>
-          <li><a href="#deliveroo" className="text-blue-600 dark:text-blue-400 hover:underline">6. Deliveroo 攻略</a></li>
-          <li><a href="#best-cards" className="text-blue-600 dark:text-blue-400 hover:underline">7. 外賣最佳信用卡排行榜</a></li>
-          <li><a href="#saving-tips" className="text-blue-600 dark:text-blue-400 hover:underline">8. 外賣慳錢攻略</a></li>
-          <li><a href="#bank-offers" className="text-blue-600 dark:text-blue-400 hover:underline">9. 銀行外賣優惠</a></li>
-          <li><a href="#faq" className="text-blue-600 dark:text-blue-400 hover:underline">10. 常見問題 FAQ</a></li>
+          <li><a href="#keeta" className="text-blue-600 dark:text-blue-400 hover:underline">5. KeeTa 攻略</a></li>
+          <li><a href="#best-cards" className="text-blue-600 dark:text-blue-400 hover:underline">6. 外賣最佳信用卡排行榜</a></li>
+          <li><a href="#saving-tips" className="text-blue-600 dark:text-blue-400 hover:underline">7. 外賣慳錢攻略</a></li>
+          <li><a href="#bank-offers" className="text-blue-600 dark:text-blue-400 hover:underline">8. 銀行外賣優惠</a></li>
+          <li><a href="#faq" className="text-blue-600 dark:text-blue-400 hover:underline">9. 常見問題 FAQ</a></li>
         </ul>
       </div>
 
@@ -204,7 +203,7 @@ export function FoodDeliveryGuide() {
         </h2>
         
         <p>
-          外賣 App（Foodpanda、Keeta、Deliveroo）通常當<strong>「網上簽賬」</strong>處理，
+          外賣 App（Foodpanda、KeeTa）通常當<strong>「網上簽賬」</strong>處理，
           唔係「餐飲簽賬」！所以用網購高回贈卡最抵：
         </p>
 
@@ -360,15 +359,15 @@ export function FoodDeliveryGuide() {
         </div>
       </section>
 
-      {/* Section 5: Keeta */}
+      {/* Section 5: KeeTa */}
       <section id="keeta" className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-          🛵 5. Keeta 攻略
+          🛵 5. KeeTa 攻略
         </h2>
 
         <div className="not-prose space-y-4 my-6">
           <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-xl p-4 border border-yellow-200 dark:border-yellow-800">
-            <h4 className="font-bold text-yellow-800 dark:text-yellow-200 mb-2">🎯 Keeta 最佳信用卡</h4>
+            <h4 className="font-bold text-yellow-800 dark:text-yellow-200 mb-2">🎯 KeeTa 最佳信用卡</h4>
             <ul className="text-yellow-700 dark:text-yellow-300 text-sm space-y-1">
               <li>1️⃣ <Link href="/cards/hangseng-mmpower" className="underline">恒生 MMPOWER</Link> — 網購 5%（有上限）</li>
               <li>2️⃣ <Link href="/cards/hsbc-red" className="underline">HSBC Red Card</Link> — 網購 4%（高上限）</li>
@@ -377,50 +376,23 @@ export function FoodDeliveryGuide() {
           </div>
           
           <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-4">
-            <h4 className="font-bold text-gray-900 dark:text-white mb-2">💡 Keeta 慳錢貼士</h4>
+            <h4 className="font-bold text-gray-900 dark:text-white mb-2">💡 KeeTa 慳錢貼士</h4>
             <ul className="text-gray-600 dark:text-gray-400 text-sm space-y-1">
-              <li>• <strong>新用戶優惠：</strong>Keeta 新用戶優惠碼非常吸引</li>
-              <li>• <strong>價格較平：</strong>同一餐廳 Keeta 可能較 Foodpanda 平</li>
+              <li>• <strong>新用戶優惠：</strong>KeeTa 新用戶優惠碼非常吸引，首單可減幾十蚊</li>
+              <li>• <strong>價格較平：</strong>同一餐廳 KeeTa 可能較 Foodpanda 平</li>
               <li>• <strong>美團旗下：</strong>經常有促銷活動</li>
               <li>• <strong>限時優惠：</strong>留意 App 內限時折扣</li>
+              <li>• <strong>外賣自取：</strong>自取可以慳運費</li>
             </ul>
           </div>
         </div>
       </section>
 
-      {/* Section 6: Deliveroo */}
-      <section id="deliveroo" className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-          🦘 6. Deliveroo 攻略
-        </h2>
-
-        <div className="not-prose space-y-4 my-6">
-          <div className="bg-teal-50 dark:bg-teal-900/20 rounded-xl p-4 border border-teal-200 dark:border-teal-800">
-            <h4 className="font-bold text-teal-800 dark:text-teal-200 mb-2">🎯 Deliveroo 最佳信用卡</h4>
-            <ul className="text-teal-700 dark:text-teal-300 text-sm space-y-1">
-              <li>1️⃣ <Link href="/cards/hangseng-mmpower" className="underline">恒生 MMPOWER</Link> — 網購 5%（有上限）</li>
-              <li>2️⃣ <Link href="/cards/hsbc-red" className="underline">HSBC Red Card</Link> — 網購 4%（高上限）</li>
-              <li>3️⃣ <Link href="/cards/earnmore" className="underline">安信 EarnMORE</Link> — Apple Pay 2% 無上限</li>
-            </ul>
-          </div>
-          
-          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-4">
-            <h4 className="font-bold text-gray-900 dark:text-white mb-2">💡 Deliveroo 慳錢貼士</h4>
-            <ul className="text-gray-600 dark:text-gray-400 text-sm space-y-1">
-              <li>• <strong>Deliveroo Plus：</strong>月費免運費計劃</li>
-              <li>• <strong>高級餐廳：</strong>有較多中高檔餐廳選擇</li>
-              <li>• <strong>Citi 優惠：</strong>Citi 經常有 Deliveroo 優惠</li>
-              <li>• <strong>首單優惠：</strong>新用戶有折扣</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* Section 7: 最佳卡排行 */}
+      {/* Section 6: 最佳卡排行 */}
       <section id="best-cards" className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
           <Trophy className="h-6 w-6 text-amber-500" />
-          7. 外賣最佳信用卡排行榜
+          6. 外賣最佳信用卡排行榜
         </h2>
 
         <div className="not-prose space-y-4 my-6">
@@ -442,11 +414,11 @@ export function FoodDeliveryGuide() {
         </div>
       </section>
 
-      {/* Section 8: 慳錢攻略 */}
+      {/* Section 7: 慳錢攻略 */}
       <section id="saving-tips" className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
           <Zap className="h-6 w-6 text-yellow-500" />
-          8. 外賣慳錢攻略
+          7. 外賣慳錢攻略
         </h2>
 
         <div className="not-prose grid md:grid-cols-2 gap-3 my-6">
@@ -462,11 +434,11 @@ export function FoodDeliveryGuide() {
         </div>
       </section>
 
-      {/* Section 9: 銀行優惠 */}
+      {/* Section 8: 銀行優惠 */}
       <section id="bank-offers" className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
           <Gift className="h-6 w-6 text-purple-500" />
-          9. 銀行外賣優惠
+          8. 銀行外賣優惠
         </h2>
 
         <p>
@@ -476,8 +448,8 @@ export function FoodDeliveryGuide() {
         <div className="not-prose space-y-3 my-6">
           {[
             { bank: "HSBC", offers: "Foodpanda 折扣、指定餐廳優惠" },
-            { bank: "Citi", offers: "Deliveroo 折扣、外賣平台優惠碼" },
-            { bank: "恒生", offers: "MMPOWER 網購高回贈" },
+            { bank: "恒生", offers: "MMPOWER 網購 5% 高回贈" },
+            { bank: "Citi", offers: "指定餐廳優惠" },
             { bank: "渣打", offers: "外賣平台優惠碼" },
           ].map((item, index) => (
             <div key={index} className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-4 flex items-center gap-4">
@@ -498,10 +470,10 @@ export function FoodDeliveryGuide() {
         </div>
       </section>
 
-      {/* Section 10: FAQ */}
+      {/* Section 9: FAQ */}
       <section id="faq" className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-          ❓ 10. 常見問題 FAQ
+          ❓ 9. 常見問題 FAQ
         </h2>
         
         <div className="not-prose space-y-4">
