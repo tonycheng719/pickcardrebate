@@ -48,6 +48,8 @@ import { IpadGuide, ipadFaqData } from "./ipad-guide";
 import { MacbookGuide, macbookFaqData } from "./macbook-guide";
 import { AppleWatchGuide, appleWatchFaqData } from "./apple-watch-guide";
 import { Ps5Guide, ps5FaqData } from "./ps5-guide";
+import { XboxGuide, xboxFaqData } from "./xbox-guide";
+import { SwitchGuide, switchFaqData } from "./switch-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -835,6 +837,52 @@ const GUIDES: Record<string, {
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
   },
+  "xbox-guide": {
+    id: "xbox-guide",
+    title: "Xbox 出機攻略｜食迎新買 Xbox 最平 $1,000 起！",
+    seoTitle: "Xbox 出機攻略 2025｜Series X / S 價錢比較｜Game Pass 攻略｜信用卡優惠",
+    heroTitle: "🎮 Xbox 出機攻略",
+    heroSubtitle: "食迎新買 Xbox 最平 $1,000 起！",
+    description: "買 Xbox 用邊張信用卡最抵？Series X 定 Series S？Game Pass 值唔值得買？本文教你 Xbox 出機攻略！",
+    content: "xbox-guide",
+    imageUrl: "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["Xbox", "Game Pass", "信用卡攻略", "遊戲"],
+    keywords: [
+      "Xbox付款方式",
+      "XboxGamePass付費方式",
+      "XboxAlipayHK",
+      "Microsoft信用卡扣款",
+      "Microsoft移除信用卡",
+      "Microsoft付款方式",
+      "MicrosoftAlipayHK",
+      "Xbox訂購紀錄",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
+  "switch-guide": {
+    id: "switch-guide",
+    title: "Switch 2 出機攻略｜食迎新買 Switch 最平 $1,850 起！",
+    seoTitle: "Switch 2 出機攻略 2025｜幾時出？價錢幾多？｜信用卡優惠食迎新",
+    heroTitle: "🎮 Switch 2 出機攻略",
+    heroSubtitle: "食迎新買 Switch 最平 $1,850 起！",
+    description: "買 Switch 2 用邊張信用卡最抵？幾時出？價錢幾多？本文教你 Switch 2 出機攻略，食迎新買 Switch 最平 $1,850 起！",
+    content: "switch-guide",
+    imageUrl: "https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?q=80&w=2070&auto=format&fit=crop",
+    tags: ["Switch", "Nintendo", "信用卡攻略", "遊戲"],
+    keywords: [
+      "Switch2優惠",
+      "Switch2分期付款",
+      "信用卡送SwitchOLED",
+      "信用卡迎新Switch",
+      "送Switch2",
+      "MoxSwitch2",
+      "Switch2遊戲",
+      "Switch2免息分期",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
 };
 
 // Generate static params for both promos and guides
@@ -1466,6 +1514,10 @@ function getGuideFaqData(guideId: string) {
       return appleWatchFaqData;
     case "ps5-guide":
       return ps5FaqData;
+    case "xbox-guide":
+      return xboxFaqData;
+    case "switch-guide":
+      return switchFaqData;
     default:
       return [];
   }
@@ -1534,6 +1586,10 @@ function renderGuideContent(guideId: string) {
       return <AppleWatchGuide />;
     case "ps5-guide":
       return <Ps5Guide />;
+    case "xbox-guide":
+      return <XboxGuide />;
+    case "switch-guide":
+      return <SwitchGuide />;
     default:
       return null;
   }

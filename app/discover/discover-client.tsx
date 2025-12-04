@@ -317,6 +317,26 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "xbox-guide",
+    type: "guide" as const,
+    title: "Xbox 出機攻略｜食迎新買 Xbox 最平 $1,000 起！",
+    description: "買 Xbox 用邊張信用卡最抵？Series X 定 S？Game Pass 攻略！",
+    imageUrl: "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["Xbox", "Game Pass", "遊戲"],
+    merchant: "攻略",
+    isNew: true,
+  },
+  {
+    id: "switch-guide",
+    type: "guide" as const,
+    title: "Switch 2 出機攻略｜食迎新買 Switch 最平 $1,850 起！",
+    description: "買 Switch 2 用邊張信用卡最抵？幾時出？價錢幾多？",
+    imageUrl: "https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?q=80&w=2070&auto=format&fit=crop",
+    tags: ["Switch", "Nintendo", "遊戲"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";
