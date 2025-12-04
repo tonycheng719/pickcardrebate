@@ -187,6 +187,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "low-income-guide",
+    type: "guide" as const,
+    title: "免入息證明信用卡攻略｜低門檻即批信用卡",
+    description: "無入息證明可以申請信用卡嗎？家庭主婦、自僱人士、現金出糧都適用！即時批核信用卡推薦！",
+    imageUrl: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2070&auto=format&fit=crop",
+    tags: ["免入息", "低門檻", "即批"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";

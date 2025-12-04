@@ -35,6 +35,7 @@ import { StudentCardGuide, studentCardFaqData } from "./student-card-guide";
 import { LargePurchaseGuide, largePurchaseFaqData } from "./large-purchase-guide";
 import { OctopusGuide, octopusFaqData } from "./octopus-guide";
 import { MobilePaymentGuide, mobilePaymentFaqData } from "./mobile-payment-guide";
+import { LowIncomeGuide, lowIncomeFaqData } from "./low-income-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -514,6 +515,31 @@ const GUIDES: Record<string, {
       "Apple pay信用卡優惠",
       "Apple pay信用卡付款",
       "Apple pay信用卡回贈",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
+  "low-income-guide": {
+    id: "low-income-guide",
+    title: "免入息證明信用卡攻略｜家庭主婦/自僱/現金出糧都開到",
+    seoTitle: "免入息證明信用卡攻略 2025｜低門檻信用卡比較｜家庭主婦/自僱/無業都開到",
+    heroTitle: "📋 免入息證明信用卡攻略",
+    heroSubtitle: "家庭主婦/自僱/現金出糧都開到",
+    description: "無入息證明可以申請信用卡嗎？家庭主婦、自僱人士、現金出糧點申請？本文教你免入息證明信用卡攻略，即時批核信用卡推薦！",
+    content: "low-income-guide",
+    imageUrl: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2070&auto=format&fit=crop",
+    tags: ["免入息", "低門檻", "家庭主婦", "自僱", "信用卡攻略"],
+    keywords: [
+      "無糧單信用卡",
+      "即時批核信用卡",
+      "中銀信用卡入息要求",
+      "無收入信用卡",
+      "低門檻信用卡",
+      "家庭主婦信用卡推薦",
+      "香港最容易申請信用卡",
+      "信用卡年薪證明",
+      "信用卡年薪唔夠",
+      "信用卡即批即用",
     ],
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
@@ -1123,6 +1149,8 @@ function getGuideFaqData(guideId: string) {
       return octopusFaqData;
     case "mobile-payment-guide":
       return mobilePaymentFaqData;
+    case "low-income-guide":
+      return lowIncomeFaqData;
     default:
       return [];
   }
@@ -1165,6 +1193,8 @@ function renderGuideContent(guideId: string) {
       return <OctopusGuide />;
     case "mobile-payment-guide":
       return <MobilePaymentGuide />;
+    case "low-income-guide":
+      return <LowIncomeGuide />;
     default:
       return null;
   }
