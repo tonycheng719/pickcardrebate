@@ -8,6 +8,7 @@ import {
   Home, Phone, Receipt, Calculator, Trophy, DollarSign,
   CheckCircle, AlertTriangle, Star, Smartphone, Building
 } from "lucide-react";
+import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // FAQ 數據
 export const utilityBillFaqData = [
@@ -64,7 +65,7 @@ export const billCategories = [
     methods: ["網上繳費", "自動轉賬", "AlipayHK", "BoC Pay"],
     bestCards: [
       { card: "渣打 Simply Cash", id: "sc-simply-cash", rate: "1.5%" },
-      { card: "BoC 雙幣卡", id: "boc-dual-currency", rate: "0.4%" },
+      { card: "中銀 Cheers", id: "boc-cheers", rate: "0.4%" },
     ]
   },
   { 
@@ -84,7 +85,7 @@ export const billCategories = [
     methods: ["AlipayHK", "BoC Pay", "雲閃付", "PPS"],
     bestCards: [
       { card: "渣打 Simply Cash", id: "sc-simply-cash", rate: "1.5%（AlipayHK）" },
-      { card: "中銀卡", id: "boc-dual-currency", rate: "0.4%（BoC Pay）" },
+      { card: "中銀卡", id: "boc-cheers", rate: "0.4%（BoC Pay）" },
     ]
   },
   { 
@@ -126,7 +127,7 @@ export const paymentPlatforms = [
     bills: ["水費", "差餉", "煤氣", "電費"],
     creditCardSupport: true,
     bestCards: [
-      { card: "中銀雙幣卡", id: "boc-dual-currency", rate: "0.4%" },
+      { card: "中銀卡", id: "boc-cheers", rate: "0.4%" },
     ],
     note: "限中銀信用卡"
   },
@@ -591,6 +592,13 @@ export function UtilityBillGuide() {
           ))}
         </div>
       </section>
+
+      {/* Card Preview Section */}
+      <CardPreviewSection 
+        title="📌 繳費推薦信用卡一覽"
+        subtitle="以下信用卡最適合繳付水電煤、差餉、電話費等賬單"
+        cards={RECOMMENDED_CARDS.bills}
+      />
 
       {/* CTA Section */}
       <div className="not-prose bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl p-6 text-white mb-10">

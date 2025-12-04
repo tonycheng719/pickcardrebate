@@ -8,6 +8,7 @@ import {
   CreditCard, Globe, Plane, Calculator, Trophy, DollarSign,
   TrendingUp, Users, Target, Zap, Clock, Star, Wallet, Scale
 } from "lucide-react";
+import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // FAQ 數據
 export const milesVsCashbackFaqData = [
@@ -658,6 +659,19 @@ export function MilesVsCashbackGuide() {
           </div>
         </div>
       </section>
+
+      {/* Card Preview Sections */}
+      <CardPreviewSection 
+        title="📌 里數信用卡推薦"
+        subtitle="適合經常飛、想換免費機票的用戶"
+        cards={RECOMMENDED_CARDS.miles}
+      />
+
+      <CardPreviewSection 
+        title="📌 現金回贈信用卡推薦"
+        subtitle="適合唔常飛、想即時回贈的用戶"
+        cards={RECOMMENDED_CARDS.cashback}
+      />
 
       {/* CTA Section */}
       <div className="not-prose bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl p-6 text-white mb-10">

@@ -8,6 +8,7 @@ import {
   Plane, Globe, Smartphone, Car, Zap, Target, Trophy,
   CheckCircle, Star, Calculator, DollarSign, TrendingUp
 } from "lucide-react";
+import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // FAQ 數據
 export const bestCashbackCardsFaqData = [
@@ -618,6 +619,21 @@ export function BestCashbackCardsGuide() {
           </div>
         </div>
       </div>
+
+      {/* Card Preview Section */}
+      <CardPreviewSection 
+        title="📌 一Click 查看推薦信用卡詳情"
+        subtitle="點擊以下信用卡查看詳細回贈條款及申請連結"
+        cards={[
+          { id: "sc-simply-cash", highlight: "1.5% 無上限" },
+          { id: "earnmore", highlight: "2% 無上限" },
+          { id: "hangseng-mmpower", highlight: "網購 5%" },
+          { id: "hsbc-red", highlight: "網購 4%" },
+          { id: "citi-cashback", highlight: "餐飲 2%" },
+          { id: "hsbc-vs", highlight: "餐飲 3.6%" },
+        ]}
+        columns={3}
+      />
 
       {/* CTA Section */}
       <div className="not-prose bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl p-6 text-white mb-10">

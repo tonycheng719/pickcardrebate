@@ -9,6 +9,7 @@ import {
   Info, Calculator, Trophy, Building, Wallet, Shield,
   DollarSign, Clock, Zap
 } from "lucide-react";
+import { CardPreviewSection } from "@/app/discover/components/card-preview-section";
 
 // FAQ 數據
 export const debitCardFaqData = [
@@ -568,6 +569,18 @@ export function DebitCardGuide() {
           ))}
         </div>
       </section>
+
+      {/* Credit Card Recommendation */}
+      <CardPreviewSection 
+        title="📌 想賺更高回贈？推薦信用卡"
+        subtitle="如果你有穩定收入，使用信用卡可以賺取比 Debit Card 更高的回贈"
+        cards={[
+          { id: "sc-simply-cash", highlight: "1.5% 無上限" },
+          { id: "earnmore", highlight: "2% 無上限" },
+          { id: "hsbc-red", highlight: "網購 4%" },
+          { id: "hangseng-mmpower", highlight: "網購 5%" },
+        ]}
+      />
 
       {/* CTA Section */}
       <div className="not-prose bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl p-6 text-white mb-10">

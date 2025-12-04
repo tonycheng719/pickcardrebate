@@ -23,6 +23,7 @@ import { DebitCardGuide, debitCardFaqData } from "./debit-card-guide";
 import { MilesVsCashbackGuide, milesVsCashbackFaqData } from "./miles-vs-cashback-guide";
 import { BestCashbackCardsGuide, bestCashbackCardsFaqData } from "./best-cashback-cards-guide";
 import { UtilityBillGuide, utilityBillFaqData } from "./utility-bill-guide";
+import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
 export const revalidate = 3600;
@@ -614,13 +615,20 @@ function OverseasFeeGuide() {
           6. 推薦信用卡
         </h2>
         
-        <div className="not-prose grid md:grid-cols-2 gap-4">
+        {/* Card Preview Section */}
+        <CardPreviewSection 
+          title="📌 海外簽賬推薦信用卡"
+          subtitle="以下信用卡適合海外簽賬及網購，部分免 CBF 或外幣手續費"
+          cards={RECOMMENDED_CARDS.overseas}
+        />
+        
+        <div className="not-prose grid md:grid-cols-2 gap-4 mt-6">
           <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-2xl p-5 border border-emerald-200 dark:border-emerald-800">
             <h4 className="font-bold text-emerald-800 dark:text-emerald-200 mb-2">🌐 海外網購首選</h4>
             <ul className="space-y-2 text-sm text-emerald-700 dark:text-emerald-300">
-              <li>• <strong>中銀 i-card</strong>：不收 CBF，網購 10X 積分</li>
-              <li>• <strong>東亞 Flyer World</strong>：不收 CBF，儲里數</li>
-              <li>• <strong>大新 ONE+</strong>：不收 CBF，1% 回贈</li>
+              <li>• <Link href="/cards/boc-cheers" className="text-blue-600 hover:underline font-medium">中銀 Cheers</Link>：不收 CBF</li>
+              <li>• <Link href="/cards/bea-world-master" className="text-blue-600 hover:underline font-medium">東亞 World Master</Link>：不收 CBF</li>
+              <li>• <Link href="/cards/sc-simply-cash" className="text-blue-600 hover:underline font-medium">渣打 Simply Cash</Link>：海外 2% 回贈</li>
             </ul>
             <Link href="/blog/best-online-shopping-cards">
               <Button variant="outline" size="sm" className="mt-3 w-full border-emerald-300 text-emerald-700 hover:bg-emerald-100">
@@ -632,9 +640,9 @@ function OverseasFeeGuide() {
           <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-5 border border-blue-200 dark:border-blue-800">
             <h4 className="font-bold text-blue-800 dark:text-blue-200 mb-2">✈️ 海外實體消費首選</h4>
             <ul className="space-y-2 text-sm text-blue-700 dark:text-blue-300">
-              <li>• <strong>SC Smart Card</strong>：免外幣手續費</li>
-              <li>• <strong>HSBC Pulse</strong>：銀聯免手續費，北上必備</li>
-              <li>• <strong>Hang Seng Travel+</strong>：旅遊 7% 回贈</li>
+              <li>• <Link href="/cards/sc-smart" className="text-blue-600 hover:underline font-medium">SC Smart Card</Link>：免外幣手續費</li>
+              <li>• <Link href="/cards/hsbc-pulse" className="text-blue-600 hover:underline font-medium">HSBC Pulse</Link>：銀聯免手續費，北上必備</li>
+              <li>• <Link href="/cards/hangseng-travel-plus" className="text-blue-600 hover:underline font-medium">Hang Seng Travel+</Link>：旅遊回贈</li>
             </ul>
             <Link href="/blog/best-travel-cards">
               <Button variant="outline" size="sm" className="mt-3 w-full border-blue-300 text-blue-700 hover:bg-blue-100">
