@@ -29,6 +29,7 @@ import { OnlineShoppingGuide, onlineShoppingFaqData } from "./online-shopping-gu
 import { DiningGuide, diningFaqData } from "./dining-guide";
 import { OverseasSpendingGuide, overseasSpendingFaqData } from "./overseas-spending-guide";
 import { SupermarketGuide, supermarketFaqData } from "./supermarket-guide";
+import { TaobaoGuide, taobaoFaqData } from "./taobao-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -358,6 +359,31 @@ const GUIDES: Record<string, {
       "百佳92折優惠日",
       "惠康信用卡優惠2025",
       "惠康92折",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
+  "taobao-guide": {
+    id: "taobao-guide",
+    title: "淘寶信用卡攻略｜扣埋手續費淨賺1.5%回贈",
+    seoTitle: "淘寶信用卡攻略 2025｜AlipayHK 淘寶付款免手續費｜淨賺1.5%回贈",
+    heroTitle: "🛍️ 淘寶信用卡攻略",
+    heroSubtitle: "扣埋手續費淨賺1.5%回贈",
+    description: "淘寶用邊張信用卡最抵？淘寶信用卡付款有手續費嗎？本文教你淘寶信用卡攻略，用 AlipayHK 付款免手續費，淨賺 1.5% 回贈！天貓、集運付款攻略。",
+    content: "taobao-guide",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["淘寶", "天貓", "AlipayHK", "信用卡攻略"],
+    keywords: [
+      "淘寶信用卡付款失敗",
+      "淘寶信用卡免手續費",
+      "淘寶信用卡付款安全嗎",
+      "淘寶付款方法香港2025",
+      "淘寶信用卡手續費",
+      "淘寶用邊張信用卡",
+      "淘寶付款方式只有支付寶",
+      "淘寶信用卡回贈",
+      "天貓信用卡",
+      "AlipayHK淘寶",
     ],
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
@@ -955,6 +981,8 @@ function getGuideFaqData(guideId: string) {
       return overseasSpendingFaqData;
     case "supermarket-guide":
       return supermarketFaqData;
+    case "taobao-guide":
+      return taobaoFaqData;
     default:
       return [];
   }
@@ -985,6 +1013,8 @@ function renderGuideContent(guideId: string) {
       return <OverseasSpendingGuide />;
     case "supermarket-guide":
       return <SupermarketGuide />;
+    case "taobao-guide":
+      return <TaobaoGuide />;
     default:
       return null;
   }

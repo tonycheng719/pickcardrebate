@@ -127,6 +127,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "taobao-guide",
+    type: "guide" as const,
+    title: "淘寶信用卡攻略｜扣埋手續費淨賺1.5%回贈",
+    description: "淘寶用邊張信用卡最抵？用 AlipayHK 付款免手續費，淨賺 1.5% 回贈！天貓、集運付款攻略。",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["淘寶", "天貓", "AlipayHK"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";
