@@ -277,6 +277,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "ipad-guide",
+    type: "guide" as const,
+    title: "iPad 出機攻略｜食迎新買 iPad 慳 $2,000！",
+    description: "買 iPad 用邊張信用卡最抵？連 M4 iPad Pro 價錢及教育優惠！",
+    imageUrl: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?q=80&w=2070&auto=format&fit=crop",
+    tags: ["iPad", "Apple", "迎新"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";

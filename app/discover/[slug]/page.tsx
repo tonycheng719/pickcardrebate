@@ -44,6 +44,7 @@ import { PinduoduoGuide, pinduoduoFaqData } from "./pinduoduo-guide";
 import { UberGuide, uberFaqData } from "./uber-guide";
 import { IherbGuide, iherbFaqData } from "./iherb-guide";
 import { IphoneGuide, iphoneFaqData } from "./iphone-guide";
+import { IpadGuide, ipadFaqData } from "./ipad-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -739,6 +740,29 @@ const GUIDES: Record<string, {
     publishDate: "2025-01-01",
     readTime: "15 分鐘",
   },
+  "ipad-guide": {
+    id: "ipad-guide",
+    title: "iPad 出機攻略｜食迎新買 iPad 慳 $2,000！連 M4 iPad Pro 價錢",
+    seoTitle: "iPad 出機攻略 2025｜食迎新優惠買 iPad 慳 $2,000！連 M4 iPad Pro 價錢",
+    heroTitle: "📱 iPad 出機攻略",
+    heroSubtitle: "食迎新買 iPad 慳 $2,000！",
+    description: "買 iPad 用邊張信用卡最抵？邊款 iPad 最適合你？本文教你 iPad 出機攻略，食迎新買 iPad 慳 $2,000！連 M4 iPad Pro 價錢！",
+    content: "ipad-guide",
+    imageUrl: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?q=80&w=2070&auto=format&fit=crop",
+    tags: ["iPad", "Apple", "信用卡攻略", "迎新"],
+    keywords: [
+      "信用卡迎新iPad",
+      "信用卡送iPad",
+      "百老匯iPad優惠",
+      "iPad優惠2025",
+      "邊度買iPad平",
+      "iPad信用卡",
+      "豐澤iPad優惠",
+      "iPad免息分期",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "15 分鐘",
+  },
 };
 
 // Generate static params for both promos and guides
@@ -1362,6 +1386,8 @@ function getGuideFaqData(guideId: string) {
       return iherbFaqData;
     case "iphone-guide":
       return iphoneFaqData;
+    case "ipad-guide":
+      return ipadFaqData;
     default:
       return [];
   }
@@ -1422,6 +1448,8 @@ function renderGuideContent(guideId: string) {
       return <IherbGuide />;
     case "iphone-guide":
       return <IphoneGuide />;
+    case "ipad-guide":
+      return <IpadGuide />;
     default:
       return null;
   }
