@@ -46,6 +46,7 @@ import { IherbGuide, iherbFaqData } from "./iherb-guide";
 import { IphoneGuide, iphoneFaqData } from "./iphone-guide";
 import { IpadGuide, ipadFaqData } from "./ipad-guide";
 import { MacbookGuide, macbookFaqData } from "./macbook-guide";
+import { AppleWatchGuide, appleWatchFaqData } from "./apple-watch-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -787,6 +788,29 @@ const GUIDES: Record<string, {
     publishDate: "2025-01-01",
     readTime: "15 分鐘",
   },
+  "apple-watch-guide": {
+    id: "apple-watch-guide",
+    title: "Apple Watch 出機攻略｜食迎新買 Apple Watch 慳 $2,000！",
+    seoTitle: "Apple Watch 出機攻略 2025｜Series 10 / Ultra 2 價錢比較｜信用卡優惠",
+    heroTitle: "⌚ Apple Watch 出機攻略",
+    heroSubtitle: "食迎新買 Apple Watch 慳 $2,000！",
+    description: "買 Apple Watch 用邊張信用卡最抵？Series 10 定 Ultra 2？本文教你 Apple Watch 出機攻略，食迎新買 Apple Watch 慳 $2,000！",
+    content: "apple-watch-guide",
+    imageUrl: "https://images.unsplash.com/photo-1551816230-ef5deaed4a26?q=80&w=2070&auto=format&fit=crop",
+    tags: ["Apple Watch", "Apple", "信用卡攻略", "迎新"],
+    keywords: [
+      "AppleWatch信用卡優惠",
+      "AppleWatch錢包付款",
+      "信用卡送AppleWatch",
+      "CSLAppleWatch買一送一",
+      "AppleWatch付款方式",
+      "AppleWatch學生優惠",
+      "信用卡迎新AppleWatchSE",
+      "AppleWatch錢包同步",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
 };
 
 // Generate static params for both promos and guides
@@ -1414,6 +1438,8 @@ function getGuideFaqData(guideId: string) {
       return ipadFaqData;
     case "macbook-guide":
       return macbookFaqData;
+    case "apple-watch-guide":
+      return appleWatchFaqData;
     default:
       return [];
   }
@@ -1478,6 +1504,8 @@ function renderGuideContent(guideId: string) {
       return <IpadGuide />;
     case "macbook-guide":
       return <MacbookGuide />;
+    case "apple-watch-guide":
+      return <AppleWatchGuide />;
     default:
       return null;
   }

@@ -297,6 +297,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "apple-watch-guide",
+    type: "guide" as const,
+    title: "Apple Watch 出機攻略｜Series 10 / Ultra 2 價錢比較",
+    description: "買 Apple Watch 用邊張信用卡最抵？連 Series 10 / Ultra 2 價錢！",
+    imageUrl: "https://images.unsplash.com/photo-1551816230-ef5deaed4a26?q=80&w=2070&auto=format&fit=crop",
+    tags: ["Apple Watch", "Apple", "迎新"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";
