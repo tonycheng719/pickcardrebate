@@ -26,6 +26,7 @@ import { UtilityBillGuide, utilityBillFaqData } from "./utility-bill-guide";
 import { RentPaymentGuide, rentPaymentFaqData } from "./rent-payment-guide";
 import { TaxPaymentGuide, taxPaymentFaqData } from "./tax-payment-guide";
 import { OnlineShoppingGuide, onlineShoppingFaqData } from "./online-shopping-guide";
+import { DiningGuide, diningFaqData } from "./dining-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -271,6 +272,33 @@ const GUIDES: Record<string, {
       "淘寶信用卡",
       "Amazon信用卡",
       "Apple Pay網購",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
+  "dining-guide": {
+    id: "dining-guide",
+    title: "餐飲信用卡攻略｜食飯最高5%回贈｜酒樓/快餐/外賣",
+    seoTitle: "餐飲信用卡攻略 2025｜食飯信用卡比較｜酒樓/快餐/外賣最高5%回贈",
+    heroTitle: "🍽️ 餐飲信用卡攻略",
+    heroSubtitle: "食飯最高5%回贈｜酒樓/快餐/外賣",
+    description: "食飯信用卡邊張回贈最高？餐飲簽賬定義係咩？本文教你餐飲信用卡攻略，酒樓、茶餐廳、快餐店、外賣平台都可以賺高達 5% 回贈！Apple Pay 食飯攻略。",
+    content: "dining-guide",
+    imageUrl: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=2070&auto=format&fit=crop",
+    tags: ["餐飲", "食肆", "外賣", "信用卡攻略"],
+    keywords: [
+      "食飯信用卡",
+      "食飯信用卡2025",
+      "食飯信用卡里數",
+      "信用卡食肆回贈",
+      "餐飲信用卡回贈",
+      "餐飲簽賬信用卡",
+      "餐飲信用卡回饋",
+      "購物信用卡",
+      "Foodpanda信用卡",
+      "Keeta信用卡",
+      "酒樓信用卡",
+      "Apple Pay食飯",
     ],
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
@@ -862,6 +890,8 @@ function getGuideFaqData(guideId: string) {
       return taxPaymentFaqData;
     case "online-shopping-guide":
       return onlineShoppingFaqData;
+    case "dining-guide":
+      return diningFaqData;
     default:
       return [];
   }
@@ -886,6 +916,8 @@ function renderGuideContent(guideId: string) {
       return <TaxPaymentGuide />;
     case "online-shopping-guide":
       return <OnlineShoppingGuide />;
+    case "dining-guide":
+      return <DiningGuide />;
     default:
       return null;
   }

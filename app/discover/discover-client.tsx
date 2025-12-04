@@ -97,6 +97,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "dining-guide",
+    type: "guide" as const,
+    title: "餐飲信用卡攻略｜食飯最高5%回贈",
+    description: "食飯信用卡邊張回贈最高？酒樓、茶餐廳、快餐店、外賣平台都可以賺高達 5% 回贈！Apple Pay 食飯攻略。",
+    imageUrl: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=2070&auto=format&fit=crop",
+    tags: ["餐飲", "食肆", "外賣"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";
