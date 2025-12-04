@@ -22,6 +22,7 @@ import { ShareButton } from "@/components/share-button";
 import { DebitCardGuide, debitCardFaqData } from "./debit-card-guide";
 import { MilesVsCashbackGuide, milesVsCashbackFaqData } from "./miles-vs-cashback-guide";
 import { BestCashbackCardsGuide, bestCashbackCardsFaqData } from "./best-cashback-cards-guide";
+import { UtilityBillGuide, utilityBillFaqData } from "./utility-bill-guide";
 
 // Revalidate every hour
 export const revalidate = 3600;
@@ -153,6 +154,38 @@ const GUIDES: Record<string, {
     ],
     publishDate: "2025-01-01",
     readTime: "15 分鐘",
+  },
+  "utility-bill-guide": {
+    id: "utility-bill-guide",
+    title: "信用卡繳費攻略｜交水電煤/差餉/電話費/管理費高達4%回贈",
+    seoTitle: "信用卡繳費攻略 2025｜交水電煤/差餉/電話費最高4%回贈｜AlipayHK/BoC Pay 繳費",
+    heroTitle: "💡 信用卡繳費攻略",
+    heroSubtitle: "交水電煤/差餉/電話費/管理費最高4%回贈",
+    description: "用信用卡交水電煤、差餉、電話費、管理費可以賺回贈！本文教你網上繳費信用卡邊張最抵，AlipayHK、BoC Pay、雲閃付繳費攻略，每年輕鬆賺返幾百蚊！",
+    content: "utility-bill-guide",
+    imageUrl: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2070&auto=format&fit=crop",
+    tags: ["繳費", "水電煤", "差餉", "信用卡攻略"],
+    keywords: [
+      "煤氣繳費信用卡",
+      "網上繳費信用卡",
+      "信用卡繳費攻略",
+      "信用卡繳費優惠",
+      "網上繳費信用卡回贈",
+      "差餉信用卡繳費",
+      "Alipay繳費信用卡",
+      "中電繳費信用卡",
+      "交電費信用卡",
+      "交水費信用卡2025",
+      "信用卡交電費優惠",
+      "交煤氣費信用卡",
+      "電話費信用卡回贈",
+      "電話費信用卡2025",
+      "信用卡交差餉2025",
+      "管理費信用卡回饋",
+      "管理費信用卡2025",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "10 分鐘",
   },
 };
 
@@ -726,6 +759,8 @@ function getGuideFaqData(guideId: string) {
       return milesVsCashbackFaqData;
     case "best-cashback-cards":
       return bestCashbackCardsFaqData;
+    case "utility-bill-guide":
+      return utilityBillFaqData;
     default:
       return [];
   }
@@ -742,6 +777,8 @@ function renderGuideContent(guideId: string) {
       return <MilesVsCashbackGuide />;
     case "best-cashback-cards":
       return <BestCashbackCardsGuide />;
+    case "utility-bill-guide":
+      return <UtilityBillGuide />;
     default:
       return null;
   }

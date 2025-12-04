@@ -57,6 +57,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "utility-bill-guide",
+    type: "guide" as const,
+    title: "信用卡繳費攻略｜交水電煤/差餉/電話費高達4%回贈",
+    description: "用信用卡交水電煤、差餉、電話費、管理費可以賺回贈！網上繳費信用卡邊張最抵？AlipayHK、BoC Pay 繳費攻略！",
+    imageUrl: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2070&auto=format&fit=crop",
+    tags: ["繳費", "水電煤", "差餉"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";
