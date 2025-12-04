@@ -177,6 +177,16 @@ const GUIDES = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "mobile-payment-guide",
+    type: "guide" as const,
+    title: "手機支付信用卡攻略｜Apple Pay/Google Pay 回贈",
+    description: "Apple Pay 回贈點計？Google Pay 同 Apple Pay 回贈一樣嗎？比較各銀行 Mobile Pay 回贈！",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["Apple Pay", "Google Pay", "手機支付"],
+    merchant: "攻略",
+    isNew: true,
+  },
 ];
 
 type ContentType = "all" | "promo" | "guide";

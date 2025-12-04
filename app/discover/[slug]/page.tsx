@@ -34,6 +34,7 @@ import { NoAnnualFeeGuide, noAnnualFeeFaqData } from "./no-annual-fee-guide";
 import { StudentCardGuide, studentCardFaqData } from "./student-card-guide";
 import { LargePurchaseGuide, largePurchaseFaqData } from "./large-purchase-guide";
 import { OctopusGuide, octopusFaqData } from "./octopus-guide";
+import { MobilePaymentGuide, mobilePaymentFaqData } from "./mobile-payment-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 
 // Revalidate every hour
@@ -488,6 +489,31 @@ const GUIDES: Record<string, {
       "八達通自動增值信用卡積分",
       "O!ePay信用卡",
       "八達通銀包信用卡",
+    ],
+    publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
+  "mobile-payment-guide": {
+    id: "mobile-payment-guide",
+    title: "手機支付信用卡攻略｜Apple Pay/Google Pay 回贈比較",
+    seoTitle: "手機支付信用卡攻略 2025｜Apple Pay/Google Pay 回贈比較｜Mobile Pay 最高5%",
+    heroTitle: "📱 手機支付信用卡攻略",
+    heroSubtitle: "Apple Pay/Google Pay 回贈比較",
+    description: "Apple Pay 信用卡回贈點計？Google Pay 同 Apple Pay 回贈一樣嗎？本文教你手機支付信用卡攻略，比較各銀行 Mobile Pay 回贈！",
+    content: "mobile-payment-guide",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["Apple Pay", "Google Pay", "手機支付", "信用卡攻略"],
+    keywords: [
+      "手機支付信用卡2025",
+      "手機支付信用卡回贈",
+      "手機支付信用卡優惠",
+      "Apple pay回贈信用卡",
+      "手機支付定義",
+      "手機支付回贈",
+      "Google pay信用卡回贈",
+      "Apple pay信用卡優惠",
+      "Apple pay信用卡付款",
+      "Apple pay信用卡回贈",
     ],
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
@@ -1095,6 +1121,8 @@ function getGuideFaqData(guideId: string) {
       return largePurchaseFaqData;
     case "octopus-guide":
       return octopusFaqData;
+    case "mobile-payment-guide":
+      return mobilePaymentFaqData;
     default:
       return [];
   }
@@ -1135,6 +1163,8 @@ function renderGuideContent(guideId: string) {
       return <LargePurchaseGuide />;
     case "octopus-guide":
       return <OctopusGuide />;
+    case "mobile-payment-guide":
+      return <MobilePaymentGuide />;
     default:
       return null;
   }
