@@ -77,18 +77,18 @@ export const milesValueData = [
 // 信用卡比較數據
 export const cardComparisonData = {
   miles: [
-    { card: "渣打國泰 Mastercard", rate: "$4/里", annual: "$2,000", bonus: "60,000 里迎新" },
-    { card: "Citi PremierMiles", rate: "$3/里(海外)", annual: "$1,800", bonus: "108,000 里迎新" },
-    { card: "HSBC EveryMile", rate: "$5/里", annual: "$2,000", bonus: "40,000 里迎新" },
-    { card: "DBS Black Card", rate: "$6/里", annual: "$2,000", bonus: "50,000 里迎新" },
-    { card: "AE Explorer", rate: "$4/里", annual: "$1,800", bonus: "40,000 里迎新" },
+    { card: "渣打國泰 Mastercard", id: "sc-cathay", rate: "$4/里", annual: "$2,000", bonus: "60,000 里迎新" },
+    { card: "Citi PremierMiles", id: "citi-premiermiles", rate: "$3/里(海外)", annual: "$1,800", bonus: "108,000 里迎新" },
+    { card: "HSBC EveryMile", id: "hsbc-everymile", rate: "$5/里", annual: "$2,000", bonus: "40,000 里迎新" },
+    { card: "DBS Black Card", id: "dbs-black", rate: "$6/里", annual: "$2,000", bonus: "50,000 里迎新" },
+    { card: "AE Explorer", id: null, rate: "$4/里", annual: "$1,800", bonus: "40,000 里迎新" },
   ],
   cashback: [
-    { card: "渣打 Simply Cash", rate: "1.5% 無上限", annual: "永久免年費", bonus: "$2,000 迎新" },
-    { card: "HSBC Red Card", rate: "網購 4%", annual: "免年費", bonus: "$800 迎新" },
-    { card: "Citi Cash Back", rate: "餐飲 2%", annual: "$1,200", bonus: "$1,800 迎新" },
-    { card: "恒生 MMPOWER", rate: "網購 5%", annual: "$300", bonus: "$700 迎新" },
-    { card: "安信 EarnMORE", rate: "2% 無上限", annual: "永久免年費", bonus: "OTO 迎新" },
+    { card: "渣打 Simply Cash", id: "sc-simply-cash", rate: "1.5% 無上限", annual: "永久免年費", bonus: "$2,000 迎新" },
+    { card: "HSBC Red Card", id: "hsbc-red", rate: "網購 4%", annual: "免年費", bonus: "$800 迎新" },
+    { card: "Citi Cash Back", id: "citi-cashback", rate: "餐飲 2%", annual: "$1,200", bonus: "$1,800 迎新" },
+    { card: "恒生 MMPOWER", id: "hangseng-mmpower", rate: "網購 5%", annual: "$300", bonus: "$700 迎新" },
+    { card: "安信 EarnMORE", id: "earnmore", rate: "2% 無上限", annual: "永久免年費", bonus: "OTO 迎新" },
   ]
 };
 
@@ -428,7 +428,13 @@ export function MilesVsCashbackGuide() {
               <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                 {cardComparisonData.miles.map((card, index) => (
                   <tr key={index}>
-                    <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">{card.card}</td>
+                    <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">
+                      {card.id ? (
+                        <Link href={`/cards/${card.id}`} className="text-blue-600 hover:underline dark:text-blue-400">
+                          {card.card}
+                        </Link>
+                      ) : card.card}
+                    </td>
                     <td className="px-4 py-3 text-center font-bold text-blue-600 dark:text-blue-400">{card.rate}</td>
                     <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-400">{card.annual}</td>
                     <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-400">{card.bonus}</td>
@@ -454,7 +460,13 @@ export function MilesVsCashbackGuide() {
               <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                 {cardComparisonData.cashback.map((card, index) => (
                   <tr key={index}>
-                    <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">{card.card}</td>
+                    <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">
+                      {card.id ? (
+                        <Link href={`/cards/${card.id}`} className="text-green-600 hover:underline dark:text-green-400">
+                          {card.card}
+                        </Link>
+                      ) : card.card}
+                    </td>
                     <td className="px-4 py-3 text-center font-bold text-green-600 dark:text-green-400">{card.rate}</td>
                     <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-400">{card.annual}</td>
                     <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-400">{card.bonus}</td>

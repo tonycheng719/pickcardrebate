@@ -50,6 +50,7 @@ export const recommendedCards = {
   unlimited: [
     { 
       card: "渣打 Simply Cash Visa", 
+      id: "sc-simply-cash",
       rate: "1.5%", 
       cap: "無上限",
       annual: "永久免年費",
@@ -60,6 +61,7 @@ export const recommendedCards = {
     },
     { 
       card: "安信 EarnMORE 銀聯卡", 
+      id: "earnmore",
       rate: "2%", 
       cap: "無上限",
       annual: "永久免年費",
@@ -72,6 +74,7 @@ export const recommendedCards = {
   online: [
     { 
       card: "恒生 MMPOWER World", 
+      id: "hangseng-mmpower",
       rate: "5%", 
       cap: "$200/月",
       annual: "$300",
@@ -82,6 +85,7 @@ export const recommendedCards = {
     },
     { 
       card: "HSBC Red Card", 
+      id: "hsbc-red",
       rate: "4%", 
       cap: "$400/月",
       annual: "免年費",
@@ -94,6 +98,7 @@ export const recommendedCards = {
   dining: [
     { 
       card: "Citi Cash Back Card", 
+      id: "citi-cashback",
       rate: "2%", 
       cap: "$300/月",
       annual: "$1,200",
@@ -104,6 +109,7 @@ export const recommendedCards = {
     },
     { 
       card: "HSBC Visa Signature", 
+      id: "hsbc-vs",
       rate: "3.6%", 
       cap: "有上限",
       annual: "$2,000",
@@ -116,6 +122,7 @@ export const recommendedCards = {
   supermarket: [
     { 
       card: "DBS COMPASS Visa", 
+      id: "dbs-compass",
       rate: "8%", 
       cap: "$2,000簽賬/月",
       annual: "首年免",
@@ -126,6 +133,7 @@ export const recommendedCards = {
     },
     { 
       card: "恒生 enJoy 卡", 
+      id: "hangseng-enjoy",
       rate: "92折", 
       cap: "無",
       annual: "免年費",
@@ -138,6 +146,7 @@ export const recommendedCards = {
   overseas: [
     { 
       card: "Citi PremierMiles", 
+      id: "citi-premiermiles",
       rate: "$3/里", 
       cap: "無",
       annual: "$1,800",
@@ -148,6 +157,7 @@ export const recommendedCards = {
     },
     { 
       card: "渣打國泰 Mastercard", 
+      id: "sc-cathay",
       rate: "$4/里", 
       cap: "無",
       annual: "$2,000",
@@ -165,9 +175,9 @@ export const comboRecommendations = [
     name: "💼 打工仔日常組合",
     description: "適合一般上班族，簡單易用",
     cards: [
-      { card: "渣打 Simply Cash", role: "日常消費打底", rate: "1.5% 無上限" },
-      { card: "HSBC Red Card", role: "網購、超市", rate: "網購 4%" },
-      { card: "Citi Cash Back", role: "食飯", rate: "餐飲 2%" },
+      { card: "渣打 Simply Cash", id: "sc-simply-cash", role: "日常消費打底", rate: "1.5% 無上限" },
+      { card: "HSBC Red Card", id: "hsbc-red", role: "網購、超市", rate: "網購 4%" },
+      { card: "Citi Cash Back", id: "citi-cashback", role: "食飯", rate: "餐飲 2%" },
     ],
     monthlySpend: "$15,000",
     estimatedRebate: "$300+"
@@ -176,9 +186,9 @@ export const comboRecommendations = [
     name: "🛒 網購狂人組合",
     description: "適合經常網購、淘寶用戶",
     cards: [
-      { card: "恒生 MMPOWER", role: "網購主力", rate: "5%" },
-      { card: "HSBC Red Card", role: "網購副手", rate: "4%" },
-      { card: "渣打 Simply Cash", role: "打底", rate: "1.5%" },
+      { card: "恒生 MMPOWER", id: "hangseng-mmpower", role: "網購主力", rate: "5%" },
+      { card: "HSBC Red Card", id: "hsbc-red", role: "網購副手", rate: "4%" },
+      { card: "渣打 Simply Cash", id: "sc-simply-cash", role: "打底", rate: "1.5%" },
     ],
     monthlySpend: "$10,000",
     estimatedRebate: "$400+"
@@ -187,9 +197,9 @@ export const comboRecommendations = [
     name: "✈️ 旅遊達人組合",
     description: "適合經常飛、海外消費",
     cards: [
-      { card: "渣打國泰 Mastercard", role: "儲里數", rate: "$4/里" },
-      { card: "Citi PremierMiles", role: "海外簽賬", rate: "$3/里海外" },
-      { card: "Citi Cash Back", role: "本地消費", rate: "2%" },
+      { card: "渣打國泰 Mastercard", id: "sc-cathay", role: "儲里數", rate: "$4/里" },
+      { card: "Citi PremierMiles", id: "citi-premiermiles", role: "海外簽賬", rate: "$3/里海外" },
+      { card: "Citi Cash Back", id: "citi-cashback", role: "本地消費", rate: "2%" },
     ],
     monthlySpend: "$20,000",
     estimatedRebate: "8,000 里/月"
@@ -198,9 +208,9 @@ export const comboRecommendations = [
     name: "🍽️ 食家組合",
     description: "適合經常外出用餐",
     cards: [
-      { card: "Citi Cash Back", role: "餐飲主力", rate: "2%" },
-      { card: "HSBC Visa Signature", role: "高級餐飲", rate: "3.6%" },
-      { card: "渣打 Simply Cash", role: "打底", rate: "1.5%" },
+      { card: "Citi Cash Back", id: "citi-cashback", role: "餐飲主力", rate: "2%" },
+      { card: "HSBC Visa Signature", id: "hsbc-vs", role: "高級餐飲", rate: "3.6%" },
+      { card: "渣打 Simply Cash", id: "sc-simply-cash", role: "打底", rate: "1.5%" },
     ],
     monthlySpend: "$12,000",
     estimatedRebate: "$280+"
@@ -297,7 +307,7 @@ export function BestCashbackCardsGuide() {
               <div className="flex items-start justify-between mb-3">
                 <div>
                   <span className="text-2xl mr-2">{index === 0 ? "🥇" : "🥈"}</span>
-                  <h4 className="inline font-bold text-gray-900 dark:text-white">{card.card}</h4>
+                  <Link href={`/cards/${card.id}`} className="inline font-bold text-blue-600 hover:underline dark:text-blue-400">{card.card}</Link>
                   <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
                     {card.highlight}
                   </span>
@@ -358,7 +368,7 @@ export function BestCashbackCardsGuide() {
                 {recommendedCards.online.map((card, index) => (
                   <tr key={index}>
                     <td className="px-4 py-3">
-                      <span className="font-medium text-gray-900 dark:text-white">{card.card}</span>
+                      <Link href={`/cards/${card.id}`} className="font-medium text-blue-600 hover:underline dark:text-blue-400">{card.card}</Link>
                       <span className="ml-2 text-xs text-green-600">★ {card.highlight}</span>
                     </td>
                     <td className="px-4 py-3 text-center font-bold text-blue-600 dark:text-blue-400">{card.rate}</td>
@@ -399,7 +409,7 @@ export function BestCashbackCardsGuide() {
                 {recommendedCards.dining.map((card, index) => (
                   <tr key={index}>
                     <td className="px-4 py-3">
-                      <span className="font-medium text-gray-900 dark:text-white">{card.card}</span>
+                      <Link href={`/cards/${card.id}`} className="font-medium text-orange-600 hover:underline dark:text-orange-400">{card.card}</Link>
                       <span className="ml-2 text-xs text-orange-600">★ {card.highlight}</span>
                     </td>
                     <td className="px-4 py-3 text-center font-bold text-orange-600 dark:text-orange-400">{card.rate}</td>
@@ -439,7 +449,7 @@ export function BestCashbackCardsGuide() {
                 {recommendedCards.supermarket.map((card, index) => (
                   <tr key={index}>
                     <td className="px-4 py-3">
-                      <span className="font-medium text-gray-900 dark:text-white">{card.card}</span>
+                      <Link href={`/cards/${card.id}`} className="font-medium text-purple-600 hover:underline dark:text-purple-400">{card.card}</Link>
                       <span className="ml-2 text-xs text-purple-600">★ {card.highlight}</span>
                     </td>
                     <td className="px-4 py-3 text-center font-bold text-purple-600 dark:text-purple-400">{card.rate}</td>
@@ -479,7 +489,7 @@ export function BestCashbackCardsGuide() {
                 {recommendedCards.overseas.map((card, index) => (
                   <tr key={index}>
                     <td className="px-4 py-3">
-                      <span className="font-medium text-gray-900 dark:text-white">{card.card}</span>
+                      <Link href={`/cards/${card.id}`} className="font-medium text-teal-600 hover:underline dark:text-teal-400">{card.card}</Link>
                       <span className="ml-2 text-xs text-teal-600">★ {card.highlight}</span>
                     </td>
                     <td className="px-4 py-3 text-center font-bold text-teal-600 dark:text-teal-400">{card.rate}</td>
@@ -521,7 +531,7 @@ export function BestCashbackCardsGuide() {
               <div className="grid md:grid-cols-3 gap-3">
                 {combo.cards.map((card, i) => (
                   <div key={i} className="bg-white dark:bg-gray-800 rounded-xl p-3 border border-gray-100 dark:border-gray-700">
-                    <p className="font-medium text-gray-900 dark:text-white text-sm">{card.card}</p>
+                    <Link href={`/cards/${card.id}`} className="font-medium text-blue-600 hover:underline dark:text-blue-400 text-sm">{card.card}</Link>
                     <p className="text-xs text-gray-500">{card.role}</p>
                     <p className="text-sm font-bold text-blue-600 dark:text-blue-400 mt-1">{card.rate}</p>
                   </div>
