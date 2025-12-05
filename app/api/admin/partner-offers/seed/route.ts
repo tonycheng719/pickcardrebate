@@ -13,7 +13,7 @@ const MONEYHERO_PARTNER_OFFERS = [
     cardId: "citi-rewards",
     partnerOffer: {
       enabled: true,
-      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/citi-rewards-card",
+      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=169&a=228&sub_id1=pickcardrebate&sub_id2=web",
       bonusValue: 4288,
       bonusDescription: "獎品6選1：PHILIPS飲水機(HK$4,288)/LG空氣清新機(HK$3,690)/Marshall藍牙喇叭(HK$3,499)/HK$2,000 Apple禮品卡/HK$2,000惠康現金券/4K投影機(HK$2,499)",
       bonusItems: [
@@ -127,7 +127,7 @@ const MONEYHERO_PARTNER_OFFERS = [
     cardId: "citi-cashback",
     partnerOffer: {
       enabled: true,
-      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/citi-cash-back-card",
+      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=168&a=228&sub_id1=pickcardrebate&sub_id2=web",
       bonusValue: 4288,
       bonusDescription: "獎品6選1：PHILIPS飲水機(HK$4,288)/LG空氣清新機(HK$3,690)/Marshall藍牙喇叭(HK$3,499)/HK$2,000 Apple禮品卡/HK$2,000惠康現金券/4K投影機(HK$2,499)",
       bonusItems: [
@@ -188,7 +188,7 @@ const MONEYHERO_PARTNER_OFFERS = [
     cardId: "dbs-black",
     partnerOffer: {
       enabled: true,
-      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/dbs-black-world-mastercard",
+      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=188&a=228&sub_id1=pickcardrebate&sub_id2=web",
       bonusValue: 4980,
       bonusDescription: "獎品7選1：Delsey行李箱(HK$4,980)/Foreo LUNA 3(HK$2,090)/NESCAFÉ咖啡機(HK$1,780)/Marshall藍牙喇叭(HK$1,499)/HK$800 HKTVmall/Apple/Trip.com禮券",
       bonusItems: [
@@ -218,7 +218,7 @@ const MONEYHERO_PARTNER_OFFERS = [
     cardId: "dbs-eminent",
     partnerOffer: {
       enabled: true,
-      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/dbs-eminent-visa-platinum",
+      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=187&a=228&sub_id1=pickcardrebate&sub_id2=web",
       bonusValue: 4980,
       bonusDescription: "獎品7選1：Delsey行李箱(HK$4,980)/Foreo LUNA 3(HK$2,090)/NESCAFÉ咖啡機(HK$1,780)/Marshall藍牙喇叭(HK$1,499)/HK$800 HKTVmall/Apple/Trip.com禮券",
       bonusItems: [
@@ -247,7 +247,7 @@ const MONEYHERO_PARTNER_OFFERS = [
     cardId: "dbs-compass",
     partnerOffer: {
       enabled: true,
-      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/dbs-compass-visa",
+      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=185&a=228&sub_id1=pickcardrebate&sub_id2=web",
       bonusValue: 200,
       bonusDescription: "HK$200 Apple Store禮品卡",
       bonusItems: ["HK$200 Apple Store禮品卡"],
@@ -290,7 +290,7 @@ const MONEYHERO_PARTNER_OFFERS = [
     cardId: "sc-smart",
     partnerOffer: {
       enabled: true,
-      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/scb-smart-credit-card",
+      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=176&a=228&sub_id1=pickcardrebate&sub_id2=web",
       bonusValue: 800,
       bonusDescription: "HK$800 HKTVmall電子購物禮券（迎新總值高達HK$4,980）",
       bonusItems: ["HK$800 HKTVmall電子購物禮券"],
@@ -334,7 +334,7 @@ const MONEYHERO_PARTNER_OFFERS = [
     cardId: "dahsing-one",
     partnerOffer: {
       enabled: true,
-      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/dah-sing-one-plus-credit-card",
+      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=604&a=228&sub_id1=pickcardrebate&sub_id2=web",
       bonusValue: 400,
       bonusDescription: "HK$400 Apple Store禮品卡",
       bonusItems: ["HK$400 Apple Store禮品卡"],
@@ -395,7 +395,7 @@ const MONEYHERO_PARTNER_OFFERS = [
     cardId: "wewa-unionpay",
     partnerOffer: {
       enabled: true,
-      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/wewa-visa-signature",
+      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=180&a=228&sub_id1=pickcardrebate&sub_id2=web",
       bonusValue: 500,
       bonusDescription: "全新客戶：HK$400 惠康購物現金券 + HK$100現金回贈",
       bonusItems: ["HK$400 惠康購物現金券", "HK$100現金回贈"],
@@ -414,7 +414,7 @@ const MONEYHERO_PARTNER_OFFERS = [
     cardId: "earnmore",
     partnerOffer: {
       enabled: true,
-      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/earnmore-unionpay-diamond",
+      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=182&a=228&sub_id1=pickcardrebate&sub_id2=web",
       bonusValue: 500,
       bonusDescription: "全新客戶：HK$400 惠康購物現金券 + HK$100現金回贈",
       bonusItems: ["HK$400 惠康購物現金券", "HK$100現金回贈"],
@@ -437,7 +437,7 @@ const MONEYHERO_PARTNER_OFFERS = [
     cardId: "cncbi-motion",
     partnerOffer: {
       enabled: true,
-      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/cncbi-hong-kong-airlines-mastercard",
+      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=178&a=228&sub_id1=pickcardrebate&sub_id2=web",
       bonusValue: 1600,
       bonusDescription: "HK$1,600 HKTVmall電子購物禮券（升級優惠，迎新總值高達HK$5,980）",
       bonusItems: ["HK$1,600 HKTVmall電子購物禮券"],
@@ -462,7 +462,7 @@ const MONEYHERO_PARTNER_OFFERS = [
     cardId: "hangseng-travel-plus",
     partnerOffer: {
       enabled: true,
-      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/hang-seng-travel-plus-visa-signature",
+      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=688&a=228&sub_id1=pickcardrebate&sub_id2=web",
       bonusValue: 300,
       bonusDescription: "HK$300 惠康購物現金券",
       bonusItems: ["HK$300 惠康購物現金券"],
@@ -489,7 +489,7 @@ const MONEYHERO_PARTNER_OFFERS = [
     cardId: "hsbc-vs",
     partnerOffer: {
       enabled: true,
-      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/hsbc-visa-signature-card",
+      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=255&a=228&sub_id1=pickcardrebate&sub_id2=web",
       bonusValue: 5980,
       bonusDescription: "全新客戶8選1：HK$1,300 HKTVmall/HK$1,000 Apple禮品卡/HK$1,000 惠康/12,000 Max Miles/Dyson Zone™ 耳機(HK$5,980)/Delsey行李箱(HK$4,980)/Marshall喇叭(HK$1,499)/Canon 打印機(HK$1,080)",
       bonusItems: [
@@ -535,7 +535,7 @@ const MONEYHERO_PARTNER_OFFERS = [
     cardId: "hsbc-pulse",
     partnerOffer: {
       enabled: true,
-      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/hsbc-pulse-unionpay-card",
+      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=259&a=228&sub_id1=pickcardrebate&sub_id2=web",
       bonusValue: 5980,
       bonusDescription: "全新客戶8選1：HK$1,300 HKTVmall/HK$1,000 Apple禮品卡/HK$1,000 惠康/12,000 Max Miles/Dyson Zone™ 耳機(HK$5,980)/Delsey行李箱(HK$4,980)/Marshall喇叭(HK$1,499)/Canon 打印機(HK$1,080)",
       bonusItems: [
