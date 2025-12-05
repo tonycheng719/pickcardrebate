@@ -184,14 +184,14 @@ export function PartnerOfferCard({ card, bankWelcomeValue = 0 }: PartnerOfferCar
         </div>
         
         {/* Requirements */}
-        {(offer.minSpend > 0 || (currentRequirements && currentRequirements.length > 0)) && (
+        {((offer.minSpend ?? 0) > 0 || (currentRequirements && currentRequirements.length > 0)) && (
           <div className="mb-4">
             <h4 className="font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
               <CheckCircle2 className="h-5 w-5 text-green-500" />
               申請要求
             </h4>
             <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
-              {offer.minSpend > 0 && customerType === "new" && (
+              {(offer.minSpend ?? 0) > 0 && customerType === "new" && (
                 <li className="flex items-start gap-2">
                   <span className="text-green-500 mt-0.5">✓</span>
                   批卡後 {offer.minSpendDays || 30} 日內簽賬滿 ${offer.minSpend.toLocaleString()}
