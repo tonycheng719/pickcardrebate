@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { adminAuthClient } from '@/lib/supabase/admin';
+import { adminAuthClient } from '@/lib/supabase/admin-client';
 
 // GET: 公開 API - 獲取所有文章自訂封面設定
 export async function GET() {

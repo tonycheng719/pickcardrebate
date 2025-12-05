@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { adminAuthClient } from '@/lib/supabase/admin';
+import { adminAuthClient } from '@/lib/supabase/admin-client';
 
 // GET: 獲取所有文章設定 (封面圖片覆蓋)
 export async function GET() {
