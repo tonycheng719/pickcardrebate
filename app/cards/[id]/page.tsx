@@ -696,8 +696,17 @@ export default function CardDetailPage() {
                           href={`/cards/${relatedCard.id}`}
                           className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group"
                         >
-                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-white text-xs font-bold ${relatedCard.style?.bgColor || 'bg-gray-600'}`}>
-                            {relatedCard.bank.slice(0, 2)}
+                          <div className={`w-12 h-8 rounded-lg flex items-center justify-center overflow-hidden ${!relatedCard.imageUrl ? (relatedCard.style?.bgColor || 'bg-gray-600') : 'bg-white dark:bg-gray-900'}`}>
+                            {relatedCard.imageUrl ? (
+                              <img 
+                                src={relatedCard.imageUrl} 
+                                alt={relatedCard.name}
+                                className="w-full h-full object-contain"
+                                referrerPolicy="no-referrer"
+                              />
+                            ) : (
+                              <span className="text-white text-xs font-bold">{relatedCard.bank.slice(0, 2)}</span>
+                            )}
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium text-gray-900 dark:text-white truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
