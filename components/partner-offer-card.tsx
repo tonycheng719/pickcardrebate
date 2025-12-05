@@ -129,7 +129,7 @@ export function PartnerOfferCard({ card, bankWelcomeValue = 0 }: PartnerOfferCar
                   {customerType === "new" ? "全新客戶" : "現有客戶"}
                 </span>
               )}
-              銀行迎新 + 本網額外獎賞 總價值
+              銀行迎新 + 本網額外獎賞 最高可獲
             </div>
             <div className="text-3xl font-bold text-amber-600 dark:text-amber-400">
               <DollarSign className="inline h-7 w-7" />
@@ -184,14 +184,14 @@ export function PartnerOfferCard({ card, bankWelcomeValue = 0 }: PartnerOfferCar
         </div>
         
         {/* Requirements */}
-        {(offer.minSpend || currentRequirements) && (
+        {(offer.minSpend > 0 || (currentRequirements && currentRequirements.length > 0)) && (
           <div className="mb-4">
             <h4 className="font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
               <CheckCircle2 className="h-5 w-5 text-green-500" />
               申請要求
             </h4>
             <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
-              {offer.minSpend && customerType === "new" && (
+              {offer.minSpend > 0 && customerType === "new" && (
                 <li className="flex items-start gap-2">
                   <span className="text-green-500 mt-0.5">✓</span>
                   批卡後 {offer.minSpendDays || 30} 日內簽賬滿 ${offer.minSpend.toLocaleString()}
