@@ -52,17 +52,20 @@ export async function POST(request: Request) {
       }
     }
 
-    // Also log individual click for detailed analytics
-    await adminAuthClient
-      .from('partner_click_logs')
-      .insert({
-        card_id: cardId,
-        card_name: cardName,
-        user_id: userId || null,
-        clicked_at: new Date().toISOString(),
-        user_agent: request.headers.get('user-agent') || null,
-      })
-      .catch(() => {}); // Silent fail for detailed logs
+    // Also log individual click for detailed analytics (silent fail)
+    try {
+      await adminAuthClient
+        .from('partner_click_logs')
+        .insert({
+          card_id: cardId,
+          card_name: cardName,
+          user_id: userId || null,
+          clicked_at: new Date().toISOString(),
+          user_agent: request.headers.get('user-agent') || null,
+        });
+    } catch {
+      // Silent fail for detailed logs
+    }
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
