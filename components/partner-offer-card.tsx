@@ -194,7 +194,7 @@ export function PartnerOfferCard({ card, bankWelcomeValue = 0 }: PartnerOfferCar
               {(offer.minSpend ?? 0) > 0 && customerType === "new" && (
                 <li className="flex items-start gap-2">
                   <span className="text-green-500 mt-0.5">✓</span>
-                  批卡後 {offer.minSpendDays || 30} 日內簽賬滿 ${offer.minSpend.toLocaleString()}
+                  批卡後 {offer.minSpendDays || 30} 日內簽賬滿 ${(offer.minSpend ?? 0).toLocaleString()}
                 </li>
               )}
               {currentRequirements?.map((req, index) => (
