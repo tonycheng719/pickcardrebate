@@ -486,7 +486,7 @@ const MONEYHERO_PARTNER_OFFERS = [
   // ⚠️ 全新客戶與現有客戶優惠不同
   // ========================================
   {
-    cardId: "hsbc-visa-signature",
+    cardId: "hsbc-vs",
     partnerOffer: {
       enabled: true,
       applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/hsbc-visa-signature-card",
