@@ -1,6 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminAuthClient } from "@/lib/supabase/admin-client";
 
+export const dynamic = 'force-dynamic';
+
+// GET: Fetch all promos
+export async function GET() {
+  try {
+    const { data, error } = await adminAuthClient
+      .from('promos')
+      .select('*');
+
+    if (error) {
+      console.error("Error fetching promos:", error);
+      return NextResponse.json({ promos: [], error: error.message });
+    }
+
+    return NextResponse.json({ promos: data || [] });
+  } catch (error) {
+    console.error("Internal error fetching promos:", error);
+    return NextResponse.json({ promos: [] });
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const promo = await request.json();

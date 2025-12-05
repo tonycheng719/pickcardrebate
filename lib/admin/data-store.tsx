@@ -250,64 +250,70 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
             }
         }
 
-        // 2. Merchants - with independent timeout
+        // 2. Merchants - USE API ROUTE to bypass RLS
         // IMPORTANT: Prioritize LOCAL static data for logos (most up-to-date)
         // DB data is only used for merchants not in local data
         try {
-            const merchantsPromise = supabase.from('merchants').select('*');
-            const merchantsTimeout = new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 5000));
-            const { data: merchantsData } = await Promise.race([merchantsPromise, merchantsTimeout]) as any;
-            
-            if (merchantsData && merchantsData.length > 0) {
-                const dbMerchants: Merchant[] = merchantsData.map(mapMerchantFromDB);
-                // Create a map of DB merchants by ID for quick lookup
-                const dbMerchantMap = new Map<string, Merchant>(dbMerchants.map((m) => [m.id, m]));
+            const merchantsRes = await fetch('/api/admin/merchants', { signal: controller.signal });
+            if (merchantsRes.ok) {
+                const { merchants: merchantsData } = await merchantsRes.json();
                 
-                // Merge: LOCAL data takes priority for logos, DB data used for extra fields
-                const mergedMerchants: Merchant[] = POPULAR_MERCHANTS.map(localMerchant => {
-                    const dbMerchant = dbMerchantMap.get(localMerchant.id);
-                    if (dbMerchant) {
-                        // LOCAL logo takes priority (most up-to-date in code)
-                        // Only use DB logo if it's a Supabase storage URL (user uploaded)
-                        const useDbLogo = dbMerchant.logo && (
-                            dbMerchant.logo.includes('supabase') || 
-                            dbMerchant.logo.includes('storage')
-                        );
-                        return {
-                            ...localMerchant, // Start with local data
-                            ...dbMerchant,    // Override with DB data
-                            logo: useDbLogo ? dbMerchant.logo : localMerchant.logo, // Prefer local logo unless DB has uploaded one
-                        };
-                    }
-                    return localMerchant;
-                });
-                
-                // Also add any DB-only merchants not in local data
-                dbMerchants.forEach((dbM) => {
-                    if (!POPULAR_MERCHANTS.some(lm => lm.id === dbM.id)) {
-                        mergedMerchants.push(dbM);
-                    }
-                });
-                
-                setMerchants(mergedMerchants);
-                // Cache merchants for faster initial load next time
-                cacheMerchants(mergedMerchants);
+                if (merchantsData && merchantsData.length > 0) {
+                    const dbMerchants: Merchant[] = merchantsData.map(mapMerchantFromDB);
+                    // Create a map of DB merchants by ID for quick lookup
+                    const dbMerchantMap = new Map<string, Merchant>(dbMerchants.map((m) => [m.id, m]));
+                    
+                    // Merge: LOCAL data takes priority for logos, DB data used for extra fields
+                    const mergedMerchants: Merchant[] = POPULAR_MERCHANTS.map(localMerchant => {
+                        const dbMerchant = dbMerchantMap.get(localMerchant.id);
+                        if (dbMerchant) {
+                            // LOCAL logo takes priority (most up-to-date in code)
+                            // Only use DB logo if it's a Supabase storage URL (user uploaded)
+                            const useDbLogo = dbMerchant.logo && (
+                                dbMerchant.logo.includes('supabase') || 
+                                dbMerchant.logo.includes('storage')
+                            );
+                            return {
+                                ...localMerchant, // Start with local data
+                                ...dbMerchant,    // Override with DB data
+                                logo: useDbLogo ? dbMerchant.logo : localMerchant.logo, // Prefer local logo unless DB has uploaded one
+                            };
+                        }
+                        return localMerchant;
+                    });
+                    
+                    // Also add any DB-only merchants not in local data
+                    dbMerchants.forEach((dbM) => {
+                        if (!POPULAR_MERCHANTS.some(lm => lm.id === dbM.id)) {
+                            mergedMerchants.push(dbM);
+                        }
+                    });
+                    
+                    setMerchants(mergedMerchants);
+                    // Cache merchants for faster initial load next time
+                    cacheMerchants(mergedMerchants);
+                }
             }
         } catch (e: any) {
-            console.warn("Merchants fetch failed:", e.message);
+            if (e.name !== 'AbortError') {
+                console.warn("Merchants fetch failed:", e.message);
+            }
         }
 
-        // 3. Promos - with independent timeout
+        // 3. Promos - USE API ROUTE to bypass RLS
         try {
-            const promosPromise = supabase.from('promos').select('*');
-            const promosTimeout = new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 5000));
-            const { data: promosData } = await Promise.race([promosPromise, promosTimeout]) as any;
-            
-            if (promosData && promosData.length > 0) {
-                setPromos(promosData.map(mapPromoFromDB));
+            const promosRes = await fetch('/api/admin/promos', { signal: controller.signal });
+            if (promosRes.ok) {
+                const { promos: promosData } = await promosRes.json();
+                
+                if (promosData && promosData.length > 0) {
+                    setPromos(promosData.map(mapPromoFromDB));
+                }
             }
         } catch (e: any) {
-            console.warn("Promos fetch failed:", e.message);
+            if (e.name !== 'AbortError') {
+                console.warn("Promos fetch failed:", e.message);
+            }
         }
         
         setIsLoading(false); // Data sync complete
