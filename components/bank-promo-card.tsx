@@ -22,7 +22,9 @@ export function BankPromoCard({ promo, cardBank, isVisaCard = false }: BankPromo
   // 檢查是否在有效期內
   const now = new Date();
   const validFrom = new Date(promo.validFrom);
+  // 將 validTo 設為當天的 23:59:59，避免當天被判斷為過期
   const validTo = new Date(promo.validTo);
+  validTo.setHours(23, 59, 59, 999);
   const isValid = now >= validFrom && now <= validTo;
   
   if (!isValid) {

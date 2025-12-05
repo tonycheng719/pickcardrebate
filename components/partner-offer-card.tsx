@@ -43,7 +43,9 @@ export function PartnerOfferCard({ card, bankWelcomeValue = 0 }: PartnerOfferCar
   // 檢查是否在有效期內
   const now = new Date();
   const validFrom = new Date(offer.validFrom);
+  // 將 validTo 設為當天的 23:59:59，避免當天被判斷為過期
   const validTo = new Date(offer.validTo);
+  validTo.setHours(23, 59, 59, 999);
   const isValid = now >= validFrom && now <= validTo;
   
   if (!isValid) {
