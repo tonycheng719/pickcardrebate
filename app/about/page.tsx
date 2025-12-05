@@ -8,16 +8,146 @@ import {
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "關於我們｜PickCardRebate 信用卡回贈計算機",
-  description: "PickCardRebate 是香港首個智能信用卡回贈比較平台，幫助消費者找出每筆消費最高回贈的信用卡，讓你每次簽賬都賺盡回贈！",
+  title: "關於我們｜PickCardRebate 香港信用卡回贈比較平台",
+  description: "PickCardRebate 是香港首個智能信用卡回贈比較平台，收錄超過50張信用卡，幫助消費者輕鬆找出每筆消費最高回贈的信用卡！HSBC、Citi、渣打、恒生、DBS 等銀行信用卡一覽無遺。",
+  keywords: [
+    "信用卡比較香港",
+    "信用卡回贈計算",
+    "香港信用卡推薦",
+    "信用卡回贈比較",
+    "HSBC信用卡",
+    "Citi信用卡",
+    "渣打信用卡",
+    "恒生信用卡",
+    "DBS信用卡",
+    "現金回贈信用卡",
+    "里數信用卡",
+    "信用卡攻略",
+  ],
   openGraph: {
-    title: "關於我們｜PickCardRebate 信用卡回贈計算機",
-    description: "香港首個智能信用卡回贈比較平台，幫助你找出最抵信用卡！",
+    title: "關於我們｜PickCardRebate 香港信用卡回贈比較平台",
+    description: "香港首個智能信用卡回贈比較平台，收錄超過50張信用卡，幫助你找出最抵信用卡！",
     url: "https://pickcardrebate.com/about",
+    type: "website",
+    siteName: "PickCardRebate",
+    locale: "zh_HK",
+    images: [
+      {
+        url: "https://pickcardrebate.com/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "PickCardRebate 香港信用卡回贈比較平台",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "關於我們｜PickCardRebate 香港信用卡回贈比較平台",
+    description: "香港首個智能信用卡回贈比較平台，幫助你找出最抵信用卡！",
+    images: ["https://pickcardrebate.com/og-image.png"],
   },
   alternates: {
     canonical: "https://pickcardrebate.com/about",
   },
+  robots: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
+    "max-snippet": -1,
+    "max-video-preview": -1,
+  },
+};
+
+// Structured Data for SEO
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "AboutPage",
+      "@id": "https://pickcardrebate.com/about#webpage",
+      "url": "https://pickcardrebate.com/about",
+      "name": "關於我們｜PickCardRebate",
+      "description": "PickCardRebate 是香港首個智能信用卡回贈比較平台",
+      "isPartOf": {
+        "@id": "https://pickcardrebate.com/#website"
+      },
+      "inLanguage": "zh-HK",
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://pickcardrebate.com/#organization",
+      "name": "PickCardRebate",
+      "url": "https://pickcardrebate.com",
+      "logo": "https://pickcardrebate.com/og-image.png",
+      "description": "香港首個智能信用卡回贈比較平台，幫助消費者找出最高回贈的信用卡",
+      "email": "info@pickcardrebate.com",
+      "foundingDate": "2024",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Hong Kong"
+      },
+      "knowsAbout": [
+        "信用卡回贈",
+        "香港信用卡",
+        "現金回贈",
+        "飛行里數"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "首頁",
+          "item": "https://pickcardrebate.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "關於我們",
+          "item": "https://pickcardrebate.com/about"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "PickCardRebate 是什麼？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PickCardRebate 是香港首個智能信用卡回贈比較平台，收錄超過50張香港主流信用卡，幫助消費者輕鬆計算及比較每張信用卡的回贈金額。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "使用 PickCardRebate 需要付費嗎？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "不需要！PickCardRebate 所有功能完全免費，包括回贈計算、信用卡比較、攻略文章等。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "PickCardRebate 的資料來源是什麼？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "我們的信用卡回贈資料均來自各銀行官方網站及條款細則，並定期更新以確保準確性。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "如何聯絡 PickCardRebate？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "如有任何查詢、建議或發現資料錯誤，可發送電郵至 info@pickcardrebate.com 聯絡我們。"
+          }
+        }
+      ]
+    }
+  ]
 };
 
 const features = [
@@ -61,14 +191,20 @@ const values = [
   },
   {
     icon: Shield,
-    title: "中立",
-    description: "我們不接受銀行贊助影響排名，所有推薦基於真實回贈數據。"
+    title: "透明",
+    description: "所有回贈計算基於真實數據，部分內容或包含合作推廣資訊。"
   },
 ];
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      
       <Navbar />
       
       <main className="max-w-4xl mx-auto px-4 py-12 pb-24 md:pb-12">
