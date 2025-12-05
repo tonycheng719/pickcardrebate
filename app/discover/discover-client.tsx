@@ -9,7 +9,7 @@ import {
   Clock, ExternalLink, Tag, Send, Bell, PlusCircle, 
   Image as ImageIcon, BookOpen, Globe, Sparkles 
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useWallet } from "@/lib/store/wallet-context";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -347,6 +347,28 @@ export function DiscoverClient() {
   const { promos } = useDataset();
   const [contentType, setContentType] = useState<ContentType>("all");
   const [tagFilter, setTagFilter] = useState<string>("all");
+  const [customCovers, setCustomCovers] = useState<Record<string, string>>({});
+
+  // 獲取自訂封面設定
+  useEffect(() => {
+    async function fetchCustomCovers() {
+      try {
+        const res = await fetch('/api/article-settings');
+        if (res.ok) {
+          const data = await res.json();
+          setCustomCovers(data.settings || {});
+        }
+      } catch (e) {
+        console.error('Failed to fetch custom covers:', e);
+      }
+    }
+    fetchCustomCovers();
+  }, []);
+
+  // 獲取有效封面圖片 (自訂或預設)
+  const getCoverImage = (item: { id: string; imageUrl?: string }) => {
+    return customCovers[item.id] || item.imageUrl || '';
+  };
 
   const displayPromos = promos.length > 0 ? promos : PROMOS;
 
@@ -535,9 +557,9 @@ export function DiscoverClient() {
                   }`}>
                     {/* Visual Header */}
                     <div className="h-40 bg-gray-100 dark:bg-gray-900 relative overflow-hidden group">
-                      {'imageUrl' in item && item.imageUrl ? (
+                      {getCoverImage(item) ? (
                         <img 
-                          src={item.imageUrl} 
+                          src={getCoverImage(item)} 
                           alt={item.title} 
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
                         />

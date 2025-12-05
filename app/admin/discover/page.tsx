@@ -6,46 +6,87 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { 
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { 
   Search, BookOpen, Eye, ExternalLink, Tag, Image as ImageIcon,
-  TrendingUp, Sparkles, CalendarIcon, Gift, Plus
+  TrendingUp, Sparkles, CalendarIcon, Gift, Plus, Pencil, RotateCcw, Loader2
 } from "lucide-react";
 import Link from "next/link";
-import { GUIDES } from "@/lib/data/guides";
+import { GUIDES, Guide } from "@/lib/data/guides";
 import { useDataset } from "@/lib/admin/data-store";
+import { toast } from "sonner";
 
 interface ViewStat {
   page_id: string;
   view_count: number;
 }
 
+interface ArticleSetting {
+  id: string;
+  article_id: string;
+  cover_image_url: string | null;
+}
+
 export default function AdminDiscoverPage() {
   const { promos } = useDataset();
   const [keyword, setKeyword] = useState("");
   const [viewStats, setViewStats] = useState<Record<string, number>>({});
+  const [articleSettings, setArticleSettings] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"guides" | "promos">("guides");
+  
+  // Edit cover dialog
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editingGuide, setEditingGuide] = useState<Guide | null>(null);
+  const [newCoverUrl, setNewCoverUrl] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
 
-  // Fetch view stats
+  // Fetch view stats and article settings
   useEffect(() => {
-    async function fetchViewStats() {
+    async function fetchData() {
       try {
-        const res = await fetch('/api/stats/pageview?pageType=article');
-        if (res.ok) {
-          const data = await res.json();
+        // Fetch view stats
+        const viewRes = await fetch('/api/stats/pageview?pageType=article');
+        if (viewRes.ok) {
+          const data = await viewRes.json();
           const stats: Record<string, number> = {};
           (data.stats || []).forEach((s: ViewStat) => {
             stats[s.page_id] = s.view_count;
           });
           setViewStats(stats);
         }
+
+        // Fetch article settings (custom covers)
+        const settingsRes = await fetch('/api/admin/article-settings');
+        if (settingsRes.ok) {
+          const data = await settingsRes.json();
+          const settings: Record<string, string> = {};
+          (data.settings || []).forEach((s: ArticleSetting) => {
+            if (s.cover_image_url) {
+              settings[s.article_id] = s.cover_image_url;
+            }
+          });
+          setArticleSettings(settings);
+        }
       } catch (e) {
-        console.error("Failed to fetch view stats:", e);
+        console.error("Failed to fetch data:", e);
       } finally {
         setIsLoading(false);
       }
     }
-    fetchViewStats();
+    fetchData();
   }, []);
+
+  // Get effective cover image (custom or default)
+  const getCoverImage = (guide: Guide) => {
+    return articleSettings[guide.id] || guide.imageUrl;
+  };
 
   // Filter guides
   const filteredGuides = useMemo(() => {
@@ -74,6 +115,90 @@ export default function AdminDiscoverPage() {
   }, [keyword, promos]);
 
   const totalGuideViews = Object.values(viewStats).reduce((a, b) => a + b, 0);
+
+  // Open edit dialog
+  const handleEditCover = (guide: Guide) => {
+    setEditingGuide(guide);
+    setNewCoverUrl(articleSettings[guide.id] || guide.imageUrl);
+    setEditDialogOpen(true);
+  };
+
+  // Save new cover
+  const handleSaveCover = async () => {
+    if (!editingGuide) return;
+    
+    setIsSaving(true);
+    try {
+      const res = await fetch('/api/admin/article-settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          articleId: editingGuide.id,
+          coverImageUrl: newCoverUrl || null,
+        }),
+      });
+
+      const data = await res.json();
+      
+      if (data.sqlRequired) {
+        toast.error('請先在 Supabase SQL Editor 執行 sql/article_settings.sql');
+        return;
+      }
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to save');
+      }
+
+      // Update local state
+      if (newCoverUrl) {
+        setArticleSettings(prev => ({ ...prev, [editingGuide.id]: newCoverUrl }));
+      } else {
+        setArticleSettings(prev => {
+          const newSettings = { ...prev };
+          delete newSettings[editingGuide.id];
+          return newSettings;
+        });
+      }
+
+      toast.success('封面圖片已更新');
+      setEditDialogOpen(false);
+    } catch (error: any) {
+      toast.error('更新失敗：' + error.message);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  // Reset to default cover
+  const handleResetCover = async () => {
+    if (!editingGuide) return;
+    
+    setIsSaving(true);
+    try {
+      const res = await fetch(`/api/admin/article-settings?articleId=${editingGuide.id}`, {
+        method: 'DELETE',
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to reset');
+      }
+
+      // Update local state
+      setArticleSettings(prev => {
+        const newSettings = { ...prev };
+        delete newSettings[editingGuide.id];
+        return newSettings;
+      });
+
+      toast.success('已恢復預設封面');
+      setEditDialogOpen(false);
+    } catch (error: any) {
+      toast.error('重設失敗：' + error.message);
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -181,7 +306,7 @@ export default function AdminDiscoverPage() {
             <table className="w-full text-sm text-left">
               <thead className="bg-gray-50 dark:bg-gray-900/50 text-gray-500 dark:text-gray-400 border-b dark:border-gray-700">
                 <tr>
-                  <th className="px-6 py-4 font-medium">圖片</th>
+                  <th className="px-6 py-4 font-medium">封面</th>
                   <th className="px-6 py-4 font-medium">標題</th>
                   <th className="px-6 py-4 font-medium">標籤</th>
                   <th className="px-6 py-4 font-medium">
@@ -198,19 +323,32 @@ export default function AdminDiscoverPage() {
                 {sortedGuides.map((guide, index) => {
                   const views = viewStats[guide.id] || 0;
                   const isTop3 = index < 3 && views > 0;
+                  const hasCustomCover = !!articleSettings[guide.id];
+                  const coverImage = getCoverImage(guide);
                   
                   return (
                     <tr key={guide.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                       <td className="px-6 py-4">
-                        {guide.imageUrl ? (
-                          <div className="w-16 h-10 rounded overflow-hidden bg-gray-100">
-                            <img src={guide.imageUrl} alt="" className="w-full h-full object-cover" />
-                          </div>
-                        ) : (
-                          <div className="w-16 h-10 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-400">
-                            <ImageIcon className="h-4 w-4" />
-                          </div>
-                        )}
+                        <div className="relative group">
+                          {coverImage ? (
+                            <div className="w-20 h-12 rounded overflow-hidden bg-gray-100">
+                              <img src={coverImage} alt="" className="w-full h-full object-cover" />
+                            </div>
+                          ) : (
+                            <div className="w-20 h-12 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-400">
+                              <ImageIcon className="h-4 w-4" />
+                            </div>
+                          )}
+                          {hasCustomCover && (
+                            <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-800" title="已自訂封面" />
+                          )}
+                          <button
+                            onClick={() => handleEditCover(guide)}
+                            className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded"
+                          >
+                            <Pencil className="h-4 w-4 text-white" />
+                          </button>
+                        </div>
                       </td>
                       <td className="px-6 py-4">
                         <p className="font-medium text-gray-900 dark:text-white line-clamp-1">{guide.title}</p>
@@ -234,21 +372,40 @@ export default function AdminDiscoverPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        {guide.isNew ? (
-                          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium">
-                            NEW
-                          </span>
-                        ) : (
-                          <span className="text-gray-400 text-xs">-</span>
-                        )}
+                        <div className="flex items-center gap-2">
+                          {guide.isNew && (
+                            <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium">
+                              NEW
+                            </span>
+                          )}
+                          {hasCustomCover && (
+                            <span className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-xs font-medium">
+                              自訂封面
+                            </span>
+                          )}
+                          {!guide.isNew && !hasCustomCover && (
+                            <span className="text-gray-400 text-xs">-</span>
+                          )}
+                        </div>
                       </td>
                       <td className="px-6 py-4">
-                        <Link href={`/discover/${guide.id}`} target="_blank">
-                          <Button variant="ghost" size="sm" className="gap-1">
-                            <ExternalLink className="h-3 w-3" />
-                            查看
+                        <div className="flex items-center gap-1">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="gap-1"
+                            onClick={() => handleEditCover(guide)}
+                          >
+                            <Pencil className="h-3 w-3" />
+                            封面
                           </Button>
-                        </Link>
+                          <Link href={`/discover/${guide.id}`} target="_blank">
+                            <Button variant="ghost" size="sm" className="gap-1">
+                              <ExternalLink className="h-3 w-3" />
+                              查看
+                            </Button>
+                          </Link>
+                        </div>
                       </td>
                     </tr>
                   );
@@ -310,7 +467,103 @@ export default function AdminDiscoverPage() {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Edit Cover Dialog */}
+      <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <ImageIcon className="h-5 w-5" />
+              編輯文章封面
+            </DialogTitle>
+            <DialogDescription>
+              {editingGuide?.title}
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            {/* Preview */}
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">預覽</p>
+              {newCoverUrl ? (
+                <div className="w-full h-40 rounded-lg overflow-hidden bg-gray-100">
+                  <img 
+                    src={newCoverUrl} 
+                    alt="Preview" 
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '';
+                      (e.target as HTMLImageElement).classList.add('hidden');
+                    }}
+                  />
+                </div>
+              ) : (
+                <div className="w-full h-40 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-400">
+                  <div className="text-center">
+                    <ImageIcon className="h-8 w-8 mx-auto mb-2" />
+                    <p className="text-sm">無封面圖片</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* URL Input */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                圖片網址 (URL)
+              </label>
+              <Input
+                placeholder="https://example.com/image.jpg"
+                value={newCoverUrl}
+                onChange={(e) => setNewCoverUrl(e.target.value)}
+              />
+              <p className="text-xs text-gray-500">
+                建議使用 Unsplash、Imgur 或其他圖床的圖片連結
+              </p>
+            </div>
+
+            {/* Default image info */}
+            {editingGuide && articleSettings[editingGuide.id] && (
+              <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
+                <p className="text-sm text-amber-800 dark:text-amber-200">
+                  目前使用自訂封面。點擊「恢復預設」可使用原始封面圖片。
+                </p>
+              </div>
+            )}
+          </div>
+
+          <DialogFooter className="gap-2">
+            {editingGuide && articleSettings[editingGuide.id] && (
+              <Button
+                variant="outline"
+                onClick={handleResetCover}
+                disabled={isSaving}
+                className="gap-2"
+              >
+                <RotateCcw className="h-4 w-4" />
+                恢復預設
+              </Button>
+            )}
+            <Button
+              variant="outline"
+              onClick={() => setEditDialogOpen(false)}
+              disabled={isSaving}
+            >
+              取消
+            </Button>
+            <Button onClick={handleSaveCover} disabled={isSaving}>
+              {isSaving ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  儲存中...
+                </>
+              ) : (
+                '儲存'
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
-
