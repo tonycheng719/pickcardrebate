@@ -52,6 +52,7 @@ import { XboxGuide, xboxFaqData } from "./xbox-guide";
 import { SwitchGuide, switchFaqData } from "./switch-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 import { ArticleTracker } from "@/app/discover/components/article-tracker";
+import { ArticleReviews } from "@/app/discover/components/article-reviews";
 
 // Revalidate every hour
 export const revalidate = 3600;
@@ -75,6 +76,7 @@ const GUIDES: Record<string, {
   tags: string[];
   keywords: string[];
   publishDate: string;
+  lastUpdated?: string; // 最後更新日期 (optional, defaults to current date)
   readTime: string;
 }> = {
   "overseas-fee": {
@@ -1604,9 +1606,26 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
   if (isGuide(slug)) {
     const guide = GUIDES[slug];
     const currentYear = new Date().getFullYear();
+    const lastUpdated = guide.lastUpdated || new Date().toISOString().split('T')[0];
     
     // Get FAQ data for this specific guide
     const faqData = getGuideFaqData(slug);
+
+    // Fetch article rating data for SEO
+    let avgRating = 0;
+    let reviewCount = 0;
+    try {
+      const ratingRes = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'https://pickcardrebate.com'}/api/articles/comments?articleId=${slug}`, { 
+        next: { revalidate: 3600 } 
+      });
+      if (ratingRes.ok) {
+        const ratingData = await ratingRes.json();
+        avgRating = ratingData.avgRating || 0;
+        reviewCount = ratingData.totalCount || 0;
+      }
+    } catch (e) {
+      console.error('Failed to fetch article rating:', e);
+    }
 
     const structuredData = {
       "@context": "https://schema.org",
@@ -1619,9 +1638,19 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
           "author": { "@type": "Organization", "name": "PickCardRebate" },
           "publisher": { "@type": "Organization", "name": "PickCardRebate", "logo": { "@type": "ImageObject", "url": "https://pickcardrebate.com/logo.png" } },
           "datePublished": guide.publishDate,
-          "dateModified": new Date().toISOString().split('T')[0],
+          "dateModified": lastUpdated,
           "image": guide.imageUrl,
           "mainEntityOfPage": `https://pickcardrebate.com/discover/${slug}`,
+          // Add AggregateRating for SEO if there are reviews
+          ...(reviewCount > 0 && {
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": avgRating.toFixed(1),
+              "bestRating": "5",
+              "worstRating": "1",
+              "reviewCount": reviewCount
+            }
+          })
         },
         {
           "@type": "FAQPage",
@@ -1662,13 +1691,15 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
           
           {/* Hero Section */}
           <header className="mb-10">
-            <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-3">
+            <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-3">
               <span className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1">
                 <BookOpen className="h-3 w-3" /> 攻略
               </span>
               <span>📅 {currentYear}年最新</span>
               <span>•</span>
               <span>⏱️ 閱讀時間約 {guide.readTime}</span>
+              <span>•</span>
+              <span>🔄 最後更新：{lastUpdated}</span>
             </div>
             
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
@@ -1693,6 +1724,9 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
           {/* Guide Content */}
           <article className="bg-white dark:bg-gray-900 rounded-3xl shadow-sm border dark:border-gray-800 p-6 md:p-10">
             {renderGuideContent(slug)}
+            
+            {/* Article Reviews Section */}
+            <ArticleReviews articleId={slug} articleTitle={guide.title} />
           </article>
           
           {/* Disclaimer */}

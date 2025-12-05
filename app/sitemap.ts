@@ -1,98 +1,97 @@
 import { MetadataRoute } from 'next';
 import { HK_CARDS } from '@/lib/data/cards';
-import { PROMOS } from '@/lib/data/promos';
-import { RANKING_CATEGORIES } from '@/lib/logic/rankings';
 
-// 攻略文章 IDs
-const GUIDE_SLUGS = ['overseas-fee'];
+// All guide slugs
+const GUIDE_SLUGS = [
+  'overseas-fee',
+  'debit-card-guide',
+  'miles-vs-cashback',
+  'best-cashback-cards',
+  'utility-bill-guide',
+  'rent-payment-guide',
+  'tax-payment-guide',
+  'online-shopping-guide',
+  'dining-guide',
+  'overseas-spending-guide',
+  'supermarket-guide',
+  'taobao-guide',
+  'no-annual-fee-guide',
+  'student-card-guide',
+  'large-purchase-guide',
+  'octopus-guide',
+  'mobile-payment-guide',
+  'low-income-guide',
+  'food-delivery-guide',
+  'streaming-guide',
+  'driving-guide',
+  'insurance-guide',
+  'pinduoduo-guide',
+  'uber-guide',
+  'iherb-guide',
+  'iphone-guide',
+  'ipad-guide',
+  'macbook-guide',
+  'apple-watch-guide',
+  'ps5-guide',
+  'xbox-guide',
+  'switch-guide',
+];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://pickcardrebate.com';
-  
+  const currentDate = new Date().toISOString();
+
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: currentDate,
       changeFrequency: 'daily',
       priority: 1,
     },
     {
-      url: `${baseUrl}/cards`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
+      url: `${baseUrl}/discover`,
+      lastModified: currentDate,
+      changeFrequency: 'daily',
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/discover`,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.9,
+      url: `${baseUrl}/cards`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/rankings`,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.9,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/wallet`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/login`,
-      lastModified: new Date(),
+      lastModified: currentDate,
       changeFrequency: 'monthly',
       priority: 0.5,
     },
-    {
-      url: `${baseUrl}/terms`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/privacy`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.3,
-    },
   ];
 
-  // Card detail pages (exclude hidden cards)
-  const cardPages: MetadataRoute.Sitemap = HK_CARDS
-    .filter(card => !card.hidden)
-    .map((card) => ({
-      url: `${baseUrl}/cards/${card.id}`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    }));
-
-  // Discover pages (promos + guides)
-  const promoPages: MetadataRoute.Sitemap = PROMOS.map((promo) => ({
-    url: `${baseUrl}/discover/${promo.id}`,
-    lastModified: new Date(),
-    changeFrequency: 'daily' as const,
-    priority: 0.8,
-  }));
-
+  // Guide/Article pages
   const guidePages: MetadataRoute.Sitemap = GUIDE_SLUGS.map((slug) => ({
     url: `${baseUrl}/discover/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.85,
+    lastModified: currentDate, // Will be updated when we have DB-stored lastUpdated
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
   }));
 
-  // Blog/Rankings category pages
-  const blogPages: MetadataRoute.Sitemap = RANKING_CATEGORIES.map((category) => ({
-    url: `${baseUrl}/blog/${category.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'daily' as const,
-    priority: 0.85,
-  }));
+  // Credit card detail pages
+  const cardPages: MetadataRoute.Sitemap = HK_CARDS
+    .filter((card) => !card.hidden)
+    .map((card) => ({
+      url: `${baseUrl}/cards/${card.id}`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    }));
 
-  return [...staticPages, ...cardPages, ...promoPages, ...guidePages, ...blogPages];
+  return [...staticPages, ...guidePages, ...cardPages];
 }
