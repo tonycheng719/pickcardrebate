@@ -4,6 +4,7 @@ import { useState } from "react";
 import { CreditCard, PartnerOffer } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { useSettings } from "@/lib/store/settings-context";
+import { trackPartnerApply } from "@/lib/analytics";
 import { 
   Gift, ExternalLink, ChevronDown, ChevronUp, 
   AlertCircle, CheckCircle2, Clock, DollarSign,
@@ -148,6 +149,26 @@ export function PartnerOfferCard({ card, bankWelcomeValue = 0 }: PartnerOfferCar
           target="_blank" 
           rel="noopener noreferrer"
           className="block"
+          onClick={() => {
+            // Track to GA4 & Meta Pixel
+            trackPartnerApply({
+              cardId: card.id,
+              cardName: card.name,
+              cardBank: card.bank,
+              partnerUrl: offer.applyUrl,
+              bonusValue: offer.bonusValue,
+            });
+            
+            // Track to backend for stats
+            fetch('/api/stats/partner-click', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                cardId: card.id,
+                cardName: card.name,
+              }),
+            }).catch(() => {}); // Silent fail
+          }}
         >
           <Button 
             className="w-full h-12 text-base font-bold bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-xl shadow-lg shadow-amber-200 dark:shadow-amber-900/30"

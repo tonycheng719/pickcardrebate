@@ -8,7 +8,7 @@ import { HK_CARDS } from "@/lib/data/cards";
 import { createClient } from "@/lib/supabase/client";
 import { 
   ArrowLeft, Save, Trash2, Plus, ExternalLink, 
-  Gift, Search, Check, X, AlertCircle, Settings
+  Gift, Search, Check, X, AlertCircle, Settings, MousePointerClick, Wand2
 } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
@@ -21,6 +21,13 @@ interface CardWithPartnerOffer {
   partnerOffer?: PartnerOffer;
 }
 
+interface ClickStats {
+  card_id: string;
+  card_name: string;
+  click_count: number;
+  last_clicked_at: string;
+}
+
 export default function AdminPartnerOffersPage() {
   const [cards, setCards] = useState<CardWithPartnerOffer[]>([]);
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
@@ -28,6 +35,8 @@ export default function AdminPartnerOffersPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [globalEnabled, setGlobalEnabled] = useState(false);
+  const [clickStats, setClickStats] = useState<ClickStats[]>([]);
+  const [totalClicks, setTotalClicks] = useState(0);
   
   // Partner Offer Form State
   const [formData, setFormData] = useState<PartnerOffer>({
@@ -76,6 +85,18 @@ export default function AdminPartnerOffersPage() {
         }));
         
         setCards(mergedCards);
+        
+        // Fetch click stats
+        try {
+          const clickResponse = await fetch('/api/stats/partner-click');
+          if (clickResponse.ok) {
+            const clickData = await clickResponse.json();
+            setClickStats(clickData.stats || []);
+            setTotalClicks(clickData.totalClicks || 0);
+          }
+        } catch (e) {
+          console.log('Click stats not available yet');
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
         toast.error("載入失敗");
@@ -95,6 +116,12 @@ export default function AdminPartnerOffersPage() {
 
   // Cards with partner offers
   const cardsWithOffers = cards.filter(c => c.partnerOffer?.enabled);
+  
+  // Get click count for a card
+  const getClickCount = (cardId: string): number => {
+    const stat = clickStats.find(s => s.card_id === cardId);
+    return stat?.click_count || 0;
+  };
 
   // Select a card to edit
   const handleSelectCard = (cardId: string) => {
@@ -217,6 +244,34 @@ export default function AdminPartnerOffersPage() {
     }
   };
 
+  // Seed sample partner offers (MoneyHero style)
+  const handleSeedSampleData = async () => {
+    if (!confirm("這會添加 10 張熱門信用卡的示例合作夥伴資料（參考 MoneyHero），要繼續嗎？")) {
+      return;
+    }
+    
+    try {
+      const response = await fetch('/api/admin/partner-offers/seed', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'seed' }),
+      });
+
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.error || '添加失敗');
+      }
+
+      toast.success(result.message);
+      
+      // Refresh data
+      window.location.reload();
+    } catch (error: any) {
+      toast.error("添加失敗：" + error.message);
+    }
+  };
+
   // Add bonus item
   const addBonusItem = () => {
     if (bonusItemInput.trim()) {
@@ -284,8 +339,17 @@ export default function AdminPartnerOffersPage() {
           </div>
         </div>
         
-        {/* Global Toggle */}
+        {/* Global Toggle & Seed Button */}
         <div className="flex items-center gap-3">
+          <Button 
+            variant="outline"
+            size="sm"
+            onClick={handleSeedSampleData}
+            className="text-purple-600 border-purple-200 hover:bg-purple-50"
+          >
+            <Wand2 className="h-4 w-4 mr-1" />
+            添加示例資料
+          </Button>
           <span className="text-sm text-gray-500">前台顯示：</span>
           <Button 
             variant={globalEnabled ? "default" : "outline"}
@@ -318,7 +382,7 @@ export default function AdminPartnerOffersPage() {
           {/* Stats */}
           <Card>
             <CardContent className="p-4">
-              <div className="grid grid-cols-2 gap-4 text-center">
+              <div className="grid grid-cols-3 gap-4 text-center">
                 <div>
                   <p className="text-2xl font-bold text-blue-600">{cards.length}</p>
                   <p className="text-xs text-gray-500">全部信用卡</p>
@@ -326,6 +390,10 @@ export default function AdminPartnerOffersPage() {
                 <div>
                   <p className="text-2xl font-bold text-amber-600">{cardsWithOffers.length}</p>
                   <p className="text-xs text-gray-500">有額外迎新</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-green-600">{totalClicks}</p>
+                  <p className="text-xs text-gray-500">總點擊數</p>
                 </div>
               </div>
             </CardContent>
@@ -344,27 +412,38 @@ export default function AdminPartnerOffersPage() {
           
           {/* Card List */}
           <div className="bg-white dark:bg-gray-900 rounded-lg border dark:border-gray-800 overflow-hidden max-h-[600px] overflow-y-auto">
-            {filteredCards.map((card) => (
-              <button
-                key={card.id}
-                onClick={() => handleSelectCard(card.id)}
-                className={`w-full text-left px-4 py-3 border-b dark:border-gray-800 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${
-                  selectedCardId === card.id ? "bg-blue-50 dark:bg-blue-900/20" : ""
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium text-gray-900 dark:text-white text-sm">{card.name}</p>
-                    <p className="text-xs text-gray-500">{card.bank}</p>
+            {filteredCards.map((card) => {
+              const clicks = getClickCount(card.id);
+              return (
+                <button
+                  key={card.id}
+                  onClick={() => handleSelectCard(card.id)}
+                  className={`w-full text-left px-4 py-3 border-b dark:border-gray-800 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${
+                    selectedCardId === card.id ? "bg-blue-50 dark:bg-blue-900/20" : ""
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium text-gray-900 dark:text-white text-sm">{card.name}</p>
+                      <p className="text-xs text-gray-500">{card.bank}</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {clicks > 0 && (
+                        <span className="flex items-center gap-1 px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs rounded-full">
+                          <MousePointerClick className="h-3 w-3" />
+                          {clicks}
+                        </span>
+                      )}
+                      {card.partnerOffer?.enabled && (
+                        <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 text-xs rounded-full">
+                          +${card.partnerOffer.bonusValue}
+                        </span>
+                      )}
+                    </div>
                   </div>
-                  {card.partnerOffer?.enabled && (
-                    <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 text-xs rounded-full">
-                      +${card.partnerOffer.bonusValue}
-                    </span>
-                  )}
-                </div>
-              </button>
-            ))}
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -374,9 +453,17 @@ export default function AdminPartnerOffersPage() {
             <Card>
               <CardHeader className="border-b dark:border-gray-800">
                 <CardTitle className="flex items-center justify-between">
-                  <span>
-                    編輯額外迎新：{cards.find(c => c.id === selectedCardId)?.name}
-                  </span>
+                  <div>
+                    <span>編輯額外迎新：{cards.find(c => c.id === selectedCardId)?.name}</span>
+                    {getClickCount(selectedCardId) > 0 && (
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="flex items-center gap-1 px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-sm rounded-full">
+                          <MousePointerClick className="h-4 w-4" />
+                          申請點擊：{getClickCount(selectedCardId)} 次
+                        </span>
+                      </div>
+                    )}
+                  </div>
                   <div className="flex gap-2">
                     <Button variant="outline" size="sm" onClick={handleDelete} disabled={isSaving}>
                       <Trash2 className="h-4 w-4 mr-1" /> 刪除

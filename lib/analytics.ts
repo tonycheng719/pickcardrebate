@@ -14,6 +14,7 @@ export type AnalyticsEvent =
   | 'select_category'
   | 'view_card'
   | 'click_apply'
+  | 'click_partner_apply'
   | 'compare_cards'
   | 'sign_up'
   | 'login'
@@ -54,6 +55,7 @@ const ga4EventMap: Record<AnalyticsEvent, string> = {
   select_category: 'select_content',
   view_card: 'view_item',
   click_apply: 'generate_lead',
+  click_partner_apply: 'generate_lead',
   compare_cards: 'view_item_list',
   sign_up: 'sign_up',
   login: 'login',
@@ -69,6 +71,7 @@ const metaEventMap: Record<AnalyticsEvent, string> = {
   select_category: 'ViewContent',
   view_card: 'ViewContent',
   click_apply: 'Lead',
+  click_partner_apply: 'Lead',
   compare_cards: 'ViewContent',
   sign_up: 'CompleteRegistration',
   login: 'Login',
@@ -237,6 +240,28 @@ export function trackShare(params: {
     content_type: params.contentType,
     item_id: params.itemId,
     method: params.method,
+  });
+}
+
+/**
+ * Track partner apply click (for partner offers)
+ */
+export function trackPartnerApply(params: {
+  cardId: string;
+  cardName: string;
+  cardBank: string;
+  partnerUrl?: string;
+  bonusValue?: number;
+}): void {
+  trackEvent('click_partner_apply', {
+    card_id: params.cardId,
+    card_name: params.cardName,
+    card_bank: params.cardBank,
+    partner_url: params.partnerUrl,
+    bonus_value: params.bonusValue,
+    content_type: 'partner_application',
+    value: params.bonusValue,
+    currency: 'HKD',
   });
 }
 
