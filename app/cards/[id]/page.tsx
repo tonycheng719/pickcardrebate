@@ -21,6 +21,8 @@ import Head from "next/head";
 import Script from "next/script";
 import { CreditCard } from "@/lib/types";
 import { PartnerOfferCard } from "@/components/partner-offer-card";
+import { BankPromoCard } from "@/components/bank-promo-card";
+import { getPromosForBank } from "@/lib/data/bank-promos";
 import { trackViewCard, trackClickApply, trackAddToWallet } from "@/lib/analytics";
 import { PageViewTracker } from "@/components/page-view-tracker";
 
@@ -474,6 +476,22 @@ export default function CardDetailPage() {
                 />
               </motion.div>
             )}
+
+            {/* Bank Promo - 銀行簽賬推廣 */}
+            {getPromosForBank(card.bank).map((promo) => (
+              <motion.div
+                key={promo.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.19 }}
+              >
+                <BankPromoCard 
+                  promo={promo}
+                  cardBank={card.bank}
+                  isVisaCard={card.name.toLowerCase().includes('visa') || card.id.includes('visa')}
+                />
+              </motion.div>
+            ))}
 
             {/* Selling Points */}
             {card.sellingPoints && card.sellingPoints.length > 0 && (

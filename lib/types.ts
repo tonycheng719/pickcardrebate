@@ -74,6 +74,9 @@ export interface CreditCard {
   
   // Partner Offer (經本網指定連結申請額外獎賞)
   partnerOffer?: PartnerOffer;
+  
+  // Bank Promo (銀行簽賬推廣)
+  bankPromo?: BankPromo;
 }
 
 export interface Merchant {
@@ -219,4 +222,38 @@ export interface PartnerOffer {
   minSpend?: number; // 最低簽賬要求
   minSpendDays?: number; // 簽賬期限（天）
   notes?: string; // 其他備註
+}
+
+// Bank Promotion (銀行簽賬推廣)
+export interface BankPromoTier {
+  minSpend: number; // 最低簽賬金額
+  reward: string; // 獎賞描述
+  rewardValue: number; // 獎賞價值
+  extraReward?: string; // 額外獎賞（如Visa卡額外）
+  extraRewardValue?: number;
+}
+
+export interface BankPromoPhase {
+  name: string; // 階段名稱
+  startDate: string; // 開始日期
+  endDate: string; // 結束日期
+  tiers: BankPromoTier[];
+}
+
+export interface BankPromo {
+  id: string;
+  name: string; // 推廣名稱
+  description: string; // 簡短描述
+  validFrom: string;
+  validTo: string;
+  phases?: BankPromoPhase[]; // 分階段推廣
+  tiers?: BankPromoTier[]; // 單一階段推廣
+  bonusTiers?: BankPromoTier[]; // 額外獎賞層級
+  requirements?: string[]; // 參與要求
+  exclusions?: string[]; // 不合資格簽賬
+  registrationUrl?: string; // 登記網址
+  termsUrl?: string; // 條款連結
+  notes?: string; // 備註
+  visaExtraReward?: boolean; // Visa卡有額外獎賞
+  maxReward?: string; // 最高可獲獎賞
 }
