@@ -21,6 +21,7 @@ import {
   Calculator,
   Scale,
   Gift,
+  Eye,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AdminAuthProvider, useAdminAuth } from "@/components/admin/admin-auth-context";
@@ -35,6 +36,7 @@ const menuItems = [
   { name: "商戶資料", href: "/admin/merchants", icon: Store },
   { name: "優惠活動", href: "/admin/promos", icon: Tag },
   { name: "搜尋分析", href: "/admin/analytics", icon: BarChart3 },
+  { name: "瀏覽次數統計", href: "/admin/pageviews", icon: Eye },
   { name: "計算機記錄", href: "/admin/search-logs", icon: Calculator },
   { name: "比較功能統計", href: "/admin/compare-stats", icon: Scale },
   { name: "回報審核", href: "/admin/moderation", icon: MessageSquare },
