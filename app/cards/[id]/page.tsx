@@ -151,6 +151,9 @@ export default function CardDetailPage() {
     }
   ];
   
+  // Get current date for dateModified
+  const currentDate = new Date().toISOString().split('T')[0];
+  
   // Generate structured data for SEO - Product Schema with AggregateRating
   const productSchema: Record<string, any> = {
     "@context": "https://schema.org",
@@ -162,6 +165,7 @@ export default function CardDetailPage() {
     },
     "description": card.sellingPoints?.join("。") || `${card.bank} ${card.name} 信用卡`,
     "image": card.imageUrl,
+    "dateModified": currentDate, // 告訴 Google 頁面最後更新日期
     "offers": {
       "@type": "Offer",
       "availability": "https://schema.org/InStock",
@@ -222,6 +226,22 @@ export default function CardDetailPage() {
       }
     }))
   };
+  
+  // WebPage Schema with dateModified
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": `${card.name} - ${card.bank} 信用卡詳情`,
+    "description": card.sellingPoints?.join("。") || `${card.bank} ${card.name} 信用卡`,
+    "url": `https://pickcardrebate.com/cards/${card.id}`,
+    "dateModified": currentDate,
+    "datePublished": "2025-01-01", // 初始發布日期
+    "publisher": {
+      "@type": "Organization",
+      "name": "PickCardRebate",
+      "url": "https://pickcardrebate.com"
+    }
+  };
 
   const handleShare = async (platform: string) => {
     const url = `https://pickcardrebate.com/cards/${card.id}`;
@@ -270,6 +290,11 @@ export default function CardDetailPage() {
         id="faq-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <Script
+        id="webpage-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
       />
 
       <main className="container mx-auto px-4 py-8 flex-1">
