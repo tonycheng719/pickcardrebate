@@ -39,20 +39,16 @@ export default function AdminCommentsPage() {
   const fetchComments = async () => {
     setLoading(true);
     try {
-      // Fetch both types of comments
-      const [cardRes, promoRes] = await Promise.all([
-        fetch("/api/admin/comments?type=card"),
-        fetch("/api/admin/comments?type=promo")
-      ]);
+      // Fetch all comments via API
+      const res = await fetch("/api/admin/comments?type=all");
       
-      if (cardRes.ok) {
-        const cardData = await cardRes.json();
-        setCardComments(cardData);
-      }
-      
-      if (promoRes.ok) {
-        const promoData = await promoRes.json();
-        setPromoComments(promoData);
+      if (res.ok) {
+        const data = await res.json();
+        const comments = data.comments || [];
+        
+        // Separate card and promo comments
+        setCardComments(comments.filter((c: any) => c.type === 'card'));
+        setPromoComments(comments.filter((c: any) => c.type === 'article' || c.type === 'promo'));
       }
     } catch (error) {
       console.error("Error fetching comments:", error);
