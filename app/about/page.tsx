@@ -3,7 +3,7 @@ import { Navbar } from "@/components/navbar";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Calculator, CreditCard, Search, BarChart3, Users, Mail, 
-  Shield, Heart, Lightbulb, Target, CheckCircle, ExternalLink
+  Heart, Lightbulb, Target, CheckCircle
 } from "lucide-react";
 import Link from "next/link";
 
@@ -189,11 +189,6 @@ const values = [
     title: "免費",
     description: "所有功能完全免費使用，致力幫助每位消費者賺盡回贈！"
   },
-  {
-    icon: Shield,
-    title: "透明",
-    description: "所有回贈計算基於真實數據，部分內容或包含合作推廣資訊。"
-  },
 ];
 
 export default function AboutPage() {
@@ -270,7 +265,7 @@ export default function AboutPage() {
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">
             我們的價值觀
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             {values.map((value, index) => (
               <Card key={index} className="dark:bg-gray-800 dark:border-gray-700 text-center">
                 <CardContent className="p-6">

@@ -1,15 +1,62 @@
+import { Metadata } from "next";
 import { Navbar } from "@/components/navbar";
+
+export const metadata: Metadata = {
+  title: "隱私權政策｜PickCardRebate 香港信用卡回贈比較平台",
+  description: "PickCardRebate 隱私權政策，了解我們如何收集、使用及保護您的個人資訊。",
+  alternates: {
+    canonical: "https://pickcardrebate.com/privacy",
+  },
+  openGraph: {
+    title: "隱私權政策｜PickCardRebate",
+    description: "PickCardRebate 隱私權政策",
+    url: "https://pickcardrebate.com/privacy",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+const LAST_UPDATED = "2025年12月5日";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "隱私權政策",
+  "description": "PickCardRebate 隱私權政策",
+  "url": "https://pickcardrebate.com/privacy",
+  "dateModified": "2025-12-05",
+  "inLanguage": "zh-HK",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "PickCardRebate",
+    "url": "https://pickcardrebate.com"
+  },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "首頁", "item": "https://pickcardrebate.com" },
+      { "@type": "ListItem", "position": 2, "name": "隱私權政策", "item": "https://pickcardrebate.com/privacy" }
+    ]
+  }
+};
 
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <Navbar />
       
       <main className="container mx-auto px-4 py-12 max-w-3xl">
         <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border dark:border-gray-800 p-8 md:p-12 space-y-8">
           <div className="border-b dark:border-gray-800 pb-6">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">隱私權政策</h1>
-            <p className="text-gray-500 dark:text-gray-400 text-sm">最後更新日期：2024年11月27日</p>
+            <p className="text-gray-500 dark:text-gray-400 text-sm">最後更新日期：{LAST_UPDATED}</p>
           </div>
 
           <div className="prose dark:prose-invert max-w-none space-y-6 text-gray-700 dark:text-gray-300">
@@ -59,7 +106,10 @@ export default function PrivacyPage() {
             <section>
               <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3">6. 用戶權利</h2>
               <p>
-                您有權隨時查詢、更正或刪除您的個人資訊。您可以透過「帳戶設定」頁面管理您的資料，或透過 Email 聯繫我們請求協助。
+                您有權隨時查詢、更正或刪除您的個人資訊。您可以透過「帳戶設定」頁面管理您的資料，或透過 Email 聯繫我們請求協助：
+                <a href="mailto:info@pickcardrebate.com" className="text-blue-600 dark:text-blue-400 hover:underline ml-1">
+                  info@pickcardrebate.com
+                </a>
               </p>
             </section>
 

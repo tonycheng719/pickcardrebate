@@ -1,15 +1,62 @@
+import { Metadata } from "next";
 import { Navbar } from "@/components/navbar";
+
+export const metadata: Metadata = {
+  title: "服務條款｜PickCardRebate 香港信用卡回贈比較平台",
+  description: "PickCardRebate 服務條款，了解使用本網站的條款及細則、免責聲明、會員權利等重要資訊。",
+  alternates: {
+    canonical: "https://pickcardrebate.com/terms",
+  },
+  openGraph: {
+    title: "服務條款｜PickCardRebate",
+    description: "PickCardRebate 服務條款及細則",
+    url: "https://pickcardrebate.com/terms",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+const LAST_UPDATED = "2025年12月5日";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "服務條款",
+  "description": "PickCardRebate 服務條款及細則",
+  "url": "https://pickcardrebate.com/terms",
+  "dateModified": "2025-12-05",
+  "inLanguage": "zh-HK",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "PickCardRebate",
+    "url": "https://pickcardrebate.com"
+  },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "首頁", "item": "https://pickcardrebate.com" },
+      { "@type": "ListItem", "position": 2, "name": "服務條款", "item": "https://pickcardrebate.com/terms" }
+    ]
+  }
+};
 
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <Navbar />
       
       <main className="container mx-auto px-4 py-12 max-w-3xl">
         <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border dark:border-gray-800 p-8 md:p-12 space-y-8">
           <div className="border-b dark:border-gray-800 pb-6">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">服務條款</h1>
-            <p className="text-gray-500 dark:text-gray-400 text-sm">最後更新日期：2025年6月3日</p>
+            <p className="text-gray-500 dark:text-gray-400 text-sm">最後更新日期：{LAST_UPDATED}</p>
           </div>
 
           <div className="prose dark:prose-invert max-w-none space-y-6 text-gray-700 dark:text-gray-300">
@@ -65,7 +112,10 @@ export default function TermsPage() {
             <section>
               <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3">7. 聯絡我們</h2>
               <p>
-                如您對本服務條款有任何疑問，請透過 Email 聯繫我們：support@pickcardrebate.hk
+                如您對本服務條款有任何疑問，請透過 Email 聯繫我們：
+                <a href="mailto:info@pickcardrebate.com" className="text-blue-600 dark:text-blue-400 hover:underline">
+                  info@pickcardrebate.com
+                </a>
               </p>
             </section>
           </div>

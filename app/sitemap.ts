@@ -73,6 +73,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.5,
     },
+    {
+      url: `${baseUrl}/about`,
+      lastModified: '2025-12-05',
+      changeFrequency: 'monthly',
+      priority: 0.4,
+    },
+    {
+      url: `${baseUrl}/terms`,
+      lastModified: '2025-12-05',
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/privacy`,
+      lastModified: '2025-12-05',
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
   ];
 
   // Guide/Article pages
