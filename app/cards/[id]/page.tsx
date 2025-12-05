@@ -70,6 +70,11 @@ export default function CardDetailPage() {
     return cards.find(c => c.id === cardId) || HK_CARDS.find(c => c.id === cardId);
   }, [cards, cardId]);
   
+  // 當 card.imageUrl 改變時，重置圖片錯誤狀態（讓新圖片有機會載入）
+  useEffect(() => {
+    setCardImageError(false);
+  }, [card?.imageUrl]);
+  
   // Fetch reviews on page load for SEO Schema
   useEffect(() => {
     if (cardId) {
