@@ -39,7 +39,7 @@ export default function AdminPartnerOffersPage() {
   const [isSeeding, setIsSeeding] = useState(false);
   
   // Partner Offer Form State
-  const [formData, setFormData] = useState<PartnerOffer>({
+  const [formData, setFormData] = useState<PartnerOffer & { existingCustomerOffer?: any }>({
     enabled: false,
     applyUrl: "",
     bonusValue: 0,
@@ -54,6 +54,8 @@ export default function AdminPartnerOffersPage() {
   });
   const [bonusItemInput, setBonusItemInput] = useState("");
   const [requirementInput, setRequirementInput] = useState("");
+  const [existingBonusItemInput, setExistingBonusItemInput] = useState("");
+  const [existingRequirementInput, setExistingRequirementInput] = useState("");
 
   // Fetch cards and their partner offers from API
   useEffect(() => {
@@ -119,7 +121,7 @@ export default function AdminPartnerOffersPage() {
     setSelectedCardId(cardId);
     const card = cards.find(c => c.id === cardId);
     if (card?.partnerOffer) {
-      setFormData(card.partnerOffer);
+      setFormData(card.partnerOffer as any);
     } else {
       // Reset form for new offer
       setFormData({
@@ -136,6 +138,11 @@ export default function AdminPartnerOffersPage() {
         notes: "",
       });
     }
+    // Reset input fields
+    setBonusItemInput("");
+    setRequirementInput("");
+    setExistingBonusItemInput("");
+    setExistingRequirementInput("");
   };
 
   // Save partner offer
@@ -650,6 +657,203 @@ export default function AdminPartnerOffersPage() {
                     placeholder="如：連同銀行外幣迎新，簽HK$10,000等值外幣可賺合共$1,500"
                     className="w-full min-h-[80px] rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm"
                   />
+                </div>
+
+                {/* Existing Customer Offer Section */}
+                <div className="border-t dark:border-gray-700 pt-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-900 dark:text-white">現有客戶優惠</h3>
+                      <p className="text-sm text-gray-500">如現有客戶有不同優惠，可在此設定</p>
+                    </div>
+                    <Button
+                      variant={formData.existingCustomerOffer ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => {
+                        if (formData.existingCustomerOffer) {
+                          setFormData(prev => ({ ...prev, existingCustomerOffer: undefined }));
+                        } else {
+                          setFormData(prev => ({
+                            ...prev,
+                            existingCustomerOffer: {
+                              bonusValue: 0,
+                              bonusDescription: "",
+                              bonusItems: [],
+                              requirements: [],
+                            }
+                          }));
+                        }
+                      }}
+                      className={formData.existingCustomerOffer ? "bg-blue-600 hover:bg-blue-700" : ""}
+                    >
+                      {formData.existingCustomerOffer ? "已啟用" : "啟用"}
+                    </Button>
+                  </div>
+
+                  {formData.existingCustomerOffer && (
+                    <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 space-y-4">
+                      {/* Existing Customer Bonus Value & Description */}
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            現有客戶獎賞價值 (HKD)
+                          </label>
+                          <Input
+                            type="number"
+                            value={formData.existingCustomerOffer.bonusValue || 0}
+                            onChange={(e) => setFormData(prev => ({
+                              ...prev,
+                              existingCustomerOffer: {
+                                ...prev.existingCustomerOffer,
+                                bonusValue: parseInt(e.target.value) || 0
+                              }
+                            }))}
+                            placeholder="200"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            現有客戶獎賞描述
+                          </label>
+                          <Input
+                            value={formData.existingCustomerOffer.bonusDescription || ""}
+                            onChange={(e) => setFormData(prev => ({
+                              ...prev,
+                              existingCustomerOffer: {
+                                ...prev.existingCustomerOffer,
+                                bonusDescription: e.target.value
+                              }
+                            }))}
+                            placeholder="$200現金回贈"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Existing Customer Bonus Items */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          現有客戶獎賞選項
+                        </label>
+                        <div className="flex gap-2 mb-2">
+                          <Input
+                            value={existingBonusItemInput}
+                            onChange={(e) => setExistingBonusItemInput(e.target.value)}
+                            placeholder="如：$200 Apple禮品卡"
+                            onKeyPress={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                if (existingBonusItemInput.trim()) {
+                                  setFormData(prev => ({
+                                    ...prev,
+                                    existingCustomerOffer: {
+                                      ...prev.existingCustomerOffer,
+                                      bonusItems: [...(prev.existingCustomerOffer?.bonusItems || []), existingBonusItemInput.trim()]
+                                    }
+                                  }));
+                                  setExistingBonusItemInput("");
+                                }
+                              }
+                            }}
+                          />
+                          <Button type="button" size="sm" onClick={() => {
+                            if (existingBonusItemInput.trim()) {
+                              setFormData(prev => ({
+                                ...prev,
+                                existingCustomerOffer: {
+                                  ...prev.existingCustomerOffer,
+                                  bonusItems: [...(prev.existingCustomerOffer?.bonusItems || []), existingBonusItemInput.trim()]
+                                }
+                              }));
+                              setExistingBonusItemInput("");
+                            }
+                          }}>
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {formData.existingCustomerOffer.bonusItems?.map((item: string, index: number) => (
+                            <span key={index} className="inline-flex items-center px-3 py-1 bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-full text-sm">
+                              {item}
+                              <button
+                                onClick={() => setFormData(prev => ({
+                                  ...prev,
+                                  existingCustomerOffer: {
+                                    ...prev.existingCustomerOffer,
+                                    bonusItems: prev.existingCustomerOffer?.bonusItems?.filter((_: string, i: number) => i !== index) || []
+                                  }
+                                }))}
+                                className="ml-2 text-blue-500 hover:text-blue-700"
+                              >
+                                <X className="h-3 w-3" />
+                              </button>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Existing Customer Requirements */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          現有客戶申請要求
+                        </label>
+                        <div className="flex gap-2 mb-2">
+                          <Input
+                            value={existingRequirementInput}
+                            onChange={(e) => setExistingRequirementInput(e.target.value)}
+                            placeholder="如：現有滙豐信用卡客戶"
+                            onKeyPress={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                if (existingRequirementInput.trim()) {
+                                  setFormData(prev => ({
+                                    ...prev,
+                                    existingCustomerOffer: {
+                                      ...prev.existingCustomerOffer,
+                                      requirements: [...(prev.existingCustomerOffer?.requirements || []), existingRequirementInput.trim()]
+                                    }
+                                  }));
+                                  setExistingRequirementInput("");
+                                }
+                              }
+                            }}
+                          />
+                          <Button type="button" size="sm" onClick={() => {
+                            if (existingRequirementInput.trim()) {
+                              setFormData(prev => ({
+                                ...prev,
+                                existingCustomerOffer: {
+                                  ...prev.existingCustomerOffer,
+                                  requirements: [...(prev.existingCustomerOffer?.requirements || []), existingRequirementInput.trim()]
+                                }
+                              }));
+                              setExistingRequirementInput("");
+                            }
+                          }}>
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <ul className="space-y-1">
+                          {formData.existingCustomerOffer.requirements?.map((req: string, index: number) => (
+                            <li key={index} className="flex items-center justify-between bg-white dark:bg-gray-800 px-3 py-2 rounded">
+                              <span className="text-sm text-gray-700 dark:text-gray-300">{req}</span>
+                              <button
+                                onClick={() => setFormData(prev => ({
+                                  ...prev,
+                                  existingCustomerOffer: {
+                                    ...prev.existingCustomerOffer,
+                                    requirements: prev.existingCustomerOffer?.requirements?.filter((_: string, i: number) => i !== index) || []
+                                  }
+                                }))}
+                                className="text-red-500 hover:text-red-700"
+                              >
+                                <X className="h-4 w-4" />
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
