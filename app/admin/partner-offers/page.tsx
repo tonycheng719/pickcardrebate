@@ -244,9 +244,9 @@ export default function AdminPartnerOffersPage() {
     }
   };
 
-  // Seed sample partner offers (MoneyHero style)
+  // Seed MoneyHero partner offers
   const handleSeedSampleData = async () => {
-    if (!confirm("這會添加 10 張熱門信用卡的示例合作夥伴資料（參考 MoneyHero），要繼續嗎？")) {
+    if (!confirm("這會從 MoneyHero 導入真實的額外迎新優惠資料（約20張信用卡），要繼續嗎？")) {
       return;
     }
     
@@ -348,7 +348,7 @@ export default function AdminPartnerOffersPage() {
             className="text-purple-600 border-purple-200 hover:bg-purple-50"
           >
             <Wand2 className="h-4 w-4 mr-1" />
-            添加示例資料
+            導入 MoneyHero 資料
           </Button>
           <span className="text-sm text-gray-500">前台顯示：</span>
           <Button 
