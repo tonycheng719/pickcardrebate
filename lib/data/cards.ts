@@ -26,7 +26,7 @@ export const HK_CARDS: CreditCard[] = [
       { description: "基本回饋 0.4% ($25/里)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
     tags: ["餐飲神卡", "最紅自主獎賞", "6X積分", "需登記"],
-    imageUrl: "https://www.hsbc.com.hk/content/dam/hsbc/hk/images/credit-cards/visa-signature-card-en.png",
+    imageUrl: "https://pickcardrebate-supabase-kong.zeabur.app/storage/v1/object/public/images/cards/1764329466898-zu95i1newy.png",
     feeWaiverCondition: "首兩年免年費",
     welcomeOfferText: "迎新簽 $8,000 送 $600-$800 獎賞錢 (首60日內)",
     applyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/visa-signature/",
