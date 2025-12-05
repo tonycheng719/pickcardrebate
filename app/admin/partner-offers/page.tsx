@@ -37,6 +37,7 @@ export default function AdminPartnerOffersPage() {
   const [globalEnabled, setGlobalEnabled] = useState(false);
   const [clickStats, setClickStats] = useState<ClickStats[]>([]);
   const [totalClicks, setTotalClicks] = useState(0);
+  const [isSeeding, setIsSeeding] = useState(false);
   
   // Partner Offer Form State
   const [formData, setFormData] = useState<PartnerOffer>({
@@ -250,6 +251,9 @@ export default function AdminPartnerOffersPage() {
       return;
     }
     
+    setIsSeeding(true);
+    toast.info("正在導入 MoneyHero 資料...");
+    
     try {
       const response = await fetch('/api/admin/partner-offers/seed', {
         method: 'POST',
@@ -269,6 +273,7 @@ export default function AdminPartnerOffersPage() {
       window.location.reload();
     } catch (error: any) {
       toast.error("添加失敗：" + error.message);
+      setIsSeeding(false);
     }
   };
 
@@ -345,10 +350,20 @@ export default function AdminPartnerOffersPage() {
             variant="outline"
             size="sm"
             onClick={handleSeedSampleData}
+            disabled={isSeeding}
             className="text-purple-600 border-purple-200 hover:bg-purple-50"
           >
-            <Wand2 className="h-4 w-4 mr-1" />
-            導入 MoneyHero 資料
+            {isSeeding ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-purple-600 mr-1"></div>
+                導入中...
+              </>
+            ) : (
+              <>
+                <Wand2 className="h-4 w-4 mr-1" />
+                導入 MoneyHero 資料
+              </>
+            )}
           </Button>
           <span className="text-sm text-gray-500">前台顯示：</span>
           <Button 
