@@ -152,13 +152,10 @@ export function PartnerOfferCard({ card, bankWelcomeValue = 0 }: PartnerOfferCar
               </span>
             )}
           </h4>
-          <p className="text-gray-700 dark:text-gray-300 font-medium">
-            {currentBonusDescription}
-          </p>
           
-          {/* Bonus Items if available */}
-          {currentBonusItems && currentBonusItems.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-2">
+          {/* 如果有 bonusItems 就顯示 items，否則顯示 description */}
+          {currentBonusItems && currentBonusItems.length > 0 ? (
+            <div className="flex flex-wrap gap-2">
               {currentBonusItems.map((item, index) => (
                 <span 
                   key={index}
@@ -168,6 +165,10 @@ export function PartnerOfferCard({ card, bankWelcomeValue = 0 }: PartnerOfferCar
                 </span>
               ))}
             </div>
+          ) : (
+            <p className="text-gray-700 dark:text-gray-300 font-medium">
+              {currentBonusDescription}
+            </p>
           )}
         </div>
         
