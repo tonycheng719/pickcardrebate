@@ -22,6 +22,7 @@ import Script from "next/script";
 import { CreditCard } from "@/lib/types";
 import { PartnerOfferCard } from "@/components/partner-offer-card";
 import { trackViewCard, trackClickApply, trackAddToWallet } from "@/lib/analytics";
+import { PageViewTracker } from "@/components/page-view-tracker";
 
 // Card Image component with error handling
 function CardImage({ card, onError }: { card: CreditCard; onError?: () => void }) {
@@ -273,6 +274,9 @@ export default function CardDetailPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
+      {/* Page View Tracker */}
+      <PageViewTracker pageType="card" pageId={card.id} pageName={card.name} />
+      
       <Navbar />
       
       {/* Structured Data for SEO */}
