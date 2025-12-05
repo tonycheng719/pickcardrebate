@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { HK_CARDS } from "@/lib/data/cards";
-import { createClient } from "@/lib/supabase/client";
 import { 
   ArrowLeft, Save, Trash2, Plus, ExternalLink, 
   Gift, Search, Check, X, AlertCircle, Settings, MousePointerClick, Wand2
@@ -56,33 +55,24 @@ export default function AdminPartnerOffersPage() {
   const [bonusItemInput, setBonusItemInput] = useState("");
   const [requirementInput, setRequirementInput] = useState("");
 
-  // Fetch cards and their partner offers from database
+  // Fetch cards and their partner offers from API
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
       try {
-        const supabase = createClient();
+        // Fetch partner offers via API (uses admin client on server)
+        const response = await fetch('/api/admin/partner-offers');
+        const data = await response.json();
         
-        // Fetch global setting
-        const { data: settingData } = await supabase
-          .from("system_settings")
-          .select("value")
-          .eq("key", "partner_offers_enabled")
-          .single();
-        
-        setGlobalEnabled(settingData?.value === "true");
-        
-        // Fetch partner offers from database
-        const { data: offersData } = await supabase
-          .from("cards")
-          .select("id, partner_offer");
+        setGlobalEnabled(data.globalEnabled || false);
         
         // Merge with HK_CARDS
+        const offersData = data.offers || [];
         const mergedCards = HK_CARDS.map(card => ({
           id: card.id,
           name: card.name,
           bank: card.bank,
-          partnerOffer: offersData?.find((o: { id: string; partner_offer: PartnerOffer }) => o.id === card.id)?.partner_offer as PartnerOffer | undefined,
+          partnerOffer: offersData.find((o: { id: string; partner_offer: PartnerOffer }) => o.id === card.id)?.partner_offer as PartnerOffer | undefined,
         }));
         
         setCards(mergedCards);
