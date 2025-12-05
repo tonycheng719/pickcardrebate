@@ -5,12 +5,20 @@ import { CreditCard, PartnerOffer } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { useSettings } from "@/lib/store/settings-context";
 import { trackPartnerApply } from "@/lib/analytics";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { 
   Gift, ExternalLink, ChevronDown, ChevronUp, 
   AlertCircle, CheckCircle2, Clock, DollarSign,
-  Sparkles
+  Sparkles, UserPlus, User
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+
+interface ExistingCustomerOffer {
+  bonusValue: number;
+  bonusDescription: string;
+  bonusItems?: string[];
+  requirements?: string[];
+}
 
 interface PartnerOfferCardProps {
   card: CreditCard;
@@ -19,8 +27,10 @@ interface PartnerOfferCardProps {
 
 export function PartnerOfferCard({ card, bankWelcomeValue = 0 }: PartnerOfferCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [customerType, setCustomerType] = useState<"new" | "existing">("new");
   const { getSetting } = useSettings();
   const offer = card.partnerOffer;
+  const existingOffer = (offer as any)?.existingCustomerOffer as ExistingCustomerOffer | undefined;
   
   // 全局開關：partner_offers_enabled 必須為 "true" 才顯示
   const globalEnabled = getSetting("partner_offers_enabled") === "true";
@@ -41,7 +51,20 @@ export function PartnerOfferCard({ card, bankWelcomeValue = 0 }: PartnerOfferCar
   }
   
   // 計算總價值
-  const totalValue = bankWelcomeValue + offer.bonusValue;
+  const hasExistingOffer = !!existingOffer;
+  const currentBonusValue = customerType === "existing" && existingOffer 
+    ? existingOffer.bonusValue 
+    : offer.bonusValue;
+  const currentBonusDescription = customerType === "existing" && existingOffer
+    ? existingOffer.bonusDescription
+    : offer.bonusDescription;
+  const currentBonusItems = customerType === "existing" && existingOffer
+    ? existingOffer.bonusItems
+    : offer.bonusItems;
+  const currentRequirements = customerType === "existing" && existingOffer
+    ? existingOffer.requirements
+    : offer.requirements;
+  const totalValue = bankWelcomeValue + currentBonusValue;
   
   // 換領須知
   const redemptionNotes = [
@@ -63,10 +86,34 @@ export function PartnerOfferCard({ card, bankWelcomeValue = 0 }: PartnerOfferCar
             <span className="font-bold">經本網指定連結申請額外獎賞</span>
           </div>
           <div className="bg-white/20 backdrop-blur px-3 py-1 rounded-full text-sm font-bold">
-            額外 +${offer.bonusValue.toLocaleString()}
+            額外 +${currentBonusValue.toLocaleString()}
           </div>
         </div>
       </div>
+      
+      {/* Customer Type Tabs (only show if has different offers) */}
+      {hasExistingOffer && (
+        <div className="px-5 pt-4">
+          <Tabs value={customerType} onValueChange={(v) => setCustomerType(v as any)} className="w-full">
+            <TabsList className="grid w-full grid-cols-2 bg-amber-100 dark:bg-amber-900/30">
+              <TabsTrigger 
+                value="new" 
+                className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 gap-2"
+              >
+                <UserPlus className="h-4 w-4" />
+                全新客戶
+              </TabsTrigger>
+              <TabsTrigger 
+                value="existing"
+                className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 gap-2"
+              >
+                <User className="h-4 w-4" />
+                現有客戶
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
+      )}
       
       {/* Main Content */}
       <div className="p-5">
@@ -74,6 +121,12 @@ export function PartnerOfferCard({ card, bankWelcomeValue = 0 }: PartnerOfferCar
         <div className="bg-white dark:bg-gray-800 rounded-xl p-4 mb-4 border border-amber-200 dark:border-amber-700">
           <div className="text-center">
             <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+              {hasExistingOffer && (
+                <span className="inline-flex items-center gap-1 mr-2 px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs">
+                  {customerType === "new" ? <UserPlus className="h-3 w-3" /> : <User className="h-3 w-3" />}
+                  {customerType === "new" ? "全新客戶" : "現有客戶"}
+                </span>
+              )}
               銀行迎新 + 本網額外獎賞 總價值
             </div>
             <div className="text-3xl font-bold text-amber-600 dark:text-amber-400">
@@ -81,7 +134,7 @@ export function PartnerOfferCard({ card, bankWelcomeValue = 0 }: PartnerOfferCar
               {totalValue.toLocaleString()}
             </div>
             <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-              銀行迎新 ${bankWelcomeValue.toLocaleString()} + 額外獎賞 ${offer.bonusValue.toLocaleString()}
+              銀行迎新 ${bankWelcomeValue.toLocaleString()} + 額外獎賞 ${currentBonusValue.toLocaleString()}
             </div>
           </div>
         </div>
@@ -91,15 +144,20 @@ export function PartnerOfferCard({ card, bankWelcomeValue = 0 }: PartnerOfferCar
           <h4 className="font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
             <Gift className="h-5 w-5 text-amber-500" />
             額外獎賞內容
+            {hasExistingOffer && (
+              <span className="text-xs font-normal text-gray-500">
+                ({customerType === "new" ? "全新客戶" : "現有客戶"})
+              </span>
+            )}
           </h4>
           <p className="text-gray-700 dark:text-gray-300 font-medium">
-            {offer.bonusDescription}
+            {currentBonusDescription}
           </p>
           
           {/* Bonus Items if available */}
-          {offer.bonusItems && offer.bonusItems.length > 0 && (
+          {currentBonusItems && currentBonusItems.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-2">
-              {offer.bonusItems.map((item, index) => (
+              {currentBonusItems.map((item, index) => (
                 <span 
                   key={index}
                   className="inline-flex items-center px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-sm"
@@ -112,20 +170,20 @@ export function PartnerOfferCard({ card, bankWelcomeValue = 0 }: PartnerOfferCar
         </div>
         
         {/* Requirements */}
-        {(offer.minSpend || offer.requirements) && (
+        {(offer.minSpend || currentRequirements) && (
           <div className="mb-4">
             <h4 className="font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
               <CheckCircle2 className="h-5 w-5 text-green-500" />
               申請要求
             </h4>
             <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
-              {offer.minSpend && (
+              {offer.minSpend && customerType === "new" && (
                 <li className="flex items-start gap-2">
                   <span className="text-green-500 mt-0.5">✓</span>
                   批卡後 {offer.minSpendDays || 30} 日內簽賬滿 ${offer.minSpend.toLocaleString()}
                 </li>
               )}
-              {offer.requirements?.map((req, index) => (
+              {currentRequirements?.map((req, index) => (
                 <li key={index} className="flex items-start gap-2">
                   <span className="text-green-500 mt-0.5">✓</span>
                   {req}
@@ -156,7 +214,7 @@ export function PartnerOfferCard({ card, bankWelcomeValue = 0 }: PartnerOfferCar
               cardName: card.name,
               cardBank: card.bank,
               partnerUrl: offer.applyUrl,
-              bonusValue: offer.bonusValue,
+              bonusValue: currentBonusValue,
             });
             
             // Track to backend for stats
@@ -166,6 +224,7 @@ export function PartnerOfferCard({ card, bankWelcomeValue = 0 }: PartnerOfferCar
               body: JSON.stringify({
                 cardId: card.id,
                 cardName: card.name,
+                customerType: hasExistingOffer ? customerType : 'new',
               }),
             }).catch(() => {}); // Silent fail
           }}

@@ -479,6 +479,104 @@ const MONEYHERO_PARTNER_OFFERS = [
       notes: "⚠️ 優惠期至12月21日！換領流程由推廣期結束後起計需時至少16星期。若客戶於開戶後13個月內取消有關信用卡戶口，並已獲贈有關之迎新獎賞，則須繳付同等價值之金額作為手續費。",
     }
   },
+
+  // ========================================
+  // 滙豐銀行 HSBC (截至 2025/12/05 23:59)
+  // 適用：Visa Signature 卡、Pulse銀聯雙幣鑽石卡
+  // ⚠️ 全新客戶與現有客戶優惠不同
+  // ========================================
+  {
+    cardId: "hsbc-visa-signature",
+    partnerOffer: {
+      enabled: true,
+      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/hsbc-visa-signature-card",
+      bonusValue: 5980,
+      bonusDescription: "全新客戶8選1：HK$1,300 HKTVmall/HK$1,000 Apple禮品卡/HK$1,000 惠康/12,000 Max Miles/Dyson Zone™ 耳機(HK$5,980)/Delsey行李箱(HK$4,980)/Marshall喇叭(HK$1,499)/Canon 打印機(HK$1,080)",
+      bonusItems: [
+        "HK$1,300 HKTVmall電子購物禮券",
+        "HK$1,000 Apple Store禮品卡",
+        "HK$1,000 惠康購物禮券",
+        "12,000 Max Miles 飛行里數",
+        "Dyson Zone™ 降噪耳機（價值HK$5,980）",
+        "Delsey 30\" GRENELLE SE Expandable Front Opening Suitcase（價值HK$4,980; 顏色隨機）",
+        "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）",
+        "Canon SELPHY QX20 流動無線相片打印機（價值HK$1,080）"
+      ],
+      validFrom: "2025-12-01",
+      validTo: "2025-12-05",
+      requirements: [
+        "全新滙豐信用卡客戶（於處理申請時沒有任何滙豐個人信用卡基本卡）",
+        "2026年1月5日之前成功獲批信用卡",
+        "收到表格後7日內填妥「獎賞換領表格」",
+        "批卡後7日內填寫表格及上傳批核證明"
+      ],
+      minSpend: 0,
+      minSpendDays: 0,
+      notes: "⚠️ 優惠期至12月5日晚上11:59分！選擇Max Miles時，登記電郵需與HEYMAX賬戶相同。換領流程由推廣期結束後起計需時至少8星期。申請前請關掉AdBlocker及「私人模式」。",
+      // 新增：現有客戶優惠
+      existingCustomerOffer: {
+        bonusValue: 4980,
+        bonusDescription: "現有客戶6選1：HK$200 Apple禮品卡/HK$200 惠康禮券/8,000 Max Miles/Delsey行李箱(HK$4,980)/Marshall喇叭(HK$1,499)/Insta360 Flow 2(HK$819)",
+        bonusItems: [
+          "HK$200 Apple Store禮品卡",
+          "HK$200 惠康超市禮券",
+          "8,000 Max Miles 飛行里數",
+          "Delsey 30\" GRENELLE SE Expandable Front Opening Suitcase（價值HK$4,980; 顏色隨機）",
+          "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）",
+          "Insta360 Flow 2 AI 追蹤模組套裝（價值HK$819）"
+        ],
+        requirements: [
+          "現有滙豐信用卡客戶（於處理申請時已持有任何滙豐個人信用卡基本卡）"
+        ]
+      }
+    }
+  },
+  {
+    cardId: "hsbc-pulse",
+    partnerOffer: {
+      enabled: true,
+      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/hsbc-pulse-unionpay-card",
+      bonusValue: 5980,
+      bonusDescription: "全新客戶8選1：HK$1,300 HKTVmall/HK$1,000 Apple禮品卡/HK$1,000 惠康/12,000 Max Miles/Dyson Zone™ 耳機(HK$5,980)/Delsey行李箱(HK$4,980)/Marshall喇叭(HK$1,499)/Canon 打印機(HK$1,080)",
+      bonusItems: [
+        "HK$1,300 HKTVmall電子購物禮券",
+        "HK$1,000 Apple Store禮品卡",
+        "HK$1,000 惠康購物禮券",
+        "12,000 Max Miles 飛行里數",
+        "Dyson Zone™ 降噪耳機（價值HK$5,980）",
+        "Delsey 30\" GRENELLE SE Expandable Front Opening Suitcase（價值HK$4,980; 顏色隨機）",
+        "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）",
+        "Canon SELPHY QX20 流動無線相片打印機（價值HK$1,080）"
+      ],
+      validFrom: "2025-12-01",
+      validTo: "2025-12-05",
+      requirements: [
+        "全新滙豐信用卡客戶（於處理申請時沒有任何滙豐個人信用卡基本卡）",
+        "2026年1月5日之前成功獲批信用卡",
+        "收到表格後7日內填妥「獎賞換領表格」",
+        "批卡後7日內填寫表格及上傳批核證明"
+      ],
+      minSpend: 0,
+      minSpendDays: 0,
+      notes: "⚠️ 優惠期至12月5日晚上11:59分！選擇Max Miles時，登記電郵需與HEYMAX賬戶相同。換領流程由推廣期結束後起計需時至少8星期。申請前請關掉AdBlocker及「私人模式」。",
+      // 新增：現有客戶優惠
+      existingCustomerOffer: {
+        bonusValue: 4980,
+        bonusDescription: "現有客戶6選1：HK$200 Apple禮品卡/HK$200 惠康禮券/8,000 Max Miles/Delsey行李箱(HK$4,980)/Marshall喇叭(HK$1,499)/Insta360 Flow 2(HK$819)",
+        bonusItems: [
+          "HK$200 Apple Store禮品卡",
+          "HK$200 惠康超市禮券",
+          "8,000 Max Miles 飛行里數",
+          "Delsey 30\" GRENELLE SE Expandable Front Opening Suitcase（價值HK$4,980; 顏色隨機）",
+          "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）",
+          "Insta360 Flow 2 AI 追蹤模組套裝（價值HK$819）"
+        ],
+        requirements: [
+          "現有滙豐信用卡客戶（於處理申請時已持有任何滙豐個人信用卡基本卡）"
+        ]
+      }
+    }
+  },
 ];
 
 export async function POST(request: Request) {
