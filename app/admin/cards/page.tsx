@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Edit, ExternalLink, Image, Info, Star, ArrowUp, ArrowDown, GripVertical } from "lucide-react";
+import { Search, Edit, ExternalLink, Image, Info, Star, ArrowUp, ArrowDown, GripVertical, Eye, TrendingUp } from "lucide-react";
 import { useMemo, useState, useEffect } from "react";
 import Link from "next/link";
 import { HK_CARDS } from "@/lib/data/cards";
@@ -15,12 +15,18 @@ interface CardWithPriority extends CreditCard {
   featured: boolean;
 }
 
+interface ViewStat {
+  page_id: string;
+  view_count: number;
+}
+
 export default function AdminCardsPage() {
   // 使用 cards.ts 作為唯一來源
   const [dbData, setDbData] = useState<Record<string, { image_url?: string; priority?: number; featured?: boolean }>>({});
+  const [viewStats, setViewStats] = useState<Record<string, number>>({});
   const [search, setSearch] = useState("");
   const [bankFilter, setBankFilter] = useState("所有銀行");
-  const [sortMode, setSortMode] = useState<"default" | "priority">("default");
+  const [sortMode, setSortMode] = useState<"default" | "priority" | "views">("default");
 
   // 從數據庫獲取圖片 URL 和優先級
   useEffect(() => {
@@ -40,6 +46,26 @@ export default function AdminCardsPage() {
       }
     }
     fetchData();
+  }, []);
+
+  // 獲取瀏覽次數
+  useEffect(() => {
+    async function fetchViewStats() {
+      try {
+        const res = await fetch('/api/stats/pageview?pageType=card');
+        if (res.ok) {
+          const data = await res.json();
+          const stats: Record<string, number> = {};
+          (data.stats || []).forEach((s: ViewStat) => {
+            stats[s.page_id] = s.view_count;
+          });
+          setViewStats(stats);
+        }
+      } catch (e) {
+        console.error("Failed to fetch view stats:", e);
+      }
+    }
+    fetchViewStats();
   }, []);
 
   // 合併 cards.ts 同數據庫圖片/優先級
@@ -71,10 +97,19 @@ export default function AdminCardsPage() {
         // Then by priority (lower = higher priority)
         return a.priority - b.priority;
       });
+    } else if (sortMode === "views") {
+      // Sort by view count (highest first)
+      result = [...result].sort((a, b) => {
+        const viewsA = viewStats[a.id] || 0;
+        const viewsB = viewStats[b.id] || 0;
+        return viewsB - viewsA;
+      });
     }
 
     return result;
-  }, [cards, search, bankFilter, sortMode]);
+  }, [cards, search, bankFilter, sortMode, viewStats]);
+
+  const totalViews = Object.values(viewStats).reduce((a, b) => a + b, 0);
 
   // Update card priority
   const updatePriority = async (cardId: string, newPriority: number) => {
@@ -143,7 +178,7 @@ export default function AdminCardsPage() {
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">信用卡管理</h1>
           <p className="text-gray-500 dark:text-gray-400">
-            共 {cards.length} 張信用卡（資料來源：cards.ts）
+            共 {cards.length} 張信用卡，總瀏覽 {totalViews.toLocaleString()} 次
           </p>
         </div>
         <div className="flex items-center gap-2 text-sm text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 px-3 py-2 rounded-lg">
@@ -181,6 +216,14 @@ export default function AdminCardsPage() {
           <GripVertical className="h-4 w-4 mr-2" />
           {sortMode === "priority" ? "優先級排序中" : "按優先級排序"}
         </Button>
+        <Button
+          variant={sortMode === "views" ? "default" : "outline"}
+          onClick={() => setSortMode(sortMode === "views" ? "default" : "views")}
+          className="whitespace-nowrap"
+        >
+          <Eye className="h-4 w-4 mr-2" />
+          {sortMode === "views" ? "瀏覽排序中" : "按瀏覽排序"}
+        </Button>
       </div>
 
       <div className="bg-white dark:bg-gray-800 rounded-xl border dark:border-gray-700 overflow-hidden shadow-sm">
@@ -190,6 +233,12 @@ export default function AdminCardsPage() {
               <th className="px-6 py-4 font-medium">卡片名稱</th>
               <th className="px-6 py-4 font-medium">銀行</th>
               <th className="px-6 py-4 font-medium">標籤</th>
+              <th className="px-6 py-4 font-medium">
+                <div className="flex items-center gap-1">
+                  <Eye className="h-4 w-4" />
+                  瀏覽
+                </div>
+              </th>
               <th className="px-6 py-4 font-medium">優先級</th>
               <th className="px-6 py-4 font-medium">操作</th>
             </tr>
@@ -222,6 +271,20 @@ export default function AdminCardsPage() {
                     ))}
                     {card.tags.length > 2 && <span className="text-xs text-gray-400">+{card.tags.length - 2}</span>}
                   </div>
+                </td>
+                <td className="px-6 py-4">
+                  {(() => {
+                    const views = viewStats[card.id] || 0;
+                    const isTop = views > 0 && Object.values(viewStats).filter(v => v > views).length < 3;
+                    return (
+                      <div className="flex items-center gap-1">
+                        {isTop && <TrendingUp className="h-3 w-3 text-green-500" />}
+                        <span className={isTop ? 'text-green-600 dark:text-green-400 font-medium' : 'text-gray-500'}>
+                          {views.toLocaleString()}
+                        </span>
+                      </div>
+                    );
+                  })()}
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-2">

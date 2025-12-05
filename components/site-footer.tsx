@@ -33,6 +33,9 @@ export function SiteFooter() {
               <span className="font-medium">加入 WhatsApp 討論群</span>
             </a>
             
+            <Link href="/about" className="text-sm text-gray-500 hover:text-gray-900 dark:hover:text-gray-300">
+              關於我們
+            </Link>
             <Link href="/terms" className="text-sm text-gray-500 hover:text-gray-900 dark:hover:text-gray-300">
               服務條款
             </Link>

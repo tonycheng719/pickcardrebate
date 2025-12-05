@@ -638,17 +638,13 @@ export const HK_CARDS: CreditCard[] = [
     incomeNote: "全日制學生可豁免入息要求",
     foreignCurrencyFee: 1.95,
     rules: [
-      // T&C: 自選類別 5%，需透過 DBS Card+ App 登記及 45 日內按「一扣即享」
-      // 選項: 娛樂/網上旅遊/美容服飾/指定網上商戶等 (每月自選一項)
-      { description: "自選類別 5% [需登記+一扣即享]", matchType: "category", matchValue: ["entertainment", "travel", "online", "fashion", "beauty"], percentage: 5.0, cap: 150, capType: "reward", excludeCategories: ["ewallet", "insurance", "tax"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
-      // T&C: 基本回贈 0.4%，排除電子錢包、八達通、繳費等
+      // 基本回贈 0.4%，排除電子錢包、八達通、繳費等
+      // 注意：自選類別 5% 推廣已於 2025/3/31 結束
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["自選5%", "一扣即享", "需登記"],
-    sellingPoints: ["自選類別 5% (娛樂/旅遊/美容/服飾等)", "需透過 DBS Card+ App 登記", "每月回贈上限 $150 (即$3,000簽賬)"],
-    note: "⚠️ 【推廣期 2025/4/1-12/31】自選類別 5% 需：(1) 安裝 DBS Card+ App；(2) 開啟「一扣即享」通知；(3) 於 App 內登記及選擇類別；(4) 簽賬後 45 日內按「一扣即享」按鈕！逾期未按視作放棄獎賞。每月可重新選擇類別，未選擇則自動延續上月。✅ DBS$ 積分無限期！⚠️ 電子錢包（八達通增值/PayMe/支付寶/微信支付）**每月首 $5,000 可獲 DBS$**，超過不計。Apple Pay/Google Pay/Samsung Pay 不受此限。❌ 不計回贈：繳稅、繳費、保費。",
-    promoEndDate: "2025-12-31",
-    promoName: "DBS Live Fresh 自選類別 5% 推廣",
+    tags: ["學生卡", "低門檻"],
+    sellingPoints: ["基本回贈 0.4%", "學生可豁免入息要求", "DBS$ 積分無限期"],
+    note: "💡 基本回贈 0.4%。✅ DBS$ 積分無限期！⚠️ 電子錢包（八達通增值/PayMe/支付寶/微信支付）**每月首 $5,000 可獲 DBS$**，超過不計。Apple Pay/Google Pay/Samsung Pay 不受此限。❌ 不計回贈：繳稅、繳費、保費。📌 注意：自選類別 5% 推廣已於 2025年3月31日結束。",
   },
   {
     id: "dbs-compass",
