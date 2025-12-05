@@ -151,20 +151,31 @@ export function PartnerOfferCard({ card, bankWelcomeValue = 0 }: PartnerOfferCar
                 ({customerType === "new" ? "全新客戶" : "現有客戶"})
               </span>
             )}
+            {currentBonusItems && currentBonusItems.length > 1 && (
+              <span className="text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-100 dark:bg-amber-900/30 px-2 py-0.5 rounded-full">
+                {currentBonusItems.length}選1
+              </span>
+            )}
           </h4>
           
           {/* 如果有 bonusItems 就顯示 items，否則顯示 description */}
           {currentBonusItems && currentBonusItems.length > 0 ? (
-            <div className="flex flex-wrap gap-2">
+            <ul className="space-y-2">
               {currentBonusItems.map((item, index) => (
-                <span 
+                <li 
                   key={index}
-                  className="inline-flex items-center px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-sm"
+                  className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300"
                 >
-                  {item}
-                </span>
+                  <span className="text-amber-500 mt-0.5">•</span>
+                  <span>
+                    {item}
+                    {index < currentBonusItems.length - 1 && (
+                      <span className="text-gray-400 dark:text-gray-500 ml-1">; or</span>
+                    )}
+                  </span>
+                </li>
               ))}
-            </div>
+            </ul>
           ) : (
             <p className="text-gray-700 dark:text-gray-300 font-medium">
               {currentBonusDescription}

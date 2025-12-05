@@ -454,7 +454,7 @@ export default function CardDetailPage() {
                         <Calendar className="h-5 w-5 text-amber-700 dark:text-amber-200" />
                       </div>
                       <div>
-                        <p className="font-semibold text-amber-900 dark:text-amber-100">迎新優惠</p>
+                        <p className="font-semibold text-amber-900 dark:text-amber-100">銀行迎新優惠</p>
                         <p className="text-amber-800 dark:text-amber-200 mt-1">{card.welcomeOfferText}</p>
                       </div>
                     </div>
