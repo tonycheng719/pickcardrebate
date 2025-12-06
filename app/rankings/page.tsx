@@ -49,6 +49,21 @@ function CardRow({ result, rank, showFxFee = false }: { result: RankingResult; r
     <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
       <RankBadge rank={rank} />
       
+      {/* Card Image */}
+      <div className={`w-10 h-7 rounded-md flex items-center justify-center overflow-hidden flex-shrink-0 ${!result.card.imageUrl ? (result.card.style?.bgColor || 'bg-gray-600') : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700'}`}>
+        {result.card.imageUrl ? (
+          <img 
+            src={result.card.imageUrl} 
+            alt={result.card.name}
+            className="max-h-full max-w-full object-contain"
+          />
+        ) : (
+          <span className={`text-[8px] font-bold ${result.card.style?.textColor || 'text-white'}`}>
+            {result.card.bank.slice(0, 3)}
+          </span>
+        )}
+      </div>
+      
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
           <span className="font-medium text-gray-900 dark:text-white truncate">

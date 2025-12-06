@@ -95,6 +95,21 @@ function CardDetailSection({ result, rank, showFxInfo = false }: { result: Ranki
         <div className="flex items-start gap-4">
           <RankBadge rank={rank} />
           
+          {/* Card Image */}
+          <div className={`w-16 h-10 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0 ${!result.card.imageUrl ? (result.card.style?.bgColor || 'bg-gray-600') : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700'}`}>
+            {result.card.imageUrl ? (
+              <img 
+                src={result.card.imageUrl} 
+                alt={result.card.name}
+                className="max-h-full max-w-full object-contain"
+              />
+            ) : (
+              <span className={`text-xs font-bold ${result.card.style?.textColor || 'text-white'}`}>
+                {result.card.bank.slice(0, 3)}
+              </span>
+            )}
+          </div>
+          
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
               <span className="text-sm text-gray-500 dark:text-gray-400">
@@ -281,7 +296,21 @@ function QuickRankingTable({ rankings, category }: { rankings: RankingResult[]; 
                   )}
                 </td>
                 <td className="px-3 py-3">
-                  <Link href={`/cards/${result.card.id}`} className="hover:text-emerald-600">
+                  <Link href={`/cards/${result.card.id}`} className="hover:text-emerald-600 flex items-center gap-2">
+                    {/* Card Image */}
+                    <div className={`w-8 h-5 rounded flex items-center justify-center overflow-hidden flex-shrink-0 ${!result.card.imageUrl ? (result.card.style?.bgColor || 'bg-gray-600') : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700'}`}>
+                      {result.card.imageUrl ? (
+                        <img 
+                          src={result.card.imageUrl} 
+                          alt={result.card.name}
+                          className="max-h-full max-w-full object-contain"
+                        />
+                      ) : (
+                        <span className={`text-[6px] font-bold ${result.card.style?.textColor || 'text-white'}`}>
+                          {result.card.bank.slice(0, 2)}
+                        </span>
+                      )}
+                    </div>
                     <div className="font-medium text-gray-900 dark:text-white">{result.card.name}</div>
                   </Link>
                 </td>
