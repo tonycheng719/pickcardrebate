@@ -592,7 +592,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "DBS Eminent Card",
     bank: "DBS",
     style: { bgColor: "bg-gradient-to-br from-gray-600 to-gray-900", textColor: "text-white" },
-    imageUrl: "https://www.dbs.com.hk/personal/credit-cards/credit-cards/eminent-card/images/card_face_eminent_visa_signature.png",
+    // imageUrl removed - DBS official URL no longer valid
     annualFee: 1800,
     feeWaiverCondition: "首年免年費",
     minIncome: 360000,
