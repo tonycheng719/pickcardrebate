@@ -40,7 +40,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "HSBC Red Credit Card",
     bank: "HSBC",
     style: { bgColor: "bg-gradient-to-br from-red-500 via-red-600 to-pink-700", textColor: "text-white" },
-    imageUrl: "https://www.hsbc.com.hk/content/dam/hsbc/hk/images/credit-cards/red-credit-card-en.png",
+    // imageUrl from DB
     rewardTimeline: "獎賞錢即時入賬",
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' },
@@ -170,7 +170,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "SC Smart Card",
     bank: "Standard Chartered",
     style: { bgColor: "bg-gradient-to-r from-emerald-400 to-cyan-600", textColor: "text-white" },
-    imageUrl: "https://av.sc.com/hk/content/images/hk-smart-card-masthead-400x255.png",
+    // imageUrl from DB
     rewardTimeline: "現金回贈於「360°全面賞」平台顯示，需手動換領 (最低$50)",
     annualFee: 0,
     foreignCurrencyFee: 0, // T&C: 外幣交易手續費全免 (本地+海外)
@@ -223,7 +223,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "SC Simply Cash Visa",
     bank: "Standard Chartered",
     style: { bgColor: "bg-gradient-to-br from-blue-500 to-blue-700", textColor: "text-white" },
-    imageUrl: "https://av.sc.com/hk/content/images/hk-simply-cash-visa-card-masthead-400x255.png",
+    // imageUrl from DB
     rewardTimeline: "現金回贈於下期賬單顯示，需手動換領 ($50倍數)",
     annualFee: 2000,
     minIncome: 96000,
@@ -250,7 +250,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "BOC Chill Card",
     bank: "BOC",
     style: { bgColor: "bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500", textColor: "text-white" },
-    imageUrl: "https://www.bochk.com/dam/more/creditcard/chill/chill_card_face.png",
+    // imageUrl from DB
     rewardTimeline: "現金回贈",
     annualFee: 600,
     feeWaiverCondition: "首年免年費",
@@ -276,7 +276,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "BOC SOGO Visa Signature",
     bank: "BOC",
     style: { bgColor: "bg-gradient-to-br from-blue-700 to-blue-900", textColor: "text-white" },
-    imageUrl: "https://www.bochk.com/dam/more/creditcard/sogo/sogo_visa_signature_card_face.png",
+    // imageUrl from DB
     rewardTimeline: "現金回贈 (下個月內入賬)",
     annualFee: 600,
     feeWaiverCondition: "首年免年費",
@@ -299,7 +299,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "BOC Cheers Visa Infinite",
     bank: "BOC",
     style: { bgColor: "bg-gradient-to-br from-neutral-800 to-black", textColor: "text-yellow-400" },
-    imageUrl: "https://www.bochk.com/dam/more/creditcard/cheers/cheers_visa_infinite_card_face.png",
+    // imageUrl from DB
     rewardTimeline: "積分",
     annualFee: 3800,
     feeWaiverCondition: "首年免年費；私人銀行/私人財富/中銀理財客戶豁免年費",
@@ -331,7 +331,7 @@ export const HK_CARDS: CreditCard[] = [
     bank: "BOC",
     hidden: true,
     style: { bgColor: "bg-gradient-to-br from-gray-700 to-gray-900", textColor: "text-yellow-300" },
-    imageUrl: "https://www.bochk.com/dam/more/creditcard/cheers/cheers_visa_signature_card_face.png",
+    // imageUrl from DB
     rewardTimeline: "積分",
     annualFee: 2000,
     feeWaiverCondition: "首年免年費；私人銀行/私人財富/中銀理財客戶豁免年費",
@@ -362,7 +362,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "BOC 大灣區一卡通",
     bank: "BOC",
     style: { bgColor: "bg-gradient-to-br from-blue-600 to-cyan-600", textColor: "text-white" },
-    imageUrl: "https://www.bochk.com/dam/more/creditcard/gba/gba_diamond_card_face.png",
+    // imageUrl from DB
     annualFee: 800,
     feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 0,
@@ -382,7 +382,7 @@ export const HK_CARDS: CreditCard[] = [
     bank: "中銀",
     hidden: true,
     style: { bgColor: "bg-gradient-to-br from-blue-400 to-blue-600", textColor: "text-white" },
-    imageUrl: "https://www.bochk.com/dam/more/creditcard/icard/icard_card_face.png",
+    // imageUrl from DB
     annualFee: 0,
     feeWaiverCondition: "永久免年費",
     foreignCurrencyFee: 1.95,
@@ -407,7 +407,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "Hang Seng MMPOWER",
     bank: "Hang Seng",
     style: { bgColor: "bg-gradient-to-br from-purple-600 via-pink-600 to-red-500", textColor: "text-white" },
-    imageUrl: "https://www.hangseng.com/content/dam/hase/config/personal/credit-cards/mmpower-card/images/mmpower-card-face.png",
+    // imageUrl from DB
     annualFee: 2000,
     minIncome: 150000,
     feeWaiverCondition: "首年免年費",
@@ -433,7 +433,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "Hang Seng enJoy Card",
     bank: "Hang Seng",
     style: { bgColor: "bg-gradient-to-br from-red-500 to-red-700", textColor: "text-white" },
-    imageUrl: "https://www.hangseng.com/content/dam/hase/config/personal/credit-cards/enjoy-card/images/enjoy-card-face.png",
+    // imageUrl from DB
     annualFee: 0,
     feeWaiverCondition: "永久免年費",
     foreignCurrencyFee: 1.95,
@@ -468,7 +468,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "Hang Seng Travel+",
     bank: "Hang Seng",
     style: { bgColor: "bg-gradient-to-br from-sky-500 to-blue-600", textColor: "text-white" },
-    imageUrl: "https://www.hangseng.com/content/dam/hase/config/personal/credit-cards/travel-plus-card/images/travel-plus-card-face.png",
+    // imageUrl from DB
     annualFee: 2000,
     minIncome: 150000,
     feeWaiverCondition: "首年免年費",
@@ -501,7 +501,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "Citi Cash Back Card",
     bank: "Citi",
     style: { bgColor: "bg-gradient-to-br from-blue-700 to-blue-900", textColor: "text-white" },
-    imageUrl: "https://www.citibank.com.hk/chinese/credit-cards/images/cash-back-card.png",
+    // imageUrl from DB
     annualFee: 1200,
     minIncome: 120000,
     feeWaiverCondition: "首年免年費",
@@ -523,7 +523,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "Citi Rewards Card",
     bank: "Citi",
     style: { bgColor: "bg-gradient-to-r from-blue-400 to-cyan-500", textColor: "text-white" },
-    imageUrl: "https://www.citibank.com.hk/chinese/credit-cards/images/rewards-card.png",
+    // imageUrl from DB
     annualFee: 1800,
     minIncome: 120000,
     feeWaiverCondition: "首年免年費",
@@ -546,7 +546,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "Citi PremierMiles",
     bank: "Citi",
     style: { bgColor: "bg-gradient-to-br from-slate-600 to-slate-800", textColor: "text-white" },
-    imageUrl: "https://www.citibank.com.hk/chinese/credit-cards/images/premiermiles-card.png",
+    // imageUrl from DB
     annualFee: 1800,
     minIncome: 150000,
     feeWaiverCondition: "首年免年費",
@@ -567,7 +567,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "Citi Prestige Card",
     bank: "Citi",
     style: { bgColor: "bg-gradient-to-br from-gray-700 to-gray-900", textColor: "text-white" },
-    imageUrl: "https://www.citibank.com.hk/chinese/credit-cards/images/prestige-card.png",
+    // imageUrl from DB
     annualFee: 3800,
     minIncome: 600000,
     feeWaiverCondition: "首年免年費",
@@ -619,7 +619,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "DBS Black World Mastercard",
     bank: "DBS",
     style: { bgColor: "bg-black", textColor: "text-white" },
-    imageUrl: "https://www.dbs.com.hk/personal/credit-cards/credit-cards/black-card/images/card_face_black_world_master.png",
+    // imageUrl from DB
     annualFee: 1800,
     feeWaiverCondition: "首年免年費",
     minIncome: 240000,
@@ -639,7 +639,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "DBS Live Fresh",
     bank: "DBS",
     style: { bgColor: "bg-gradient-to-br from-lime-300 to-lime-500", textColor: "text-black" },
-    imageUrl: "https://www.dbs.com.hk/personal/credit-cards/credit-cards/live-fresh-card/images/card_face_live_fresh.png",
+    // imageUrl from DB
     annualFee: 600,
     feeWaiverCondition: "首年免年費",
     minIncome: 150000,
@@ -659,7 +659,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "DBS COMPASS VISA",
     bank: "DBS",
     style: { bgColor: "bg-gradient-to-br from-red-500 to-red-700", textColor: "text-white" },
-    imageUrl: "https://www.dbs.com.hk/personal/credit-cards/credit-cards/compass-visa/images/card_face_compass_visa.png",
+    // imageUrl from DB
     annualFee: 600,
     feeWaiverCondition: "首年免年費",
     minIncome: 100000,
@@ -691,7 +691,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "AEON CARD WAKUWAKU",
     bank: "AEON",
     style: { bgColor: "bg-gradient-to-br from-pink-400 to-pink-600", textColor: "text-white" },
-    imageUrl: "https://www.aeon.com.hk/wakuwaku/images/card_face.png",
+    // imageUrl from DB
     annualFee: 0,
     feeWaiverCondition: "永久免年費",
     foreignCurrencyFee: 1.95,
@@ -722,7 +722,7 @@ export const HK_CARDS: CreditCard[] = [
     bank: "AEON",
     hidden: true,
     style: { bgColor: "bg-gradient-to-br from-red-600 to-red-800", textColor: "text-white" },
-    imageUrl: "https://www.aeon.com.hk/tc/privileges/promotion_images/jal_mastercard_card_face.png",
+    // imageUrl from DB
     annualFee: 300,
     feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 0,
@@ -991,7 +991,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "安信 EarnMORE 銀聯卡",
     bank: "安信",
     style: { bgColor: "bg-gradient-to-br from-blue-600 to-indigo-700", textColor: "text-white" },
-    imageUrl: "https://www.primecredit.com/credit-card/images/earnmore_card_face.png",
+    // imageUrl from DB
     rewardTimeline: "現金回贈下期月結單入賬",
     annualFee: 250,
     feeWaiverCondition: "首年免年費",
@@ -1013,7 +1013,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "WeWa 銀聯卡",
     bank: "安信",
     style: { bgColor: "bg-gradient-to-br from-yellow-300 to-yellow-500", textColor: "text-black" },
-    imageUrl: "https://www.wewacard.com/images/card_face.png",
+    // imageUrl from DB
     annualFee: 600,
     feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 0,
@@ -1156,7 +1156,7 @@ export const HK_CARDS: CreditCard[] = [
     bank: "富邦銀行",
     hidden: true,
     style: { bgColor: "bg-gradient-to-br from-blue-800 to-indigo-900", textColor: "text-white" },
-    imageUrl: "https://www.fubonbank.com.hk/web/html/cc_platinum_card_face.png",
+    // imageUrl from DB
     foreignCurrencyFee: 1.95,
     rules: [
       // T&C: 新台幣簽賬 20X 積分 = 8%，每月上限 80,000 額外積分，全年 240,000
@@ -1183,7 +1183,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "Amex Explorer",
     bank: "American Express",
     style: { bgColor: "bg-slate-800", textColor: "text-white" },
-    imageUrl: "https://www.americanexpress.com/content/dam/amex/hk/en/staticassets/card-art/Explorer-Credit-Card/480x304_Explorer_Card_Art_Di_No_Name.png",
+    // imageUrl from DB
     foreignCurrencyFee: 2.0,
     rewardConfig: { method: 'conversion', ratio: 16.6666, currency: 'Points' }, // 18 pts = 1 mile (approx $6/mile local, but earn rate is 3X/5X)
     // Actually Amex Explorer earns 3 pts per HK$1 (local) -> 3/18 = 1/6 mile ($6/mile).
@@ -1206,7 +1206,7 @@ export const HK_CARDS: CreditCard[] = [
     name: "Mox Credit",
     bank: "Mox",
     style: { bgColor: "bg-gradient-to-br from-teal-400 to-cyan-600", textColor: "text-white" },
-    imageUrl: "https://mox.com/images/cards/mox-card-black-front.png",
+    // imageUrl from DB
     foreignCurrencyFee: 0,
     rules: [
       { description: "指定超市 3% (惠康/百佳/AEON/HKTVmall等)", matchType: "merchant", matchValue: ["wellcome", "parknshop", "aeon", "hktvmall", "donki", "759"], percentage: 3.0 },
