@@ -473,10 +473,16 @@ export default function CardDetailPage() {
                 <PartnerOfferCard 
                   card={card} 
                   bankWelcomeValue={
-                    // 嘗試從 welcomeOfferReward 解析數值
+                    // 嘗試從 welcomeOfferReward 或 welcomeOfferText 解析數值
                     card.welcomeOfferReward 
                       ? parseInt(card.welcomeOfferReward.replace(/[^0-9]/g, '')) || 0
-                      : 0
+                      : card.welcomeOfferText
+                        ? (() => {
+                            // 從文字中提取金額，如 "送 $1,200 現金回贈" -> 1200
+                            const match = card.welcomeOfferText.match(/送\s*\$?([\d,]+)/);
+                            return match ? parseInt(match[1].replace(/,/g, '')) || 0 : 0;
+                          })()
+                        : 0
                   }
                 />
               </motion.div>
