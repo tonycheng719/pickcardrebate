@@ -19,6 +19,7 @@ import { WHATSAPP_GROUP_URL } from "@/lib/constants";
 import { getSystemSetting } from "@/lib/data/settings";
 import { HK_CARDS } from "@/lib/data/cards";
 import { ShareButton } from "@/components/share-button";
+import { ShareSection } from "@/components/share-section";
 import { DebitCardGuide, debitCardFaqData } from "./debit-card-guide";
 import { MilesVsCashbackGuide, milesVsCashbackFaqData } from "./miles-vs-cashback-guide";
 import { BestCashbackCardsGuide, bestCashbackCardsFaqData } from "./best-cashback-cards-guide";
@@ -1718,6 +1719,7 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
               <ShareButton
                 title={guide.title}
                 text={guide.description}
+                variant="prominent"
                 size="sm"
               />
             </div>
@@ -1729,6 +1731,12 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
             
             {/* Article Reviews Section */}
             <ArticleReviews articleId={slug} articleTitle={guide.title} />
+            
+            {/* Share Section */}
+            <ShareSection 
+              title={guide.title}
+              text={guide.description}
+            />
           </article>
           
           {/* Disclaimer */}

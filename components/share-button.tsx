@@ -14,7 +14,7 @@ interface ShareButtonProps {
   title: string;
   text: string;
   url?: string;
-  variant?: "default" | "outline" | "ghost";
+  variant?: "default" | "outline" | "ghost" | "prominent";
   size?: "sm" | "md" | "lg" | "icon";
   className?: string;
 }
@@ -137,21 +137,25 @@ export function ShareButton({
     </button>
   );
 
+  // Prominent variant has special styling
+  const isProminent = variant === "prominent";
+  const buttonVariant = isProminent ? "default" : variant;
+  
   return (
     <>
       <Button
         ref={buttonRef}
-        variant={variant}
+        variant={buttonVariant}
         size={size}
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
           setShowMenu(!showMenu);
         }}
-        className={className}
+        className={`${className} ${isProminent ? 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white border-0 shadow-lg shadow-emerald-200 dark:shadow-emerald-900/30 animate-pulse hover:animate-none' : ''}`}
       >
-        <Share2 className="h-4 w-4" />
-        {size !== "icon" && <span className="ml-2">分享</span>}
+        <Share2 className={`h-4 w-4 ${isProminent ? 'animate-bounce' : ''}`} />
+        {size !== "icon" && <span className="ml-2">分享給朋友</span>}
       </Button>
 
       {mounted && showMenu && createPortal(

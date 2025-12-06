@@ -729,7 +729,7 @@ export function CreditCardCalculator({
                   title={`PickCardRebate 計算結果`}
                   text={`💳 ${selectedMerchant?.name || '消費'} $${amount}\n🏆 最佳信用卡：${best.card.name}\n💰 回贈：$${best.rewardAmount.toFixed(2)} (${best.percentage}%)`}
                   url="https://pickcardrebate.com"
-                  variant="outline"
+                  variant="prominent"
                   size="md"
                   className="flex-1"
                 />
@@ -886,7 +886,7 @@ export function CreditCardCalculator({
                   title={`PickCardRebate 計算結果`}
                   text={`💳 ${selectedMerchant?.name || '消費'} $${amount}\n🏆 最佳信用卡：${best.card.name}\n💰 回贈：$${best.rewardAmount.toFixed(2)} (${best.percentage}%)`}
                   url="https://pickcardrebate.com"
-                  variant="outline"
+                  variant="prominent"
                   size="md"
                   className="flex-1"
                 />

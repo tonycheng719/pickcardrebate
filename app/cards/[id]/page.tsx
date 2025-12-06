@@ -25,6 +25,8 @@ import { BankPromoCard } from "@/components/bank-promo-card";
 import { getPromosForBank } from "@/lib/data/bank-promos";
 import { trackViewCard, trackClickApply, trackAddToWallet } from "@/lib/analytics";
 import { PageViewTracker } from "@/components/page-view-tracker";
+import { ShareSection } from "@/components/share-section";
+import { ShareButton } from "@/components/share-button";
 
 // Card Image component with error handling
 function CardImage({ card, onError }: { card: CreditCard; onError?: () => void }) {
@@ -62,7 +64,6 @@ export default function CardDetailPage() {
   const { cards } = useDataset();
   const { addCard, hasCard, user } = useWallet();
   const { getReviewsByCardId, fetchReviewsForCard } = useReviews();
-  const [showShareMenu, setShowShareMenu] = useState(false);
   const [cardImageError, setCardImageError] = useState(false);
   
   // Find card from dataset (includes DB images) or fallback to static data
@@ -251,34 +252,6 @@ export default function CardDetailPage() {
     }
   };
 
-  const handleShare = async (platform: string) => {
-    const url = `https://pickcardrebate.com/cards/${card.id}`;
-    const title = `${card.name} - ${card.bank}`;
-    const text = `${card.name}\n${card.sellingPoints?.slice(0, 2).join('\n')}\n\n立即查看: ${url}`;
-
-    switch (platform) {
-      case 'copy':
-        await navigator.clipboard.writeText(url);
-        toast.success('已複製連結！');
-        break;
-      case 'whatsapp':
-        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-        break;
-      case 'facebook':
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
-        break;
-      case 'twitter':
-        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
-        break;
-      case 'native':
-        if (navigator.share) {
-          await navigator.share({ title, text: card.sellingPoints?.join('\n'), url });
-        }
-        break;
-    }
-    setShowShareMenu(false);
-  };
-
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
       {/* Page View Tracker */}
@@ -361,38 +334,12 @@ export default function CardDetailPage() {
                   )}
                 </Button>
                 
-                <div className="relative">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => setShowShareMenu(!showShareMenu)}
-                  >
-                    <Share2 className="h-4 w-4" />
-                  </Button>
-                  
-                  {showShareMenu && (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      className="absolute right-0 top-12 bg-white dark:bg-gray-800 rounded-xl shadow-xl border dark:border-gray-700 p-2 z-50 min-w-[160px]"
-                    >
-                      <button onClick={() => handleShare('copy')} className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm">
-                        <Copy className="h-4 w-4" /> 複製連結
-                      </button>
-                      <button onClick={() => handleShare('whatsapp')} className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm">
-                        <MessageCircle className="h-4 w-4 text-green-500" /> WhatsApp
-                      </button>
-                      <button onClick={() => handleShare('facebook')} className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm">
-                        <span className="text-blue-600 font-bold text-sm">f</span> Facebook
-                      </button>
-                      {typeof navigator !== 'undefined' && 'share' in navigator && (
-                        <button onClick={() => handleShare('native')} className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm">
-                          <Share2 className="h-4 w-4" /> 更多...
-                        </button>
-                      )}
-                    </motion.div>
-                  )}
-                </div>
+                <ShareButton
+                  title={`${card.name} - ${card.bank}`}
+                  text={card.sellingPoints?.slice(0, 2).join('。') || `${card.bank} ${card.name} 信用卡詳情`}
+                  variant="prominent"
+                  size="sm"
+                />
               </div>
 
               {/* Apply Button */}
@@ -771,6 +718,12 @@ export default function CardDetailPage() {
                 </CardContent>
               </Card>
             </motion.div>
+
+            {/* Share Section */}
+            <ShareSection 
+              title={`${card.name} - ${card.bank}`}
+              text={card.sellingPoints?.slice(0, 2).join('。') || `${card.bank} ${card.name} 信用卡詳情`}
+            />
           </div>
         </div>
       </main>

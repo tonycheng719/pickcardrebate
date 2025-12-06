@@ -185,6 +185,7 @@ export default function RankingsPage() {
           <ShareButton
             title="🏆 2025 信用卡回贈排行榜"
             text="信用卡回贈排行榜 - 食飯、網購、超市、旅遊、海外簽賬各類別最抵卡\n\n👉 即睇完整排名："
+            variant="prominent"
             size="sm"
           />
         </div>
