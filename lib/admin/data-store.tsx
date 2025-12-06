@@ -22,6 +22,9 @@ function mapCardFromDB(dbCard: any): CreditCard {
     
     return {
         ...dbCard,
+        // IMPORTANT: LOCAL name and bank take priority (most up-to-date)
+        name: localCard?.name || dbCard.name,
+        bank: localCard?.bank || dbCard.bank,
         imageUrl,
         foreignCurrencyFee: dbCard.foreign_currency_fee ?? localCard?.foreignCurrencyFee,
         welcomeOfferText: dbCard.welcome_offer_text || localCard?.welcomeOfferText,
