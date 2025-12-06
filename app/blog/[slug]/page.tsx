@@ -20,6 +20,7 @@ import {
 import { Navbar } from "@/components/navbar";
 import { BottomNav } from "@/components/bottom-nav";
 import { ShareButton } from "@/components/share-button";
+import { getCardsWithImages } from "@/lib/data/get-cards-with-images";
 
 // Generate static params for all categories
 export async function generateStaticParams() {
@@ -37,7 +38,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return { title: "頁面不存在" };
   }
   
-  const rankings = getRankingsByCategory(category.id, 15);
+  const cards = await getCardsWithImages();
+  const rankings = getRankingsByCategory(category.id, 15, cards);
   const topCard = rankings[0];
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
@@ -366,7 +368,8 @@ export default async function BlogCategoryPage({ params }: { params: Promise<{ s
     notFound();
   }
   
-  const rankings = getRankingsByCategory(category.id, 15);
+  const cards = await getCardsWithImages();
+  const rankings = getRankingsByCategory(category.id, 15, cards);
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
   const lastUpdated = new Date().toLocaleDateString('zh-HK', { 

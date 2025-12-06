@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { 
@@ -19,6 +19,7 @@ import {
 import { Navbar } from "@/components/navbar";
 import { BottomNav } from "@/components/bottom-nav";
 import { ShareButton } from "@/components/share-button";
+import { useDataset } from "@/lib/admin/data-store";
 
 const categoryIcons: Record<RankingCategory, React.ReactNode> = {
   dining: <Utensils className="h-5 w-5" />,
@@ -115,11 +116,11 @@ function CardRow({ result, rank, showFxFee = false }: { result: RankingResult; r
   );
 }
 
-function CategorySection({ categoryId }: { categoryId: RankingCategory }) {
+function CategorySection({ categoryId, cards }: { categoryId: RankingCategory; cards: any[] }) {
   const category = RANKING_CATEGORIES.find(c => c.id === categoryId);
   if (!category) return null;
   
-  const rankings = getRankingsByCategory(categoryId, 5);
+  const rankings = getRankingsByCategory(categoryId, 5, cards);
   const currentYear = new Date().getFullYear();
   
   if (rankings.length === 0) return null;
@@ -173,6 +174,7 @@ function CategorySection({ categoryId }: { categoryId: RankingCategory }) {
 
 export default function RankingsPage() {
   const [activeCategory, setActiveCategory] = useState<RankingCategory | "all">("all");
+  const { cards } = useDataset();
   
   const filteredCategories = activeCategory === "all" 
     ? RANKING_CATEGORIES 
@@ -241,7 +243,7 @@ export default function RankingsPage() {
         {/* Rankings Grid */}
         <div className="grid md:grid-cols-2 gap-6">
           {filteredCategories.map(category => (
-            <CategorySection key={category.id} categoryId={category.id} />
+            <CategorySection key={category.id} categoryId={category.id} cards={cards} />
           ))}
         </div>
         
