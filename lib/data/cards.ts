@@ -1114,8 +1114,8 @@ export const HK_CARDS: CreditCard[] = [
   },
   {
     id: "dahsing-ba",
-    name: "British Airways Platinum Card",
-    bank: "Dah Sing",
+    name: "大新英國航空白金卡",
+    bank: "大新銀行",
     hidden: true,
     style: { bgColor: "bg-gradient-to-br from-blue-800 to-blue-950", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
@@ -1126,6 +1126,42 @@ export const HK_CARDS: CreditCard[] = [
     ],
     tags: ["Avios", "英航"],
     sellingPoints: ["本地簽賬 HK$6 = 1 Avios", "生日當天 HK$6 = 2 Avios"],
+    applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=604&a=228&sub_id1=pickcardrebate&sub_id2=web",
+  },
+  {
+    id: "dahsing-united",
+    name: "大新聯合航空 World 萬事達卡",
+    bank: "大新銀行",
+    style: { bgColor: "bg-gradient-to-br from-blue-900 to-indigo-950", textColor: "text-white" },
+    foreignCurrencyFee: 1.95,
+    annualFee: 2000,
+    feeWaiverCondition: "豁免首2年年費",
+    minIncome: 150000,
+    incomeNote: "最低年薪 HK$150,000",
+    rewardConfig: { method: 'conversion', ratio: 1, currency: 'United Miles' },
+    rules: [
+      // 聯合航空及海外簽賬 HK$5 = 1里數 (0.2 里/$ = 20% value if 1 mile = $1)
+      { description: "聯合航空/海外簽賬 $5/里", matchType: "category", matchValue: ["travel"], percentage: 2.0 },
+      { description: "海外簽賬 $5/里", matchType: "base", percentage: 2.0, isForeignCurrency: true, excludeCategories: ["tax", "utilities", "government", "insurance"] },
+      // 指定商戶簽賬 HK$6 = 1里數
+      { description: "指定商戶簽賬 $6/里", matchType: "category", matchValue: ["dining", "entertainment"], percentage: 1.67 },
+      // 本地簽賬 HK$8 = 1里數
+      { description: "本地簽賬 $8/里", matchType: "base", percentage: 1.25, excludeCategories: ["tax", "utilities", "government", "insurance"] },
+    ],
+    tags: ["聯合航空", "United Miles", "里數不設限期", "貴賓室"],
+    welcomeOfferText: "迎新簽 $8,000 送 10,000 里數 (首2個月內累積)",
+    applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=604&a=228&sub_id1=pickcardrebate&sub_id2=web",
+    sellingPoints: [
+      "聯合航空/海外簽賬 HK$5 = 1 里數",
+      "指定商戶簽賬 HK$6 = 1 里數",
+      "本地簽賬 HK$8 = 1 里數",
+      "里數不設限期",
+      "免費使用聯合航空貴賓室 (季簽$40,000)",
+      "World Mastercard 全球 1,300+ 機場貴賓室優惠",
+    ],
+    note: "💡 香港唯一可賺聯合航空 MileagePlus 里數的信用卡！主卡客戶於上一個信用卡季度內，憑卡累積簽賬達 HK$40,000 或以上，可獲聯合航空貴賓室單次電子通行證 1 張。里數不設限期，兌換獎賞更有彈性。透過 Mastercard Travel Pass 應用程式可享全球 1,300+ 機場貴賓室優惠。迎新優惠推廣期至 2025/12/31。",
+    promoEndDate: "2025-12-31",
+    promoName: "大新聯合航空卡迎新",
   },
 
   // ========================================================================

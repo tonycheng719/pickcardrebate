@@ -377,7 +377,7 @@ const MONEYHERO_PARTNER_OFFERS = [
     cardId: "dahsing-ba",
     partnerOffer: {
       enabled: true,
-      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/dah-sing-british-airways-platinum",
+      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=604&a=228&sub_id1=pickcardrebate&sub_id2=web",
       bonusValue: 400,
       bonusDescription: "獎品2選1：HK$400 Apple Store禮品卡 / HK$400 惠康超市現金券",
       bonusItems: [
@@ -394,6 +394,29 @@ const MONEYHERO_PARTNER_OFFERS = [
       minSpend: 0,
       minSpendDays: 0,
       notes: "申請參考編號格式為以6個0開首＋6位數字（如：000000123456）。換領流程由推廣期結束後起計需時至少16星期。",
+    }
+  },
+  {
+    cardId: "dahsing-united",
+    partnerOffer: {
+      enabled: true,
+      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=604&a=228&sub_id1=pickcardrebate&sub_id2=web",
+      bonusValue: 400,
+      bonusDescription: "獎品2選1：HK$400 Apple Store禮品卡 / HK$400 惠康超市現金券",
+      bonusItems: [
+        "HK$400 Apple Store禮品卡",
+        "HK$400 惠康超市現金券"
+      ],
+      validFrom: "2025-12-01",
+      validTo: "2025-12-31",
+      requirements: [
+        "全新大新銀行信用卡客戶",
+        "2026年1月31日或之前成功獲批信用卡",
+        "收到表格後7日內填妥「獎賞換領表格」"
+      ],
+      minSpend: 0,
+      minSpendDays: 0,
+      notes: "申請參考編號格式為以6個0開首＋6位數字（如：000000123456）。換領流程由推廣期結束後起計需時至少16星期。指定信用卡包括 大新ONE+信用卡、大新MyAuto車主信用卡、大新ANA World萬事達卡、大新聯合航空World萬事達卡、大新英國航空白金卡。",
     }
   },
   {
