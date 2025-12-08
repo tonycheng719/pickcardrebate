@@ -6,7 +6,7 @@ import { TrendingMerchants } from "@/components/trending-merchants";
 import { useWallet } from "@/lib/store/wallet-context";
 import { Zap, ShieldCheck, PieChart, BadgeCheck, Plane, RefreshCw, Smartphone, Calendar, Layers } from "lucide-react";
 import { motion } from "framer-motion";
-import { useMemo } from "react";
+import { useState, useEffect } from "react";
 import Script from "next/script";
 
 // HowTo Schema for calculator usage
@@ -163,7 +163,12 @@ const features = [
 
 export default function Home() {
   const { user } = useWallet();
-  const greeting = useMemo(() => getGreeting(), []);
+  const [greeting, setGreeting] = useState("你好"); // Default greeting for SSR
+  
+  // Set greeting on client-side only to avoid hydration mismatch
+  useEffect(() => {
+    setGreeting(getGreeting());
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950">
