@@ -398,6 +398,58 @@ export const HK_CARDS: CreditCard[] = [
     sellingPoints: ["永久免年費", "虛擬卡即時使用", "支援 BoC Pay/Apple Pay/Google Pay"],
     note: "💡 虛擬卡，永久免年費。迎新：首3個月手機簽賬（Apple Pay/Google Pay/Samsung Pay/Huawei Pay/雲閃付）享 10% 現金回贈，上限 $300。⚠️ 注意：4% 手機支付常規回贈已取消，現只有基本 0.4% 回贈。不計回贈：Alipay/WeChat Pay/PayMe、繳費、八達通增值。",
   },
+  {
+    id: "boc-go-platinum",
+    name: "中銀 Go 銀聯白金卡",
+    bank: "中銀",
+    style: { bgColor: "bg-gradient-to-br from-red-600 to-red-800", textColor: "text-white" },
+    annualFee: 0,
+    minIncome: 150000,
+    feeWaiverCondition: "首年免年費（持有中銀儲蓄/往來賬戶可獲豁免）",
+    foreignCurrencyFee: 0, // 人民幣海外簽賬免手續費
+    rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' },
+    rules: [
+      // 指定Go商戶高達5%
+      { description: "指定Go商戶5%回贈 (keeta/美團/高鐵等)", matchType: "merchant", matchValue: ["keeta", "meituan", "wellcome", "market-place-jasons"], percentage: 5, cap: 100 },
+      // 內地手機簽賬高達2%
+      { description: "內地手機簽賬2%回贈", matchType: "paymentMethod", matchValue: ["apple_pay", "huawei_pay", "boc_pay", "cloud_quick_pass"], percentage: 2, cap: 100 },
+      // 海外簽賬0.8%
+      { description: "海外簽賬0.8%回贈", matchType: "base", percentage: 0.8, isForeignCurrency: true },
+      // 基本回贈
+      { description: "基本回贈0.4%", matchType: "base", percentage: 0.4 },
+    ],
+    tags: ["Go商戶5%", "內地手機簽賬2%", "人民幣免手續費", "一卡雙幣"],
+    welcomeOfferText: "首3個月指定商戶高達5%回贈",
+    applyUrl: "https://www.bochk.com/tc/creditcard/products/gocard.html",
+    sellingPoints: ["指定Go商戶高達5%現金回贈", "內地手機簽賬高達2%回贈", "人民幣海外簽賬免手續費", "一卡雙幣"],
+    note: "💡 指定Go商戶(keeta、美團、大眾點評、高鐵西九龍站、滴滴出行、京東港澳站、惠康、Market Place等)簽賬享高達5%回贈。內地手機簽賬(BoC Pay/雲閃付/Apple Pay/Huawei Pay)享高達2%回贈。⚠️ 每月回贈上限HK$100，需累積簽賬滿HK$1,500（豁免至2025年12月31日）。",
+  },
+  {
+    id: "boc-go-diamond",
+    name: "中銀 Go 銀聯鑽石卡",
+    bank: "中銀",
+    style: { bgColor: "bg-gradient-to-br from-slate-800 to-black", textColor: "text-white" },
+    annualFee: 0,
+    minIncome: 240000,
+    feeWaiverCondition: "首年免年費（持有中銀儲蓄/往來賬戶可獲豁免）",
+    foreignCurrencyFee: 0, // 人民幣海外簽賬免手續費
+    rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' },
+    rules: [
+      // 指定Go商戶高達5%
+      { description: "指定Go商戶5%回贈 (keeta/美團/高鐵等)", matchType: "merchant", matchValue: ["keeta", "meituan", "wellcome", "market-place-jasons"], percentage: 5, cap: 100 },
+      // 內地手機簽賬高達4%
+      { description: "內地手機簽賬4%回贈", matchType: "paymentMethod", matchValue: ["apple_pay", "huawei_pay", "boc_pay", "cloud_quick_pass"], percentage: 4, cap: 100 },
+      // 海外簽賬0.8%
+      { description: "海外簽賬0.8%回贈", matchType: "base", percentage: 0.8, isForeignCurrency: true },
+      // 基本回贈
+      { description: "基本回贈0.4%", matchType: "base", percentage: 0.4 },
+    ],
+    tags: ["Go商戶5%", "內地手機簽賬4%", "人民幣免手續費", "一卡雙幣"],
+    welcomeOfferText: "首3個月指定商戶高達5%回贈",
+    applyUrl: "https://www.bochk.com/tc/creditcard/products/gocard.html",
+    sellingPoints: ["指定Go商戶高達5%現金回贈", "內地手機簽賬高達4%回贈", "人民幣海外簽賬免手續費", "一卡雙幣"],
+    note: "💡 指定Go商戶(keeta、美團、大眾點評、高鐵西九龍站、滴滴出行、京東港澳站、惠康、Market Place等)簽賬享高達5%回贈。內地手機簽賬(BoC Pay/雲閃付/Apple Pay/Huawei Pay)享高達4%回贈(10X積分)。⚠️ 每月回贈上限HK$100，需累積簽賬滿HK$1,500（豁免至2025年12月31日）。",
+  },
 
   // ========================================================================
   // Hang Seng 恆生
