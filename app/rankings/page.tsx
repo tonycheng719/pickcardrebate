@@ -121,7 +121,7 @@ function CategorySection({ categoryId, cards }: { categoryId: RankingCategory; c
   if (!category) return null;
   
   const rankings = getRankingsByCategory(categoryId, 5, cards);
-  const currentYear = new Date().getFullYear();
+  const currentYear = 2025; // Fixed for SSR to avoid hydration mismatch
   
   if (rankings.length === 0) return null;
   

@@ -34,8 +34,13 @@ export default function OnboardingPage() {
   const [birthYear, setBirthYear] = useState("");
   const [birthMonth, setBirthMonth] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [currentYear, setCurrentYear] = useState(2025); // Default for SSR
 
-  const currentYear = new Date().getFullYear();
+  // Set current year on client-side to avoid hydration mismatch
+  useEffect(() => {
+    setCurrentYear(new Date().getFullYear());
+  }, []);
+
   const years = Array.from({ length: 100 }, (_, i) => currentYear - i); // Last 100 years
   const months = Array.from({ length: 12 }, (_, i) => i + 1);
 

@@ -160,8 +160,9 @@ export default function CardDetailPage() {
     }
   ];
   
-  // Get current date for dateModified
-  const currentDate = new Date().toISOString().split('T')[0];
+  // Use fixed date for SSR to avoid hydration mismatch
+  // This will be the "last build" date, which is acceptable for SEO
+  const currentDate = "2025-12-08";
   
   // Generate structured data for SEO - Product Schema with AggregateRating
   const productSchema: Record<string, any> = {
