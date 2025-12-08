@@ -285,25 +285,35 @@ const MONEYHERO_PARTNER_OFFERS = [
   // ========================================
   // 渣打銀行 (2025/12/01 18:00 - 2025/12/31 12:00)
   // 適用：Smart Card、Simply Cash
+  // 條件：毋需簽賬
   // ========================================
   {
     cardId: "sc-smart",
     partnerOffer: {
       enabled: true,
       applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=176&a=228&sub_id1=pickcardrebate&sub_id2=web",
-      bonusValue: 800,
-      bonusDescription: "HK$800 HKTVmall電子購物禮券（迎新總值高達HK$4,980）",
-      bonusItems: ["HK$800 HKTVmall電子購物禮券"],
+      bonusValue: 4980,
+      bonusDescription: "獎品6選1：HK$800 HKTVmall / HK$800 Apple禮品卡 / HK$800 惠康現金券 / Delsey行李箱(HK$4,980) / NESCAFÉ咖啡機(HK$1,780) / Marshall喇叭(HK$1,499)",
+      bonusItems: [
+        "HK$800 HKTVmall電子購物禮券",
+        "HK$800 Apple Store禮品卡",
+        "HK$800 惠康購物現金券",
+        "Delsey 30\" GRENELLE SE Expandable Front Opening Suitcase（價值HK$4,980; 顏色隨機）",
+        "NESCAFÉ® Dolce Gusto® Genio S Plus 咖啡機 + 6盒咖啡膠囊（價值HK$1,780）",
+        "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）"
+      ],
       validFrom: "2025-12-01",
       validTo: "2025-12-31",
       requirements: [
         "全新渣打銀行信用卡客戶",
+        "毋需簽賬",
         "2026年1月31日或之前成功獲批信用卡",
-        "收到表格後7日內填妥「獎賞換領表格」"
+        "收到表格後7日內填妥「獎賞換領表格」",
+        "批卡後7日內填寫表格及上傳批核證明"
       ],
       minSpend: 0,
       minSpendDays: 0,
-      notes: "迎新總價值高達HK$4,980。換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
+      notes: "渣打信用卡申請參考編號格式: HK + 14位數字。換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
     }
   },
   {
@@ -311,24 +321,34 @@ const MONEYHERO_PARTNER_OFFERS = [
     partnerOffer: {
       enabled: true,
       applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/scb-simply-cash-visa",
-      bonusValue: 800,
-      bonusDescription: "HK$800 HKTVmall電子購物禮券（迎新總值高達HK$4,980）",
-      bonusItems: ["HK$800 HKTVmall電子購物禮券"],
+      bonusValue: 4980,
+      bonusDescription: "獎品6選1：HK$800 HKTVmall / HK$800 Apple禮品卡 / HK$800 惠康現金券 / Delsey行李箱(HK$4,980) / NESCAFÉ咖啡機(HK$1,780) / Marshall喇叭(HK$1,499)",
+      bonusItems: [
+        "HK$800 HKTVmall電子購物禮券",
+        "HK$800 Apple Store禮品卡",
+        "HK$800 惠康購物現金券",
+        "Delsey 30\" GRENELLE SE Expandable Front Opening Suitcase（價值HK$4,980; 顏色隨機）",
+        "NESCAFÉ® Dolce Gusto® Genio S Plus 咖啡機 + 6盒咖啡膠囊（價值HK$1,780）",
+        "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）"
+      ],
       validFrom: "2025-12-01",
       validTo: "2025-12-31",
       requirements: [
         "全新渣打銀行信用卡客戶",
+        "毋需簽賬",
         "2026年1月31日或之前成功獲批信用卡",
-        "收到表格後7日內填妥「獎賞換領表格」"
+        "收到表格後7日內填妥「獎賞換領表格」",
+        "批卡後7日內填寫表格及上傳批核證明"
       ],
       minSpend: 0,
       minSpendDays: 0,
-      notes: "迎新總價值高達HK$4,980。換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
+      notes: "渣打信用卡申請參考編號格式: HK + 14位數字。換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
     }
   },
 
   // ========================================
-  // 大新銀行
+  // 大新銀行 (即日起至2025年12月31日23:59)
+  // 指定信用卡：ONE+、MyAuto車主、ANA World、聯合航空World、英國航空白金卡
   // ========================================
   {
     cardId: "dahsing-one",
@@ -336,17 +356,21 @@ const MONEYHERO_PARTNER_OFFERS = [
       enabled: true,
       applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=604&a=228&sub_id1=pickcardrebate&sub_id2=web",
       bonusValue: 400,
-      bonusDescription: "HK$400 Apple Store禮品卡",
-      bonusItems: ["HK$400 Apple Store禮品卡"],
+      bonusDescription: "獎品2選1：HK$400 Apple Store禮品卡 / HK$400 惠康超市現金券",
+      bonusItems: [
+        "HK$400 Apple Store禮品卡",
+        "HK$400 惠康超市現金券"
+      ],
       validFrom: "2025-12-01",
       validTo: "2025-12-31",
       requirements: [
         "全新大新銀行信用卡客戶",
+        "2026年1月31日或之前成功獲批信用卡",
         "收到表格後7日內填妥「獎賞換領表格」"
       ],
       minSpend: 0,
       minSpendDays: 0,
-      notes: "高達1%現金回贈，最低年薪要求HK$150,000。",
+      notes: "申請參考編號格式為以6個0開首＋6位數字（如：000000123456）。換領流程由推廣期結束後起計需時至少16星期。",
     }
   },
   {
@@ -355,17 +379,21 @@ const MONEYHERO_PARTNER_OFFERS = [
       enabled: true,
       applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/dah-sing-british-airways-platinum",
       bonusValue: 400,
-      bonusDescription: "HK$400 Apple Store禮品卡",
-      bonusItems: ["HK$400 Apple Store禮品卡"],
+      bonusDescription: "獎品2選1：HK$400 Apple Store禮品卡 / HK$400 惠康超市現金券",
+      bonusItems: [
+        "HK$400 Apple Store禮品卡",
+        "HK$400 惠康超市現金券"
+      ],
       validFrom: "2025-12-01",
       validTo: "2025-12-31",
       requirements: [
         "全新大新銀行信用卡客戶",
+        "2026年1月31日或之前成功獲批信用卡",
         "收到表格後7日內填妥「獎賞換領表格」"
       ],
       minSpend: 0,
       minSpendDays: 0,
-      notes: "低至$4/里，最低年薪要求HK$150,000。",
+      notes: "申請參考編號格式為以6個0開首＋6位數字（如：000000123456）。換領流程由推廣期結束後起計需時至少16星期。",
     }
   },
   {
@@ -374,17 +402,21 @@ const MONEYHERO_PARTNER_OFFERS = [
       enabled: true,
       applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/dah-sing-myauto-credit-card",
       bonusValue: 400,
-      bonusDescription: "HK$400 Apple Store禮品卡（迎新總值高達HK$900）",
-      bonusItems: ["HK$400 Apple Store禮品卡"],
+      bonusDescription: "獎品2選1：HK$400 Apple Store禮品卡 / HK$400 惠康超市現金券",
+      bonusItems: [
+        "HK$400 Apple Store禮品卡",
+        "HK$400 惠康超市現金券"
+      ],
       validFrom: "2025-12-01",
       validTo: "2025-12-31",
       requirements: [
         "全新大新銀行信用卡客戶",
+        "2026年1月31日或之前成功獲批信用卡",
         "收到表格後7日內填妥「獎賞換領表格」"
       ],
       minSpend: 0,
       minSpendDays: 0,
-      notes: "迎新總價值高達HK$900。高達8%現金回贈，最低年薪要求HK$150,000。",
+      notes: "申請參考編號格式為以6個0開首＋6位數字（如：000000123456）。換領流程由推廣期結束後起計需時至少16星期。",
     }
   },
 
@@ -681,6 +713,40 @@ const MONEYHERO_PARTNER_OFFERS = [
         "全新sim信用卡客戶",
         "選擇「6個月免息免手續費現金套現分期計劃」作爲迎新優惠",
         "2026年1月31日或之前成功獲批並啟動信用卡及套現分期計劃"
+      ],
+      minSpend: 0,
+      minSpendDays: 0,
+      notes: "選擇Max Miles時，登記電郵需與HEYMAX賬戶相同。申請前請關掉AdBlocker及「私人模式」。記下完成申請後頁面提供的申請參考編號。",
+    }
+  },
+
+  // ========================================
+  // sim World Mastercard (2025/12/03 12:00 - 2025/12/31 12:00)
+  // 獨家優惠2: 無須簽賬即可獲獎賞
+  // ========================================
+  {
+    cardId: "sim-world-mastercard",
+    partnerOffer: {
+      enabled: true,
+      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/sim-world-mastercard",
+      bonusValue: 5980,
+      bonusDescription: "獎品8選1：14,000 Max Miles / HK$1,000 Apple禮品卡 / HK$1,000 惠康現金券 / HK$1,000 現金回贈 / Dyson Zone™耳機(HK$5,980) / LOJEL行李箱(HK$2,100) / NESCAFÉ咖啡機(HK$1,780) / Marshall喇叭(HK$1,499)",
+      bonusItems: [
+        "14,000 Max Miles 飛行里數",
+        "HK$1,000 Apple Store禮品卡",
+        "HK$1,000 惠康購物現金券",
+        "HK$1,000 現金回贈（經轉數快存入戶口）",
+        "Dyson Zone™ 降噪耳機（價值HK$5,980）",
+        "LOJEL Alto 29吋超輕量拉鍊行李箱（價值HK$2,100; 顏色隨機）",
+        "NESCAFÉ® Dolce Gusto® Genio S Plus 咖啡機 + 6盒咖啡膠囊（價值HK$1,780）",
+        "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）"
+      ],
+      validFrom: "2025-12-03",
+      validTo: "2025-12-31",
+      requirements: [
+        "全新sim信用卡客戶",
+        "無須簽賬",
+        "2026年1月31日或之前成功獲批並啟動信用卡"
       ],
       minSpend: 0,
       minSpendDays: 0,
