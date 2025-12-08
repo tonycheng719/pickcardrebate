@@ -1089,6 +1089,8 @@ export function CreditCardCalculator({
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                   disabled={!selectedMerchant}
+                  autoComplete="off"
+                  min="0"
                 />
               </div>
               <select
