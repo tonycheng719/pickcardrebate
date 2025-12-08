@@ -2,7 +2,7 @@
 
 > 香港信用卡回贈比較平台 - 系統技術文檔
 
-**最後更新**: 2025-11-29
+**最後更新**: 2025-12-08
 
 ---
 
@@ -14,10 +14,11 @@
 4. [資料庫結構](#資料庫結構)
 5. [認證系統](#認證系統)
 6. [後台管理功能](#後台管理功能)
-7. [SEO 配置](#seo-配置)
-8. [常用 SQL 腳本](#常用-sql-腳本)
-9. [部署指南](#部署指南)
-10. [故障排除](#故障排除)
+7. [合作夥伴額外迎新系統](#合作夥伴額外迎新系統)
+8. [SEO 配置](#seo-配置)
+9. [常用 SQL 腳本](#常用-sql-腳本)
+10. [部署指南](#部署指南)
+11. [故障排除](#故障排除)
 
 ---
 
@@ -27,7 +28,9 @@ PickCardRebate 是一個香港信用卡回贈比較平台，主要功能包括�
 
 - **信用卡回贈計算機**: 根據商戶和消費方式，計算最高回贈信用卡
 - **信用卡錢包**: 用戶可管理持有的信用卡
-- **優惠資訊**: 最新信用卡優惠活動
+- **排行榜**: 各消費類別最佳信用卡排名
+- **探索頁面**: 攻略文章與優惠活動
+- **合作夥伴額外迎新**: MoneyHero 等第三方平台獨家優惠
 - **用戶評價系統**: 社群驗證回贈真偽
 - **後台管理**: 信用卡、商戶、優惠、用戶管理
 
@@ -208,11 +211,15 @@ supabase.auth.token
 
 ### 訪問路徑
 - **後台首頁**: `/admin`
-- **信用卡管理**: `/admin/cards`
+- **信用卡管理**: `/admin/cards` - 含瀏覽次數統計
 - **商戶管理**: `/admin/merchants`
-- **優惠管理**: `/admin/promos`
+- **探索內容管理**: `/admin/discover` - 攻略文章與優惠活動（含瀏覽次數、封面圖片管理）
+- **合作夥伴額外迎新**: `/admin/partner-offers` - MoneyHero 等第三方平台獨家優惠
 - **用戶管理**: `/admin/users`
 - **內容審核**: `/admin/moderation` - 管理用戶提交的回報和評論
+- **評論管理**: `/admin/comments` - 信用卡與優惠評論管理
+- **計算機記錄**: `/admin/search-logs` - 用戶搜尋記錄分析
+- **比較統計**: `/admin/compare-stats` - 信用卡比較功能統計
 - **操作日誌**: `/admin/logs` - 追蹤管理員操作記錄
 - **更新日誌**: `/admin/changelog` - 發佈系統更新通知
 - **系統設定**: `/admin/settings`
@@ -231,6 +238,55 @@ supabase.auth.token
 - **FAQ 管理** (常見問題)
 - **SEO 設定** (自訂標題和描述)
 - 圖片上傳
+
+---
+
+## 合作夥伴額外迎新系統
+
+### 功能說明
+此功能用於展示第三方平台（如 MoneyHero）提供的獨家信用卡申請優惠。
+
+### 資料結構
+每張信用卡的 `partner_offer` 欄位包含：
+- `enabled`: 是否啟用
+- `bonusValue`: 額外獎賞價值（HKD）
+- `bonusDescription`: 獎賞描述
+- `bonusItems`: 獎賞選項列表（多選一）
+- `validFrom` / `validTo`: 有效期
+- `applyUrl`: 申請連結（帶追蹤參數）
+- `minSpend`: 最低簽賬金額
+- `minSpendDays`: 簽賬期限（天）
+- `requirements`: 其他申請要求
+- `existingCustomerOffer`: 現有客戶專屬優惠（可選）
+
+### 區分新舊客戶優惠
+部分信用卡（如 HSBC）對「全新客戶」和「現有客戶」提供不同優惠：
+```json
+{
+  "bonusItems": ["全新客戶優惠A", "全新客戶優惠B"],
+  "existingCustomerOffer": {
+    "bonusValue": 200,
+    "bonusDescription": "現有客戶專屬",
+    "bonusItems": ["現有客戶優惠A", "現有客戶優惠B"],
+    "requirements": ["需為現有客戶"]
+  }
+}
+```
+
+### 點擊追蹤
+- 表格: `partner_clicks` (彙總) 和 `partner_click_logs` (詳細)
+- API: `/api/stats/partner-click`
+- 前端會在用戶點擊「立即申請」時自動記錄
+
+### MoneyHero 追蹤連結格式
+```
+https://apply.creatory.moneyhero.com.hk/click?o={OFFER_ID}&a=228&sub_id1=pickcardrebate&sub_id2=web
+```
+
+### 後台操作
+1. 前往 `/admin/partner-offers`
+2. 點擊「導入 MoneyHero 資料」自動匯入預設資料
+3. 或手動編輯每張信用卡的額外迎新設定
 
 ---
 
@@ -269,6 +325,81 @@ supabase.auth.token
 ---
 
 ## 常用 SQL 腳本
+
+### 創建操作日誌表
+```sql
+-- sql/admin_audit_logs.sql
+CREATE TABLE IF NOT EXISTS admin_audit_logs (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  admin_email TEXT NOT NULL,
+  action TEXT NOT NULL,
+  target_type TEXT NOT NULL,
+  target_id TEXT,
+  target_name TEXT,
+  details JSONB,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_admin_audit_logs_created_at ON admin_audit_logs(created_at DESC);
+ALTER TABLE admin_audit_logs ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Service role full access on admin_audit_logs" ON admin_audit_logs
+  FOR ALL USING (true) WITH CHECK (true);
+```
+
+### 創建更新日誌表
+```sql
+-- sql/system_changelogs.sql
+CREATE TABLE IF NOT EXISTS system_changelogs (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  version TEXT NOT NULL,
+  title TEXT NOT NULL,
+  type TEXT NOT NULL CHECK (type IN ('feature', 'fix', 'improvement', 'maintenance')),
+  content TEXT NOT NULL,
+  release_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_system_changelogs_release_date ON system_changelogs(release_date DESC);
+ALTER TABLE system_changelogs ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Service role full access on system_changelogs" ON system_changelogs
+  FOR ALL USING (true) WITH CHECK (true);
+```
+
+### 創建合作夥伴點擊追蹤表
+```sql
+-- sql/partner_clicks.sql
+CREATE TABLE IF NOT EXISTS partner_clicks (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  card_id TEXT NOT NULL UNIQUE,
+  card_name TEXT,
+  click_count INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  last_clicked_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS partner_click_logs (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  card_id TEXT NOT NULL,
+  card_name TEXT,
+  user_id UUID,
+  clicked_at TIMESTAMPTZ DEFAULT NOW(),
+  user_agent TEXT
+);
+```
+
+### 創建文章設定表
+```sql
+-- sql/article_settings.sql
+CREATE TABLE IF NOT EXISTS article_settings (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  article_id TEXT NOT NULL UNIQUE,
+  cover_image_url TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
 
 ### 添加用戶管理欄位
 ```sql
