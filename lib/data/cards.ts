@@ -1225,8 +1225,8 @@ export const HK_CARDS: CreditCard[] = [
   // ========================================================================
   {
     id: "cncbi-motion",
-    name: "CNCBI Motion Credit Card",
-    bank: "CNCBI",
+    name: "信銀國際 Motion 信用卡",
+    bank: "信銀國際",
     style: { bgColor: "bg-gradient-to-br from-orange-500 to-red-600", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     rules: [
@@ -1242,6 +1242,44 @@ export const HK_CARDS: CreditCard[] = [
     sellingPoints: ["食肆及網上簽賬 6% (需月簽$3,800)", "額外回贈每月上限 $200", "基本回贈 0.55%"],
     note: "⚠️ 食肆/網上 6% 需每月累積簽滿 $3,800！額外回贈上限 $200/月。不適用於：酒店餐飲、美食廣場/超市內食肆、超市網購平台、電子錢包（支付寶/微信支付/PayMe）、八達通增值。",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=178&a=228&sub_id1=pickcardrebate&sub_id2=web",
+  },
+  {
+    id: "cncbi-hkairlines",
+    name: "中信銀行(國際)香港航空 Mastercard 卡",
+    bank: "信銀國際",
+    style: { bgColor: "bg-gradient-to-br from-red-700 to-rose-900", textColor: "text-white" },
+    foreignCurrencyFee: 1.95,
+    annualFee: 2000,
+    feeWaiverCondition: "豁免首年年費",
+    minIncome: 96000,
+    incomeNote: "最低年薪 HK$96,000",
+    rewardConfig: { method: 'conversion', ratio: 1, currency: 'FWC' },
+    rules: [
+      // 香港航空簽賬 HK$2 = 1 FWC 積分
+      { description: "香港航空簽賬 $2/FWC", matchType: "merchant", matchValue: ["hong_kong_airlines"], percentage: 5.0 },
+      // 海外及網上簽賬 HK$4 = 1 FWC 積分
+      { description: "海外簽賬 $4/FWC", matchType: "base", percentage: 2.5, isForeignCurrency: true, excludeCategories: ["tax", "utilities", "government", "insurance"] },
+      { description: "網上簽賬 $4/FWC", matchType: "category", matchValue: ["online"], percentage: 2.5, excludeCategories: ["ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // 本地簽賬 HK$6 = 1 FWC 積分
+      { description: "本地簽賬 $6/FWC", matchType: "base", percentage: 1.67, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+    ],
+    tags: ["香港航空", "FWC積分", "貴賓室", "海外$4/FWC"],
+    welcomeOfferText: "全新客戶迎新：150日內簽 $25,000 送 26,000 FWC；簽 $70,000 送 104,000 FWC (需換領費)",
+    applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=178&a=228&sub_id1=pickcardrebate&sub_id2=web",
+    sellingPoints: [
+      "香港航空簽賬 HK$2 = 1 FWC",
+      "海外及網上簽賬 HK$4 = 1 FWC",
+      "本地簽賬 HK$6 = 1 FWC",
+      "免費 2 張香港航空機場貴賓室禮券",
+      "機上免稅商品 9 折",
+      "專屬登機櫃檯、優先登機及優先行李",
+      "5折 FWC 積分兌換獎勵機票",
+      "免費旅遊保險（保額高達10萬美元）",
+      "免費 12 個月 HoteLux Elite 會籍",
+    ],
+    note: "💡 **香港航空專屬禮遇**！FWC 積分可兌換香港航空機票。\n\n**迎新禮遇（全新客戶）**：150日內累積簽賬達指定金額可享 FWC 積分：\n- $25,000 → 26,000 FWC（免費）\n- $40,000 → 52,000 FWC（換領費$800）\n- $55,000 → 78,000 FWC（換領費$1,600）\n- $70,000 → 104,000 FWC（換領費$2,400）\n\n**機場貴賓室**：成功啟動卡並作任何零售簽賬即送 2 張可共享的香港航空機場貴賓室禮券。另可以 $60/張換領額外禮券（需於換領日起計至下一曆月內累積簽 $3,000）。\n\n⚠️ 推廣期至 2026/6/30。",
+    promoEndDate: "2026-06-30",
+    promoName: "香港航空卡迎新",
   },
   {
     id: "fubon-titanium",

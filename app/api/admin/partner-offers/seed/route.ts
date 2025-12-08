@@ -550,6 +550,36 @@ const MONEYHERO_PARTNER_OFFERS = [
       notes: "指定信用卡包括Motion信用卡、大灣區雙幣信用卡及香港航空Mastercard。每位客戶只可享一份MoneyHero獎賞。選擇Max Miles時，登記電郵需與HEYMAX賬戶相同。",
     }
   },
+  {
+    cardId: "cncbi-hkairlines",
+    partnerOffer: {
+      enabled: true,
+      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=178&a=228&sub_id1=pickcardrebate&sub_id2=web",
+      bonusValue: 5980,
+      bonusDescription: "獎品8選1：HK$1,600 HKTVmall（升級優惠）/ HK$1,300 Apple禮品卡 / HK$1,300 惠康現金券 / HK$1,300 現金回贈 / 15,000 Max Miles / Dyson Zone™耳機(HK$5,980) / Philips吸塵機(HK$2,498) / LOJEL行李箱(HK$2,100)",
+      bonusItems: [
+        "HK$1,600 HKTVmall電子購物禮券（升級優惠）",
+        "HK$1,300 Apple Store禮品卡",
+        "HK$1,300 惠康購物現金券",
+        "HK$1,300 現金回贈（經轉數快存入戶口）",
+        "15,000 Max Miles 飛行里數",
+        "Dyson Zone™ 降噪耳機（價值HK$5,980）",
+        "Philips輕量強效無線吸塵機 XC2011/61（價值HK$2,498）",
+        "LOJEL Alto 29吋超輕量拉鍊行李箱（價值HK$2,100; 顏色隨機）"
+      ],
+      validFrom: "2025-12-01",
+      validTo: "2025-12-15",
+      requirements: [
+        "全新信銀國際信用卡客戶（過去12個月內未曾持有信銀國際信用卡主卡）",
+        "批卡後30日內簽賬滿HK$100",
+        "2026年1月31日或之前成功獲批信用卡",
+        "收到表格後7日內填妥「獎賞換領表格」"
+      ],
+      minSpend: 100,
+      minSpendDays: 30,
+      notes: "指定信用卡包括Motion信用卡、大灣區雙幣信用卡及香港航空Mastercard。每位客戶只可享一份MoneyHero獎賞。選擇Max Miles時，登記電郵需與HEYMAX賬戶相同。",
+    }
+  },
 
   // ========================================
   // 恒生銀行 (2025/12/01 10:00 - 2025/12/21 23:59)
