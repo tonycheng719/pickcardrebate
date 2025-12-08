@@ -65,25 +65,36 @@ export function PromoCalendar({ open, onOpenChange }: PromoCalendarProps) {
     return Array.from(cardMap.values());
   }, [datasetCards]);
   
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedDay, setSelectedDay] = useState<number | null>(new Date().getDate());
+  // Use fixed initial values for SSR to avoid hydration mismatch
+  const [currentDate, setCurrentDate] = useState(() => new Date(2025, 11, 8)); // Dec 8, 2025
+  const [selectedDay, setSelectedDay] = useState<number | null>(8);
+  const [isClient, setIsClient] = useState(false);
+
+  // Set actual date on client-side
+  useEffect(() => {
+    setIsClient(true);
+    const today = new Date();
+    setCurrentDate(today);
+    setSelectedDay(today.getDate());
+  }, []);
 
   // Reset to today when dialog opens
   useEffect(() => {
-    if (open) {
+    if (open && isClient) {
       const today = new Date();
       setCurrentDate(today);
       setSelectedDay(today.getDate());
     }
-  }, [open]);
+  }, [open, isClient]);
 
   // Get current month info
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const firstDayOfMonth = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const today = new Date();
-  const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
+  // Use currentDate for comparison to avoid hydration mismatch
+  const isCurrentMonth = currentDate.getFullYear() === year && currentDate.getMonth() === month;
+  const todayDate = currentDate.getDate();
 
   // Extract promos with validDays (day of week) from all cards
   const dayOfWeekPromos = useMemo(() => {
@@ -256,7 +267,7 @@ export function PromoCalendar({ open, onOpenChange }: PromoCalendarProps) {
             return <div key={`empty-${index}`} className="h-12" />;
           }
           
-          const isToday = isCurrentMonth && day === today.getDate();
+          const isToday = isCurrentMonth && day === todayDate;
           const isSelected = selectedDay === day;
           const promoDots = getPromoDots(day);
           const hasPromos = promoDots.length > 0;

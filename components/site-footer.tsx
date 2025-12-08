@@ -4,11 +4,19 @@ import Link from "next/link";
 import { MessageCircle } from "lucide-react";
 import { WHATSAPP_GROUP_URL } from "@/lib/constants";
 import { useSettings } from "@/lib/store/settings-context";
+import { useState, useEffect } from "react";
 
 export function SiteFooter() {
   const { getSetting } = useSettings();
   // Use setting from DB, fallback to constant
   const whatsappUrl = getSetting("whatsapp_group_url") || WHATSAPP_GROUP_URL;
+  
+  // Use fixed year for SSR to avoid hydration mismatch
+  const [year, setYear] = useState(2025);
+  
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
 
   return (
     <footer className="bg-gray-50 dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800 py-12 mt-auto">
@@ -16,7 +24,7 @@ export function SiteFooter() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-center md:text-left">
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              © {new Date().getFullYear()} PickCardRebate. All rights reserved.
+              © {year} PickCardRebate. All rights reserved.
             </p>
           </div>
           
