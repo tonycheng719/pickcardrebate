@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { 
   Search, BookOpen, Eye, ExternalLink, Tag, Image as ImageIcon,
-  TrendingUp, Sparkles, CalendarIcon, Gift, Plus, Pencil, RotateCcw, Loader2
+  TrendingUp, Sparkles, CalendarIcon, Gift, Plus, Pencil, RotateCcw, Loader2, Upload
 } from "lucide-react";
 import Link from "next/link";
 import { GUIDES, Guide } from "@/lib/data/guides";
@@ -46,6 +46,8 @@ export default function AdminDiscoverPage() {
   const [editingGuide, setEditingGuide] = useState<Guide | null>(null);
   const [newCoverUrl, setNewCoverUrl] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Fetch view stats and article settings
   useEffect(() => {
@@ -197,6 +199,48 @@ export default function AdminDiscoverPage() {
       toast.error('重設失敗：' + error.message);
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  // Upload cover image
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('圖片大小不能超過 5MB');
+      return;
+    }
+
+    setIsUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('bucket', 'images');
+      formData.append('folder', 'articles');
+
+      const res = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || '上傳失敗');
+      }
+
+      setNewCoverUrl(data.url);
+      toast.success('圖片上傳成功');
+    } catch (error: any) {
+      toast.error('上傳失敗：' + error.message);
+    } finally {
+      setIsUploading(false);
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
   };
 
@@ -507,6 +551,52 @@ export default function AdminDiscoverPage() {
               )}
             </div>
 
+            {/* Upload Button */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                上傳圖片
+              </label>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileUpload}
+                accept="image/*"
+                className="hidden"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={isUploading}
+                className="w-full gap-2"
+              >
+                {isUploading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    上傳中...
+                  </>
+                ) : (
+                  <>
+                    <Upload className="h-4 w-4" />
+                    選擇圖片上傳
+                  </>
+                )}
+              </Button>
+              <p className="text-xs text-gray-500">
+                支援 JPG、PNG、GIF、WebP（最大 5MB）
+              </p>
+            </div>
+
+            {/* Divider */}
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-gray-200 dark:border-gray-700" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-white dark:bg-gray-900 px-2 text-gray-500">或</span>
+              </div>
+            </div>
+
             {/* URL Input */}
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -518,7 +608,7 @@ export default function AdminDiscoverPage() {
                 onChange={(e) => setNewCoverUrl(e.target.value)}
               />
               <p className="text-xs text-gray-500">
-                建議使用 Unsplash、Imgur 或其他圖床的圖片連結
+                或直接輸入圖片連結
               </p>
             </div>
 
