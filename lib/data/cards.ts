@@ -419,10 +419,11 @@ export const HK_CARDS: CreditCard[] = [
       { description: "基本回贈0.4%", matchType: "base", percentage: 0.4 },
     ],
     tags: ["Go商戶5%", "內地手機簽賬2%", "人民幣免手續費", "一卡雙幣"],
-    welcomeOfferText: "首3個月指定商戶高達5%回贈",
+    welcomeOfferText: "迎新手機簽賬10%回贈 (上限$500)",
+    welcomeOfferReward: "$500",
     applyUrl: "https://www.bochk.com/tc/creditcard/products/gocard.html",
     sellingPoints: ["指定Go商戶高達5%現金回贈", "內地手機簽賬高達2%回贈", "人民幣海外簽賬免手續費", "一卡雙幣"],
-    note: "💡 指定Go商戶(keeta、美團、大眾點評、高鐵西九龍站、滴滴出行、京東港澳站、惠康、Market Place等)簽賬享高達5%回贈。內地手機簽賬(BoC Pay/雲閃付/Apple Pay/Huawei Pay)享高達2%回贈。⚠️ 每月回贈上限HK$100，需累積簽賬滿HK$1,500（豁免至2025年12月31日）。",
+    note: "💡 指定Go商戶(keeta、美團、大眾點評、高鐵西九龍站、滴滴出行、京東港澳站、惠康、Market Place等)簽賬享高達5%回贈。內地手機簽賬(BoC Pay/雲閃付/Apple Pay/Huawei Pay)享高達2%回贈。⚠️ 每月回贈上限HK$100，需累積簽賬滿HK$1,500（豁免至2025年12月31日）。🎁 迎新：首3個月手機簽賬（Apple Pay/Google Pay/Samsung Pay/Huawei Pay/雲閃付）享10%回贈，基本$300+額外$200=$500上限。",
   },
   {
     id: "boc-go-diamond",
@@ -445,10 +446,11 @@ export const HK_CARDS: CreditCard[] = [
       { description: "基本回贈0.4%", matchType: "base", percentage: 0.4 },
     ],
     tags: ["Go商戶5%", "內地手機簽賬4%", "人民幣免手續費", "一卡雙幣"],
-    welcomeOfferText: "首3個月指定商戶高達5%回贈",
+    welcomeOfferText: "迎新手機簽賬10%回贈 (上限$500)",
+    welcomeOfferReward: "$500",
     applyUrl: "https://www.bochk.com/tc/creditcard/products/gocard.html",
     sellingPoints: ["指定Go商戶高達5%現金回贈", "內地手機簽賬高達4%回贈", "人民幣海外簽賬免手續費", "一卡雙幣"],
-    note: "💡 指定Go商戶(keeta、美團、大眾點評、高鐵西九龍站、滴滴出行、京東港澳站、惠康、Market Place等)簽賬享高達5%回贈。內地手機簽賬(BoC Pay/雲閃付/Apple Pay/Huawei Pay)享高達4%回贈(10X積分)。⚠️ 每月回贈上限HK$100，需累積簽賬滿HK$1,500（豁免至2025年12月31日）。",
+    note: "💡 指定Go商戶(keeta、美團、大眾點評、高鐵西九龍站、滴滴出行、京東港澳站、惠康、Market Place等)簽賬享高達5%回贈。內地手機簽賬(BoC Pay/雲閃付/Apple Pay/Huawei Pay)享高達4%回贈(10X積分)。⚠️ 每月回贈上限HK$100，需累積簽賬滿HK$1,500（豁免至2025年12月31日）。🎁 迎新：首3個月手機簽賬（Apple Pay/Google Pay/Samsung Pay/Huawei Pay/雲閃付）享10%回贈，基本$300+額外$200=$500上限。",
   },
 
   // ========================================================================
@@ -1252,6 +1254,27 @@ export const HK_CARDS: CreditCard[] = [
     tags: ["里數", "旅遊保險"],
     sellingPoints: ["積分無限期", "指定簽賬 HK$3.6/里", "免費旅遊保險及貴賓室 (年費豁免)"],
     hidden: true, // 暫時隱藏
+  },
+  {
+    id: "amex-platinum",
+    name: "美國運通白金卡",
+    bank: "American Express",
+    style: { bgColor: "bg-gradient-to-br from-gray-300 via-gray-100 to-gray-300", textColor: "text-gray-900" },
+    annualFee: 7800,
+    minIncome: 600000,
+    feeWaiverCondition: "無免年費優惠",
+    foreignCurrencyFee: 2.0,
+    rewardConfig: { method: 'conversion', ratio: 15, currency: 'Points' },
+    rules: [
+      // 每HK$5 = 1積分，15積分 = 1里，所以 $75 = 1里
+      { description: "外幣簽賬 3X 積分", matchType: "base", percentage: 1.33, isForeignCurrency: true },
+      { description: "本地簽賬 1X 積分", matchType: "base", percentage: 0.67, excludeCategories: ["tax", "utilities", "government", "insurance"] },
+    ],
+    tags: ["機場貴賓室", "旅遊保險", "禮賓服務"],
+    welcomeOfferText: "迎新高達240,000積分（16,000里）",
+    applyUrl: "https://www.americanexpress.com/hk/zh/credit-cards/platinum-card/",
+    sellingPoints: ["無限次免費進入全球機場貴賓室", "免費旅遊保險", "24小時禮賓服務", "高端酒店及航空公司優惠"],
+    note: "💎 頂級信用卡，年費HK$7,800。主要優勢為機場貴賓室通行證、酒店升級、旅遊保險等。積分回贈率較低，適合經常旅遊及重視尊享服務的用戶。⚠️ 部分商戶不接受美國運通。",
   },
   {
     id: "mox-credit",

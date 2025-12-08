@@ -622,6 +622,39 @@ const MONEYHERO_PARTNER_OFFERS = [
   },
 
   // ========================================
+  // 美國運通白金卡 (2025/12/05 18:00 - 2025/12/31 12:00)
+  // 條件：發卡後兩個月內累積合資格簽賬HK$15,000或以上，及已清繳年費
+  // ========================================
+  {
+    cardId: "amex-platinum",
+    partnerOffer: {
+      enabled: true,
+      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/amex-platinum-card",
+      bonusValue: 6998,
+      bonusDescription: "獎品5選1：HK$4,800 HKTVmall（升級優惠）/ HK$4,500 Apple禮品卡 / HK$4,500 現金回贈 / Philips咖啡機(HK$6,998) / Dyson吸塵機(HK$4,990)",
+      bonusItems: [
+        "HK$4,800 HKTVmall電子購物禮券（升級優惠）",
+        "HK$4,500 Apple Store禮品卡",
+        "HK$4,500 現金回贈（經轉數快存入戶口）",
+        "Philips PSA2218/00 二合一半自動膠囊意式咖啡機（價值HK$6,998）",
+        "Dyson PencilVac Fluffycones 無線吸塵機（價值HK$4,990）"
+      ],
+      validFrom: "2025-12-05",
+      validTo: "2025-12-31",
+      requirements: [
+        "全新美國運通白金卡客戶",
+        "發卡後兩個月內累積合資格簽賬HK$15,000或以上",
+        "已清繳年費",
+        "2026年1月31日或之前成功獲批信用卡",
+        "收到表格後7日內填妥「獎賞換領表格」"
+      ],
+      minSpend: 15000,
+      minSpendDays: 60,
+      notes: "⚠️ 成功申請此卡不能同時享有由MoneyHero提供的優惠和其他機構提供的優惠（包括銀行迎新優惠）。申請前請關掉AdBlocker及「私人模式」。",
+    }
+  },
+
+  // ========================================
   // 亞洲聯合財務 sim 信用卡 (2025/12/02 18:00 - 2025/12/31 12:00)
   // 條件：選擇「6個月免息免手續費現金套現分期計劃」作爲迎新優惠
   // ========================================
