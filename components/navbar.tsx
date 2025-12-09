@@ -60,7 +60,7 @@ export function Navbar() {
           </span>
         </Link>
         
-        <nav className="flex items-center gap-1 md:gap-3">
+        <nav className="flex items-center gap-1 md:gap-3 flex-shrink-0">
           {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-6 mr-4">
             <Link href="/discover" className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
@@ -245,13 +245,13 @@ export function Navbar() {
               </div>
             </div>
           ) : (
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 flex-shrink-0">
                 {/* Mobile only: Theme Toggle for guests */}
                 <Button 
                   variant="ghost" 
                   size="icon" 
                   onClick={toggleTheme}
-                  className="md:hidden text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"
+                  className="md:hidden text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full flex-shrink-0"
                 >
                   {mounted ? (
                       resolvedTheme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />
@@ -259,8 +259,8 @@ export function Navbar() {
                       <div className="w-5 h-5" />
                   )}
                 </Button>
-                <Link href="/login">
-                    <Button variant="primary" size="sm" className="rounded-full px-4 md:px-5 shadow-blue-200 dark:shadow-none bg-blue-600 hover:bg-blue-700 text-white border-none">
+                <Link href="/login" className="flex-shrink-0">
+                    <Button variant="primary" size="sm" className="rounded-full px-4 md:px-5 shadow-blue-200 dark:shadow-none bg-blue-600 hover:bg-blue-700 text-white border-none whitespace-nowrap">
                       登入
                     </Button>
                 </Link>
