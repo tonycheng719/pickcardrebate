@@ -7,7 +7,7 @@ import { useWallet } from "@/lib/store/wallet-context";
 import { useReviews } from "@/lib/store/reviews-context";
 import type { CreditCard } from "@/lib/types";
 import { 
-    Plus, Check, ExternalLink, MessageSquare, Star, Search, X, Info, Scale
+    Plus, Check, ExternalLink, MessageSquare, Star, Search, X, Info, Scale, ArrowLeft
 } from "lucide-react";
 import {
   Dialog,
@@ -21,6 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { HK_CARDS } from "@/lib/data/cards";
 import { useDataset } from "@/lib/admin/data-store";
 import { motion } from "framer-motion";
@@ -406,12 +407,24 @@ function CardSkeleton() {
 export default function AllCardsPage() {
     const { cards, isLoading } = useDataset();
     const [searchQuery, setSearchQuery] = useState("");
+    const searchParams = useSearchParams();
     const cardList = cards.length ? cards : HK_CARDS;
     
-    // Filter cards based on search query and hidden status
+    // Get ids filter from URL params
+    const idsParam = searchParams.get('ids');
+    const filterIds = idsParam ? idsParam.split(',').filter(Boolean) : [];
+    const isFiltered = filterIds.length > 0;
+    
+    // Filter cards based on ids, search query and hidden status
     const filteredCards = cardList.filter(card => {
         // Skip hidden cards
         if (card.hidden) return false;
+        
+        // If ids filter is active, only show those cards
+        if (isFiltered) {
+            return filterIds.includes(card.id);
+        }
+        
         if (!searchQuery.trim()) return true;
         const query = searchQuery.toLowerCase();
         return (
@@ -427,9 +440,34 @@ export default function AllCardsPage() {
           <Navbar />
           
           <main className="container mx-auto px-4 py-8 flex-1">
+            {isFiltered && (
+              <div className="mb-6 p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-200 dark:border-emerald-800">
+                <div className="flex items-center justify-between flex-wrap gap-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-emerald-700 dark:text-emerald-300 font-medium">
+                      顯示 {filteredCards.length} 張相關信用卡
+                    </span>
+                  </div>
+                  <Link href="/cards">
+                    <Button variant="outline" size="sm" className="gap-2 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 hover:bg-emerald-100 dark:hover:bg-emerald-900/40">
+                      <ArrowLeft className="h-4 w-4" />
+                      查看所有信用卡
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            )}
+            
             <div className="mb-8">
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">所有信用卡</h1>
-              <p className="text-gray-600 dark:text-gray-400">收錄香港主流信用卡，查看優惠詳情並加入您的錢包。</p>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                {isFiltered ? '相關信用卡' : '所有信用卡'}
+              </h1>
+              <p className="text-gray-600 dark:text-gray-400">
+                {isFiltered 
+                  ? '以下信用卡可享此優惠，點擊查看詳情並加入錢包。'
+                  : '收錄香港主流信用卡，查看優惠詳情並加入您的錢包。'
+                }
+              </p>
             </div>
 
             {/* Search Bar & Compare Button */}

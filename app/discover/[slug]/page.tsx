@@ -1935,11 +1935,19 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
                   </Button>
                 </a>
               )}
-              <Link href={`/cards?tags=${encodeURIComponent(promo.tags[0])}`} className="flex-1">
-                <Button variant="outline" className="w-full h-12 text-base rounded-xl dark:border-gray-700 dark:text-white dark:hover:bg-gray-800">
-                  查看相關信用卡
-                </Button>
-              </Link>
+              {relatedCards.length > 0 ? (
+                <Link href={`/cards?ids=${promo.relatedCardIds?.join(',')}`} className="flex-1">
+                  <Button variant="outline" className="w-full h-12 text-base rounded-xl dark:border-gray-700 dark:text-white dark:hover:bg-gray-800">
+                    查看相關信用卡 ({relatedCards.length})
+                  </Button>
+                </Link>
+              ) : (
+                <Link href="/cards" className="flex-1">
+                  <Button variant="outline" className="w-full h-12 text-base rounded-xl dark:border-gray-700 dark:text-white dark:hover:bg-gray-800">
+                    瀏覽所有信用卡
+                  </Button>
+                </Link>
+              )}
             </div>
 
             <FAQSection faqs={promo.faqs || []} />
