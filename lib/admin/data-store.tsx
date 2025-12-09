@@ -93,15 +93,22 @@ function mapMerchantFromDB(dbMerchant: any): Merchant {
 }
 
 function mapMerchantToDB(merchant: Merchant): any {
-    return {
+    const payload: any = {
         id: merchant.id,
         name: merchant.name,
         category_ids: merchant.categoryIds,
-        logo: merchant.logo,
         accent_color: merchant.accentColor,
         is_general: merchant.isGeneral,
         aliases: merchant.aliases
     };
+    
+    // Only include logo if it's a valid URL, avoid overwriting with emoji or undefined
+    if (merchant.logo && typeof merchant.logo === 'string' && 
+        (merchant.logo.startsWith('http') || merchant.logo.startsWith('/'))) {
+        payload.logo = merchant.logo;
+    }
+    
+    return payload;
 }
 
 function mapPromoFromDB(dbPromo: any): Promo {
@@ -150,7 +157,7 @@ interface AdminDataStoreContextType {
 const AdminDataStoreContext = createContext<AdminDataStoreContextType | undefined>(undefined);
 
 // Helper to get cached merchants from localStorage
-// IMPORTANT: Always merge with local data to ensure logos are up-to-date
+// IMPORTANT: DB/cached logos take priority (user uploaded)
 function getCachedMerchants(): Merchant[] {
   if (typeof window === 'undefined') return POPULAR_MERCHANTS;
   try {
@@ -158,18 +165,18 @@ function getCachedMerchants(): Merchant[] {
     if (cached) {
       const parsed = JSON.parse(cached);
       if (parsed && parsed.length > 0) {
-        // Merge cached with local to ensure logos are current
+        // Merge cached with local, cached logo takes priority if valid URL
         const cachedMap = new Map<string, Merchant>(parsed.map((m: Merchant) => [m.id, m]));
         return POPULAR_MERCHANTS.map(localMerchant => {
           const cachedMerchant = cachedMap.get(localMerchant.id);
           if (cachedMerchant) {
-            // Use local logo unless cached has a Supabase storage URL
-            const useCachedLogo = cachedMerchant.logo && (
-              cachedMerchant.logo.includes('supabase') || 
-              cachedMerchant.logo.includes('storage')
-            );
+            // Use cached logo if it's a valid URL (user uploaded)
+            const useCachedLogo = cachedMerchant.logo && 
+              typeof cachedMerchant.logo === 'string' && 
+              (cachedMerchant.logo.startsWith('http') || cachedMerchant.logo.startsWith('/'));
             return {
               ...localMerchant,
+              ...cachedMerchant,
               logo: useCachedLogo ? cachedMerchant.logo : localMerchant.logo,
             };
           }
@@ -269,20 +276,19 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
                     // Create a map of DB merchants by ID for quick lookup
                     const dbMerchantMap = new Map<string, Merchant>(dbMerchants.map((m) => [m.id, m]));
                     
-                    // Merge: LOCAL data takes priority for logos, DB data used for extra fields
+                    // Merge: DB logo takes priority if available (user uploaded)
                     const mergedMerchants: Merchant[] = POPULAR_MERCHANTS.map(localMerchant => {
                         const dbMerchant = dbMerchantMap.get(localMerchant.id);
                         if (dbMerchant) {
-                            // LOCAL logo takes priority (most up-to-date in code)
-                            // Only use DB logo if it's a Supabase storage URL (user uploaded)
-                            const useDbLogo = dbMerchant.logo && (
-                                dbMerchant.logo.includes('supabase') || 
-                                dbMerchant.logo.includes('storage')
-                            );
+                            // DB logo takes priority if it exists and is a valid URL
+                            // This ensures user-uploaded logos are always used
+                            const useDbLogo = dbMerchant.logo && 
+                                typeof dbMerchant.logo === 'string' && 
+                                (dbMerchant.logo.startsWith('http') || dbMerchant.logo.startsWith('/'));
                             return {
                                 ...localMerchant, // Start with local data
                                 ...dbMerchant,    // Override with DB data
-                                logo: useDbLogo ? dbMerchant.logo : localMerchant.logo, // Prefer local logo unless DB has uploaded one
+                                logo: useDbLogo ? dbMerchant.logo : localMerchant.logo, // DB logo takes priority
                             };
                         }
                         return localMerchant;
