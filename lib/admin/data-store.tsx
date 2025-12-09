@@ -215,12 +215,7 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
   const refreshData = useCallback(async () => {
     // Removed setIsLoading(true) here to prevent UI flickering if we already have data
     try {
-        // Set a shorter timeout (8s) - if it fails, we use local data which is fine
-        const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error("Timeout")), 8000)
-        );
-
-        // Use AbortController for fetch requests
+        // Use AbortController for fetch requests with 8s timeout
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 8000);
 
@@ -319,6 +314,7 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
             }
         }
         
+        clearTimeout(timeoutId); // Clean up timeout
         setIsLoading(false); // Data sync complete
     } catch (error: any) {
         console.warn("Data sync error:", error.message);
