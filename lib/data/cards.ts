@@ -668,6 +668,12 @@ export const HK_CARDS: CreditCard[] = [
     incomeNote: "Visa Signature 需年薪 $360,000；未達要求會自動當作 Platinum ($150,000) 申請",
     foreignCurrencyFee: 1.95,
     rules: [
+      // 🔥 DBS x 衛訊優惠 (2025/12/1 - 2026/2/28)
+      // 優惠一：單一簽賬滿$3,500享$100一扣即享 (2.86%)
+      // 優惠二：單一簽賬滿$8,000享$320一扣即享 (4%)
+      // 每月只可享其中一個優惠一次，需開啟DBS Card+ App「一扣即享」
+      { description: "🔥衛訊 4% [$8k享$320一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 4.0, minSpend: 8000, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
+      { description: "🔥衛訊 2.86% [$3.5k享$100一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 2.86, minSpend: 3500, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
       // T&C: 指定類別 5%: 餐飲/運動服飾/健身中心/醫療 (單筆≥$300，Signature卡每月首$8,000)
       // 餐飲不包括：酒席宴會、私人宴會、酒店/百貨公司/會所內食肆
       { description: "餐飲 5% (單筆≥$300)", matchType: "category", matchValue: "dining", percentage: 5.0, minSpend: 300, cap: 8000, capType: "spending", excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
@@ -677,7 +683,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 其他零售 1% (包括未滿$300的指定類別)
       { description: "其他零售 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
     ],
-    tags: ["餐飲5%", "健身5%", "運動服飾5%", "需登記"],
+    tags: ["餐飲5%", "健身5%", "運動服飾5%", "需登記", "衛訊4%"],
     welcomeOfferText: "迎新高達 $1,000 回贈",
     sellingPoints: ["餐飲/運動服飾/健身/醫療 5% (單筆≥$300)", "其他零售 1%", "需透過 DBS Card+ App 登記"],
     note: "⚠️ 指定類別 5% 需單筆消費滿 $300 並透過 DBS Card+ App 登記！未滿 $300 只有 1%。Signature卡每月首 $8,000 享 5%。餐飲不包括酒席宴會/酒店內食肆。醫療不包括獸醫。✅ DBS$ 積分無限期！⚠️ 電子錢包（八達通增值/PayMe/支付寶/微信支付增值及簽賬）**每月首 $5,000 可獲 DBS$**，超過不計。Apple Pay/Google Pay/Samsung Pay 不受此限。❌ 不計回贈：繳稅、繳費、保費、籌碼、外幣兌換、信用卡年費、結餘轉戶。",
@@ -695,10 +701,13 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'direct_rate', baseRate: 6, currency: 'DBS$' }, // $6/mile standard
     rules: [
+      // 🔥 DBS x 衛訊優惠 (2025/12/1 - 2026/2/28)
+      { description: "🔥衛訊 4% [$8k享$320一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 4.0, minSpend: 8000, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
+      { description: "🔥衛訊 2.86% [$3.5k享$100一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 2.86, minSpend: 3500, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
       { description: "外幣簽賬 $4/里", matchType: "base", percentage: 2.5, isForeignCurrency: true }, // ~2.5% value
       { description: "本地簽賬 $6/里", matchType: "base", percentage: 1.6, excludeCategories: ["tax", "utilities", "government", "insurance"] }, // ~1.6% value
     ],
-    tags: ["儲里數", "里數神卡"],
+    tags: ["儲里數", "里數神卡", "衛訊4%"],
     sellingPoints: ["積分無限期", "兌換里數免手續費", "外幣 HK$4/里"],
     note: "⚠️ Black Card 有獨立 DBS$ 兌換比率，詳情見官網。✅ DBS$ 積分無限期！⚠️ 電子錢包（八達通增值/PayMe/支付寶/微信支付增值及簽賬）**每月首 $5,000 可獲 DBS$**，超過不計。Apple Pay/Google Pay/Samsung Pay 不受此限。❌ 不計回贈：繳稅、繳費、保費、籌碼、外幣兌換、信用卡年費、結餘轉戶。",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=188&a=228&sub_id1=pickcardrebate&sub_id2=web",
@@ -715,11 +724,14 @@ export const HK_CARDS: CreditCard[] = [
     incomeNote: "全日制學生可豁免入息要求",
     foreignCurrencyFee: 1.95,
     rules: [
+      // 🔥 DBS x 衛訊優惠 (2025/12/1 - 2026/2/28)
+      { description: "🔥衛訊 4% [$8k享$320一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 4.0, minSpend: 8000, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
+      { description: "🔥衛訊 2.86% [$3.5k享$100一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 2.86, minSpend: 3500, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
       // 基本回贈 0.4%，排除電子錢包、八達通、繳費等
       // 注意：自選類別 5% 推廣已於 2025/3/31 結束
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["學生卡", "低門檻"],
+    tags: ["學生卡", "低門檻", "衛訊4%"],
     sellingPoints: ["基本回贈 0.4%", "學生可豁免入息要求", "DBS$ 積分無限期"],
     note: "💡 基本回贈 0.4%。✅ DBS$ 積分無限期！⚠️ 電子錢包（八達通增值/PayMe/支付寶/微信支付）**每月首 $5,000 可獲 DBS$**，超過不計。Apple Pay/Google Pay/Samsung Pay 不受此限。❌ 不計回贈：繳稅、繳費、保費。📌 注意：自選類別 5% 推廣已於 2025年3月31日結束。",
   },
@@ -734,6 +746,9 @@ export const HK_CARDS: CreditCard[] = [
     minIncome: 100000,
     foreignCurrencyFee: 1.95,
     rules: [
+      // 🔥 DBS x 衛訊優惠 (2025/12/1 - 2026/2/28)
+      { description: "🔥衛訊 4% [$8k享$320一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 4.0, minSpend: 8000, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
+      { description: "🔥衛訊 2.86% [$3.5k享$100一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 2.86, minSpend: 3500, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
       // T&C「四圍簽，好 COM 賺」: 指定類別 2% (0.4% 基本 + 1.6% 額外)
       // 指定類別：AliPay/AliPayHK/WeChat Pay、百貨公司、家居傢俬、油站
       // 單筆≥$300，每月首 $12,500
@@ -746,7 +761,7 @@ export const HK_CARDS: CreditCard[] = [
       // 基本回贈 0.4%
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["payme", "octopus", "alipay", "wechat_pay"] },
     ],
-    tags: ["週三超市8%", "指定類別2%", "需登記"],
+    tags: ["週三超市8%", "指定類別2%", "需登記", "衛訊4%"],
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=185&a=228&sub_id1=pickcardrebate&sub_id2=web",
     sellingPoints: ["🔥 週三超市 8% (單筆≥$300)", "指定類別 2% (百貨/家居/油站/AliPay/WeChat Pay) [需登記]", "每月首 $2,000 超市 / $12,500 指定類別"],
     note: "⚠️ COMPASS VISA 使用 COMPASS Dollar（非 DBS$），獎賞系統不同！【週三大折日 2025/7/2-12/31】全港超市 8% (單筆≥$300，每月首$2,000)，✅ Apple Pay/Google Pay/Samsung Pay 可以，❌ 支付寶/微信支付/PayMe/八達通增值 不可以。【四圍簽，好 COM 賺】需透過 DBS Card+ App 登記！指定類別 2% (單筆≥$300，每月首$12,500)：AliPay/WeChat Pay、百貨公司、家居傢俬、油站。❌ 不計回贈：PayMe、八達通增值、電子錢包增值、繳費、保費、繳稅。",

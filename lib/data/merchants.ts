@@ -97,6 +97,7 @@ export const POPULAR_MERCHANTS: Merchant[] = [
   { id: "fortress", name: "Fortress 豐澤", categoryIds: ["electronics", "online"], aliases: ["fortress", "豐澤"], logo: "https://logo.clearbit.com/fortress.com.hk", accentColor: "#0ea5e9" },
   { id: "yoho", name: "友和 YOHO", categoryIds: ["electronics", "online"], aliases: ["yoho", "友和"], logo: "https://logo.clearbit.com/yohohongkong.com", accentColor: "#f97316" },
   { id: "broadway", name: "Broadway 百老滙", categoryIds: ["electronics", "online"], aliases: ["broadway", "百老滙", "百老匯"], logo: "https://logo.clearbit.com/broadway.com.hk", accentColor: "#1d4ed8" },
+  { id: "wilson_comm", name: "Wilson 衛訊", categoryIds: ["electronics", "online"], aliases: ["wilson", "衛訊", "wilsoncomm"], logo: "https://logo.clearbit.com/wilsoncomm.com.hk", accentColor: "#e11d48" },
 
   // ========== yuu 積分商戶 (恒生 enJoy 卡) ==========
   // 4X yuu積分 (2%) - 美心中菜
