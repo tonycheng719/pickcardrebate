@@ -32,30 +32,39 @@ import Link from "next/link";
 
 // Helper to render note with Markdown links
 function renderNoteWithLinks(note: string) {
-  // Split by markdown link pattern [text](url)
-  const parts = note.split(/(\[([^\]]+)\]\(([^)]+)\))/g);
+  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+  const elements: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let match;
+  let key = 0;
+
+  while ((match = linkRegex.exec(note)) !== null) {
+    // Add text before the link
+    if (match.index > lastIndex) {
+      elements.push(note.slice(lastIndex, match.index));
+    }
+    
+    // Add the link
+    const [, text, url] = match;
+    elements.push(
+      <Link 
+        key={key++} 
+        href={url} 
+        className="text-blue-600 hover:underline font-medium"
+      >
+        {text}
+      </Link>
+    );
+    
+    lastIndex = match.index + match[0].length;
+  }
   
-  return parts.map((part, index) => {
-    // Check if this part is a full markdown link match
-    const linkMatch = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
-    if (linkMatch) {
-      const [, text, url] = linkMatch;
-      return (
-        <Link 
-          key={index} 
-          href={url} 
-          className="text-blue-600 hover:underline font-medium"
-        >
-          {text}
-        </Link>
-      );
-    }
-    // Skip the captured groups (they appear as separate parts)
-    if (parts[index - 1]?.match(/^\[([^\]]+)\]\(([^)]+)\)$/)) {
-      return null;
-    }
-    return part;
-  }).filter(Boolean);
+  // Add remaining text after last link
+  if (lastIndex < note.length) {
+    elements.push(note.slice(lastIndex));
+  }
+  
+  return elements.length > 0 ? elements : note;
 }
 import { LoginPromptDialog } from "@/components/login-prompt-dialog";
 import { toast } from "sonner";
