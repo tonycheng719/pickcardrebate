@@ -435,68 +435,67 @@ export function DiscoverClient() {
 
   const tagFilters = [
     { id: "all", label: "全部" },
-    { id: "餐飲", label: "餐飲" },
-    { id: "網購", label: "網購" },
-    { id: "旅遊", label: "旅遊" },
-    { id: "海外消費", label: "海外" },
+    { id: "餐飲", label: "🍽️ 餐飲" },
+    { id: "網購", label: "🛒 網購" },
+    { id: "旅遊", label: "✈️ 旅遊" },
+    { id: "海外消費", label: "🌍 海外" },
+    { id: "超市", label: "🏪 超市" },
+    { id: "迎新", label: "🎁 迎新" },
     { id: "HSBC", label: "HSBC" },
+    { id: "恒生", label: "恒生" },
+    { id: "DBS", label: "DBS" },
   ];
 
   return (
     <>
-      {/* Header */}
-      <div className="bg-white dark:bg-gray-900 pt-8 pb-4 px-4 sticky top-0 z-40 border-b dark:border-gray-800">
-        <div className="container mx-auto">
-          <div className="flex justify-between items-end mb-4">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                <Sparkles className="h-7 w-7 text-amber-500" />
-                探索
-              </h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">優惠資訊、慳錢攻略一覽無遺</p>
+      {/* Header - 更簡潔的設計 */}
+      <div className="bg-white dark:bg-gray-900 sticky top-0 z-40 border-b dark:border-gray-800">
+        <div className="container mx-auto px-4">
+          {/* 主標題區域 */}
+          <div className="flex items-center justify-between py-4">
+            {/* Content Type Tabs - 更緊湊的 pill 設計 */}
+            <div className="flex bg-gray-100 dark:bg-gray-800 p-1 rounded-full">
+              {contentTypes.map(type => {
+                const Icon = type.icon;
+                return (
+                  <button
+                    key={type.id}
+                    onClick={() => setContentType(type.id as ContentType)}
+                    className={`px-4 py-1.5 rounded-full text-sm font-medium flex items-center gap-1.5 transition-all ${
+                      contentType === type.id 
+                        ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm" 
+                        : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                    }`}
+                  >
+                    <Icon className="h-3.5 w-3.5" />
+                    {type.label}
+                  </button>
+                );
+              })}
             </div>
+            
+            {/* 回報按鈕 */}
             <Button 
               onClick={() => setIsReporting(!isReporting)} 
-              variant="outline" 
+              variant="ghost" 
               size="sm" 
-              className="gap-2 rounded-full dark:border-gray-700 dark:text-gray-300"
+              className="gap-1.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
             >
               <PlusCircle className="h-4 w-4" />
-              {isReporting ? "取消" : "回報"}
+              {isReporting ? "取消" : "回報優惠"}
             </Button>
           </div>
           
-          {/* Content Type Tabs */}
-          <div className="flex gap-2 mb-3">
-            {contentTypes.map(type => {
-              const Icon = type.icon;
-              return (
-                <button
-                  key={type.id}
-                  onClick={() => setContentType(type.id as ContentType)}
-                  className={`px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 transition-all ${
-                    contentType === type.id 
-                      ? "bg-blue-600 text-white shadow-lg shadow-blue-200 dark:shadow-blue-900/30" 
-                      : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-                  }`}
-                >
-                  <Icon className="h-4 w-4" />
-                  {type.label}
-                </button>
-              );
-            })}
-          </div>
-          
-          {/* Tag Filters */}
-          <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
+          {/* Tag Filters - 水平滾動標籤 */}
+          <div className="flex gap-2 overflow-x-auto pb-3 -mx-4 px-4 scrollbar-hide">
             {tagFilters.map(f => (
               <button
                 key={f.id}
                 onClick={() => setTagFilter(f.id)}
-                className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${
+                className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
                   tagFilter === f.id 
-                    ? "bg-black text-white dark:bg-white dark:text-black" 
-                    : "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400"
+                    ? "bg-blue-600 text-white" 
+                    : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
                 }`}
               >
                 {f.label}
