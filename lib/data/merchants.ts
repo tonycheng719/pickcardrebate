@@ -17,6 +17,7 @@ export const POPULAR_MERCHANTS: Merchant[] = [
   { id: "donki", name: "Don Don Donki", categoryIds: ["supermarket"], aliases: ["donki", "唐吉訶德"], logo: "https://logo.clearbit.com/dondondonki.com", accentColor: "#facc15" },
   { id: "mannings", name: "Mannings 萬寧", categoryIds: ["personal_care", "supermarket"], aliases: ["mannings", "萬寧"], logo: "https://logo.clearbit.com/mannings.com.hk", accentColor: "#fb923c" },
   { id: "watsons", name: "Watsons 屈臣氏", categoryIds: ["personal_care", "supermarket"], aliases: ["watsons", "屈臣氏"], logo: "https://logo.clearbit.com/watsons.com.hk", accentColor: "#0ea5e9" },
+  { id: "lungfung", name: "龍豐藥房", categoryIds: ["personal_care"], aliases: ["龍豐", "lungfung", "lung fung"], logo: "💊", accentColor: "#dc2626" },
   // DBS 官方認定超市
   { id: "citysuper", name: "city'super", categoryIds: ["supermarket"], aliases: ["citysuper", "city super"], logo: "https://logo.clearbit.com/citysuper.com.hk", accentColor: "#1e3a8a" },
   { id: "eshop360", name: "優品360", categoryIds: ["supermarket"], aliases: ["優品", "360", "eshop360"], logo: "🛒", accentColor: "#ef4444" },
@@ -153,7 +154,14 @@ export const POPULAR_MERCHANTS: Merchant[] = [
 
   // ========== 渣打 Smart 卡特約商戶 ==========
   { id: "japanhome", name: "Japan Home 日本城", categoryIds: ["home"], aliases: ["japan home", "日本城"], logo: "https://logo.clearbit.com/japanhome.com.hk", accentColor: "#dc2626" },
+
+  // ========== 電訊 ==========
   { id: "cmhk", name: "中國移動香港 CMHK", categoryIds: ["telecom", "online"], aliases: ["cmhk", "中國移動", "china mobile"], logo: "https://logo.clearbit.com/hk.chinamobile.com", accentColor: "#0ea5e9", isOnlineOnly: true },
+  { id: "csl", name: "CSL", categoryIds: ["telecom"], aliases: ["csl", "1010"], logo: "https://logo.clearbit.com/csl.com", accentColor: "#e11d48" },
+  { id: "smartone", name: "SmarTone 數碼通", categoryIds: ["telecom"], aliases: ["smartone", "數碼通"], logo: "https://logo.clearbit.com/smartone.com", accentColor: "#16a34a" },
+  { id: "3hk", name: "3 香港", categoryIds: ["telecom"], aliases: ["3hk", "3香港", "three"], logo: "https://logo.clearbit.com/three.com.hk", accentColor: "#000000" },
+  { id: "hgc", name: "HGC 環電", categoryIds: ["telecom"], aliases: ["hgc", "環電", "和記環球電訊"], logo: "https://logo.clearbit.com/hgc.com.hk", accentColor: "#dc2626" },
+  { id: "hkbn", name: "香港寬頻 HKBN", categoryIds: ["telecom"], aliases: ["hkbn", "香港寬頻", "hkbroadband"], logo: "https://logo.clearbit.com/hkbn.net", accentColor: "#3b82f6" },
 
   // ========== 油站 ==========
   { id: "caltex", name: "Caltex 加德士", categoryIds: ["petrol"], aliases: ["caltex", "加德士"], logo: "https://logo.clearbit.com/caltex.com", accentColor: "#dc2626" },
@@ -168,12 +176,15 @@ export const POPULAR_MERCHANTS: Merchant[] = [
 
   // ========== 百貨公司 ==========
   { id: "aeon", name: "AEON 永旺", categoryIds: ["department_store", "supermarket"], aliases: ["aeon", "永旺", "jusco"], logo: "https://logo.clearbit.com/aeon.com.hk", accentColor: "#ec4899" },
-  { id: "muji", name: "MUJI 無印良品", categoryIds: ["department_store", "home"], aliases: ["muji", "無印良品", "無印"], logo: "https://logo.clearbit.com/muji.com", accentColor: "#78350f" },
+  { id: "muji", name: "MUJI 無印良品", categoryIds: ["department_store", "home", "sports_apparel"], aliases: ["muji", "無印良品", "無印"], logo: "https://logo.clearbit.com/muji.com", accentColor: "#78350f" },
 
   // ========== 運動服飾 ==========
   { id: "nike", name: "Nike", categoryIds: ["sports_apparel"], aliases: ["nike"], logo: "https://logo.clearbit.com/nike.com", accentColor: "#000000" },
   { id: "adidas", name: "Adidas", categoryIds: ["sports_apparel"], aliases: ["adidas"], logo: "https://logo.clearbit.com/adidas.com", accentColor: "#000000" },
-  { id: "uniqlo", name: "UNIQLO", categoryIds: ["department_store"], aliases: ["uniqlo", "優衣庫"], logo: "https://logo.clearbit.com/uniqlo.com", accentColor: "#dc2626" },
+  { id: "lululemon", name: "lululemon", categoryIds: ["sports_apparel"], aliases: ["lululemon"], logo: "https://logo.clearbit.com/lululemon.com", accentColor: "#dc2626" },
+  { id: "decathlon", name: "Decathlon 迪卡儂", categoryIds: ["sports_apparel"], aliases: ["decathlon", "迪卡儂"], logo: "https://logo.clearbit.com/decathlon.com", accentColor: "#0ea5e9" },
+  { id: "gu", name: "GU", categoryIds: ["sports_apparel", "department_store"], aliases: ["gu"], logo: "https://logo.clearbit.com/gu-global.com", accentColor: "#dc2626" },
+  { id: "uniqlo", name: "UNIQLO", categoryIds: ["sports_apparel", "department_store"], aliases: ["uniqlo", "優衣庫"], logo: "https://logo.clearbit.com/uniqlo.com", accentColor: "#dc2626" },
 
   // ========== 停車場/隧道 ==========
   { id: "autotoll", name: "Autotoll 易通行", categoryIds: ["tunnel_fee"], aliases: ["autotoll", "易通行", "隧道費"], logo: "🚗", accentColor: "#3b82f6" },
