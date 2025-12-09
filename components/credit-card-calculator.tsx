@@ -70,7 +70,7 @@ import { LoginPromptDialog } from "@/components/login-prompt-dialog";
 import { toast } from "sonner";
 
 const PAYMENT_OPTIONS = [
-  { id: "physical_card", label: "實體卡" },
+  { id: "physical_card", label: "門市使用實體卡" },
   { id: "online", label: "網上輸入信用卡" },
   { id: "apple_pay", label: "Apple Pay" },
   { id: "google_pay", label: "Google Pay" },

@@ -225,7 +225,7 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'direct_rate', baseRate: 6, currency: 'AM' }, // Direct rate: $6/mile
     rules: [
-      { description: "國泰/HK Express 簽賬 $2/里", matchType: "merchant", matchValue: ["cathay", "hkexpress"], percentage: 5.0 },
+      { description: "國泰/HK Express 簽賬 $2/里", matchType: "merchant", matchValue: ["cathay-pacific", "hk-express"], percentage: 5.0 },
       { description: "旅遊/航空簽賬 $4/里", matchType: "category", matchValue: ["travel", "airline"], percentage: 2.5 },
       { description: "餐飲/外賣/網上 $4/里", matchType: "category", matchValue: ["dining", "online"], percentage: 2.5 }, 
       // T&C: 八達通自動增值計里數

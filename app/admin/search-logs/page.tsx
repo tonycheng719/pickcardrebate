@@ -97,7 +97,7 @@ export default function AdminSearchLogsPage() {
 
   const getPaymentMethodLabel = (method: string) => {
     const map: Record<string, string> = {
-      physical_card: "實體卡",
+      physical_card: "門市使用實體卡",
       apple_pay: "Apple Pay",
       google_pay: "Google Pay",
       samsung_pay: "Samsung Pay",
