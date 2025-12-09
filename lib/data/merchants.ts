@@ -83,9 +83,6 @@ export const POPULAR_MERCHANTS: Merchant[] = [
   { id: "tamjai", name: "譚仔三哥米線", categoryIds: ["dining"], aliases: ["譚仔三哥", "tamjai", "譚仔"], logo: "https://logo.clearbit.com/tamjai.com.hk", accentColor: "#f97316" },
   { id: "tamjai_yunnan", name: "譚仔雲南米線", categoryIds: ["dining"], aliases: ["譚仔雲南", "雲南米線"], logo: "https://logo.clearbit.com/tamjaiyunnan.com", accentColor: "#ea580c" },
   { id: "coffee_academics", name: "The Coffee Academïcs", categoryIds: ["dining"], aliases: ["coffee academics", "咖啡學院"], logo: "https://logo.clearbit.com/the-coffeeacademics.com", accentColor: "#78350f" },
-  { id: "gu", name: "GU", categoryIds: ["department_store"], aliases: ["gu", "極優"], logo: "https://logo.clearbit.com/gu-global.com", accentColor: "#dc2626" },
-  { id: "decathlon", name: "Decathlon 迪卡儂", categoryIds: ["other"], aliases: ["decathlon", "迪卡儂"], logo: "https://logo.clearbit.com/decathlon.com.hk", accentColor: "#0284c7" },
-  { id: "lululemon", name: "lululemon", categoryIds: ["other"], aliases: ["lululemon"], logo: "https://logo.clearbit.com/lululemon.com", accentColor: "#dc2626" },
   { id: "namco", name: "NAMCO", categoryIds: ["entertainment"], aliases: ["namco", "南夢宮"], logo: "https://logo.clearbit.com/namco.co.jp", accentColor: "#f97316" },
   { id: "taito", name: "TAITO STATION", categoryIds: ["entertainment"], aliases: ["taito", "太東"], logo: "https://logo.clearbit.com/taito.co.jp", accentColor: "#7c3aed" },
   
