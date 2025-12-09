@@ -22,6 +22,7 @@ import {
   Scale,
   Gift,
   Eye,
+  Wrench,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AdminAuthProvider, useAdminAuth } from "@/components/admin/admin-auth-context";
@@ -41,6 +42,7 @@ const menuItems = [
   { name: "回報審核", href: "/admin/moderation", icon: MessageSquare },
   { name: "信用卡評論", href: "/admin/comments", icon: MessageCircle },
   { name: "操作日誌", href: "/admin/logs", icon: History },
+  { name: "API 工具", href: "/admin/api-tools", icon: Wrench },
   { name: "系統設定", href: "/admin/settings", icon: Settings },
 ];
 
