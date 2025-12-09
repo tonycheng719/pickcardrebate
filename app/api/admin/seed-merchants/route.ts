@@ -41,8 +41,9 @@ export async function GET(request: Request) {
         const existingLogosMap = new Map<string, string>();
         if (existingMerchants) {
             existingMerchants.forEach((m: any) => {
-                // Preserve logo if it's a Supabase storage URL (user uploaded)
-                if (m.logo && (m.logo.includes('storage') || m.logo.includes('supabase'))) {
+                // Preserve logo if it's a valid HTTP URL (likely user uploaded or Clearbit)
+                // This includes Supabase storage URLs, Clearbit URLs, and any other HTTP URLs
+                if (m.logo && typeof m.logo === 'string' && m.logo.startsWith('http')) {
                     existingLogosMap.set(m.id, m.logo);
                 }
             });

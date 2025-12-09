@@ -65,6 +65,15 @@ const API_TOOLS: ApiTool[] = [
   
   // 圖片工具
   {
+    id: "check-merchant-logos",
+    name: "檢查商戶圖片狀態",
+    description: "檢查 DB 中所有商戶的 logo 類型（已上傳/Clearbit/Emoji）",
+    endpoint: "/api/admin/check-merchant-logos",
+    method: "GET",
+    icon: <Image className="w-5 h-5" />,
+    category: "圖片工具",
+  },
+  {
     id: "recover-card-images",
     name: "恢復信用卡圖片",
     description: "掃描 Storage 中的信用卡圖片，嘗試恢復到 DB",
