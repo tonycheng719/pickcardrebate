@@ -1130,6 +1130,12 @@ export const HK_CARDS: CreditCard[] = [
     feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 0,
     rules: [
+      // 🔥 本地餐飲優惠 (2025/12/1 - 2025/12/31)
+      // 實體卡：額外 9.6%，連同基本 0.4% = 10%
+      // 指定手機支付：額外 6%，連同自選 3.6% + 基本 0.4% = 10%
+      // 單一簽賬滿 $100，全期上限 $500 額外回贈，需登記
+      { description: "🔥餐飲 10% [實體卡,單筆≥$100,需登記]", matchType: "category", matchValue: "dining", percentage: 10.0, minSpend: 100, cap: 500, capType: "reward", validDateRange: { start: "2025-12-01", end: "2025-12-31" }, excludePaymentMethods: ["mobile", "apple_pay", "octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "🔥餐飲 10% [手機支付,單筆≥$100,需登記]", matchType: "category", matchValue: "dining", percentage: 10.0, minSpend: 100, cap: 500, capType: "reward", validDateRange: { start: "2025-12-01", end: "2025-12-31" }, excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
       // T&C 2025/7/1-2026/6/30: 玩樂類別 4 選 1 (3.6% 額外)，需月簽$1,500，每月回贈上限 $200
       // 1. 手機支付 (Apple Pay/銀聯手機閃付/銀聯二維碼) - ⚠️ WeWa Visa + Android 暫不支援
       { description: "手機支付 3.6% (需月簽$1500)", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay"], percentage: 3.6, monthlyMinSpend: 1500, cap: 200, capType: "reward", excludeCategories: ["ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
@@ -1144,13 +1150,13 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 基本回贈 0.4%（$250=$1），排除電子錢包充值、P2P轉賬、賭場等
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["玩樂3.6%", "旅遊", "海外", "線上娛樂", "八達通增值", "免外幣手續費"],
+    tags: ["玩樂3.6%", "旅遊", "海外", "線上娛樂", "八達通增值", "免外幣手續費", "餐飲10%"],
     welcomeOfferText: "迎新簽 $8,500 送 $500 現金回贈 / 簽 $8,800 送 LG顯示器或Marshall喇叭 (首90天)",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=180&a=228&sub_id1=pickcardrebate&sub_id2=web",
-    sellingPoints: ["玩樂類別 3.6% (4選1: 手機支付/旅遊/海外/線上娛樂)", "每月回贈上限 $200", "免外幣手續費", "八達通增值 0.4%"],
-    note: "💡 【推廣期 2025/7/1-2026/6/30】玩樂類別 3.6% 需 4 選 1（透過 OmyCard App 自選），需每月簽滿 $1,500，每月回贈上限 $200。如未選擇，自動選擇「手機支付」。線上娛樂包括：Apple App Store (APPLE.COM/BILL) / Disney+ / Google Play / JOOX / KKBOX / MyTV SUPER / Netflix / Nintendo / Patreon / PlayStation / Spotify / Steam / Xbox / YouTube。⚠️ 手機支付暫不支援 WeWa Visa + Android 組合！✅ 八達通自動增值計基本 0.4%（無上限）！❌ 玩樂3.6%不計：電子錢包充值/轉賬、分期計劃、賭場交易、繳費。",
-    promoEndDate: "2026-06-30",
-    promoName: "WeWa 玩樂類別 4 選 1 優惠",
+    sellingPoints: ["🔥餐飲 10% (12月限定,需登記)", "玩樂類別 3.6% (4選1: 手機支付/旅遊/海外/線上娛樂)", "每月回贈上限 $200", "免外幣手續費", "八達通增值 0.4%"],
+    note: "💡 【推廣期 2025/7/1-2026/6/30】玩樂類別 3.6% 需 4 選 1（透過 OmyCard App 自選），需每月簽滿 $1,500，每月回贈上限 $200。如未選擇，自動選擇「手機支付」。線上娛樂包括：Apple App Store (APPLE.COM/BILL) / Disney+ / Google Play / JOOX / KKBOX / MyTV SUPER / Netflix / Nintendo / Patreon / PlayStation / Spotify / Steam / Xbox / YouTube。⚠️ 手機支付暫不支援 WeWa Visa + Android 組合！✅ 八達通自動增值計基本 0.4%（無上限）！❌ 玩樂3.6%不計：電子錢包充值/轉賬、分期計劃、賭場交易、繳費。\n\n🔥 **本地餐飲優惠**（至2025/12/31）：全港食肆享高達10%回贈！[查看詳情](/discover/wewa-dining-2025)",
+    promoEndDate: "2025-12-31",
+    promoName: "WeWa 本地餐飲優惠",
   },
 
   // ========================================================================
