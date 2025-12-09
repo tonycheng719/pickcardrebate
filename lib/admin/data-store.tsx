@@ -53,11 +53,12 @@ function mapCardFromDB(dbCard: any): CreditCard {
 }
 
 function mapCardToDB(card: CreditCard): any {
-    return {
+    // IMPORTANT: Only include image_url if it's explicitly set (not from local static data)
+    // This prevents overwriting user-uploaded images when updating other fields
+    const payload: any = {
         id: card.id,
         name: card.name,
         bank: card.bank,
-        image_url: card.imageUrl,
         style: card.style,
         tags: card.tags,
         foreign_currency_fee: card.foreignCurrencyFee,
@@ -70,8 +71,15 @@ function mapCardToDB(card: CreditCard): any {
         fee_waiver_condition: card.feeWaiverCondition,
         waiver_method: card.waiverMethod,
         rules: card.rules,
-        // updated_at: new Date().toISOString() // Supabase handles this usually, or we send it
     };
+    
+    // Only include image_url if it's a real URL (Supabase storage or external URL)
+    // Avoid overwriting with undefined/null
+    if (card.imageUrl) {
+        payload.image_url = card.imageUrl;
+    }
+    
+    return payload;
 }
 
 function mapMerchantFromDB(dbMerchant: any): Merchant {

@@ -346,7 +346,7 @@ export default function CompareCardsPage() {
                             {reward ? (
                               <div>
                                 <span className={`font-bold ${reward.isDiscount ? 'text-orange-600' : 'text-emerald-600'}`}>
-                                  {reward.isDiscount ? `${100 - reward.percentage}折` : `${reward.percentage}%`}
+                                  {reward.isDiscount ? `${(100 - reward.percentage) / 10}折` : `${reward.percentage}%`}
                                 </span>
                                 {reward.cap && (
                                   <p className="text-[10px] text-gray-400 mt-0.5">

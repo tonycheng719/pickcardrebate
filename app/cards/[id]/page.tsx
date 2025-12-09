@@ -502,7 +502,7 @@ export default function CardDetailPage() {
                           )}
                         </div>
                         <span className="font-bold text-blue-600 dark:text-blue-400">
-                          {rule.isDiscount ? `${100 - rule.percentage}折` : `${rule.percentage}%`}
+                          {rule.isDiscount ? `${(100 - rule.percentage) / 10}折` : `${rule.percentage}%`}
                         </span>
                       </div>
                     ))}

@@ -452,8 +452,8 @@ export function CreditCardCalculator({
                 <div className="text-[10px] text-orange-500 mt-1 flex items-center gap-1">
                     <Lightbulb className="w-3 h-3" />
                     {result.missedDiscountRule.validDates && result.missedDiscountRule.validDates.length > 0
-                        ? `每月 ${result.missedDiscountRule.validDates.join("/")} 號可享 ${100 - (result.missedDiscountPercentage || 0)}折`
-                        : `特定日子可享 ${100 - (result.missedDiscountPercentage || 0)}折`
+                        ? `每月 ${result.missedDiscountRule.validDates.join("/")} 號可享 ${(100 - (result.missedDiscountPercentage || 0)) / 10}折`
+                        : `特定日子可享 ${(100 - (result.missedDiscountPercentage || 0)) / 10}折`
                     }
                 </div>
             )}
@@ -662,7 +662,7 @@ export function CreditCardCalculator({
                 <div className="text-right shrink-0">
                   {best.discountRule && best.discountAmount ? (
                     <div className="mb-2">
-                      <div className="text-2xl font-bold text-orange-600 tracking-tight">{100 - best.discountPercentage!}折</div>
+                      <div className="text-2xl font-bold text-orange-600 tracking-tight">{(100 - best.discountPercentage!) / 10}折</div>
                       <div className="text-xs text-orange-500 mt-0.5">即減 ${best.discountAmount.toFixed(0)}</div>
                     </div>
                   ) : null}
@@ -697,7 +697,7 @@ export function CreditCardCalculator({
                     ) : best.missedDiscountRule.validDates?.length ? (
                       <>在 <span className="font-bold">每月 {best.missedDiscountRule.validDates.join("/")} 號</span> 消費，</>
                     ) : <>在特定日子消費，</>}
-                    可享 <span className="font-bold">{100 - (best.missedDiscountPercentage || 0)}折</span>！
+                    可享 <span className="font-bold">{(100 - (best.missedDiscountPercentage || 0)) / 10}折</span>！
                   </div>
                 </div>
               )}
@@ -858,7 +858,7 @@ export function CreditCardCalculator({
                   <div className="text-right shrink-0">
                     {best.discountRule && best.discountAmount ? (
                       <div className="mb-1">
-                        <div className="text-xl font-bold text-orange-600">{100 - best.discountPercentage!}折</div>
+                        <div className="text-xl font-bold text-orange-600">{(100 - best.discountPercentage!) / 10}折</div>
                         <div className="text-[10px] text-orange-500">即減 ${best.discountAmount.toFixed(0)}</div>
                       </div>
                     ) : null}
