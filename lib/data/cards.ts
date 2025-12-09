@@ -491,11 +491,13 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 基本回饋 0.4%，排除繳費、保險、Alipay/WeChat Pay、八達通增值
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
     ],
-    tags: ["網購5%", "外幣6%", "必須登記"],
+    tags: ["網購5%", "外幣6%", "必須登記", "冬日賞"],
     welcomeOfferText: "迎新簽 $5,000 送 $700 +FUN Dollars (全新客戶) / $300 (現有客戶) / 學生簽$2,000送$300 (首60日)",
-    sellingPoints: ["海外外幣簽賬 6% (需月簽$5,000)", "網上簽賬 5% (需月簽$5,000)", "自選類別 1% (餐飲/電子/娛樂)", "每月回贈上限 $500"],
-    note: "⚠️ 需月簽賬滿 $5,000 並於 hangseng.com/mpower 登記才享優惠！迎新：全新客戶簽$5,000送$700；現有客戶簽$5,000送$300；學生簽$2,000送$300 (首60日)。13個月內取消會扣回迎新獎賞！迎新不計：八達通自動增值、電子錢包充值、繳費、稅款、分期計劃。Alipay/WeChat Pay/八達通自動增值不計回贈。網上繳費（水電費、保險等）不計回贈。",
+    sellingPoints: ["海外外幣簽賬 6% (需月簽$5,000)", "網上簽賬 5% (需月簽$5,000)", "自選類別 1% (餐飲/電子/娛樂)", "每月回贈上限 $500", "🔥冬日簽賬賞額外高達$2,800"],
+    note: "⚠️ 需月簽賬滿 $5,000 並於 hangseng.com/mpower 登記才享優惠！迎新：全新客戶簽$5,000送$700；現有客戶簽$5,000送$300；學生簽$2,000送$300 (首60日)。13個月內取消會扣回迎新獎賞！迎新不計：八達通自動增值、電子錢包充值、繳費、稅款、分期計劃。Alipay/WeChat Pay/八達通自動增值不計回贈。網上繳費（水電費、保險等）不計回贈。\n\n🔥 **冬日簽賬賞 2025/12/1-2026/2/28**：Visa卡累積簽賬滿$15,000每階段享$700；網上/外幣滿$5,000再享$200；全期高達$2,800！須於+FUN Centre登記。",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=212&a=228&sub_id1=pickcardrebate&sub_id2=web",
+    promoEndDate: "2026-02-28",
+    promoName: "恒生冬日簽賬賞",
   },
   {
     id: "hangseng-enjoy",
@@ -527,10 +529,12 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 其他商戶 1X yuu積分 (0.5%)，排除電子錢包充值（八達通自動增值除外）
       { description: "基本回饋 1X yuu積分 (0.5%)", matchType: "base", percentage: 0.5, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["儲分", "食肆優惠", "yuu積分", "折扣日", "7-Eleven 95折", "八達通增值"],
-    sellingPoints: ["7-Eleven 全年 95折 [折扣]", "惠康 92折 (3/13/23號) [折扣]", "萬寧 94折 (1/20號) [折扣]", "指定食肆 4X yuu積分 (2%)", "yuu 積分可當現金使用 (200積分=$1)", "八達通自動增值計積分"],
-    note: "⚠️ 【yuu積分獎賞】4X (2%)：Pizza Hut/PHD/KFC/美心中菜(翠園/美心皇宮/八月花等)/美心西餐/m.a.x. concepts(simplylife/吉谷舍等)/美心快餐(MX/can.teen)/麵包西餅(東海堂/美心西餅/Paper Stone)/星巴克/并并屋/魚尚。3X (1.5%)：7-Eleven/IKEA/萬寧/惠康/Market Place/3hreesixty/Oliver's/GNC。2X (1%)：Shell油站/美心其他品牌。1X (0.5%)：其他商戶。✅ 八達通自動增值計積分！❌ 不計積分：現金透支、分期計劃、e-Banking繳費、電子錢包充值（八達通自動增值除外）。折扣優惠與積分可同時享有！需綁定 yuu App。",
+    tags: ["儲分", "食肆優惠", "yuu積分", "折扣日", "7-Eleven 95折", "八達通增值", "冬日賞"],
+    sellingPoints: ["7-Eleven 全年 95折 [折扣]", "惠康 92折 (3/13/23號) [折扣]", "萬寧 94折 (1/20號) [折扣]", "指定食肆 4X yuu積分 (2%)", "yuu 積分可當現金使用 (200積分=$1)", "八達通自動增值計積分", "🔥冬日簽賬賞額外高達480,000 yuu"],
+    note: "⚠️ 【yuu積分獎賞】4X (2%)：Pizza Hut/PHD/KFC/美心中菜(翠園/美心皇宮/八月花等)/美心西餐/m.a.x. concepts(simplylife/吉谷舍等)/美心快餐(MX/can.teen)/麵包西餅(東海堂/美心西餅/Paper Stone)/星巴克/并并屋/魚尚。3X (1.5%)：7-Eleven/IKEA/萬寧/惠康/Market Place/3hreesixty/Oliver's/GNC。2X (1%)：Shell油站/美心其他品牌。1X (0.5%)：其他商戶。✅ 八達通自動增值計積分！❌ 不計積分：現金透支、分期計劃、e-Banking繳費、電子錢包充值（八達通自動增值除外）。折扣優惠與積分可同時享有！需綁定 yuu App。\n\n🔥 **冬日簽賬賞 2025/12/1-2026/2/28**：累積簽賬滿$15,000每階段享140,000 yuu；網上/外幣滿$5,000再享40,000 yuu；全期高達480,000 yuu積分！須於+FUN Centre登記。",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=213&a=228&sub_id1=pickcardrebate&sub_id2=web",
+    promoEndDate: "2026-02-28",
+    promoName: "恒生冬日簽賬賞",
   },
   {
     id: "hangseng-travel-plus",
@@ -555,11 +559,13 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 基本回饋 0.4%，排除繳費、保險、Alipay/WeChat Pay、八達通增值、電子錢包充值
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
     ],
-    tags: ["旅遊7%", "餐飲5%", "交通5%", "必須登記"],
+    tags: ["旅遊7%", "餐飲5%", "交通5%", "必須登記", "冬日賞"],
     welcomeOfferText: "迎新簽 $5,000 送 $700 Fun Dollars",
-    sellingPoints: ["指定國家外幣 7% (日韓泰星澳)", "其他外幣/本地交通/餐飲 5%", "每月回贈上限 $500"],
-    note: "⚠️ 需月簽賬滿 $6,000 並登記才享優惠！指定國家：日本/韓國/泰國/新加坡/澳洲。本地交通：九巴/城巴/龍運/港鐵/電車/天星小輪。餐飲不包括快餐店及酒店內食肆。Alipay/WeChat Pay/八達通自動增值/電子錢包充值不計回贈。",
+    sellingPoints: ["指定國家外幣 7% (日韓泰星澳)", "其他外幣/本地交通/餐飲 5%", "每月回贈上限 $500", "🔥冬日簽賬賞額外高達$2,800"],
+    note: "⚠️ 需月簽賬滿 $6,000 並登記才享優惠！指定國家：日本/韓國/泰國/新加坡/澳洲。本地交通：九巴/城巴/龍運/港鐵/電車/天星小輪。餐飲不包括快餐店及酒店內食肆。Alipay/WeChat Pay/八達通自動增值/電子錢包充值不計回贈。\n\n🔥 **冬日簽賬賞 2025/12/1-2026/2/28**：Visa卡累積簽賬滿$15,000每階段享$700；網上/外幣滿$5,000再享$200；全期高達$2,800！須於+FUN Centre登記。",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=688&a=228&sub_id1=pickcardrebate&sub_id2=web",
+    promoEndDate: "2026-02-28",
+    promoName: "恒生冬日簽賬賞",
   },
 
   // ========================================================================
