@@ -28,6 +28,35 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { trackSearch, trackCalculateRebate, trackSelectCategory } from "@/lib/analytics";
 import { Label } from "@/components/ui/label";
 import { useMerchantCommunityData } from "@/hooks/use-merchant-community-data";
+import Link from "next/link";
+
+// Helper to render note with Markdown links
+function renderNoteWithLinks(note: string) {
+  // Split by markdown link pattern [text](url)
+  const parts = note.split(/(\[([^\]]+)\]\(([^)]+)\))/g);
+  
+  return parts.map((part, index) => {
+    // Check if this part is a full markdown link match
+    const linkMatch = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    if (linkMatch) {
+      const [, text, url] = linkMatch;
+      return (
+        <Link 
+          key={index} 
+          href={url} 
+          className="text-blue-600 hover:underline font-medium"
+        >
+          {text}
+        </Link>
+      );
+    }
+    // Skip the captured groups (they appear as separate parts)
+    if (parts[index - 1]?.match(/^\[([^\]]+)\]\(([^)]+)\)$/)) {
+      return null;
+    }
+    return part;
+  }).filter(Boolean);
+}
 import { LoginPromptDialog } from "@/components/login-prompt-dialog";
 import { toast } from "sonner";
 
@@ -720,7 +749,7 @@ export function CreditCardCalculator({
               {best.card.note && (
                 <div className="mt-2 p-2.5 bg-amber-50 border border-amber-100 rounded-xl flex items-start gap-2">
                   <Info className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                  <div className="text-[11px] text-amber-800 leading-snug">{best.card.note}</div>
+                  <div className="text-[11px] text-amber-800 leading-snug">{renderNoteWithLinks(best.card.note)}</div>
                 </div>
               )}
 
@@ -1239,7 +1268,7 @@ export function CreditCardCalculator({
                 <div className="p-2.5 bg-amber-50 border border-amber-100 rounded-xl flex items-start gap-2">
                   <Info className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                   <div className="text-[11px] text-amber-800 leading-snug">
-                    {whyCardResult.card.note}
+                    {renderNoteWithLinks(whyCardResult.card.note)}
                   </div>
                 </div>
               )}
