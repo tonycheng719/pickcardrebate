@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BankPromo } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { 
@@ -18,16 +18,23 @@ interface BankPromoCardProps {
 
 export function BankPromoCard({ promo, cardBank, isVisaCard = false }: BankPromoCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [mounted, setMounted] = useState(false);
   
-  // 檢查是否在有效期內
-  const now = new Date();
+  // Wait for client-side to avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  // 檢查是否在有效期內 - only on client side
+  const now = mounted ? new Date() : new Date(promo.validFrom); // Use validFrom as default for SSR
   const validFrom = new Date(promo.validFrom);
   // 將 validTo 設為當天的 23:59:59，避免當天被判斷為過期
   const validTo = new Date(promo.validTo);
   validTo.setHours(23, 59, 59, 999);
   const isValid = now >= validFrom && now <= validTo;
   
-  if (!isValid) {
+  // Don't hide on server-side to avoid hydration mismatch
+  if (mounted && !isValid) {
     return null;
   }
   

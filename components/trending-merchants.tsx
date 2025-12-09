@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
-import { Flame, TrendingUp, ArrowRight, Store } from "lucide-react";
+import { Flame, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useDataset } from "@/lib/admin/data-store";
@@ -16,19 +15,20 @@ interface TrendingMerchant {
 export function TrendingMerchants() {
   const [trending, setTrending] = useState<TrendingMerchant[]>([]);
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
   const { merchants } = useDataset();
 
   useEffect(() => {
     async function fetchTrending() {
       try {
-        const { data, error } = await supabase.rpc("get_trending_merchants");
-        if (error) {
-          // Silently fail - this is expected in dev without proper DB setup
-          // console.warn("Trending merchants unavailable:", error.message);
+        // Use API route instead of direct RPC to avoid 401 errors
+        const res = await fetch('/api/stats/trending-merchants');
+        if (!res.ok) {
+          // Silently fail - trending is optional feature
+          setLoading(false);
           return;
         }
-        setTrending(data || []);
+        const data = await res.json();
+        setTrending(data.merchants || []);
       } catch (err) {
         // Silently fail - trending is optional feature
       } finally {

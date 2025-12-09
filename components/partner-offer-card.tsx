@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CreditCard, PartnerOffer } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { useSettings } from "@/lib/store/settings-context";
@@ -28,9 +28,15 @@ interface PartnerOfferCardProps {
 export function PartnerOfferCard({ card, bankWelcomeValue = 0 }: PartnerOfferCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [customerType, setCustomerType] = useState<"new" | "existing">("new");
+  const [mounted, setMounted] = useState(false);
   const { getSetting } = useSettings();
   const offer = card.partnerOffer;
   const existingOffer = (offer as any)?.existingCustomerOffer as ExistingCustomerOffer | undefined;
+  
+  // Wait for client-side to avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   
   // 全局開關：partner_offers_enabled 必須為 "true" 才顯示
   const globalEnabled = getSetting("partner_offers_enabled") === "true";
@@ -40,16 +46,18 @@ export function PartnerOfferCard({ card, bankWelcomeValue = 0 }: PartnerOfferCar
     return null;
   }
   
-  // 檢查是否在有效期內
-  const now = new Date();
+  // 檢查是否在有效期內 - only check on client side
   const validFrom = new Date(offer.validFrom);
-  // 將 validTo 設為當天的 23:59:59，避免當天被判斷為過期
   const validTo = new Date(offer.validTo);
   validTo.setHours(23, 59, 59, 999);
-  const isValid = now >= validFrom && now <= validTo;
   
-  if (!isValid) {
-    return null;
+  // Only perform date check on client side to avoid hydration mismatch
+  if (mounted) {
+    const now = new Date();
+    const isValid = now >= validFrom && now <= validTo;
+    if (!isValid) {
+      return null;
+    }
   }
   
   // 計算總價值
