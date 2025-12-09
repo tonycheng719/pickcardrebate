@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { HK_CARDS } from "@/lib/data/cards";
 import { useDataset } from "@/lib/admin/data-store";
@@ -404,7 +404,7 @@ function CardSkeleton() {
     );
 }
 
-export default function AllCardsPage() {
+function AllCardsContent() {
     const { cards, isLoading } = useDataset();
     const [searchQuery, setSearchQuery] = useState("");
     const searchParams = useSearchParams();
@@ -546,4 +546,32 @@ export default function AllCardsPage() {
           </main>
         </div>
       );
+}
+
+// Loading fallback for Suspense
+function CardsLoading() {
+    return (
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col transition-colors">
+            <Navbar />
+            <main className="container mx-auto px-4 py-8 flex-1">
+                <div className="mb-8">
+                    <Skeleton className="h-9 w-48 mb-2" />
+                    <Skeleton className="h-5 w-96" />
+                </div>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {[1, 2, 3, 4, 5, 6].map((i) => (
+                        <CardSkeleton key={i} />
+                    ))}
+                </div>
+            </main>
+        </div>
+    );
+}
+
+export default function AllCardsPage() {
+    return (
+        <Suspense fallback={<CardsLoading />}>
+            <AllCardsContent />
+        </Suspense>
+    );
 }
