@@ -180,7 +180,7 @@ export const HK_CARDS: CreditCard[] = [
     welcomeOfferText: "迎新簽 $2,000 送 $300 獎賞錢 (首60日內)",
     applyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/gold/",
     sellingPoints: ["網上繳付指定學院學費 2.4% 額外獎賞錢", "永久年費豁免", "最紅自主獎賞 2.4%", "專為學生而設"],
-    note: "⚠️ 僅限全日制大學/大專學生申請。學費 2.4% 需透過滙豐 App/網上理財繳費，每階段上限 $200 獎賞錢。指定學院包括：HKU/CUHK/HKUST/PolyU/CityU/HKBU/LingU/EdUHK/HKMU/HSU/VTC 等。不適用於電子錢包（Alipay/WeChat Pay/PayMe）、八達通增值、繳稅。",
+    note: "⚠️ 僅限全日制大學/大專學生申請。學費 2.4% 需透過滙豐 App/網上理財繳費，每階段上限 $200 獎賞錢。指定學院包括：HKU/CUHK/HKUST/PolyU/CityU/HKBU/LingU/EdUHK/HKMU/HSU/VTC 等。不適用於電子錢包（Alipay/WeChat Pay/PayMe）、八達通增值、繳稅。\n\n🔥 **最紅冬日賞萬寧**（至2026/2/28）：累積簽賬滿$1,000享高達10%回贈！[查看詳情](/discover/hsbc-mannings-winter-2025)\n\n🔥 **最紅冬日賞百老滙**（至2026/2/28）：累積簽賬滿$10,000享6%回贈！[查看詳情](/discover/hsbc-broadway-winter-2025)",
   },
 
   // ========================================================================
@@ -1566,7 +1566,7 @@ export const HK_CARDS: CreditCard[] = [
     welcomeOfferText: "迎新送一年「易賞錢」VIP 會籍 (6倍積分) + 簽 $5,800 送 $600 獎賞錢",
     applyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/easy/",
     sellingPoints: ["百佳 92折 (每月2/12/22號) [折扣]", "屈臣氏 92折 (每月8/18/28號) [折扣]", "VIP會員 6倍易賞錢 (2.4%)", "最紅自主獎賞 2.4%", "首兩年免年費"],
-    note: "⚠️ 折扣優惠：百佳92折需滿$100 (2/12/22號)、屈臣氏92折需滿$400 (8/18/28號)、豐澤95折需滿$2,000。折扣是購物時直接減價，非事後回贈。迎新：發卡後首 30 日內綁定「易賞錢」App 可獲一年 VIP 會籍（百佳/屈臣氏/豐澤 6 倍積分）。開戶後 13 個月內取消卡或取消綁定將被取消 VIP 會籍。不適用於電子錢包（Alipay/WeChat Pay/PayMe）、八達通增值、繳稅、網上繳費。",
+    note: "⚠️ 折扣優惠：百佳92折需滿$100 (2/12/22號)、屈臣氏92折需滿$400 (8/18/28號)、豐澤95折需滿$2,000。折扣是購物時直接減價，非事後回贈。迎新：發卡後首 30 日內綁定「易賞錢」App 可獲一年 VIP 會籍（百佳/屈臣氏/豐澤 6 倍積分）。開戶後 13 個月內取消卡或取消綁定將被取消 VIP 會籍。不適用於電子錢包（Alipay/WeChat Pay/PayMe）、八達通增值、繳稅、網上繳費。\n\n🔥 **最紅冬日賞萬寧**（至2026/2/28）：累積簽賬滿$1,000享高達10%回贈！[查看詳情](/discover/hsbc-mannings-winter-2025)\n\n🔥 **最紅冬日賞百老滙**（至2026/2/28）：累積簽賬滿$10,000享6%回贈！[查看詳情](/discover/hsbc-broadway-winter-2025)",
   },
   {
     id: "citi-hktvmall",

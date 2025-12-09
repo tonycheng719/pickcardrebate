@@ -9,7 +9,7 @@ export const PROMOS: Promo[] = [
     description: "憑 HSBC 信用卡於萬寧門市或網店簽賬，累積滿 $1,000 可享額外 5% 回贈；星期五至日更可享高達 10%！單一簽賬需滿 $500，全期最高額外 $450 獎賞錢！",
     imageUrl: "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?q=80&w=2079&auto=format&fit=crop",
     expiryDate: "2026-02-28",
-    relatedCardIds: ["hsbc-vs", "hsbc-red", "hsbc-everymile", "hsbc-pulse", "hsbc-premier"],
+    relatedCardIds: ["hsbc-vs", "hsbc-red", "hsbc-everymile", "hsbc-pulse", "hsbc-premier", "hsbc-student", "hsbc-easy"],
     tags: ["萬寧", "HSBC", "藥妝", "10%回贈", "需登記", "週末加碼"],
     url: "https://www.hsbc.com.hk/",
     updatedAt: "2025-12-09",
@@ -413,7 +413,7 @@ export const PROMOS: Promo[] = [
     imageUrl: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2070&auto=format&fit=crop",
     expiryDate: "2026-02-28",
     updatedAt: "2025-12-05",
-    relatedCardIds: ["hsbc-vs", "hsbc-red", "hsbc-everymile", "hsbc-pulse"],
+    relatedCardIds: ["hsbc-vs", "hsbc-red", "hsbc-everymile", "hsbc-pulse", "hsbc-premier", "hsbc-student", "hsbc-easy"],
     tags: ["購物", "電器", "HSBC", "需登記"],
     url: "https://www.hsbc.com.hk/zh-hk/credit-cards/rewards/red-hot/",
     content: `
