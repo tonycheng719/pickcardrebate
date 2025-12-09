@@ -15,6 +15,9 @@ export const HK_CARDS: CreditCard[] = [
     minIncome: 240000,
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' }, // $10 = $1 RC = 0.4%
     rules: [
+      // 🔥 最紅冬日賞 - 百老滙 (2025/12/1 - 2026/2/28)
+      // 累積簽賬滿 $10,000 享 6% 回贈 (上限 $900)，單一簽賬需滿 $500，需登記
+      { description: "🔥百老滙 6% [冬日賞,累積$10k,需登記]", matchType: "merchant", matchValue: ["broadway"], percentage: 6.0, minSpend: 500, cap: 900, capType: "reward", validDateRange: { start: "2025-12-01", end: "2026-02-28" } },
       // T&C: 最紅自主獎賞 6X (2.4%)，需登記，額外「獎賞錢」簽賬上限 $100,000
       // 5大類別：賞滋味/賞購物/賞家居/賞享受/賞世界，可自由分配 5X 額外倍數
       // 6X = 5X額外 + 1X基本 = 2.4%
@@ -25,7 +28,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 基本回饋 0.4% ($250 = $1 RC)，排除電子錢包、繳稅、繳費
       { description: "基本回饋 0.4% ($25/里)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
-    tags: ["餐飲神卡", "最紅自主獎賞", "6X積分", "需登記"],
+    tags: ["餐飲神卡", "最紅自主獎賞", "6X積分", "需登記", "百老滙6%"],
     imageUrl: "https://pickcardrebate-supabase-kong.zeabur.app/storage/v1/object/public/images/cards/1764329466898-zu95i1newy.png",
     feeWaiverCondition: "首兩年免年費",
     welcomeOfferText: "迎新簽 $8,000 送 $600-$800 獎賞錢 (首60日內)",
@@ -45,6 +48,9 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' },
     rules: [
+      // 🔥 最紅冬日賞 - 百老滙 (2025/12/1 - 2026/2/28)
+      // 累積簽賬滿 $10,000 享 6% 回贈 (上限 $900)，單一簽賬需滿 $500，需登記
+      { description: "🔥百老滙 6% [冬日賞,累積$10k,需登記]", matchType: "merchant", matchValue: ["broadway"], percentage: 6.0, minSpend: 500, cap: 900, capType: "reward", validDateRange: { start: "2025-12-01", end: "2026-02-28" } },
       // T&C 2025/9/1-2026/3/31: 指定商戶 8% (每月首$1,250 = $100獎賞錢上限)
       // 餐飲：壽司郎/譚仔三哥/譚仔雲南/The Coffee Academïcs
       // 潮流及運動服飾：GU/Decathlon/lululemon
@@ -56,7 +62,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 基本獎賞 0.4%
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] }, 
     ],
-    tags: ["網購神卡", "永久免年費", "指定商戶8%"],
+    tags: ["網購神卡", "永久免年費", "指定商戶8%", "百老滙6%"],
     annualFee: 0,
     feeWaiverCondition: "永久免年費",
     welcomeOfferText: "迎新簽 $3,000 送 $300 獎賞錢 (首60日)",
@@ -78,13 +84,16 @@ export const HK_CARDS: CreditCard[] = [
     feeWaiverCondition: "首兩年免年費",
     rewardConfig: { method: 'conversion', ratio: 20, currency: 'RC' }, // 1 RC = 20 Miles (Special rate for EveryMile)
     rules: [
+      // 🔥 最紅冬日賞 - 百老滙 (2025/12/1 - 2026/2/28)
+      // 累積簽賬滿 $10,000 享 6% 回贈 (上限 $900)，單一簽賬需滿 $500，需登記
+      { description: "🔥百老滙 6% [冬日賞,累積$10k,需登記]", matchType: "merchant", matchValue: ["broadway"], percentage: 6.0, minSpend: 500, cap: 900, capType: "reward", validDateRange: { start: "2025-12-01", end: "2026-02-28" } },
       // T&C: 指定商戶/交通 $2/里 (2.5%)
       { description: "指定商戶/交通 $2/里 (2.5%)", matchType: "category", matchValue: ["transport", "online", "dining"], percentage: 2.5, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       { description: "海外簽賬 $2/里 (2.5%)", matchType: "base", percentage: 2.5, isForeignCurrency: true },
       // T&C: 基本回饋 $5/里 (1%)，排除電子錢包（八達通自動增值除外）
       { description: "基本回饋 $5/里 (1%)", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
-    tags: ["旅遊神卡", "交通$2/里", "Lounge"],
+    tags: ["旅遊神卡", "交通$2/里", "Lounge", "百老滙6%"],
     welcomeOfferText: "迎新簽 $8,000 送 $600-$800 獎賞錢 (首60日內)",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=245&a=228&sub_id1=pickcardrebate&sub_id2=web",
     sellingPoints: ["指定日常簽賬低至 HK$2/里", "免費環亞機場貴賓室", "首兩年免年費"],
@@ -102,6 +111,9 @@ export const HK_CARDS: CreditCard[] = [
     feeWaiverCondition: "首兩年免年費",
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' },
     rules: [
+      // 🔥 最紅冬日賞 - 百老滙 (2025/12/1 - 2026/2/28)
+      // 銀聯卡：累積簽賬滿 $10,000 享 8% 回贈 (上限 $1,000)，單一簽賬需滿 $500，需登記
+      { description: "🔥百老滙 8% [冬日賞,累積$10k,需登記]", matchType: "merchant", matchValue: ["broadway"], percentage: 8.0, minSpend: 500, cap: 1000, capType: "reward", validDateRange: { start: "2025-12-01", end: "2026-02-28" } },
       // T&C 2025: 內地/澳門 QR Code/流動支付 額外5倍 (2%) + 基本0.4% + 賞世界2% = 4.4%
       // 簽賬上限 $80,000
       { description: "內地/澳門 QR Code/流動支付 4.4%", matchType: "base", percentage: 4.4, isForeignCurrency: true, cap: 80000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
@@ -110,7 +122,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 基本回饋 0.4%，排除電子錢包、繳稅、繳費、PayMe增值
       { description: "基本回饋 0.4% ($25/里)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
-    tags: ["北上消費", "銀聯", "免手續費", "內地4.4%"],
+    tags: ["北上消費", "銀聯", "免手續費", "內地4.4%", "百老滙8%"],
     welcomeOfferText: "迎新簽 $8,000 送 $600-$800 獎賞錢 (首60日內)",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=259&a=228&sub_id1=pickcardrebate&sub_id2=web",
     sellingPoints: ["內地/澳門 QR Code/流動支付 4.4%", "人民幣/港幣雙幣結算", "豁免外幣手續費", "北上消費必備"],
@@ -129,12 +141,15 @@ export const HK_CARDS: CreditCard[] = [
     incomeNote: "或持有 HK$1,000,000 全面理財總值",
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' },
     rules: [
+      // 🔥 最紅冬日賞 - 百老滙 (2025/12/1 - 2026/2/28)
+      // 累積簽賬滿 $10,000 享 6% 回贈 (上限 $900)，單一簽賬需滿 $500，需登記
+      { description: "🔥百老滙 6% [冬日賞,累積$10k,需登記]", matchType: "merchant", matchValue: ["broadway"], percentage: 6.0, minSpend: 500, cap: 900, capType: "reward", validDateRange: { start: "2025-12-01", end: "2026-02-28" } },
       // T&C: 最紅自主獎賞適用
       { description: "海外/網上簽賬 2.4%", matchType: "category", matchValue: ["travel", "online"], percentage: 2.4, minSpend: 8000, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 基本回饋 0.4%，排除電子錢包、繳稅、繳費
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["卓越理財", "旅遊"],
+    tags: ["卓越理財", "旅遊", "百老滙6%"],
     sellingPoints: ["卓越理財客戶專享", "指定類別額外獎賞錢"],
     note: "⚠️ 需月簽賬滿 $8,000 才享 2.4% 回贈！不適用於電子錢包簽賬、繳稅、網上繳費。僅限卓越理財客戶申請。",
   },
