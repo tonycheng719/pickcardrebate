@@ -15,7 +15,8 @@ import {
 } from "@/components/ui/dialog";
 import { 
   Search, BookOpen, Eye, ExternalLink, Tag, Image as ImageIcon,
-  TrendingUp, Sparkles, CalendarIcon, Gift, Plus, Pencil, RotateCcw, Loader2, Upload
+  TrendingUp, Sparkles, CalendarIcon, Gift, Plus, Pencil, RotateCcw, Loader2, Upload,
+  Pin, PinOff, ArrowUp, ArrowDown, Clock
 } from "lucide-react";
 import Link from "next/link";
 import { GUIDES, Guide } from "@/lib/data/guides";
@@ -108,12 +109,28 @@ export default function AdminDiscoverPage() {
     });
   }, [filteredGuides, viewStats]);
 
-  // Filter promos
+  // Filter and sort promos (pinned first, then by updatedAt)
   const filteredPromos = useMemo(() => {
-    return promos.filter(promo =>
-      promo.title.toLowerCase().includes(keyword.toLowerCase()) ||
-      promo.merchant.toLowerCase().includes(keyword.toLowerCase())
-    );
+    return promos
+      .filter(promo =>
+        promo.title.toLowerCase().includes(keyword.toLowerCase()) ||
+        promo.merchant.toLowerCase().includes(keyword.toLowerCase())
+      )
+      .sort((a, b) => {
+        // 1. Pinned first
+        if (a.isPinned && !b.isPinned) return -1;
+        if (!a.isPinned && b.isPinned) return 1;
+        
+        // 2. Sort by sortOrder (higher first)
+        const aSortOrder = a.sortOrder || 0;
+        const bSortOrder = b.sortOrder || 0;
+        if (aSortOrder !== bSortOrder) return bSortOrder - aSortOrder;
+        
+        // 3. Sort by updatedAt (newest first)
+        const aUpdated = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+        const bUpdated = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+        return bUpdated - aUpdated;
+      });
   }, [keyword, promos]);
 
   const totalGuideViews = Object.values(viewStats).reduce((a, b) => a + b, 0);
@@ -465,17 +482,28 @@ export default function AdminDiscoverPage() {
             <table className="w-full text-sm text-left">
               <thead className="bg-gray-50 dark:bg-gray-900/50 text-gray-500 dark:text-gray-400 border-b dark:border-gray-700">
                 <tr>
-                  <th className="px-6 py-4 font-medium">圖片</th>
-                  <th className="px-6 py-4 font-medium">標題</th>
-                  <th className="px-6 py-4 font-medium">商戶</th>
-                  <th className="px-6 py-4 font-medium">標籤</th>
-                  <th className="px-6 py-4 font-medium">到期日</th>
+                  <th className="px-4 py-4 font-medium w-10">#</th>
+                  <th className="px-4 py-4 font-medium">圖片</th>
+                  <th className="px-4 py-4 font-medium">標題</th>
+                  <th className="px-4 py-4 font-medium">商戶</th>
+                  <th className="px-4 py-4 font-medium">
+                    <div className="flex items-center gap-1">
+                      <Clock className="h-4 w-4" />
+                      更新時間
+                    </div>
+                  </th>
+                  <th className="px-4 py-4 font-medium">到期日</th>
+                  <th className="px-4 py-4 font-medium">狀態</th>
+                  <th className="px-4 py-4 font-medium">操作</th>
                 </tr>
               </thead>
               <tbody className="divide-y dark:divide-gray-700">
-                {filteredPromos.map((promo) => (
-                  <tr key={promo.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                    <td className="px-6 py-4">
+                {filteredPromos.map((promo, index) => (
+                  <tr key={promo.id} className={`hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors ${promo.isPinned ? 'bg-amber-50/50 dark:bg-amber-900/10' : ''}`}>
+                    <td className="px-4 py-4 text-gray-400 text-xs">
+                      {index + 1}
+                    </td>
+                    <td className="px-4 py-4">
                       {promo.imageUrl ? (
                         <div className="w-12 h-8 rounded overflow-hidden bg-gray-100">
                           <img src={promo.imageUrl} alt="" className="w-full h-full object-cover" />
@@ -486,28 +514,50 @@ export default function AdminDiscoverPage() {
                         </div>
                       )}
                     </td>
-                    <td className="px-6 py-4">
-                      <p className="font-medium text-gray-900 dark:text-white">{promo.title}</p>
+                    <td className="px-4 py-4">
+                      <p className="font-medium text-gray-900 dark:text-white line-clamp-1">{promo.title}</p>
                       <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">{promo.description}</p>
                     </td>
-                    <td className="px-6 py-4 text-gray-600 dark:text-gray-300">{promo.merchant}</td>
-                    <td className="px-6 py-4">
-                      <div className="flex gap-2 flex-wrap">
-                        {promo.tags.map((tag) => (
-                          <span key={tag} className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded-full text-xs text-gray-600 dark:text-gray-300">
-                            {tag}
-                          </span>
-                        ))}
+                    <td className="px-4 py-4 text-gray-600 dark:text-gray-300 text-sm">{promo.merchant}</td>
+                    <td className="px-4 py-4 text-gray-500 dark:text-gray-400 text-sm">
+                      {promo.updatedAt || '-'}
+                    </td>
+                    <td className="px-4 py-4 text-gray-500 dark:text-gray-300 text-sm">
+                      <div className="flex items-center gap-1">
+                        <CalendarIcon className="h-3 w-3" />
+                        {promo.expiryDate}
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-gray-500 dark:text-gray-300 flex items-center gap-1">
-                      <CalendarIcon className="h-4 w-4" />
-                      {promo.expiryDate}
+                    <td className="px-4 py-4">
+                      <div className="flex items-center gap-1">
+                        {promo.isPinned && (
+                          <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs font-medium flex items-center gap-1">
+                            <Pin className="h-3 w-3" />
+                            置頂
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-4 py-4">
+                      <div className="flex items-center gap-1">
+                        <Link href={`/discover/${promo.id}`} target="_blank">
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <ExternalLink className="h-3 w-3" />
+                          </Button>
+                        </Link>
+                      </div>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            
+            {/* Info Box */}
+            <div className="p-4 bg-gray-50 dark:bg-gray-900/50 border-t dark:border-gray-700">
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                💡 排序邏輯：置頂優惠 → 更新時間（最新在前）。如需修改優惠內容或排序，請編輯 <code className="px-1 py-0.5 bg-gray-200 dark:bg-gray-700 rounded">lib/data/promos.ts</code>
+              </p>
+            </div>
           </div>
         </TabsContent>
       </Tabs>

@@ -26,6 +26,7 @@ const GUIDES = [
     tags: ["海外消費", "網購", "手續費"],
     merchant: "攻略",
     isNew: false,
+    updatedAt: "2025-12-01",
   },
   {
     id: "debit-card-guide",
@@ -405,10 +406,24 @@ export function DiscoverClient() {
     return typeMatch && tagMatch;
   });
 
-  // 將攻略排在最前面
+  // 排序邏輯：1. 置頂優先 2. 最後更新時間降序
   const sortedContent = filteredContent.sort((a, b) => {
-    if (a.contentType === "guide" && b.contentType === "promo") return -1;
-    if (a.contentType === "promo" && b.contentType === "guide") return 1;
+    // 1. 置頂優先
+    const aIsPinned = 'isPinned' in a && a.isPinned;
+    const bIsPinned = 'isPinned' in b && b.isPinned;
+    if (aIsPinned && !bIsPinned) return -1;
+    if (!aIsPinned && bIsPinned) return 1;
+    
+    // 2. 按 sortOrder 排序（數字越大越前）
+    const aSortOrder = 'sortOrder' in a ? (a.sortOrder || 0) : 0;
+    const bSortOrder = 'sortOrder' in b ? (b.sortOrder || 0) : 0;
+    if (aSortOrder !== bSortOrder) return bSortOrder - aSortOrder;
+    
+    // 3. 按 updatedAt 排序（最新更新在前）
+    const aUpdated = 'updatedAt' in a && a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+    const bUpdated = 'updatedAt' in b && b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+    if (aUpdated !== bUpdated) return bUpdated - aUpdated;
+    
     return 0;
   });
 

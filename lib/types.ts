@@ -114,6 +114,10 @@ export interface Promo {
   relatedCardIds: string[];
   tags: string[];
   url?: string;
+  // Sorting & Display
+  updatedAt?: string; // ISO date string for sorting by last update
+  sortOrder?: number; // Manual sort order (higher = top), for pinning
+  isPinned?: boolean; // If true, always show at top
   // SEO Fields
   faqs?: PromoFAQ[]; // FAQ for structured data
   seoTitle?: string; // Custom SEO title
