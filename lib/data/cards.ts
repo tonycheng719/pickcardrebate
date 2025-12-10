@@ -328,12 +328,11 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.125, currency: 'Points' }, // 8 pts = 1 mile -> ratio 0.125
     rules: [
-      // T&C 2025/7/1-2025/12/31: 需每月簽滿 $5,000，餐飲+旅遊可享 10X 積分 (4%)
+      // T&C 2025/7/1-2025/12/31: 需每月簽滿 $5,000，餐飲+外幣可享 10X 積分 (4%)
       // 餐飲上限：100,000 積分/月 = $10,000 簽賬
-      // 旅遊上限：250,000 積分/月 = $25,000 簽賬
-      // 餐飲+旅遊合共上限：300,000 積分/月 = $30,000 簽賬
+      // 外幣上限：250,000 積分/月 = $25,000 簽賬
+      // 餐飲+外幣合共上限：300,000 積分/月 = $30,000 簽賬
       { description: "本地餐飲 10X (4%)", matchType: "category", matchValue: ["dining"], percentage: 4.0, monthlyMinSpend: 5000, cap: 10000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
-      { description: "旅遊/外幣簽賬 10X (4%)", matchType: "category", matchValue: ["travel"], percentage: 4.0, monthlyMinSpend: 5000, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       { description: "外幣簽賬 10X (4%)", matchType: "base", percentage: 4.0, isForeignCurrency: true, monthlyMinSpend: 5000, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 不適用於 Alipay/WeChat Pay/PayMe
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
@@ -360,17 +359,16 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.125, currency: 'Points' },
     rules: [
-      // T&C 2025/7/1-2025/12/31: 需每月簽滿 $5,000，餐飲+旅遊可享 8X 積分 (3.2%)
+      // T&C 2025/7/1-2025/12/31: 需每月簽滿 $5,000，餐飲+外幣可享 8X 積分 (3.2%)
       // 餐飲上限：80,000 積分/月 = $10,000 簽賬
-      // 旅遊上限：200,000 積分/月 = $25,000 簽賬
-      // 餐飲+旅遊合共上限：240,000 積分/月 = $30,000 簽賬
+      // 外幣上限：200,000 積分/月 = $25,000 簽賬
+      // 餐飲+外幣合共上限：240,000 積分/月 = $30,000 簽賬
       { description: "本地餐飲 8X (3.2%)", matchType: "category", matchValue: ["dining"], percentage: 3.2, monthlyMinSpend: 5000, cap: 10000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
-      { description: "旅遊/外幣簽賬 8X (3.2%)", matchType: "category", matchValue: ["travel"], percentage: 3.2, monthlyMinSpend: 5000, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       { description: "外幣簽賬 8X (3.2%)", matchType: "base", percentage: 3.2, isForeignCurrency: true, monthlyMinSpend: 5000, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 不適用於 Alipay/WeChat Pay/PayMe
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["餐飲3.2%", "旅遊3.2%"],
+    tags: ["餐飲3.2%", "外幣3.2%"],
     welcomeOfferText: "迎新高達 390,000 積分 (26,000里/HK$1,560)",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=452&a=228&sub_id1=pickcardrebate&sub_id2=web",
     sellingPoints: ["本地餐飲 8X (3.2%)", "外幣簽賬 8X (3.2%)", "需每月簽滿 $5,000"],
