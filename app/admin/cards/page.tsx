@@ -33,19 +33,51 @@ export default function AdminCardsPage() {
   // 從數據庫獲取圖片 URL 和優先級
   useEffect(() => {
     async function fetchData() {
-      const supabase = createClient();
-      const { data } = await supabase.from("cards").select("id, image_url, priority, featured, hidden");
-      if (data) {
-        const dataMap: Record<string, { image_url?: string; priority?: number; featured?: boolean; hidden?: boolean }> = {};
-        data.forEach((card: any) => {
-          dataMap[card.id] = {
-            image_url: card.image_url,
-            priority: card.priority ?? 100,
-            featured: card.featured ?? false,
-            hidden: card.hidden ?? false
-          };
-        });
-        setDbData(dataMap);
+      try {
+        // 使用 API 路由來獲取數據（繞過 RLS 問題）
+        const res = await fetch('/api/admin/cards');
+        if (res.ok) {
+          const result = await res.json();
+          const cards = result.cards || result || [];
+          
+          const dataMap: Record<string, { image_url?: string; priority?: number; featured?: boolean; hidden?: boolean }> = {};
+          cards.forEach((card: any) => {
+            dataMap[card.id] = {
+              image_url: card.image_url || card.imageUrl,
+              priority: card.priority ?? 100,
+              featured: card.featured ?? false,
+              hidden: card.hidden ?? false
+            };
+          });
+          setDbData(dataMap);
+          console.log(`[Admin Cards] Loaded ${cards.length} cards from API`);
+        } else {
+          // Fallback: 直接使用 Supabase 客戶端
+          console.warn('[Admin Cards] API failed, trying direct Supabase...');
+          const supabase = createClient();
+          const { data, error } = await supabase.from("cards").select("id, image_url, priority, featured, hidden");
+          
+          if (error) {
+            console.error('[Admin Cards] Supabase error:', error);
+            return;
+          }
+          
+          if (data) {
+            const dataMap: Record<string, { image_url?: string; priority?: number; featured?: boolean; hidden?: boolean }> = {};
+            data.forEach((card: any) => {
+              dataMap[card.id] = {
+                image_url: card.image_url,
+                priority: card.priority ?? 100,
+                featured: card.featured ?? false,
+                hidden: card.hidden ?? false
+              };
+            });
+            setDbData(dataMap);
+            console.log(`[Admin Cards] Loaded ${data.length} cards from Supabase`);
+          }
+        }
+      } catch (e) {
+        console.error('[Admin Cards] Error fetching data:', e);
       }
     }
     fetchData();
