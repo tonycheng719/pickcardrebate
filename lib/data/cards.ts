@@ -1111,18 +1111,18 @@ export const HK_CARDS: CreditCard[] = [
     rewardTimeline: "現金回贈下期月結單入賬",
     annualFee: 250,
     feeWaiverCondition: "首年免年費",
-    foreignCurrencyFee: 0,
+    foreignCurrencyFee: 1, // 2025/1/1 起銀聯卡外幣手續費 1%
     rules: [
       // T&C: 全方位 2% 現金回贈 (1% 基本 + 1% 加碼)
       // 加碼回贈上限 $1,500/年 (即總簽賬上限 $150,000/年)
       // ❌ 不包括：八達通自動增值、電子錢包充值/繳費、P2P 轉賬
       { description: "全方位 2%", matchType: "base", percentage: 2.0, cap: 1500, capType: "reward", excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["全方位2%", "懶人必備", "免外幣手續費"],
+    tags: ["全方位2%", "懶人必備", "銀聯1%手續費"],
     welcomeOfferText: "迎新簽 $8,500 送 $500 回贈 / 洗碗機 (首90天內)",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=182&a=228&sub_id1=pickcardrebate&sub_id2=web",
-    sellingPoints: ["全方位 2% 現金回贈", "1% 加碼回贈上限 $1,500/年", "免外幣手續費", "無需登記"],
-    note: "⚠️ 2% 回贈 = 1% 基本 + 1% 加碼（1% 加碼上限 $1,500/年，即有效簽賬 $150,000/年）。不適用於：八達通自動增值、電子錢包充值/繳費（包括 AlipayHK/PayMe/WeChat Pay）、P2P 轉賬、賭場交易。迎新：簽 $8,500 送 $500 / 簽 $8,800 送平板 / 簽 $9,500 送洗碗機。",
+    sellingPoints: ["全方位 2% 現金回贈", "1% 加碼回贈上限 $1,500/年", "銀聯外幣手續費 1%", "無需登記"],
+    note: "⚠️ 2% 回贈 = 1% 基本 + 1% 加碼（1% 加碼上限 $1,500/年，即有效簽賬 $150,000/年）。不適用於：八達通自動增值、電子錢包充值/繳費（包括 AlipayHK/PayMe/WeChat Pay）、P2P 轉賬、賭場交易。⚠️ 銀聯卡外幣手續費 1%（2025/1/1起），海外淨回贈約 1%。迎新：簽 $8,500 送 $500 / 簽 $8,800 送平板 / 簽 $9,500 送洗碗機。",
   },
   {
     id: "wewa-unionpay",
@@ -1132,7 +1132,7 @@ export const HK_CARDS: CreditCard[] = [
     // imageUrl from DB
     annualFee: 600,
     feeWaiverCondition: "首年免年費",
-    foreignCurrencyFee: 0,
+    foreignCurrencyFee: 1, // 2025/1/1 起銀聯卡外幣手續費 1%
     rules: [
       // 🔥 本地餐飲優惠 (2025/12/1 - 2025/12/31)
       // 實體卡：額外 9.6%，連同基本 0.4% = 10%
@@ -1154,11 +1154,11 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 基本回贈 0.4%（$250=$1），排除電子錢包充值、P2P轉賬、賭場等
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["玩樂3.6%", "旅遊", "海外", "線上娛樂", "八達通增值", "免外幣手續費", "餐飲10%"],
+    tags: ["玩樂3.6%", "旅遊", "海外", "線上娛樂", "八達通增值", "銀聯1%手續費", "餐飲10%"],
     welcomeOfferText: "迎新簽 $8,500 送 $500 現金回贈 / 簽 $8,800 送 LG顯示器或Marshall喇叭 (首90天)",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=180&a=228&sub_id1=pickcardrebate&sub_id2=web",
-    sellingPoints: ["🔥餐飲 10% (12月限定,需登記)", "玩樂類別 3.6% (4選1: 手機支付/旅遊/海外/線上娛樂)", "每月回贈上限 $200", "免外幣手續費", "八達通增值 0.4%"],
-    note: "💡 【推廣期 2025/7/1-2026/6/30】玩樂類別 3.6% 需 4 選 1（透過 OmyCard App 自選），需每月簽滿 $1,500，每月回贈上限 $200。如未選擇，自動選擇「手機支付」。線上娛樂包括：Apple App Store (APPLE.COM/BILL) / Disney+ / Google Play / JOOX / KKBOX / MyTV SUPER / Netflix / Nintendo / Patreon / PlayStation / Spotify / Steam / Xbox / YouTube。⚠️ 手機支付暫不支援 WeWa Visa + Android 組合！✅ 八達通自動增值計基本 0.4%（無上限）！❌ 玩樂3.6%不計：電子錢包充值/轉賬、分期計劃、賭場交易、繳費。\n\n🔥 **本地餐飲優惠**（至2025/12/31）：全港食肆享高達10%回贈！[查看詳情](/discover/wewa-dining-2025)",
+    sellingPoints: ["🔥餐飲 10% (12月限定,需登記)", "玩樂類別 3.6% (4選1: 手機支付/旅遊/海外/線上娛樂)", "每月回贈上限 $200", "銀聯外幣手續費 1%", "八達通增值 0.4%"],
+    note: "💡 【推廣期 2025/7/1-2026/6/30】玩樂類別 3.6% 需 4 選 1（透過 OmyCard App 自選），需每月簽滿 $1,500，每月回贈上限 $200。如未選擇，自動選擇「手機支付」。線上娛樂包括：Apple App Store (APPLE.COM/BILL) / Disney+ / Google Play / JOOX / KKBOX / MyTV SUPER / Netflix / Nintendo / Patreon / PlayStation / Spotify / Steam / Xbox / YouTube。⚠️ 手機支付暫不支援 WeWa Visa + Android 組合！✅ 八達通自動增值計基本 0.4%（無上限）！❌ 玩樂3.6%不計：電子錢包充值/轉賬、分期計劃、賭場交易、繳費。⚠️ 銀聯卡外幣手續費 1%（2025/1/1起）。\n\n🔥 **本地餐飲優惠**（至2025/12/31）：全港食肆享高達10%回贈！[查看詳情](/discover/wewa-dining-2025)",
     promoEndDate: "2025-12-31",
     promoName: "WeWa 本地餐飲優惠",
   },
