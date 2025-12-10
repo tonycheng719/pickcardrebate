@@ -254,8 +254,8 @@ export function CreditCardCalculator({
     effectiveMerchants.find((m) => m.id === selectedMerchantId) ||
     null; 
 
-  // Reset online scenario when payment method changes, but only if switching TO ambiguous method
-  // If switching FROM ambiguous TO explicit (e.g. "online"), we can auto-set.
+  // Reset online scenario when payment method changes
+  // For ambiguous methods (Apple Pay, etc.), set to null to force user selection
   useEffect(() => {
       // Priority Check: Is merchant Online Only?
       if (selectedMerchant?.isOnlineOnly) {
@@ -267,10 +267,9 @@ export function CreditCardCalculator({
           setIsOnlineScenario(true);
       } else if (paymentMethod === "physical_card") {
           setIsOnlineScenario(false);
-      } else {
-          // For ambiguous methods, reset to false (default to offline/store) unless user changes it
-          // But maybe we want to persist? Let's reset to be safe/clear.
-          setIsOnlineScenario(false);
+      } else if (AMBIGUOUS_PAYMENT_METHODS.includes(paymentMethod)) {
+          // For ambiguous methods, set to null to force user to choose
+          setIsOnlineScenario(null);
       }
   }, [paymentMethod, selectedMerchant]); // Add selectedMerchant to dependency
 
