@@ -316,7 +316,7 @@ export function CreditCardCalculator({
       {
         amount: parseFloat(amount),
         paymentMethod,
-        isOnlineScenario, // Pass the toggle state
+        isOnlineScenario: isOnlineScenario ?? false, // Convert null to false for type safety
         rewardPreference, // Pass preference
       },
       cardList,
@@ -346,7 +346,7 @@ export function CreditCardCalculator({
                 categoryId: selectedCategory,
                 amount: parseFloat(amount),
                 paymentMethod,
-                isOnline: isOnlineScenario,
+                isOnline: isOnlineScenario ?? false,
                 bestCardId: bestResult?.card.id,
                 bestRewardAmount: bestResult?.rewardAmount,
                 userId: user?.id
