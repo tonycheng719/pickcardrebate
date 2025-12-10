@@ -687,6 +687,8 @@ export const HK_CARDS: CreditCard[] = [
       // 每月只可享其中一個優惠一次，需開啟DBS Card+ App「一扣即享」
       { description: "🔥衛訊 4% [$8k享$320一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 4.0, minSpend: 8000, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
       { description: "🔥衛訊 2.86% [$3.5k享$100一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 2.86, minSpend: 3500, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
+      // T&C: 海外簽賬 5% (單筆≥$300，Signature卡每月首$8,000)
+      { description: "海外簽賬 5% (單筆≥$300)", matchType: "base", percentage: 5.0, isForeignCurrency: true, minSpend: 300, cap: 8000, capType: "spending", excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
       // T&C: 指定類別 5%: 餐飲/運動服飾/健身中心/醫療 (單筆≥$300，Signature卡每月首$8,000)
       // 餐飲不包括：酒席宴會、私人宴會、酒店/百貨公司/會所內食肆
       { description: "餐飲 5% (單筆≥$300)", matchType: "category", matchValue: "dining", percentage: 5.0, minSpend: 300, cap: 8000, capType: "spending", excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
@@ -696,10 +698,10 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 其他零售 1% (包括未滿$300的指定類別)
       { description: "其他零售 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
     ],
-    tags: ["餐飲5%", "健身5%", "運動服飾5%", "需登記", "衛訊4%"],
+    tags: ["餐飲5%", "海外5%", "健身5%", "運動服飾5%", "需登記", "衛訊4%"],
     welcomeOfferText: "迎新高達 $1,000 回贈",
-    sellingPoints: ["餐飲/運動服飾/健身/醫療 5% (單筆≥$300)", "其他零售 1%", "需透過 DBS Card+ App 登記"],
-    note: "⚠️ 指定類別 5% 需單筆消費滿 $300 並透過 DBS Card+ App 登記！未滿 $300 只有 1%。Signature卡每月首 $8,000 享 5%。餐飲不包括酒席宴會/酒店內食肆。醫療不包括獸醫。✅ DBS$ 積分無限期！⚠️ 電子錢包（八達通增值/PayMe/支付寶/微信支付增值及簽賬）**每月首 $5,000 可獲 DBS$**，超過不計。Apple Pay/Google Pay/Samsung Pay 不受此限。❌ 不計回贈：繳稅、繳費、保費、籌碼、外幣兌換、信用卡年費、結餘轉戶。\n\n🔥 **DBS x 衛訊優惠**（至2026/2/28）：單一簽賬滿$8,000享$320回贈！[查看詳情](/discover/dbs-wilson-2025)",
+    sellingPoints: ["海外簽賬 5% (單筆≥$300)", "餐飲/運動服飾/健身/醫療 5% (單筆≥$300)", "其他零售 1%", "需透過 DBS Card+ App 登記"],
+    note: "⚠️ 指定類別及海外簽賬 5% 需單筆消費滿 $300 並透過 DBS Card+ App 登記！未滿 $300 只有 1%。Signature卡每月首 $8,000 享 5%。餐飲不包括酒席宴會/酒店內食肆。醫療不包括獸醫。✅ DBS$ 積分無限期！⚠️ 電子錢包（八達通增值/PayMe/支付寶/微信支付增值及簽賬）**每月首 $5,000 可獲 DBS$**，超過不計。Apple Pay/Google Pay/Samsung Pay 不受此限。❌ 不計回贈：繳稅、繳費、保費、籌碼、外幣兌換、信用卡年費、結餘轉戶。\n\n🔥 **DBS x 衛訊優惠**（至2026/2/28）：單一簽賬滿$8,000享$320回贈！[查看詳情](/discover/dbs-wilson-2025)",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=187&a=228&sub_id1=pickcardrebate&sub_id2=web",
     promoEndDate: "2026-02-28",
     promoName: "DBS x 衛訊優惠",
