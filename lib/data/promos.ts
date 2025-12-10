@@ -254,6 +254,7 @@ export const PROMOS: Promo[] = [
 - 網上繳費、交稅、保險
 - **Alipay / WeChat Pay**
 - 八達通增值、電子錢包
+- **易通行增值**（Autotoll）
 - 購買禮券、分期
 
 ---

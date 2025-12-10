@@ -91,6 +91,7 @@ export const HANGSENG_WINTER_PROMO: BankPromo = {
     "購買禮券",
     "分期付款、結餘轉戶",
     "八達通自動增值",
+    "易通行增值（Autotoll）",
     "購買/充值儲值卡",
     "電子錢包簽賬",
     "金融機構交易（外滙、滙票等）"
