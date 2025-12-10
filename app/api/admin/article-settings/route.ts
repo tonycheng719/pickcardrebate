@@ -9,16 +9,18 @@ export async function GET() {
       .select('*');
 
     if (error) {
-      // 表不存在時返回空陣列
-      if (error.code === '42P01') {
+      // 表不存在或欄位不存在時返回空陣列
+      // 42P01 = table doesn't exist, 42703 = column doesn't exist
+      if (error.code === '42P01' || error.code === '42703') {
         return NextResponse.json({ settings: [] });
       }
-      throw error;
+      console.warn('Article settings query error:', error.message);
+      return NextResponse.json({ settings: [] });
     }
 
     return NextResponse.json({ settings: data || [] });
   } catch (error: any) {
-    console.error('Error fetching article settings:', error);
+    // Silently handle errors - article settings is optional feature
     return NextResponse.json({ settings: [] });
   }
 }

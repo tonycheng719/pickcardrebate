@@ -12,8 +12,7 @@ export async function GET(request: Request) {
 
     let query = adminAuthClient
       .from('article_settings')
-      .select('*')
-      .order('display_order', { ascending: true });
+      .select('*');
 
     if (articleId) {
       query = query.eq('article_id', articleId);
@@ -22,17 +21,19 @@ export async function GET(request: Request) {
     const { data, error } = await query;
 
     if (error) {
-      // If table doesn't exist, return empty array
-      if (error.code === '42P01') {
+      // If table doesn't exist or column doesn't exist, return empty array
+      // 42P01 = table doesn't exist, 42703 = column doesn't exist
+      if (error.code === '42P01' || error.code === '42703') {
         return NextResponse.json({ settings: [] });
       }
-      throw error;
+      console.warn('Article settings query error:', error.message);
+      return NextResponse.json({ settings: [] });
     }
 
     return NextResponse.json({ settings: data || [] });
   } catch (error: any) {
-    console.error('Error fetching article settings:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    // Silently handle errors - article settings is optional feature
+    return NextResponse.json({ settings: [] });
   }
 }
 
