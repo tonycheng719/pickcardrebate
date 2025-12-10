@@ -498,6 +498,14 @@ export function findBestCards(
         // e.g. $500 * 1.5% * 200 = 1500 yuu points
         pointsAmount = Math.round(amount * (percentage / 100) * card.rewardConfig.ratio);
         pointsCashValue = current.rewardAmount; // Cash equivalent
+      } else if (card.rewardConfig.method === 'direct_rate' && card.rewardConfig.baseRate) {
+        // For miles cards with direct rate (e.g. SC Cathay: $6/mile, $4/mile for dining)
+        // The percentage is already calculated based on miles value of $0.1/mile
+        // So: miles = amount * percentage / 100 / milesValue = amount * percentage / 10
+        // Example: $1000 at 2.5% = $25 / $0.1 = 250 miles (= $1000 / $4 per mile)
+        const milesValue = 0.1; // $0.1 per mile (standard Asia Miles valuation)
+        pointsAmount = Math.round(amount * (percentage / 100) / milesValue);
+        pointsCashValue = current.rewardAmount; // Cash equivalent
       }
     }
 
