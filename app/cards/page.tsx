@@ -225,9 +225,15 @@ function CardItem({ card }: { card: CreditCard }) {
 
             <CardContent className="flex-1 flex flex-col pt-2 pb-6 px-6"> {/* Adjusted padding */}
                 {/* Always show Card Name & Bank below visual */}
-                <Link href={`/cards/${card.id}`} className="mb-4 group/title">
+                <Link href={`/cards/${card.id}`} className="mb-4 group/title block">
                     <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{card.bank}</div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white leading-tight group-hover/title:text-blue-600 dark:group-hover/title:text-blue-400 transition-colors">{card.name}</h3>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white leading-tight group-hover/title:text-blue-600 dark:group-hover/title:text-blue-400 transition-colors flex items-center gap-1.5">
+                        {card.name}
+                        <span className="text-xs font-normal text-gray-400 group-hover/title:text-blue-500 transition-colors">→</span>
+                    </h3>
+                    <div className="text-xs text-gray-400 group-hover/title:text-blue-500 transition-colors mt-0.5 opacity-0 group-hover/title:opacity-100">
+                        點擊查看詳情
+                    </div>
                 </Link>
 
                 <div className="flex flex-wrap gap-2 mb-4">
@@ -556,7 +562,7 @@ function CardsLoading() {
             <main className="container mx-auto px-4 py-8 flex-1">
                 <div className="mb-8">
                     <Skeleton className="h-9 w-48 mb-2" />
-                    <Skeleton className="h-5 w-96" />
+                    <Skeleton className="h-5 w-full max-w-96" />
                 </div>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {[1, 2, 3, 4, 5, 6].map((i) => (

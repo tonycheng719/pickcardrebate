@@ -129,14 +129,14 @@ export function RewardBreakdown({
             <span>基本回贈</span>
             <span>{baseRate.toFixed(1)}%</span>
           </div>
-          <div className="flex justify-between items-center text-gray-600 dark:text-gray-400">
-            <div className="flex items-center gap-1">
+          <div className="flex justify-between items-start text-gray-600 dark:text-gray-400">
+            <div className="flex-1 min-w-0 pr-2">
               <span>額外回贈</span>
-              <span className="text-[10px] text-blue-500 truncate max-w-[100px]" title={extraSource}>
-                ({extraSource})
-              </span>
+              <div className="text-[10px] text-blue-500 mt-0.5 leading-tight">
+                {extraSource}
+              </div>
             </div>
-            <span className="text-blue-600">+{extraRate.toFixed(1)}%</span>
+            <span className="text-blue-600 shrink-0">+{extraRate.toFixed(1)}%</span>
           </div>
           <div className="border-t border-gray-200 dark:border-gray-700 pt-1 mt-1">
             <div className="flex justify-between items-center font-medium text-emerald-600 dark:text-emerald-400">
