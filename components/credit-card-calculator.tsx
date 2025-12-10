@@ -143,7 +143,7 @@ export function CreditCardCalculator({
   const [searchQuery, setSearchQuery] = useState(""); // New Search State
   const [amount, setAmount] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("physical_card");
-  const [isOnlineScenario, setIsOnlineScenario] = useState(false); // New state for online toggle
+  const [isOnlineScenario, setIsOnlineScenario] = useState<boolean | null>(null); // null = not selected yet
   const [results, setResults] = useState<CalculationResult[]>([]);
   const [open, setOpen] = useState(false);
   const [showAllResults, setShowAllResults] = useState(false); // Toggle for showing all results
@@ -1333,7 +1333,18 @@ export function CreditCardCalculator({
               <select
                 className="w-full md:w-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm h-12"
                 value={paymentMethod}
-                onChange={(e) => setPaymentMethod(e.target.value)}
+                onChange={(e) => {
+                  const newMethod = e.target.value;
+                  setPaymentMethod(newMethod);
+                  // 如果切換到需要選擇場景的支付方式，重置場景選擇
+                  if (AMBIGUOUS_PAYMENT_METHODS.includes(newMethod)) {
+                    setIsOnlineScenario(null);
+                  } else if (newMethod === "physical_card") {
+                    setIsOnlineScenario(false);
+                  } else if (newMethod === "online") {
+                    setIsOnlineScenario(true);
+                  }
+                }}
                 disabled={!selectedMerchant}
               >
                 {PAYMENT_OPTIONS
@@ -1357,21 +1368,31 @@ export function CreditCardCalculator({
               <Button 
                 className="w-full md:w-auto rounded-xl shrink-0 h-12 px-6 text-base font-medium shadow-emerald-100 dark:shadow-none active:scale-95 transition-transform" 
                 onClick={handleCalculate} 
-                disabled={!amount || !selectedMerchant}
+                disabled={!amount || !selectedMerchant || (AMBIGUOUS_PAYMENT_METHODS.includes(paymentMethod) && !selectedMerchant?.isOnlineOnly && isOnlineScenario === null)}
               >
-                即刻計回贈
+                {AMBIGUOUS_PAYMENT_METHODS.includes(paymentMethod) && !selectedMerchant?.isOnlineOnly && isOnlineScenario === null 
+                  ? "請先選擇付款場景 ↓" 
+                  : "即刻計回贈"}
               </Button>
             </div>
 
             {/* Scenario Toggle for Ambiguous Payments */}
             {/* Only show if merchant is NOT online-only AND payment method is ambiguous */}
             {AMBIGUOUS_PAYMENT_METHODS.includes(paymentMethod) && !selectedMerchant?.isOnlineOnly && (
-                <div className="mt-3 p-3 bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 rounded-xl animate-in fade-in slide-in-from-top-2">
-                    <Label className="text-xs text-gray-500 dark:text-gray-400 mb-2 block">
-                        請問您的付款場景是？
+                <div className={`mt-3 p-3 border rounded-xl animate-in fade-in slide-in-from-top-2 ${
+                    isOnlineScenario === null 
+                        ? "bg-amber-50 dark:bg-amber-900/20 border-amber-300 dark:border-amber-700" 
+                        : "bg-gray-50 dark:bg-gray-800/50 border-gray-100 dark:border-gray-700"
+                }`}>
+                    <Label className={`text-xs mb-2 block font-medium ${
+                        isOnlineScenario === null 
+                            ? "text-amber-700 dark:text-amber-400" 
+                            : "text-gray-500 dark:text-gray-400"
+                    }`}>
+                        {isOnlineScenario === null ? "⚠️ 請先選擇付款場景：" : "請問您的付款場景是？"}
                     </Label>
                     <RadioGroup 
-                        value={isOnlineScenario ? "online" : "offline"} 
+                        value={isOnlineScenario === null ? "" : (isOnlineScenario ? "online" : "offline")} 
                         onValueChange={(v) => setIsOnlineScenario(v === "online")}
                         className="flex flex-col sm:flex-row gap-3"
                     >
