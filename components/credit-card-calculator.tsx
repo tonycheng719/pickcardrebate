@@ -70,15 +70,18 @@ import { LoginPromptDialog } from "@/components/login-prompt-dialog";
 import { toast } from "sonner";
 
 const PAYMENT_OPTIONS = [
-  { id: "physical_card", label: "門市使用實體卡" },
-  { id: "online", label: "網上輸入信用卡" },
-  { id: "apple_pay", label: "Apple Pay" },
-  { id: "google_pay", label: "Google Pay" },
-  { id: "alipay", label: "AlipayHK" },
-  { id: "wechat_pay", label: "WeChat Pay HK" },
-  { id: "unionpay_qr", label: "雲閃付 App" },
-  { id: "boc_pay", label: "BoC Pay" },
+  { id: "physical_card", label: "門市使用實體卡", onlineOnly: false },
+  { id: "online", label: "網上輸入信用卡", onlineOnly: true },
+  { id: "apple_pay", label: "Apple Pay", onlineOnly: false },
+  { id: "google_pay", label: "Google Pay", onlineOnly: false },
+  { id: "alipay", label: "AlipayHK", onlineOnly: false },
+  { id: "wechat_pay", label: "WeChat Pay HK", onlineOnly: false },
+  { id: "unionpay_qr", label: "雲閃付 App", onlineOnly: false },
+  { id: "boc_pay", label: "BoC Pay", onlineOnly: false },
 ];
+
+// 純網上消費的類別 - 這些類別不應該顯示「門市使用實體卡」選項
+const ONLINE_ONLY_CATEGORIES = ["online"];
 
 // Payment methods that might be used online or offline
 const AMBIGUOUS_PAYMENT_METHODS = ["apple_pay", "google_pay", "alipay", "wechat_pay", "unionpay_qr", "boc_pay"];
@@ -275,6 +278,12 @@ export function CreditCardCalculator({
     setSelectedCategory(catId);
     setSelectedMerchantId(null);
     setSearchQuery(""); // Reset search on category change
+    
+    // 🔴 FIX: 如果選擇純網上類別（如網購/串流），自動切換付款方式為「網上輸入信用卡」
+    if (ONLINE_ONLY_CATEGORIES.includes(catId)) {
+      setPaymentMethod("online");
+      setIsOnlineScenario(true);
+    }
     
     // Track category selection
     const categoryName = categoryList.find(c => c.id === catId)?.name || catId;
@@ -1137,7 +1146,19 @@ export function CreditCardCalculator({
                 onChange={(e) => setPaymentMethod(e.target.value)}
                 disabled={!selectedMerchant}
               >
-                {PAYMENT_OPTIONS.map((opt) => (
+                {PAYMENT_OPTIONS
+                  // 🔴 FIX: 如果選擇純網上類別，不顯示「門市使用實體卡」選項
+                  .filter(opt => {
+                    const isOnlineCategory = ONLINE_ONLY_CATEGORIES.includes(selectedCategory);
+                    const merchantIsOnlineOnly = selectedMerchant?.categoryIds?.includes("online") && 
+                      !selectedMerchant?.categoryIds?.some(cat => !["online"].includes(cat));
+                    // 如果是純網上類別或商戶，隱藏門市選項
+                    if ((isOnlineCategory || merchantIsOnlineOnly) && opt.id === "physical_card") {
+                      return false;
+                    }
+                    return true;
+                  })
+                  .map((opt) => (
                   <option key={opt.id} value={opt.id}>
                   {opt.label}
                   </option>
