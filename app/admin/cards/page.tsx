@@ -187,22 +187,36 @@ export default function AdminCardsPage() {
 
   // Toggle featured status (使用 API 繞過 RLS)
   const toggleFeatured = async (cardId: string, currentFeatured: boolean) => {
+    const newFeatured = !currentFeatured;
+    
+    // 先樂觀更新 UI
+    setDbData(prev => ({
+      ...prev,
+      [cardId]: { 
+        image_url: prev[cardId]?.image_url,
+        priority: prev[cardId]?.priority ?? 100,
+        hidden: prev[cardId]?.hidden ?? false,
+        featured: newFeatured 
+      }
+    }));
+    
     try {
       const res = await fetch('/api/admin/cards/toggle', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cardId, field: 'featured', value: !currentFeatured })
+        body: JSON.stringify({ cardId, field: 'featured', value: newFeatured })
       });
 
       if (!res.ok) {
         const err = await res.json();
+        // 回滾 UI 更新
+        setDbData(prev => ({
+          ...prev,
+          [cardId]: { ...prev[cardId], featured: currentFeatured }
+        }));
         throw new Error(err.error || 'Failed to update');
       }
 
-      setDbData(prev => ({
-        ...prev,
-        [cardId]: { ...prev[cardId], featured: !currentFeatured }
-      }));
       toast.success(currentFeatured ? "已取消推薦" : "已設為推薦");
     } catch (error: any) {
       console.error('Toggle featured error:', error);
@@ -212,22 +226,36 @@ export default function AdminCardsPage() {
 
   // Toggle hidden status (使用 API 繞過 RLS)
   const toggleHidden = async (cardId: string, currentHidden: boolean) => {
+    const newHidden = !currentHidden;
+    
+    // 先樂觀更新 UI
+    setDbData(prev => ({
+      ...prev,
+      [cardId]: { 
+        image_url: prev[cardId]?.image_url,
+        priority: prev[cardId]?.priority ?? 100,
+        featured: prev[cardId]?.featured ?? false,
+        hidden: newHidden 
+      }
+    }));
+    
     try {
       const res = await fetch('/api/admin/cards/toggle', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cardId, field: 'hidden', value: !currentHidden })
+        body: JSON.stringify({ cardId, field: 'hidden', value: newHidden })
       });
 
       if (!res.ok) {
         const err = await res.json();
+        // 回滾 UI 更新
+        setDbData(prev => ({
+          ...prev,
+          [cardId]: { ...prev[cardId], hidden: currentHidden }
+        }));
         throw new Error(err.error || 'Failed to update');
       }
 
-      setDbData(prev => ({
-        ...prev,
-        [cardId]: { ...prev[cardId], hidden: !currentHidden }
-      }));
       toast.success(currentHidden ? "卡片已顯示" : "卡片已隱藏");
     } catch (error: any) {
       console.error('Toggle hidden error:', error);
