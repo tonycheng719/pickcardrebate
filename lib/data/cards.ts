@@ -1249,9 +1249,9 @@ export const HK_CARDS: CreditCard[] = [
     rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 25,000 積分 = $100 回贈 (0.4%)
     rules: [
       // T&C: 本地餐飲/外賣平台 高達11% (需登記，月簽$8,000享9%+2%積分)，推廣期 2025年7月-12月
-      { description: "本地餐飲/外賣 11% (需登記,月簽$8k)", matchType: "category", matchValue: ["dining"], percentage: 11.0, monthlyMinSpend: 8000, cap: 800, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "本地餐飲/外賣 11% (需登記,月簽≥$8k)", matchType: "category", matchValue: ["dining"], percentage: 11.0, monthlyMinSpend: 8000, cap: 800, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 月簽<$8,000 只享 2%
-      { description: "本地餐飲/外賣 2% (需登記)", matchType: "category", matchValue: ["dining"], percentage: 2.0, cap: 800, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "本地餐飲/外賣 2% (需登記,月簽<$8k)", matchType: "category", matchValue: ["dining"], percentage: 2.0, cap: 800, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 本地交通 2% (需登記)，推廣期 2025年7月-12月
       { description: "本地交通 2% (需登記)", matchType: "category", matchValue: ["transport"], percentage: 2.0, cap: 400, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 網上零售交易 5X 積分 (2%)，每曆年額外4倍積分上限 300,000 (即簽$75,000)
