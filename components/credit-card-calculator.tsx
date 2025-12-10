@@ -68,6 +68,7 @@ function renderNoteWithLinks(note: string) {
 }
 import { LoginPromptDialog } from "@/components/login-prompt-dialog";
 import { toast } from "sonner";
+import { RewardBreakdown } from "@/components/reward-breakdown";
 
 const PAYMENT_OPTIONS = [
   { id: "physical_card", label: "門市使用實體卡", onlineOnly: false },
@@ -733,6 +734,22 @@ export function CreditCardCalculator({
                 </div>
               </div>
               
+              {/* 回贈明細 */}
+              <div className="mt-3">
+                <RewardBreakdown
+                  card={best.card}
+                  matchedRule={best.matchedRule}
+                  percentage={best.percentage}
+                  rewardAmount={best.rewardAmount}
+                  isForeignCurrency={best.isForeignCurrency}
+                  fxFee={best.card.foreignCurrencyFee}
+                  netPercentage={best.netPercentage}
+                  netRewardAmount={best.netRewardAmount}
+                  compact={false}
+                  showToggle={false}
+                />
+              </div>
+              
               {/* Tips & Notes */}
               {best.missedDiscountRule && best.missedDiscountAmount && best.missedDiscountAmount > 0 && (
                 <div className="mt-3 p-3 bg-orange-50 border border-orange-100 rounded-xl flex items-start gap-2">
@@ -853,6 +870,21 @@ export function CreditCardCalculator({
                       )}
                     </div>
                   </div>
+                  {/* 回贈明細 - 你持有的卡 */}
+                  <div className="mt-3">
+                    <RewardBreakdown
+                      card={myBestCard.card}
+                      matchedRule={myBestCard.matchedRule}
+                      percentage={myBestCard.percentage}
+                      rewardAmount={myBestCard.rewardAmount}
+                      isForeignCurrency={myBestCard.isForeignCurrency}
+                      fxFee={myBestCard.card.foreignCurrencyFee}
+                      netPercentage={myBestCard.netPercentage}
+                      netRewardAmount={myBestCard.netRewardAmount}
+                      compact={true}
+                      showToggle={true}
+                    />
+                  </div>
                 </div>
               )}
 
@@ -924,6 +956,21 @@ export function CreditCardCalculator({
                       </>
                     )}
                   </div>
+                </div>
+                {/* 回贈明細 - 全場最抵 */}
+                <div className="mt-2">
+                  <RewardBreakdown
+                    card={best.card}
+                    matchedRule={best.matchedRule}
+                    percentage={best.percentage}
+                    rewardAmount={best.rewardAmount}
+                    isForeignCurrency={best.isForeignCurrency}
+                    fxFee={best.card.foreignCurrencyFee}
+                    netPercentage={best.netPercentage}
+                    netRewardAmount={best.netRewardAmount}
+                    compact={true}
+                    showToggle={true}
+                  />
                 </div>
               </div>
               

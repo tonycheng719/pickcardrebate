@@ -528,22 +528,95 @@ export default function CardDetailPage() {
                     回贈規則
                   </h2>
                   <div className="space-y-3">
-                    {card.rules.map((rule, idx) => (
-                      <div key={idx} className="flex justify-between items-center py-2 border-b dark:border-gray-700 last:border-0">
-                        <div className="flex items-center gap-2">
-                          <span className="text-gray-700 dark:text-gray-300">{rule.description}</span>
-                          {rule.isDiscount && (
-                            <span className="px-2 py-0.5 bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-300 text-xs rounded-full">
-                              折扣
+                    {card.rules.map((rule, idx) => {
+                      // Calculate base rate and extra rate
+                      const baseRule = card.rules.find(
+                        (r) => r.matchType === "base" && !r.isForeignCurrency && r.description.includes("基本")
+                      );
+                      const baseRate = baseRule?.percentage || 0.4;
+                      const extraRate = rule.percentage - baseRate;
+                      const hasExtraRate = extraRate > 0.01 && rule.matchType !== "base";
+                      
+                      return (
+                        <div key={idx} className="py-2 border-b dark:border-gray-700 last:border-0">
+                          <div className="flex justify-between items-center">
+                            <div className="flex items-center gap-2">
+                              <span className="text-gray-700 dark:text-gray-300">{rule.description}</span>
+                              {rule.isDiscount && (
+                                <span className="px-2 py-0.5 bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-300 text-xs rounded-full">
+                                  折扣
+                                </span>
+                              )}
+                              {rule.isForeignCurrency && (
+                                <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 text-xs rounded-full">
+                                  海外
+                                </span>
+                              )}
+                            </div>
+                            <span className="font-bold text-blue-600 dark:text-blue-400">
+                              {rule.isDiscount ? `${(100 - rule.percentage) / 10}折` : `${rule.percentage}%`}
                             </span>
+                          </div>
+                          {/* 顯示回贈組成 */}
+                          {!rule.isDiscount && hasExtraRate && (
+                            <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                              {rule.isForeignCurrency && card.foreignCurrencyFee ? (
+                                <span>
+                                  {rule.percentage}% - {card.foreignCurrencyFee}% 手續費 = <span className="text-emerald-600 dark:text-emerald-400 font-medium">{(rule.percentage - card.foreignCurrencyFee).toFixed(2)}% 淨回贈</span>
+                                </span>
+                              ) : (
+                                <span>
+                                  {baseRate.toFixed(1)}% 基本 + <span className="text-blue-500">{extraRate.toFixed(1)}%</span> 額外 = <span className="text-emerald-600 dark:text-emerald-400 font-medium">{rule.percentage}% 總回贈</span>
+                                </span>
+                              )}
+                            </div>
+                          )}
+                          {/* 海外回贈淨值（只有基本回贈時） */}
+                          {!rule.isDiscount && rule.isForeignCurrency && !hasExtraRate && card.foreignCurrencyFee && (
+                            <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                              {rule.percentage}% - {card.foreignCurrencyFee}% 手續費 = <span className="text-emerald-600 dark:text-emerald-400 font-medium">{(rule.percentage - card.foreignCurrencyFee).toFixed(2)}% 淨回贈</span>
+                            </div>
+                          )}
+                          {/* 條件提示 */}
+                          {(rule.cap || rule.monthlyMinSpend || rule.minSpend) && (
+                            <div className="mt-1 text-[10px] text-amber-600 dark:text-amber-400 flex flex-wrap gap-2">
+                              {rule.cap && (
+                                <span>{rule.capType === "reward" ? `上限回贈 $${rule.cap.toLocaleString()}` : `上限簽賬 $${rule.cap.toLocaleString()}`}</span>
+                              )}
+                              {rule.monthlyMinSpend && (
+                                <span>月簽 ${rule.monthlyMinSpend.toLocaleString()}</span>
+                              )}
+                              {rule.minSpend && (
+                                <span>單筆滿 ${rule.minSpend.toLocaleString()}</span>
+                              )}
+                            </div>
                           )}
                         </div>
-                        <span className="font-bold text-blue-600 dark:text-blue-400">
-                          {rule.isDiscount ? `${(100 - rule.percentage) / 10}折` : `${rule.percentage}%`}
-                        </span>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
+                  
+                  {/* 外幣手續費提示 */}
+                  {card.foreignCurrencyFee !== undefined && (
+                    <div className={`mt-4 p-3 rounded-lg ${card.foreignCurrencyFee === 0 ? 'bg-green-50 dark:bg-green-900/20' : 'bg-gray-50 dark:bg-gray-800'}`}>
+                      <div className="flex items-center gap-2 text-sm">
+                        {card.foreignCurrencyFee === 0 ? (
+                          <>
+                            <span className="text-green-600 dark:text-green-400">✓</span>
+                            <span className="text-green-700 dark:text-green-300 font-medium">此卡免外幣手續費</span>
+                          </>
+                        ) : (
+                          <>
+                            <span className="text-gray-500">💡</span>
+                            <span className="text-gray-600 dark:text-gray-400">
+                              外幣手續費：<span className="font-medium text-orange-600 dark:text-orange-400">{card.foreignCurrencyFee}%</span>
+                              <span className="text-xs ml-1">（海外簽賬已在上方扣除）</span>
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </motion.div>

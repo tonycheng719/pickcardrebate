@@ -6,7 +6,8 @@ import Image from "next/image";
 import { 
   Trophy, ChevronRight, Info, AlertTriangle, 
   CreditCard, ExternalLink, Scale, Filter,
-  Utensils, ShoppingCart, Plane, Globe, Smartphone, Wallet
+  Utensils, ShoppingCart, Plane, Globe, Smartphone, Wallet,
+  ChevronDown, ChevronUp
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { 
@@ -20,6 +21,25 @@ import { Navbar } from "@/components/navbar";
 import { BottomNav } from "@/components/bottom-nav";
 import { ShareButton } from "@/components/share-button";
 import { useDataset } from "@/lib/admin/data-store";
+
+// Helper to get base rate from card rules
+function getBaseRate(card: { rules: Array<{ matchType: string; isForeignCurrency?: boolean; description: string; percentage: number }> }): number {
+  const baseRule = card.rules.find(
+    (r) => r.matchType === "base" && !r.isForeignCurrency && r.description.includes("基本")
+  );
+  return baseRule?.percentage || 0.4;
+}
+
+// Helper to extract extra rate source from rule description
+function getExtraSource(description: string): string {
+  let cleaned = description
+    .replace(/\s*\d+(\.\d+)?%/g, "")
+    .replace(/\s*\(\d+X\)/g, "")
+    .replace(/\s*\(每月首\$[\d,]+\)/g, "")
+    .replace(/\s*\(首\$[\d,]+\)/g, "")
+    .trim();
+  return cleaned || description;
+}
 
 const categoryIcons: Record<RankingCategory, React.ReactNode> = {
   dining: <Utensils className="h-5 w-5" />,
@@ -110,9 +130,21 @@ function CardRow({ result, rank, showFxFee = false }: { result: RankingResult; r
             <div className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
               {result.percentage}%
             </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">
-              回贈
-            </div>
+            {/* 顯示回贈組成 */}
+            {(() => {
+              const baseRate = getBaseRate(result.card);
+              const extraRate = result.percentage - baseRate;
+              if (extraRate > 0.01) {
+                return (
+                  <div className="text-[10px] text-gray-500 dark:text-gray-400">
+                    {baseRate.toFixed(1)}% 基本 + <span className="text-blue-500">{extraRate.toFixed(1)}%</span> 額外
+                  </div>
+                );
+              }
+              return (
+                <div className="text-xs text-gray-500 dark:text-gray-400">回贈</div>
+              );
+            })()}
           </>
         )}
       </div>
