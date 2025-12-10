@@ -111,7 +111,6 @@
     border-color: hsl(var(--border));
   }
 html {
-    overflow-x: hidden;
     -webkit-text-size-adjust: 100%;
   }
   body {
@@ -119,13 +118,12 @@ html {
     color: hsl(var(--foreground));
     font-feature-settings: "rlig" 1, "calt" 1;
     -webkit-overflow-scrolling: touch;
-    overflow-x: hidden;
-    width: 100%;
   }
-  /* Prevent horizontal scroll caused by child elements */
-  #__next, main, .container {
-    max-width: 100%;
-    overflow-x: hidden;
+  /* Only apply overflow-x: hidden on mobile to prevent horizontal scroll */
+  @media (max-width: 768px) {
+    html, body {
+      overflow-x: hidden;
+    }
   }
   .pb-safe {
     padding-bottom: env(safe-area-inset-bottom);
