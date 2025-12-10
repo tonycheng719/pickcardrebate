@@ -491,11 +491,20 @@ export function findBestCards(
       const cfgMethod = card.rewardConfig.method;
       const cfgRatio = card.rewardConfig.ratio || 0;
       const cfgCurrency = card.rewardConfig.currency;
-      pointsCurrency = cfgCurrency;
+      const currencyUpper = cfgCurrency.toUpperCase();
+      
+      // Identify if this card earns miles (directly or can convert to miles)
+      const isMilesEarningCard = currencyUpper === 'RC' || // HSBC RC → can convert to miles
+                                 currencyUpper === 'AM' || // Asia Miles
+                                 currencyUpper.includes('MILE') || // United Miles, etc.
+                                 currencyUpper === 'FWC' || // Fortune Wings Club
+                                 currencyUpper === 'DBS$'; // DBS$ → can convert to miles
+      
+      pointsCurrency = cfgCurrency; // Default to original currency
       
       if (cfgMethod === 'conversion' && cfgRatio) {
         // Handle HSBC RC (獎賞錢) specially
-        if (cfgCurrency.toUpperCase() === 'RC') {
+        if (currencyUpper === 'RC') {
           // For HSBC cards: 1 RC = $1 cash value, ratio = miles per RC
           const rcAmount = current.rewardAmount; // RC amount = cash value
           
@@ -509,16 +518,30 @@ export function findBestCards(
             pointsCurrency = 'RC';
           }
           pointsCashValue = current.rewardAmount;
+        } else if (currencyUpper === 'DBS$') {
+          // DBS$: $1 DBS$ = 1 里 (Asia Miles)
+          const dbsAmount = Math.round(amount * (percentage / 100) * cfgRatio);
+          if (rewardPreference === 'miles') {
+            pointsAmount = dbsAmount; // 1 DBS$ = 1 mile
+            pointsCurrency = '里';
+          } else {
+            pointsAmount = dbsAmount;
+            pointsCurrency = 'DBS$';
+          }
+          pointsCashValue = current.rewardAmount;
         } else {
-          // For yuu points and other point systems
+          // For yuu points, AEON Points, etc. - these cannot convert to miles
           pointsAmount = Math.round(amount * (percentage / 100) * cfgRatio);
           pointsCashValue = current.rewardAmount;
+          // Keep original currency (yuu積分, Points, etc.)
         }
       } else if (cfgMethod === 'direct_rate' && card.rewardConfig.baseRate) {
         // For miles cards with direct rate (e.g. SC Cathay: $6/mile)
         const milesValue = 0.1; // $0.1 per mile
         pointsAmount = Math.round(amount * (percentage / 100) / milesValue);
         pointsCashValue = current.rewardAmount;
+        // Always show as '里' for direct_rate miles cards
+        pointsCurrency = '里';
       }
     }
 
