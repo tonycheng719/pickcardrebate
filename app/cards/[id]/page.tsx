@@ -319,7 +319,7 @@ export default function CardDetailPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
       />
 
-      <main className="container mx-auto px-4 py-8 flex-1">
+      <main className="container mx-auto px-4 py-8 flex-1 max-w-full overflow-x-hidden">
         {/* Back Button */}
         <button 
           onClick={() => router.back()}
