@@ -30,7 +30,7 @@ export const overseasSpendingFaqData = [
   },
   {
     question: "日本旅行用邊張信用卡？",
-    answer: "日本消費係日圓結算，建議用免外幣手續費卡（SC Smart Card）或高回贈卡（Simply Cash 海外 2%）。日本好多地方接受 Apple Pay，可用 EarnMORE 2%。"
+    answer: "日本消費係日圓結算，建議用免外幣手續費卡（SC Smart Card）或高回贈卡（Simply Cash 海外 2%）。日本好多地方接受 Apple Pay。注意 EarnMORE 銀聯卡 2025 年起有 1% 手續費。"
   },
   {
     question: "歐洲旅行用邊張信用卡？",
@@ -72,7 +72,7 @@ const popularDestinations = [
     currency: "KRW",
     bestCards: [
       { card: "SC Smart Card", id: "sc-smart", rate: "免手續費" },
-      { card: "安信 EarnMORE", id: "earnmore", rate: "2%" },
+      { card: "渣打 Simply Cash", id: "sc-simply-cash", rate: "2%" },
     ],
     tips: "Samsung Pay 普及",
   },
@@ -160,10 +160,10 @@ const recommendedCards = [
     card: "安信 EarnMORE 銀聯卡",
     id: "earnmore",
     rate: "2%",
-    fee: "1.95%",
-    netRate: "0.05%",
+    fee: "1%",
+    netRate: "1%",
     highlight: "Mobile Pay",
-    reason: "Apple Pay / Google Pay 海外 2% 無上限。",
+    reason: "Apple Pay / Google Pay 海外 2% 無上限。⚠️ 2025/1/1 起銀聯卡外幣手續費 1%。",
     best: "手機支付",
   },
 ];
@@ -174,7 +174,7 @@ const cashbackComparison = [
   { card: "Simply Cash", id: "sc-simply-cash", overseas: "2%", fee: "1.95%", net: "0.05%", cap: "無上限", annual: "免" },
   { card: "SC Smart Card", id: "sc-smart", overseas: "0.55%", fee: "0%", net: "0.55%", cap: "無上限", annual: "免" },
   { card: "SC 國泰 Mastercard", id: "sc-cathay", overseas: "$4/里", fee: "1.95%", net: "$4/里", cap: "有上限", annual: "$1,800" },
-  { card: "EarnMORE", id: "earnmore", overseas: "2%", fee: "1.95%", net: "0.05%", cap: "無上限", annual: "免" },
+  { card: "EarnMORE", id: "earnmore", overseas: "2%", fee: "1%", net: "1%", cap: "無上限", annual: "免" },
 ];
 
 export function OverseasSpendingGuide() {
