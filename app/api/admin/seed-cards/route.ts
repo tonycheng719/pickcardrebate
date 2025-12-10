@@ -4,12 +4,12 @@ import { adminAuthClient } from '@/lib/supabase/admin-client';
 import { CreditCard } from '@/lib/types';
 
 // Helper function to map card data to DB schema
+// NOTE: image_url is handled separately to preserve uploaded images
 function mapCardToDB(card: CreditCard): any {
-    return {
+    const payload: any = {
         id: card.id,
         name: card.name,
         bank: card.bank,
-        image_url: card.imageUrl,
         style: card.style,
         tags: card.tags,
         foreign_currency_fee: card.foreignCurrencyFee,
@@ -24,6 +24,12 @@ function mapCardToDB(card: CreditCard): any {
         rules: card.rules,
         reward_config: card.rewardConfig
     };
+    // Only set image_url if explicitly provided in cards.ts
+    // This prevents overwriting user-uploaded images with undefined
+    if (card.imageUrl) {
+        payload.image_url = card.imageUrl;
+    }
+    return payload;
 }
 
 export const dynamic = 'force-dynamic';
@@ -53,20 +59,30 @@ export async function GET(request: Request) {
         const existingImagesMap = new Map();
         if (existingCards) {
             existingCards.forEach((c: any) => {
-                // More robust check: if it contains "storage" OR "supabase", treat as custom upload
-                if (c.image_url && (c.image_url.includes("storage") || c.image_url.includes("supabase"))) {
+                // Preserve ANY valid HTTP/HTTPS URL as it indicates an uploaded image
+                // This includes Supabase storage URLs and any other image hosting
+                if (c.image_url && (c.image_url.startsWith("http://") || c.image_url.startsWith("https://"))) {
                     existingImagesMap.set(c.id, c.image_url);
                 }
             });
         }
+        
+        console.log(`Found ${existingImagesMap.size} cards with uploaded images to preserve`);
 
         const payload = HK_CARDS.map(card => {
             const dbPayload = mapCardToDB(card);
-            // Preserve existing Supabase Storage URL if present
+            
+            // IMPORTANT: Always preserve existing uploaded images from database
+            // Priority: DB uploaded image > cards.ts imageUrl > undefined
             if (existingImagesMap.has(card.id)) {
-                console.log(`Preserving custom image for ${card.id}: ${existingImagesMap.get(card.id)}`);
-                dbPayload.image_url = existingImagesMap.get(card.id);
-            } else {
+                const dbImageUrl = existingImagesMap.get(card.id);
+                console.log(`Preserving uploaded image for ${card.id}`);
+                dbPayload.image_url = dbImageUrl;
+            } else if (!dbPayload.image_url) {
+                // No image in DB and no image in cards.ts - leave as undefined (don't set null)
+                // This allows the DB default or existing value to remain
+                delete dbPayload.image_url;
+                
                 // Log new cards being added
                 if (!existingCards?.some((c: any) => c.id === card.id)) {
                     console.log(`[NEW CARD] Adding: ${card.id} - ${card.name}`);

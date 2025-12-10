@@ -526,9 +526,26 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
   const uploadInitialData = async () => {
     setIsLoading(true);
     try {
-        // Upload Cards
+        // Fetch existing cards to preserve uploaded images
+        const { data: existingCards } = await supabase.from('cards').select('id, image_url');
+        const existingImagesMap = new Map();
+        if (existingCards) {
+            existingCards.forEach((c: any) => {
+                // Preserve ANY valid HTTP/HTTPS URL as uploaded image
+                if (c.image_url && (c.image_url.startsWith("http://") || c.image_url.startsWith("https://"))) {
+                    existingImagesMap.set(c.id, c.image_url);
+                }
+            });
+        }
+        
+        // Upload Cards (preserving existing images)
         for (const card of HK_CARDS) {
-            await supabase.from('cards').upsert(mapCardToDB(card));
+            const payload = mapCardToDB(card);
+            // Preserve existing uploaded image
+            if (existingImagesMap.has(card.id)) {
+                payload.image_url = existingImagesMap.get(card.id);
+            }
+            await supabase.from('cards').upsert(payload);
         }
         // Upload Merchants
         for (const merchant of POPULAR_MERCHANTS) {
