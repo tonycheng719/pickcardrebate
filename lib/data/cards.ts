@@ -554,7 +554,7 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rules: [
       // T&C: 指定國家外幣簽賬 7% (日本/韓國/泰國/新加坡/澳洲，需月簽賬滿$6,000)
-      { description: "指定國家旅遊 7% (日韓泰星澳)", matchType: "category", matchValue: ["travel"], percentage: 7.0, monthlyMinSpend: 6000, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
+      // 注意：7% 只適用於指定國家的外幣簽賬，不是旅遊類別
       { description: "指定國家外幣 7% (日韓泰星澳)", matchType: "base", percentage: 7.0, monthlyMinSpend: 6000, isForeignCurrency: true, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
       // T&C: 其他外幣簽賬 5% (需月簽賬滿$6,000)
       { description: "其他外幣簽賬 5%", matchType: "base", percentage: 5.0, monthlyMinSpend: 6000, isForeignCurrency: true, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
