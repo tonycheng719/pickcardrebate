@@ -85,6 +85,7 @@ export const POPULAR_MERCHANTS: Merchant[] = [
   { id: "coffee_academics", name: "The Coffee Academïcs", categoryIds: ["dining"], aliases: ["coffee academics", "咖啡學院"], logo: "https://logo.clearbit.com/the-coffeeacademics.com", accentColor: "#78350f" },
   { id: "namco", name: "NAMCO", categoryIds: ["entertainment"], aliases: ["namco", "南夢宮"], logo: "https://logo.clearbit.com/namco.co.jp", accentColor: "#f97316" },
   { id: "taito", name: "TAITO STATION", categoryIds: ["entertainment"], aliases: ["taito", "太東"], logo: "https://logo.clearbit.com/taito.co.jp", accentColor: "#7c3aed" },
+  { id: "game-station", name: "Game Station", categoryIds: ["entertainment", "electronics"], aliases: ["game station", "gamestation", "遊戲店"], logo: "🎮", accentColor: "#7c3aed" },
   
   // 餐飲 - 連鎖店 (門市+網上)
   { id: "kfc", name: "KFC 肯德基", categoryIds: ["dining", "online"], aliases: ["kfc", "肯德基", "kentucky"], logo: "https://logo.clearbit.com/kfc.com.hk", accentColor: "#dc2626" },
@@ -164,6 +165,7 @@ export const POPULAR_MERCHANTS: Merchant[] = [
   { id: "caltex", name: "Caltex 加德士", categoryIds: ["petrol"], aliases: ["caltex", "加德士"], logo: "https://logo.clearbit.com/caltex.com", accentColor: "#dc2626" },
   { id: "esso", name: "Esso 埃索", categoryIds: ["petrol"], aliases: ["esso", "埃索"], logo: "https://logo.clearbit.com/esso.com.hk", accentColor: "#1d4ed8" },
   { id: "sinopec", name: "Sinopec 中石化", categoryIds: ["petrol"], aliases: ["sinopec", "中石化"], logo: "https://logo.clearbit.com/sinopec.com", accentColor: "#dc2626" },
+  { id: "petrochina", name: "PetroChina 中油", categoryIds: ["petrol"], aliases: ["petrochina", "中油", "中國石油"], logo: "https://logo.clearbit.com/petrochina.com.cn", accentColor: "#dc2626" },
 
   // ========== 交通 ==========
   { id: "citybus", name: "Citybus 城巴", categoryIds: ["transport"], aliases: ["citybus", "城巴"], logo: "https://logo.clearbit.com/citybus.com.hk", accentColor: "#facc15" },
