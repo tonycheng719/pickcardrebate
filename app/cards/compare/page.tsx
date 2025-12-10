@@ -28,27 +28,72 @@ export default function CompareCardsPage() {
   const [showCardPicker, setShowCardPicker] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showAllRules, setShowAllRules] = useState(false);
-  const hasLoggedRef = useRef<string>("");
+  const lastLoggedRef = useRef<string>("");
+  const selectedCardIdsRef = useRef<string[]>([]);
+  const userIdRef = useRef<string | null>(null);
 
-  // Log comparison when user has selected 2+ cards
+  // Keep refs in sync with state
   useEffect(() => {
-    if (selectedCardIds.length >= 2) {
-      const sortedIds = [...selectedCardIds].sort().join(',');
-      // Only log if this is a new combination
-      if (sortedIds !== hasLoggedRef.current) {
-        hasLoggedRef.current = sortedIds;
-        // Fire and forget - don't await
-        fetch('/api/compare/log', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            cardIds: selectedCardIds,
-            userId: user?.id || null
-          })
-        }).catch(err => console.warn('Failed to log comparison:', err));
+    selectedCardIdsRef.current = selectedCardIds;
+  }, [selectedCardIds]);
+
+  useEffect(() => {
+    userIdRef.current = user?.id || null;
+  }, [user?.id]);
+
+  // Log comparison when user LEAVES the page (not on every selection)
+  useEffect(() => {
+    const logComparison = () => {
+      const cardIds = selectedCardIdsRef.current;
+      if (cardIds.length >= 2) {
+        const sortedIds = [...cardIds].sort().join(',');
+        // Only log if this is a new combination (not already logged)
+        if (sortedIds !== lastLoggedRef.current) {
+          lastLoggedRef.current = sortedIds;
+          // Use sendBeacon for reliable logging on page unload
+          const data = JSON.stringify({
+            cardIds: cardIds,
+            userId: userIdRef.current
+          });
+          if (navigator.sendBeacon) {
+            // sendBeacon needs a Blob with correct Content-Type
+            const blob = new Blob([data], { type: 'application/json' });
+            navigator.sendBeacon('/api/compare/log', blob);
+          } else {
+            // Fallback for browsers without sendBeacon
+            fetch('/api/compare/log', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: data,
+              keepalive: true
+            }).catch(() => {});
+          }
+        }
       }
-    }
-  }, [selectedCardIds, user?.id]);
+    };
+
+    // Log when page becomes hidden (user switches tab or closes)
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        logComparison();
+      }
+    };
+
+    // Log when user navigates away
+    const handleBeforeUnload = () => {
+      logComparison();
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      // Also log on component unmount (e.g., navigation within the app)
+      logComparison();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
   
   const selectedCards = useMemo(() => {
     return selectedCardIds.map(id => cards.find(c => c.id === id)).filter(Boolean) as CreditCard[];
