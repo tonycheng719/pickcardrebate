@@ -1250,12 +1250,12 @@ export const HK_CARDS: CreditCard[] = [
     feeWaiverCondition: "永久免年費",
     rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 25,000 積分 = $100 回贈 (0.4%)
     rules: [
-      // T&C: 本地餐飲/外賣平台 高達11% (需登記，月簽$8,000享9%+2%積分)，推廣期 2025年7月-12月
+      // T&C: 本地餐飲/外賣平台 高達11% (需登記，月簽≥$8,000享9%+2%=11%)，推廣期 2025年7月-12月
       { description: "本地餐飲/外賣 11% (需登記,月簽≥$8k)", matchType: "category", matchValue: ["dining"], percentage: 11.0, monthlyMinSpend: 8000, cap: 800, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
-      // T&C: 月簽<$8,000 只享 2%
-      { description: "本地餐飲/外賣 2% (需登記,月簽<$8k)", matchType: "category", matchValue: ["dining"], percentage: 2.0, cap: 800, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
-      // T&C: 本地交通 2% (需登記)，推廣期 2025年7月-12月
-      { description: "本地交通 2% (需登記)", matchType: "category", matchValue: ["transport"], percentage: 2.0, cap: 400, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C: 月簽<$8,000 享 2%+2%=4% (網購/拍卡2% + 計劃2%)
+      { description: "本地餐飲/外賣 4% (需登記,月簽<$8k)", matchType: "category", matchValue: ["dining"], percentage: 4.0, cap: 800, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C: 本地交通 4% (需登記,無簽賬要求)，推廣期 2025年7月-12月，上限$400
+      { description: "本地交通 4% (需登記)", matchType: "category", matchValue: ["transport"], percentage: 4.0, cap: 400, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 網上零售交易 5X 積分 (2%)，每曆年額外4倍積分上限 300,000 (即簽$75,000)
       { description: "網購 5X積分 (2%)", matchType: "category", matchValue: ["online"], percentage: 2.0, cap: 75000, capType: "spending", excludeCategories: ["ewallet", "insurance", "tax", "government"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: Visa 感應式付款 5X 積分 (2%)，每曆年額外4倍積分上限 300,000
@@ -1263,11 +1263,11 @@ export const HK_CARDS: CreditCard[] = [
       // 基本回贈 0.4%，排除電子錢包、八達通、繳費等
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["餐飲11%", "交通2%", "網購2%", "需登記", "永久免年費"],
+    tags: ["餐飲11%", "交通4%", "網購2%", "需登記", "永久免年費"],
     welcomeOfferText: "迎新簽 $6,000 送 $600 現金回贈 (首2個月) / Chill分期$15,000送$800 (首3個月)",
     applyUrl: "https://www.asia.ccb.com/hongkong/personal/credit-cards/eye-card.html",
-    sellingPoints: ["本地餐飲/外賣高達 11% (需登記)", "本地交通 2%", "網購及感應式支付 2%", "永久免年費"],
-    note: "💡 【限時推廣 2025/7-12月】本地餐飲/外賣：月簽滿$8,000享9%+2%=11%，未滿$8,000只享2%，每階段上限$800，需每月經 App 登記（首2,000名）。本地交通 2% 每階段上限$400。網購/感應式支付 5X 積分 (2%)，每曆年額外積分上限 300,000 (即首$75,000簽賬享2%)。⚠️ 不計回贈：電子錢包充值/轉賬、酒店/會所餐飲、保險、RentSmart。迎新：(1) Chill分期$15,000送$800；(2) 簽$6,000送$600，只可選一。",
+    sellingPoints: ["🔥 本地餐飲/外賣高達 11% (需登記)", "本地交通 4%", "網購及感應式支付 2%", "永久免年費"],
+    note: "💡 【限時推廣 2025/7-12月】需每月經 App 登記（名額有限）！\n📍 本地餐飲/外賣：月簽 ≥$8,000 享 11%（9%+2%）；月簽 <$8,000 享 4%（2%+2%）；每階段上限$800。\n📍 本地交通：4%（2%+2%），無簽賬要求，每階段上限$400。\n📍 網購/感應式支付：2%（5X積分），每曆年額外積分上限 300,000。\n⚠️ 不計回贈：電子錢包充值/轉賬、酒店/會所餐飲、保險、RentSmart。",
     promoEndDate: "2025-12-31",
     promoName: "建行 eye 本地餐飲/交通回贈推廣",
   },
