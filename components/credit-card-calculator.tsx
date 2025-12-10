@@ -595,6 +595,149 @@ export function CreditCardCalculator({
       </div>
   )};
 
+  // ResultRow with RewardBreakdown - used for "其他卡" lists
+  const ResultRowWithBreakdown = ({ result, isBest = false }: { result: CalculationResult, isBest?: boolean }) => {
+    const isVerified = verifiedCards[result.card.id]?.count > 0;
+    const milesText = result.milesReturn ? `$${result.milesReturn.toFixed(1)}/里` : null;
+    const isCashFallback = rewardPreference === 'miles' && !milesText && result.rewardAmount > 0;
+    
+    const isRecording = recordingCardId === result.card.id;
+    const isRecorded = recordedCardIds.has(result.card.id);
+    const isOwned = effectiveMyCardIds.includes(result.card.id);
+
+    return (
+    <div className={`rounded-xl border ${isBest ? 'bg-emerald-50 border-emerald-200' : 'bg-white dark:bg-gray-900'}`}>
+      <div
+        className="p-3 flex items-center justify-between relative"
+        title={`Debug: Miles=${result.milesReturn}, Pref=${rewardPreference}, Config=${!!result.card.rewardConfig}`}
+      >
+        {result.isCapped && (
+          <div className="absolute top-2 right-2 text-amber-500" title="已達上限">
+            <AlertCircle className="w-3 h-3" />
+          </div>
+        )}
+        <div className="flex items-center gap-3">
+            {result.card.imageUrl ? (
+                <div className="w-12 h-8 rounded border bg-white flex items-center justify-center overflow-hidden shrink-0">
+                    <img src={result.card.imageUrl} alt={result.card.name} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
+                </div>
+            ) : (
+                <div className={`w-12 h-8 rounded border ${result.card.style?.bgColor || 'bg-gray-500'} shrink-0`}></div>
+            )}
+
+            <div>
+            <p className="font-semibold text-gray-900 dark:text-white flex items-center gap-2 text-sm">
+                {result.card.name}
+                {isBest && <span className="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full font-bold">最抵</span>}
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">{result.matchedRule.description}</p>
+            
+            <div className="flex flex-wrap gap-1 mt-1">
+                {isVerified && (
+                    <span className="text-[10px] text-green-600 bg-green-50 px-1 rounded border border-green-100 flex items-center gap-0.5">
+                        <BadgeCheck className="w-3 h-3" /> 社群驗證
+                    </span>
+                )}
+                {result.matchedRule.validDays && (
+                    <span className="text-[10px] text-blue-500 bg-blue-50 px-1 rounded">
+                        僅限 {result.matchedRule.validDays.map(d => DAYS_MAP[d]).join("/")}
+                    </span>
+                )}
+                {result.matchedRule.cap && (
+                    <span className="text-[10px] text-gray-400">
+                    (上限 {result.matchedRule.capType === 'spending' ? '簽' : '回'} ${result.matchedRule.cap})
+                    </span>
+                )}
+            </div>
+
+            <div className="flex items-center gap-2 mt-2 flex-wrap">
+                {isOwned && (
+                    <span className="text-xs text-emerald-500 inline-flex items-center gap-1">
+                    <CreditCard className="h-3 w-3" /> 你已持有
+                    </span>
+                )}
+                <button 
+                    className="text-xs border border-gray-200 rounded px-2 py-0.5 flex items-center gap-1 text-gray-500 hover:bg-gray-50 hover:border-gray-300 transition-colors"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        handleWhyClick(result);
+                    }}
+                >
+                    <HelpCircle className="w-3 h-3" /> 點解係呢張？
+                </button>
+                {isOwned && user && (
+                    <button 
+                        className={`text-xs border rounded px-2 py-0.5 flex items-center gap-1 transition-colors ${
+                            isRecorded 
+                            ? "bg-gray-100 text-gray-500 border-gray-200 cursor-default" 
+                            : "bg-white hover:bg-gray-50 text-gray-600 border-gray-200"
+                        }`}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            if (!isRecorded && !isRecording) handleRecordTransaction(result);
+                        }}
+                        disabled={isRecorded || isRecording}
+                    >
+                        {isRecording ? <Loader2 className="w-3 h-3 animate-spin" /> : isRecorded ? <CheckCircle2 className="w-3 h-3" /> : <PlusCircle className="w-3 h-3" />}
+                        {isRecorded ? "已記錄" : "記賬"}
+                    </button>
+                )}
+                {!isBest && best && (
+                    <button 
+                        className="text-xs border border-gray-200 rounded px-2 py-0.5 flex items-center gap-1 text-gray-500 hover:bg-gray-50 hover:border-gray-300 transition-colors"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleCompareClick(result);
+                        }}
+                    >
+                        <Swords className="w-3 h-3" /> 同冠軍比較
+                    </button>
+                )}
+            </div>
+          </div>
+        </div>
+        
+        <div className="text-right shrink-0">
+          {result.pointsAmount && result.pointsCurrency ? (
+            <>
+              <div className={`text-lg font-bold ${isBest ? 'text-emerald-700' : 'text-orange-600'}`}>
+                {result.pointsAmount.toLocaleString()} {result.pointsCurrency}
+              </div>
+              <div className="text-[10px] text-gray-500">
+                ≈ ${result.pointsCashValue?.toFixed(1)} · {result.percentage}%
+              </div>
+            </>
+          ) : (
+            <>
+              <div className={`text-lg font-bold ${isBest ? 'text-emerald-700' : isCashFallback ? 'text-gray-400' : 'text-gray-800 dark:text-gray-100'}`}>
+                {milesText || (result.rewardAmount > 0 ? `+$${result.rewardAmount.toFixed(1)}` : `${result.percentage}%`)}
+              </div>
+              {isCashFallback && <div className="text-[10px] text-gray-400">現金回贈</div>}
+              {!isCashFallback && !milesText && result.rewardAmount > 0 && (
+                <div className="text-[10px] text-gray-500">{result.percentage}%</div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+      {/* 回贈組成 */}
+      <div className="px-3 pb-2">
+        <RewardBreakdown
+          card={result.card}
+          matchedRule={result.matchedRule}
+          percentage={result.percentage}
+          rewardAmount={result.rewardAmount}
+          isForeignCurrency={result.isForeignCurrency}
+          fxFee={result.card.foreignCurrencyFee}
+          netPercentage={result.netPercentage}
+          netRewardAmount={result.netRewardAmount}
+          compact={true}
+          showToggle={true}
+        />
+      </div>
+    </div>
+  )};
+
     const ResultContent = () => {
     // Check if the best card is verified
     const isBestVerified = best ? verifiedCards[best.card.id]?.count > 0 : false;
@@ -1010,7 +1153,7 @@ export function CreditCardCalculator({
                 {showAllResults && (
                   <div className="space-y-2 mt-2 animate-in fade-in slide-in-from-top-2">
                     {myOtherCards.map(card => (
-                      <ResultRow key={card.card.id} result={card} />
+                      <ResultRowWithBreakdown key={card.card.id} result={card} />
                     ))}
                   </div>
                 )}
@@ -1035,7 +1178,7 @@ export function CreditCardCalculator({
                 {showAllResults && (
                   <div className="space-y-2 mt-2 animate-in fade-in slide-in-from-top-2">
                     {unownedCards.map(card => (
-                      <ResultRow key={card.card.id} result={card} />
+                      <ResultRowWithBreakdown key={card.card.id} result={card} />
                     ))}
                   </div>
                 )}
