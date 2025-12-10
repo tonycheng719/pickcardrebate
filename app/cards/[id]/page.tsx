@@ -329,13 +329,13 @@ export default function CardDetailPage() {
           <span>返回</span>
         </button>
 
-        <div className="grid lg:grid-cols-3 gap-8 w-full">
+        <div className="grid lg:grid-cols-3 gap-8">
           {/* Left Column - Card Image & Actions */}
-          <div className="lg:col-span-1 min-w-0">
+          <div className="lg:col-span-1">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="sticky top-6 space-y-4 w-full"
+              className="sticky top-6 space-y-4"
             >
               {/* Card Image */}
               <Card className="overflow-hidden border-0 shadow-xl">
@@ -352,9 +352,9 @@ export default function CardDetailPage() {
               </Card>
 
               {/* Action Buttons */}
-              <div className="flex gap-2 w-full">
+              <div className="flex gap-2">
                 <Button
-                  className="flex-1 min-w-0 truncate"
+                  className="flex-1"
                   variant={isInWallet ? "outline" : "default"}
                   onClick={() => {
                     if (!user) {
