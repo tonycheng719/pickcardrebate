@@ -352,9 +352,9 @@ export default function CardDetailPage() {
               </Card>
 
               {/* Action Buttons */}
-              <div className="flex gap-3">
+              <div className="flex gap-2">
                 <Button
-                  className="flex-1"
+                  className="flex-1 min-w-0"
                   variant={isInWallet ? "outline" : "default"}
                   onClick={() => {
                     if (!user) {
@@ -376,7 +376,8 @@ export default function CardDetailPage() {
                   title={`${card.name} - ${card.bank}`}
                   text={card.sellingPoints?.slice(0, 2).join('。') || `${card.bank} ${card.name} 信用卡詳情`}
                   variant="prominent"
-                  size="sm"
+                  size="icon"
+                  className="shrink-0"
                 />
               </div>
 
