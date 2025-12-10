@@ -18,23 +18,23 @@ export const HK_CARDS: CreditCard[] = [
       // 🔥 最紅冬日賞 - 百老滙 (2025/12/1 - 2026/2/28)
       // 累積簽賬滿 $10,000 享 6% 回贈 (上限 $900)，單一簽賬需滿 $500，需登記
       { description: "🔥百老滙 6% [冬日賞,累積$10k,需登記]", matchType: "merchant", matchValue: ["broadway"], percentage: 6.0, minSpend: 500, cap: 900, capType: "reward", validDateRange: { start: "2025-12-01", end: "2026-02-28" } },
-      // T&C: 最紅自主獎賞 6X (2.4%)，需登記，額外「獎賞錢」簽賬上限 $100,000
+      // T&C: 最紅自主獎賞 9X (3.6%)，需登記，額外「獎賞錢」簽賬上限 $100,000
+      // Visa Signature: 9X = 5X額外 + 1X基本 + 3X VS專享 = 3.6%
       // 5大類別：賞滋味/賞購物/賞家居/賞享受/賞世界，可自由分配 5X 額外倍數
-      // 6X = 5X額外 + 1X基本 = 2.4%
-      { description: "最紅自主獎賞 6X (2.4%) [需登記]", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 2.4, cap: 100000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "最紅自主獎賞 9X (3.6%) [需登記]", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 3.6, cap: 100000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 賞世界 - 海外簽賬 (非港幣交易)，不包括香港進行或以港幣交易的簽賬
-      { description: "賞世界 6X (2.4%) [需登記]", matchType: "base", percentage: 2.4, isForeignCurrency: true, cap: 100000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "賞世界 9X (3.6%) [需登記]", matchType: "base", percentage: 3.6, isForeignCurrency: true, cap: 100000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 賞滋味限制：不包括酒席宴會/私人宴會/包場派對/酒店百貨公司俱樂部內飲食專櫃
       // T&C: 基本回饋 0.4% ($250 = $1 RC)，排除電子錢包、繳稅、繳費
       { description: "基本回饋 0.4% ($25/里)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
-    tags: ["餐飲神卡", "最紅自主獎賞", "6X積分", "需登記", "百老滙6%"],
+    tags: ["餐飲神卡", "最紅自主獎賞", "9X積分", "需登記", "百老滙6%"],
     imageUrl: "https://pickcardrebate-supabase-kong.zeabur.app/storage/v1/object/public/images/cards/1764329466898-zu95i1newy.png",
     feeWaiverCondition: "首兩年免年費",
     welcomeOfferText: "迎新簽 $8,000 送 $600-$800 獎賞錢 (首60日內)",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=255&a=228&sub_id1=pickcardrebate&sub_id2=web",
-    sellingPoints: ["最紅自主獎賞 6X (2.4%)，5大類別自由分配", "首 $100,000 簽賬享額外獎賞", "首兩年免年費"],
-    note: "⚠️ 【最紅自主獎賞 2026】需於 2026/10/31 前登記！6X = 5X額外 + 1X基本 = 2.4%。5大類別：賞滋味/賞家居/賞享受/賞購物/賞世界，可自由分配 5X 額外倍數。首 $100,000 簽賬享額外獎賞。登記後 3 個工作天內生效，一經登記不能更改！⚠️ 賞滋味限制：不包括酒席宴會、私人宴會、包場派對、酒店/百貨公司/俱樂部內飲食專櫃。⚠️ 賞世界限制：不包括香港進行或以港幣交易的簽賬。❌ 不適用於電子錢包（Alipay/WeChat Pay/PayMe）、八達通增值、繳稅、網上繳費。\n\n🔥 **最紅冬日賞萬寧**（至2026/2/28）：週末高達10%回贈！[查看詳情](/discover/hsbc-mannings-winter-2025)\n\n🔥 **最紅冬日賞百老滙**（至2026/2/28）：累積簽賬滿$10,000享6%回贈！[查看詳情](/discover/hsbc-broadway-winter-2025)",
+    sellingPoints: ["最紅自主獎賞 9X (3.6%)，5大類別自由分配", "首 $100,000 簽賬享額外獎賞", "首兩年免年費"],
+    note: "⚠️ 【最紅自主獎賞 2026】需於 2026/10/31 前登記！**Visa Signature 專享 9X = 5X額外 + 1X基本 + 3X VS專享 = 3.6%**。5大類別：賞滋味/賞家居/賞享受/賞購物/賞世界，可自由分配 5X 額外倍數。首 $100,000 簽賬享額外獎賞。登記後 3 個工作天內生效，一經登記不能更改！⚠️ 賞滋味限制：不包括酒席宴會、私人宴會、包場派對、酒店/百貨公司/俱樂部內飲食專櫃。⚠️ 賞世界限制：不包括香港進行或以港幣交易的簽賬。❌ 不適用於電子錢包（Alipay/WeChat Pay/PayMe）、八達通增值、繳稅、網上繳費。\n\n🔥 **最紅冬日賞萬寧**（至2026/2/28）：週末高達10%回贈！[查看詳情](/discover/hsbc-mannings-winter-2025)\n\n🔥 **最紅冬日賞百老滙**（至2026/2/28）：累積簽賬滿$10,000享6%回贈！[查看詳情](/discover/hsbc-broadway-winter-2025)",
     promoEndDate: "2026-02-28",
     promoName: "最紅冬日賞百老滙",
   },
@@ -304,16 +304,19 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' },
     rules: [
+      // T&C: 手機支付 5.4% (Apple Pay/Google Pay/Samsung Pay)，每月首 $2,000 簽賬
+      // 5.4% × $2,000 = $108 回贈上限
+      { description: "手機支付 5.4% (每月首$2,000)", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 5.4, cap: 2000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 週二 SOGO 5% 現金回贈 (每月上限$100)
       { description: "週二 SOGO 5% (上限$100)", matchType: "merchant", matchValue: ["sogo"], percentage: 5.0, validDays: [2], cap: 100, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 基本回贈 0.4%，不適用於八達通增值、電子錢包充值、P2P 轉賬
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
-    tags: ["SOGO", "週二SOGO 5%"],
+    tags: ["SOGO", "週二SOGO 5%", "手機支付5.4%"],
     welcomeOfferText: "迎新簽 $5,000 送 $500 崇光禮券 / 手機簽賬 10% (上限$300)",
     applyUrl: "https://www.bochk.com/tc/creditcard/cardproduct/sogo.html",
-    sellingPoints: ["週二 SOGO 5% 現金回贈 (每月上限$100)", "崇光百貨專屬優惠", "SOGO Rewards 會員專屬"],
-    note: "⚠️ 週二 SOGO 5% 每月回贈上限 $100。不適用於：八達通增值、電子錢包充值/P2P轉賬（AlipayHK/PayMe/WeChat Pay）、繳稅、網上繳費。迎新二選一：$500 崇光禮券 或 手機簽賬 10% (上限$300)。",
+    sellingPoints: ["手機支付 5.4% (每月首$2,000)", "週二 SOGO 5% (每月上限$100)", "崇光百貨專屬優惠"],
+    note: "💡 手機支付（Apple Pay/Google Pay/Samsung Pay）5.4% 回贈，每月首 $2,000 簽賬享優惠！週二 SOGO 5% 每月回贈上限 $100。❌ 不適用於：八達通增值、電子錢包充值/P2P轉賬（AlipayHK/PayMe/WeChat Pay）、繳稅、網上繳費。迎新二選一：$500 崇光禮券 或 手機簽賬 10% (上限$300)。",
   },
   {
     id: "boc-cheers",
