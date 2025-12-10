@@ -72,6 +72,10 @@ function CardRow({ result, rank, showFxFee = false }: { result: RankingResult; r
           </span>
         </div>
         <div className="text-xs text-gray-500 dark:text-gray-400 flex flex-wrap gap-x-2 gap-y-0.5">
+          {/* Show merchant restriction if applicable */}
+          {result.rule.matchType === "merchant" && (
+            <span className="text-orange-600 dark:text-orange-400">指定商戶</span>
+          )}
           {result.capAsSpending && (
             <span>上限 ${result.capAsSpending.toLocaleString()}</span>
           )}
@@ -81,7 +85,7 @@ function CardRow({ result, rank, showFxFee = false }: { result: RankingResult; r
           {result.monthlyMinSpend && (
             <span>月簽${result.monthlyMinSpend.toLocaleString()}</span>
           )}
-          {!result.capAsSpending && !result.minSpend && !result.monthlyMinSpend && (
+          {result.rule.matchType !== "merchant" && !result.capAsSpending && !result.minSpend && !result.monthlyMinSpend && (
             <span className="text-green-600 dark:text-green-400">無限制</span>
           )}
         </div>
