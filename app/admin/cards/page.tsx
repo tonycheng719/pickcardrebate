@@ -160,93 +160,79 @@ export default function AdminCardsPage() {
 
   const totalViews = Object.values(viewStats).reduce((a, b) => a + b, 0);
 
-  // Update card priority
+  // Update card priority (使用 API 繞過 RLS)
   const updatePriority = async (cardId: string, newPriority: number) => {
-    const supabase = createClient();
-    const { error } = await supabase
-      .from("cards")
-      .update({ priority: newPriority })
-      .eq("id", cardId);
+    try {
+      const res = await fetch('/api/admin/cards/toggle', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cardId, field: 'priority', value: newPriority })
+      });
 
-    if (error) {
-      // If card doesn't exist in DB, insert it
-      if (error.code === "PGRST116") {
-        const card = HK_CARDS.find(c => c.id === cardId);
-        if (card) {
-          await supabase.from("cards").insert({
-            id: cardId,
-            name: card.name,
-            bank: card.bank,
-            priority: newPriority
-          });
-        }
-      } else {
-        toast.error("更新失敗");
-        return;
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Failed to update');
       }
-    }
 
-    setDbData(prev => ({
-      ...prev,
-      [cardId]: { ...prev[cardId], priority: newPriority }
-    }));
-    toast.success("優先級已更新");
+      setDbData(prev => ({
+        ...prev,
+        [cardId]: { ...prev[cardId], priority: newPriority }
+      }));
+      toast.success("優先級已更新");
+    } catch (error: any) {
+      console.error('Update priority error:', error);
+      toast.error(`更新失敗: ${error.message}`);
+    }
   };
 
-  // Toggle featured status
+  // Toggle featured status (使用 API 繞過 RLS)
   const toggleFeatured = async (cardId: string, currentFeatured: boolean) => {
-    const supabase = createClient();
-    const { error } = await supabase
-      .from("cards")
-      .update({ featured: !currentFeatured })
-      .eq("id", cardId);
+    try {
+      const res = await fetch('/api/admin/cards/toggle', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cardId, field: 'featured', value: !currentFeatured })
+      });
 
-    if (error) {
-      // If card doesn't exist in DB, insert it
-      const card = HK_CARDS.find(c => c.id === cardId);
-      if (card) {
-        await supabase.from("cards").insert({
-          id: cardId,
-          name: card.name,
-          bank: card.bank,
-          featured: !currentFeatured
-        });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Failed to update');
       }
-    }
 
-    setDbData(prev => ({
-      ...prev,
-      [cardId]: { ...prev[cardId], featured: !currentFeatured }
-    }));
-    toast.success(currentFeatured ? "已取消推薦" : "已設為推薦");
+      setDbData(prev => ({
+        ...prev,
+        [cardId]: { ...prev[cardId], featured: !currentFeatured }
+      }));
+      toast.success(currentFeatured ? "已取消推薦" : "已設為推薦");
+    } catch (error: any) {
+      console.error('Toggle featured error:', error);
+      toast.error(`更新失敗: ${error.message}`);
+    }
   };
 
-  // Toggle hidden status
+  // Toggle hidden status (使用 API 繞過 RLS)
   const toggleHidden = async (cardId: string, currentHidden: boolean) => {
-    const supabase = createClient();
-    const { error } = await supabase
-      .from("cards")
-      .update({ hidden: !currentHidden })
-      .eq("id", cardId);
+    try {
+      const res = await fetch('/api/admin/cards/toggle', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cardId, field: 'hidden', value: !currentHidden })
+      });
 
-    if (error) {
-      // If card doesn't exist in DB, insert it
-      const card = HK_CARDS.find(c => c.id === cardId);
-      if (card) {
-        await supabase.from("cards").insert({
-          id: cardId,
-          name: card.name,
-          bank: card.bank,
-          hidden: !currentHidden
-        });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Failed to update');
       }
-    }
 
-    setDbData(prev => ({
-      ...prev,
-      [cardId]: { ...prev[cardId], hidden: !currentHidden }
-    }));
-    toast.success(currentHidden ? "卡片已顯示" : "卡片已隱藏");
+      setDbData(prev => ({
+        ...prev,
+        [cardId]: { ...prev[cardId], hidden: !currentHidden }
+      }));
+      toast.success(currentHidden ? "卡片已顯示" : "卡片已隱藏");
+    } catch (error: any) {
+      console.error('Toggle hidden error:', error);
+      toast.error(`更新失敗: ${error.message}`);
+    }
   };
 
   return (
