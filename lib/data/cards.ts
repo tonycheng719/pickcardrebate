@@ -1426,11 +1426,15 @@ export const HK_CARDS: CreditCard[] = [
     // imageUrl from DB
     foreignCurrencyFee: 0,
     rules: [
-      { description: "指定超市 3% (惠康/百佳/AEON/HKTVmall等)", matchType: "merchant", matchValue: ["wellcome", "parknshop", "aeon", "hktvmall", "donki", "759"], percentage: 3.0 },
+      // T&C: 超市消費 3% 無上限 (商戶類別由 Mastercard 釐定)
+      { description: "指定超市 3% (無上限)", matchType: "merchant", matchValue: ["wellcome", "parknshop", "aeon", "hktvmall", "donki", "759", "yata", "citysuper"], percentage: 3.0 },
+      // T&C: 合資格結餘 ≥$250,000 或 出糧 ≥$25,000 享 2%；否則 1%
+      // 以 1% 作為基本（因大部分用戶未必符合高存款條件）
       { description: "基本回饋 1% (無上限)", matchType: "base", percentage: 1.0 },
     ],
-    tags: ["超市3%", "虛擬銀行", "無上限1%"],
-    sellingPoints: ["指定超市 3% 現金回贈 (無上限)", "所有簽賬 1% (無上限)", "免外幣手續費"],
+    tags: ["超市3%", "虛擬銀行", "無上限", "免外幣手續費"],
+    sellingPoints: ["指定超市 3% 現金回贈 (無上限)", "所有簽賬 1-2% (無上限)", "免外幣手續費", "💡 存款$25萬或出糧$2.5萬可享 2%"],
+    note: "⚠️ 高存款獎賞：合資格結餘 ≥$250,000 或 出糧 ≥$25,000 可享 2% 無上限！另有亞洲萬里通計劃：滿足條件可享 HKD4=1里。超市 3% 適用商戶類別由 Mastercard 釐定。",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=402&a=228&sub_id1=pickcardrebate&sub_id2=web",
   },
   {
