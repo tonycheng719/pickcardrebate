@@ -14,7 +14,8 @@ import {
   ExternalLink,
   Copy,
   Check,
-  Play
+  Play,
+  EyeOff
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -90,6 +91,24 @@ const API_TOOLS: ApiTool[] = [
     method: "POST",
     icon: <RefreshCw className="w-5 h-5" />,
     category: "圖片工具",
+  },
+  {
+    id: "sync-hidden-preview",
+    name: "預覽同步隱藏狀態",
+    description: "預覽哪些卡的 hidden 狀態需要從 cards.ts 同步到 DB",
+    endpoint: "/api/admin/sync-hidden-status",
+    method: "GET",
+    icon: <EyeOff className="w-5 h-5" />,
+    category: "數據同步",
+  },
+  {
+    id: "sync-hidden",
+    name: "執行同步隱藏狀態",
+    description: "將 cards.ts 中的 hidden 狀態同步到 DB",
+    endpoint: "/api/admin/sync-hidden-status",
+    method: "POST",
+    icon: <EyeOff className="w-5 h-5" />,
+    category: "數據同步",
   },
   {
     id: "check-merchant-logos",
