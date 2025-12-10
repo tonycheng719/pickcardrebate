@@ -944,20 +944,20 @@ export const HK_CARDS: CreditCard[] = [
     feeWaiverCondition: "永久免年費",
     rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 獎分 = $1 回贈 (0.4%)
     rules: [
-      // T&C 2025: 網上簽賬 10X 獎分 (4%)，每月額外獎分上限 10,000 = $40 回贈
-      { description: "網上簽賬 10X (4%)", matchType: "category", matchValue: "online", percentage: 4.0, cap: 40, capType: "reward", excludeCategories: ["ewallet", "utilities", "insurance", "supermarket", "government"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
-      // T&C 2025: 本地食肆 5X 獎分 (2%)
-      { description: "本地食肆 5X (2%)", matchType: "category", matchValue: ["dining"], percentage: 2.0, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
-      // T&C 2025: 外幣簽賬 5X 獎分 (2%)
-      { description: "外幣簽賬 5X (2%)", matchType: "base", percentage: 2.0, isForeignCurrency: true, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      // T&C 2025: 網上簽賬 10X 獎分 (4%)，需月簽滿 $2,000，每月回贈上限 $200 (即首 $5,000 簽賬)
+      { description: "網上簽賬 10X (4%) [月簽$2000]", matchType: "category", matchValue: "online", percentage: 4.0, monthlyMinSpend: 2000, cap: 200, capType: "reward", excludeCategories: ["ewallet", "utilities", "insurance", "supermarket", "government"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C 2025: 本地食肆 5X 獎分 (2%)，需月簽滿 $2,000
+      { description: "本地食肆 5X (2%) [月簽$2000]", matchType: "category", matchValue: ["dining"], percentage: 2.0, monthlyMinSpend: 2000, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      // T&C 2025: 外幣簽賬 5X 獎分 (2%)，需月簽滿 $2,000
+      { description: "外幣簽賬 5X (2%) [月簽$2000]", matchType: "base", percentage: 2.0, monthlyMinSpend: 2000, isForeignCurrency: true, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 基本獎賞 0.4%
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
-    tags: ["網購4%", "食肆2%", "海外2%", "永久免年費"],
+    tags: ["網購4%", "食肆2%", "海外2%", "永久免年費", "月簽$2000"],
     welcomeOfferText: "迎新簽 $3,000 送 $300 現金回贈 (首2個月內)",
     applyUrl: "https://www.hkbea.com/html/tc/bea-goal-credit-card.html",
-    sellingPoints: ["網上簽賬 10X 獎分 (4%)", "本地食肆 5X 獎分 (2%)", "外幣簽賬 5X 獎分 (2%)", "永久免年費"],
-    note: "💡 【推廣期 2025/1/1-12/31】網上簽賬 10X 獎分 (4%)，每月額外獎分上限 10,000。本地食肆/外幣簽賬 5X (2%)。⚠️ 不計回贈：電子錢包充值(Alipay/PayMe/WeChat Pay)、保費、透過電子網絡繳款。八達通自動增值/政府部門簽賬每月上限 $40 回贈。迎新：首2個月簽滿 $3,000 送 $300。12個月內取消扣回迎新。",
+    sellingPoints: ["網上簽賬 10X (4%) [需月簽$2,000]", "本地食肆 5X (2%)", "外幣簽賬 5X (2%)", "每月回贈上限 $200", "永久免年費"],
+    note: "⚠️ 需每月簽滿 $2,000 才享額外獎分！網上簽賬 10X (4%)，每月回贈上限 $200（即首 $5,000 網上簽賬享 4%）。本地食肆/外幣簽賬 5X (2%)。❌ 不計回贈：超市、電子錢包充值(Alipay/PayMe/WeChat Pay)、保費、透過電子網絡繳款、政府部門。迎新：首2個月簽滿 $3,000 送 $300。12個月內取消扣回迎新。",
     promoEndDate: "2025-12-31",
     promoName: "BEA GOAL 額外獎分推廣",
   },
