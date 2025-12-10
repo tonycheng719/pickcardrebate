@@ -529,8 +529,24 @@ export function findBestCards(
             pointsCurrency = 'DBS$';
           }
           pointsCashValue = current.rewardAmount;
+        } else if (currencyUpper === 'POINTS' && cfgRatio < 1) {
+          // BOC/Citi style Points that CAN convert to miles (ratio < 1 means pts->miles conversion)
+          // e.g., BOC Chill: 15 pts = 1 mile (ratio 0.0666), BOC Cheers: 8 pts = 1 mile (ratio 0.125)
+          const milesValue = 0.1; // $0.1 per mile
+          const milesAmount = Math.round(current.rewardAmount / milesValue);
+          
+          if (rewardPreference === 'miles') {
+            pointsAmount = milesAmount;
+            pointsCurrency = '里';
+          } else {
+            // Show raw points: amount * percentage / 100 * (1/ratio) gives points
+            // Or simpler: show rewardAmount as it represents cash value
+            pointsAmount = Math.round(current.rewardAmount * 10); // Rough points estimate
+            pointsCurrency = 'Points';
+          }
+          pointsCashValue = current.rewardAmount;
         } else {
-          // For yuu points, AEON Points, etc. - these cannot convert to miles
+          // For yuu points, AEON Points, etc. that cannot convert to miles (ratio >= 1)
           pointsAmount = Math.round(amount * (percentage / 100) * cfgRatio);
           pointsCashValue = current.rewardAmount;
           // Keep original currency (yuu積分, Points, etc.)
