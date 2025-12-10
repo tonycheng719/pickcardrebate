@@ -76,6 +76,10 @@ function CardRow({ result, rank, showFxFee = false }: { result: RankingResult; r
           {result.rule.matchType === "merchant" && (
             <span className="text-orange-600 dark:text-orange-400">指定商戶</span>
           )}
+          {/* Show country restriction if applicable */}
+          {result.rule.description?.includes("指定國家") && (
+            <span className="text-blue-600 dark:text-blue-400">指定國家</span>
+          )}
           {result.capAsSpending && (
             <span>上限 ${result.capAsSpending.toLocaleString()}</span>
           )}
@@ -85,7 +89,7 @@ function CardRow({ result, rank, showFxFee = false }: { result: RankingResult; r
           {result.monthlyMinSpend && (
             <span>月簽${result.monthlyMinSpend.toLocaleString()}</span>
           )}
-          {result.rule.matchType !== "merchant" && !result.capAsSpending && !result.minSpend && !result.monthlyMinSpend && (
+          {result.rule.matchType !== "merchant" && !result.rule.description?.includes("指定國家") && !result.capAsSpending && !result.minSpend && !result.monthlyMinSpend && (
             <span className="text-green-600 dark:text-green-400">無限制</span>
           )}
         </div>
