@@ -488,24 +488,37 @@ export function findBestCards(
     let pointsCashValue: number | undefined;
     
     if (card.rewardConfig && card.rewardConfig.currency) {
-      pointsCurrency = card.rewardConfig.currency;
+      const cfgMethod = card.rewardConfig.method;
+      const cfgRatio = card.rewardConfig.ratio || 0;
+      const cfgCurrency = card.rewardConfig.currency;
+      pointsCurrency = cfgCurrency;
       
-      if (card.rewardConfig.method === 'conversion' && card.rewardConfig.ratio) {
-        // For yuu points: $500 * 1.5% = $7.5 cash, but as points = amount * percentage / 100 * pointsPerDollar
-        // yuu: 1 yuu point = $0.005 (200 points = $1)
-        // So points earned = amount * (percentage / 100) * (1 / 0.005) = amount * percentage * 2
-        // Actually simpler: points = (amount * percentage / 100) * ratio
-        // e.g. $500 * 1.5% * 200 = 1500 yuu points
-        pointsAmount = Math.round(amount * (percentage / 100) * card.rewardConfig.ratio);
-        pointsCashValue = current.rewardAmount; // Cash equivalent
-      } else if (card.rewardConfig.method === 'direct_rate' && card.rewardConfig.baseRate) {
-        // For miles cards with direct rate (e.g. SC Cathay: $6/mile, $4/mile for dining)
-        // The percentage is already calculated based on miles value of $0.1/mile
-        // So: miles = amount * percentage / 100 / milesValue = amount * percentage / 10
-        // Example: $1000 at 2.5% = $25 / $0.1 = 250 miles (= $1000 / $4 per mile)
-        const milesValue = 0.1; // $0.1 per mile (standard Asia Miles valuation)
+      if (cfgMethod === 'conversion' && cfgRatio) {
+        // Handle HSBC RC (獎賞錢) specially
+        if (cfgCurrency.toUpperCase() === 'RC') {
+          // For HSBC cards: 1 RC = $1 cash value, ratio = miles per RC
+          const rcAmount = current.rewardAmount; // RC amount = cash value
+          
+          if (rewardPreference === 'miles') {
+            // User wants miles: convert RC to miles (e.g., 10 miles/RC or 20 for EveryMile)
+            pointsAmount = Math.round(rcAmount * cfgRatio);
+            pointsCurrency = '里';
+          } else {
+            // User wants cash/RC: show RC directly
+            pointsAmount = Math.round(rcAmount);
+            pointsCurrency = 'RC';
+          }
+          pointsCashValue = current.rewardAmount;
+        } else {
+          // For yuu points and other point systems
+          pointsAmount = Math.round(amount * (percentage / 100) * cfgRatio);
+          pointsCashValue = current.rewardAmount;
+        }
+      } else if (cfgMethod === 'direct_rate' && card.rewardConfig.baseRate) {
+        // For miles cards with direct rate (e.g. SC Cathay: $6/mile)
+        const milesValue = 0.1; // $0.1 per mile
         pointsAmount = Math.round(amount * (percentage / 100) / milesValue);
-        pointsCashValue = current.rewardAmount; // Cash equivalent
+        pointsCashValue = current.rewardAmount;
       }
     }
 
