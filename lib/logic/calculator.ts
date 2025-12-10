@@ -220,13 +220,30 @@ function calculateCardReward(
         // Handle matchValue as string or string[]
         const ruleCategories = Array.isArray(rule.matchValue) ? rule.matchValue : [rule.matchValue];
         
+        // 🔴 FIX: If rule is for 'online' category but user chose physical_card payment,
+        // skip this rule (門市付款不應匹配網上簽賬規則)
+        const isOnlineRule = ruleCategories.includes('online');
+        const isPhysicalPayment = paymentMethod === 'physical_card' || !paymentMethod;
+        
+        // Only match online rules if:
+        // 1. User explicitly chose online payment method, OR
+        // 2. isOnlineScenario is true (user indicated it's an online purchase)
+        if (isOnlineRule && isPhysicalPayment && !isOnlineScenario) {
+          // Skip online rules for physical card payments
+          continue;
+        }
+        
         if (matchedCategory) {
           isMatch = ruleCategories.includes(matchedCategory.id);
         } 
         else if (matchedMerchant) {
           if (Array.isArray(matchedMerchant.categoryIds)) {
             // Check if any merchant category matches any rule category
-            isMatch = matchedMerchant.categoryIds.some(catId => ruleCategories.includes(catId));
+            // 🔴 FIX: Exclude 'online' category from merchant matching when using physical card
+            const categoriesToCheck = (isPhysicalPayment && !isOnlineScenario)
+              ? matchedMerchant.categoryIds.filter(catId => catId !== 'online')
+              : matchedMerchant.categoryIds;
+            isMatch = categoriesToCheck.some(catId => ruleCategories.includes(catId));
           }
         }
         
@@ -234,7 +251,7 @@ function calculateCardReward(
         if (paymentMethod === 'online' && ruleCategories.includes('online')) {
             isMatch = true;
         }
-        // NEW: If isOnlineScenario is true, treat as online category
+        // If isOnlineScenario is true, treat as online category
         if (isOnlineScenario && ruleCategories.includes('online')) {
             isMatch = true;
         }
