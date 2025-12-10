@@ -42,7 +42,8 @@ function mapCardFromDB(dbCard: any): CreditCard {
         // Fields only in local static data - MUST preserve these from local
         note: localCard?.note,
         rewardConfig: localCard?.rewardConfig,
-        hidden: localCard?.hidden, // IMPORTANT: Preserve hidden status from local
+        // DB hidden takes priority over local (allows admin to toggle visibility)
+        hidden: dbCard.hidden ?? localCard?.hidden,
         minIncome: localCard?.minIncome, // Preserve minIncome from local
         incomeNote: localCard?.incomeNote, // Preserve incomeNote from local
         annualFee: localCard?.annualFee ?? dbCard.annual_fee, // Prefer local annualFee

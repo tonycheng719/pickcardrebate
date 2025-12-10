@@ -996,6 +996,7 @@ export const HK_CARDS: CreditCard[] = [
     id: "bea-i-titanium",
     name: "BEA i-Titanium 信用卡",
     bank: "東亞銀行",
+    hidden: true, // 東亞已停止接受新申請
     style: { bgColor: "bg-gradient-to-br from-gray-400 to-gray-600", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     annualFee: 0,
