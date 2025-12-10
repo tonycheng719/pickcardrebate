@@ -118,7 +118,6 @@ export const POPULAR_MERCHANTS: Merchant[] = [
   { id: "kikusan", name: "吉谷舍 kikusan", categoryIds: ["dining"], aliases: ["吉谷舍", "kikusan"], logo: "🍱", accentColor: "#dc2626" },
   { id: "thai_basil", name: "THAI BASIL", categoryIds: ["dining"], aliases: ["thai basil", "泰式"], logo: "🌿", accentColor: "#16a34a" },
   { id: "exp", name: "EXP", categoryIds: ["dining"], aliases: ["exp"], logo: "🍜", accentColor: "#3b82f6" },
-  { id: "dragon_inn", name: "龍點", categoryIds: ["dining"], aliases: ["龍點", "dragon inn"], logo: "🐉", accentColor: "#dc2626" },
   { id: "ming_court", name: "明谷", categoryIds: ["dining"], aliases: ["明谷", "ming court"], logo: "🏮", accentColor: "#f97316" },
   { id: "hong_kong_day", name: "香港地", categoryIds: ["dining"], aliases: ["香港地", "hong kong day"], logo: "🇭🇰", accentColor: "#dc2626" },
 
