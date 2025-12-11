@@ -52,6 +52,7 @@ import { AppleWatchGuide, appleWatchFaqData } from "./apple-watch-guide";
 import { Ps5Guide, ps5FaqData } from "./ps5-guide";
 import { XboxGuide, xboxFaqData } from "./xbox-guide";
 import { SwitchGuide, switchFaqData } from "./switch-guide";
+import { MilesCreditCardGuide, milesCreditCardFaqData } from "./miles-credit-card-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 import { ArticleTracker } from "@/app/discover/components/article-tracker";
 import { ArticleReviews } from "@/app/discover/components/article-reviews";
@@ -161,6 +162,36 @@ const GUIDES: Record<string, {
     ],
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
+  },
+  "best-miles-credit-cards": {
+    id: "best-miles-credit-cards",
+    title: "2025 最抵里數信用卡攻略｜Asia Miles 信用卡比較｜儲里數技巧",
+    seoTitle: "里數信用卡攻略 2025｜最抵 Asia Miles 信用卡比較｜儲里數邊張卡最好｜香港",
+    heroTitle: "✈️ 里數信用卡攻略",
+    heroSubtitle: "Asia Miles 信用卡完全比較",
+    description: "2025年最抵儲里數信用卡比較！渣打國泰、HSBC EveryMile、Citi PremierMiles、DBS Black 邊張最啱你？$/里比率、年費、迎新獎賞完全分析，教你揀最啱自己嘅里數卡！",
+    content: "best-miles-credit-cards",
+    imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2074&auto=format&fit=crop",
+    tags: ["里數", "Asia Miles", "信用卡攻略"],
+    keywords: [
+      "里數信用卡",
+      "里數信用卡2025",
+      "asia miles信用卡",
+      "asia miles 信用卡比較",
+      "儲里數信用卡",
+      "儲里數邊張卡好",
+      "里數卡推薦",
+      "渣打國泰卡",
+      "hsbc everymile",
+      "citi premiermiles",
+      "dbs black card",
+      "里數換機票",
+      "最抵里數卡",
+      "avios 信用卡",
+      "里數計劃比較",
+    ],
+    publishDate: "2025-12-11",
+    readTime: "15 分鐘",
   },
   "best-cashback-cards": {
     id: "best-cashback-cards",
@@ -1466,6 +1497,8 @@ function getGuideFaqData(guideId: string) {
       return debitCardFaqData;
     case "miles-vs-cashback":
       return milesVsCashbackFaqData;
+    case "best-miles-credit-cards":
+      return milesCreditCardFaqData;
     case "best-cashback-cards":
       return bestCashbackCardsFaqData;
     case "utility-bill-guide":
@@ -1538,6 +1571,8 @@ function renderGuideContent(guideId: string) {
       return <DebitCardGuide />;
     case "miles-vs-cashback":
       return <MilesVsCashbackGuide />;
+    case "best-miles-credit-cards":
+      return <MilesCreditCardGuide />;
     case "best-cashback-cards":
       return <BestCashbackCardsGuide />;
     case "utility-bill-guide":

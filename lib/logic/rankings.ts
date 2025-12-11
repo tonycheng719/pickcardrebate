@@ -8,6 +8,7 @@ export type RankingCategory =
   | "travel" 
   | "overseas" 
   | "mobile_payment"
+  | "miles"
   | "all_round";
 
 export interface RankingResult {
@@ -23,6 +24,8 @@ export interface RankingResult {
   monthlyMinSpend?: number;
   conditions: string[];
   paymentMethod?: string;
+  dollarsPerMile?: number; // For miles cards: HKD per mile
+  milesProgram?: string; // Asia Miles, Avios, etc.
 }
 
 export interface CategoryConfig {
@@ -33,9 +36,10 @@ export interface CategoryConfig {
   description: string;
   slug: string;
   matchCategories?: string[];
-  matchType?: "category" | "base" | "paymentMethod" | "merchant";
+  matchType?: "category" | "base" | "paymentMethod" | "merchant" | "miles";
   isForeignCurrency?: boolean;
   paymentMethods?: string[];
+  isMilesCard?: boolean; // For miles category
 }
 
 export const RANKING_CATEGORIES: CategoryConfig[] = [
@@ -93,6 +97,16 @@ export const RANKING_CATEGORIES: CategoryConfig[] = [
     slug: "best-mobile-payment-cards",
     matchType: "paymentMethod",
     paymentMethods: ["mobile", "apple_pay", "google_pay"],
+  },
+  {
+    id: "miles",
+    name: "換里數",
+    nameEn: "Miles",
+    icon: "✈️",
+    description: "Asia Miles、Avios 里數信用卡",
+    slug: "best-miles-cards",
+    matchType: "miles",
+    isMilesCard: true,
   },
   {
     id: "all_round",
@@ -159,6 +173,33 @@ function getCapDescription(rule: RewardRule): string | undefined {
   return `上限 ${rule.cap.toLocaleString()}`;
 }
 
+// Check if a card is a miles card based on rewardConfig
+function isMilesCard(card: CreditCard): boolean {
+  if (!card.rewardConfig) return false;
+  const currency = card.rewardConfig.currency;
+  // AM = Asia Miles, Avios, Points (convertible to miles)
+  return currency === 'AM' || currency === 'Avios' || currency === 'Points';
+}
+
+// Get miles program name from card
+function getMilesProgram(card: CreditCard): string {
+  if (!card.rewardConfig) return '里數';
+  const currency = card.rewardConfig.currency;
+  if (currency === 'AM') return 'Asia Miles';
+  if (currency === 'Avios') return 'Avios';
+  if (currency === 'Points') return '積分換里數';
+  return '里數';
+}
+
+// Extract dollars per mile from rule description (e.g. "$4/里" -> 4)
+function extractDollarsPerMile(description: string): number | null {
+  const match = description.match(/\$(\d+(?:\.\d+)?)\s*\/\s*里/);
+  if (match) {
+    return parseFloat(match[1]);
+  }
+  return null;
+}
+
 function matchesCategory(rule: RewardRule, category: CategoryConfig): boolean {
   // For overseas/foreign currency
   if (category.isForeignCurrency) {
@@ -203,6 +244,70 @@ export function getRankingsByCategory(
   // Filter out hidden cards
   const visibleCards = cardsData.filter(card => !card.hidden);
   
+  // Special handling for miles category
+  if (category.isMilesCard) {
+    for (const card of visibleCards) {
+      if (!isMilesCard(card)) continue;
+      
+      // Find the best $/mile rule (lowest is better)
+      let bestRule: RewardRule | null = null;
+      let bestDollarsPerMile = Infinity;
+      
+      for (const rule of card.rules) {
+        if (rule.isDiscount) continue;
+        
+        // Extract $/mile from description
+        const dpm = extractDollarsPerMile(rule.description);
+        if (dpm && dpm < bestDollarsPerMile) {
+          bestDollarsPerMile = dpm;
+          bestRule = rule;
+        }
+      }
+      
+      // If no explicit $/mile found, calculate from percentage (assuming 1 mile = $0.1)
+      if (!bestRule) {
+        const baseRule = card.rules.find(r => r.matchType === "base" && !r.isForeignCurrency);
+        if (baseRule) {
+          // percentage * 10 = miles value per $100, so $/mile = 100 / (percentage * 10) = 10 / percentage
+          bestDollarsPerMile = 10 / baseRule.percentage;
+          bestRule = baseRule;
+        }
+      }
+      
+      if (bestRule && bestDollarsPerMile < Infinity) {
+        // Convert $/mile to percentage equivalent (assuming 1 mile = $0.1)
+        const percentageEquiv = 10 / bestDollarsPerMile;
+        
+        results.push({
+          card,
+          rule: bestRule,
+          percentage: percentageEquiv,
+          dollarsPerMile: bestDollarsPerMile,
+          milesProgram: getMilesProgram(card),
+          cap: bestRule.cap,
+          capType: bestRule.capType,
+          capAsSpending: bestRule.cap && bestRule.capType === "spending" ? bestRule.cap : undefined,
+          minSpend: bestRule.minSpend,
+          monthlyMinSpend: bestRule.monthlyMinSpend,
+          conditions: extractConditions(bestRule, card),
+        });
+      }
+    }
+    
+    // Sort by dollars per mile (lowest first = best)
+    results.sort((a, b) => {
+      const aDpm = a.dollarsPerMile ?? Infinity;
+      const bDpm = b.dollarsPerMile ?? Infinity;
+      if (aDpm !== bDpm) return aDpm - bDpm;
+      // Secondary: higher cap is better
+      if (a.capAsSpending && b.capAsSpending) return b.capAsSpending - a.capAsSpending;
+      return 0;
+    });
+    
+    return results.slice(0, limit);
+  }
+  
+  // Standard category handling
   for (const card of visibleCards) {
     let bestRule: RewardRule | null = null;
     let bestPercentage = 0;

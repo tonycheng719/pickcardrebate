@@ -96,7 +96,7 @@ function RankBadge({ rank }: { rank: number }) {
   return <span className={`${baseClass} bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300`}>{rank}</span>;
 }
 
-function CardDetailSection({ result, rank, showFxInfo = false }: { result: RankingResult; rank: number; showFxInfo?: boolean }) {
+function CardDetailSection({ result, rank, showFxInfo = false, showMiles = false }: { result: RankingResult; rank: number; showFxInfo?: boolean; showMiles?: boolean }) {
   const warnings = generateWarnings(result);
   
   return (
@@ -117,15 +117,29 @@ function CardDetailSection({ result, rank, showFxInfo = false }: { result: Ranki
           
           <div className="flex-1 min-w-0">
             <h3 className="font-bold text-gray-900 dark:text-white truncate">{result.card.name}</h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">{result.card.bank}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              {result.card.bank}
+              {showMiles && result.milesProgram && (
+                <span className="ml-2 text-purple-600 dark:text-purple-400">• {result.milesProgram}</span>
+              )}
+            </p>
           </div>
           
           {/* Main Stats */}
           <div className="flex items-center gap-2 flex-shrink-0">
             <div className="text-right">
-              <div className="text-xl font-bold text-emerald-600 dark:text-emerald-400">{result.percentage}%</div>
-              {showFxInfo && result.netPercentage !== undefined && (
-                <div className="text-xs text-gray-500">淨{result.netPercentage.toFixed(1)}%</div>
+              {showMiles && result.dollarsPerMile ? (
+                <>
+                  <div className="text-xl font-bold text-purple-600 dark:text-purple-400">${result.dollarsPerMile}/里</div>
+                  <div className="text-xs text-gray-500">≈ {result.percentage.toFixed(1)}% 回贈</div>
+                </>
+              ) : (
+                <>
+                  <div className="text-xl font-bold text-emerald-600 dark:text-emerald-400">{result.percentage}%</div>
+                  {showFxInfo && result.netPercentage !== undefined && (
+                    <div className="text-xs text-gray-500">淨{result.netPercentage.toFixed(1)}%</div>
+                  )}
+                </>
               )}
             </div>
           </div>
@@ -192,11 +206,14 @@ function CardDetailSection({ result, rank, showFxInfo = false }: { result: Ranki
 
 function QuickRankingTable({ rankings, category }: { rankings: RankingResult[]; category: CategoryConfig }) {
   const isOverseas = category.isForeignCurrency;
+  const isMiles = category.isMilesCard;
   const currentYear = new Date().getFullYear();
   
   // Generate share text
   const shareText = rankings.slice(0, 5).map((r, i) => 
-    `${i + 1}. ${r.card.name} ${r.netPercentage !== undefined ? r.netPercentage.toFixed(1) : r.percentage}%`
+    isMiles && r.dollarsPerMile
+      ? `${i + 1}. ${r.card.name} $${r.dollarsPerMile}/里`
+      : `${i + 1}. ${r.card.name} ${r.netPercentage !== undefined ? r.netPercentage.toFixed(1) : r.percentage}%`
   ).join('\n');
   
   return (
@@ -220,7 +237,14 @@ function QuickRankingTable({ rankings, category }: { rankings: RankingResult[]; 
             <tr>
               <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">#</th>
               <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">信用卡</th>
-              <th className="px-3 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">回贈</th>
+              {isMiles ? (
+                <>
+                  <th className="px-3 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">$/里</th>
+                  <th className="px-3 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">里數計劃</th>
+                </>
+              ) : (
+                <th className="px-3 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">回贈</th>
+              )}
               {isOverseas && (
                 <>
                   <th className="px-3 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">手續費</th>
@@ -264,9 +288,20 @@ function QuickRankingTable({ rankings, category }: { rankings: RankingResult[]; 
                     <div className="font-medium text-gray-900 dark:text-white">{result.card.name}</div>
                   </Link>
                 </td>
-                <td className="px-3 py-3 text-right whitespace-nowrap">
-                  <span className="font-bold text-emerald-600 dark:text-emerald-400">{result.percentage}%</span>
-                </td>
+                {isMiles ? (
+                  <>
+                    <td className="px-3 py-3 text-right whitespace-nowrap">
+                      <span className="font-bold text-purple-600 dark:text-purple-400">${result.dollarsPerMile}/里</span>
+                    </td>
+                    <td className="px-3 py-3 text-right whitespace-nowrap">
+                      <span className="text-gray-600 dark:text-gray-400">{result.milesProgram}</span>
+                    </td>
+                  </>
+                ) : (
+                  <td className="px-3 py-3 text-right whitespace-nowrap">
+                    <span className="font-bold text-emerald-600 dark:text-emerald-400">{result.percentage}%</span>
+                  </td>
+                )}
                 {isOverseas && (
                   <>
                     <td className="px-3 py-3 text-right whitespace-nowrap">
@@ -506,7 +541,7 @@ export default async function BlogCategoryPage({ params }: { params: Promise<{ s
           
           <div className="space-y-6">
             {rankings.map((result, index) => (
-              <CardDetailSection key={result.card.id} result={result} rank={index + 1} showFxInfo={category.isForeignCurrency} />
+              <CardDetailSection key={result.card.id} result={result} rank={index + 1} showFxInfo={category.isForeignCurrency} showMiles={category.isMilesCard} />
             ))}
           </div>
         </div>

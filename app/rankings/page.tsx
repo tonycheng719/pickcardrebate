@@ -48,6 +48,7 @@ const categoryIcons: Record<RankingCategory, React.ReactNode> = {
   travel: <Plane className="h-5 w-5" />,
   overseas: <Globe className="h-5 w-5" />,
   mobile_payment: <Smartphone className="h-5 w-5" />,
+  miles: <Plane className="h-5 w-5" />,
   all_round: <Wallet className="h-5 w-5" />,
 };
 
@@ -65,7 +66,7 @@ function RankBadge({ rank }: { rank: number }) {
   return <span className={`${baseClass} bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300`}>{rank}</span>;
 }
 
-function CardRow({ result, rank, showFxFee = false }: { result: RankingResult; rank: number; showFxFee?: boolean }) {
+function CardRow({ result, rank, showFxFee = false, showMiles = false }: { result: RankingResult; rank: number; showFxFee?: boolean; showMiles?: boolean }) {
   return (
     <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
       <RankBadge rank={rank} />
@@ -92,6 +93,10 @@ function CardRow({ result, rank, showFxFee = false }: { result: RankingResult; r
           </span>
         </div>
         <div className="text-xs text-gray-500 dark:text-gray-400 flex flex-wrap gap-x-2 gap-y-0.5">
+          {/* Show miles program if applicable */}
+          {showMiles && result.milesProgram && (
+            <span className="text-purple-600 dark:text-purple-400">{result.milesProgram}</span>
+          )}
           {/* Show merchant restriction if applicable */}
           {result.rule.matchType === "merchant" && (
             <span className="text-orange-600 dark:text-orange-400">指定商戶</span>
@@ -109,14 +114,23 @@ function CardRow({ result, rank, showFxFee = false }: { result: RankingResult; r
           {result.monthlyMinSpend && (
             <span>月簽${result.monthlyMinSpend.toLocaleString()}</span>
           )}
-          {result.rule.matchType !== "merchant" && !result.rule.description?.includes("指定國家") && !result.capAsSpending && !result.minSpend && !result.monthlyMinSpend && (
+          {!showMiles && result.rule.matchType !== "merchant" && !result.rule.description?.includes("指定國家") && !result.capAsSpending && !result.minSpend && !result.monthlyMinSpend && (
             <span className="text-green-600 dark:text-green-400">無限制</span>
           )}
         </div>
       </div>
       
       <div className="text-right">
-        {showFxFee && result.netPercentage !== undefined ? (
+        {showMiles && result.dollarsPerMile ? (
+          <>
+            <div className="text-lg font-bold text-purple-600 dark:text-purple-400">
+              ${result.dollarsPerMile}/里
+            </div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">
+              ≈ {result.percentage.toFixed(1)}% 回贈
+            </div>
+          </>
+        ) : showFxFee && result.netPercentage !== undefined ? (
           <>
             <div className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
               {result.netPercentage.toFixed(1)}%
@@ -205,7 +219,7 @@ function CategorySection({ categoryId, cards }: { categoryId: RankingCategory; c
       
       <div className="divide-y divide-gray-100 dark:divide-gray-800">
         {rankings.map((result, index) => (
-          <CardRow key={result.card.id} result={result} rank={index + 1} showFxFee={category.isForeignCurrency} />
+          <CardRow key={result.card.id} result={result} rank={index + 1} showFxFee={category.isForeignCurrency} showMiles={category.isMilesCard} />
         ))}
       </div>
     </div>
