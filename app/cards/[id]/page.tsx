@@ -32,8 +32,8 @@ import { PARTNER_MODE_ENABLED } from "@/lib/config";
 // Apply Button Component - switches between official and partner URLs based on config
 function ApplyButton({ card }: { card: CreditCard }) {
   // Determine which URL to use based on partner mode
-  const usePartnerUrl = PARTNER_MODE_ENABLED && card.applyUrl;
-  const applyUrl = usePartnerUrl ? card.applyUrl : (card.officialApplyUrl || card.applyUrl);
+  const isPartnerMode = PARTNER_MODE_ENABLED && !!card.applyUrl;
+  const applyUrl = isPartnerMode ? card.applyUrl : (card.officialApplyUrl || card.applyUrl);
   
   if (!applyUrl) {
     return (
@@ -54,11 +54,11 @@ function ApplyButton({ card }: { card: CreditCard }) {
         cardName: card.name,
         cardBank: card.bank,
         applyUrl: applyUrl,
-        isPartner: usePartnerUrl,
+        isPartner: isPartnerMode,
       })}
     >
       <Button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
-        {usePartnerUrl ? "🎁 經本網連結申請" : "立即申請"} <ExternalLink className="h-4 w-4 ml-2" />
+        {isPartnerMode ? "🎁 經本網連結申請" : "立即申請"} <ExternalLink className="h-4 w-4 ml-2" />
       </Button>
     </a>
   );
