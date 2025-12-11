@@ -457,7 +457,7 @@ export const HK_CARDS: CreditCard[] = [
       // 指定Go商戶高達5%
       { description: "指定Go商戶 5% [keeta/美團/高鐵等]", matchType: "merchant", matchValue: ["keeta", "meituan", "wellcome", "market-place-jasons"], percentage: 5, cap: 100, capType: "reward" },
       // 內地手機簽賬高達2% - 只限內地/澳門消費（外幣簽賬）
-      { description: "內地/澳門手機簽賬2%回贈", matchType: "paymentMethod", matchValue: ["apple_pay", "huawei_pay", "boc_pay", "cloud_quick_pass"], percentage: 2, cap: 100, capType: "reward", isForeignCurrency: true },
+      { description: "內地/澳門手機簽賬2%回贈", matchType: "paymentMethod", matchValue: ["apple_pay", "huawei_pay", "boc_pay", "unionpay_qr"], percentage: 2, cap: 100, capType: "reward", isForeignCurrency: true },
       // 海外簽賬0.8%
       { description: "海外簽賬0.8%回贈", matchType: "base", percentage: 0.8, isForeignCurrency: true },
       // 基本回贈
@@ -486,7 +486,7 @@ export const HK_CARDS: CreditCard[] = [
       // 指定Go商戶高達5%
       { description: "指定Go商戶 5% [keeta/美團/高鐵等]", matchType: "merchant", matchValue: ["keeta", "meituan", "wellcome", "market-place-jasons"], percentage: 5, cap: 100, capType: "reward" },
       // 內地手機簽賬高達4% - 只限內地/澳門消費（外幣簽賬）
-      { description: "內地/澳門手機簽賬4%回贈", matchType: "paymentMethod", matchValue: ["apple_pay", "huawei_pay", "boc_pay", "cloud_quick_pass"], percentage: 4, cap: 100, capType: "reward", isForeignCurrency: true },
+      { description: "內地/澳門手機簽賬4%回贈", matchType: "paymentMethod", matchValue: ["apple_pay", "huawei_pay", "boc_pay", "unionpay_qr"], percentage: 4, cap: 100, capType: "reward", isForeignCurrency: true },
       // 海外簽賬0.8%
       { description: "海外簽賬0.8%回贈", matchType: "base", percentage: 0.8, isForeignCurrency: true },
       // 基本回贈
