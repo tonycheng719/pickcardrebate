@@ -335,7 +335,7 @@ export function CreditCardCalculator({
     // Calculator is now open to all users (guests included)
     // Login is only required for other features like recording transactions
 
-    const res = findBestCards(
+    let res = findBestCards(
       selectedMerchant.name,
       {
         amount: parseFloat(amount),
@@ -347,6 +347,12 @@ export function CreditCardCalculator({
       merchantList,
       categoryList
     );
+    
+    // Filter for UnionPay cards when using 雲閃付 App
+    // 雲閃付 App 只能綁定銀聯卡
+    if (paymentMethod === "unionpay_qr") {
+      res = res.filter(r => r.card.cardNetwork === "unionpay");
+    }
     
     const bestResult = res[0];
     

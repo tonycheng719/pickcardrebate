@@ -108,6 +108,7 @@ export const HK_CARDS: CreditCard[] = [
     id: "hsbc-pulse",
     name: "HSBC Pulse 銀聯雙幣卡",
     bank: "HSBC",
+    cardNetwork: "unionpay",
     style: { bgColor: "bg-gradient-to-br from-red-400 to-red-600", textColor: "text-white" },
     rewardTimeline: "獎賞錢即時入賬",
     foreignCurrencyFee: 0,
@@ -445,6 +446,7 @@ export const HK_CARDS: CreditCard[] = [
     id: "boc-go-platinum",
     name: "中銀 Go 銀聯白金卡",
     bank: "中銀",
+    cardNetwork: "unionpay",
     style: { bgColor: "bg-gradient-to-br from-red-600 to-red-800", textColor: "text-white" },
     annualFee: 0,
     minIncome: 150000,
@@ -473,6 +475,7 @@ export const HK_CARDS: CreditCard[] = [
     id: "boc-go-diamond",
     name: "中銀 Go 銀聯鑽石卡",
     bank: "中銀",
+    cardNetwork: "unionpay",
     style: { bgColor: "bg-gradient-to-br from-slate-800 to-black", textColor: "text-white" },
     annualFee: 0,
     minIncome: 240000,
@@ -936,6 +939,7 @@ export const HK_CARDS: CreditCard[] = [
     id: "aeon-unionpay",
     name: "AEON 銀聯信用卡",
     bank: "AEON",
+    cardNetwork: "unionpay",
     style: { bgColor: "bg-gradient-to-br from-red-600 to-red-800", textColor: "text-white" },
     foreignCurrencyFee: 0, // 銀聯通常免外幣手續費
     rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 積分 = $1 回贈
@@ -1106,6 +1110,7 @@ export const HK_CARDS: CreditCard[] = [
     id: "bea-unionpay-diamond",
     name: "BEA 銀聯雙幣鑽石信用卡",
     bank: "東亞銀行",
+    cardNetwork: "unionpay",
     style: { bgColor: "bg-gradient-to-br from-cyan-600 to-blue-800", textColor: "text-white" },
     foreignCurrencyFee: 0, // 銀聯卡通常無外幣手續費
     annualFee: 1800,
@@ -1133,6 +1138,7 @@ export const HK_CARDS: CreditCard[] = [
     id: "bea-unionpay-platinum",
     name: "BEA 銀聯雙幣白金信用卡",
     bank: "東亞銀行",
+    cardNetwork: "unionpay",
     hidden: true,
     style: { bgColor: "bg-gradient-to-br from-slate-400 to-slate-600", textColor: "text-white" },
     foreignCurrencyFee: 0, // 銀聯卡通常無外幣手續費
@@ -1162,6 +1168,7 @@ export const HK_CARDS: CreditCard[] = [
     id: "earnmore",
     name: "安信 EarnMORE 銀聯卡",
     bank: "安信",
+    cardNetwork: "unionpay",
     style: { bgColor: "bg-gradient-to-br from-blue-600 to-indigo-700", textColor: "text-white" },
     // imageUrl from DB
     rewardTimeline: "現金回贈下期月結單入賬",
@@ -1185,6 +1192,7 @@ export const HK_CARDS: CreditCard[] = [
     id: "wewa-unionpay",
     name: "WeWa 銀聯卡",
     bank: "安信",
+    cardNetwork: "unionpay",
     style: { bgColor: "bg-gradient-to-br from-yellow-300 to-yellow-500", textColor: "text-black" },
     // imageUrl from DB
     annualFee: 600,

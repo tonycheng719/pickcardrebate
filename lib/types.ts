@@ -48,6 +48,7 @@ export interface CreditCard {
   feeWaiverCondition?: string;
   rules: RewardRule[];
   tags: string[];
+  cardNetwork?: 'visa' | 'mastercard' | 'unionpay' | 'amex' | 'jcb'; // Card network for payment method filtering
   applyUrl?: string; // Partner apply URL (e.g. MoneyHero)
   officialApplyUrl?: string; // Official bank apply URL
   rewardTimeline?: string;
