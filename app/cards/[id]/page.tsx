@@ -239,17 +239,14 @@ export default function CardDetailPage() {
   
   // Generate structured data for SEO - FinancialProduct Schema (適合信用卡)
   // 使用 FinancialProduct 而非 Product+Offer，避免 Google 要求 shippingDetails/hasMerchantReturnPolicy
+  // provider 使用 Organization 而非 FinancialService，避免需要 address 欄位
   const productSchema: Record<string, any> = {
     "@context": "https://schema.org",
     "@type": "FinancialProduct",
     "name": card.name,
     "provider": {
-      "@type": "FinancialService",
-      "name": card.bank,
-      "areaServed": {
-        "@type": "Country",
-        "name": "Hong Kong"
-      }
+      "@type": "Organization",
+      "name": card.bank
     },
     "description": card.sellingPoints?.join("。") || `${card.bank} ${card.name} 信用卡`,
     "image": card.imageUrl,
@@ -257,11 +254,6 @@ export default function CardDetailPage() {
     "feesAndCommissionsSpecification": card.annualFee 
       ? `年費 HKD ${card.annualFee}${card.feeWaiverCondition ? `（${card.feeWaiverCondition}）` : ''}`
       : "永久免年費",
-    "interestRate": {
-      "@type": "QuantitativeValue",
-      "value": card.foreignCurrencyFee || 1.95,
-      "unitText": "外幣手續費 %"
-    },
     "category": "Credit Card"
   };
   
