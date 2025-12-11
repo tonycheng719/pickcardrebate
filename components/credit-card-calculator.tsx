@@ -354,6 +354,18 @@ export function CreditCardCalculator({
       res = res.filter(r => r.card.cardNetwork === "unionpay");
     }
     
+    // Filter for BOC cards when using BoC Pay
+    // BoC Pay 只能綁定中銀信用卡
+    if (paymentMethod === "boc_pay") {
+      res = res.filter(r => 
+        r.card.bank === "BOC" || 
+        r.card.bank === "中銀" || 
+        r.card.bank === "中銀香港" ||
+        r.card.bank.includes("中銀") ||
+        r.card.bank.toUpperCase().includes("BOC")
+      );
+    }
+    
     const bestResult = res[0];
     
     // Track search and calculate events
