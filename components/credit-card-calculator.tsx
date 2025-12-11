@@ -304,6 +304,23 @@ export function CreditCardCalculator({
   // Auto-scroll and focus when merchant changes
   const handleMerchantSelect = (merchantId: string) => {
     setSelectedMerchantId(merchantId);
+    
+    // 🔴 FIX: 如果選擇純網上商戶（如 KeeTa、Deliveroo），自動切換付款方式
+    const merchant = effectiveMerchants.find(m => m.id === merchantId);
+    if (merchant?.isOnlineOnly) {
+      // 純網上商戶：自動設為「網上輸入信用卡」（如果當前是門市實體卡）
+      if (paymentMethod === "physical_card") {
+        setPaymentMethod("online");
+        setIsOnlineScenario(true);
+      }
+    } else {
+      // 非純網上商戶：如果當前是「網上輸入信用卡」且不在網購類別，重置為「門市使用實體卡」
+      if (paymentMethod === "online" && !ONLINE_ONLY_CATEGORIES.includes(selectedCategory)) {
+        setPaymentMethod("physical_card");
+        setIsOnlineScenario(null);
+      }
+    }
+    
     setTimeout(() => {
       inputSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
       amountInputRef.current?.focus();
@@ -1354,11 +1371,10 @@ export function CreditCardCalculator({
                 disabled={!selectedMerchant}
               >
                 {PAYMENT_OPTIONS
-                  // 🔴 FIX: 如果選擇純網上類別，不顯示「門市使用實體卡」選項
+                  // 🔴 FIX: 純網上類別或純網上商戶，不顯示「門市使用實體卡」選項
                   .filter(opt => {
                     const isOnlineCategory = ONLINE_ONLY_CATEGORIES.includes(selectedCategory);
-                    const merchantIsOnlineOnly = selectedMerchant?.categoryIds?.includes("online") && 
-                      !selectedMerchant?.categoryIds?.some(cat => !["online"].includes(cat));
+                    const merchantIsOnlineOnly = selectedMerchant?.isOnlineOnly === true;
                     // 如果是純網上類別或商戶，隱藏門市選項
                     if ((isOnlineCategory || merchantIsOnlineOnly) && opt.id === "physical_card") {
                       return false;
