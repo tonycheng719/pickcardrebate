@@ -57,10 +57,10 @@ export const POPULAR_MERCHANTS: Merchant[] = [
   { id: "towngas", name: "Towngas 煤氣", categoryIds: ["utilities"], aliases: ["煤氣", "towngas"], logo: "https://logo.clearbit.com/towngas.com", accentColor: "#ea580c", isOnlineOnly: true },
   { id: "wechat-pay-hk", name: "WeChat Pay HK", categoryIds: ["ewallet"], aliases: ["wechat", "微信支付"], logo: "https://logo.clearbit.com/wechat.com", accentColor: "#16a34a", isOnlineOnly: true },
   
-  // 跨境電商 Cross-border E-commerce
-  { id: "taobao", name: "淘寶 Taobao", categoryIds: ["online"], aliases: ["淘寶", "taobao", "tb"], logo: "https://logo.clearbit.com/taobao.com", accentColor: "#ff5000", isOnlineOnly: true },
-  { id: "tmall", name: "天貓 Tmall", categoryIds: ["online"], aliases: ["天貓", "tmall"], logo: "https://logo.clearbit.com/tmall.com", accentColor: "#ff0036", isOnlineOnly: true },
-  { id: "jd", name: "京東 JD.com", categoryIds: ["online"], aliases: ["京東", "jd", "jd.com"], logo: "https://logo.clearbit.com/jd.com", accentColor: "#e2231a", isOnlineOnly: true },
+  // 跨境電商 Cross-border E-commerce (人民幣交易)
+  { id: "taobao", name: "淘寶 Taobao", categoryIds: ["online"], aliases: ["淘寶", "taobao", "tb"], logo: "https://logo.clearbit.com/taobao.com", accentColor: "#ff5000", isOnlineOnly: true, isForeignCurrency: true, currency: "CNY" },
+  { id: "tmall", name: "天貓 Tmall", categoryIds: ["online"], aliases: ["天貓", "tmall"], logo: "https://logo.clearbit.com/tmall.com", accentColor: "#ff0036", isOnlineOnly: true, isForeignCurrency: true, currency: "CNY" },
+  { id: "jd", name: "京東 JD.com", categoryIds: ["online"], aliases: ["京東", "jd", "jd.com"], logo: "https://logo.clearbit.com/jd.com", accentColor: "#e2231a", isOnlineOnly: true, isForeignCurrency: true, currency: "CNY" },
   { id: "pinduoduo", name: "拼多多 Pinduoduo", categoryIds: ["online"], aliases: ["拼多多", "pdd", "pinduoduo"], logo: "https://logo.clearbit.com/pinduoduo.com", accentColor: "#e02e24", isOnlineOnly: true },
   { id: "xiaohongshu", name: "小紅書 RED", categoryIds: ["online"], aliases: ["小紅書", "red", "xiaohongshu"], logo: "https://logo.clearbit.com/xiaohongshu.com", accentColor: "#fe2c55", isOnlineOnly: true },
   { id: "amazon", name: "Amazon 亞馬遜", categoryIds: ["online"], aliases: ["amazon", "亞馬遜"], logo: "https://logo.clearbit.com/amazon.com", accentColor: "#ff9900", isOnlineOnly: true },

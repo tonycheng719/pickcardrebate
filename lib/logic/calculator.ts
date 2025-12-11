@@ -444,7 +444,7 @@ export function findBestCards(
   categoriesData: Category[] = CATEGORIES
 ): CalculationResult[] {
   const normalizedQuery = query.toLowerCase().trim();
-  const { amount = 0, paymentMethod, userCards, isForeignCurrency = false, isOnlineScenario = false, rewardPreference = "cash" } = options;
+  const { amount = 0, paymentMethod, userCards, isForeignCurrency: optionsForeignCurrency = false, isOnlineScenario = false, rewardPreference = "cash" } = options;
   
   const matchedMerchant = merchantsData.find(
     m => m.name.toLowerCase().includes(normalizedQuery) || 
@@ -454,6 +454,9 @@ export function findBestCards(
   const matchedCategory = categoriesData.find(
     c => c.name.includes(normalizedQuery) || normalizedQuery.includes(c.name)
   );
+
+  // Auto-detect foreign currency based on merchant (e.g. 淘寶/天貓/京東 = CNY)
+  const isForeignCurrency = optionsForeignCurrency || (matchedMerchant?.isForeignCurrency ?? false);
 
   const cardPool = userCards && userCards.length > 0
     ? cardsData.filter((c) => userCards.includes(c.id))

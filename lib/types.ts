@@ -90,6 +90,8 @@ export interface Merchant {
   accentColor?: string;
   isGeneral?: boolean;
   isOnlineOnly?: boolean;
+  isForeignCurrency?: boolean; // If true, this merchant uses foreign currency (e.g. Taobao = RMB)
+  currency?: string; // Currency code (e.g. "CNY", "JPY", "USD")
 }
 
 export interface Category {
