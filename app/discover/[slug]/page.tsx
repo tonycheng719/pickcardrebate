@@ -53,6 +53,7 @@ import { Ps5Guide, ps5FaqData } from "./ps5-guide";
 import { XboxGuide, xboxFaqData } from "./xbox-guide";
 import { SwitchGuide, switchFaqData } from "./switch-guide";
 import { MilesCreditCardGuide, milesCreditCardFaqData } from "./miles-credit-card-guide";
+import { PaymentMethodsGuide, paymentMethodsFaqData } from "./payment-methods-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 import { ArticleTracker } from "@/app/discover/components/article-tracker";
 import { ArticleReviews } from "@/app/discover/components/article-reviews";
@@ -569,6 +570,33 @@ const GUIDES: Record<string, {
     ],
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
+  },
+  "payment-methods-guide": {
+    id: "payment-methods-guide",
+    title: "支付方式回贈攻略｜Apple Pay vs 實體卡 vs 網購回贈比較",
+    seoTitle: "支付方式回贈攻略 2025｜Apple Pay vs 實體卡 vs 網購｜同一張卡回贈差 10 倍",
+    heroTitle: "💳 支付方式回贈攻略",
+    heroSubtitle: "Apple Pay vs 實體卡 vs 網購",
+    description: "同一張信用卡，不同支付方式回贈可以差 10 倍！Apple Pay、Google Pay、實體卡、網上簽賬回贈有咩分別？電子錢包陷阱要點避？本文詳細比較！",
+    content: "payment-methods-guide",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["支付方式", "Apple Pay", "網購", "信用卡攻略"],
+    keywords: [
+      "apple pay回贈",
+      "apple pay信用卡回贈",
+      "google pay回贈",
+      "信用卡支付方式",
+      "網上簽賬回贈",
+      "流動支付回贈",
+      "實體卡回贈",
+      "電子錢包回贈",
+      "apple pay vs實體卡",
+      "alipay信用卡回贈",
+      "payme信用卡回贈",
+      "八達通自動增值回贈",
+    ],
+    publishDate: "2025-12-11",
+    readTime: "15 分鐘",
   },
   "low-income-guide": {
     id: "low-income-guide",
@@ -1527,6 +1555,8 @@ function getGuideFaqData(guideId: string) {
       return octopusFaqData;
     case "mobile-payment-guide":
       return mobilePaymentFaqData;
+    case "payment-methods-guide":
+      return paymentMethodsFaqData;
     case "low-income-guide":
       return lowIncomeFaqData;
     case "food-delivery-guide":
@@ -1601,6 +1631,8 @@ function renderGuideContent(guideId: string) {
       return <OctopusGuide />;
     case "mobile-payment-guide":
       return <MobilePaymentGuide />;
+    case "payment-methods-guide":
+      return <PaymentMethodsGuide />;
     case "low-income-guide":
       return <LowIncomeGuide />;
     case "food-delivery-guide":
