@@ -49,6 +49,17 @@ const GUIDES = [
     isNew: false,
   },
   {
+    id: "best-miles-credit-cards",
+    type: "guide" as const,
+    title: "里數信用卡攻略｜Asia Miles 信用卡比較｜儲里數技巧",
+    description: "2025年最抵儲里數信用卡比較！渣打國泰、HSBC EveryMile、Citi PremierMiles、DBS Black 邊張最啱你？$/里比率、年費、迎新獎賞完全分析！",
+    imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2074&auto=format&fit=crop",
+    tags: ["里數", "Asia Miles", "信用卡攻略"],
+    merchant: "攻略",
+    isNew: true,
+    updatedAt: "2025-12-11",
+  },
+  {
     id: "best-cashback-cards",
     type: "guide" as const,
     title: "2025 最高回贈信用卡比較｜邊張信用卡好？",
