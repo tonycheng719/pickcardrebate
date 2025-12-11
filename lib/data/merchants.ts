@@ -31,7 +31,6 @@ export const POPULAR_MERCHANTS: Merchant[] = [
   { id: "uselect", name: "U購Select超級市場", categoryIds: ["supermarket"], aliases: ["u購", "uselect", "u select"], logo: "🛒", accentColor: "#8b5cf6" },
   { id: "maxims", name: "Maxim's Group 美心集團", categoryIds: ["dining"], aliases: ["美心", "maxims", "翠園", "美心皇宮", "潮江春", "北京樓", "美心MX", "can.teen"], logo: "https://logo.clearbit.com/maxims.com.hk", accentColor: "#f59e0b" },
   { id: "mcdonalds", name: "McDonald's 麥當勞", categoryIds: ["dining"], aliases: ["mcd", "麥記", "老麥", "mcdonald"], logo: "https://logo.clearbit.com/mcdonalds.com.hk", accentColor: "#fbbf24" },
-  { id: "deliveroo", name: "Deliveroo 戶戶送", categoryIds: ["dining", "online"], aliases: ["外賣", "deliveroo"], logo: "https://logo.clearbit.com/deliveroo.hk", accentColor: "#06b6d4", isOnlineOnly: true },
   { id: "foodpanda", name: "foodpanda", categoryIds: ["dining", "online", "supermarket"], aliases: ["熊貓", "foodpanda"], logo: "https://logo.clearbit.com/foodpanda.hk", accentColor: "#ec4899", isOnlineOnly: true },
   { id: "keeta", name: "KeeTa", categoryIds: ["dining", "online"], aliases: ["keeta", "美團"], logo: "🦅", accentColor: "#facc15", isOnlineOnly: true },
   { id: "kmb", name: "KMB 九巴", categoryIds: ["transport"], aliases: ["bus", "巴士", "kmb"], logo: "https://logo.clearbit.com/kmb.hk", accentColor: "#dc2626" },

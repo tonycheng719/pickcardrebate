@@ -204,7 +204,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 特約商戶 5% (需月簽賬滿$4,000)，5% 已包含基本回贈
       // 特約商戶名單及簽賬上限需查閱 sc.com/hk/smartcard
       // 電子錢包消費只適用於月結單上有顯示特約商戶名稱之交易
-      { description: "特約商戶 5% (月簽$4000)", matchType: "merchant", matchValue: ["parknshop", "fusion", "taste", "watsons", "759", "japanhome", "deliveroo", "klook", "decathlon", "netflix", "disney", "spotify", "cmhk"], percentage: 5.0, monthlyMinSpend: 4000, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      { description: "特約商戶 5% (月簽$4000)", matchType: "merchant", matchValue: ["parknshop", "fusion", "taste", "watsons", "759", "japanhome", "klook", "decathlon", "netflix", "disney", "spotify", "cmhk"], percentage: 5.0, monthlyMinSpend: 4000, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 八達通自動增值計回贈
       { description: "八達通自動增值 (月簽$4000)", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.56, monthlyMinSpend: 4000 },
       // T&C: 月簽 $15,000+ 基本回贈升至 1.20%
@@ -217,7 +217,7 @@ export const HK_CARDS: CreditCard[] = [
     welcomeOfferText: "迎新簽 $3,500 送 $800 現金回贈 (首月內)",
     officialApplyUrl: "https://www.sc.com/hk/zh/credit-cards/smart-card/",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=176&a=228&sub_id1=pickcardrebate&sub_id2=web",
-    sellingPoints: ["特約商戶 5% (百佳/屈臣氏/759/Klook/Deliveroo等)", "基本回贈 0.56%-1.2% (視乎月簽)", "永久免年費", "外幣交易手續費全免", "現金透支費豁免"],
+    sellingPoints: ["特約商戶 5% (百佳/屈臣氏/759/Klook/Netflix等)", "基本回贈 0.56%-1.2% (視乎月簽)", "永久免年費", "外幣交易手續費全免", "現金透支費豁免"],
     note: "⚠️ 【階梯制回贈】月簽 < $4,000 = 0%！月簽 $4,000-$14,999 = 0.56%。月簽 $15,000+ = 1.2%。特約商戶 5% 已包含基本回贈，超出簽賬上限部分只計基本回贈。✅ 八達通自動增值計回贈！✅ 外幣交易手續費全免（本地+海外）！✅ 現金透支費豁免！❌ 不計回贈：八達通錢包/支付寶/微信支付/PayMe增值、FPS、保費、繳費、繳稅、賭博、金融機構交易。回贈需於「360°全面賞」平台手動換領（最低 $50）。",
   },
   {

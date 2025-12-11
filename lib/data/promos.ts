@@ -149,7 +149,7 @@ export const PROMOS: Promo[] = [
 - 🏨 酒店/美食廣場/百貨內食肆
 - 🍺 酒吧
 - 🎉 酒席宴會/包場派對
-- 📱 **外賣平台（Deliveroo/foodpanda 等）**
+- 📱 **外賣平台（KeeTa/foodpanda 等）**
 
 ---
 

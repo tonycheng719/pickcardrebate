@@ -305,7 +305,7 @@ export function CreditCardCalculator({
   const handleMerchantSelect = (merchantId: string) => {
     setSelectedMerchantId(merchantId);
     
-    // 🔴 FIX: 如果選擇純網上商戶（如 KeeTa、Deliveroo），自動切換付款方式
+    // 🔴 FIX: 如果選擇純網上商戶（如 KeeTa、foodpanda），自動切換付款方式
     const merchant = effectiveMerchants.find(m => m.id === merchantId);
     if (merchant?.isOnlineOnly) {
       // 純網上商戶：自動設為「網上輸入信用卡」（如果當前是門市實體卡）

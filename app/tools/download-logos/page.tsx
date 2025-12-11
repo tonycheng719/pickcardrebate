@@ -54,7 +54,6 @@ const MERCHANTS = [
   { id: 'ird', name: '稅務局', domain: 'ird.gov.hk' },
   { id: 'wsd', name: '水務署', domain: 'wsd.gov.hk' },
   { id: 'sogo', name: 'SOGO', domain: 'sogo.com.hk' },
-  { id: 'deliveroo', name: 'Deliveroo', domain: 'deliveroo.hk' },
 ];
 
 interface MerchantStatus {
