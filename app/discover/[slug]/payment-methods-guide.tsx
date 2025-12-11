@@ -86,14 +86,14 @@ const paymentMethodsData = [
     color: "purple"
   },
   {
-    id: "online_apple_pay",
-    name: "網上 Apple Pay",
-    icon: "🍎",
-    description: "網站/App 內 Apple Pay",
-    howItWorks: "點擊 Apple Pay 按鈕，Face ID 驗證",
+    id: "online_mobile_pay",
+    name: "網上流動支付",
+    icon: "📲",
+    description: "網站/App 內 Apple Pay / Google Pay",
+    howItWorks: "點擊 Apple Pay / Google Pay 按鈕，驗證付款",
     bankRecognition: "網上簽賬（同輸入卡號）",
     pros: ["無需輸入卡號", "更安全", "更快速"],
-    cons: ["不是所有網站支援", "需 Apple 設備"],
+    cons: ["不是所有網站支援", "需支援嘅設備"],
     rebateLevel: "同網上簽賬",
     color: "green"
   }
@@ -364,7 +364,7 @@ export function PaymentMethodsGuide() {
             <tr className="bg-gray-50 dark:bg-gray-800">
               <th className="px-4 py-3 text-left text-sm font-medium">信用卡</th>
               <th className="px-4 py-3 text-center text-sm font-medium">💳 門市實體卡</th>
-              <th className="px-4 py-3 text-center text-sm font-medium">📱 Apple Pay</th>
+              <th className="px-4 py-3 text-center text-sm font-medium">📱 流動支付</th>
               <th className="px-4 py-3 text-center text-sm font-medium">💻 網上簽賬</th>
               <th className="px-4 py-3 text-left text-sm font-medium">備註</th>
             </tr>
@@ -411,11 +411,23 @@ export function PaymentMethodsGuide() {
       {/* E-wallet Warning */}
       <h2 id="ewallet" className="flex items-center gap-2 scroll-mt-20">
         <Wallet className="h-6 w-6 text-purple-600" />
-        電子錢包陷阱 ⚠️
+        增值型電子錢包陷阱 ⚠️
       </h2>
 
+      <div className="not-prose mb-4">
+        <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+          <p className="text-sm text-blue-800 dark:text-blue-200">
+            <strong>⚠️ 注意：</strong>呢度講嘅「電子錢包」係指<strong>增值型錢包</strong>（AlipayHK、WeChat Pay、PayMe），
+            與<strong>流動支付</strong>（Apple Pay、Google Pay）唔同！
+            <br />
+            Apple Pay / Google Pay 直接扣信用卡，多數銀行有回贈；
+            增值型錢包需要先增值，銀行對增值交易多數不計回贈。
+          </p>
+        </div>
+      </div>
+
       <p>
-        <strong>電子錢包（AlipayHK、WeChat Pay、PayMe）係回贈黑洞！</strong>
+        <strong>增值型電子錢包（AlipayHK、WeChat Pay、PayMe）係回贈黑洞！</strong>
         大多數銀行對電子錢包增值或消費設有限制，甚至完全不計回贈。
       </p>
 
