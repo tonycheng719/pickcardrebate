@@ -21,6 +21,15 @@ import { Navbar } from "@/components/navbar";
 import { BottomNav } from "@/components/bottom-nav";
 import { ShareButton } from "@/components/share-button";
 import { getCardsWithImages } from "@/lib/data/get-cards-with-images";
+import { PARTNER_MODE_ENABLED } from "@/lib/config";
+
+// Helper to get the correct apply URL based on partner mode
+function getApplyUrl(card: { applyUrl?: string; officialApplyUrl?: string }): string | undefined {
+  if (PARTNER_MODE_ENABLED && card.applyUrl) {
+    return card.applyUrl;
+  }
+  return card.officialApplyUrl || card.applyUrl;
+}
 
 // Generate static params for all categories
 export async function generateStaticParams() {
@@ -168,8 +177,8 @@ function CardDetailSection({ result, rank, showFxInfo = false }: { result: Ranki
               詳情 <ChevronRight className="h-3 w-3 ml-1" />
             </Button>
           </Link>
-          {result.card.applyUrl && (
-            <a href={result.card.applyUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
+          {getApplyUrl(result.card) && (
+            <a href={getApplyUrl(result.card)} target="_blank" rel="noopener noreferrer" className="flex-1">
               <Button variant="outline" size="sm" className="w-full text-xs h-8">
                 申請 <ExternalLink className="h-3 w-3 ml-1" />
               </Button>
