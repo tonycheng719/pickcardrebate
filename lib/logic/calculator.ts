@@ -43,6 +43,14 @@ export interface CalculationResult {
   missedDiscountRule?: RewardRule;
   missedDiscountPercentage?: number;
   missedDiscountAmount?: number;
+  // New: Over-cap reward info (when spending exceeds cap, show base reward for overflow)
+  overCapInfo?: {
+    capAmount: number;           // The cap limit (e.g. $3,947)
+    overCapAmount: number;       // Amount exceeding cap (e.g. $2,053)
+    overCapPercentage: number;   // Base percentage for overflow (e.g. 0.4%)
+    overCapReward: number;       // Reward for overflow (e.g. $8.21)
+    totalReward: number;         // Total reward including overflow
+  };
 }
 
 export interface SearchOptions {
@@ -77,12 +85,20 @@ function calculateCardReward(
     discountAmount?: number,
     missedDiscountRule?: RewardRule,
     missedDiscountPercentage?: number,
-    missedDiscountAmount?: number
+    missedDiscountAmount?: number,
+    overCapInfo?: {
+        capAmount: number,
+        overCapAmount: number,
+        overCapPercentage: number,
+        overCapReward: number,
+        totalReward: number
+    }
 } {
     let bestRule: RewardRule | null = null;
     let maxReward = -1;
     let bestPercentage = 0;
     let isCapped = false;
+    let overCapInfo: { capAmount: number, overCapAmount: number, overCapPercentage: number, overCapReward: number, totalReward: number } | undefined = undefined;
 
     let bestMissedRule: RewardRule | null = null;
     let maxMissedPercent = -1;
@@ -308,6 +324,28 @@ function calculateCardReward(
                              else effectiveSpendingCap = rule.cap;
                         }
                         isCapped = amount > effectiveSpendingCap;
+                        
+                        // Calculate over-cap info if amount exceeds cap
+                        if (isCapped && effectiveSpendingCap < Infinity) {
+                            // Find base reward percentage for this card
+                            const baseRule = card.rules.find(r => 
+                                r.matchType === 'base' && 
+                                !r.isForeignCurrency && 
+                                (r.description.includes('基本') || r.description.includes('0.4%') || r.description.includes('0.5%'))
+                            );
+                            const basePercentage = baseRule?.percentage || 0.4;
+                            
+                            const overCapAmount = amount - effectiveSpendingCap;
+                            const overCapReward = (overCapAmount * basePercentage) / 100;
+                            
+                            overCapInfo = {
+                                capAmount: effectiveSpendingCap,
+                                overCapAmount,
+                                overCapPercentage: basePercentage,
+                                overCapReward,
+                                totalReward: potentialReward + overCapReward
+                            };
+                        }
                      }
                   } else {
                      // Track missed rule (spending threshold)
@@ -393,7 +431,8 @@ function calculateCardReward(
         discountAmount: bestDiscountAmount > 0 ? bestDiscountAmount : undefined,
         missedDiscountRule: bestMissedDiscountRule || undefined,
         missedDiscountPercentage: bestMissedDiscountPercentage > 0 ? bestMissedDiscountPercentage : undefined,
-        missedDiscountAmount: bestMissedDiscountAmount > 0 ? bestMissedDiscountAmount : undefined
+        missedDiscountAmount: bestMissedDiscountAmount > 0 ? bestMissedDiscountAmount : undefined,
+        overCapInfo
     };
 }
 
@@ -588,7 +627,9 @@ export function findBestCards(
       // Missed discount info (date mismatch)
       missedDiscountRule: current.missedDiscountRule,
       missedDiscountPercentage: current.missedDiscountPercentage,
-      missedDiscountAmount: current.missedDiscountAmount
+      missedDiscountAmount: current.missedDiscountAmount,
+      // Over-cap info (when spending exceeds cap)
+      overCapInfo: current.overCapInfo
     };
   });
 

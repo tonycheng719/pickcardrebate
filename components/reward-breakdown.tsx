@@ -15,6 +15,14 @@ interface RewardBreakdownProps {
   netRewardAmount?: number;
   compact?: boolean; // For tight spaces
   showToggle?: boolean; // Allow expand/collapse
+  // Over-cap info (when spending exceeds cap)
+  overCapInfo?: {
+    capAmount: number;
+    overCapAmount: number;
+    overCapPercentage: number;
+    overCapReward: number;
+    totalReward: number;
+  };
 }
 
 // Helper to get base rate from card rules
@@ -55,6 +63,7 @@ export function RewardBreakdown({
   netRewardAmount,
   compact = false,
   showToggle = true,
+  overCapInfo,
 }: RewardBreakdownProps) {
   const [isExpanded, setIsExpanded] = useState(!compact);
   
@@ -65,6 +74,7 @@ export function RewardBreakdown({
   // Determine if we should show breakdown
   const hasExtraRate = extraRate > 0.01; // Avoid floating point issues
   const shouldShowFxBreakdown = isForeignCurrency && fxFee && netPercentage !== undefined;
+  const hasOverCap = overCapInfo && overCapInfo.overCapAmount > 0;
   
   // Compact view - just show the result with a hint
   if (compact && !isExpanded) {
@@ -183,6 +193,29 @@ export function RewardBreakdown({
             ? `上限回贈 $${matchedRule.cap.toLocaleString()}`
             : `上限簽賬 $${matchedRule.cap.toLocaleString()}`
           }
+        </div>
+      )}
+      
+      {/* Over-cap breakdown - show when spending exceeds cap */}
+      {hasOverCap && (
+        <div className="mt-2 pt-2 border-t border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 -mx-2.5 px-2.5 pb-1 rounded-b-lg">
+          <div className="text-[10px] text-amber-700 dark:text-amber-300 font-medium mb-1.5 flex items-center gap-1">
+            ⚠️ 超出上限部分另計基本回贈
+          </div>
+          <div className="space-y-1 text-[10px]">
+            <div className="flex justify-between items-center text-gray-600 dark:text-gray-400">
+              <span>上限內 ${overCapInfo!.capAmount.toLocaleString()}</span>
+              <span>${rewardAmount.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between items-center text-amber-600 dark:text-amber-400">
+              <span>超出 ${overCapInfo!.overCapAmount.toLocaleString()} × {overCapInfo!.overCapPercentage}%</span>
+              <span>+${overCapInfo!.overCapReward.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between items-center font-medium text-emerald-600 dark:text-emerald-400 pt-1 border-t border-amber-200 dark:border-amber-700">
+              <span>實際總回贈</span>
+              <span>${overCapInfo!.totalReward.toFixed(2)}</span>
+            </div>
+          </div>
         </div>
       )}
     </div>

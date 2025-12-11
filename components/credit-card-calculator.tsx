@@ -757,6 +757,7 @@ export function CreditCardCalculator({
           netRewardAmount={result.netRewardAmount}
           compact={true}
           showToggle={true}
+          overCapInfo={result.overCapInfo}
         />
       </div>
     </div>
@@ -914,6 +915,7 @@ export function CreditCardCalculator({
                   netRewardAmount={best.netRewardAmount}
                   compact={false}
                   showToggle={false}
+                  overCapInfo={best.overCapInfo}
                 />
               </div>
               
@@ -1050,6 +1052,7 @@ export function CreditCardCalculator({
                       netRewardAmount={myBestCard.netRewardAmount}
                       compact={true}
                       showToggle={true}
+                      overCapInfo={myBestCard.overCapInfo}
                     />
                   </div>
                 </div>
@@ -1142,6 +1145,7 @@ export function CreditCardCalculator({
                     netRewardAmount={best.netRewardAmount}
                     compact={true}
                     showToggle={true}
+                    overCapInfo={best.overCapInfo}
                   />
                 </div>
               </div>
