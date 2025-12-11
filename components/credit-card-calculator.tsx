@@ -1251,19 +1251,25 @@ export function CreditCardCalculator({
             />
         </div>
 
-        <div className="flex items-center gap-3 flex-wrap mb-4">
+        <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2 mb-4">
           {categoryList.map((cat) => (
             <button
               key={cat.id}
-              className={`px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2 transition active:scale-95 ${
+              className={`p-2 sm:p-3 rounded-xl text-center transition active:scale-95 flex flex-col items-center gap-1 ${
                 selectedCategory === cat.id && !searchQuery
-                  ? `${cat.bgColor} ${cat.accentColor} ring-2 ring-offset-2 ring-emerald-200`
-                  : "bg-gray-100 text-gray-500 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700"
+                  ? `${cat.bgColor} ${cat.accentColor} ring-2 ring-offset-1 ring-emerald-300 shadow-sm`
+                  : "bg-gray-50 text-gray-600 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
               }`}
               onClick={() => handleCategorySelect(cat.id)}
             >
-              <DynamicIcon name={cat.icon} className="h-4 w-4" />
-              {cat.name}
+              <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center ${
+                selectedCategory === cat.id && !searchQuery
+                  ? "bg-white/50 dark:bg-black/20"
+                  : "bg-gray-100 dark:bg-gray-700"
+              }`}>
+                <DynamicIcon name={cat.icon} className="h-4 w-4 sm:h-5 sm:w-5" />
+              </div>
+              <span className="text-[10px] sm:text-xs font-medium leading-tight">{cat.name}</span>
             </button>
           ))}
         </div>
