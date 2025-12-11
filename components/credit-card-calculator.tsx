@@ -1268,18 +1268,18 @@ export function CreditCardCalculator({
           ))}
         </div>
 
-        <div ref={merchantsRef} className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6 scroll-mt-20">
+        <div ref={merchantsRef} className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-2 sm:gap-3 mb-6 scroll-mt-20">
           {effectiveMerchants.map((merchant) => (
             <Card
               key={merchant.id}
-              className={`p-4 cursor-pointer border-2 transition-all active:scale-[0.98] ${
-                selectedMerchant?.id === merchant.id ? "border-emerald-500 shadow-md" : "border-transparent hover:bg-gray-50 dark:hover:bg-gray-800"
+              className={`p-2 sm:p-3 cursor-pointer border-2 transition-all active:scale-[0.96] ${
+                selectedMerchant?.id === merchant.id ? "border-emerald-500 shadow-md bg-emerald-50 dark:bg-emerald-900/20" : "border-transparent hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-200 dark:hover:border-gray-700"
               } ${merchant.isGeneral ? "bg-gray-50/50 dark:bg-gray-800/30 border-dashed" : ""}`}
               onClick={() => handleMerchantSelect(merchant.id)}
             >
-              <div className="flex items-center gap-3">
+              <div className="flex flex-col items-center text-center gap-1.5 sm:gap-2">
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0 overflow-hidden"
+                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-xl shrink-0 overflow-hidden"
                   style={{
                     backgroundColor: `${merchant.accentColor || "#e5e7eb"}20`,
                     color: merchant.accentColor || "#111827",
@@ -1289,7 +1289,7 @@ export function CreditCardCalculator({
                       <img 
                         src={merchant.logo} 
                         alt={merchant.name} 
-                        className="w-full h-full object-contain" 
+                        className="w-full h-full object-contain p-1" 
                         onError={(e) => {
                             e.currentTarget.style.display = 'none';
                             // Fallback to first letter if logo fails
@@ -1300,11 +1300,8 @@ export function CreditCardCalculator({
                       merchant.logo || merchant.name.charAt(0)
                   )}
                 </div>
-                <div className="min-w-0">
-                  <div className="text-sm font-semibold text-gray-900 leading-tight truncate">{merchant.name}</div>
-                  <div className="text-[11px] text-gray-400 uppercase tracking-wide truncate">
-                    {merchant.isGeneral ? "通用類別" : (categoryNameMap[merchant.categoryIds[0]] || merchant.categoryIds[0])}
-                  </div>
+                <div className="w-full min-w-0">
+                  <div className="text-xs sm:text-sm font-medium text-gray-900 dark:text-gray-100 leading-tight truncate">{merchant.name}</div>
                 </div>
               </div>
             </Card>
