@@ -59,7 +59,7 @@ export const HK_CARDS: CreditCard[] = [
       { description: "指定商戶 8% (壽司郎/譚仔/GU等)", matchType: "merchant", matchValue: ["sushiro", "tamjai", "tamjai_yunnan", "coffee_academics", "gu", "decathlon", "lululemon", "namco", "taito"], percentage: 8.0, cap: 100, capType: "reward" },
       // T&C: 網上簽賬 4% (每月首$10,000 = $400獎賞錢上限)
       // 不包括：網上繳費、電子錢包簽賬、保費、證券買賣、租金/物業管理費、廣告服務、八達通增值
-      { description: "網上簽賬 4% (每月首$10,000)", matchType: "category", matchValue: "online", percentage: 4.0, cap: 400, capType: "reward", excludeCategories: ["utilities", "insurance", "ewallet"], excludePaymentMethods: ["octopus"] },
+      { description: "網上簽賬 4% [每月首$10k]", matchType: "category", matchValue: "online", percentage: 4.0, cap: 400, capType: "reward", excludeCategories: ["utilities", "insurance", "ewallet"], excludePaymentMethods: ["octopus"] },
       // T&C: 基本獎賞 0.4%
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] }, 
     ],
@@ -641,7 +641,7 @@ export const HK_CARDS: CreditCard[] = [
     rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' }, // 15 pts = 1 mile
     rules: [
       // 流動支付 5X (Apple Pay/Google Pay/Samsung Pay，不包括八達通增值/電子錢包增值)
-      { description: "流動支付 5X (2% / $3/里)", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 2.0, cap: 50000, capType: "spending", excludeCategories: ["ewallet"], excludePaymentMethods: ["octopus", "payme", "alipay", "wechat_pay"] },
+      { description: "流動支付 2% [上限$50k簽賬]", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 2.0, cap: 50000, capType: "spending", excludeCategories: ["ewallet"], excludePaymentMethods: ["octopus", "payme", "alipay", "wechat_pay"] },
       { description: "超市/百貨 5X (2%)", matchType: "category", matchValue: ["supermarket", "department_store"], percentage: 2.0 },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"] },
     ],
@@ -1817,9 +1817,9 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 0,
     rules: [
       // T&C: 人民幣簽賬/雲閃付App 4% (每月上限$150)
-      { description: "人民幣/雲閃付 4% (月上限$150)", matchType: "base", percentage: 4.0, isForeignCurrency: true, cap: 150, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "人民幣/雲閃付 4% [上限$150]", matchType: "base", percentage: 4.0, isForeignCurrency: true, cap: 150, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 單筆滿CNY4,000 額外6% (每月上限$250)
-      { description: "單筆滿¥4,000 額外6% (月上限$250)", matchType: "base", percentage: 6.0, isForeignCurrency: true, minSpend: 4000, cap: 250, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "單筆滿¥4k 額外6% [上限$250]", matchType: "base", percentage: 6.0, isForeignCurrency: true, minSpend: 4000, cap: 250, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 本地簽賬 0.4%，排除繳稅、網上繳費、八達通增值、電子錢包
       { description: "本地簽賬 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
@@ -1838,11 +1838,11 @@ export const HK_CARDS: CreditCard[] = [
     rewardConfig: { method: 'conversion', ratio: 1000, currency: 'A. Point' }, // 1000 A. Point = $1
     rules: [
       // AlipayHK 跨境商戶 (北上/淘寶): 20個 A. Point/$1 = 2%
-      { description: "AlipayHK 跨境/北上 2% (20 A. Point/$1)", matchType: "paymentMethod", matchValue: ["alipay"], percentage: 2.0, isForeignCurrency: true },
+      { description: "AlipayHK 跨境/北上 2%", matchType: "paymentMethod", matchValue: ["alipay"], percentage: 2.0, isForeignCurrency: true },
       // 實體卡/電子錢包簽賬: 10個 A. Point/$1 = 1%
-      { description: "實體卡/電子錢包 1% (10 A. Point/$1)", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance"] },
+      { description: "實體卡/電子錢包 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance"] },
       // AlipayHK 本地合資格簽賬: 2個 A. Point/$1 = 0.2%
-      { description: "AlipayHK 本地 0.2% (2 A. Point/$1)", matchType: "paymentMethod", matchValue: ["alipay"], percentage: 0.2 },
+      { description: "AlipayHK 本地 0.2%", matchType: "paymentMethod", matchValue: ["alipay"], percentage: 0.2 },
     ],
     tags: ["AlipayHK", "北上2%", "淘寶免手續費"],
     sellingPoints: ["AlipayHK 北上/跨境 2% (20 A. Point/$1)", "實體卡簽賬 1% (10 A. Point/$1)", "淘寶首5筆免手續費", "免外幣手續費"],
