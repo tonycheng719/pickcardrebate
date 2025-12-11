@@ -1301,7 +1301,7 @@ export function CreditCardCalculator({
                   )}
                 </div>
                 <div className="w-full min-w-0">
-                  <div className="text-[10px] sm:text-xs font-medium text-gray-900 dark:text-gray-100 leading-tight line-clamp-2 min-h-[2.5em]">{merchant.name}</div>
+                  <div className="text-[9px] sm:text-[10px] font-medium text-gray-900 dark:text-gray-100 leading-snug break-words hyphens-auto">{merchant.name}</div>
                 </div>
               </div>
             </Card>
