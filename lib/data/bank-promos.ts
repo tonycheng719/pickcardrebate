@@ -11,8 +11,8 @@ export const HANGSENG_WINTER_PROMO: BankPromo = {
   maxReward: "$2,800 +FUN Dollars",
   // enJoy 卡專用 yuu 版本（$1 = 200 yuu）
   maxRewardYuu: "560,000 yuu積分",
-  registrationUrl: "https://www.hangseng.com/zh-hk/personal/cards/promotions/winter-spending-rewards/",
-  termsUrl: "https://www.hangseng.com/zh-hk/personal/cards/promotions/winter-spending-rewards/",
+  registrationUrl: "https://cms.hangseng.com/cms/emkt/pmo/grp05/p52/chi/index.html",
+  termsUrl: "https://cms.hangseng.com/cms/emkt/pmo/grp05/p52/chi/index.html",
   
   phases: [
     {
