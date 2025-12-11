@@ -424,6 +424,107 @@ export function DahsingWinterPromoGuide() {
         </Card>
       </section>
 
+      {/* 適用信用卡 */}
+      <section>
+        <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+          <CreditCard className="h-6 w-6 text-purple-500" />
+          適用大新信用卡
+        </h2>
+        <p className="text-gray-600 dark:text-gray-400 mb-4">
+          以下大新信用卡均可參與冬日狂賞（Visa Infinite 卡除外）：
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Link href="/cards/dahsing-one" className="group">
+            <Card className="p-4 hover:shadow-md transition-shadow border-2 border-transparent hover:border-purple-200 dark:hover:border-purple-800">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-800 to-purple-950 rounded-xl flex items-center justify-center">
+                  <span className="text-white text-lg font-bold">1%</span>
+                </div>
+                <div>
+                  <div className="font-bold group-hover:text-purple-600 transition-colors">
+                    大新 ONE+ 白金卡
+                  </div>
+                  <div className="text-sm text-gray-500">無上限 1% 回贈 + 冬日狂賞 = 高達 6%</div>
+                </div>
+              </div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <span className="text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-2 py-1 rounded">推薦</span>
+                <span className="text-xs bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-2 py-1 rounded">無腦1%</span>
+              </div>
+            </Card>
+          </Link>
+          
+          <Link href="/cards/dahsing-united" className="group">
+            <Card className="p-4 hover:shadow-md transition-shadow border-2 border-transparent hover:border-blue-200 dark:hover:border-blue-800">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-900 to-indigo-950 rounded-xl flex items-center justify-center">
+                  <Plane className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <div className="font-bold group-hover:text-blue-600 transition-colors">
+                    大新聯合航空 World 萬事達卡
+                  </div>
+                  <div className="text-sm text-gray-500">儲聯合航空里數 + 冬日狂賞額外回贈</div>
+                </div>
+              </div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <span className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded">聯合航空</span>
+                <span className="text-xs bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 px-2 py-1 rounded">里數不設限期</span>
+              </div>
+            </Card>
+          </Link>
+          
+          <Link href="/cards/dahsing-ba" className="group">
+            <Card className="p-4 hover:shadow-md transition-shadow border-2 border-transparent hover:border-blue-200 dark:hover:border-blue-800">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-800 to-blue-950 rounded-xl flex items-center justify-center">
+                  <Plane className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <div className="font-bold group-hover:text-blue-600 transition-colors">
+                    大新英國航空白金卡
+                  </div>
+                  <div className="text-sm text-gray-500">儲 Avios + 冬日狂賞額外回贈</div>
+                </div>
+              </div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <span className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded">Avios</span>
+                <span className="text-xs bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300 px-2 py-1 rounded">英國航空</span>
+              </div>
+            </Card>
+          </Link>
+          
+          <Link href="/cards/dahsing-myauto" className="group">
+            <Card className="p-4 hover:shadow-md transition-shadow border-2 border-transparent hover:border-sky-200 dark:hover:border-sky-800">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center">
+                  <span className="text-white text-lg">🚗</span>
+                </div>
+                <div>
+                  <div className="font-bold group-hover:text-sky-600 transition-colors">
+                    大新 MyAuto 車主信用卡
+                  </div>
+                  <div className="text-sm text-gray-500">油站 4% + 冬日狂賞額外回贈</div>
+                </div>
+              </div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <span className="text-xs bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300 px-2 py-1 rounded">車主專享</span>
+                <span className="text-xs bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 px-2 py-1 rounded">油站4%</span>
+              </div>
+            </Card>
+          </Link>
+        </div>
+        
+        <Card className="mt-4 p-4 border-red-200 dark:border-red-800 bg-red-50/50 dark:bg-red-900/10">
+          <div className="flex items-start gap-3">
+            <XCircle className="h-5 w-5 text-red-600 shrink-0 mt-0.5" />
+            <div className="text-sm text-gray-700 dark:text-gray-300">
+              <strong className="text-red-600">不適用卡種：</strong>大新 Visa Infinite 卡、大新 VIP 銀行服務 Visa Infinite、大新 Private Banking Visa Infinite
+            </div>
+          </div>
+        </Card>
+      </section>
+
       {/* 總評 */}
       <section>
         <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
@@ -465,7 +566,7 @@ export function DahsingWinterPromoGuide() {
               <div className="font-medium group-hover:text-emerald-600 transition-colors">
                 恒生冬日簽賬賞 2025
               </div>
-              <div className="text-sm text-gray-500">累積簽賬享額外 +FUN Dollars</div>
+              <div className="text-sm text-gray-500">累積簽賬享額外 +FUN Dollars / yuu積分</div>
             </Card>
           </Link>
           <Link href="/discover/dining-guide" className="group">
@@ -476,6 +577,44 @@ export function DahsingWinterPromoGuide() {
               <div className="text-sm text-gray-500">邊張卡食飯最抵？</div>
             </Card>
           </Link>
+          <Link href="/discover/online-shopping-guide" className="group">
+            <Card className="p-4 hover:shadow-md transition-shadow">
+              <div className="font-medium group-hover:text-emerald-600 transition-colors">
+                網購信用卡攻略
+              </div>
+              <div className="text-sm text-gray-500">HKTVmall/淘寶/Amazon 最高5%回贈</div>
+            </Card>
+          </Link>
+          <Link href="/discover/overseas-travel-guide" className="group">
+            <Card className="p-4 hover:shadow-md transition-shadow">
+              <div className="font-medium group-hover:text-emerald-600 transition-colors">
+                海外簽賬信用卡攻略
+              </div>
+              <div className="text-sm text-gray-500">旅行最高7%回贈</div>
+            </Card>
+          </Link>
+        </div>
+        
+        {/* 快速連結 */}
+        <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl">
+          <h4 className="font-bold mb-3">🔗 快速連結</h4>
+          <div className="flex flex-wrap gap-2">
+            <Link href="/rankings" className="text-sm text-emerald-600 hover:underline">
+              📊 信用卡排行榜
+            </Link>
+            <span className="text-gray-300">|</span>
+            <Link href="/cards" className="text-sm text-emerald-600 hover:underline">
+              💳 所有信用卡
+            </Link>
+            <span className="text-gray-300">|</span>
+            <Link href="/" className="text-sm text-emerald-600 hover:underline">
+              🧮 回贈計算機
+            </Link>
+            <span className="text-gray-300">|</span>
+            <Link href="/discover/best-cashback-cards" className="text-sm text-emerald-600 hover:underline">
+              💰 最高回贈信用卡
+            </Link>
+          </div>
         </div>
       </section>
     </div>
