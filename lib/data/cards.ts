@@ -508,23 +508,26 @@ export const HK_CARDS: CreditCard[] = [
     feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rules: [
-      // T&C: 海外外幣 6% (需月簽賬滿$5,000，每月上限$500回贈)
-      { description: "海外外幣簽賬 6% (需月簽$5,000)", matchType: "base", percentage: 6.0, monthlyMinSpend: 5000, isForeignCurrency: true, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
-      // T&C: 網上簽賬 5% (需月簽賬滿$5,000，與自選類別共用$500上限)
-      { description: "網上簽賬 5% (需月簽$5,000)", matchType: "category", matchValue: "online", percentage: 5.0, monthlyMinSpend: 5000, cap: 500, capType: "reward", excludeCategories: ["ewallet", "utilities", "insurance"], excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
-      // T&C: 自選類別 (餐飲/電子產品/娛樂) 1% - 但網上自選會計入網上5%
-      { description: "自選類別 1% (餐飲/電子/娛樂)", matchType: "category", matchValue: ["dining", "electronics", "entertainment"], percentage: 1.0, monthlyMinSpend: 5000, excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
+      // T&C: 海外外幣 6% (需月簽賬滿$5,000，每月上限$500回贈，優惠期至2025/12/31)
+      { description: "海外外幣簽賬 6% [需月簽$5k,需登記]", matchType: "base", percentage: 6.0, monthlyMinSpend: 5000, isForeignCurrency: true, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"], validDateRange: { start: "2024-07-01", end: "2025-12-31" } },
+      // T&C: 網上簽賬 5% (需月簽賬滿$5,000，與海外/自選共用$500上限)
+      // 不包括網上繳費、保險、電子錢包
+      { description: "網上簽賬 5% [需月簽$5k,需登記]", matchType: "category", matchValue: "online", percentage: 5.0, monthlyMinSpend: 5000, cap: 500, capType: "reward", excludeCategories: ["ewallet", "utilities", "insurance", "tax"], excludePaymentMethods: ["alipay", "wechat_pay", "octopus"], validDateRange: { start: "2024-07-01", end: "2025-12-31" } },
+      // T&C: 自選類別 (餐飲/電子產品/娛樂，最多選2個) 1%
+      // 餐飲不包括：快餐店、酒店/百貨公司/俱樂部內食肆
+      // 網上自選簽賬會計入網上5%，不會計入自選1%
+      { description: "自選類別 1% [餐飲(不含快餐)/電子/娛樂,需登記]", matchType: "category", matchValue: ["dining", "electronics", "entertainment"], percentage: 1.0, monthlyMinSpend: 5000, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"], validDateRange: { start: "2024-07-01", end: "2025-12-31" } },
       // T&C: 基本回饋 0.4%，排除繳費、保險、Alipay/WeChat Pay、八達通增值
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
     ],
     tags: ["網購5%", "外幣6%", "必須登記", "冬日賞"],
     welcomeOfferText: "迎新簽 $5,000 送 $700 +FUN Dollars (全新客戶) / $300 (現有客戶) / 學生簽$2,000送$300 (首60日)",
     sellingPoints: ["海外外幣簽賬 6% (需月簽$5,000)", "網上簽賬 5% (需月簽$5,000)", "自選類別 1% (餐飲/電子/娛樂)", "每月回贈上限 $500", "🔥冬日簽賬賞額外高達$2,800"],
-    note: "⚠️ 需月簽賬滿 $5,000 並於 hangseng.com/mpower 登記才享優惠！迎新：全新客戶簽$5,000送$700；現有客戶簽$5,000送$300；學生簽$2,000送$300 (首60日)。13個月內取消會扣回迎新獎賞！迎新不計：八達通自動增值、電子錢包充值、繳費、稅款、分期計劃。Alipay/WeChat Pay/八達通自動增值/易通行增值不計回贈。網上繳費（水電費、保險等）不計回贈。\n\n🔥 **冬日簽賬賞**（至2026/2/28）：累積簽賬可享額外高達$2,800回贈！[查看詳情](/discover/hangseng-winter-2025)",
+    note: "⚠️ **需月簽賬滿 $5,000** 並於 hangseng.com/mpower 登記才享優惠！優惠期至 **2025/12/31**。\n\n📌 **重要排除**：\n• 餐飲不包括：快餐店、酒店/百貨公司/俱樂部內食肆\n• Alipay/WeChat Pay 簽賬不計\n• 八達通自動增值不計\n• 網上繳費（水電費、保險等）不計\n• 交稅、保險公司簽賬不計\n\n📌 **自選類別**：餐飲、電子產品、娛樂（最多選2個），網上自選簽賬只計網上5%，不重覆計算。\n\n💡 迎新：全新客戶簽$5,000送$700；現有客戶簽$5,000送$300；學生簽$2,000送$300 (首60日)。13個月內取消會扣回迎新獎賞！\n\n🔥 **冬日簽賬賞**（至2026/2/28）：累積簽賬可享額外高達$2,800回贈！[查看詳情](/discover/hangseng-winter-2025)",
     officialApplyUrl: "https://www.hangseng.com/zh-hk/personal/cards/products/mmpower-world-mastercard/",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=212&a=228&sub_id1=pickcardrebate&sub_id2=web",
-    promoEndDate: "2026-02-28",
-    promoName: "恒生冬日簽賬賞",
+    promoEndDate: "2025-12-31",
+    promoName: "+FUN Dollars獎賞計劃",
   },
   {
     id: "hangseng-enjoy",
