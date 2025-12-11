@@ -54,6 +54,7 @@ import { XboxGuide, xboxFaqData } from "./xbox-guide";
 import { SwitchGuide, switchFaqData } from "./switch-guide";
 import { MilesCreditCardGuide, milesCreditCardFaqData } from "./miles-credit-card-guide";
 import { PaymentMethodsGuide, paymentMethodsFaqData } from "./payment-methods-guide";
+import { DahsingWinterPromoGuide, dahsingWinterPromoFaqData } from "./dahsing-winter-promo-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 import { ArticleTracker } from "@/app/discover/components/article-tracker";
 import { ArticleReviews } from "@/app/discover/components/article-reviews";
@@ -597,6 +598,31 @@ const GUIDES: Record<string, {
     ],
     publishDate: "2025-12-11",
     readTime: "15 分鐘",
+  },
+  "dahsing-winter-promo": {
+    id: "dahsing-winter-promo",
+    title: "大新信用卡冬日狂賞｜高達額外5%現金回贈",
+    seoTitle: "大新信用卡冬日狂賞 2025｜食肆5%網購3%額外回贈｜登記教學+回贈計算",
+    heroTitle: "🎁 大新信用卡冬日狂賞",
+    heroSubtitle: "高達額外 5% 現金回贈",
+    description: "大新信用卡冬日狂賞！登記後本地食肆享額外5%回贈，網上/旅遊/海外享額外3%回贈。推廣期2025年12月8日至2026年2月28日，名額8,000人先到先得！",
+    content: "dahsing-winter-promo",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["大新銀行", "冬日優惠", "現金回贈", "限時優惠"],
+    keywords: [
+      "大新信用卡優惠",
+      "大新冬日狂賞",
+      "大新信用卡回贈",
+      "大新ONE+優惠",
+      "信用卡食肆回贈",
+      "信用卡網購回贈",
+      "大新信用卡登記",
+      "冬日簽賬優惠",
+      "信用卡現金回贈",
+      "大新銀行優惠2025",
+    ],
+    publishDate: "2025-12-11",
+    readTime: "8 分鐘",
   },
   "low-income-guide": {
     id: "low-income-guide",
@@ -1557,6 +1583,8 @@ function getGuideFaqData(guideId: string) {
       return mobilePaymentFaqData;
     case "payment-methods-guide":
       return paymentMethodsFaqData;
+    case "dahsing-winter-promo":
+      return dahsingWinterPromoFaqData;
     case "low-income-guide":
       return lowIncomeFaqData;
     case "food-delivery-guide":
@@ -1633,6 +1661,8 @@ function renderGuideContent(guideId: string) {
       return <MobilePaymentGuide />;
     case "payment-methods-guide":
       return <PaymentMethodsGuide />;
+    case "dahsing-winter-promo":
+      return <DahsingWinterPromoGuide />;
     case "low-income-guide":
       return <LowIncomeGuide />;
     case "food-delivery-guide":
