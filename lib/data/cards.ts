@@ -1160,6 +1160,31 @@ export const HK_CARDS: CreditCard[] = [
     sellingPoints: ["本地食肆 3X 獎分 (1.2%)", "本地零售 2X 獎分 (0.8%)", "免外幣手續費", "內地消費免貨幣兌換費"],
     note: "💡 【推廣期 2025/1/1-12/31】本地食肆 3X (1.2%)，本地零售 2X (0.8%)。銀聯卡內地消費免貨幣兌換費。⚠️ 不計回贈：電子錢包充值(Alipay/PayMe/WeChat Pay)、保費、透過電子網絡繳款。八達通自動增值/政府部門簽賬每月上限 $40 回贈。年費 $600，首年免。",
   },
+  {
+    id: "bea-jcb-platinum",
+    name: "BEA JCB 白金卡",
+    bank: "東亞銀行",
+    cardNetwork: "jcb",
+    style: { bgColor: "bg-gradient-to-br from-blue-600 to-indigo-800", textColor: "text-white" },
+    foreignCurrencyFee: 1.95, // 一般外幣手續費
+    annualFee: 1800,
+    feeWaiverCondition: "首年免年費",
+    rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 獎分 = $1 回贈 (0.4%)
+    rules: [
+      // 限時優惠：本地及澳門實體店非接觸式簽賬高達15%
+      { description: "🔥非接觸式簽賬 15% [限時]", matchType: "paymentMethod", matchValue: ["contactless", "apple_pay", "google_pay"], percentage: 15.0, validDateRange: { start: "2025-01-01", end: "2025-12-31" }, excludeCategories: ["online", "ewallet", "insurance", "tax", "utilities"] },
+      // 基本獎賞：$250 = $1 (0.4%)
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+    ],
+    tags: ["JCB", "日本優惠", "非接觸式15%", "藥妝折扣", "機場貴賓室"],
+    welcomeOfferText: "迎新優惠請查詢官網",
+    officialApplyUrl: "https://www.hkbea.com/html/tc/bea-jcb-platinum-card.html",
+    applyUrl: "https://www.hkbea.com/html/tc/bea-jcb-platinum-card.html",
+    sellingPoints: ["🔥非接觸式簽賬高達15%回贈 [限時]", "日本藥妝店高達7%折扣", "日本電子產品店5%折扣", "日本/夏威夷機場貴賓室"],
+    note: "💡 **限時優惠**：本地及澳門實體店非接觸式簽賬可享高達15%現金回贈！\n\n🇯🇵 **日本JCB禮遇**：\n• 藥妝店高達7%折扣（松本清、大國藥妝等）\n• 電子產品店5%折扣 + 10%免稅（BIC CAMERA、友都八喜等）\n• Toyota Rent a Car 5%折扣\n• shibuya-san免費飲品+行李寄存\n\n✈️ **機場貴賓室**：日本及夏威夷機場貴賓室免費使用（至2026/3/31）\n\n⚠️ 不計回贈：保費、網上繳費、電子錢包充值（PayMe/八達通除外）、歐洲地區簽賬。政府/八達通每月上限$40回贈。",
+    promoEndDate: "2025-12-31",
+    promoName: "非接觸式簽賬高達15%回贈",
+  },
 
   // ========================================================================
   // PrimeCredit 安信 / WeWa
