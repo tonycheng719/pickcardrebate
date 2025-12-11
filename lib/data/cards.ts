@@ -1173,17 +1173,19 @@ export const HK_CARDS: CreditCard[] = [
     rules: [
       // 限時優惠：本地及澳門實體店非接觸式簽賬高達15%
       { description: "🔥非接觸式簽賬 15% [限時]", matchType: "paymentMethod", matchValue: ["contactless", "apple_pay", "google_pay"], percentage: 15.0, validDateRange: { start: "2025-01-01", end: "2025-12-31" }, excludeCategories: ["online", "ewallet", "insurance", "tax", "utilities"] },
+      // JCB 大灣區航空日本機票 8 折 (至2026/1/31)
+      { description: "🔥大灣區航空日本機票 8 折", matchType: "merchant", matchValue: ["greater-bay-airlines"], percentage: 20.0, isDiscount: true, validDateRange: { start: "2025-11-01", end: "2026-01-31" } },
       // JCB 香港松本清 3% 折扣 (至2026/12/31)
       { description: "香港松本清 3% 折扣", matchType: "merchant", matchValue: ["matsumoto-kiyoshi"], percentage: 3.0, isDiscount: true, validDateRange: { start: "2023-01-01", end: "2026-12-31" } },
       // 基本獎賞：$250 = $1 (0.4%)
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["JCB", "日本優惠", "非接觸式15%", "藥妝折扣", "機場貴賓室", "松本清3%"],
+    tags: ["JCB", "日本優惠", "非接觸式15%", "藥妝折扣", "機場貴賓室", "松本清3%", "大灣區航空8折"],
     welcomeOfferText: "迎新優惠請查詢官網",
     officialApplyUrl: "https://www.hkbea.com/html/tc/bea-jcb-platinum-card.html",
     applyUrl: "https://www.hkbea.com/html/tc/bea-jcb-platinum-card.html",
-    sellingPoints: ["🔥非接觸式簽賬高達15%回贈 [限時]", "香港松本清 3% 折扣", "日本藥妝店高達7%折扣", "日本/夏威夷機場貴賓室"],
-    note: "💡 **限時優惠**：本地及澳門實體店非接觸式簽賬可享高達15%現金回贈！\n\n🛒 **香港松本清 3% 折扣**（至2026/12/31）：憑JCB卡於香港松本清購物享3%折扣！需結賬前聲明使用JCB卡。\n\n🇯🇵 **日本JCB禮遇**：\n• 藥妝店高達7%折扣（松本清、大國藥妝等）\n• 電子產品店5%折扣 + 10%免稅（BIC CAMERA、友都八喜等）\n• Toyota Rent a Car 5%折扣\n• shibuya-san免費飲品+行李寄存\n\n✈️ **機場貴賓室**：日本及夏威夷機場貴賓室免費使用（至2026/3/31）\n\n⚠️ 不計回贈：保費、網上繳費、電子錢包充值（PayMe/八達通除外）、歐洲地區簽賬。政府/八達通每月上限$40回贈。",
+    sellingPoints: ["🔥大灣區航空日本機票 8 折 [限時]", "🔥非接觸式簽賬高達15%回贈 [限時]", "香港松本清 3% 折扣", "日本/夏威夷機場貴賓室"],
+    note: "💡 **限時優惠**：本地及澳門實體店非接觸式簽賬可享高達15%現金回贈！\n\n✈️ **大灣區航空日本機票 8 折**（至2026/1/31）：於大灣區航空官網預訂日本來回機票，輸入優惠碼「25JCBHKGPRO」享8折！適用航點：東京、大阪、仙台、札幌。\n\n🛒 **香港松本清 3% 折扣**（至2026/12/31）：憑JCB卡於香港松本清購物享3%折扣！需結賬前聲明使用JCB卡。\n\n🇯🇵 **日本JCB禮遇**：\n• 藥妝店高達7%折扣（松本清、大國藥妝等）\n• 電子產品店5%折扣 + 10%免稅（BIC CAMERA、友都八喜等）\n• Toyota Rent a Car 5%折扣\n• shibuya-san免費飲品+行李寄存\n\n✈️ **機場貴賓室**：日本及夏威夷機場貴賓室免費使用（至2026/3/31）\n\n⚠️ 不計回贈：保費、網上繳費、電子錢包充值（PayMe/八達通除外）、歐洲地區簽賬。政府/八達通每月上限$40回贈。",
     promoEndDate: "2025-12-31",
     promoName: "非接觸式簽賬高達15%回贈",
   },

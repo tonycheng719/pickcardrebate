@@ -45,6 +45,7 @@ export const POPULAR_MERCHANTS: Merchant[] = [
   { id: "klook", name: "Klook", categoryIds: ["travel", "online"], aliases: ["klook"], logo: "https://logo.clearbit.com/klook.com", accentColor: "#ff5b00", isOnlineOnly: true },
   { id: "cathay-pacific", name: "國泰航空 Cathay Pacific", categoryIds: ["travel"], aliases: ["cx", "cathay", "國泰", "cathay pacific"], logo: "https://logo.clearbit.com/cathaypacific.com", accentColor: "#006564", isOnlineOnly: true },
   { id: "hk-express", name: "香港快運 HK Express", categoryIds: ["travel"], aliases: ["uo", "hkexpress", "快運", "hk express"], logo: "https://logo.clearbit.com/hkexpress.com", accentColor: "#6a3077", isOnlineOnly: true },
+  { id: "greater-bay-airlines", name: "大灣區航空 Greater Bay Airlines", categoryIds: ["travel"], aliases: ["gba", "大灣區航空", "greater bay", "hb"], logo: "https://logo.clearbit.com/greaterbay-airlines.com", accentColor: "#0ea5e9", isOnlineOnly: true },
   
   // New Online Only Merchants
   { id: "kkday", name: "KKday", categoryIds: ["travel", "online"], aliases: ["kkday"], logo: "https://logo.clearbit.com/kkday.com", accentColor: "#22d3ee", isOnlineOnly: true },
