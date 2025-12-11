@@ -31,6 +31,7 @@ function mapCardFromDB(dbCard: any): CreditCard {
         welcomeOfferReward: dbCard.welcome_offer_reward,
         welcomeOfferDeadline: dbCard.welcome_offer_deadline,
         applyUrl: dbCard.apply_url || localCard?.applyUrl,
+        officialApplyUrl: localCard?.officialApplyUrl, // Official bank URL from local static data
         sellingPoints: localCard?.sellingPoints || dbCard.selling_points, // Prefer local for up-to-date selling points
         feeWaiverCondition: localCard?.feeWaiverCondition || dbCard.fee_waiver_condition, // Prefer local
         waiverMethod: dbCard.waiver_method,
