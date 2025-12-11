@@ -222,5 +222,15 @@ export const GUIDES: Guide[] = [
     merchant: "攻略",
     isNew: true,
   },
+  {
+    id: "dahsing-winter-promo",
+    type: "guide",
+    title: "大新信用卡冬日狂賞｜高達額外5%現金回贈",
+    description: "大新信用卡冬日狂賞！登記後本地食肆享額外5%回贈，網上/旅遊/海外享額外3%回贈。名額8,000人先到先得！",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["大新銀行", "冬日優惠", "現金回贈", "限時"],
+    merchant: "優惠",
+    isNew: true,
+  },
 ];
 
