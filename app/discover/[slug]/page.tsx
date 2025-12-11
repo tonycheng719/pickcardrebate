@@ -55,6 +55,7 @@ import { SwitchGuide, switchFaqData } from "./switch-guide";
 import { MilesCreditCardGuide, milesCreditCardFaqData } from "./miles-credit-card-guide";
 import { PaymentMethodsGuide, paymentMethodsFaqData } from "./payment-methods-guide";
 import { DahsingWinterPromoGuide } from "./dahsing-winter-promo-guide";
+import { TuitionFeeGuide, tuitionFeeFaqData } from "./tuition-fee-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 import { ArticleTracker } from "@/app/discover/components/article-tracker";
 import { ArticleReviews } from "@/app/discover/components/article-reviews";
@@ -495,6 +496,33 @@ const GUIDES: Record<string, {
       "學生信用卡2025",
     ],
     publishDate: "2025-01-01",
+    readTime: "12 分鐘",
+  },
+  "tuition-fee-guide": {
+    id: "tuition-fee-guide",
+    title: "交學費信用卡攻略｜大學學費最高4%回贈｜食迎新必睇",
+    seoTitle: "交學費信用卡攻略 2025｜大學學費信用卡回贈｜AlipayHK繳費4%｜食迎新",
+    heroTitle: "🎓 交學費信用卡攻略",
+    heroSubtitle: "大學學費最高4%回贈｜食迎新必睇",
+    description: "用信用卡交學費有回贈嗎？本文教你交學費信用卡攻略，比較各種繳費方式、AlipayHK/雲閃付繳費最高4%回贈，仲教你點用學費食迎新優惠！",
+    content: "tuition-fee-guide",
+    imageUrl: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop",
+    tags: ["學費", "大學", "AlipayHK", "信用卡攻略"],
+    keywords: [
+      "交學費信用卡",
+      "交學費信用卡回贈",
+      "大學學費信用卡",
+      "學費信用卡2025",
+      "AlipayHK交學費",
+      "雲閃付交學費",
+      "Flywire信用卡",
+      "學費迎新",
+      "交學費回贈",
+      "港大學費",
+      "中大學費",
+      "科大學費",
+    ],
+    publishDate: "2025-12-11",
     readTime: "12 分鐘",
   },
   "large-purchase-guide": {
@@ -1587,6 +1615,8 @@ function getGuideFaqData(guideId: string) {
       return noAnnualFeeFaqData;
     case "student-card-guide":
       return studentCardFaqData;
+    case "tuition-fee-guide":
+      return tuitionFeeFaqData;
     case "large-purchase-guide":
       return largePurchaseFaqData;
     case "octopus-guide":
@@ -1665,6 +1695,8 @@ function renderGuideContent(guideId: string) {
       return <NoAnnualFeeGuide />;
     case "student-card-guide":
       return <StudentCardGuide />;
+    case "tuition-fee-guide":
+      return <TuitionFeeGuide />;
     case "large-purchase-guide":
       return <LargePurchaseGuide />;
     case "octopus-guide":
