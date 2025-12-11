@@ -24,6 +24,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { HK_CARDS } from "@/lib/data/cards";
 import { useDataset } from "@/lib/admin/data-store";
+import { PARTNER_MODE_ENABLED } from "@/lib/config";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { LoginPromptDialog } from "@/components/login-prompt-dialog";
@@ -277,16 +278,19 @@ function CardItem({ card }: { card: CreditCard }) {
                     <p className="text-sm text-amber-900 dark:text-amber-100 leading-relaxed">
                       {card.welcomeOfferText}
                     </p>
-                    {card.applyUrl && (
-                      <a
-                        href={card.applyUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex mt-3 text-xs font-semibold text-amber-700 dark:text-amber-200 hover:underline"
-                      >
-                        立即查看詳情 →
-                      </a>
-                    )}
+                    {(() => {
+                      const applyLink = PARTNER_MODE_ENABLED && card.applyUrl ? card.applyUrl : (card.officialApplyUrl || card.applyUrl);
+                      return applyLink && (
+                        <a
+                          href={applyLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex mt-3 text-xs font-semibold text-amber-700 dark:text-amber-200 hover:underline"
+                        >
+                          立即查看詳情 →
+                        </a>
+                      );
+                    })()}
                   </div>
                 )}
                 
@@ -340,23 +344,28 @@ function CardItem({ card }: { card: CreditCard }) {
                         </Button>
                     </Link>
                     
-                    {card.applyUrl && (
-                        <a 
-                            href={card.applyUrl} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            onClick={() => trackClickApply({
-                                cardId: card.id,
-                                cardName: card.name,
-                                cardBank: card.bank,
-                                applyUrl: card.applyUrl,
-                            })}
-                        >
-                            <Button variant="ghost" size="icon" className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20" title="申請此卡">
-                                <ExternalLink className="h-4 w-4" />
-                            </Button>
-                        </a>
-                    )}
+                    {(() => {
+                        const isPartnerMode = PARTNER_MODE_ENABLED && !!card.applyUrl;
+                        const applyLink = isPartnerMode ? card.applyUrl : (card.officialApplyUrl || card.applyUrl);
+                        return applyLink && (
+                            <a 
+                                href={applyLink} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                onClick={() => trackClickApply({
+                                    cardId: card.id,
+                                    cardName: card.name,
+                                    cardBank: card.bank,
+                                    applyUrl: applyLink,
+                                    isPartner: isPartnerMode,
+                                })}
+                            >
+                                <Button variant="ghost" size="icon" className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20" title="申請此卡">
+                                    <ExternalLink className="h-4 w-4" />
+                                </Button>
+                            </a>
+                        );
+                    })()}
                 </div>
             </CardContent>
         </Card>

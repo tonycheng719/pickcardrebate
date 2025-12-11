@@ -15,6 +15,7 @@ import { POPULAR_MERCHANTS } from "@/lib/data/merchants";
 import { CATEGORIES } from "@/lib/data/categories";
 import { HK_CARDS } from "@/lib/data/cards";
 import { findBestCards, CalculationResult } from "@/lib/logic/calculator";
+import { PARTNER_MODE_ENABLED } from "@/lib/config";
 import { CreditCard as CreditCardType } from "@/lib/types";
 import { useWallet } from "@/lib/store/wallet-context";
   import { CheckCircle2, CreditCard, DollarSign, Sparkles, Flag, Info, Calendar, AlertCircle, Lightbulb, Store, Globe, ChevronDown, ChevronUp, BadgeCheck, Tag, AlertTriangle, Search, LogIn, PlusCircle, Loader2, History, HelpCircle, Swords, X, Share2 } from "lucide-react";
@@ -1088,15 +1089,20 @@ export function CreditCardCalculator({
                       >
                         <HelpCircle className="w-3 h-3" /> 點解係呢張？
                       </button>
-                      {best.card.applyUrl && (
-                        <Button
-                          size="sm"
-                          className="h-7 text-xs bg-orange-500 hover:bg-orange-600"
-                          onClick={() => window.open(best.card.applyUrl, "_blank")}
-                        >
-                          立即申請
-                        </Button>
-                      )}
+                      {(() => {
+                        const applyLink = PARTNER_MODE_ENABLED && best.card.applyUrl 
+                          ? best.card.applyUrl 
+                          : (best.card.officialApplyUrl || best.card.applyUrl);
+                        return applyLink && (
+                          <Button
+                            size="sm"
+                            className="h-7 text-xs bg-orange-500 hover:bg-orange-600"
+                            onClick={() => window.open(applyLink, "_blank")}
+                          >
+                            立即申請
+                          </Button>
+                        );
+                      })()}
                     </div>
                   </div>
 
@@ -1618,24 +1624,29 @@ export function CreditCardCalculator({
               </div>
 
               {/* CTA */}
-              {best.card.applyUrl ? (
-                <Button 
-                  className="w-full bg-orange-500 hover:bg-orange-600"
-                  onClick={() => {
-                    window.open(best.card.applyUrl, "_blank");
-                    setShowCompareDialog(false);
-                  }}
-                >
-                  立即申請 {best.card.name}
-                </Button>
-              ) : (
-                <Button 
-                  className="w-full bg-gray-800 hover:bg-gray-900"
-                  onClick={() => setShowCompareDialog(false)}
-                >
-                  明白，關閉
-                </Button>
-              )}
+              {(() => {
+                const applyLink = PARTNER_MODE_ENABLED && best.card.applyUrl 
+                  ? best.card.applyUrl 
+                  : (best.card.officialApplyUrl || best.card.applyUrl);
+                return applyLink ? (
+                  <Button 
+                    className="w-full bg-orange-500 hover:bg-orange-600"
+                    onClick={() => {
+                      window.open(applyLink, "_blank");
+                      setShowCompareDialog(false);
+                    }}
+                  >
+                    立即申請 {best.card.name}
+                  </Button>
+                ) : (
+                  <Button 
+                    className="w-full bg-gray-800 hover:bg-gray-900"
+                    onClick={() => setShowCompareDialog(false)}
+                  >
+                    明白，關閉
+                  </Button>
+                );
+              })()}
             </div>
           )}
         </DialogContent>
