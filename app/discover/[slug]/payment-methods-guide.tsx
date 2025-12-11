@@ -14,24 +14,24 @@ import {
 // FAQ 數據 - SEO 結構化資料
 export const paymentMethodsFaqData = [
   {
-    question: "Apple Pay 同實體卡回贈有冇分別？",
-    answer: "視乎信用卡！部分卡如恒生 MMPOWER、BOC SOGO Visa 用 Apple Pay 可獲額外 5% 回贈，但渣打 Simply Cash、安信 EarnMORE 則全部一樣。建議查閱各卡條款或使用 PickCardRebate 計算機查詢。"
+    question: "流動支付（Apple Pay / Google Pay）同實體卡回贈有冇分別？",
+    answer: "視乎信用卡！部分卡如恒生 MMPOWER、BOC SOGO Visa 用流動支付可獲額外 5% 回贈，但渣打 Simply Cash、安信 EarnMORE 則全部一樣。Apple Pay 和 Google Pay 回贈率通常相同，建議使用 PickCardRebate 計算機查詢。"
   },
   {
-    question: "網上用 Apple Pay 同直接輸入卡號有冇分別？",
+    question: "網上用 Apple Pay / Google Pay 同直接輸入卡號有冇分別？",
     answer: "通常冇分別！銀行會將兩者都歸類為「網上簽賬」。少數銀行可能有細微差異，但大多數情況下回贈率相同。"
   },
   {
-    question: "門市用 Apple Pay 會唔會當網購計？",
-    answer: "唔會。銀行可以識別到交易係透過實體店 NFC 支付，會歸類為「流動支付」或「感應式支付」，而非網上簽賬。"
+    question: "門市用流動支付會唔會當網購計？",
+    answer: "唔會。銀行可以識別到交易係透過實體店 NFC 支付，會歸類為「流動支付」或「感應式支付」，而非網上簽賬。Apple Pay 和 Google Pay 在實體店使用都屬於流動支付。"
   },
   {
-    question: "Google Pay 同 Apple Pay 回贈一樣嗎？",
-    answer: "大多數銀行將 Apple Pay 和 Google Pay 一視同仁，都歸類為「流動支付」或「手機支付」。但個別推廣活動可能只限某一種，建議查閱條款。"
+    question: "流動支付同增值型電子錢包有咩分別？",
+    answer: "流動支付（Apple Pay / Google Pay）直接從信用卡扣款，多數銀行有回贈。增值型電子錢包（AlipayHK、WeChat Pay、PayMe）需要先用信用卡增值，增值交易多數銀行不計回贈，係兩種完全唔同嘅支付方式！"
   },
   {
-    question: "電子錢包（AlipayHK、PayMe）有冇回贈？",
-    answer: "多數銀行對電子錢包增值或消費設有限制：1) 增值通常無回贈或有月簽上限；2) 部分銀行完全不計回贈；3) 少數銀行如渣打 Simply Cash 可計回贈但有上限。建議用前查清楚！"
+    question: "增值型電子錢包（AlipayHK、PayMe）有冇回贈？",
+    answer: "多數銀行對增值型電子錢包增值設有限制：1) 增值通常無回贈或有月簽上限；2) 部分銀行完全不計回贈；3) 少數銀行如渣打 Simply Cash 可計回贈但有上限。建議用前查清楚！注意：呢類錢包同 Apple Pay / Google Pay 唔同。"
   },
   {
     question: "八達通自動增值有冇回贈？",
@@ -39,11 +39,11 @@ export const paymentMethodsFaqData = [
   },
   {
     question: "邊種支付方式最安全？",
-    answer: "Apple Pay / Google Pay 最安全！因為：1) 不會暴露真實卡號；2) 每次交易用獨特 Token；3) 需要 Face ID/Touch ID 驗證。網上輸入卡號風險較高，建議用 3D Secure 驗證。"
+    answer: "流動支付（Apple Pay / Google Pay）最安全！因為：1) 不會暴露真實卡號；2) 每次交易用獨特 Token；3) 需要 Face ID/Touch ID 驗證。網上輸入卡號風險較高，建議用 3D Secure 驗證。"
   },
   {
-    question: "海外用 Apple Pay 有冇額外手續費？",
-    answer: "Apple Pay 本身無額外手續費，但信用卡的外幣交易手續費（通常 1.95%）仍然適用。選擇免外幣手續費的卡如渣打國泰、SC Smart Card 可避免此費用。"
+    question: "海外用流動支付有冇額外手續費？",
+    answer: "Apple Pay / Google Pay 本身無額外手續費，但信用卡的外幣交易手續費（通常 1.95%）仍然適用。選擇免外幣手續費的卡如渣打國泰、SC Smart Card 可避免此費用。"
   }
 ];
 
