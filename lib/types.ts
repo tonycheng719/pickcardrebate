@@ -233,6 +233,7 @@ export interface PartnerOffer {
 export interface BankPromoTier {
   minSpend: number; // 最低簽賬金額
   reward: string; // 獎賞描述
+  rewardYuu?: string; // yuu積分版本（enJoy卡專用）
   rewardValue: number; // 獎賞價值
   extraReward?: string; // 額外獎賞（如Visa卡額外）
   extraRewardValue?: number;
@@ -261,4 +262,5 @@ export interface BankPromo {
   notes?: string; // 備註
   visaExtraReward?: boolean; // Visa卡有額外獎賞
   maxReward?: string; // 最高可獲獎賞
+  maxRewardYuu?: string; // yuu積分版本最高獎賞（enJoy卡專用）
 }

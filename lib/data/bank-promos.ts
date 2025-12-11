@@ -9,6 +9,8 @@ export const HANGSENG_WINTER_PROMO: BankPromo = {
   validTo: "2026-02-28",
   visaExtraReward: true,
   maxReward: "$2,800 +FUN Dollars",
+  // enJoy 卡專用 yuu 版本（$1 = 200 yuu）
+  maxRewardYuu: "560,000 yuu積分",
   registrationUrl: "https://www.hangseng.com/zh-hk/personal/cards/promotions/winter-spending-rewards/",
   termsUrl: "https://www.hangseng.com/zh-hk/personal/cards/promotions/winter-spending-rewards/",
   
@@ -21,6 +23,7 @@ export const HANGSENG_WINTER_PROMO: BankPromo = {
         { 
           minSpend: 8000, 
           reward: "$150 +FUN Dollars", 
+          rewardYuu: "30,000 yuu積分",
           rewardValue: 150,
           extraReward: "$100",
           extraRewardValue: 100
@@ -28,6 +31,7 @@ export const HANGSENG_WINTER_PROMO: BankPromo = {
         { 
           minSpend: 15000, 
           reward: "$500 +FUN Dollars", 
+          rewardYuu: "100,000 yuu積分",
           rewardValue: 500,
           extraReward: "$200",
           extraRewardValue: 200
@@ -42,6 +46,7 @@ export const HANGSENG_WINTER_PROMO: BankPromo = {
         { 
           minSpend: 8000, 
           reward: "$150 +FUN Dollars", 
+          rewardYuu: "30,000 yuu積分",
           rewardValue: 150,
           extraReward: "$100",
           extraRewardValue: 100
@@ -49,6 +54,7 @@ export const HANGSENG_WINTER_PROMO: BankPromo = {
         { 
           minSpend: 15000, 
           reward: "$500 +FUN Dollars", 
+          rewardYuu: "100,000 yuu積分",
           rewardValue: 500,
           extraReward: "$200",
           extraRewardValue: 200
@@ -61,6 +67,7 @@ export const HANGSENG_WINTER_PROMO: BankPromo = {
     {
       minSpend: 5000, // 網上/外幣簽賬
       reward: "獎賞二：$100 (需達獎賞一+網上/外幣簽$5,000)",
+      rewardYuu: "獎賞二：20,000 yuu (需達獎賞一+網上/外幣簽$5,000)",
       rewardValue: 100,
       extraReward: "$100",
       extraRewardValue: 100
@@ -68,6 +75,7 @@ export const HANGSENG_WINTER_PROMO: BankPromo = {
     {
       minSpend: 60000, // 全期累積
       reward: "獎賞三：$600 (全期簽$60,000)",
+      rewardYuu: "獎賞三：120,000 yuu (全期簽$60,000)",
       rewardValue: 600,
       extraReward: "$400",
       extraRewardValue: 400

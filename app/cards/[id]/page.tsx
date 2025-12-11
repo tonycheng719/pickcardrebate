@@ -504,6 +504,7 @@ export default function CardDetailPage() {
                   promo={promo}
                   cardBank={card.bank}
                   isVisaCard={card.name.toLowerCase().includes('visa') || card.id.includes('visa')}
+                  isEnjoyCard={card.id === 'hangseng-enjoy'}
                 />
               </motion.div>
             ))}

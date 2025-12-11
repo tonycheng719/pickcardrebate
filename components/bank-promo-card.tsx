@@ -14,9 +14,10 @@ interface BankPromoCardProps {
   promo: BankPromo;
   cardBank?: string;
   isVisaCard?: boolean;
+  isEnjoyCard?: boolean; // enJoy 卡使用 yuu 積分
 }
 
-export function BankPromoCard({ promo, cardBank, isVisaCard = false }: BankPromoCardProps) {
+export function BankPromoCard({ promo, cardBank, isVisaCard = false, isEnjoyCard = false }: BankPromoCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [mounted, setMounted] = useState(false);
   
@@ -84,7 +85,7 @@ export function BankPromoCard({ promo, cardBank, isVisaCard = false }: BankPromo
                 最高可獲獎賞
               </div>
               <div className="text-2xl font-bold text-sky-600 dark:text-sky-400">
-                {promo.maxReward}
+                {isEnjoyCard && promo.maxRewardYuu ? promo.maxRewardYuu : promo.maxReward}
               </div>
               {isVisaCard && promo.visaExtraReward && (
                 <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">
@@ -118,7 +119,7 @@ export function BankPromoCard({ promo, cardBank, isVisaCard = false }: BankPromo
                       </span>
                       <div className="text-right">
                         <span className="font-medium text-gray-900 dark:text-white">
-                          {tier.reward}
+                          {isEnjoyCard && tier.rewardYuu ? tier.rewardYuu : tier.reward}
                         </span>
                         {isVisaCard && tier.extraReward && (
                           <span className="ml-2 text-blue-600 dark:text-blue-400">
@@ -149,7 +150,7 @@ export function BankPromoCard({ promo, cardBank, isVisaCard = false }: BankPromo
                   </span>
                   <div className="text-right">
                     <span className="font-medium text-gray-900 dark:text-white">
-                      {tier.reward}
+                      {isEnjoyCard && tier.rewardYuu ? tier.rewardYuu : tier.reward}
                     </span>
                     {isVisaCard && tier.extraReward && (
                       <span className="ml-2 text-blue-600 dark:text-blue-400">
@@ -179,7 +180,7 @@ export function BankPromoCard({ promo, cardBank, isVisaCard = false }: BankPromo
                     </span>
                     <div className="text-right">
                       <span className="font-medium text-amber-700 dark:text-amber-300">
-                        {tier.reward}
+                        {isEnjoyCard && tier.rewardYuu ? tier.rewardYuu : tier.reward}
                       </span>
                       {isVisaCard && tier.extraReward && (
                         <span className="ml-2 text-blue-600 dark:text-blue-400">
