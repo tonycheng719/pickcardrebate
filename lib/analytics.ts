@@ -14,6 +14,8 @@ export type AnalyticsEvent =
   | 'select_category'
   | 'view_card'
   | 'click_apply'
+  | 'click_apply_official'
+  | 'click_apply_partner'
   | 'click_partner_apply'
   | 'compare_cards'
   | 'sign_up'
