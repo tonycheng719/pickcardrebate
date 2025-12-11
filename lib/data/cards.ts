@@ -1806,18 +1806,18 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rules: [
       // T&C: 網上簽賬 20X 積分 = 8%，額外積分上限75,000/月 = 簽賬上限 $3,947
-      { description: "網上簽賬 8% (20X)", matchType: "category", matchValue: "online", percentage: 8.0, cap: 3947, capType: "spending", excludeCategories: ["ewallet", "insurance", "tax"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      { description: "網上簽賬 8% (20X) [上限$3,947]", matchType: "category", matchValue: "online", percentage: 8.0, cap: 3947, capType: "spending", excludeCategories: ["ewallet", "insurance", "tax"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 流動支付及八達通自動增值也計積分
       { description: "流動支付 0.4%", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 0.4 },
       { description: "八達通自動增值 0.4%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
     tags: ["網購8%", "年輕人", "無需登記"],
-    welcomeOfferText: "迎新簽 $5,000 送 $150 現金回贈 (首3個月)",
+    welcomeOfferText: "迎新簽 $5,000 送 $300 現金回贈 (首3個月)",
     sellingPoints: ["網上簽賬 8% 回贈 (無需登記)", "每月簽賬上限 $3,947", "永久免年費", "流動支付/八達通增值計積分"],
     officialApplyUrl: "https://www.fubonbank.com.hk/tc/personal/credit-card/in-card.html",
     applyUrl: "https://www.fubonbank.com.hk/tc/cards/credit-card-products/incard.html",
-    note: "💡 【推廣期 2025/4/28-12/31】網上簽賬 8% (1X基本+19X額外=20X積分) 無需登記！每月額外積分上限 75,000 (即每月首 $3,947 網上簽賬享 8%)。流動支付及八達通自動增值也計 0.4% 積分。不計回贈：Alipay/WeChat Pay/PayMe 充值、保險、稅務。迎新：首3個月簽 $5,000 送 $150 現金回贈。14個月內取消扣回迎新。積分有效期一年，250分=$1。",
+    note: "💡 【推廣期 2025/4/28-12/31】網上簽賬 8% (1X基本+19X額外=20X積分) 無需登記！每月額外積分上限 75,000 (即每月首 $3,947 網上簽賬享 8%)。\n\n⚠️ **重要注意**：\n• 每月上限以**記賬日**計算（非交易日），月底簽賬可能跌落下月 quota\n• 海外商戶簽港幣有 **1% CBF 手續費**（如 App Store/Netflix/Spotify/Airbnb）\n• 積分有效期一年，250分=$1\n\n✅ 流動支付及八達通自動增值也計 0.4% 積分\n❌ 不計回贈：Alipay/WeChat Pay/PayMe 充值、保險、稅務\n\n🎁 **迎新**：首3個月簽 $5,000 送 $300 現金回贈，配合8%網購迎新期可賺高達 $700！14個月內取消扣回迎新。",
     promoEndDate: "2025-12-31",
     promoName: "富邦 iN VISA 網上簽賬 8% 推廣",
   },
