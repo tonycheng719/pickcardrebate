@@ -155,18 +155,31 @@ export function trackViewCard(params: {
 
 /**
  * Track click apply event (when user clicks to apply for a card)
+ * @param isPartner - true for partner link (e.g. MoneyHero), false for official bank link
  */
 export function trackClickApply(params: {
   cardId: string;
   cardName: string;
   cardBank: string;
   applyUrl?: string;
+  isPartner?: boolean;
 }): void {
+  const eventName = params.isPartner ? 'click_apply_partner' : 'click_apply_official';
+  trackEvent(eventName, {
+    card_id: params.cardId,
+    card_name: params.cardName,
+    card_bank: params.cardBank,
+    content_type: 'credit_card_application',
+    apply_type: params.isPartner ? 'partner' : 'official',
+  });
+  
+  // Also track generic click_apply for backward compatibility
   trackEvent('click_apply', {
     card_id: params.cardId,
     card_name: params.cardName,
     card_bank: params.cardBank,
     content_type: 'credit_card_application',
+    apply_type: params.isPartner ? 'partner' : 'official',
   });
 }
 

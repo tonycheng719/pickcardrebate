@@ -48,7 +48,8 @@ export interface CreditCard {
   feeWaiverCondition?: string;
   rules: RewardRule[];
   tags: string[];
-  applyUrl?: string;
+  applyUrl?: string; // Partner apply URL (e.g. MoneyHero)
+  officialApplyUrl?: string; // Official bank apply URL
   rewardTimeline?: string;
   waiverMethod?: string;
   foreignCurrencyFee?: number;

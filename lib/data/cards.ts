@@ -32,6 +32,7 @@ export const HK_CARDS: CreditCard[] = [
     imageUrl: "https://pickcardrebate-supabase-kong.zeabur.app/storage/v1/object/public/images/cards/1764329466898-zu95i1newy.png",
     feeWaiverCondition: "首兩年免年費",
     welcomeOfferText: "迎新簽 $8,000 送 $600-$800 獎賞錢 (首60日內)",
+    officialApplyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/visa-signature/",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=255&a=228&sub_id1=pickcardrebate&sub_id2=web",
     sellingPoints: ["最紅自主獎賞 9X (3.6%)，5大類別自由分配", "💡 Travel Guru 海外實體店可達 6.6%~9.6%", "首 $100,000 簽賬享額外獎賞"],
     note: "⚠️ 【最紅自主獎賞 2026】需於 2026/10/31 前登記！**Visa Signature 專享 9X = 5X額外 + 1X基本 + 3X VS專享 = 3.6%**。5大類別：賞滋味/賞家居/賞享受/賞購物/賞世界，可自由分配 5X 額外倍數。首 $100,000 簽賬享額外獎賞。\n\n🌍 **Travel Guru 會員計劃**（登記期 2025/10/1-10/31）：海外實體店外幣簽賬額外回贈！\n• GO級 +3%（連續3個月簽≥$8,000解鎖，上限$500/年）→ 合共 **6.6%**\n• GING級 +4%（累積≥$30,000，上限$1,200/年）→ 合共 **7.6%**\n• GURU級 +6%（累積≥$70,000，上限$2,200/年）→ 合共 **9.6%**\n⚠️ 2024/9起只限海外實體店，不包括網購、電子錢包、八達通增值。\n\n⚠️ 賞滋味限制：不包括酒席宴會、私人宴會、包場派對、酒店/百貨公司/俱樂部內飲食專櫃。⚠️ 賞世界限制：不包括香港進行或以港幣交易的簽賬。❌ 不適用於電子錢包（Alipay/WeChat Pay/PayMe）、八達通增值、繳稅、網上繳費。\n\n🔥 **最紅冬日賞萬寧**（至2026/2/28）：週末高達10%回贈！[查看詳情](/discover/hsbc-mannings-winter-2025)\n\n🔥 **最紅冬日賞百老滙**（至2026/2/28）：累積簽賬滿$10,000享6%回贈！[查看詳情](/discover/hsbc-broadway-winter-2025)",

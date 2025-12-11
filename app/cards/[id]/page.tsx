@@ -381,25 +381,63 @@ export default function CardDetailPage() {
                 />
               </div>
 
-              {/* Apply Button */}
-              {card.applyUrl && (
-                <a 
-                  href={card.applyUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="block"
-                  onClick={() => trackClickApply({
-                    cardId: card.id,
-                    cardName: card.name,
-                    cardBank: card.bank,
-                    applyUrl: card.applyUrl,
-                  })}
-                >
-                  <Button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
-                    立即申請 <ExternalLink className="h-4 w-4 ml-2" />
+              {/* Apply Buttons */}
+              <div className="space-y-2">
+                {/* Official Bank Apply Button (Primary) */}
+                {card.officialApplyUrl && (
+                  <a 
+                    href={card.officialApplyUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="block"
+                    onClick={() => trackClickApply({
+                      cardId: card.id,
+                      cardName: card.name,
+                      cardBank: card.bank,
+                      applyUrl: card.officialApplyUrl,
+                      isPartner: false,
+                    })}
+                  >
+                    <Button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
+                      立即申請 <ExternalLink className="h-4 w-4 ml-2" />
+                    </Button>
+                  </a>
+                )}
+                
+                {/* Partner Apply Button (Secondary, e.g. MoneyHero) */}
+                {card.applyUrl && (
+                  <a 
+                    href={card.applyUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="block"
+                    onClick={() => trackClickApply({
+                      cardId: card.id,
+                      cardName: card.name,
+                      cardBank: card.bank,
+                      applyUrl: card.applyUrl,
+                      isPartner: true,
+                    })}
+                  >
+                    <Button 
+                      variant={card.officialApplyUrl ? "outline" : "default"}
+                      className={card.officialApplyUrl 
+                        ? "w-full border-orange-500 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-900/20" 
+                        : "w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+                      }
+                    >
+                      {card.officialApplyUrl ? "🎁 經 MoneyHero 申請" : "立即申請"} <ExternalLink className="h-4 w-4 ml-2" />
+                    </Button>
+                  </a>
+                )}
+                
+                {/* Fallback if neither URL exists */}
+                {!card.officialApplyUrl && !card.applyUrl && (
+                  <Button className="w-full" disabled>
+                    暫無申請連結
                   </Button>
-                </a>
-              )}
+                )}
+              </div>
             </motion.div>
           </div>
 
