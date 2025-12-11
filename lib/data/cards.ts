@@ -17,7 +17,7 @@ export const HK_CARDS: CreditCard[] = [
     rules: [
       // 🔥 最紅冬日賞 - 百老滙 (2025/12/1 - 2026/2/28)
       // 累積簽賬滿 $10,000 享 6% 回贈 (上限 $900)，單一簽賬需滿 $500，需登記
-      { description: "🔥百老滙 6% [冬日賞,累積$10k,需登記]", matchType: "merchant", matchValue: ["broadway"], percentage: 6.0, minSpend: 500, cap: 900, capType: "reward", validDateRange: { start: "2025-12-01", end: "2026-02-28" } },
+      { description: "🔥百老滙 6% [冬日賞,累積$10,000,需登記]", matchType: "merchant", matchValue: ["broadway"], percentage: 6.0, minSpend: 500, cap: 900, capType: "reward", validDateRange: { start: "2025-12-01", end: "2026-02-28" } },
       // T&C: 最紅自主獎賞 9X (3.6%)，需登記，額外「獎賞錢」簽賬上限 $100,000
       // Visa Signature: 9X = 5X額外 + 1X基本 + 3X VS專享 = 3.6%
       // 5大類別：賞滋味/賞購物/賞家居/賞享受/賞世界，可自由分配 5X 額外倍數
@@ -51,7 +51,7 @@ export const HK_CARDS: CreditCard[] = [
     rules: [
       // 🔥 最紅冬日賞 - 百老滙 (2025/12/1 - 2026/2/28)
       // 累積簽賬滿 $10,000 享 6% 回贈 (上限 $900)，單一簽賬需滿 $500，需登記
-      { description: "🔥百老滙 6% [冬日賞,累積$10k,需登記]", matchType: "merchant", matchValue: ["broadway"], percentage: 6.0, minSpend: 500, cap: 900, capType: "reward", validDateRange: { start: "2025-12-01", end: "2026-02-28" } },
+      { description: "🔥百老滙 6% [冬日賞,累積$10,000,需登記]", matchType: "merchant", matchValue: ["broadway"], percentage: 6.0, minSpend: 500, cap: 900, capType: "reward", validDateRange: { start: "2025-12-01", end: "2026-02-28" } },
       // T&C 2025/9/1-2026/3/31: 指定商戶 8% (每月首$1,250 = $100獎賞錢上限)
       // 餐飲：壽司郎/譚仔三哥/譚仔雲南/The Coffee Academïcs
       // 潮流及運動服飾：GU/Decathlon/lululemon
@@ -88,7 +88,7 @@ export const HK_CARDS: CreditCard[] = [
     rules: [
       // 🔥 最紅冬日賞 - 百老滙 (2025/12/1 - 2026/2/28)
       // 累積簽賬滿 $10,000 享 6% 回贈 (上限 $900)，單一簽賬需滿 $500，需登記
-      { description: "🔥百老滙 6% [冬日賞,累積$10k,需登記]", matchType: "merchant", matchValue: ["broadway"], percentage: 6.0, minSpend: 500, cap: 900, capType: "reward", validDateRange: { start: "2025-12-01", end: "2026-02-28" } },
+      { description: "🔥百老滙 6% [冬日賞,累積$10,000,需登記]", matchType: "merchant", matchValue: ["broadway"], percentage: 6.0, minSpend: 500, cap: 900, capType: "reward", validDateRange: { start: "2025-12-01", end: "2026-02-28" } },
       // T&C: 指定商戶/交通 $2/里 (2.5%)
       { description: "指定商戶/交通 $2/里 (2.5%)", matchType: "category", matchValue: ["transport", "online", "dining"], percentage: 2.5, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       { description: "海外簽賬 $2/里 (2.5%)", matchType: "base", percentage: 2.5, isForeignCurrency: true },
@@ -118,7 +118,7 @@ export const HK_CARDS: CreditCard[] = [
     rules: [
       // 🔥 最紅冬日賞 - 百老滙 (2025/12/1 - 2026/2/28)
       // 銀聯卡：累積簽賬滿 $10,000 享 8% 回贈 (上限 $1,000)，單一簽賬需滿 $500，需登記
-      { description: "🔥百老滙 8% [冬日賞,累積$10k,需登記]", matchType: "merchant", matchValue: ["broadway"], percentage: 8.0, minSpend: 500, cap: 1000, capType: "reward", validDateRange: { start: "2025-12-01", end: "2026-02-28" } },
+      { description: "🔥百老滙 8% [冬日賞,累積$10,000,需登記]", matchType: "merchant", matchValue: ["broadway"], percentage: 8.0, minSpend: 500, cap: 1000, capType: "reward", validDateRange: { start: "2025-12-01", end: "2026-02-28" } },
       // T&C 2025: 內地/澳門 QR Code/流動支付 額外5倍 (2%) + 基本0.4% + 賞世界2% = 4.4%
       // 簽賬上限 $80,000
       { description: "內地/澳門 QR Code/流動支付 4.4%", matchType: "base", percentage: 4.4, isForeignCurrency: true, cap: 80000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
@@ -151,7 +151,7 @@ export const HK_CARDS: CreditCard[] = [
     rules: [
       // 🔥 最紅冬日賞 - 百老滙 (2025/12/1 - 2026/2/28)
       // 累積簽賬滿 $10,000 享 6% 回贈 (上限 $900)，單一簽賬需滿 $500，需登記
-      { description: "🔥百老滙 6% [冬日賞,累積$10k,需登記]", matchType: "merchant", matchValue: ["broadway"], percentage: 6.0, minSpend: 500, cap: 900, capType: "reward", validDateRange: { start: "2025-12-01", end: "2026-02-28" } },
+      { description: "🔥百老滙 6% [冬日賞,累積$10,000,需登記]", matchType: "merchant", matchValue: ["broadway"], percentage: 6.0, minSpend: 500, cap: 900, capType: "reward", validDateRange: { start: "2025-12-01", end: "2026-02-28" } },
       // T&C: 最紅自主獎賞適用
       { description: "海外/網上簽賬 2.4%", matchType: "category", matchValue: ["travel", "online"], percentage: 2.4, minSpend: 8000, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 基本回饋 0.4%，排除電子錢包、繳稅、繳費
@@ -509,10 +509,10 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rules: [
       // T&C: 海外外幣 6% (需月簽賬滿$5,000，每月上限$500回贈，優惠期至2025/12/31)
-      { description: "海外外幣簽賬 6% [需月簽$5k,需登記]", matchType: "base", percentage: 6.0, monthlyMinSpend: 5000, isForeignCurrency: true, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"], validDateRange: { start: "2024-07-01", end: "2025-12-31" } },
+      { description: "海外外幣簽賬 6% [需月簽$5,000,需登記]", matchType: "base", percentage: 6.0, monthlyMinSpend: 5000, isForeignCurrency: true, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"], validDateRange: { start: "2024-07-01", end: "2025-12-31" } },
       // T&C: 網上簽賬 5% (需月簽賬滿$5,000，與海外/自選共用$500上限)
       // 不包括網上繳費、保險、電子錢包
-      { description: "網上簽賬 5% [需月簽$5k,需登記]", matchType: "category", matchValue: "online", percentage: 5.0, monthlyMinSpend: 5000, cap: 500, capType: "reward", excludeCategories: ["ewallet", "utilities", "insurance", "tax"], excludePaymentMethods: ["alipay", "wechat_pay", "octopus"], validDateRange: { start: "2024-07-01", end: "2025-12-31" } },
+      { description: "網上簽賬 5% [需月簽$5,000,需登記]", matchType: "category", matchValue: "online", percentage: 5.0, monthlyMinSpend: 5000, cap: 500, capType: "reward", excludeCategories: ["ewallet", "utilities", "insurance", "tax"], excludePaymentMethods: ["alipay", "wechat_pay", "octopus"], validDateRange: { start: "2024-07-01", end: "2025-12-31" } },
       // T&C: 自選類別 (餐飲/電子產品/娛樂，最多選2個) 1%
       // 餐飲不包括：快餐店、酒店/百貨公司/俱樂部內食肆
       // 網上自選簽賬會計入網上5%，不會計入自選1%
@@ -718,8 +718,8 @@ export const HK_CARDS: CreditCard[] = [
       // 優惠一：單一簽賬滿$3,500享$100一扣即享 (2.86%)
       // 優惠二：單一簽賬滿$8,000享$320一扣即享 (4%)
       // 每月只可享其中一個優惠一次，需開啟DBS Card+ App「一扣即享」
-      { description: "🔥衛訊 4% [$8k享$320一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 4.0, minSpend: 8000, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
-      { description: "🔥衛訊 2.86% [$3.5k享$100一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 2.86, minSpend: 3500, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
+      { description: "🔥衛訊 4% [$8,000享$320一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 4.0, minSpend: 8000, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
+      { description: "🔥衛訊 2.86% [$3,500享$100一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 2.86, minSpend: 3500, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
       // T&C: 海外簽賬 5% (單筆≥$300，Signature卡每月首$8,000)
       { description: "海外簽賬 5% [單筆≥$300]", matchType: "base", percentage: 5.0, isForeignCurrency: true, minSpend: 300, cap: 8000, capType: "spending", excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
       // T&C: 指定類別 5%: 餐飲/運動服飾/健身中心/醫療 (單筆≥$300，Signature卡每月首$8,000)
@@ -753,8 +753,8 @@ export const HK_CARDS: CreditCard[] = [
     rewardConfig: { method: 'direct_rate', baseRate: 6, currency: 'DBS$' }, // $6/mile standard
     rules: [
       // 🔥 DBS x 衛訊優惠 (2025/12/1 - 2026/2/28)
-      { description: "🔥衛訊 4% [$8k享$320一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 4.0, minSpend: 8000, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
-      { description: "🔥衛訊 2.86% [$3.5k享$100一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 2.86, minSpend: 3500, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
+      { description: "🔥衛訊 4% [$8,000享$320一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 4.0, minSpend: 8000, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
+      { description: "🔥衛訊 2.86% [$3,500享$100一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 2.86, minSpend: 3500, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
       { description: "旅遊/酒店 $4/里 (2.5%)", matchType: "category", matchValue: ["travel", "hotel", "airline"], percentage: 2.5, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
       { description: "外幣簽賬 $4/里", matchType: "base", percentage: 2.5, isForeignCurrency: true }, // ~2.5% value
       { description: "本地簽賬 $6/里", matchType: "base", percentage: 1.6, excludeCategories: ["tax", "utilities", "government", "insurance"] }, // ~1.6% value
@@ -780,8 +780,8 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rules: [
       // 🔥 DBS x 衛訊優惠 (2025/12/1 - 2026/2/28)
-      { description: "🔥衛訊 4% [$8k享$320一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 4.0, minSpend: 8000, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
-      { description: "🔥衛訊 2.86% [$3.5k享$100一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 2.86, minSpend: 3500, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
+      { description: "🔥衛訊 4% [$8,000享$320一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 4.0, minSpend: 8000, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
+      { description: "🔥衛訊 2.86% [$3,500享$100一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 2.86, minSpend: 3500, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
       // 基本回贈 0.4%，排除電子錢包、八達通、繳費等
       // 注意：自選類別 5% 推廣已於 2025/3/31 結束
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
@@ -805,8 +805,8 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rules: [
       // 🔥 DBS x 衛訊優惠 (2025/12/1 - 2026/2/28)
-      { description: "🔥衛訊 4% [$8k享$320一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 4.0, minSpend: 8000, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
-      { description: "🔥衛訊 2.86% [$3.5k享$100一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 2.86, minSpend: 3500, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
+      { description: "🔥衛訊 4% [$8,000享$320一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 4.0, minSpend: 8000, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
+      { description: "🔥衛訊 2.86% [$3,500享$100一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 2.86, minSpend: 3500, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
       // T&C「四圍簽，好 COM 賺」: 指定類別 2% (0.4% 基本 + 1.6% 額外)
       // 指定類別：AliPay/AliPayHK/WeChat Pay、百貨公司、家居傢俬、油站
       // 單筆≥$300，每月首 $12,500
@@ -1196,13 +1196,13 @@ export const HK_CARDS: CreditCard[] = [
       // T&C 2025/7/1-2026/6/30: 玩樂類別 4 選 1，需月簽$1,500，每月回贈上限 $200
       // 回贈率已包含基本 0.4%，顯示為總回贈 4%
       // 1. 手機支付 (Apple Pay/銀聯手機閃付/銀聯二維碼) - ⚠️ WeWa Visa + Android 暫不支援
-      { description: "手機支付 4% [需月簽$1.5k,4選1]", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay"], percentage: 4.0, monthlyMinSpend: 1500, cap: 200, capType: "reward", excludeCategories: ["ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "手機支付 4% [需月簽$1,500,4選1]", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay"], percentage: 4.0, monthlyMinSpend: 1500, cap: 200, capType: "reward", excludeCategories: ["ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
       // 2. 旅遊簽賬 (旅行社/航空公司/酒店客房住宿)
-      { description: "旅遊 4% [需月簽$1.5k,4選1]", matchType: "category", matchValue: ["travel"], percentage: 4.0, monthlyMinSpend: 1500, cap: 200, capType: "reward", excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "旅遊 4% [需月簽$1,500,4選1]", matchType: "category", matchValue: ["travel"], percentage: 4.0, monthlyMinSpend: 1500, cap: 200, capType: "reward", excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
       // 3. 海外簽賬 (非香港登記商戶 + 外幣交易)，扣除1%外幣手續費後淨回贈約3%
-      { description: "海外 4% [需月簽$1.5k,4選1]", matchType: "base", percentage: 4.0, isForeignCurrency: true, monthlyMinSpend: 1500, cap: 200, capType: "reward", excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "海外 4% [需月簽$1,500,4選1]", matchType: "base", percentage: 4.0, isForeignCurrency: true, monthlyMinSpend: 1500, cap: 200, capType: "reward", excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
       // 4. 線上娛樂 (Apple App Store/Disney+/Google Play/JOOX/KKBOX/MyTV SUPER/Netflix/Nintendo/Patreon/PlayStation/Spotify/Steam/Xbox/YouTube)
-      { description: "線上娛樂 4% [需月簽$1.5k,4選1]", matchType: "merchant", matchValue: ["netflix", "spotify", "disney-plus", "youtube", "steam", "playstation", "xbox", "nintendo", "kkbox", "joox", "mytv-super", "patreon", "apple-app-store", "google-play"], percentage: 4.0, monthlyMinSpend: 1500, cap: 200, capType: "reward", excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "線上娛樂 4% [需月簽$1,500,4選1]", matchType: "merchant", matchValue: ["netflix", "spotify", "disney-plus", "youtube", "steam", "playstation", "xbox", "nintendo", "kkbox", "joox", "mytv-super", "patreon", "apple-app-store", "google-play"], percentage: 4.0, monthlyMinSpend: 1500, cap: 200, capType: "reward", excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
       // T&C: 八達通自動增值計入基本 0.4%（無上限），但不計入玩樂類別 3.6%
       { description: "八達通自動增值 0.4%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
       // T&C: 基本回贈 0.4%（$250=$1），排除電子錢包充值、P2P轉賬、賭場等
