@@ -23,6 +23,7 @@ interface Report {
   status: "pending" | "verified" | "rejected";
   created_at: string;
   user_id: string;
+  user_name?: string; // 會員名稱
   report_type?: string;
   conditions?: string[];
   evidence_url?: string;
@@ -387,6 +388,9 @@ export default function AdminModerationPage() {
                     </CardTitle>
                     <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                         卡片: {report.card_id || "未指定"} | 金額: ${report.amount || "未指定"} | 支付: {report.payment_method}
+                    </div>
+                    <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                        👤 會員: {report.user_name || report.user_id || "匿名"}
                     </div>
                 </div>
                 </CardHeader>
