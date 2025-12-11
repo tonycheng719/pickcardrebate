@@ -18,6 +18,7 @@ export const POPULAR_MERCHANTS: Merchant[] = [
   { id: "mannings", name: "Mannings 萬寧", categoryIds: ["personal_care", "supermarket"], aliases: ["mannings", "萬寧"], logo: "https://logo.clearbit.com/mannings.com.hk", accentColor: "#fb923c" },
   { id: "watsons", name: "Watsons 屈臣氏", categoryIds: ["personal_care", "supermarket"], aliases: ["watsons", "屈臣氏"], logo: "https://logo.clearbit.com/watsons.com.hk", accentColor: "#0ea5e9" },
   { id: "lungfung", name: "龍豐藥房", categoryIds: ["personal_care"], aliases: ["龍豐", "lungfung", "lung fung"], logo: "💊", accentColor: "#dc2626" },
+  { id: "matsumoto-kiyoshi", name: "松本清 Matsumoto Kiyoshi", categoryIds: ["personal_care"], aliases: ["松本清", "matsumoto", "matsukiyo"], logo: "https://logo.clearbit.com/matsukiyo.co.jp", accentColor: "#e11d48" },
   // DBS 官方認定超市
   { id: "citysuper", name: "city'super", categoryIds: ["supermarket"], aliases: ["citysuper", "city super"], logo: "https://logo.clearbit.com/citysuper.com.hk", accentColor: "#1e3a8a" },
   { id: "eshop360", name: "優品360", categoryIds: ["supermarket"], aliases: ["優品", "360", "eshop360"], logo: "🛒", accentColor: "#ef4444" },
