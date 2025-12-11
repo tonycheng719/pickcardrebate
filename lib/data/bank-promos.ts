@@ -1,5 +1,76 @@
 import { BankPromo } from "@/lib/types";
 
+// 大新銀行「冬日狂賞」推廣
+export const DAHSING_WINTER_PROMO: BankPromo = {
+  id: "dahsing-winter-2025",
+  name: "冬日狂賞",
+  description: "登記後本地食肆享額外5%回贈，網上/旅遊/海外享額外3%回贈！",
+  validFrom: "2025-12-08",
+  validTo: "2026-02-28",
+  maxReward: "$900 現金回贈",
+  registrationUrl: "https://www.dahsing.com/pws/promo-reg-ccard/?lang=zh-HK&camp_code=PDM25629",
+  termsUrl: "https://www.dahsing.com/html/tc/credit_card/promotions/winter_spending_madness.html",
+  
+  phases: [
+    {
+      name: "階段1",
+      startDate: "2025-12-08",
+      endDate: "2025-12-31",
+      tiers: [
+        { 
+          minSpend: 6000, 
+          reward: "本地食肆 5% / 網上旅遊海外 3%", 
+          rewardValue: 300, // 每階段上限
+        },
+      ]
+    },
+    {
+      name: "階段2",
+      startDate: "2026-01-01",
+      endDate: "2026-01-31",
+      tiers: [
+        { 
+          minSpend: 6000, 
+          reward: "本地食肆 5% / 網上旅遊海外 3%", 
+          rewardValue: 300,
+        },
+      ]
+    },
+    {
+      name: "階段3",
+      startDate: "2026-02-01",
+      endDate: "2026-02-28",
+      tiers: [
+        { 
+          minSpend: 6000, 
+          reward: "本地食肆 5% / 網上旅遊海外 3%", 
+          rewardValue: 300,
+        },
+      ]
+    }
+  ],
+  
+  requirements: [
+    "須透過大新手機 App 或指定網頁登記",
+    "名額只限首 8,000 名，先到先得",
+    "每階段累積簽賬滿 $6,000（單一簽賬需滿 $300）",
+    "登記後才開始計算，越早登記享越多階段",
+  ],
+  
+  exclusions: [
+    "AlipayHK、WeChat Pay HK、PayMe 簽賬",
+    "八達通自動增值",
+    "網上繳費、交稅",
+    "分期付款",
+    "單一簽賬低於 $300",
+    "酒席宴會、私人宴會",
+    "美食廣場/超市/百貨公司內食肆",
+    "大新 Visa Infinite 卡"
+  ],
+  
+  notes: "本地食肆簽 $6,000 即爆上限 $300（5%）；網上/旅遊/海外簽 $10,000 即爆上限 $300（3%）。配合 ONE+ 本身 1% 回贈，可達 6%/4%！回贈於 2026年6月入賬。"
+};
+
 // 恒生銀行「冬日簽賬賞」推廣
 export const HANGSENG_WINTER_PROMO: BankPromo = {
   id: "hangseng-winter-2025",
@@ -111,6 +182,7 @@ export const HANGSENG_WINTER_PROMO: BankPromo = {
 // 導出所有銀行推廣
 export const BANK_PROMOS: Record<string, BankPromo> = {
   "hangseng-winter-2025": HANGSENG_WINTER_PROMO,
+  "dahsing-winter-2025": DAHSING_WINTER_PROMO,
 };
 
 // 根據銀行獲取適用的推廣
@@ -118,6 +190,9 @@ export function getPromosForBank(bank: string): BankPromo[] {
   const bankLower = bank.toLowerCase();
   if (bankLower.includes("hang seng") || bankLower.includes("恒生")) {
     return [HANGSENG_WINTER_PROMO];
+  }
+  if (bankLower.includes("dah sing") || bankLower.includes("大新")) {
+    return [DAHSING_WINTER_PROMO];
   }
   return [];
 }
