@@ -315,20 +315,24 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' },
     rules: [
-      // T&C: 手機支付 5.4% (Apple Pay/Google Pay/Samsung Pay)，每月首 $2,000 簽賬
-      // 5.4% × $2,000 = $108 回贈上限
-      { description: "手機支付 5.4% [每月首$2,000]", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 5.4, cap: 2000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
-      // T&C: 週二 SOGO 5% 現金回贈 (每月上限$100)
-      { description: "週二 SOGO 5% [上限$100]", matchType: "merchant", matchValue: ["sogo"], percentage: 5.0, validDays: [2], cap: 100, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C: 手機支付額外 5% (Apple Pay/Google Pay/Samsung Pay)，每月上限 $100 回贈
+      // 5% + 基本 0.4% = 5.4%，每月回贈上限 $100
+      { description: "手機支付 5.4% [上限回贈$100]", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 5.4, cap: 100, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C: 崇光百貨全年 5% 現金回贈 (指定商戶/產品)
+      { description: "崇光百貨 5%", matchType: "merchant", matchValue: ["sogo"], percentage: 5.0, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C: 崇光超市 Freshmart 逢星期一 5% 現金折扣
+      { description: "崇光超市星期一 5%", matchType: "merchant", matchValue: ["sogo_freshmart"], percentage: 5.0, validDays: [1], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 基本回贈 0.4%，不適用於八達通增值、電子錢包充值、P2P 轉賬
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
-    tags: ["SOGO", "週二SOGO 5%", "手機支付5.4%"],
+    tags: ["SOGO", "崇光5%", "手機支付5.4%"],
     welcomeOfferText: "迎新簽 $5,000 送 $500 崇光禮券 / 手機簽賬 10% (上限$300)",
     officialApplyUrl: "https://www.bochk.com/tc/creditcard/cardproduct/sogo.html",
     applyUrl: "https://www.bochk.com/tc/creditcard/cardproduct/sogo.html",
-    sellingPoints: ["手機支付 5.4% (每月首$2,000)", "週二 SOGO 5% (每月上限$100)", "崇光百貨專屬優惠"],
-    note: "💡 手機支付（Apple Pay/Google Pay/Samsung Pay）5.4% 回贈，每月首 $2,000 簽賬享優惠！週二 SOGO 5% 每月回贈上限 $100。❌ 不適用於：八達通增值、電子錢包充值/P2P轉賬（AlipayHK/PayMe/WeChat Pay）、繳稅、網上繳費。迎新二選一：$500 崇光禮券 或 手機簽賬 10% (上限$300)。",
+    sellingPoints: ["手機支付 5.4% (每月上限$100)", "崇光百貨全年 5%", "崇光超市星期一 5%", "日本 SOGO/西武 5% 折扣"],
+    note: "💡 **手機支付**（Apple Pay/Google Pay/Samsung Pay）額外 5% 回贈（連基本 0.4% 共 5.4%），每月回贈上限 $100（即每月 $2,000 簽賬爆 Cap）。\n\n🛍️ **崇光百貨全年 5%**：適用於崇光百貨指定商戶及產品。\n\n🛒 **崇光超市 Freshmart**：逢星期一 5% 現金折扣。\n\n🇯🇵 **日本優惠**：日本 SOGO/西武滿 ¥1,000 享 5% 折扣；累積滿 ¥10萬可換 $800 崇光禮券。\n\n🍽️ **和三昧日本料理**：9 折優惠。\n\n❌ 不適用於：八達通增值、電子錢包充值/P2P轉賬（AlipayHK/PayMe/WeChat Pay）、繳稅、網上繳費。\n\n🎁 **迎新二選一**：$500 崇光禮券（需簽滿 $5,000）或 手機簽賬 10% (上限$300)。",
+    promoEndDate: "2025-12-31",
+    promoName: "手機支付 5% 現金回贈",
   },
   {
     id: "boc-cheers",
