@@ -222,7 +222,7 @@ export function PaymentMethodsGuide() {
             </div>
             <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
               支付方式回贈攻略<br />
-              <span className="text-purple-200">Apple Pay vs 實體卡 vs 網購</span>
+              <span className="text-purple-200">流動支付 vs 實體卡 vs 網購</span>
             </h1>
             <p className="text-lg md:text-xl text-purple-100 max-w-2xl mb-6">
               同一張信用卡，不同支付方式回贈可以差 10 倍！教你揀最抵支付方式。

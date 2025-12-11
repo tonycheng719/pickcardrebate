@@ -202,8 +202,8 @@ const GUIDES = [
   {
     id: "payment-methods-guide",
     type: "guide" as const,
-    title: "支付方式回贈攻略｜Apple Pay vs 實體卡 vs 網購",
-    description: "同一張卡，不同支付方式回贈差 10 倍！Apple Pay、實體卡、網上簽賬回贈有咩分別？電子錢包陷阱要點避？",
+    title: "支付方式回贈攻略｜流動支付 vs 實體卡 vs 網購",
+    description: "同一張卡，不同支付方式回贈差 10 倍！Apple Pay / Google Pay、實體卡、網上簽賬回贈有咩分別？增值型電子錢包陷阱要點避？",
     imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
     tags: ["支付方式", "Apple Pay", "網購"],
     merchant: "攻略",
