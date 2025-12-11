@@ -160,6 +160,7 @@ export const HK_CARDS: CreditCard[] = [
     tags: ["卓越理財", "旅遊", "百老滙6%"],
     sellingPoints: ["卓越理財客戶專享", "指定類別額外獎賞錢"],
     note: "⚠️ 需月簽賬滿 $8,000 才享 2.4% 回贈！不適用於電子錢包簽賬、繳稅、網上繳費。僅限卓越理財客戶申請。\n\n🔥 **最紅冬日賞萬寧**（至2026/2/28）：週末高達10%回贈！[查看詳情](/discover/hsbc-mannings-winter-2025)\n\n🔥 **最紅冬日賞百老滙**（至2026/2/28）：累積簽賬滿$10,000享6%回贈！[查看詳情](/discover/hsbc-broadway-winter-2025)",
+    officialApplyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/premier/",
     promoEndDate: "2026-02-28",
     promoName: "最紅冬日賞百老滙",
   },
@@ -411,6 +412,7 @@ export const HK_CARDS: CreditCard[] = [
     welcomeOfferText: "迎新手機簽賬 10% 回贈 (上限$300)",
     sellingPoints: ["內地簽賬高達 4% 回贈", "支援內地交通乘車碼"],
     note: "⚠️ 不適用於 Alipay/WeChat Pay/PayMe 簽賬。迎新：手機簽賬 (Apple Pay/Google Pay/Samsung Pay/Huawei Pay/雲閃付 App) 享 10% 回贈，上限 $300。",
+    officialApplyUrl: "https://www.bochk.com/tc/creditcard/products/gba.html",
   },
   {
     id: "boc-icard",
@@ -784,6 +786,7 @@ export const HK_CARDS: CreditCard[] = [
     tags: ["學生卡", "低門檻", "衛訊4%"],
     sellingPoints: ["基本回贈 0.4%", "學生可豁免入息要求", "DBS$ 積分無限期"],
     note: "💡 基本回贈 0.4%。✅ DBS$ 積分無限期！⚠️ 電子錢包（八達通增值/PayMe/支付寶/微信支付）**每月首 $5,000 可獲 DBS$**，超過不計。Apple Pay/Google Pay/Samsung Pay 不受此限。❌ 不計回贈：繳稅、繳費、保費。📌 注意：自選類別 5% 推廣已於 2025年3月31日結束。\n\n🔥 **DBS x 衛訊優惠**（至2026/2/28）：單一簽賬滿$8,000享$320回贈！[查看詳情](/discover/dbs-wilson-2025)",
+    officialApplyUrl: "https://www.dbs.com.hk/personal-zh/cards/credit-cards/live-fresh-card",
     promoEndDate: "2026-02-28",
     promoName: "DBS x 衛訊優惠",
   },
@@ -878,6 +881,7 @@ export const HK_CARDS: CreditCard[] = [
     ],
     tags: ["日本旅遊", "JAL"],
     sellingPoints: ["日圓簽賬 $6 = 1 里", "JAL 機艙銷售 9 折"],
+    officialApplyUrl: "https://www.aeon.com.hk/chi/credit_card/cardapp.jsp",
   },
   {
     id: "aeon-visa",
@@ -1430,6 +1434,7 @@ export const HK_CARDS: CreditCard[] = [
     tags: ["台灣8%", "日韓4%", "網上4%", "八達通增值"],
     sellingPoints: ["🇹🇼 新台幣簽賬 8% (20X)", "🇯🇵🇰🇷 日韓簽賬 4% (10X)", "其他外幣 2%", "本地網上 4% [需登記]", "八達通自動增值 0.4%"],
     note: "⚠️ 台幣/日韓額外積分每月上限 80,000 (全年 240,000)。本地網上 4% 需致電 2566 8181 登記 (按1>7>2)，每月上限 50,000 積分 (即 $6,250 簽賬)。週六日滿 $300 享額外積分。✅ 八達通自動增值計 0.4% 積分！積分可兌換現金回贈或亞洲萬里通里數 (15分=1里)。不適用於：稅務、保險、水電費繳費、分期付款。",
+    officialApplyUrl: "https://www.fubonbank.com.hk/tc/personal/credit-card/titanium-card.html",
   },
   {
     id: "amex-explorer",
@@ -1452,6 +1457,7 @@ export const HK_CARDS: CreditCard[] = [
     ],
     tags: ["里數", "旅遊保險"],
     sellingPoints: ["積分無限期", "指定簽賬 HK$3.6/里", "免費旅遊保險及貴賓室 (年費豁免)"],
+    officialApplyUrl: "https://www.americanexpress.com/hk/credit-cards/explorer-credit-card/",
     hidden: true, // 暫時隱藏
   },
   {
@@ -1605,6 +1611,7 @@ export const HK_CARDS: CreditCard[] = [
     tags: ["油站4%", "汽車", "易通行", "車主專享"],
     sellingPoints: ["油站簽賬 4% 回贈", "汽車相關消費 4% (維修/泊車/充電)", "易通行隧道費 4%", "專為車主而設"],
     note: "⚠️ 汽車相關簽賬包括：易通行隧道費、購買汽車、時租泊車、洗車、汽車美容、汽車維修、汽車零件、汽車保養、拖車服務、電動汽車充電、油站消費。",
+    officialApplyUrl: "https://www.dahsing.com/html/tc/credit_card/myauto/",
   },
 
   // ========================================================================
