@@ -88,154 +88,93 @@ function RankBadge({ rank }: { rank: number }) {
 }
 
 function CardDetailSection({ result, rank, showFxInfo = false }: { result: RankingResult; rank: number; showFxInfo?: boolean }) {
-  const suitableFor = generateSuitableFor(result);
   const warnings = generateWarnings(result);
   
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
-      <div className={`p-6 ${rank <= 3 ? 'bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20' : ''}`}>
-        <div className="flex items-start gap-4">
+    <div className={`bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 overflow-hidden ${rank <= 3 ? 'ring-2 ring-amber-200 dark:ring-amber-800' : ''}`}>
+      <div className="p-4">
+        {/* Header Row */}
+        <div className="flex items-center gap-3 mb-3">
           <RankBadge rank={rank} />
           
           {/* Card Image */}
-          <div className={`w-16 h-10 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0 ${!result.card.imageUrl ? (result.card.style?.bgColor || 'bg-gray-600') : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700'}`}>
+          <div className={`w-12 h-8 rounded flex items-center justify-center overflow-hidden flex-shrink-0 ${!result.card.imageUrl ? (result.card.style?.bgColor || 'bg-gray-600') : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700'}`}>
             {result.card.imageUrl ? (
-              <img 
-                src={result.card.imageUrl} 
-                alt={result.card.name}
-                className="max-h-full max-w-full object-contain"
-              />
+              <img src={result.card.imageUrl} alt={result.card.name} className="max-h-full max-w-full object-contain" />
             ) : (
-              <span className={`text-xs font-bold ${result.card.style?.textColor || 'text-white'}`}>
-                {result.card.bank.slice(0, 3)}
-              </span>
+              <span className={`text-[8px] font-bold ${result.card.style?.textColor || 'text-white'}`}>{result.card.bank.slice(0, 2)}</span>
             )}
           </div>
           
-          <div className="flex-1">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-sm text-gray-500 dark:text-gray-400">
-                {result.card.bank}
-              </span>
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-              {result.card.name}
-            </h3>
-            
-            <div className="flex flex-wrap items-center gap-3 mb-4">
-              <div className="bg-emerald-100 dark:bg-emerald-900/30 px-4 py-2 rounded-xl">
-                <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
-                  {result.percentage}%
-                </div>
-                <div className="text-xs text-emerald-700 dark:text-emerald-300">回贈率</div>
-              </div>
-              
-              {/* FX Fee & Net Percentage for overseas */}
-              {showFxInfo && result.foreignCurrencyFee !== undefined && (
-                <>
-                  <div className="bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-xl">
-                    <div className={`text-lg font-bold ${result.foreignCurrencyFee === 0 ? 'text-green-600 dark:text-green-400' : 'text-gray-700 dark:text-gray-300'}`}>
-                      {result.foreignCurrencyFee === 0 ? '豁免' : `${result.foreignCurrencyFee}%`}
-                    </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">手續費</div>
-                  </div>
-                  
-                  <div className="bg-blue-100 dark:bg-blue-900/30 px-4 py-2 rounded-xl">
-                    <div className={`text-2xl font-bold ${(result.netPercentage ?? 0) >= 3 ? 'text-blue-600 dark:text-blue-400' : 'text-orange-600 dark:text-orange-400'}`}>
-                      {result.netPercentage?.toFixed(2)}%
-                    </div>
-                    <div className="text-xs text-blue-700 dark:text-blue-300">淨回贈</div>
-                  </div>
-                </>
-              )}
-              
-              <div className="bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-xl">
-                <div className="text-lg font-bold text-gray-700 dark:text-gray-300">
-                  {result.capAsSpending ? `$${result.capAsSpending.toLocaleString()}` : '無上限'}
-                </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">簽賬上限</div>
-              </div>
-              
-              {(result.minSpend || result.monthlyMinSpend) && (
-                <div className="bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-xl">
-                  <div className="text-lg font-bold text-gray-700 dark:text-gray-300">
-                    {result.minSpend ? `$${result.minSpend}` : `$${result.monthlyMinSpend?.toLocaleString()}`}
-                  </div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">
-                    {result.minSpend ? '單筆最低' : '月簽要求'}
-                  </div>
-                </div>
-              )}
-            </div>
-            
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
-              {result.rule.description}
-            </p>
-            
-            {/* Conditions */}
-            {result.conditions.length > 0 && (
-              <div className="mb-4">
-                <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">條件：</div>
-                <div className="flex flex-wrap gap-2">
-                  {result.conditions.map((condition, i) => (
-                    <span key={i} className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs rounded-lg">
-                      {condition}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-            
-            {/* Suitable For */}
-            {suitableFor.length > 0 && (
-              <div className="mb-4">
-                <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-1">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                  適合人群：
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {suitableFor.map((item, i) => (
-                    <span key={i} className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs rounded-lg">
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-            
-            {/* Warnings */}
-            {warnings.length > 0 && (
-              <div className="mb-4">
-                <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-1">
-                  <AlertTriangle className="h-4 w-4 text-amber-500" />
-                  注意事項：
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {warnings.map((warning, i) => (
-                    <span key={i} className="px-2 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 text-xs rounded-lg">
-                      {warning}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-            
-            {/* Actions */}
-            <div className="flex flex-wrap gap-2 mt-4">
-              <Link href={`/cards/${result.card.id}`}>
-                <Button size="sm">
-                  查看詳情 <ChevronRight className="h-4 w-4 ml-1" />
-                </Button>
-              </Link>
-              {result.card.applyUrl && (
-                <a href={result.card.applyUrl} target="_blank" rel="noopener noreferrer">
-                  <Button variant="outline" size="sm">
-                    立即申請 <ExternalLink className="h-4 w-4 ml-1" />
-                  </Button>
-                </a>
+          <div className="flex-1 min-w-0">
+            <h3 className="font-bold text-gray-900 dark:text-white truncate">{result.card.name}</h3>
+            <p className="text-xs text-gray-500 dark:text-gray-400">{result.card.bank}</p>
+          </div>
+          
+          {/* Main Stats */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <div className="text-right">
+              <div className="text-xl font-bold text-emerald-600 dark:text-emerald-400">{result.percentage}%</div>
+              {showFxInfo && result.netPercentage !== undefined && (
+                <div className="text-xs text-gray-500">淨{result.netPercentage.toFixed(1)}%</div>
               )}
             </div>
           </div>
+        </div>
+        
+        {/* Description & Stats Row */}
+        <div className="flex flex-wrap items-center gap-2 text-xs mb-3">
+          <span className="text-gray-600 dark:text-gray-400">{result.rule.description}</span>
+          <span className="text-gray-400">•</span>
+          <span className="text-gray-500">
+            上限 {result.capAsSpending ? `$${result.capAsSpending.toLocaleString()}` : '無'}
+          </span>
+          {(result.minSpend || result.monthlyMinSpend) && (
+            <>
+              <span className="text-gray-400">•</span>
+              <span className="text-gray-500">
+                {result.minSpend ? `單筆$${result.minSpend}` : `月簽$${result.monthlyMinSpend?.toLocaleString()}`}
+              </span>
+            </>
+          )}
+          {showFxInfo && result.foreignCurrencyFee !== undefined && (
+            <>
+              <span className="text-gray-400">•</span>
+              <span className={result.foreignCurrencyFee === 0 ? 'text-green-600' : 'text-gray-500'}>
+                手續費 {result.foreignCurrencyFee === 0 ? '豁免' : `${result.foreignCurrencyFee}%`}
+              </span>
+            </>
+          )}
+        </div>
+        
+        {/* Tags Row */}
+        <div className="flex flex-wrap items-center gap-1.5 mb-3">
+          {result.conditions.slice(0, 3).map((condition, i) => (
+            <span key={i} className="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-xs rounded">
+              {condition}
+            </span>
+          ))}
+          {warnings.slice(0, 2).map((warning, i) => (
+            <span key={`w-${i}`} className="px-2 py-0.5 bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 text-xs rounded">
+              ⚠️ {warning.length > 15 ? warning.slice(0, 15) + '...' : warning}
+            </span>
+          ))}
+        </div>
+        
+        {/* Actions */}
+        <div className="flex gap-2">
+          <Link href={`/cards/${result.card.id}`} className="flex-1">
+            <Button size="sm" className="w-full text-xs h-8">
+              詳情 <ChevronRight className="h-3 w-3 ml-1" />
+            </Button>
+          </Link>
+          {result.card.applyUrl && (
+            <a href={result.card.applyUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
+              <Button variant="outline" size="sm" className="w-full text-xs h-8">
+                申請 <ExternalLink className="h-3 w-3 ml-1" />
+              </Button>
+            </a>
+          )}
         </div>
       </div>
     </div>
