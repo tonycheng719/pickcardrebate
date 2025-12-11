@@ -813,6 +813,26 @@ export function CreditCardCalculator({
               </div>
           )}
 
+          {/* 天星小輪 Amex $1 優惠提示 */}
+          {selectedMerchant?.id === "star_ferry" && (
+            <div className="mb-4 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
+              <div className="flex items-start gap-2">
+                <Sparkles className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-bold text-blue-800 dark:text-blue-200">💳 Amex 卡專屬優惠！</p>
+                  <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">
+                    使用任何<span className="font-bold">美國運通卡</span>搭天星小輪只需 <span className="font-bold text-blue-600">$1</span>！
+                    <br/>
+                    <span className="text-blue-500">閘機按「Amex $1」鍵再拍卡即可（至 2025/12/31）</span>
+                  </p>
+                  <Link href="/cards?bank=American%20Express" className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline mt-2 font-medium">
+                    查看 Amex 卡 <ChevronUp className="w-3 h-3 rotate-90" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* 方案 C: 智能建議模式 */}
           
           {/* CASE 1: 用戶已持有全場最抵卡 - 顯示恭喜訊息 */}
