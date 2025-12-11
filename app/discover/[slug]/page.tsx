@@ -54,7 +54,7 @@ import { XboxGuide, xboxFaqData } from "./xbox-guide";
 import { SwitchGuide, switchFaqData } from "./switch-guide";
 import { MilesCreditCardGuide, milesCreditCardFaqData } from "./miles-credit-card-guide";
 import { PaymentMethodsGuide, paymentMethodsFaqData } from "./payment-methods-guide";
-import { DahsingWinterPromoGuide, dahsingWinterPromoFaqData } from "./dahsing-winter-promo-guide";
+import { DahsingWinterPromoGuide } from "./dahsing-winter-promo-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 import { ArticleTracker } from "@/app/discover/components/article-tracker";
 import { ArticleReviews } from "@/app/discover/components/article-reviews";
@@ -1019,7 +1019,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return {
       title: guide.seoTitle,
       description: guide.description,
-      keywords: [...guide.keywords, ...guide.tags],
+      keywords: [...(guide.keywords || []), ...(guide.tags || [])],
       openGraph: {
         title: guide.seoTitle,
         description: guide.description,
@@ -1542,6 +1542,18 @@ const overseasFeeFaqData = [
   { question: "如何避免海外簽賬手續費？", answer: "使用不收 CBF 的銀行信用卡（如中銀、東亞），或用 Gift Card 增值。" },
 ];
 
+// 大新冬日狂賞 FAQ 資料
+const dahsingWinterPromoFaqData = [
+  { question: "大新冬日狂賞需要登記嗎？", answer: "需要。必須透過大新手機 App 或指定網頁登記，名額只限首 8,000 名，先到先得。登記後才開始計算簽賬，未登記的簽賬不計入回贈！" },
+  { question: "冬日狂賞的推廣期是什麼時候？", answer: "推廣期由 2025年12月8日 至 2026年2月28日，分為三個階段：階段1 (12月8-31日)、階段2 (1月1-31日)、階段3 (2月1-28日)。每個階段獨立計算回贈。" },
+  { question: "每階段需要簽多少才有回贈？", answer: "每階段需累積簽賬滿 $6,000（只計算單一簽賬滿 $300 的交易），才可享有本地食肆 5% 或網上/旅遊/海外 3% 的額外回贈。" },
+  { question: "網上訂餐如 foodpanda 算本地食肆嗎？", answer: "不算。網上訂餐只計入「網上簽賬」類別（3%回贈），而非本地食肆（5%回贈）。要享 5% 回贈必須實體到店消費。" },
+  { question: "用 AlipayHK 或 WeChat Pay 簽賬可以嗎？", answer: "不可以。透過 AlipayHK、WeChat Pay HK、PayMe 的簽賬均不符合資格，即使是在餐廳消費也不計！" },
+  { question: "大新 Visa Infinite 卡可以參加嗎？", answer: "不可以。大新 VIP 銀行服務 Visa Infinite、Private Banking Visa Infinite、Visa Infinite 卡均不適用於此推廣。" },
+  { question: "回贈什麼時候發放？", answer: "所有回贈將於 2026年6月30日或之前，以免找數簽賬額形式存入主卡賬戶，並顯示於隨後的月結單上。" },
+  { question: "冬日狂賞值得參加嗎？", answer: "如果你有大新信用卡並經常外出食飯，5% 食肆回贈配合 ONE+ 本身 1% 可達 6%，算是不錯。但名額有限、回贈上限較低，建議同時比較其他銀行優惠。" }
+];
+
 // Get FAQ data for specific guide
 function getGuideFaqData(guideId: string) {
   switch (guideId) {
@@ -1734,7 +1746,7 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
           "@type": "Article",
           "headline": guide.title,
           "description": guide.description,
-          "keywords": guide.keywords.join(", "),
+          "keywords": (guide.keywords || []).join(", "),
           "author": { "@type": "Organization", "name": "PickCardRebate" },
           "publisher": { "@type": "Organization", "name": "PickCardRebate", "logo": { "@type": "ImageObject", "url": "https://pickcardrebate.com/logo.png" } },
           "datePublished": guide.publishDate,
