@@ -237,25 +237,32 @@ export default function CardDetailPage() {
   // This will be the "last build" date, which is acceptable for SEO
   const currentDate = "2025-12-08";
   
-  // Generate structured data for SEO - Product Schema with AggregateRating
+  // Generate structured data for SEO - FinancialProduct Schema (適合信用卡)
+  // 使用 FinancialProduct 而非 Product+Offer，避免 Google 要求 shippingDetails/hasMerchantReturnPolicy
   const productSchema: Record<string, any> = {
     "@context": "https://schema.org",
-    "@type": "Product",
+    "@type": "FinancialProduct",
     "name": card.name,
-    "brand": {
-      "@type": "Brand",
-      "name": card.bank
+    "provider": {
+      "@type": "FinancialService",
+      "name": card.bank,
+      "areaServed": {
+        "@type": "Country",
+        "name": "Hong Kong"
+      }
     },
     "description": card.sellingPoints?.join("。") || `${card.bank} ${card.name} 信用卡`,
     "image": card.imageUrl,
-    "dateModified": currentDate, // 告訴 Google 頁面最後更新日期
-    "offers": {
-      "@type": "Offer",
-      "availability": "https://schema.org/InStock",
-      "price": card.annualFee || 0,
-      "priceCurrency": "HKD",
-      "description": card.feeWaiverCondition || "年費詳情請參閱官網"
-    }
+    "url": `https://pickcardrebate.com/cards/${card.id}`,
+    "feesAndCommissionsSpecification": card.annualFee 
+      ? `年費 HKD ${card.annualFee}${card.feeWaiverCondition ? `（${card.feeWaiverCondition}）` : ''}`
+      : "永久免年費",
+    "interestRate": {
+      "@type": "QuantitativeValue",
+      "value": card.foreignCurrencyFee || 1.95,
+      "unitText": "外幣手續費 %"
+    },
+    "category": "Credit Card"
   };
   
   // Add AggregateRating if there are reviews (SEO: Star ratings in search results)

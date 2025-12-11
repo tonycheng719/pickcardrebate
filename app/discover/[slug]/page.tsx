@@ -1804,17 +1804,31 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
     return card ? { id: card.id, name: card.name, bank: card.bank } : null;
   }).filter(Boolean) || [];
 
+  // 使用 Article 而非 Offer，避免 Google 要求 shippingDetails/hasMerchantReturnPolicy
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "Offer",
-        "name": promo.title,
+        "@type": "Article",
+        "headline": promo.title,
         "description": promo.description,
         "url": `https://pickcardrebate.com/discover/${promo.id}`,
         "image": promo.imageUrl,
-        "validThrough": promo.expiryDate,
-        "offeredBy": { "@type": "Organization", "name": promo.merchant }
+        "datePublished": promo.expiryDate,
+        "dateModified": promo.expiryDate,
+        "author": {
+          "@type": "Organization",
+          "name": "PickCardRebate"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "PickCardRebate",
+          "url": "https://pickcardrebate.com"
+        },
+        "about": {
+          "@type": "Thing",
+          "name": promo.merchant
+        }
       },
       {
         "@type": "BreadcrumbList",

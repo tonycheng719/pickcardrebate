@@ -104,7 +104,7 @@ function getStructuredData() {
           }
         ]
       },
-      // ItemList Schema - 列出優惠
+      // ItemList Schema - 列出優惠（使用 Article 而非 Offer，避免 shippingDetails 警告）
       {
         "@type": "ItemList",
         "name": "最新信用卡優惠",
@@ -113,14 +113,14 @@ function getStructuredData() {
           "@type": "ListItem",
           "position": index + 1,
           "item": {
-            "@type": "Offer",
-            "name": promo.title,
+            "@type": "Article",
+            "headline": promo.title,
             "description": promo.description,
             "url": `https://pickcardrebate.com/discover/${promo.id}`,
-            "validThrough": promo.expiryDate,
-            "offeredBy": {
+            "datePublished": promo.expiryDate,
+            "author": {
               "@type": "Organization",
-              "name": promo.merchant
+              "name": "PickCardRebate"
             }
           }
         }))
