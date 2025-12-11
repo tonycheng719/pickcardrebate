@@ -598,15 +598,15 @@ export default function CardDetailPage() {
                             </div>
                           )}
                           {/* 條件提示 */}
-                          {(rule.cap || rule.monthlyMinSpend || rule.minSpend) && (
+                          {(!!rule.cap || !!rule.monthlyMinSpend || !!rule.minSpend) && (
                             <div className="mt-1 text-[10px] text-amber-600 dark:text-amber-400 flex flex-wrap gap-2">
-                              {rule.cap && (
+                              {!!rule.cap && (
                                 <span>{rule.capType === "reward" ? `上限回贈 $${rule.cap.toLocaleString()}` : `上限簽賬 $${rule.cap.toLocaleString()}`}</span>
                               )}
-                              {rule.monthlyMinSpend && (
+                              {!!rule.monthlyMinSpend && (
                                 <span>月簽 ${rule.monthlyMinSpend.toLocaleString()}</span>
                               )}
-                              {rule.minSpend && (
+                              {!!rule.minSpend && (
                                 <span>單筆滿 ${rule.minSpend.toLocaleString()}</span>
                               )}
                             </div>
