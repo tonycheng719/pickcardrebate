@@ -58,7 +58,7 @@ function ApplyButton({ card }: { card: CreditCard }) {
       })}
     >
       <Button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
-        {usePartnerUrl ? "🎁 經合作夥伴申請" : "立即申請"} <ExternalLink className="h-4 w-4 ml-2" />
+        {usePartnerUrl ? "🎁 經本網連結申請" : "立即申請"} <ExternalLink className="h-4 w-4 ml-2" />
       </Button>
     </a>
   );
