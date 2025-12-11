@@ -233,7 +233,7 @@ export const HK_CARDS: CreditCard[] = [
     rules: [
       // 2025年指定類別：食肆、酒店、海外 = $4/里
       { description: "食肆簽賬 $4/里 (港幣)", matchType: "category", matchValue: ["dining"], percentage: 2.5, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
-      { description: "酒店簽賬 $4/里 (港幣)", matchType: "category", matchValue: ["hotel"], percentage: 2.5, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      { description: "酒店/旅遊簽賬 $4/里 (港幣)", matchType: "category", matchValue: ["hotel", "travel"], percentage: 2.5, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       { description: "海外簽賬 $4/里 (外幣)", matchType: "base", percentage: 2.5, isForeignCurrency: true, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 八達通自動增值計里數
       { description: "八達通自動增值 $6/里", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 1.67 },
@@ -347,6 +347,7 @@ export const HK_CARDS: CreditCard[] = [
       // 外幣上限：250,000 積分/月 = $25,000 簽賬
       // 餐飲+外幣合共上限：300,000 積分/月 = $30,000 簽賬
       { description: "本地餐飲 10X (4%)", matchType: "category", matchValue: ["dining"], percentage: 4.0, monthlyMinSpend: 5000, cap: 10000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      { description: "酒店/旅遊 10X (4%)", matchType: "category", matchValue: ["travel", "hotel"], percentage: 4.0, monthlyMinSpend: 5000, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       { description: "外幣簽賬 10X (4%)", matchType: "base", percentage: 4.0, isForeignCurrency: true, monthlyMinSpend: 5000, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
       // T&C: 不適用於 Alipay/WeChat Pay/PayMe
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
@@ -577,6 +578,8 @@ export const HK_CARDS: CreditCard[] = [
       { description: "指定國家外幣 7% (日韓泰星澳)", matchType: "base", percentage: 7.0, monthlyMinSpend: 6000, isForeignCurrency: true, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
       // T&C: 其他外幣簽賬 5% (需月簽賬滿$6,000)
       { description: "其他外幣簽賬 5%", matchType: "base", percentage: 5.0, monthlyMinSpend: 6000, isForeignCurrency: true, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
+      // 旅遊類別 (酒店/航空公司/旅行社)
+      { description: "旅遊簽賬 5% (需月簽$6,000)", matchType: "category", matchValue: ["travel", "hotel", "airline"], percentage: 5.0, monthlyMinSpend: 6000, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
       // T&C: 本地交通 5% (九巴/城巴/龍運/港鐵/電車/天星小輪，需月簽賬滿$6,000)
       { description: "本地交通 5% (巴士/港鐵/電車)", matchType: "category", matchValue: ["transport"], percentage: 5.0, monthlyMinSpend: 6000, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
       // T&C: 本地餐飲 5% (不包括快餐店/酒店內食肆，需月簽賬滿$6,000)
@@ -656,6 +659,7 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.0833, currency: 'Points' }, // 12 pts = 1 mile
     rules: [
+      { description: "旅遊/酒店/航空 $4/里 (2.25%)", matchType: "category", matchValue: ["travel", "hotel", "airline"], percentage: 2.25, excludePaymentMethods: ["octopus"] },
       { description: "外幣簽賬 $4/里 (3%*)", matchType: "base", percentage: 2.25, isForeignCurrency: true }, // $20000/m for $3/mile promo often active
       { description: "本地簽賬 $8/里 (1.1%)", matchType: "base", percentage: 1.1, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus"] },
     ],
@@ -678,10 +682,11 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.0833, currency: 'Points' }, // 12 pts = 1 mile
     rules: [
+      { description: "旅遊/酒店/航空 $4/里 (2.5%)", matchType: "category", matchValue: ["travel", "hotel", "airline"], percentage: 2.5, excludePaymentMethods: ["octopus"] },
       { description: "海外簽賬 $4/里", matchType: "base", percentage: 2.5, isForeignCurrency: true }, // 3pts/$ * 0.0833 = 0.25 miles/$ -> $4/mile
       { description: "本地簽賬 $6/里", matchType: "base", percentage: 1.67, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus"] }, // 2pts/$ * 0.0833 = 0.166 miles/$ -> $6/mile
     ],
-    tags: ["高端", "年費卡"],
+    tags: ["高端", "年費卡", "旅遊"],
     welcomeOfferText: "迎新繳年費 $3,800 送 360,000積分 (30,000里)",
     officialApplyUrl: "https://www.citibank.com.hk/zh-hk/credit-cards/citi-prestige-card.html",
     applyUrl: "https://www.citibank.com.hk/chinese/credit-cards/citi-prestige-card.html",
@@ -745,6 +750,7 @@ export const HK_CARDS: CreditCard[] = [
       // 🔥 DBS x 衛訊優惠 (2025/12/1 - 2026/2/28)
       { description: "🔥衛訊 4% [$8k享$320一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 4.0, minSpend: 8000, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
       { description: "🔥衛訊 2.86% [$3.5k享$100一扣即享]", matchType: "merchant", matchValue: ["wilson_comm"], percentage: 2.86, minSpend: 3500, validDateRange: { start: "2025-12-01", end: "2026-02-28" }, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
+      { description: "旅遊/酒店 $4/里 (2.5%)", matchType: "category", matchValue: ["travel", "hotel", "airline"], percentage: 2.5, excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
       { description: "外幣簽賬 $4/里", matchType: "base", percentage: 2.5, isForeignCurrency: true }, // ~2.5% value
       { description: "本地簽賬 $6/里", matchType: "base", percentage: 1.6, excludeCategories: ["tax", "utilities", "government", "insurance"] }, // ~1.6% value
     ],
