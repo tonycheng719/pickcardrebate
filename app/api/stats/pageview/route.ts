@@ -13,45 +13,45 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // Check if record exists
-    const { data: existing } = await adminAuthClient
+    // 策略：先嘗試插入新記錄，如果唯一約束衝突則更新
+    const { error: insertError } = await adminAuthClient
       .from('page_views')
-      .select('id, view_count')
-      .eq('page_type', pageType)
-      .eq('page_id', pageId)
-      .single();
+      .insert({
+        page_type: pageType,
+        page_id: pageId,
+        page_name: pageName || pageId,
+        view_count: 1,
+        created_at: new Date().toISOString(),
+        last_viewed_at: new Date().toISOString()
+      });
 
-    if (existing) {
-      // Increment view count
-      const { error } = await adminAuthClient
-        .from('page_views')
-        .update({ 
-          view_count: existing.view_count + 1,
-          last_viewed_at: new Date().toISOString()
-        })
-        .eq('id', existing.id);
+    if (insertError) {
+      // 唯一約束衝突 = 記錄已存在，需要更新 view_count
+      if (insertError.code === '23505') {
+        // 先獲取當前 view_count，再 +1 更新
+        const { data: existing } = await adminAuthClient
+          .from('page_views')
+          .select('id, view_count')
+          .eq('page_type', pageType)
+          .eq('page_id', pageId)
+          .single();
 
-      if (error) throw error;
-    } else {
-      // Create new record
-      const { error } = await adminAuthClient
-        .from('page_views')
-        .insert({
-          page_type: pageType,
-          page_id: pageId,
-          page_name: pageName || pageId,
-          view_count: 1,
-          created_at: new Date().toISOString(),
-          last_viewed_at: new Date().toISOString()
-        });
-
-      if (error) {
-        // If table doesn't exist, just log and return success
-        if (error.code === '42P01') {
-          console.log('page_views table does not exist yet');
-          return NextResponse.json({ success: true, message: 'Table not created yet' });
+        if (existing) {
+          await adminAuthClient
+            .from('page_views')
+            .update({ 
+              view_count: existing.view_count + 1,
+              last_viewed_at: new Date().toISOString()
+            })
+            .eq('id', existing.id);
         }
-        throw error;
+      }
+      // 表不存在，靜默失敗
+      else if (insertError.code === '42P01') {
+        console.log('page_views table does not exist yet');
+      }
+      else {
+        throw insertError;
       }
     }
 
