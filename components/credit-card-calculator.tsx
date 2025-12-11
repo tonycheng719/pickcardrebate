@@ -279,10 +279,17 @@ export function CreditCardCalculator({
     setSelectedMerchantId(null);
     setSearchQuery(""); // Reset search on category change
     
-    // 🔴 FIX: 如果選擇純網上類別（如網購/串流），自動切換付款方式為「網上輸入信用卡」
+    // 🔴 FIX: 根據類別自動調整付款方式
     if (ONLINE_ONLY_CATEGORIES.includes(catId)) {
+      // 網購類別：自動切換為「網上輸入信用卡」
       setPaymentMethod("online");
       setIsOnlineScenario(true);
+    } else {
+      // 非網購類別：如果當前是「網上輸入信用卡」，重置為「門市使用實體卡」
+      if (paymentMethod === "online") {
+        setPaymentMethod("physical_card");
+        setIsOnlineScenario(null);
+      }
     }
     
     // Track category selection
