@@ -484,7 +484,12 @@ export default function AdminDiscoverPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <p className="font-medium text-gray-900 dark:text-white line-clamp-1">{guide.title}</p>
+                        <Link href={`/discover/${guide.id}`} target="_blank" className="block group">
+                          <p className="font-medium text-gray-900 dark:text-white line-clamp-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                            {guide.title}
+                            <ExternalLink className="inline-block w-3 h-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </p>
+                        </Link>
                         <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">{guide.description}</p>
                       </td>
                       <td className="px-6 py-4">
@@ -607,7 +612,12 @@ export default function AdminDiscoverPage() {
                       )}
                     </td>
                     <td className="px-4 py-4">
-                      <p className="font-medium text-gray-900 dark:text-white line-clamp-1">{promo.title}</p>
+                      <Link href={`/discover/${promo.id}`} target="_blank" className="block group">
+                        <p className="font-medium text-gray-900 dark:text-white line-clamp-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                          {promo.title}
+                          <ExternalLink className="inline-block w-3 h-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </p>
+                      </Link>
                       <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">{promo.description}</p>
                     </td>
                     <td className="px-4 py-4 text-gray-600 dark:text-gray-300 text-sm">{promo.merchant}</td>
