@@ -962,8 +962,8 @@ export function CreditCardCalculator({
                 </div>
               </div>
               
-              {/* 回贈明細 */}
-              <div className="mt-3">
+              {/* 回贈明細 - 可收起/展開 */}
+              <div className="mt-2">
                 <RewardBreakdown
                   card={best.card}
                   matchedRule={best.matchedRule}
@@ -973,8 +973,8 @@ export function CreditCardCalculator({
                   fxFee={best.card.foreignCurrencyFee}
                   netPercentage={best.netPercentage}
                   netRewardAmount={best.netRewardAmount}
-                  compact={false}
-                  showToggle={false}
+                  compact={true}
+                  showToggle={true}
                   overCapInfo={best.overCapInfo}
                 />
               </div>
