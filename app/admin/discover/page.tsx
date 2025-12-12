@@ -35,6 +35,7 @@ interface ArticleSetting {
   cover_image_url: string | null;
   content_type: 'guide' | 'promo' | null;
   custom_tags: string[] | null;
+  is_pinned: boolean | null;
 }
 
 export default function AdminDiscoverPage() {
@@ -47,16 +48,20 @@ export default function AdminDiscoverPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"guides" | "promos">("guides");
   
-  // Edit dialog (cover + category + tags)
+  // Edit dialog (cover + category + tags + pinned)
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [editingGuide, setEditingGuide] = useState<Guide | null>(null);
+  const [editingItem, setEditingItem] = useState<{ id: string; title: string; type: 'guide' | 'promo'; imageUrl?: string } | null>(null);
   const [newCoverUrl, setNewCoverUrl] = useState("");
   const [newContentType, setNewContentType] = useState<"guide" | "promo" | "">("");
   const [newTags, setNewTags] = useState<string[]>([]);
+  const [newIsPinned, setNewIsPinned] = useState(false);
   const [tagInput, setTagInput] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // Pinned settings (from article_settings)
+  const [articlePinned, setArticlePinned] = useState<Record<string, boolean>>({});
 
   // Fetch view stats and article settings
   useEffect(() => {
@@ -73,13 +78,14 @@ export default function AdminDiscoverPage() {
           setViewStats(stats);
         }
 
-        // Fetch article settings (custom covers, categories, tags)
+        // Fetch article settings (custom covers, categories, tags, pinned)
         const settingsRes = await fetch('/api/admin/article-settings');
         if (settingsRes.ok) {
           const data = await settingsRes.json();
           const settings: Record<string, string> = {};
           const categories: Record<string, string> = {};
           const tags: Record<string, string[]> = {};
+          const pinned: Record<string, boolean> = {};
           (data.settings || []).forEach((s: ArticleSetting) => {
             if (s.cover_image_url) {
               settings[s.article_id] = s.cover_image_url;
@@ -90,10 +96,14 @@ export default function AdminDiscoverPage() {
             if (s.custom_tags && s.custom_tags.length > 0) {
               tags[s.article_id] = s.custom_tags;
             }
+            if (s.is_pinned) {
+              pinned[s.article_id] = s.is_pinned;
+            }
           });
           setArticleSettings(settings);
           setArticleCategories(categories);
           setArticleTags(tags);
+          setArticlePinned(pinned);
         }
       } catch (e) {
         console.error("Failed to fetch data:", e);
@@ -153,12 +163,25 @@ export default function AdminDiscoverPage() {
 
   const totalGuideViews = Object.values(viewStats).reduce((a, b) => a + b, 0);
 
-  // Open edit dialog
-  const handleEditArticle = (guide: Guide) => {
-    setEditingGuide(guide);
+  // Open edit dialog for guide
+  const handleEditGuide = (guide: Guide) => {
+    setEditingItem({ id: guide.id, title: guide.title, type: 'guide', imageUrl: guide.imageUrl });
     setNewCoverUrl(articleSettings[guide.id] || guide.imageUrl);
     setNewContentType(articleCategories[guide.id] as "guide" | "promo" || "");
     setNewTags(articleTags[guide.id] || []);
+    setNewIsPinned(articlePinned[guide.id] || false);
+    setTagInput("");
+    setEditDialogOpen(true);
+  };
+  
+  // Open edit dialog for promo
+  const handleEditPromo = (promo: typeof promos[0]) => {
+    setEditingItem({ id: promo.id, title: promo.title, type: 'promo', imageUrl: promo.imageUrl });
+    setNewCoverUrl(articleSettings[promo.id] || promo.imageUrl || "");
+    setNewContentType(articleCategories[promo.id] as "guide" | "promo" || "");
+    setNewTags(articleTags[promo.id] || []);
+    // 優惠的置頂：先檢查後台設定，再檢查原始數據
+    setNewIsPinned(articlePinned[promo.id] ?? promo.isPinned ?? false);
     setTagInput("");
     setEditDialogOpen(true);
   };
@@ -179,7 +202,7 @@ export default function AdminDiscoverPage() {
 
   // Save article settings
   const handleSaveSettings = async () => {
-    if (!editingGuide) return;
+    if (!editingItem) return;
     
     setIsSaving(true);
     try {
@@ -187,10 +210,11 @@ export default function AdminDiscoverPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          articleId: editingGuide.id,
+          articleId: editingItem.id,
           coverImageUrl: newCoverUrl || null,
           contentType: newContentType || null,
           customTags: newTags.length > 0 ? newTags : null,
+          isPinned: newIsPinned,
         }),
       });
 
@@ -207,38 +231,49 @@ export default function AdminDiscoverPage() {
 
       // Update local state - cover
       if (newCoverUrl) {
-        setArticleSettings(prev => ({ ...prev, [editingGuide.id]: newCoverUrl }));
+        setArticleSettings(prev => ({ ...prev, [editingItem.id]: newCoverUrl }));
       } else {
         setArticleSettings(prev => {
           const newSettings = { ...prev };
-          delete newSettings[editingGuide.id];
+          delete newSettings[editingItem.id];
           return newSettings;
         });
       }
       
       // Update local state - category
       if (newContentType) {
-        setArticleCategories(prev => ({ ...prev, [editingGuide.id]: newContentType }));
+        setArticleCategories(prev => ({ ...prev, [editingItem.id]: newContentType }));
       } else {
         setArticleCategories(prev => {
           const newCategories = { ...prev };
-          delete newCategories[editingGuide.id];
+          delete newCategories[editingItem.id];
           return newCategories;
         });
       }
       
       // Update local state - tags
       if (newTags.length > 0) {
-        setArticleTags(prev => ({ ...prev, [editingGuide.id]: newTags }));
+        setArticleTags(prev => ({ ...prev, [editingItem.id]: newTags }));
       } else {
         setArticleTags(prev => {
           const newTagsState = { ...prev };
-          delete newTagsState[editingGuide.id];
+          delete newTagsState[editingItem.id];
           return newTagsState;
         });
       }
+      
+      // Update local state - pinned
+      if (newIsPinned) {
+        setArticlePinned(prev => ({ ...prev, [editingItem.id]: true }));
+      } else {
+        setArticlePinned(prev => {
+          const newPinned = { ...prev };
+          delete newPinned[editingItem.id];
+          return newPinned;
+        });
+      }
 
-      toast.success('文章設定已更新');
+      toast.success('設定已更新');
       setEditDialogOpen(false);
     } catch (error: any) {
       toast.error('更新失敗：' + error.message);
@@ -249,33 +284,11 @@ export default function AdminDiscoverPage() {
 
   // Reset to default cover
   const handleResetCover = async () => {
-    if (!editingGuide) return;
+    if (!editingItem) return;
     
-    setIsSaving(true);
-    try {
-      const res = await fetch(`/api/admin/article-settings?articleId=${editingGuide.id}`, {
-        method: 'DELETE',
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || 'Failed to reset');
-      }
-
-      // Update local state
-      setArticleSettings(prev => {
-        const newSettings = { ...prev };
-        delete newSettings[editingGuide.id];
-        return newSettings;
-      });
-
-      toast.success('已恢復預設封面');
-      setEditDialogOpen(false);
-    } catch (error: any) {
-      toast.error('重設失敗：' + error.message);
-    } finally {
-      setIsSaving(false);
-    }
+    // Just clear the cover URL in the form, actual save happens on "Save"
+    setNewCoverUrl(editingItem.imageUrl || "");
+    toast.success('已恢復預設封面（記得按儲存）');
   };
 
   // Upload cover image
@@ -463,7 +476,7 @@ export default function AdminDiscoverPage() {
                             <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-800" title="已自訂封面" />
                           )}
                           <button
-                            onClick={() => handleEditArticle(guide)}
+                            onClick={() => handleEditGuide(guide)}
                             className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded"
                           >
                             <Pencil className="h-4 w-4 text-white" />
@@ -493,6 +506,12 @@ export default function AdminDiscoverPage() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-1 flex-wrap">
+                          {articlePinned[guide.id] && (
+                            <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs font-medium flex items-center gap-0.5">
+                              <Pin className="h-3 w-3" />
+                              置頂
+                            </span>
+                          )}
                           {guide.isNew && (
                             <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium">
                               NEW
@@ -513,11 +532,11 @@ export default function AdminDiscoverPage() {
                             </span>
                           )}
                           {articleTags[guide.id] && (
-                            <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs font-medium">
+                            <span className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full text-xs font-medium">
                               +{articleTags[guide.id].length} 標籤
                             </span>
                           )}
-                          {!guide.isNew && !hasCustomCover && !articleCategories[guide.id] && !articleTags[guide.id] && (
+                          {!articlePinned[guide.id] && !guide.isNew && !hasCustomCover && !articleCategories[guide.id] && !articleTags[guide.id] && (
                             <span className="text-gray-400 text-xs">-</span>
                           )}
                         </div>
@@ -528,7 +547,7 @@ export default function AdminDiscoverPage() {
                             variant="ghost" 
                             size="sm" 
                             className="gap-1"
-                            onClick={() => handleEditArticle(guide)}
+                            onClick={() => handleEditGuide(guide)}
                           >
                             <Settings className="h-3 w-3" />
                             設定
@@ -602,17 +621,40 @@ export default function AdminDiscoverPage() {
                       </div>
                     </td>
                     <td className="px-4 py-4">
-                      <div className="flex items-center gap-1">
-                        {promo.isPinned && (
-                          <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs font-medium flex items-center gap-1">
+                      <div className="flex items-center gap-1 flex-wrap">
+                        {(articlePinned[promo.id] ?? promo.isPinned) && (
+                          <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs font-medium flex items-center gap-0.5">
                             <Pin className="h-3 w-3" />
                             置頂
+                          </span>
+                        )}
+                        {articleCategories[promo.id] && (
+                          <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                            articleCategories[promo.id] === 'guide' 
+                              ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300'
+                              : 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
+                          }`}>
+                            {articleCategories[promo.id] === 'guide' ? '攻略' : '優惠'}
+                          </span>
+                        )}
+                        {articleTags[promo.id] && (
+                          <span className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full text-xs font-medium">
+                            +{articleTags[promo.id].length} 標籤
                           </span>
                         )}
                       </div>
                     </td>
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-1">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="gap-1"
+                          onClick={() => handleEditPromo(promo)}
+                        >
+                          <Settings className="h-3 w-3" />
+                          設定
+                        </Button>
                         <Link href={`/discover/${promo.id}`} target="_blank">
                           <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                             <ExternalLink className="h-3 w-3" />
@@ -641,14 +683,34 @@ export default function AdminDiscoverPage() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Settings className="h-5 w-5" />
-              編輯文章設定
+              編輯設定
             </DialogTitle>
-            <DialogDescription>
-              {editingGuide?.title}
+            <DialogDescription className="line-clamp-2">
+              {editingItem?.title}
             </DialogDescription>
           </DialogHeader>
           
           <div className="space-y-6 py-4">
+            {/* 置頂設定 */}
+            <div className="space-y-3">
+              <Label className="text-sm font-medium">置頂</Label>
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  variant={!newIsPinned ? "outline" : "default"}
+                  size="sm"
+                  onClick={() => setNewIsPinned(!newIsPinned)}
+                  className={`gap-1 ${newIsPinned ? 'bg-amber-500 hover:bg-amber-600 text-white' : ''}`}
+                >
+                  {newIsPinned ? <Pin className="h-3 w-3" /> : <PinOff className="h-3 w-3" />}
+                  {newIsPinned ? '已置頂' : '未置頂'}
+                </Button>
+              </div>
+              <p className="text-xs text-gray-500">
+                置頂的文章會顯示在列表最前面
+              </p>
+            </div>
+            
             {/* 分類設定 */}
             <div className="space-y-3">
               <Label className="text-sm font-medium">分類</Label>
@@ -778,7 +840,7 @@ export default function AdminDiscoverPage() {
                   {isUploading ? <Loader2 className="h-3 w-3 animate-spin" /> : <Upload className="h-3 w-3" />}
                   上傳
                 </Button>
-                {editingGuide && articleSettings[editingGuide.id] && (
+                {editingItem && articleSettings[editingItem.id] && (
                   <Button
                     type="button"
                     variant="outline"

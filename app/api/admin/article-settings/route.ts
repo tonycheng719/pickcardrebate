@@ -25,11 +25,11 @@ export async function GET() {
   }
 }
 
-// POST: 更新文章設定（封面圖片、分類、標籤）
+// POST: 更新文章設定（封面圖片、分類、標籤、置頂）
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { articleId, coverImageUrl, contentType, customTags } = body;
+    const { articleId, coverImageUrl, contentType, customTags, isPinned } = body;
 
     if (!articleId) {
       return NextResponse.json({ error: 'Missing articleId' }, { status: 400 });
@@ -49,6 +49,9 @@ export async function POST(request: Request) {
     }
     if (customTags !== undefined) {
       updateData.custom_tags = customTags && customTags.length > 0 ? customTags : null;
+    }
+    if (isPinned !== undefined) {
+      updateData.is_pinned = isPinned || false;
     }
 
     // 先檢查是否已有設定
@@ -75,6 +78,7 @@ export async function POST(request: Request) {
           cover_image_url: coverImageUrl || null,
           content_type: contentType || null,
           custom_tags: customTags && customTags.length > 0 ? customTags : null,
+          is_pinned: isPinned || false,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         });

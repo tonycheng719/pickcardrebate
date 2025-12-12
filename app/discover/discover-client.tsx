@@ -391,6 +391,7 @@ export function DiscoverClient() {
   const [customCovers, setCustomCovers] = useState<Record<string, string>>({});
   const [customCategories, setCustomCategories] = useState<Record<string, string>>({});
   const [customTags, setCustomTags] = useState<Record<string, string[]>>({});
+  const [customPinned, setCustomPinned] = useState<Record<string, boolean>>({});
   
   // 更新 URL 而不重載頁面
   const updateFilters = (type?: ContentType, tag?: string) => {
@@ -408,7 +409,7 @@ export function DiscoverClient() {
   const setContentType = (type: ContentType) => updateFilters(type, undefined);
   const setTagFilter = (tag: string) => updateFilters(undefined, tag);
 
-  // 獲取自訂設定（封面、分類、標籤）
+  // 獲取自訂設定（封面、分類、標籤、置頂）
   useEffect(() => {
     async function fetchCustomSettings() {
       try {
@@ -418,6 +419,7 @@ export function DiscoverClient() {
           setCustomCovers(data.settings || {});
           setCustomCategories(data.categories || {});
           setCustomTags(data.tags || {});
+          setCustomPinned(data.pinned || {});
         }
       } catch (e) {
         console.error('Failed to fetch custom settings:', e);
@@ -494,12 +496,12 @@ export function DiscoverClient() {
     });
   }, [allContent, contentType, tagFilter]);
 
-  // 排序邏輯：1. 置頂優先 2. 最後更新時間降序（最新在前）
+  // 排序邏輯：1. 置頂優先（後台設定優先） 2. 最後更新時間降序（最新在前）
   const sortedContent = useMemo(() => {
     return [...filteredContent].sort((a, b) => {
-      // 1. 置頂優先
-      const aIsPinned = 'isPinned' in a && a.isPinned;
-      const bIsPinned = 'isPinned' in b && b.isPinned;
+      // 1. 置頂優先（後台設定 > 原始數據）
+      const aIsPinned = customPinned[a.id] ?? ('isPinned' in a && a.isPinned);
+      const bIsPinned = customPinned[b.id] ?? ('isPinned' in b && b.isPinned);
       if (aIsPinned && !bIsPinned) return -1;
       if (!aIsPinned && bIsPinned) return 1;
       
@@ -521,7 +523,7 @@ export function DiscoverClient() {
       
       return 0;
     });
-  }, [filteredContent]);
+  }, [filteredContent, customPinned]);
 
   const contentTypes = [
     { id: "all", label: "全部", icon: Sparkles },
