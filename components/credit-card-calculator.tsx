@@ -401,7 +401,8 @@ export function CreditCardCalculator({
 
     setResults(res);
     setOpen(true);
-    setShowAllResults(false); // Reset show all on new calculation
+    setShowMyOtherCards(false); // Reset on new calculation
+    setShowUnownedCards(false);
   };
 
   const best = results[0];
