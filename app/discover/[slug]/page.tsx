@@ -338,7 +338,6 @@ const GUIDES: Record<string, {
     ],
     publishDate: "2025-11-18",
     readTime: "8 分鐘",
-    promoEndDate: "2026-02-02",
   },
   "online-shopping-guide": {
     id: "online-shopping-guide",
