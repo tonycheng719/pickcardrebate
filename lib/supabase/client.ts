@@ -38,10 +38,10 @@ export function createClient() {
     } as any
   }
 
-  // Check if user wants to be remembered (30 days) or use default session (1 hour)
+  // Check if user wants to be remembered (30 days) or use session-only cookie
   const rememberMe = typeof localStorage !== 'undefined' ? localStorage.getItem('rememberMe') === 'true' : false;
-  // 30 days in seconds for "remember me", or 24 hours for default
-  const sessionMaxAge = rememberMe ? 30 * 24 * 60 * 60 : 24 * 60 * 60;
+  // 30 days in seconds for "remember me", or undefined for session cookie (expires when browser closes)
+  const sessionMaxAge = rememberMe ? 30 * 24 * 60 * 60 : undefined;
   
   return createBrowserClient(url, key, {
     cookies: {
@@ -70,13 +70,17 @@ export function createClient() {
           // Set SameSite to Lax for better compatibility
           cookieString += '; samesite=lax';
           
-          // Use longer max-age for better session persistence
-          // This helps prevent frequent logouts
+          // Set max-age based on "remember me" preference
+          // If rememberMe is true: 30 days
+          // If rememberMe is false: session cookie (no max-age, expires when browser closes)
           const maxAge = options?.maxAge || sessionMaxAge;
-          cookieString += `; max-age=${maxAge}`;
+          if (maxAge) {
+            cookieString += `; max-age=${maxAge}`;
+          }
+          // If no maxAge, it becomes a session cookie (deleted when browser closes)
           
           document.cookie = cookieString;
-          console.log('[Supabase Client] Cookie set:', name, 'maxAge:', maxAge);
+          console.log('[Supabase Client] Cookie set:', name, 'maxAge:', maxAge || 'session');
         });
       },
     },
