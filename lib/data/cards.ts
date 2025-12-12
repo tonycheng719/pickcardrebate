@@ -1292,40 +1292,6 @@ export const HK_CARDS: CreditCard[] = [
     promoEndDate: "2025-12-31",
     promoName: "WeWa 本地餐飲優惠",
   },
-  {
-    id: "wewa-visa-platinum",
-    name: "WeWa Visa 白金卡",
-    bank: "安信",
-    cardNetwork: "visa",
-    style: { bgColor: "bg-gradient-to-br from-yellow-300 to-amber-400", textColor: "text-black" },
-    annualFee: 600,
-    feeWaiverCondition: "首年免年費",
-    foreignCurrencyFee: 1.95, // Visa 外幣手續費約 1.95%
-    rules: [
-      // 🔥 本地餐飲優惠 (2025/12/1 - 2025/12/31)
-      { description: "🔥餐飲 10% [實體卡,單筆≥$100,需登記]", matchType: "category", matchValue: "dining", percentage: 10.0, minSpend: 100, cap: 500, capType: "reward", validDateRange: { start: "2025-12-01", end: "2025-12-31" }, excludePaymentMethods: ["mobile", "apple_pay", "octopus", "alipay", "wechat_pay", "payme"] },
-      { description: "🔥餐飲 10% [Apple Pay,單筆≥$100,需登記]", matchType: "category", matchValue: "dining", percentage: 10.0, minSpend: 100, cap: 500, capType: "reward", validDateRange: { start: "2025-12-01", end: "2025-12-31" }, excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
-      // T&C 2025/7/1-2026/6/30: 玩樂類別 4 選 1，需月簽$1,500，每月回贈上限 $200
-      // 1. 手機支付 - ⚠️ WeWa Visa 只支援 Apple Pay (iOS)，Android 不支援
-      { description: "手機支付 4% [需月簽$1,500,4選1,僅iOS]", matchType: "paymentMethod", matchValue: ["apple_pay"], percentage: 4.0, monthlyMinSpend: 1500, cap: 200, capType: "reward", excludeCategories: ["ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
-      // 2. 旅遊簽賬 (旅行社/航空公司/酒店客房住宿)
-      { description: "旅遊 4% [需月簽$1,500,4選1]", matchType: "category", matchValue: ["travel"], percentage: 4.0, monthlyMinSpend: 1500, cap: 200, capType: "reward", excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
-      // 3. 海外簽賬 - 扣除1.95%外幣手續費後淨回贈約2%
-      { description: "海外 4% [需月簽$1,500,4選1]", matchType: "base", percentage: 4.0, isForeignCurrency: true, monthlyMinSpend: 1500, cap: 200, capType: "reward", excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
-      // 4. 線上娛樂
-      { description: "線上娛樂 4% [需月簽$1,500,4選1]", matchType: "merchant", matchValue: ["netflix", "spotify", "disney-plus", "youtube", "steam", "playstation", "xbox", "nintendo", "kkbox", "joox", "mytv-super", "patreon", "apple-app-store", "google-play"], percentage: 4.0, monthlyMinSpend: 1500, cap: 200, capType: "reward", excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
-      { description: "八達通自動增值 0.4%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
-    ],
-    tags: ["玩樂4%", "旅遊", "海外", "線上娛樂", "八達通增值", "餐飲10%"],
-    welcomeOfferText: "🔥網上申請額外$300 (限12/31前) + 簽$8,500送$500 / 簽$8,800送LG顯示器或Marshall喇叭",
-    officialApplyUrl: "https://www.primecredit.com/tc/credit-card/wewa/",
-    applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=180&a=228&sub_id1=pickcardrebate&sub_id2=web",
-    sellingPoints: ["🔥網上申請額外$300 (限12/31前)", "🔥餐飲 10% (12月限定,需登記)", "玩樂類別 4% (4選1)", "每月回贈上限 $200", "八達通增值 0.4%"],
-    note: "🎁 **迎新優惠**（2025/12/1-2026/2/28）：\n- 網上申請額外 $300（🔥限2025/12/31前申請）\n- 簽 $8,800 送 LG 27吋顯示器 / Marshall喇叭\n- 簽 $8,500 送 $500 現金回贈\n- 高達 $90,000 免息套現（無簽賬要求）\n- 學生專享：簽 $2,000 送 $200\n\n💡 【推廣期 2025/7/1-2026/6/30】玩樂類別 **4%**（已包 0.4% 基本）需 4 選 1（透過 OmyCard App 自選），需每月簽滿 $1,500，每月回贈上限 $200。\n\n📌 **玩樂類別選項**：手機支付 / 旅遊 / 海外 / 線上娛樂\n\n⚠️ **手機支付僅支援 iOS 使用 Apple Pay**！Android 用戶無法使用此類別。\n\n📌 **線上娛樂包括**：Apple App Store / Disney+ / Google Play / JOOX / KKBOX / MyTV SUPER / Netflix / Nintendo / Patreon / PlayStation / Spotify / Steam / Xbox / YouTube\n\n✅ 八達通自動增值計 0.4%（無上限）！\n❌ 玩樂4%不計：電子錢包充值/轉賬、分期、賭場、繳費\n⚠️ Visa 外幣手續費約 1.95%，海外淨回贈約 2%\n\n🔥 **本地餐飲優惠**（至2025/12/31）：全港食肆享高達10%回贈！[查看詳情](/discover/wewa-dining-2025)",
-    promoEndDate: "2025-12-31",
-    promoName: "WeWa 本地餐飲優惠",
-  },
 
   // ========================================================================
   // Dah Sing 大新
