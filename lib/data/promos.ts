@@ -522,6 +522,18 @@ export const PROMOS: Promo[] = [
     url: "https://www.sc.com/hk",
   },
   {
+    id: "sc-tax-payment-2025",
+    title: "🔥 渣打信用卡交稅優惠｜高達$2,300回贈/23,000里",
+    merchant: "渣打銀行",
+    description: "透過渣打網上理財交稅，特選客戶可賺高達$2,300現金回贈或23,000 Asia Miles！12月31日前完成分期更有早鳥額外獎賞！",
+    imageUrl: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2070&auto=format&fit=crop",
+    expiryDate: "2026-02-02",
+    updatedAt: "2025-12-12",
+    relatedCardIds: ["sc-simply-cash", "sc-cathay", "sc-smart"],
+    tags: ["交稅", "分期", "限時優惠", "需登記"],
+    url: "/discover/sc-tax-payment-2025",
+  },
+  {
     id: "citi-octopus-transport-2025",
     title: "Citi 八達通卡交通 15% 回贈",
     merchant: "Citi",
