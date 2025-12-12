@@ -855,109 +855,79 @@ export function CreditCardCalculator({
 
           {/* 方案 C: 智能建議模式 */}
           
-          {/* CASE 1: 用戶已持有全場最抵卡 - 顯示恭喜訊息 */}
+          {/* CASE 1: 用戶已持有全場最抵卡 - 精簡版 */}
           {isBestOwned ? (
-            <div className="rounded-2xl border-2 border-emerald-400 p-4 bg-gradient-to-br from-emerald-50 to-green-50 relative overflow-hidden shadow-md">
+            <div className="rounded-xl border-2 border-emerald-400 p-3 bg-gradient-to-br from-emerald-50 to-green-50 relative overflow-hidden">
               {/* 恭喜標籤 */}
-              <div className="absolute -top-1 -right-1 bg-gradient-to-r from-emerald-500 to-green-500 text-white text-[10px] px-3 py-1.5 rounded-bl-xl font-bold flex items-center gap-1 shadow-lg">
-                🎉 恭喜！你已持有最抵卡
+              <div className="absolute -top-1 -right-1 bg-emerald-500 text-white text-[9px] px-2 py-1 rounded-bl-lg font-bold">
+                🎉 已持有最抵卡
               </div>
               
-              {best.isCapped && (
-                <div className="absolute top-0 left-0 bg-amber-100 text-amber-700 text-[10px] px-2 py-1 rounded-br-lg font-medium flex items-center gap-1">
-                  <AlertCircle className="w-3 h-3" /> 已達上限
-                </div>
-              )}
-              
-              <div className="text-xs uppercase text-emerald-700 font-bold mb-3 flex items-center gap-2">
-                <span className="bg-emerald-100 px-2 py-1 rounded-lg">🏆 推薦使用</span>
-              </div>
-              
-              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-                <div className="flex items-start gap-3 flex-1 min-w-0">
-                  {/* Card Image */}
-                  {best.card.imageUrl ? (
-                    <div className="w-16 h-10 sm:w-20 sm:h-12 rounded-lg border-2 border-emerald-200 bg-white flex items-center justify-center overflow-hidden shrink-0 shadow-sm">
-                      <img src={best.card.imageUrl} alt={best.card.name} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
-                    </div>
-                  ) : (
-                    <div className={`w-16 h-10 sm:w-20 sm:h-12 rounded-lg border-2 border-emerald-200 ${best.card.style?.bgColor || 'bg-gray-500'} shrink-0 shadow-sm`}></div>
-                  )}
+              <div className="flex items-center gap-3">
+                {/* Card Image - 更小 */}
+                {best.card.imageUrl ? (
+                  <div className="w-12 h-8 rounded border border-emerald-200 bg-white flex items-center justify-center overflow-hidden shrink-0">
+                    <img src={best.card.imageUrl} alt={best.card.name} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
+                  </div>
+                ) : (
+                  <div className={`w-12 h-8 rounded border border-emerald-200 ${best.card.style?.bgColor || 'bg-gray-500'} shrink-0`}></div>
+                )}
 
-                  <div className="flex-1 min-w-0">
-                  <p className="text-xs text-gray-500">{best.card.bank}</p>
-                  <h3 className="text-lg font-bold flex items-center gap-1 leading-tight text-emerald-800">
-                    {best.card.name}
-                    {isBestVerified && <BadgeCheck className="w-4 h-4 text-green-600 shrink-0" />}
-                  </h3>
-                  <p className="text-sm text-gray-600 mt-0.5">{best.matchedRule.description}</p>
-                  
-                  {/* Condition & Cap Tags */}
-                  <div className="flex flex-wrap gap-1 mt-2">
-                    {isBestVerified && (
-                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-green-100 text-green-700 rounded text-[10px] font-medium border border-green-200">
-                        <BadgeCheck className="w-3 h-3" /> 社群已驗證
-                      </span>
-                    )}
-                    {best.matchedRule.validDays && (
-                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded text-[10px] font-medium border border-blue-100">
-                        <Calendar className="w-3 h-3" /> 僅限 {best.matchedRule.validDays.map(d => DAYS_MAP[d]).join("/")}
-                      </span>
-                    )}
-                    {best.matchedRule.cap && (
-                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-orange-50 text-orange-600 rounded text-[10px] font-medium border border-orange-100">
-                        <Info className="w-3 h-3" /> 上限 ${best.matchedRule.cap}
-                      </span>
-                    )}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-1">
+                    <h3 className="font-bold text-emerald-800 truncate">{best.card.name}</h3>
+                    {isBestVerified && <BadgeCheck className="w-3.5 h-3.5 text-green-600 shrink-0" />}
                   </div>
-
-                  <div className="flex items-center gap-2 mt-3 flex-wrap">
-                    <button 
-                      className="text-xs border border-emerald-200 rounded-lg px-2 py-1 flex items-center gap-1 text-emerald-700 hover:bg-emerald-100 transition-colors"
-                      onClick={() => handleWhyClick(best)}
-                    >
-                      <HelpCircle className="w-3 h-3" /> 點解係呢張？
-                    </button>
-                    
-                    {user && (
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className={`h-8 text-xs gap-1 border-emerald-300 bg-white hover:bg-emerald-50 text-emerald-700 ${isBestRecorded ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        onClick={() => !isBestRecorded && !isBestRecording && handleRecordTransaction(best)}
-                        disabled={isBestRecorded || isBestRecording}
-                      >
-                        {isBestRecording ? <Loader2 className="w-3 h-3 animate-spin" /> : isBestRecorded ? <CheckCircle2 className="w-3 h-3" /> : <PlusCircle className="w-3 h-3" />}
-                        {isBestRecorded ? "已記錄" : "一鍵記賬"}
-                      </Button>
-                    )}
-                  </div>
-                  </div>
+                  <p className="text-xs text-gray-600 truncate">{best.matchedRule.description}</p>
                 </div>
 
-                <div className="text-right sm:text-right shrink-0 mt-2 sm:mt-0 flex sm:block items-center justify-between sm:justify-end">
-                  {best.discountRule && best.discountAmount ? (
-                    <div className="sm:mb-2">
-                      <div className="text-xl sm:text-2xl font-bold text-orange-600 tracking-tight">{(100 - best.discountPercentage!) / 10}折</div>
-                      <div className="text-xs text-orange-500 mt-0.5">即減 ${best.discountAmount.toFixed(0)}</div>
-                    </div>
-                  ) : null}
-                  
+                {/* 獎勵金額 */}
+                <div className="text-right shrink-0">
                   {best.pointsAmount && best.pointsCurrency ? (
-                    <div>
-                      <div className="text-2xl sm:text-3xl font-bold text-emerald-600 tracking-tight">{best.pointsAmount.toLocaleString()} {best.pointsCurrency}</div>
-                      <div className="text-xs text-gray-500 mt-1">≈ ${best.pointsCashValue?.toFixed(1)} · {best.percentage}%</div>
-                    </div>
+                    <>
+                      <div className="text-lg font-bold text-emerald-600">{best.pointsAmount.toLocaleString()} {best.pointsCurrency}</div>
+                      <div className="text-[10px] text-gray-500">≈ ${best.pointsCashValue?.toFixed(1)}</div>
+                    </>
                   ) : (
-                    <div>
-                      <div className={`text-2xl sm:text-3xl font-bold ${isBestCashFallback ? 'text-gray-400' : 'text-emerald-700'} tracking-tight`}>
+                    <>
+                      <div className={`text-lg font-bold ${isBestCashFallback ? 'text-gray-400' : 'text-emerald-700'}`}>
                         {bestMilesText || (best.rewardAmount > 0 ? `+$${best.rewardAmount.toFixed(1)}` : `${best.percentage}%`)}
                       </div>
-                      {isBestCashFallback && <div className="text-xs text-gray-400 font-medium mt-1">現金回贈</div>}
                       {!isBestCashFallback && !bestMilesText && best.rewardAmount > 0 && (
-                        <div className="text-xs text-gray-500 mt-1">{best.percentage}% 回贈</div>
+                        <div className="text-[10px] text-gray-500">{best.percentage}%</div>
                       )}
-                    </div>
+                    </>
+                  )}
+                </div>
+              </div>
+              
+              {/* 精簡標籤 + 按鈕 - 單行 */}
+              <div className="flex items-center justify-between mt-2 pt-2 border-t border-emerald-200">
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  {best.matchedRule.cap && (
+                    <span className="text-[10px] text-orange-600 bg-orange-50 px-1.5 py-0.5 rounded">上限 ${best.matchedRule.cap}</span>
+                  )}
+                  {best.isCapped && (
+                    <span className="text-[10px] text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded flex items-center gap-0.5">
+                      <AlertCircle className="w-2.5 h-2.5" /> 已達上限
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <button 
+                    className="text-[10px] text-emerald-600 hover:underline"
+                    onClick={() => handleWhyClick(best)}
+                  >
+                    點解？
+                  </button>
+                  {user && (
+                    <button 
+                      className={`text-[10px] px-2 py-0.5 rounded ${isBestRecorded ? 'bg-gray-100 text-gray-400' : 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200'}`}
+                      onClick={() => !isBestRecorded && !isBestRecording && handleRecordTransaction(best)}
+                      disabled={isBestRecorded || isBestRecording}
+                    >
+                      {isBestRecording ? '...' : isBestRecorded ? '✓' : '記賬'}
+                    </button>
                   )}
                 </div>
               </div>
