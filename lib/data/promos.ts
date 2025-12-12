@@ -535,14 +535,14 @@ export const PROMOS: Promo[] = [
   },
   {
     id: "bea-jcb-contactless-2025",
-    title: "🔥 BEA JCB 白金卡非接觸式簽賬 15% 回贈",
+    title: "🔥 BEA JCB 白金卡 Apple Pay/Google Pay 15% 回贈",
     merchant: "東亞銀行",
-    description: "本地及澳門實體店非接觸式付款（拍卡/Apple Pay）享 15% 現金回贈！每月簽滿 $500，每月最高回贈 $100，整個推廣期最高 $600！",
+    description: "Apple Pay / Google Pay 非接觸式付款享 15% 現金回贈！本地及澳門實體店用手機支付，每月簽滿 $500，每月最高回贈 $100，整個推廣期最高 $600！",
     imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
     expiryDate: "2026-03-31",
     updatedAt: "2025-12-12",
     relatedCardIds: ["bea-jcb-platinum"],
-    tags: ["非接觸式", "拍卡", "15%回贈", "需登記", "限時優惠"],
+    tags: ["Apple Pay", "Google Pay", "15%回贈", "需登記", "限時優惠"],
     url: "/discover/bea-jcb-contactless-2025",
   },
   {

@@ -1,4 +1,4 @@
-// BEA JCB 白金卡非接觸式簽賬 15% 回贈攻略
+// BEA JCB 白金卡 Apple Pay/Google Pay 15% 現金回贈攻略
 // 用於 /discover/bea-jcb-contactless-2025 頁面
 
 import { Button } from "@/components/ui/button";
@@ -18,8 +18,8 @@ export const beaJcbContactless2025FaqData = [
     answer: "需要透過 BEA Mall App 登記，首 5,000 名額滿即止。登記後東亞銀行會發送確認電郵。成功登記後，你名下所有主卡及附屬卡嘅合資格簽賬都會獨立計算獎賞。"
   },
   {
-    question: "非接觸式簽賬包括咩？",
-    answer: "包括本地（港元）及澳門（澳門元）實體店嘅非接觸式付款，例如「拍卡」付款。Apple Pay、Google Pay 等手機支付亦計算在內，但必須係實體店消費。網上簽賬不適用！"
+    question: "非接觸式付款包括咩？",
+    answer: "主要係指 Apple Pay 同 Google Pay！喺本地（港元）及澳門（澳門元）實體店用手機支付即可享優惠。實體卡「拍卡」付款亦計算在內。但必須係實體店消費，網上簽賬不適用！"
   },
   {
     question: "每月回贈上限係幾多？",
@@ -116,8 +116,8 @@ export function BeaJcbContactless2025Guide() {
     <div className="prose prose-lg dark:prose-invert max-w-none">
       {/* 引言 */}
       <p className="lead text-xl text-gray-600 dark:text-gray-300 mb-6">
-        🔥 東亞銀行 BEA JCB 白金卡推出<strong>非接觸式簽賬 15% 現金回贈</strong>優惠！
-        本地及澳門實體店「拍卡」消費，每月簽滿 <strong>$500</strong> 即享 <strong>15% 回贈</strong>，
+        🔥 東亞銀行 BEA JCB 白金卡推出 <strong>Apple Pay / Google Pay 非接觸式付款 15% 現金回贈</strong>優惠！
+        本地及澳門實體店用<strong>手機支付</strong>消費，每月簽滿 <strong>$500</strong> 即享 <strong>15% 回贈</strong>，
         整個推廣期最高可賺 <strong>$600</strong>！
       </p>
 
@@ -126,7 +126,7 @@ export function BeaJcbContactless2025Guide() {
         <div className="flex items-center gap-3 mb-4">
           <Gift className="h-8 w-8" />
           <div>
-            <h3 className="text-xl font-bold m-0">BEA JCB 非接觸式簽賬優惠</h3>
+            <h3 className="text-xl font-bold m-0">BEA JCB Apple Pay/Google Pay 15% 回贈</h3>
             <p className="text-blue-100 m-0">推廣期：2025年10月15日 - 2026年3月31日</p>
           </div>
         </div>
@@ -176,8 +176,8 @@ export function BeaJcbContactless2025Guide() {
         </h2>
         
         <p>
-          東亞銀行 <strong>JCB 白金卡</strong>推出限時非接觸式簽賬優惠，
-          喺本地及澳門實體店以<strong>非接觸式付款</strong>（拍卡/Apple Pay/Google Pay），
+          東亞銀行 <strong>JCB 白金卡</strong>推出限時優惠，
+          喺本地及澳門實體店以 <strong>Apple Pay / Google Pay</strong>（非接觸式付款）消費，
           即可享 <strong>15% 現金回贈</strong>！
         </p>
 
@@ -339,8 +339,9 @@ export function BeaJcbContactless2025Guide() {
             <ul className="text-green-700 dark:text-green-300 text-sm space-y-1 m-0">
               <li>✓ 香港實體店</li>
               <li>✓ 港元（HKD）交易</li>
-              <li>✓ 非接觸式付款（拍卡）</li>
-              <li>✓ Apple Pay / Google Pay</li>
+              <li>✓ <strong>Apple Pay</strong></li>
+              <li>✓ <strong>Google Pay</strong></li>
+              <li>✓ 實體卡非接觸式付款（拍卡）</li>
             </ul>
           </div>
           <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-5 border border-blue-200 dark:border-blue-800">
@@ -351,8 +352,9 @@ export function BeaJcbContactless2025Guide() {
             <ul className="text-blue-700 dark:text-blue-300 text-sm space-y-1 m-0">
               <li>✓ 澳門實體店</li>
               <li>✓ 澳門元（MOP）交易</li>
-              <li>✓ 非接觸式付款（拍卡）</li>
-              <li>✓ Apple Pay / Google Pay</li>
+              <li>✓ <strong>Apple Pay</strong></li>
+              <li>✓ <strong>Google Pay</strong></li>
+              <li>✓ 實體卡非接觸式付款（拍卡）</li>
             </ul>
           </div>
         </div>
@@ -468,7 +470,7 @@ export function BeaJcbContactless2025Guide() {
         <div className="not-prose space-y-3">
           {[
             { icon: "📱", title: "必須登記", desc: "透過 BEA Mall App 登記，首 5,000 名額滿即止" },
-            { icon: "💳", title: "僅限非接觸式", desc: "必須以非接觸式付款（拍卡/Apple Pay/Google Pay），插卡不計" },
+            { icon: "📱", title: "Apple Pay / Google Pay", desc: "用手機支付（Apple Pay/Google Pay）或實體卡拍卡，插卡不計" },
             { icon: "🏪", title: "僅限實體店", desc: "網上簽賬不適用，必須係實體店消費" },
             { icon: "💰", title: "每月最低 $500", desc: "每月累積簽賬需滿 $500 才可享回贈" },
             { icon: "📊", title: "主卡附屬卡獨立計算", desc: "主卡登記後，附屬卡簽賬會獨立計算獎賞" },
