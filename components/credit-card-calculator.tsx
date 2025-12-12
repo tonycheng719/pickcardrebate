@@ -1214,36 +1214,10 @@ export function CreditCardCalculator({
                 </button>
                 
                 {showMyOtherCards && (
-                  <div className="space-y-1 pt-2 animate-in fade-in slide-in-from-top-2">
-                    {myOtherCards.map(card => {
-                      const milesText = card.milesReturn ? `$${card.milesReturn.toFixed(1)}/里` : null;
-                      return (
-                        <div key={card.card.id} className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800">
-                          {card.card.imageUrl ? (
-                            <div className="w-10 h-6 rounded border bg-white flex items-center justify-center overflow-hidden shrink-0">
-                              <img src={card.card.imageUrl} alt={card.card.name} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
-                            </div>
-                          ) : (
-                            <div className={`w-10 h-6 rounded border ${card.card.style?.bgColor || 'bg-gray-500'} shrink-0`}></div>
-                          )}
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{card.card.name}</p>
-                            <p className="text-[10px] text-gray-500 truncate">{card.matchedRule.description}</p>
-                          </div>
-                          <div className="text-right shrink-0">
-                            <p className="text-sm font-bold text-emerald-600">
-                              {milesText || (card.rewardAmount > 0 ? `+$${card.rewardAmount.toFixed(1)}` : `${card.percentage}%`)}
-                            </p>
-                          </div>
-                          <button 
-                            className="text-[10px] text-gray-400 hover:text-gray-600 px-1"
-                            onClick={(e) => { e.stopPropagation(); handleWhyClick(card); }}
-                          >
-                            ?
-                          </button>
-                        </div>
-                      );
-                    })}
+                  <div className="space-y-2 pt-2 animate-in fade-in slide-in-from-top-2">
+                    {myOtherCards.map(card => (
+                      <ResultRowWithBreakdown key={card.card.id} result={card} />
+                    ))}
                   </div>
                 )}
               </div>
@@ -1263,36 +1237,10 @@ export function CreditCardCalculator({
                 </button>
                 
                 {showUnownedCards && (
-                  <div className="space-y-1 pt-2 animate-in fade-in slide-in-from-top-2">
-                    {unownedCards.slice(0, 10).map(card => {
-                      const milesText = card.milesReturn ? `$${card.milesReturn.toFixed(1)}/里` : null;
-                      return (
-                        <div key={card.card.id} className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800">
-                          {card.card.imageUrl ? (
-                            <div className="w-10 h-6 rounded border bg-white flex items-center justify-center overflow-hidden shrink-0">
-                              <img src={card.card.imageUrl} alt={card.card.name} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
-                            </div>
-                          ) : (
-                            <div className={`w-10 h-6 rounded border ${card.card.style?.bgColor || 'bg-gray-500'} shrink-0`}></div>
-                          )}
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{card.card.name}</p>
-                            <p className="text-[10px] text-gray-500 truncate">{card.matchedRule.description}</p>
-                          </div>
-                          <div className="text-right shrink-0">
-                            <p className="text-sm font-bold text-gray-600">
-                              {milesText || (card.rewardAmount > 0 ? `+$${card.rewardAmount.toFixed(1)}` : `${card.percentage}%`)}
-                            </p>
-                          </div>
-                          <button 
-                            className="text-[10px] text-gray-400 hover:text-gray-600 px-1"
-                            onClick={(e) => { e.stopPropagation(); handleWhyClick(card); }}
-                          >
-                            ?
-                          </button>
-                        </div>
-                      );
-                    })}
+                  <div className="space-y-2 pt-2 animate-in fade-in slide-in-from-top-2">
+                    {unownedCards.slice(0, 10).map(card => (
+                      <ResultRowWithBreakdown key={card.card.id} result={card} />
+                    ))}
                     {unownedCards.length > 10 && (
                       <p className="text-[10px] text-gray-400 text-center py-1">還有 {unownedCards.length - 10} 張卡...</p>
                     )}
