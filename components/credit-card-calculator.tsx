@@ -873,17 +873,18 @@ export function CreditCardCalculator({
                 <span className="bg-emerald-100 px-2 py-1 rounded-lg">🏆 推薦使用</span>
               </div>
               
-              <div className="flex items-start justify-between gap-3">
-                {/* Card Image */}
-                {best.card.imageUrl ? (
-                  <div className="w-20 h-12 rounded-lg border-2 border-emerald-200 bg-white flex items-center justify-center overflow-hidden shrink-0 shadow-sm">
-                    <img src={best.card.imageUrl} alt={best.card.name} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
-                  </div>
-                ) : (
-                  <div className={`w-20 h-12 rounded-lg border-2 border-emerald-200 ${best.card.style?.bgColor || 'bg-gray-500'} shrink-0 shadow-sm`}></div>
-                )}
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                <div className="flex items-start gap-3 flex-1 min-w-0">
+                  {/* Card Image */}
+                  {best.card.imageUrl ? (
+                    <div className="w-16 h-10 sm:w-20 sm:h-12 rounded-lg border-2 border-emerald-200 bg-white flex items-center justify-center overflow-hidden shrink-0 shadow-sm">
+                      <img src={best.card.imageUrl} alt={best.card.name} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
+                    </div>
+                  ) : (
+                    <div className={`w-16 h-10 sm:w-20 sm:h-12 rounded-lg border-2 border-emerald-200 ${best.card.style?.bgColor || 'bg-gray-500'} shrink-0 shadow-sm`}></div>
+                  )}
 
-                <div className="flex-1 min-w-0">
+                  <div className="flex-1 min-w-0">
                   <p className="text-xs text-gray-500">{best.card.bank}</p>
                   <h3 className="text-lg font-bold flex items-center gap-1 leading-tight text-emerald-800">
                     {best.card.name}
@@ -931,31 +932,32 @@ export function CreditCardCalculator({
                       </Button>
                     )}
                   </div>
+                  </div>
                 </div>
 
-                <div className="text-right shrink-0">
+                <div className="text-right sm:text-right shrink-0 mt-2 sm:mt-0 flex sm:block items-center justify-between sm:justify-end">
                   {best.discountRule && best.discountAmount ? (
-                    <div className="mb-2">
-                      <div className="text-2xl font-bold text-orange-600 tracking-tight">{(100 - best.discountPercentage!) / 10}折</div>
+                    <div className="sm:mb-2">
+                      <div className="text-xl sm:text-2xl font-bold text-orange-600 tracking-tight">{(100 - best.discountPercentage!) / 10}折</div>
                       <div className="text-xs text-orange-500 mt-0.5">即減 ${best.discountAmount.toFixed(0)}</div>
                     </div>
                   ) : null}
                   
                   {best.pointsAmount && best.pointsCurrency ? (
-                    <>
-                      <div className="text-3xl font-bold text-emerald-600 tracking-tight">{best.pointsAmount.toLocaleString()} {best.pointsCurrency}</div>
+                    <div>
+                      <div className="text-2xl sm:text-3xl font-bold text-emerald-600 tracking-tight">{best.pointsAmount.toLocaleString()} {best.pointsCurrency}</div>
                       <div className="text-xs text-gray-500 mt-1">≈ ${best.pointsCashValue?.toFixed(1)} · {best.percentage}%</div>
-                    </>
+                    </div>
                   ) : (
-                    <>
-                      <div className={`text-3xl font-bold ${isBestCashFallback ? 'text-gray-400' : 'text-emerald-700'} tracking-tight`}>
+                    <div>
+                      <div className={`text-2xl sm:text-3xl font-bold ${isBestCashFallback ? 'text-gray-400' : 'text-emerald-700'} tracking-tight`}>
                         {bestMilesText || (best.rewardAmount > 0 ? `+$${best.rewardAmount.toFixed(1)}` : `${best.percentage}%`)}
                       </div>
                       {isBestCashFallback && <div className="text-xs text-gray-400 font-medium mt-1">現金回贈</div>}
                       {!isBestCashFallback && !bestMilesText && best.rewardAmount > 0 && (
                         <div className="text-xs text-gray-500 mt-1">{best.percentage}% 回贈</div>
                       )}
-                    </>
+                    </div>
                   )}
                 </div>
               </div>

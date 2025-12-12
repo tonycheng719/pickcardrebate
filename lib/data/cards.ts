@@ -89,18 +89,26 @@ export const HK_CARDS: CreditCard[] = [
       // 🔥 最紅冬日賞 - 百老滙 (2025/12/1 - 2026/2/28)
       // 累積簽賬滿 $10,000 享 6% 回贈 (上限 $900)，單一簽賬需滿 $500，需登記
       { description: "🔥百老滙 6% [冬日賞,累積$10,000,需登記]", matchType: "merchant", matchValue: ["broadway"], percentage: 6.0, minSpend: 500, cap: 900, capType: "reward", validDateRange: { start: "2025-12-01", end: "2026-02-28" } },
-      // T&C: 網上/交通/餐飲 $2/里 (2.5%)
-      { description: "網上/交通/餐飲 $2/里 (2.5%)", matchType: "category", matchValue: ["transport", "online", "dining"], percentage: 2.5, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C: 指定日常及旅遊消費 $2/里 (2.5%) - 只限特定商戶
+      // 咖啡店及輕便美食：Starbucks、Pacific Coffee、Lady M 等
+      { description: "指定咖啡店 $2/里 (2.5%)", matchType: "merchant", matchValue: ["starbucks", "pacific-coffee", "lady-m", "pret-a-manger", "green-common", "blue-bottle"], percentage: 2.5 },
+      // 本地交通出行：港鐵、巴士、的士、停車場、隧道費
+      { description: "本地交通 $2/里 (2.5%)", matchType: "category", matchValue: ["transport"], percentage: 2.5, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      // 旅遊服務：租車等
+      { description: "旅遊服務 $2/里 (2.5%)", matchType: "merchant", matchValue: ["avis", "hertz", "toyota-rent-a-car"], percentage: 2.5 },
+      // 海外簽賬
       { description: "海外簽賬 $2/里 (2.5%)", matchType: "base", percentage: 2.5, isForeignCurrency: true },
-      // T&C: 基本回饋 $5/里 (1%)，排除電子錢包（八達通自動增值除外）
-      { description: "基本回饋 $5/里 (1%)", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C: 本地及海外簽賬 $5/里 (1%) - 一般網購、餐飲等
+      { description: "本地及海外簽賬 $5/里 (1%)", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C: 八達通自動增值、網上繳費等 $12.5/里 (0.4%)
+      { description: "八達通/繳費 $12.5/里 (0.4%)", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
     ],
     tags: ["旅遊神卡", "交通$2/里", "Lounge", "百老滙6%"],
     welcomeOfferText: "迎新簽 $8,000 送 $600-$800 獎賞錢 (首60日內)",
     officialApplyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/everymile/",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=245&a=228&sub_id1=pickcardrebate&sub_id2=web",
-    sellingPoints: ["指定日常簽賬低至 HK$2/里", "免費環亞機場貴賓室", "首兩年免年費"],
-    note: "⚠️ **$2/里適用範圍**：網上簽賬（如 Apple Store）、交通（港鐵/巴士/的士）、餐飲。迎新：全新客戶 $600/$800 (網上申請)、現有客戶 $200。不適用於電子錢包（Alipay/WeChat Pay/PayMe）、八達通增值、繳稅、網上繳費。\n\n🌍 **Travel Guru 會員計劃**（登記期 2025/10/1-10/31）：海外實體店外幣簽賬額外回贈！\n• GO級 +3%（連續3個月簽≥$8,000解鎖，上限$500/年）→ 合共 **5.5%**\n• GING級 +4%（累積≥$30,000，上限$1,200/年）→ 合共 **6.5%**\n• GURU級 +6%（累積≥$70,000，上限$2,200/年）→ 合共 **8.5%**\n⚠️ 2024/9起只限海外實體店，不包括網購、電子錢包、八達通增值。\n\n✈️ **香港快運機票半價**（至12/15）：優惠碼 HSBC160，20個航點低至半價！[查看詳情](/discover/hkexpress-hsbc-flash-2025)\n\n🔥 **最紅冬日賞萬寧**（至2026/2/28）：週末高達10%回贈！[查看詳情](/discover/hsbc-mannings-winter-2025)\n\n🔥 **最紅冬日賞百老滙**（至2026/2/28）：累積簽賬滿$10,000享6%回贈！[查看詳情](/discover/hsbc-broadway-winter-2025)",
+    sellingPoints: ["指定咖啡店/交通 $2/里", "一般簽賬 $5/里", "免費環亞機場貴賓室"],
+    note: "⚠️ **$2/里 (2.5%) 只適用於「指定日常及旅遊消費」**：\n• 咖啡店：Starbucks、Pacific Coffee、Lady M、Pret A Manger 等\n• 本地交通：港鐵、巴士、的士、停車場、隧道費\n• 旅遊服務：AVIS、HERTZ、Toyota Rent a Car\n\n📌 **一般網購（如 Apple Store）屬於「本地及海外簽賬」= $5/里 (1%)**\n\n迎新：全新客戶 $600/$800 (網上申請)、現有客戶 $200。不適用於電子錢包（Alipay/WeChat Pay/PayMe）、繳稅。\n\n🌍 **Travel Guru 會員計劃**（登記期 2025/10/1-10/31）：海外實體店外幣簽賬額外回贈！\n• GO級 +3%（連續3個月簽≥$8,000解鎖，上限$500/年）→ 合共 **5.5%**\n• GING級 +4%（累積≥$30,000，上限$1,200/年）→ 合共 **6.5%**\n• GURU級 +6%（累積≥$70,000，上限$2,200/年）→ 合共 **8.5%**\n⚠️ 2024/9起只限海外實體店，不包括網購、電子錢包、八達通增值。\n\n✈️ **香港快運機票半價**（至12/15）：優惠碼 HSBC160，20個航點低至半價！[查看詳情](/discover/hkexpress-hsbc-flash-2025)\n\n🔥 **最紅冬日賞萬寧**（至2026/2/28）：週末高達10%回贈！[查看詳情](/discover/hsbc-mannings-winter-2025)\n\n🔥 **最紅冬日賞百老滙**（至2026/2/28）：累積簽賬滿$10,000享6%回贈！[查看詳情](/discover/hsbc-broadway-winter-2025)",
     promoEndDate: "2025-12-15",
     promoName: "香港快運機票低至半價",
   },
