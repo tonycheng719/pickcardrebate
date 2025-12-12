@@ -629,7 +629,7 @@ export function CreditCardCalculator({
               <div className={`text-lg font-bold ${isBest ? 'text-emerald-700' : isCashFallback ? 'text-gray-400' : 'text-gray-800 dark:text-gray-100'}`}>
                 {milesText || (result.rewardAmount > 0 ? `+$${result.rewardAmount.toFixed(1)}` : `${result.percentage}%`)}
               </div>
-              {isCashFallback && <div className="text-[10px] text-gray-400">現金回贈</div>}
+              {isCashFallback && <div className="text-[10px] text-gray-400">現金回贈 · 此卡不支持里數</div>}
               {!isCashFallback && !milesText && result.rewardAmount > 0 && (
                 <div className="text-[10px] text-gray-500">{result.percentage}%</div>
               )}
@@ -756,7 +756,7 @@ export function CreditCardCalculator({
               <div className={`text-lg font-bold ${isBest ? 'text-emerald-700' : isCashFallback ? 'text-gray-400' : 'text-gray-800 dark:text-gray-100'}`}>
                 {milesText || (result.rewardAmount > 0 ? `+$${result.rewardAmount.toFixed(1)}` : `${result.percentage}%`)}
               </div>
-              {isCashFallback && <div className="text-[10px] text-gray-400">現金回贈</div>}
+              {isCashFallback && <div className="text-[10px] text-gray-400">現金回贈 · 此卡不支持里數</div>}
               {!isCashFallback && !milesText && result.rewardAmount > 0 && (
                 <div className="text-[10px] text-gray-500">{result.percentage}%</div>
               )}
