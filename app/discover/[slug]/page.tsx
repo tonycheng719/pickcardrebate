@@ -56,6 +56,7 @@ import { MilesCreditCardGuide, milesCreditCardFaqData } from "./miles-credit-car
 import { PaymentMethodsGuide, paymentMethodsFaqData } from "./payment-methods-guide";
 import { DahsingWinterPromoGuide } from "./dahsing-winter-promo-guide";
 import { TuitionFeeGuide, tuitionFeeFaqData } from "./tuition-fee-guide";
+import { ScTaxPayment2025Guide, scTaxPayment2025FaqData } from "./sc-tax-payment-2025";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 import { ArticleTracker } from "@/app/discover/components/article-tracker";
 import { ArticleReviews } from "@/app/discover/components/article-reviews";
@@ -310,6 +311,34 @@ const GUIDES: Record<string, {
     ],
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
+  },
+  "sc-tax-payment-2025": {
+    id: "sc-tax-payment-2025",
+    title: "渣打信用卡交稅優惠攻略｜高達$2,300回贈/23,000里",
+    seoTitle: "渣打信用卡交稅優惠 2025｜交稅高達$2,300回贈/23,000 Asia Miles｜分期早鳥優惠",
+    heroTitle: "🔥 渣打信用卡交稅優惠",
+    heroSubtitle: "高達$2,300回贈 / 23,000 Asia Miles｜早鳥優惠12月31日截止",
+    description: "渣打信用卡推出交稅及分期優惠！透過渣打網上理財交稅，特選客戶可賺高達$2,300現金回贈或23,000 Asia Miles！12月31日前完成分期更有早鳥額外獎賞！",
+    content: "sc-tax-payment-2025",
+    imageUrl: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2070&auto=format&fit=crop",
+    tags: ["渣打", "交稅", "分期", "里數", "限時優惠"],
+    keywords: [
+      "渣打信用卡交稅",
+      "渣打交稅優惠",
+      "渣打交稅分期",
+      "渣打交稅回贈",
+      "渣打交稅里數",
+      "Standard Chartered 交稅",
+      "SC Simply Cash 交稅",
+      "渣打國泰卡交稅",
+      "交稅信用卡優惠2025",
+      "交稅分期免息",
+      "交稅賺里數",
+      "交稅早鳥優惠",
+    ],
+    publishDate: "2025-11-18",
+    readTime: "8 分鐘",
+    promoEndDate: "2026-02-02",
   },
   "online-shopping-guide": {
     id: "online-shopping-guide",
@@ -1606,6 +1635,8 @@ function getGuideFaqData(guideId: string) {
       return rentPaymentFaqData;
     case "tax-payment-guide":
       return taxPaymentFaqData;
+    case "sc-tax-payment-2025":
+      return scTaxPayment2025FaqData;
     case "online-shopping-guide":
       return onlineShoppingFaqData;
     case "dining-guide":
@@ -1686,6 +1717,8 @@ function renderGuideContent(guideId: string) {
       return <RentPaymentGuide />;
     case "tax-payment-guide":
       return <TaxPaymentGuide />;
+    case "sc-tax-payment-2025":
+      return <ScTaxPayment2025Guide />;
     case "online-shopping-guide":
       return <OnlineShoppingGuide />;
     case "dining-guide":

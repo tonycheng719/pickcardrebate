@@ -108,6 +108,14 @@ const taxPaymentMethods = [
 // 銀行交稅優惠
 const bankTaxOffers = [
   {
+    bank: "🔥 渣打銀行",
+    offer: "交稅高達$2,300回贈/23,000里",
+    period: "2025/11/18 - 2026/2/2",
+    requirement: "渣打/MANHATTAN信用卡",
+    note: "需SC Mobile App登記，分期有早鳥優惠",
+    link: "/discover/sc-tax-payment-2025",
+  },
+  {
     bank: "HSBC",
     offer: "交稅分期免息免手續費",
     period: "最長 24 個月",
@@ -129,13 +137,6 @@ const bankTaxOffers = [
     note: "透過 BoC Pay 繳費",
   },
   {
-    bank: "渣打銀行",
-    offer: "交稅分期免息",
-    period: "最長 12 個月",
-    requirement: "指定卡種",
-    note: "需申請",
-  },
-  {
     bank: "Citi",
     offer: "交稅分期低息",
     period: "最長 24 個月",
@@ -149,10 +150,18 @@ const recommendedCards = [
   {
     card: "渣打 Simply Cash Visa",
     id: "sc-simply-cash",
-    rate: "1.5%",
-    highlight: "AlipayHK 首選",
-    reason: "透過 AlipayHK 交稅可賺 1.5% 無上限回贈",
-    method: "AlipayHK",
+    rate: "高達$2,300",
+    highlight: "🔥 限時優惠",
+    reason: "透過渣打網上理財交稅，高達$2,300回贈 + 分期早鳥優惠",
+    method: "渣打網上理財",
+  },
+  {
+    card: "SC 國泰 Mastercard",
+    id: "sc-cathay",
+    rate: "高達23,000里",
+    highlight: "🔥 儲里數首選",
+    reason: "透過渣打網上理財交稅，高達23,000 Asia Miles",
+    method: "渣打網上理財",
   },
   {
     card: "安信 EarnMORE 銀聯卡",
@@ -169,14 +178,6 @@ const recommendedCards = [
     highlight: "分期選擇",
     reason: "可申請交稅分期，AlipayHK 交稅有 1% 回贈",
     method: "AlipayHK / 分期",
-  },
-  {
-    card: "中銀 Cheers Visa",
-    id: "boc-cheers",
-    rate: "0.4%+",
-    highlight: "BoC Pay",
-    reason: "透過 BoC Pay 交稅，中銀有額外積分優惠",
-    method: "BoC Pay",
   },
   {
     card: "HSBC Red Card",
@@ -197,10 +198,29 @@ export function TaxPaymentGuide() {
       {/* 引言 */}
       <p className="lead text-xl text-gray-600 dark:text-gray-300 mb-6">
         每年交稅都要俾一大筆錢，點解唔用<strong>信用卡交稅</strong>賺回贈？
-        本文教你 <strong>{currentYear}/{nextYear} 信用卡交稅攻略</strong>，
-        透過 <strong>AlipayHK</strong>、<strong>雲閃付</strong>、<strong>BoC Pay</strong> 交稅，
-        最高可賺 <strong>2% 回贈</strong>！仲有<strong>免息分期</strong>選擇！
+        本文教你 <strong>{currentYear}/{nextYear} 信用卡交稅攻略</strong>！
+        🔥 <strong>渣打限時優惠</strong>：交稅高達 <strong>$2,300 回贈 / 23,000里</strong>！
+        透過 <strong>AlipayHK</strong>、<strong>雲閃付</strong> 交稅亦可賺 <strong>1-2% 回贈</strong>！
       </p>
+
+      {/* 渣打限時優惠提示 */}
+      <div className="not-prose bg-gradient-to-r from-teal-500 to-blue-500 rounded-2xl p-5 text-white mb-8">
+        <div className="flex items-start gap-4">
+          <div className="flex-shrink-0 w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-2xl">🔥</div>
+          <div>
+            <h3 className="text-lg font-bold m-0 mb-1">渣打信用卡交稅優惠（2025/11/18 - 2026/2/2）</h3>
+            <p className="text-teal-100 text-sm m-0 mb-2">
+              透過渣打網上理財交稅，特選客戶可賺高達 <strong>$2,300 現金回贈</strong> 或 <strong>23,000 Asia Miles</strong>！
+              早鳥喺 <strong>12月31日前</strong>完成分期仲有額外獎賞！
+            </p>
+            <Link href="/discover/sc-tax-payment-2025">
+              <Button size="sm" className="bg-white text-teal-600 hover:bg-gray-100">
+                查看渣打交稅攻略 →
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
 
       {/* 目錄 */}
       <div className="not-prose bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 mb-10">
@@ -447,9 +467,15 @@ export function TaxPaymentGuide() {
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                 {bankTaxOffers.map((offer, index) => (
-                  <tr key={index}>
+                  <tr key={index} className={offer.link ? "bg-teal-50/50 dark:bg-teal-900/10" : ""}>
                     <td className="px-4 py-3 font-bold text-gray-900 dark:text-white">{offer.bank}</td>
-                    <td className="px-4 py-3 text-gray-600 dark:text-gray-400">{offer.offer}</td>
+                    <td className="px-4 py-3 text-gray-600 dark:text-gray-400">
+                      {offer.link ? (
+                        <Link href={offer.link} className="text-teal-600 hover:underline font-medium">{offer.offer}</Link>
+                      ) : (
+                        offer.offer
+                      )}
+                    </td>
                     <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-400">{offer.period}</td>
                     <td className="px-4 py-3 text-gray-500 dark:text-gray-500 text-xs">{offer.note}</td>
                   </tr>
@@ -545,10 +571,10 @@ export function TaxPaymentGuide() {
         title="📌 交稅推薦信用卡一覽"
         subtitle="點擊查看詳細回贈條款及申請連結"
         cards={[
-          { id: "sc-simply-cash", highlight: "AlipayHK" },
-          { id: "earnmore", highlight: "雲閃付" },
+          { id: "sc-simply-cash", highlight: "🔥限時$2,300" },
+          { id: "sc-cathay", highlight: "🔥23,000里" },
+          { id: "earnmore", highlight: "雲閃付2%" },
           { id: "citi-cashback", highlight: "分期" },
-          { id: "hsbc-red", highlight: "網上繳費" },
         ]}
       />
 
