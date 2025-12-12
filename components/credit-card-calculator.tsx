@@ -501,7 +501,7 @@ export function CreditCardCalculator({
             <AlertCircle className="w-3 h-3" />
           </div>
         )}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-1 min-w-0">
             {/* Card Image for Row */}
             {result.card.imageUrl ? (
                 <div className="w-12 h-8 rounded border bg-white flex items-center justify-center overflow-hidden shrink-0">
@@ -511,8 +511,8 @@ export function CreditCardCalculator({
                 <div className={`w-12 h-8 rounded border ${result.card.style?.bgColor || 'bg-gray-500'} shrink-0`}></div>
             )}
 
-            <div>
-            <p className="font-semibold text-gray-900 dark:text-white flex items-center gap-2 text-sm">
+            <div className="min-w-0 flex-1">
+            <p className="font-semibold text-gray-900 dark:text-white flex items-center gap-2 text-sm truncate">
                 {result.card.name}
                 {isBest && <span className="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full font-bold">最抵</span>}
             </p>
@@ -658,7 +658,7 @@ export function CreditCardCalculator({
             <AlertCircle className="w-3 h-3" />
           </div>
         )}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-1 min-w-0">
             {result.card.imageUrl ? (
                 <div className="w-12 h-8 rounded border bg-white flex items-center justify-center overflow-hidden shrink-0">
                     <img src={result.card.imageUrl} alt={result.card.name} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
@@ -667,12 +667,12 @@ export function CreditCardCalculator({
                 <div className={`w-12 h-8 rounded border ${result.card.style?.bgColor || 'bg-gray-500'} shrink-0`}></div>
             )}
 
-            <div>
+            <div className="min-w-0 flex-1">
             <p className="font-semibold text-gray-900 dark:text-white flex items-center gap-2 text-sm">
-                {result.card.name}
-                {isBest && <span className="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full font-bold">最抵</span>}
+                <span className="truncate">{result.card.name}</span>
+                {isBest && <span className="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full font-bold shrink-0">最抵</span>}
             </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">{result.matchedRule.description}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{result.matchedRule.description}</p>
             
             <div className="flex flex-wrap gap-1 mt-1">
                 {isVerified && (

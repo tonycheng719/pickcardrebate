@@ -190,7 +190,7 @@ function WalletCard({ card, feeDate }: { card: CreditCard, feeDate?: string }) {
                 </div>
 
                 <div className="pt-2 flex justify-end">
-                    <Link href={`/cards?highlight=${card.id}`}>
+                    <Link href={`/cards/${card.id}`}>
                     <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
                         查看詳情 <ChevronRight className="h-4 w-4 ml-1" />
                     </Button>
