@@ -3,6 +3,94 @@ import { Promo } from "../types";
 export const PROMOS: Promo[] = [
   // ========== 🔥 最新優惠（置頂） ==========
   {
+    id: "hkexpress-hsbc-flash-2025",
+    title: "🔥 香港快運 x HSBC 限時機票優惠｜20個航點低至半價",
+    merchant: "香港快運",
+    description: "憑 HSBC 信用卡於香港快運官網或 App 輸入優惠碼【HSBC160】，即享 20 個航點高達 50% 票價折扣！亞庇、河內低至半價，其他航點高達 8 折！限時至 12月15日！",
+    imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2074&auto=format&fit=crop",
+    expiryDate: "2025-12-15",
+    relatedCardIds: ["hsbc-vs", "hsbc-red", "hsbc-everymile", "hsbc-pulse", "hsbc-premier", "hsbc-student", "hsbc-easy"],
+    tags: ["機票", "HSBC", "香港快運", "限時優惠", "半價"],
+    url: "https://www.hkexpress.com/zh-HK/Plan/Special-Offers/Promotions/hsbc_flashsale_20251212",
+    updatedAt: "2025-12-12",
+    isPinned: true,
+    content: `
+## 📅 推廣期
+
+- **預訂日期**：2025年12月12日 10:00 至 12月15日 23:45
+- **旅遊日期**：2025年12月16日 至 2026年3月25日
+
+---
+
+## 🎫 專屬優惠碼
+
+### HSBC160
+
+於香港快運官網或 App 輸入優惠碼，並以 HSBC 信用卡付款
+
+---
+
+## ✈️ 優惠航點
+
+### 高達 50% 折扣 🔥
+
+- 🇲🇾 **亞庇（沙巴）**
+- 🇻🇳 **河內**
+- 其他東北亞精彩航點
+
+### 高達 20% 折扣
+
+- 🇨🇳 常州、寧波、義烏、貴陽
+- 🇰🇷 大邱、濟州
+- 🇲🇾 檳城
+- 🇻🇳 峴港、富國島
+- 🇹🇼 台中
+- 🇹🇭 清邁、布吉
+- 其他東北亞精彩航點
+
+---
+
+## 💳 適用信用卡
+
+所有 HSBC 信用卡（**不包括**銀聯及扣賬卡）：
+
+- ✅ HSBC Visa Signature
+- ✅ HSBC Red Card
+- ✅ HSBC EveryMile
+- ✅ HSBC Premier Mastercard
+- ❌ HSBC Pulse 銀聯雙幣卡
+
+---
+
+## 📱 點樣預訂？
+
+1. 前往 [香港快運官網](https://www.hkexpress.com) 或下載 App
+2. 輸入優惠碼 **HSBC160**
+3. 搜尋指定航點
+4. 使用 HSBC 信用卡付款
+
+---
+
+## ⚠️ 注意事項
+
+- ❌ 不適用於滙豐銀聯雙幣鑽石卡及銀聯雙幣信用卡
+- ❌ 不適用於香港快運微信小程序
+- 📌 只適用於由香港出發的機票
+- 📌 優惠數量有限，先到先得
+- 📌 機位數量有限，不一定適用於所有航班或日子
+- 📌 可選用「里數加現金」方式兌換機票
+
+---
+
+## 💡 識玩攻略
+
+- 🌴 **沙巴 / 河內**最抵，低至半價！
+- 🎿 初春快閃首選：清邁、布吉
+- ✈️ 記得加購行李及餐飲
+- 💳 搭配 HSBC EveryMile 儲里數
+`,
+  },
+  {
     id: "hsbc-mannings-winter-2025",
     title: "HSBC 最紅冬日賞 - 萬寧高達額外 10% 獎賞錢",
     merchant: "萬寧",
