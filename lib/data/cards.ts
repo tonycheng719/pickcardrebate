@@ -1177,8 +1177,9 @@ export const HK_CARDS: CreditCard[] = [
     feeWaiverCondition: "首年免年費",
     rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 獎分 = $1 回贈 (0.4%)
     rules: [
-      // 限時優惠：本地及澳門實體店非接觸式簽賬高達15%
-      { description: "🔥非接觸式簽賬 15% [限時]", matchType: "paymentMethod", matchValue: ["contactless", "apple_pay", "google_pay"], percentage: 15.0, validDateRange: { start: "2025-01-01", end: "2025-12-31" }, excludeCategories: ["online", "ewallet", "insurance", "tax", "utilities"] },
+      // 🔥 限時優惠：本地及澳門實體店非接觸式簽賬 15% (2025/10/15-2026/3/31)
+      // 需透過 BEA Mall App 登記，首5,000名，每月簽滿$500，每月上限$100，整個推廣期上限$600
+      { description: "🔥非接觸式簽賬 15% [月簽$500,上限$100,需登記]", matchType: "paymentMethod", matchValue: ["contactless", "apple_pay", "google_pay"], percentage: 15.0, monthlyMinSpend: 500, cap: 100, capType: "reward", validDateRange: { start: "2025-10-15", end: "2026-03-31" }, excludeCategories: ["online", "ewallet", "insurance", "tax", "utilities"] },
       // JCB 大灣區航空日本機票 8 折 (至2026/1/31)
       { description: "🔥大灣區航空日本機票 8 折", matchType: "merchant", matchValue: ["greater-bay-airlines"], percentage: 20.0, isDiscount: true, validDateRange: { start: "2025-11-01", end: "2026-01-31" } },
       // JCB 香港松本清 3% 折扣 (至2026/12/31)
@@ -1186,14 +1187,14 @@ export const HK_CARDS: CreditCard[] = [
       // 基本獎賞：$250 = $1 (0.4%)
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["JCB", "日本優惠", "非接觸式15%", "藥妝折扣", "機場貴賓室", "松本清3%", "大灣區航空8折", "機場星巴克"],
+    tags: ["JCB", "日本優惠", "非接觸式15%", "藥妝折扣", "機場貴賓室", "松本清3%", "大灣區航空8折", "機場星巴克", "需登記"],
     welcomeOfferText: "迎新優惠請查詢官網",
     officialApplyUrl: "https://www.hkbea.com/html/tc/bea-jcb-platinum-card.html",
     applyUrl: "https://www.hkbea.com/html/tc/bea-jcb-platinum-card.html",
-    sellingPoints: ["🔥大灣區航空日本機票 8 折 [限時]", "🔥非接觸式簽賬高達15%回贈 [限時]", "香港機場星巴克滿$90減$45", "日本/夏威夷機場貴賓室"],
-    note: "💡 **限時優惠**：本地及澳門實體店非接觸式簽賬可享高達15%現金回贈！\n\n✈️ **大灣區航空日本機票 8 折**（至2026/1/31）：於大灣區航空官網預訂日本來回機票，輸入優惠碼「25JCBHKGPRO」享8折！適用航點：東京、大阪、仙台、札幌。\n\n☕ **香港機場星巴克優惠**（至2026/1/31）：滿$90（需含中杯或以上手調飲品）即減$45！需出示登機證，每卡每日限用一次。\n\n🛒 **香港松本清 3% 折扣**（至2026/12/31）：憑JCB卡於香港松本清購物享3%折扣！需結賬前聲明使用JCB卡。\n\n🇯🇵 **日本JCB禮遇**：\n• 藥妝店高達7%折扣（松本清、大國藥妝等）\n• 電子產品店5%折扣 + 10%免稅（BIC CAMERA、友都八喜等）\n• Toyota Rent a Car 5%折扣\n• shibuya-san免費飲品+行李寄存\n\n✈️ **機場貴賓室**：日本及夏威夷機場貴賓室免費使用（至2026/3/31）\n\n⚠️ 不計回贈：保費、網上繳費、電子錢包充值（PayMe/八達通除外）、歐洲地區簽賬。政府/八達通每月上限$40回贈。",
-    promoEndDate: "2025-12-31",
-    promoName: "非接觸式簽賬高達15%回贈",
+    sellingPoints: ["🔥非接觸式簽賬 15% (月簽$500,上限$100)", "🔥大灣區航空日本機票 8 折", "香港機場星巴克滿$90減$45", "日本/夏威夷機場貴賓室"],
+    note: "🔥 **本地及澳門非接觸式簽賬 15% 現金回贈**（2025/10/15-2026/3/31）：\n- 需透過 BEA Mall App 登記，首 5,000 名\n- 每月累積簽賬滿 $500 即享 15% 回贈\n- 每月最高回贈 $100（即每月 $667 簽賬封頂）\n- 整個推廣期最高 $600（階段1: $300 + 階段2: $300）\n- ⚠️ 僅限實體店非接觸式簽賬（本地港元/澳門澳門元）\n\n✈️ **大灣區航空日本機票 8 折**（至2026/1/31）：官網預訂日本來回機票，優惠碼「25JCBHKGPRO」，適用航點：東京、大阪、仙台、札幌。\n\n☕ **香港機場星巴克優惠**（至2026/1/31）：滿$90減$45！需出示登機證。\n\n🛒 **香港松本清 3% 折扣**（至2026/12/31）：需結賬前聲明使用JCB卡。\n\n✈️ **機場貴賓室**：日本及夏威夷機場貴賓室免費使用（至2026/3/31）\n\n❌ **不合資格簽賬**：網上簽賬、電子錢包增值（Alipay/PayMe/WeChat Pay）、八達通增值、稅務繳款、循環付款、儲值卡充值、指定售票網絡（Cityline/快達票等）。",
+    promoEndDate: "2026-03-31",
+    promoName: "非接觸式簽賬15%現金回贈",
   },
 
   // ========================================================================
