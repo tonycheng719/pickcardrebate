@@ -1484,7 +1484,7 @@ export function CreditCardCalculator({
       {/* Main Result Dialog/Drawer */}
       {isDesktop ? (
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogContent className="max-w-lg">
+          <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2 text-emerald-600">
                 <Sparkles className="h-5 w-5" /> {selectedMerchant?.name} 最抵攻略
