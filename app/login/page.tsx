@@ -117,7 +117,7 @@ export default function LoginPage() {
                 className="w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 dark:border-gray-600 dark:bg-gray-700"
               />
               <span className="text-sm text-gray-600 dark:text-gray-400">
-                記住我 30 天 <span className="text-xs text-gray-400">(不勾選則關閉瀏覽器後需重新登入)</span>
+                記住我 30 天 <span className="text-xs text-gray-400">(不勾選則 12 小時後需重新登入)</span>
               </span>
             </label>
 
