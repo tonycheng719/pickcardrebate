@@ -1524,13 +1524,15 @@ export function CreditCardCalculator({
         </Dialog>
       ) : (
         <Drawer open={open} onOpenChange={setOpen}>
-          <DrawerContent>
-            <DrawerHeader>
+          <DrawerContent className="max-h-[85vh]">
+            <DrawerHeader className="shrink-0">
               <DrawerTitle className="flex items-center gap-2 text-emerald-600 justify-center">
                 <Sparkles className="h-5 w-5" /> {selectedMerchant?.name} 最抵攻略
               </DrawerTitle>
             </DrawerHeader>
-            <ResultContent />
+            <div className="overflow-y-auto overscroll-contain flex-1 px-0">
+              <ResultContent />
+            </div>
           </DrawerContent>
         </Drawer>
       )}
