@@ -19,6 +19,7 @@ export default function LoginPage() {
   const [smsCode, setSmsCode] = useState("");
   const [smsStep, setSmsStep] = useState<"input" | "verify">("input");
   const [isSmsLoading, setIsSmsLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true); // Default to remember
 
   useEffect(() => {
     if (user) {
@@ -29,6 +30,8 @@ export default function LoginPage() {
   const handleOAuthLogin = async (provider: "google" | "apple") => {
     try {
       setIsLoading(true);
+      // Save remember me preference before redirect
+      localStorage.setItem('rememberMe', rememberMe ? 'true' : 'false');
       await loginWithOAuth(provider);
       // Track login event (will be tracked after redirect back)
       trackLogin(provider);
@@ -104,6 +107,19 @@ export default function LoginPage() {
             <div className="w-full flex h-12 items-center justify-center rounded-xl border border-dashed border-gray-300 dark:border-gray-700 text-sm text-gray-400 dark:text-gray-500">
               Apple 登入即將推出
             </div>
+
+            {/* Remember Me */}
+            <label className="flex items-center gap-2 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 dark:border-gray-600 dark:bg-gray-700"
+              />
+              <span className="text-sm text-gray-600 dark:text-gray-400">
+                記住我 30 天
+              </span>
+            </label>
 
             <div className="relative py-2 hidden">
               <div className="absolute inset-0 flex items-center">
