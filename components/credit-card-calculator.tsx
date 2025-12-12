@@ -1524,7 +1524,7 @@ export function CreditCardCalculator({
         </Dialog>
       ) : (
         <Drawer open={open} onOpenChange={setOpen}>
-          <DrawerContent className="max-h-[85vh]">
+          <DrawerContent className="h-[85vh]">
             <DrawerHeader className="shrink-0">
               <DrawerTitle className="flex items-center gap-2 text-emerald-600 justify-center">
                 <Sparkles className="h-5 w-5" /> {selectedMerchant?.name} 最抵攻略
