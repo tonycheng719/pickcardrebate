@@ -57,6 +57,7 @@ import { PaymentMethodsGuide, paymentMethodsFaqData } from "./payment-methods-gu
 import { DahsingWinterPromoGuide } from "./dahsing-winter-promo-guide";
 import { TuitionFeeGuide, tuitionFeeFaqData } from "./tuition-fee-guide";
 import { ScTaxPayment2025Guide, scTaxPayment2025FaqData } from "./sc-tax-payment-2025";
+import { BeaJcbContactless2025Guide, beaJcbContactless2025FaqData } from "./bea-jcb-contactless-2025";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 import { ArticleTracker } from "@/app/discover/components/article-tracker";
 import { ArticleReviews } from "@/app/discover/components/article-reviews";
@@ -338,6 +339,31 @@ const GUIDES: Record<string, {
     ],
     publishDate: "2025-11-18",
     readTime: "8 分鐘",
+  },
+  "bea-jcb-contactless-2025": {
+    id: "bea-jcb-contactless-2025",
+    title: "BEA JCB 白金卡非接觸式簽賬 15% 回贈攻略",
+    seoTitle: "BEA JCB 白金卡非接觸式簽賬優惠 2025｜本地及澳門拍卡 15% 現金回贈｜最高$600",
+    heroTitle: "🔥 BEA JCB 非接觸式簽賬優惠",
+    heroSubtitle: "本地及澳門拍卡 15% 現金回贈｜最高 $600",
+    description: "東亞銀行 BEA JCB 白金卡推出非接觸式簽賬 15% 現金回贈優惠！本地及澳門實體店拍卡消費，每月簽滿 $500 即享 15% 回贈，整個推廣期最高可賺 $600！",
+    content: "bea-jcb-contactless-2025",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["BEA", "JCB", "非接觸式", "拍卡", "限時優惠"],
+    keywords: [
+      "BEA JCB 白金卡",
+      "BEA JCB 優惠",
+      "東亞 JCB 卡",
+      "非接觸式簽賬回贈",
+      "拍卡回贈",
+      "JCB 信用卡優惠",
+      "東亞銀行信用卡",
+      "本地簽賬回贈",
+      "澳門簽賬回贈",
+      "15%現金回贈",
+    ],
+    publishDate: "2025-10-15",
+    readTime: "6 分鐘",
   },
   "online-shopping-guide": {
     id: "online-shopping-guide",
@@ -1636,6 +1662,8 @@ function getGuideFaqData(guideId: string) {
       return taxPaymentFaqData;
     case "sc-tax-payment-2025":
       return scTaxPayment2025FaqData;
+    case "bea-jcb-contactless-2025":
+      return beaJcbContactless2025FaqData;
     case "online-shopping-guide":
       return onlineShoppingFaqData;
     case "dining-guide":
@@ -1718,6 +1746,8 @@ function renderGuideContent(guideId: string) {
       return <TaxPaymentGuide />;
     case "sc-tax-payment-2025":
       return <ScTaxPayment2025Guide />;
+    case "bea-jcb-contactless-2025":
+      return <BeaJcbContactless2025Guide />;
     case "online-shopping-guide":
       return <OnlineShoppingGuide />;
     case "dining-guide":
