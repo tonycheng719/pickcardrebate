@@ -833,6 +833,26 @@ export function CreditCardCalculator({
             </div>
           )}
 
+          {/* 香港快運 HSBC 機票半價優惠提示 */}
+          {selectedMerchant?.id === "hk-express" && (
+            <div className="mb-4 p-3 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border border-purple-200 dark:border-purple-800 rounded-xl">
+              <div className="flex items-start gap-2">
+                <Sparkles className="w-5 h-5 text-purple-500 shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-bold text-purple-800 dark:text-purple-200">✈️ HSBC 限時機票優惠！</p>
+                  <p className="text-xs text-purple-700 dark:text-purple-300 mt-1">
+                    憑 <span className="font-bold">HSBC 信用卡</span>輸入優惠碼 <span className="font-bold text-purple-600">HSBC160</span>，20 個航點低至 <span className="font-bold text-purple-600">半價</span>！
+                    <br/>
+                    <span className="text-purple-500">亞庇、河內等航點享 50% 折扣（預訂至 12/15）</span>
+                  </p>
+                  <Link href="/discover/hkexpress-hsbc-flash-2025" className="inline-flex items-center gap-1 text-xs text-purple-600 hover:underline mt-2 font-medium">
+                    查看優惠詳情 <ChevronUp className="w-3 h-3 rotate-90" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* 方案 C: 智能建議模式 */}
           
           {/* CASE 1: 用戶已持有全場最抵卡 - 顯示恭喜訊息 */}
