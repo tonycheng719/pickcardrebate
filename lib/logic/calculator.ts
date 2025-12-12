@@ -383,7 +383,7 @@ function calculateCardReward(
     // Calculate Miles Return ($/Mile)
     // Only calculate for cards that can actually earn miles
     if (rewardPreference === "miles" && card.rewardConfig && bestPercentage > 0) {
-        const { method, ratio = 0, currency = '' } = card.rewardConfig;
+        const { method, ratio = 0, currency = '', baseRate = 0 } = card.rewardConfig;
         const currencyLower = currency.toLowerCase();
         
         // Identify miles-earning cards by their currency type
@@ -391,6 +391,9 @@ function calculateCardReward(
                            currencyLower.includes('里') ||
                            currencyLower.includes('avios') ||
                            currencyLower === 'rc' || // HSBC RC can convert to miles
+                           currencyLower === 'am' || // Asia Miles
+                           currencyLower === 'dbs$' || // DBS$ can convert to miles
+                           currencyLower === 'fwc' || // Fortune Wings Club
                            (currencyLower === 'points' && ratio < 1); // Citi/BEA style points
         
         // Skip non-miles cards (yuu積分, AEON積分, Club積分, A. Point, etc.)
@@ -399,20 +402,27 @@ function calculateCardReward(
                                currencyLower.includes('a. point') ||
                                ratio >= 100; // High ratio = cash equivalent points, not miles
         
-        if (method === "conversion" && isMilesCard && !isNonMilesCard) {
-            if (ratio >= 1 && ratio < 100) {
-                // HSBC style: RC/Points * ratio = Miles
-                // e.g., $500 * 2.4% = $12 RC, $12 * 10 = 120 miles
-                // $/Mile = $500 / 120 = $4.17
-                const totalMiles = maxReward * ratio;
-                if (totalMiles > 0) {
-                    milesReturn = amount / totalMiles;
-                }
-            } else if (ratio < 1) {
-                // Citi/BEA style: ratio represents points-to-miles conversion
-                // For these cards, $/Mile is approximately 100 / percentage
-                // e.g., Citi 1.1% -> ~$9/mile (actual is $8/mile, close enough)
+        if (isMilesCard && !isNonMilesCard) {
+            if (method === "direct_rate" && baseRate > 0) {
+                // Direct rate cards (e.g., SC Cathay: $4/里 or $6/里, DBS Black: $4/里 or $6/里)
+                // percentage 2.5% = $4/里, percentage 1.67% = $6/里
+                // $/Mile = 100 / percentage
                 milesReturn = 100 / bestPercentage;
+            } else if (method === "conversion") {
+                if (ratio >= 1 && ratio < 100) {
+                    // HSBC style: RC/Points * ratio = Miles
+                    // e.g., $500 * 2.4% = $12 RC, $12 * 10 = 120 miles
+                    // $/Mile = $500 / 120 = $4.17
+                    const totalMiles = maxReward * ratio;
+                    if (totalMiles > 0) {
+                        milesReturn = amount / totalMiles;
+                    }
+                } else if (ratio < 1) {
+                    // Citi/BEA style: ratio represents points-to-miles conversion
+                    // For these cards, $/Mile is approximately 100 / percentage
+                    // e.g., Citi 1.1% -> ~$9/mile (actual is $8/mile, close enough)
+                    milesReturn = 100 / bestPercentage;
+                }
             }
         }
     }
