@@ -36,7 +36,7 @@ export const POPULAR_MERCHANTS: Merchant[] = [
   { id: "keeta", name: "KeeTa", categoryIds: ["dining", "online"], aliases: ["keeta", "美團"], logo: "🦅", accentColor: "#facc15", isOnlineOnly: true },
   { id: "kmb", name: "KMB 九巴", categoryIds: ["transport"], aliases: ["bus", "巴士", "kmb"], logo: "https://logo.clearbit.com/kmb.hk", accentColor: "#dc2626" },
   { id: "mtr", name: "MTR 港鐵", categoryIds: ["transport"], aliases: ["mtr", "港鐵", "地鐵", "metro"], logo: "https://logo.clearbit.com/mtr.com.hk", accentColor: "#dc2626" },
-  { id: "apple", name: "Apple Store", categoryIds: ["electronics", "online"], aliases: ["iphone", "macbook", "apple", "ipad"], logo: "https://logo.clearbit.com/apple.com", accentColor: "#111827" },
+  { id: "apple", name: "Apple Store", categoryIds: ["electronics", "online"], aliases: ["iphone", "macbook", "apple", "ipad"], logo: "https://logo.clearbit.com/apple.com", accentColor: "#111827", excludedCardNetworks: ["unionpay"] },
   { id: "ird", name: "Inland Revenue Department 稅務局", categoryIds: ["tax", "government"], aliases: ["稅", "交稅", "ird", "tax"], logo: "https://logo.clearbit.com/ird.gov.hk", accentColor: "#4b5563", isOnlineOnly: true },
   { id: "clp", name: "CLP 中電", categoryIds: ["utilities"], aliases: ["電費", "中電", "clp"], logo: "https://logo.clearbit.com/clp.com.hk", accentColor: "#2563eb", isOnlineOnly: true },
   { id: "payme", name: "PayMe", categoryIds: ["ewallet"], aliases: ["payme", "增值"], logo: "https://payme.hsbc.com.hk/content/dam/hsbc/payme/images/logo-payme-horizontal-en.svg", accentColor: "#ec4899", isOnlineOnly: true },

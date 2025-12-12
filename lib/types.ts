@@ -92,6 +92,7 @@ export interface Merchant {
   isOnlineOnly?: boolean;
   isForeignCurrency?: boolean; // If true, this merchant uses foreign currency (e.g. Taobao = RMB)
   currency?: string; // Currency code (e.g. "CNY", "JPY", "USD")
+  excludedCardNetworks?: string[]; // Card networks not accepted (e.g. ["unionpay"] for Apple Store)
 }
 
 export interface Category {

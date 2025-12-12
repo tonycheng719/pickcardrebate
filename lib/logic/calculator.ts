@@ -458,9 +458,20 @@ export function findBestCards(
   // Auto-detect foreign currency based on merchant (e.g. 淘寶/天貓/京東 = CNY)
   const isForeignCurrency = optionsForeignCurrency || (matchedMerchant?.isForeignCurrency ?? false);
 
-  const cardPool = userCards && userCards.length > 0
+  let cardPool = userCards && userCards.length > 0
     ? cardsData.filter((c) => userCards.includes(c.id))
     : cardsData;
+
+  // Filter out cards with excluded card networks for this merchant
+  if (matchedMerchant?.excludedCardNetworks && matchedMerchant.excludedCardNetworks.length > 0) {
+    cardPool = cardPool.filter(card => {
+      // Check if card's network is in the excluded list
+      if (card.cardNetwork && matchedMerchant.excludedCardNetworks!.includes(card.cardNetwork)) {
+        return false; // Exclude this card
+      }
+      return true;
+    });
+  }
 
   const results: CalculationResult[] = cardPool.map(card => {
     const current = calculateCardReward(card, matchedMerchant, matchedCategory, paymentMethod, amount, isForeignCurrency, isOnlineScenario, rewardPreference);
