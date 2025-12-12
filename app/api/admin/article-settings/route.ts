@@ -25,14 +25,30 @@ export async function GET() {
   }
 }
 
-// POST: 更新文章封面圖片
+// POST: 更新文章設定（封面圖片、分類、標籤）
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { articleId, coverImageUrl } = body;
+    const { articleId, coverImageUrl, contentType, customTags } = body;
 
     if (!articleId) {
       return NextResponse.json({ error: 'Missing articleId' }, { status: 400 });
+    }
+
+    // 構建更新數據
+    const updateData: Record<string, any> = {
+      updated_at: new Date().toISOString()
+    };
+    
+    // 只更新有傳入的欄位
+    if (coverImageUrl !== undefined) {
+      updateData.cover_image_url = coverImageUrl || null;
+    }
+    if (contentType !== undefined) {
+      updateData.content_type = contentType || null;
+    }
+    if (customTags !== undefined) {
+      updateData.custom_tags = customTags && customTags.length > 0 ? customTags : null;
     }
 
     // 先檢查是否已有設定
@@ -46,10 +62,7 @@ export async function POST(request: Request) {
       // 更新現有設定
       const { error } = await adminAuthClient
         .from('article_settings')
-        .update({
-          cover_image_url: coverImageUrl || null,
-          updated_at: new Date().toISOString()
-        })
+        .update(updateData)
         .eq('id', existing.id);
 
       if (error) throw error;
@@ -60,6 +73,8 @@ export async function POST(request: Request) {
         .insert({
           article_id: articleId,
           cover_image_url: coverImageUrl || null,
+          content_type: contentType || null,
+          custom_tags: customTags && customTags.length > 0 ? customTags : null,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         });

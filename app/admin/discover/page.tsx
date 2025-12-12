@@ -16,8 +16,9 @@ import {
 import { 
   Search, BookOpen, Eye, ExternalLink, Tag, Image as ImageIcon,
   TrendingUp, Sparkles, CalendarIcon, Gift, Plus, Pencil, RotateCcw, Loader2, Upload,
-  Pin, PinOff, ArrowUp, ArrowDown, Clock
+  Pin, PinOff, ArrowUp, ArrowDown, Clock, Settings, X
 } from "lucide-react";
+import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { GUIDES, Guide } from "@/lib/data/guides";
 import { useDataset } from "@/lib/admin/data-store";
@@ -32,6 +33,8 @@ interface ArticleSetting {
   id: string;
   article_id: string;
   cover_image_url: string | null;
+  content_type: 'guide' | 'promo' | null;
+  custom_tags: string[] | null;
 }
 
 export default function AdminDiscoverPage() {
@@ -39,13 +42,18 @@ export default function AdminDiscoverPage() {
   const [keyword, setKeyword] = useState("");
   const [viewStats, setViewStats] = useState<Record<string, number>>({});
   const [articleSettings, setArticleSettings] = useState<Record<string, string>>({});
+  const [articleCategories, setArticleCategories] = useState<Record<string, string>>({});
+  const [articleTags, setArticleTags] = useState<Record<string, string[]>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"guides" | "promos">("guides");
   
-  // Edit cover dialog
+  // Edit dialog (cover + category + tags)
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editingGuide, setEditingGuide] = useState<Guide | null>(null);
   const [newCoverUrl, setNewCoverUrl] = useState("");
+  const [newContentType, setNewContentType] = useState<"guide" | "promo" | "">("");
+  const [newTags, setNewTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -65,17 +73,27 @@ export default function AdminDiscoverPage() {
           setViewStats(stats);
         }
 
-        // Fetch article settings (custom covers)
+        // Fetch article settings (custom covers, categories, tags)
         const settingsRes = await fetch('/api/admin/article-settings');
         if (settingsRes.ok) {
           const data = await settingsRes.json();
           const settings: Record<string, string> = {};
+          const categories: Record<string, string> = {};
+          const tags: Record<string, string[]> = {};
           (data.settings || []).forEach((s: ArticleSetting) => {
             if (s.cover_image_url) {
               settings[s.article_id] = s.cover_image_url;
             }
+            if (s.content_type) {
+              categories[s.article_id] = s.content_type;
+            }
+            if (s.custom_tags && s.custom_tags.length > 0) {
+              tags[s.article_id] = s.custom_tags;
+            }
           });
           setArticleSettings(settings);
+          setArticleCategories(categories);
+          setArticleTags(tags);
         }
       } catch (e) {
         console.error("Failed to fetch data:", e);
@@ -136,14 +154,31 @@ export default function AdminDiscoverPage() {
   const totalGuideViews = Object.values(viewStats).reduce((a, b) => a + b, 0);
 
   // Open edit dialog
-  const handleEditCover = (guide: Guide) => {
+  const handleEditArticle = (guide: Guide) => {
     setEditingGuide(guide);
     setNewCoverUrl(articleSettings[guide.id] || guide.imageUrl);
+    setNewContentType(articleCategories[guide.id] as "guide" | "promo" || "");
+    setNewTags(articleTags[guide.id] || []);
+    setTagInput("");
     setEditDialogOpen(true);
   };
+  
+  // Add tag
+  const handleAddTag = () => {
+    const tag = tagInput.trim();
+    if (tag && !newTags.includes(tag)) {
+      setNewTags([...newTags, tag]);
+      setTagInput("");
+    }
+  };
+  
+  // Remove tag
+  const handleRemoveTag = (tagToRemove: string) => {
+    setNewTags(newTags.filter(t => t !== tagToRemove));
+  };
 
-  // Save new cover
-  const handleSaveCover = async () => {
+  // Save article settings
+  const handleSaveSettings = async () => {
     if (!editingGuide) return;
     
     setIsSaving(true);
@@ -154,6 +189,8 @@ export default function AdminDiscoverPage() {
         body: JSON.stringify({
           articleId: editingGuide.id,
           coverImageUrl: newCoverUrl || null,
+          contentType: newContentType || null,
+          customTags: newTags.length > 0 ? newTags : null,
         }),
       });
 
@@ -168,7 +205,7 @@ export default function AdminDiscoverPage() {
         throw new Error(data.error || 'Failed to save');
       }
 
-      // Update local state
+      // Update local state - cover
       if (newCoverUrl) {
         setArticleSettings(prev => ({ ...prev, [editingGuide.id]: newCoverUrl }));
       } else {
@@ -178,8 +215,30 @@ export default function AdminDiscoverPage() {
           return newSettings;
         });
       }
+      
+      // Update local state - category
+      if (newContentType) {
+        setArticleCategories(prev => ({ ...prev, [editingGuide.id]: newContentType }));
+      } else {
+        setArticleCategories(prev => {
+          const newCategories = { ...prev };
+          delete newCategories[editingGuide.id];
+          return newCategories;
+        });
+      }
+      
+      // Update local state - tags
+      if (newTags.length > 0) {
+        setArticleTags(prev => ({ ...prev, [editingGuide.id]: newTags }));
+      } else {
+        setArticleTags(prev => {
+          const newTagsState = { ...prev };
+          delete newTagsState[editingGuide.id];
+          return newTagsState;
+        });
+      }
 
-      toast.success('封面圖片已更新');
+      toast.success('文章設定已更新');
       setEditDialogOpen(false);
     } catch (error: any) {
       toast.error('更新失敗：' + error.message);
@@ -404,7 +463,7 @@ export default function AdminDiscoverPage() {
                             <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-800" title="已自訂封面" />
                           )}
                           <button
-                            onClick={() => handleEditCover(guide)}
+                            onClick={() => handleEditArticle(guide)}
                             className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded"
                           >
                             <Pencil className="h-4 w-4 text-white" />
@@ -433,18 +492,32 @@ export default function AdminDiscoverPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1 flex-wrap">
                           {guide.isNew && (
-                            <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium">
+                            <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium">
                               NEW
                             </span>
                           )}
                           {hasCustomCover && (
-                            <span className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-xs font-medium">
+                            <span className="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-xs font-medium">
                               自訂封面
                             </span>
                           )}
-                          {!guide.isNew && !hasCustomCover && (
+                          {articleCategories[guide.id] && (
+                            <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                              articleCategories[guide.id] === 'promo' 
+                                ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
+                                : 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300'
+                            }`}>
+                              {articleCategories[guide.id] === 'promo' ? '優惠' : '攻略'}
+                            </span>
+                          )}
+                          {articleTags[guide.id] && (
+                            <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs font-medium">
+                              +{articleTags[guide.id].length} 標籤
+                            </span>
+                          )}
+                          {!guide.isNew && !hasCustomCover && !articleCategories[guide.id] && !articleTags[guide.id] && (
                             <span className="text-gray-400 text-xs">-</span>
                           )}
                         </div>
@@ -455,10 +528,10 @@ export default function AdminDiscoverPage() {
                             variant="ghost" 
                             size="sm" 
                             className="gap-1"
-                            onClick={() => handleEditCover(guide)}
+                            onClick={() => handleEditArticle(guide)}
                           >
-                            <Pencil className="h-3 w-3" />
-                            封面
+                            <Settings className="h-3 w-3" />
+                            設定
                           </Button>
                           <Link href={`/discover/${guide.id}`} target="_blank">
                             <Button variant="ghost" size="sm" className="gap-1">
@@ -562,25 +635,111 @@ export default function AdminDiscoverPage() {
         </TabsContent>
       </Tabs>
 
-      {/* Edit Cover Dialog */}
+      {/* Edit Article Settings Dialog */}
       <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <ImageIcon className="h-5 w-5" />
-              編輯文章封面
+              <Settings className="h-5 w-5" />
+              編輯文章設定
             </DialogTitle>
             <DialogDescription>
               {editingGuide?.title}
             </DialogDescription>
           </DialogHeader>
           
-          <div className="space-y-4 py-4">
-            {/* Preview */}
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">預覽</p>
+          <div className="space-y-6 py-4">
+            {/* 分類設定 */}
+            <div className="space-y-3">
+              <Label className="text-sm font-medium">分類</Label>
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  variant={newContentType === "" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setNewContentType("")}
+                  className="gap-1"
+                >
+                  預設
+                </Button>
+                <Button
+                  type="button"
+                  variant={newContentType === "guide" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setNewContentType("guide")}
+                  className="gap-1"
+                >
+                  <BookOpen className="h-3 w-3" />
+                  攻略
+                </Button>
+                <Button
+                  type="button"
+                  variant={newContentType === "promo" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setNewContentType("promo")}
+                  className="gap-1"
+                >
+                  <Gift className="h-3 w-3" />
+                  優惠
+                </Button>
+              </div>
+              <p className="text-xs text-gray-500">
+                設定此文章顯示在「優惠」或「攻略」分類中
+              </p>
+            </div>
+            
+            {/* 標籤設定 */}
+            <div className="space-y-3">
+              <Label className="text-sm font-medium">自訂標籤</Label>
+              <div className="flex gap-2">
+                <Input
+                  placeholder="輸入標籤後按 Enter 或點擊新增"
+                  value={tagInput}
+                  onChange={(e) => setTagInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleAddTag();
+                    }
+                  }}
+                  className="flex-1"
+                />
+                <Button type="button" variant="outline" onClick={handleAddTag} disabled={!tagInput.trim()}>
+                  新增
+                </Button>
+              </div>
+              {newTags.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {newTags.map(tag => (
+                    <span 
+                      key={tag} 
+                      className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs"
+                    >
+                      {tag}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveTag(tag)}
+                        className="hover:text-red-500 transition-colors"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+              <p className="text-xs text-gray-500">
+                自訂標籤會覆蓋預設標籤，用於前台篩選
+              </p>
+            </div>
+
+            {/* 分隔線 */}
+            <div className="border-t dark:border-gray-700" />
+            
+            {/* 封面圖片 */}
+            <div className="space-y-3">
+              <Label className="text-sm font-medium">封面圖片</Label>
               {newCoverUrl ? (
-                <div className="w-full h-40 rounded-lg overflow-hidden bg-gray-100">
+                <div className="w-full h-32 rounded-lg overflow-hidden bg-gray-100">
                   <img 
                     src={newCoverUrl} 
                     alt="Preview" 
@@ -592,98 +751,58 @@ export default function AdminDiscoverPage() {
                   />
                 </div>
               ) : (
-                <div className="w-full h-40 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-400">
+                <div className="w-full h-32 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-400">
                   <div className="text-center">
-                    <ImageIcon className="h-8 w-8 mx-auto mb-2" />
-                    <p className="text-sm">無封面圖片</p>
+                    <ImageIcon className="h-6 w-6 mx-auto mb-1" />
+                    <p className="text-xs">無封面圖片</p>
                   </div>
                 </div>
               )}
-            </div>
-
-            {/* Upload Button */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                上傳圖片
-              </label>
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileUpload}
-                accept="image/*"
-                className="hidden"
-              />
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={isUploading}
-                className="w-full gap-2"
-              >
-                {isUploading ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    上傳中...
-                  </>
-                ) : (
-                  <>
-                    <Upload className="h-4 w-4" />
-                    選擇圖片上傳
-                  </>
+              
+              <div className="flex gap-2">
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileUpload}
+                  accept="image/*"
+                  className="hidden"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isUploading}
+                  className="gap-1"
+                >
+                  {isUploading ? <Loader2 className="h-3 w-3 animate-spin" /> : <Upload className="h-3 w-3" />}
+                  上傳
+                </Button>
+                {editingGuide && articleSettings[editingGuide.id] && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleResetCover}
+                    disabled={isSaving}
+                    className="gap-1"
+                  >
+                    <RotateCcw className="h-3 w-3" />
+                    恢復預設
+                  </Button>
                 )}
-              </Button>
-              <p className="text-xs text-gray-500">
-                支援 JPG、PNG、GIF、WebP（最大 5MB）
-              </p>
-            </div>
-
-            {/* Divider */}
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t border-gray-200 dark:border-gray-700" />
               </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white dark:bg-gray-900 px-2 text-gray-500">或</span>
-              </div>
-            </div>
-
-            {/* URL Input */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                圖片網址 (URL)
-              </label>
+              
               <Input
-                placeholder="https://example.com/image.jpg"
+                placeholder="或輸入圖片網址 https://..."
                 value={newCoverUrl}
                 onChange={(e) => setNewCoverUrl(e.target.value)}
+                className="text-sm"
               />
-              <p className="text-xs text-gray-500">
-                或直接輸入圖片連結
-              </p>
             </div>
-
-            {/* Default image info */}
-            {editingGuide && articleSettings[editingGuide.id] && (
-              <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
-                <p className="text-sm text-amber-800 dark:text-amber-200">
-                  目前使用自訂封面。點擊「恢復預設」可使用原始封面圖片。
-                </p>
-              </div>
-            )}
           </div>
 
           <DialogFooter className="gap-2">
-            {editingGuide && articleSettings[editingGuide.id] && (
-              <Button
-                variant="outline"
-                onClick={handleResetCover}
-                disabled={isSaving}
-                className="gap-2"
-              >
-                <RotateCcw className="h-4 w-4" />
-                恢復預設
-              </Button>
-            )}
             <Button
               variant="outline"
               onClick={() => setEditDialogOpen(false)}
@@ -691,14 +810,14 @@ export default function AdminDiscoverPage() {
             >
               取消
             </Button>
-            <Button onClick={handleSaveCover} disabled={isSaving}>
+            <Button onClick={handleSaveSettings} disabled={isSaving}>
               {isSaving ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                   儲存中...
                 </>
               ) : (
-                '儲存'
+                '儲存設定'
               )}
             </Button>
           </DialogFooter>

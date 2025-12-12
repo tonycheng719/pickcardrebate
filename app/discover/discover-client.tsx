@@ -9,9 +9,10 @@ import {
   Clock, ExternalLink, Tag, Send, Bell, PlusCircle, 
   Image as ImageIcon, BookOpen, Globe, Sparkles 
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useWallet } from "@/lib/store/wallet-context";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { PROMOS } from "@/lib/data/promos";
 
@@ -376,27 +377,53 @@ const GUIDES = [
 type ContentType = "all" | "promo" | "guide";
 
 export function DiscoverClient() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
   const [isReporting, setIsReporting] = useState(false);
   const { user, followPromo, unfollowPromo, isPromoFollowed } = useWallet();
   const { promos } = useDataset();
-  const [contentType, setContentType] = useState<ContentType>("all");
-  const [tagFilter, setTagFilter] = useState<string>("all");
+  
+  // 從 URL 讀取篩選狀態
+  const contentType = (searchParams.get("type") as ContentType) || "all";
+  const tagFilter = searchParams.get("tag") || "all";
+  
   const [customCovers, setCustomCovers] = useState<Record<string, string>>({});
+  const [customCategories, setCustomCategories] = useState<Record<string, string>>({});
+  const [customTags, setCustomTags] = useState<Record<string, string[]>>({});
+  
+  // 更新 URL 而不重載頁面
+  const updateFilters = (type?: ContentType, tag?: string) => {
+    const params = new URLSearchParams();
+    const newType = type !== undefined ? type : contentType;
+    const newTag = tag !== undefined ? tag : tagFilter;
+    
+    if (newType !== "all") params.set("type", newType);
+    if (newTag !== "all") params.set("tag", newTag);
+    
+    const queryString = params.toString();
+    router.replace(queryString ? `/discover?${queryString}` : "/discover", { scroll: false });
+  };
+  
+  const setContentType = (type: ContentType) => updateFilters(type, undefined);
+  const setTagFilter = (tag: string) => updateFilters(undefined, tag);
 
-  // 獲取自訂封面設定
+  // 獲取自訂設定（封面、分類、標籤）
   useEffect(() => {
-    async function fetchCustomCovers() {
+    async function fetchCustomSettings() {
       try {
         const res = await fetch('/api/article-settings');
         if (res.ok) {
           const data = await res.json();
           setCustomCovers(data.settings || {});
+          setCustomCategories(data.categories || {});
+          setCustomTags(data.tags || {});
         }
       } catch (e) {
-        console.error('Failed to fetch custom covers:', e);
+        console.error('Failed to fetch custom settings:', e);
       }
     }
-    fetchCustomCovers();
+    fetchCustomSettings();
   }, []);
 
   // 獲取有效封面圖片 (自訂或預設)
@@ -424,41 +451,77 @@ export function DiscoverClient() {
     }
   };
 
-  // 合併優惠和攻略
-  const allContent = [
-    ...GUIDES.map(g => ({ ...g, contentType: "guide" as const })),
-    ...displayPromos.map(p => ({ ...p, contentType: "promo" as const, type: "promo" as const })),
-  ];
+  // 合併優惠和攻略，根據後台設定的分類覆蓋預設類型
+  const allContent = useMemo(() => {
+    const guides = GUIDES.map(g => {
+      // 檢查後台是否有自訂分類
+      const overrideType = customCategories[g.id];
+      const effectiveType = overrideType || "guide";
+      // 合併自訂標籤
+      const effectiveTags = customTags[g.id] || g.tags;
+      return { 
+        ...g, 
+        contentType: effectiveType as "guide" | "promo",
+        tags: effectiveTags,
+      };
+    });
+    
+    const promoItems = displayPromos.map(p => {
+      // 檢查後台是否有自訂分類
+      const overrideType = customCategories[p.id];
+      const effectiveType = overrideType || "promo";
+      // 合併自訂標籤
+      const effectiveTags = customTags[p.id] || p.tags;
+      return { 
+        ...p, 
+        contentType: effectiveType as "guide" | "promo", 
+        type: "promo" as const,
+        tags: effectiveTags,
+      };
+    });
+    
+    return [...guides, ...promoItems];
+  }, [displayPromos, customCategories, customTags]);
 
   // 根據類型和標籤篩選
-  const filteredContent = allContent.filter(item => {
-    const typeMatch = contentType === "all" || item.contentType === contentType;
-    const tagMatch = tagFilter === "all" || 
-      item.tags.includes(tagFilter) || 
-      ('merchant' in item && item.merchant.toLowerCase() === tagFilter.toLowerCase());
-    return typeMatch && tagMatch;
-  });
+  const filteredContent = useMemo(() => {
+    return allContent.filter(item => {
+      const typeMatch = contentType === "all" || item.contentType === contentType;
+      const tagMatch = tagFilter === "all" || 
+        item.tags.includes(tagFilter) || 
+        ('merchant' in item && item.merchant.toLowerCase() === tagFilter.toLowerCase());
+      return typeMatch && tagMatch;
+    });
+  }, [allContent, contentType, tagFilter]);
 
-  // 排序邏輯：1. 置頂優先 2. 最後更新時間降序
-  const sortedContent = filteredContent.sort((a, b) => {
-    // 1. 置頂優先
-    const aIsPinned = 'isPinned' in a && a.isPinned;
-    const bIsPinned = 'isPinned' in b && b.isPinned;
-    if (aIsPinned && !bIsPinned) return -1;
-    if (!aIsPinned && bIsPinned) return 1;
-    
-    // 2. 按 sortOrder 排序（數字越大越前）
-    const aSortOrder = 'sortOrder' in a ? (a.sortOrder || 0) : 0;
-    const bSortOrder = 'sortOrder' in b ? (b.sortOrder || 0) : 0;
-    if (aSortOrder !== bSortOrder) return bSortOrder - aSortOrder;
-    
-    // 3. 按 updatedAt 排序（最新更新在前）
-    const aUpdated = 'updatedAt' in a && a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
-    const bUpdated = 'updatedAt' in b && b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
-    if (aUpdated !== bUpdated) return bUpdated - aUpdated;
-    
-    return 0;
-  });
+  // 排序邏輯：1. 置頂優先 2. 最後更新時間降序（最新在前）
+  const sortedContent = useMemo(() => {
+    return [...filteredContent].sort((a, b) => {
+      // 1. 置頂優先
+      const aIsPinned = 'isPinned' in a && a.isPinned;
+      const bIsPinned = 'isPinned' in b && b.isPinned;
+      if (aIsPinned && !bIsPinned) return -1;
+      if (!aIsPinned && bIsPinned) return 1;
+      
+      // 2. 按 sortOrder 排序（數字越大越前）
+      const aSortOrder = 'sortOrder' in a ? (a.sortOrder || 0) : 0;
+      const bSortOrder = 'sortOrder' in b ? (b.sortOrder || 0) : 0;
+      if (aSortOrder !== bSortOrder) return bSortOrder - aSortOrder;
+      
+      // 3. 按 updatedAt 排序（最新更新在前）
+      const aUpdated = 'updatedAt' in a && a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+      const bUpdated = 'updatedAt' in b && b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+      if (aUpdated !== bUpdated) return bUpdated - aUpdated;
+      
+      // 4. 如果沒有 updatedAt，把有 expiryDate 的優惠排在後面（較新的優惠沒有過期日）
+      const aHasExpiry = 'expiryDate' in a && a.expiryDate;
+      const bHasExpiry = 'expiryDate' in b && b.expiryDate;
+      if (aHasExpiry && !bHasExpiry) return 1;
+      if (!aHasExpiry && bHasExpiry) return -1;
+      
+      return 0;
+    });
+  }, [filteredContent]);
 
   const contentTypes = [
     { id: "all", label: "全部", icon: Sparkles },

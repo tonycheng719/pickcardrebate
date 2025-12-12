@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
 import { Navbar } from "@/components/navbar";
 import { DiscoverClient } from "./discover-client";
 import { PROMOS } from "@/lib/data/promos";
@@ -179,7 +180,9 @@ export default function DiscoverPage() {
       />
       
       <Navbar />
-      <DiscoverClient />
+      <Suspense fallback={<div className="container mx-auto px-4 py-8 text-center text-gray-500">載入中...</div>}>
+        <DiscoverClient />
+      </Suspense>
     </div>
   );
 }
