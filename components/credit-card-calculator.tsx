@@ -147,7 +147,8 @@ export function CreditCardCalculator({
   const [isOnlineScenario, setIsOnlineScenario] = useState<boolean | null>(null); // null = not selected yet
   const [results, setResults] = useState<CalculationResult[]>([]);
   const [open, setOpen] = useState(false);
-  const [showAllResults, setShowAllResults] = useState(false); // Toggle for showing all results
+  const [showMyOtherCards, setShowMyOtherCards] = useState(false); // Toggle for owned cards
+  const [showUnownedCards, setShowUnownedCards] = useState(false); // Toggle for unowned cards
   const [showLoginPrompt, setShowLoginPrompt] = useState(false); // New state for login prompt
   
   // Transaction Recording State
@@ -1194,30 +1195,54 @@ export function CreditCardCalculator({
             </>
           )}
 
-          {/* 其他卡片區域 */}
-          <div className="space-y-3 max-h-[35vh] overflow-y-auto pr-1">
+          {/* 其他卡片區域 - 精簡版 */}
+          <div className="space-y-2">
             
             {/* 你持有的其他卡 (折疊) */}
             {myOtherCards.length > 0 && (
-              <div className="pt-2">
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="w-full text-xs text-gray-500 hover:text-gray-700 h-8 justify-start"
-                  onClick={() => setShowAllResults(prev => !prev)}
+              <div>
+                <button 
+                  className="w-full text-xs text-gray-500 hover:text-gray-700 py-2 flex items-center justify-between border-b border-gray-100"
+                  onClick={() => setShowMyOtherCards(prev => !prev)}
                 >
                   <span className="flex items-center gap-1">
                     <CreditCard className="w-3 h-3" />
-                    你持有的其他卡 ({myOtherCards.length}) 
-                    {showAllResults ? <ChevronUp className="w-3 h-3 ml-1"/> : <ChevronDown className="w-3 h-3 ml-1"/>}
+                    你持有的其他卡 ({myOtherCards.length})
                   </span>
-                </Button>
+                  {showMyOtherCards ? <ChevronUp className="w-4 h-4"/> : <ChevronDown className="w-4 h-4"/>}
+                </button>
                 
-                {showAllResults && (
-                  <div className="space-y-2 mt-2 animate-in fade-in slide-in-from-top-2">
-                    {myOtherCards.map(card => (
-                      <ResultRowWithBreakdown key={card.card.id} result={card} />
-                    ))}
+                {showMyOtherCards && (
+                  <div className="space-y-1 pt-2 animate-in fade-in slide-in-from-top-2">
+                    {myOtherCards.map(card => {
+                      const milesText = card.milesReturn ? `$${card.milesReturn.toFixed(1)}/里` : null;
+                      return (
+                        <div key={card.card.id} className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800">
+                          {card.card.imageUrl ? (
+                            <div className="w-10 h-6 rounded border bg-white flex items-center justify-center overflow-hidden shrink-0">
+                              <img src={card.card.imageUrl} alt={card.card.name} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
+                            </div>
+                          ) : (
+                            <div className={`w-10 h-6 rounded border ${card.card.style?.bgColor || 'bg-gray-500'} shrink-0`}></div>
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{card.card.name}</p>
+                            <p className="text-[10px] text-gray-500 truncate">{card.matchedRule.description}</p>
+                          </div>
+                          <div className="text-right shrink-0">
+                            <p className="text-sm font-bold text-emerald-600">
+                              {milesText || (card.rewardAmount > 0 ? `+$${card.rewardAmount.toFixed(1)}` : `${card.percentage}%`)}
+                            </p>
+                          </div>
+                          <button 
+                            className="text-[10px] text-gray-400 hover:text-gray-600 px-1"
+                            onClick={(e) => { e.stopPropagation(); handleWhyClick(card); }}
+                          >
+                            ?
+                          </button>
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </div>
@@ -1225,27 +1250,54 @@ export function CreditCardCalculator({
 
             {/* 其他未持有的卡 (折疊) */}
             {unownedCards.length > 0 && (
-              <div className="pt-2 border-t border-gray-100 dark:border-gray-800">
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="w-full text-xs text-gray-400 hover:text-gray-600 h-8 justify-start"
-                  onClick={() => setShowAllResults(prev => !prev)}
+              <div>
+                <button 
+                  className="w-full text-xs text-gray-400 hover:text-gray-600 py-2 flex items-center justify-between border-b border-gray-100"
+                  onClick={() => setShowUnownedCards(prev => !prev)}
                 >
                   <span className="flex items-center gap-1">
-                    查看其他未持有的卡 ({unownedCards.length}) 
-                    {showAllResults ? <ChevronUp className="w-3 h-3 ml-1"/> : <ChevronDown className="w-3 h-3 ml-1"/>}
+                    查看其他未持有的卡 ({unownedCards.length})
                   </span>
-                </Button>
+                  {showUnownedCards ? <ChevronUp className="w-4 h-4"/> : <ChevronDown className="w-4 h-4"/>}
+                </button>
                 
-                {showAllResults && (
-                  <div className="space-y-2 mt-2 animate-in fade-in slide-in-from-top-2">
-                    {unownedCards.map(card => (
-                      <ResultRowWithBreakdown key={card.card.id} result={card} />
-                    ))}
+                {showUnownedCards && (
+                  <div className="space-y-1 pt-2 animate-in fade-in slide-in-from-top-2">
+                    {unownedCards.slice(0, 10).map(card => {
+                      const milesText = card.milesReturn ? `$${card.milesReturn.toFixed(1)}/里` : null;
+                      return (
+                        <div key={card.card.id} className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800">
+                          {card.card.imageUrl ? (
+                            <div className="w-10 h-6 rounded border bg-white flex items-center justify-center overflow-hidden shrink-0">
+                              <img src={card.card.imageUrl} alt={card.card.name} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
+                            </div>
+                          ) : (
+                            <div className={`w-10 h-6 rounded border ${card.card.style?.bgColor || 'bg-gray-500'} shrink-0`}></div>
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{card.card.name}</p>
+                            <p className="text-[10px] text-gray-500 truncate">{card.matchedRule.description}</p>
+                          </div>
+                          <div className="text-right shrink-0">
+                            <p className="text-sm font-bold text-gray-600">
+                              {milesText || (card.rewardAmount > 0 ? `+$${card.rewardAmount.toFixed(1)}` : `${card.percentage}%`)}
+                            </p>
+                          </div>
+                          <button 
+                            className="text-[10px] text-gray-400 hover:text-gray-600 px-1"
+                            onClick={(e) => { e.stopPropagation(); handleWhyClick(card); }}
+                          >
+                            ?
+                          </button>
+                        </div>
+                      );
+                    })}
+                    {unownedCards.length > 10 && (
+                      <p className="text-[10px] text-gray-400 text-center py-1">還有 {unownedCards.length - 10} 張卡...</p>
+                    )}
                   </div>
                 )}
-                </div>
+              </div>
             )}
           </div>
 
