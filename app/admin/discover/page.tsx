@@ -715,7 +715,10 @@ export default function AdminDiscoverPage() {
                   type="button"
                   variant={newIsPinned ? "default" : "outline"}
                   size="sm"
-                  onClick={() => setNewIsPinned(true)}
+                  onClick={() => {
+                    console.log('Setting pinned to TRUE');
+                    setNewIsPinned(true);
+                  }}
                   className={`gap-1 ${newIsPinned ? 'bg-amber-500 hover:bg-amber-600 text-white' : ''}`}
                 >
                   <Pin className="h-3 w-3" />
@@ -725,15 +728,18 @@ export default function AdminDiscoverPage() {
                   type="button"
                   variant={!newIsPinned ? "default" : "outline"}
                   size="sm"
-                  onClick={() => setNewIsPinned(false)}
-                  className="gap-1"
+                  onClick={() => {
+                    console.log('Setting pinned to FALSE');
+                    setNewIsPinned(false);
+                  }}
+                  className={`gap-1 ${!newIsPinned ? 'bg-gray-600 hover:bg-gray-700 text-white' : ''}`}
                 >
                   <PinOff className="h-3 w-3" />
                   不置頂
                 </Button>
               </div>
               <p className="text-xs text-gray-500">
-                當前狀態：<span className={newIsPinned ? 'text-amber-600 font-bold' : 'text-gray-600'}>{newIsPinned ? '✓ 已置頂' : '未置頂'}</span>
+                當前狀態：<span className={newIsPinned ? 'text-amber-600 font-bold' : 'text-gray-600 font-bold'}>{newIsPinned ? '✓ 已置頂' : '✗ 未置頂'}</span>
               </p>
             </div>
             
