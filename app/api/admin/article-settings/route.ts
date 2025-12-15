@@ -31,44 +31,69 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { articleId, coverImageUrl, contentType, customTags, isPinned } = body;
 
+    console.log('POST /api/admin/article-settings:', { articleId, contentType, customTags, isPinned });
+
     if (!articleId) {
       return NextResponse.json({ error: 'Missing articleId' }, { status: 400 });
     }
 
-    // 構建更新數據
-    const updateData: Record<string, any> = {
-      updated_at: new Date().toISOString()
-    };
-    
-    // 只更新有傳入的欄位
-    if (coverImageUrl !== undefined) {
-      updateData.cover_image_url = coverImageUrl || null;
-    }
-    if (contentType !== undefined) {
-      updateData.content_type = contentType || null;
-    }
-    if (customTags !== undefined) {
-      updateData.custom_tags = customTags && customTags.length > 0 ? customTags : null;
-    }
-    if (isPinned !== undefined) {
-      updateData.is_pinned = isPinned || false;
-    }
-
     // 先檢查是否已有設定
-    const { data: existing } = await adminAuthClient
+    const { data: existing, error: selectError } = await adminAuthClient
       .from('article_settings')
       .select('id')
       .eq('article_id', articleId)
       .single();
 
+    // 處理表不存在的情況
+    if (selectError && selectError.code === '42P01') {
+      return NextResponse.json({ 
+        error: 'Table article_settings not found. Please run the SQL script first.',
+        sqlRequired: true
+      }, { status: 400 });
+    }
+
+    // 處理欄位不存在的情況
+    if (selectError && selectError.code === '42703') {
+      return NextResponse.json({ 
+        error: 'Some columns are missing. Please run: ALTER TABLE article_settings ADD COLUMN IF NOT EXISTS content_type TEXT; ALTER TABLE article_settings ADD COLUMN IF NOT EXISTS custom_tags TEXT[]; ALTER TABLE article_settings ADD COLUMN IF NOT EXISTS is_pinned BOOLEAN DEFAULT FALSE;',
+        sqlRequired: true
+      }, { status: 400 });
+    }
+
     if (existing) {
       // 更新現有設定
+      const updateData: Record<string, any> = {
+        updated_at: new Date().toISOString()
+      };
+      
+      if (coverImageUrl !== undefined) {
+        updateData.cover_image_url = coverImageUrl || null;
+      }
+      if (contentType !== undefined) {
+        updateData.content_type = contentType || null;
+      }
+      if (customTags !== undefined) {
+        updateData.custom_tags = customTags && customTags.length > 0 ? customTags : null;
+      }
+      if (isPinned !== undefined) {
+        updateData.is_pinned = isPinned || false;
+      }
+
       const { error } = await adminAuthClient
         .from('article_settings')
         .update(updateData)
         .eq('id', existing.id);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Update error:', error);
+        if (error.code === '42703') {
+          return NextResponse.json({ 
+            error: `Column missing: ${error.message}. Please run the ALTER TABLE statements.`,
+            sqlRequired: true
+          }, { status: 400 });
+        }
+        throw error;
+      }
     } else {
       // 新增設定
       const { error } = await adminAuthClient
@@ -84,9 +109,16 @@ export async function POST(request: Request) {
         });
 
       if (error) {
+        console.error('Insert error:', error);
         if (error.code === '42P01') {
           return NextResponse.json({ 
             error: 'Table not created yet. Please run the SQL script first.',
+            sqlRequired: true
+          }, { status: 400 });
+        }
+        if (error.code === '42703') {
+          return NextResponse.json({ 
+            error: `Column missing: ${error.message}. Please run the ALTER TABLE statements.`,
             sqlRequired: true
           }, { status: 400 });
         }
@@ -97,7 +129,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true });
   } catch (error: any) {
     console.error('Error updating article settings:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ 
+      error: error.message || 'Unknown error',
+      details: error.code || 'N/A'
+    }, { status: 500 });
   }
 }
 
