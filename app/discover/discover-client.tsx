@@ -496,7 +496,7 @@ export function DiscoverClient() {
     });
   }, [allContent, contentType, tagFilter]);
 
-  // 排序邏輯：1. 置頂優先 2. 最近更新時間 3. 最新發表時間（按數組原始順序）
+  // 排序邏輯：1. 置頂優先 2. 最近更新時間 3. sortOrder 4. 原始順序（發表時間）
   const sortedContent = useMemo(() => {
     // 先記錄原始索引（代表發表順序，越前面越新）
     const withIndex = filteredContent.map((item, index) => ({ item, originalIndex: index }));
@@ -509,21 +509,18 @@ export function DiscoverClient() {
       if (!aIsPinned && bIsPinned) return 1;
       
       // 2. 按 updatedAt 排序（最新更新在前，有 updatedAt 的優先）
-      const aUpdated = 'updatedAt' in a.item && a.item.updatedAt ? new Date(a.item.updatedAt).getTime() : 0;
-      const bUpdated = 'updatedAt' in b.item && b.item.updatedAt ? new Date(b.item.updatedAt).getTime() : 0;
+      const aUpdatedVal = 'updatedAt' in a.item ? (a.item as { updatedAt?: string }).updatedAt : undefined;
+      const bUpdatedVal = 'updatedAt' in b.item ? (b.item as { updatedAt?: string }).updatedAt : undefined;
+      const aUpdated = aUpdatedVal ? new Date(aUpdatedVal).getTime() : 0;
+      const bUpdated = bUpdatedVal ? new Date(bUpdatedVal).getTime() : 0;
       if (aUpdated !== bUpdated) return bUpdated - aUpdated;
       
-      // 3. 按 publishedAt 排序（如有），否則按 sortOrder
-      const aPublished = 'publishedAt' in a.item && a.item.publishedAt ? new Date(a.item.publishedAt).getTime() : 0;
-      const bPublished = 'publishedAt' in b.item && b.item.publishedAt ? new Date(b.item.publishedAt).getTime() : 0;
-      if (aPublished !== bPublished) return bPublished - aPublished;
-      
-      // 4. 按 sortOrder 排序（數字越大越前）
-      const aSortOrder = 'sortOrder' in a.item ? (a.item.sortOrder || 0) : 0;
-      const bSortOrder = 'sortOrder' in b.item ? (b.item.sortOrder || 0) : 0;
+      // 3. 按 sortOrder 排序（數字越大越前）
+      const aSortOrder = 'sortOrder' in a.item ? ((a.item as { sortOrder?: number }).sortOrder || 0) : 0;
+      const bSortOrder = 'sortOrder' in b.item ? ((b.item as { sortOrder?: number }).sortOrder || 0) : 0;
       if (aSortOrder !== bSortOrder) return bSortOrder - aSortOrder;
       
-      // 5. 保持原始順序（越前面越新）
+      // 4. 保持原始順序（越前面越新）
       return a.originalIndex - b.originalIndex;
     }).map(({ item }) => item);
   }, [filteredContent, customPinned]);
