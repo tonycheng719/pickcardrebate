@@ -10,78 +10,102 @@ import {
 } from "lucide-react";
 import { CardPreviewSection } from "@/app/discover/components/card-preview-section";
 
-// FAQ 數據
+// FAQ 數據（2025/2026 更新版）
+// 參考：https://www.mrmiles.hk/tax/
 export const taxPaymentFaqData = [
   {
     question: "信用卡交稅有回贈嗎？",
-    answer: "有！透過 AlipayHK、雲閃付、BoC Pay 等平台用信用卡交稅，可以賺取信用卡回贈。部分銀行亦有交稅優惠活動，如 HSBC、恒生、中銀等。不過要留意平台手續費及回贈上限。"
+    answer: "有！2025/2026交稅季各大銀行都有優惠：渣打高達$2,300/23,000里、滙豐高達$1,100、恒生高達$700、中銀高達$3,888、工銀高達2%。需透過銀行網上理財交稅並登記。"
   },
   {
     question: "交稅用邊張信用卡最抵？",
-    answer: "視乎你用咩方法交稅：用 AlipayHK 可用渣打 Simply Cash（1.5%）；用雲閃付可用銀聯信用卡；用 BoC Pay 可用中銀卡。部分銀行有交稅分期優惠，可以免息分期還款。"
+    answer: "2025/2026年推薦：現金回贈首選渣打 Simply Cash（$2,300）；儲里數首選渣打國泰 Mastercard（23,000里）；滙豐客戶用滙豐卡（$1,100）；恒生客戶用恒生卡（$700）。需登記！"
   },
   {
     question: "HSBC 信用卡交稅有回贈嗎？",
-    answer: "HSBC 信用卡透過 AlipayHK 或政府繳費網站交稅，一般可獲基本獎賞錢回贈。部分卡種（如 Red Card）網上交稅可享額外回贈。建議留意 HSBC 每年嘅交稅優惠活動。"
+    answer: "有！2025/11/17-2026/2/28期間，滙豐信用卡交稅滿$30,000+累積簽賬$10,000，可賺最高$1,100獎賞錢。需透過滙豐 App/網上理財登記及交稅。"
   },
   {
     question: "恒生信用卡交稅有優惠嗎？",
-    answer: "恒生信用卡每年都有交稅優惠，如簽賬額外積分或回贈。透過恒生銀行網上繳費交稅，可享積分或現金回贈。建議留意恒生每年 1-4 月嘅交稅推廣活動。"
+    answer: "有！2025/11/25-2026/3/31期間，恒生信用卡交稅滿$10,000+累積簽賬$5,000，可賺最高$700 +FUN Dollars 或 yuu 積分。需透過恒生網上理財登記及交稅。"
   },
   {
     question: "中銀信用卡交稅有回贈嗎？",
-    answer: "中銀信用卡透過 BoC Pay 交稅可享積分回贈。中銀亦有交稅分期計劃，可以免息分期還款。部分中銀卡種有交稅額外積分優惠。"
+    answer: "有！2025/11/1-12/30期間，中銀信用卡透過 BoC Pay/網上理財交稅，高達$3,888現金回贈。金額愈高回贈愈多！"
   },
   {
     question: "渣打信用卡交稅有優惠嗎？",
-    answer: "渣打信用卡透過 AlipayHK 交稅，可享 Simply Cash 1.5% 回贈。渣打亦有交稅分期計劃，部分計劃免手續費。建議留意渣打每年嘅交稅推廣。"
+    answer: "有！2025/11/18-2026/2/2期間，渣打/MANHATTAN信用卡透過SC Mobile App登記後網上交稅，高達$2,300回贈或23,000里。早鳥喺12/31前完成分期仲有額外獎賞！"
   },
   {
-    question: "用 AlipayHK 交稅有回贈嗎？",
-    answer: "有！用 AlipayHK 綁定信用卡交稅，信用卡會計入簽賬。渣打 Simply Cash 有 1.5% 回贈、Citi Cash Back 有 1% 回贈。但要留意 AlipayHK 交稅可能有金額上限。"
+    question: "透過 AlipayHK/WeChat Pay 仲可以交稅嗎？",
+    answer: "⚠️ 2020年2月起，AlipayHK/WeChat Pay 已停止支援信用卡交稅功能。現時要用信用卡交稅，需透過各銀行網上理財直接繳費。"
   },
   {
     question: "交稅可以分期嗎？",
-    answer: "可以！多間銀行提供交稅分期計劃，如 HSBC、恒生、中銀、渣打、Citi 等。部分銀行提供免息免手續費分期（12-24 個月），可減輕交稅壓力。"
+    answer: "可以！多間銀行提供交稅分期計劃，如渣打、HSBC、恒生、Citi等。渣打早鳥分期有額外獎賞，部分銀行提供免息分期（6-24個月），可減輕交稅壓力。"
   }
 ];
 
-// 交稅方法比較
+// 交稅方法比較（2025/2026 更新版）
+// 參考：https://www.mrmiles.hk/tax/
+// ⚠️ AlipayHK/WeChat Pay 已於 2020年2月停止支援信用卡交稅
 const taxPaymentMethods = [
   {
-    method: "AlipayHK",
+    method: "🔥 渣打網上理財",
     fee: "免手續費",
-    limit: "有上限",
+    limit: "無上限",
     creditCardSupport: true,
     bestCards: [
-      { card: "渣打 Simply Cash", id: "sc-simply-cash", rate: "1.5%" },
-      { card: "Citi Cash Back", id: "citi-cashback", rate: "1%" },
+      { card: "渣打 Simply Cash", id: "sc-simply-cash", rate: "高達$2,300" },
+      { card: "SC 國泰 Mastercard", id: "sc-cathay", rate: "高達23,000里" },
     ],
-    pros: ["免手續費", "即時到賬"],
-    cons: ["有金額上限", "需綁定信用卡"],
+    pros: ["高達$2,300回贈", "分期有早鳥優惠"],
+    cons: ["需SC Mobile App登記"],
   },
   {
-    method: "雲閃付",
+    method: "🔥 滙豐網上理財",
     fee: "免手續費",
-    limit: "有上限",
+    limit: "無上限",
     creditCardSupport: true,
     bestCards: [
-      { card: "銀聯信用卡", id: null, rate: "視乎卡種" },
-      { card: "安信 EarnMORE", id: "earnmore", rate: "2%" },
+      { card: "滙豐信用卡", id: "hsbc-vs", rate: "高達$1,100" },
     ],
-    pros: ["免手續費", "支援銀聯"],
-    cons: ["只限銀聯卡", "有金額上限"],
+    pros: ["高達$1,100獎賞錢", "可申請分期"],
+    cons: ["需登記+累積簽$10,000"],
   },
   {
-    method: "BoC Pay",
+    method: "🔥 恒生網上理財",
     fee: "免手續費",
-    limit: "視乎卡種",
+    limit: "無上限",
     creditCardSupport: true,
     bestCards: [
-      { card: "中銀信用卡", id: "boc-cheers", rate: "0.4%+" },
+      { card: "恒生信用卡", id: "hangseng-mmpower", rate: "高達$700" },
     ],
-    pros: ["免手續費", "中銀有額外優惠"],
+    pros: ["高達$700 +FUN", "enJoy 可儲 yuu"],
+    cons: ["需登記+累積簽$5,000"],
+  },
+  {
+    method: "中銀 BoC Pay/網上理財",
+    fee: "免手續費",
+    limit: "無上限",
+    creditCardSupport: true,
+    bestCards: [
+      { card: "中銀信用卡", id: "boc-cheers", rate: "高達$3,888" },
+    ],
+    pros: ["高達$3,888回贈", "免手續費"],
     cons: ["只限中銀卡"],
+  },
+  {
+    method: "工銀網上理財",
+    fee: "免手續費",
+    limit: "無上限",
+    creditCardSupport: true,
+    bestCards: [
+      { card: "工銀 Visa 卡", id: null, rate: "高達2%" },
+    ],
+    pros: ["回贈率最高達2%", "新卡額外$50"],
+    cons: ["只限工銀卡"],
   },
   {
     method: "政府繳費網站（PPS）",
@@ -92,67 +116,72 @@ const taxPaymentMethods = [
     pros: ["無上限", "直接繳費"],
     cons: ["只接受銀行戶口", "無信用卡回贈"],
   },
-  {
-    method: "八達通 App",
-    fee: "免手續費",
-    limit: "有上限",
-    creditCardSupport: true,
-    bestCards: [
-      { card: "支援八達通自動增值嘅卡", id: null, rate: "視乎卡種" },
-    ],
-    pros: ["免手續費", "方便"],
-    cons: ["需先增值", "回贈較低"],
-  },
 ];
 
-// 銀行交稅優惠
+// 銀行交稅優惠（2025/2026 更新版）
+// 參考：https://www.mrmiles.hk/tax/
 const bankTaxOffers = [
   {
     bank: "🔥 渣打銀行",
     offer: "交稅高達$2,300回贈/23,000里",
     period: "2025/11/18 - 2026/2/2",
     requirement: "渣打/MANHATTAN信用卡",
-    note: "需SC Mobile App登記，分期有早鳥優惠",
+    note: "需SC Mobile App登記，分期有早鳥優惠，回贈率最高0.75%",
     link: "/discover/sc-tax-payment-2025",
   },
   {
-    bank: "HSBC",
-    offer: "交稅分期免息免手續費",
-    period: "最長 24 個月",
-    requirement: "指定卡種",
-    note: "需申請，名額有限",
+    bank: "🔥 HSBC 滙豐",
+    offer: "交稅滿$30,000享高達$1,100獎賞錢",
+    period: "2025/11/17 - 2026/2/28",
+    requirement: "指定滙豐信用卡",
+    note: "需登記+累積簽賬$10,000，最高0.8%回贈",
   },
   {
-    bank: "恒生銀行",
-    offer: "交稅簽賬額外積分",
-    period: "每年 1-4 月",
+    bank: "🔥 恒生銀行",
+    offer: "交稅滿$10,000享高達$700+FUN",
+    period: "2025/11/25 - 2026/3/31",
     requirement: "恒生信用卡",
-    note: "留意每年推廣詳情",
+    note: "需登記+累積簽賬$5,000，最高0.8%回贈",
   },
   {
-    bank: "中銀香港",
-    offer: "BoC Pay 交稅額外積分",
-    period: "每年交稅季",
+    bank: "🔥 中銀香港",
+    offer: "交稅高達$3,888回贈",
+    period: "2025/11/1 - 12/30",
     requirement: "中銀信用卡",
-    note: "透過 BoC Pay 繳費",
+    note: "需透過 BoC Pay / 網上理財交稅",
   },
   {
-    bank: "Citi",
-    offer: "交稅分期低息",
-    period: "最長 24 個月",
+    bank: "東亞銀行",
+    offer: "交稅高達40,000里",
+    period: "2025/11/1 - 12/31",
+    requirement: "東亞 Visa 卡",
+    note: "首4,000名登記客戶，網上交稅",
+  },
+  {
+    bank: "工銀亞洲",
+    offer: "交稅高達2%回贈",
+    period: "2025/10/1 - 2026/3/31",
+    requirement: "ICBC Visa 信用卡",
+    note: "交$5,000+享$100回贈，新卡額外$50",
+  },
+  {
+    bank: "Citi 花旗",
+    offer: "Citi PayAll 交稅賺$4.8/里",
+    period: "全年適用",
     requirement: "Citi 信用卡",
-    note: "手續費視乎分期期數",
+    note: "1.8%繳費回贈，可賺高達$15,200獎賞",
   },
 ];
 
-// 推薦信用卡
+// 推薦信用卡（2025/2026 更新版）
+// 參考：https://www.mrmiles.hk/tax/
 const recommendedCards = [
   {
     card: "渣打 Simply Cash Visa",
     id: "sc-simply-cash",
     rate: "高達$2,300",
-    highlight: "🔥 限時優惠",
-    reason: "透過渣打網上理財交稅，高達$2,300回贈 + 分期早鳥優惠",
+    highlight: "🔥 現金回贈首選",
+    reason: "透過渣打網上理財交稅，高達$2,300回贈（0.75%），分期早鳥額外$300",
     method: "渣打網上理財",
   },
   {
@@ -164,28 +193,36 @@ const recommendedCards = [
     method: "渣打網上理財",
   },
   {
-    card: "安信 EarnMORE 銀聯卡",
-    id: "earnmore",
-    rate: "2%",
-    highlight: "雲閃付首選",
-    reason: "透過雲閃付交稅可賺 2% 無上限回贈（Apple Pay）",
-    method: "雲閃付",
+    card: "HSBC 信用卡",
+    id: "hsbc-vs",
+    rate: "高達$1,100",
+    highlight: "🔥 滙豐限時",
+    reason: "交稅滿$30,000+累積簽$10,000，可賺$1,100獎賞錢",
+    method: "滙豐網上理財",
   },
   {
-    card: "Citi Cash Back Card",
-    id: "citi-cashback",
-    rate: "1%",
-    highlight: "分期選擇",
-    reason: "可申請交稅分期，AlipayHK 交稅有 1% 回贈",
-    method: "AlipayHK / 分期",
+    card: "恒生信用卡",
+    id: "hangseng-mmpower",
+    rate: "高達$700",
+    highlight: "恒生限時",
+    reason: "交稅滿$10,000+累積簽$5,000，可賺$700 +FUN Dollars",
+    method: "恒生網上理財",
   },
   {
-    card: "HSBC Red Card",
-    id: "hsbc-red",
-    rate: "4%（網上）",
-    highlight: "分期免息",
-    reason: "可申請免息免手續費分期，網上交稅可享回贈",
-    method: "網上繳費 / 分期",
+    card: "中銀信用卡",
+    id: "boc-cheers",
+    rate: "高達$3,888",
+    highlight: "中銀限時",
+    reason: "透過 BoC Pay / 網上理財交稅，高達$3,888回贈",
+    method: "BoC Pay / 網上理財",
+  },
+  {
+    card: "工銀 Visa 信用卡",
+    id: null,
+    rate: "高達2%",
+    highlight: "回贈率最高",
+    reason: "交$5,000+享$100回贈，回贈率最高2%，新卡額外$50",
+    method: "網上理財",
   },
 ];
 
@@ -199,8 +236,8 @@ export function TaxPaymentGuide() {
       <p className="lead text-xl text-gray-600 dark:text-gray-300 mb-6">
         每年交稅都要俾一大筆錢，點解唔用<strong>信用卡交稅</strong>賺回贈？
         本文教你 <strong>{currentYear}/{nextYear} 信用卡交稅攻略</strong>！
-        🔥 <strong>渣打限時優惠</strong>：交稅高達 <strong>$2,300 回贈 / 23,000里</strong>！
-        透過 <strong>AlipayHK</strong>、<strong>雲閃付</strong> 交稅亦可賺 <strong>1-2% 回贈</strong>！
+        🔥 各大銀行限時優惠：渣打高達 <strong>$2,300 / 23,000里</strong>、滙豐 <strong>$1,100</strong>、
+        恒生 <strong>$700</strong>、中銀 <strong>$3,888</strong>！
       </p>
 
       {/* 渣打限時優惠提示 */}
@@ -229,11 +266,11 @@ export function TaxPaymentGuide() {
         </h2>
         <ul className="space-y-2 text-sm">
           <li><a href="#overview" className="text-blue-600 dark:text-blue-400 hover:underline">1. 信用卡交稅可以賺回贈？</a></li>
-          <li><a href="#methods" className="text-blue-600 dark:text-blue-400 hover:underline">2. 交稅方法比較：AlipayHK vs 雲閃付 vs BoC Pay</a></li>
-          <li><a href="#alipay" className="text-blue-600 dark:text-blue-400 hover:underline">3. AlipayHK 交稅攻略</a></li>
-          <li><a href="#unionpay" className="text-blue-600 dark:text-blue-400 hover:underline">4. 雲閃付交稅攻略</a></li>
-          <li><a href="#bocpay" className="text-blue-600 dark:text-blue-400 hover:underline">5. BoC Pay 交稅攻略</a></li>
-          <li><a href="#bank-offers" className="text-blue-600 dark:text-blue-400 hover:underline">6. 各銀行交稅優惠</a></li>
+          <li><a href="#methods" className="text-blue-600 dark:text-blue-400 hover:underline">2. 交稅方法比較（2025/2026 更新）</a></li>
+          <li><a href="#alipay" className="text-blue-600 dark:text-blue-400 hover:underline">3. 銀行網上理財交稅攻略</a></li>
+          <li><a href="#unionpay" className="text-blue-600 dark:text-blue-400 hover:underline">4. 渣打交稅攻略（最高回贈）</a></li>
+          <li><a href="#bocpay" className="text-blue-600 dark:text-blue-400 hover:underline">5. 滙豐 / 恒生 / 中銀交稅攻略</a></li>
+          <li><a href="#bank-offers" className="text-blue-600 dark:text-blue-400 hover:underline">6. 各銀行交稅優惠總覽</a></li>
           <li><a href="#installment" className="text-blue-600 dark:text-blue-400 hover:underline">7. 交稅分期計劃比較</a></li>
           <li><a href="#best-cards" className="text-blue-600 dark:text-blue-400 hover:underline">8. 交稅信用卡推薦</a></li>
           <li><a href="#tips" className="text-blue-600 dark:text-blue-400 hover:underline">9. 交稅慳錢貼士</a></li>
@@ -341,105 +378,134 @@ export function TaxPaymentGuide() {
         </div>
       </section>
 
-      {/* Section 3: AlipayHK */}
+      {/* Section 3: 銀行網上理財交稅 */}
       <section id="alipay" className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
           <Smartphone className="h-6 w-6 text-blue-500" />
-          3. AlipayHK 交稅攻略
+          3. 銀行網上理財交稅攻略
         </h2>
 
+        <div className="not-prose bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 mb-6">
+          <div className="flex items-start gap-3">
+            <XCircle className="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" />
+            <p className="text-red-700 dark:text-red-300 text-sm">
+              <strong>⚠️ 注意：</strong>AlipayHK / WeChat Pay 已於 <strong>2020年2月</strong>停止支援信用卡交稅。
+              現時要用信用卡交稅賺回贈，必須透過<strong>各銀行網上理財</strong>繳費！
+            </p>
+          </div>
+        </div>
+
         <p>
-          <strong>AlipayHK 交稅</strong>係最多人用嘅方法，可以綁定信用卡賺回贈：
+          透過<strong>銀行網上理財交稅</strong>，配合銀行嘅限時優惠，可以賺取豐厚回贈：
         </p>
 
         <div className="not-prose space-y-3 my-6">
-          <div className="flex items-start gap-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4">
-            <span className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">1</span>
+          <div className="flex items-start gap-3 bg-teal-50 dark:bg-teal-900/20 rounded-xl p-4">
+            <span className="flex-shrink-0 w-8 h-8 rounded-full bg-teal-500 text-white flex items-center justify-center font-bold">1</span>
             <div>
-              <p className="font-medium text-gray-900 dark:text-white">打開 AlipayHK App</p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">選擇「繳費」→「政府及公共服務」</p>
+              <p className="font-medium text-gray-900 dark:text-white">登記銀行交稅優惠</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">透過銀行 App（如 SC Mobile / 滙豐 App）登記交稅推廣</p>
             </div>
           </div>
-          <div className="flex items-start gap-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4">
-            <span className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">2</span>
+          <div className="flex items-start gap-3 bg-teal-50 dark:bg-teal-900/20 rounded-xl p-4">
+            <span className="flex-shrink-0 w-8 h-8 rounded-full bg-teal-500 text-white flex items-center justify-center font-bold">2</span>
             <div>
-              <p className="font-medium text-gray-900 dark:text-white">選擇「稅務局」</p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">輸入稅單號碼及金額</p>
+              <p className="font-medium text-gray-900 dark:text-white">登入網上理財</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">選擇「繳費」→「政府 / 稅務局」</p>
             </div>
           </div>
-          <div className="flex items-start gap-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4">
-            <span className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">3</span>
+          <div className="flex items-start gap-3 bg-teal-50 dark:bg-teal-900/20 rounded-xl p-4">
+            <span className="flex-shrink-0 w-8 h-8 rounded-full bg-teal-500 text-white flex items-center justify-center font-bold">3</span>
             <div>
-              <p className="font-medium text-gray-900 dark:text-white">選擇信用卡付款</p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">揀已綁定嘅信用卡（如 <Link href="/cards/sc-simply-cash" className="text-blue-600 hover:underline">Simply Cash</Link>）</p>
+              <p className="font-medium text-gray-900 dark:text-white">輸入稅單資料</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">輸入稅單號碼及金額，選擇信用卡付款</p>
             </div>
           </div>
-          <div className="flex items-start gap-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4">
-            <span className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">4</span>
+          <div className="flex items-start gap-3 bg-teal-50 dark:bg-teal-900/20 rounded-xl p-4">
+            <span className="flex-shrink-0 w-8 h-8 rounded-full bg-teal-500 text-white flex items-center justify-center font-bold">4</span>
             <div>
-              <p className="font-medium text-gray-900 dark:text-white">完成付款</p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">即時到賬，信用卡會計入簽賬</p>
+              <p className="font-medium text-gray-900 dark:text-white">完成繳費 + 累積簽賬（如適用）</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">部分優惠需累積額外簽賬才可獲獎賞</p>
             </div>
           </div>
         </div>
 
         <div className="not-prose bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4">
-          <h4 className="font-bold text-green-800 dark:text-green-200 mb-2">💡 AlipayHK 交稅推薦信用卡</h4>
+          <h4 className="font-bold text-green-800 dark:text-green-200 mb-2">💡 銀行網上理財交稅推薦</h4>
           <ul className="text-green-700 dark:text-green-300 text-sm space-y-1">
-            <li>• <Link href="/cards/sc-simply-cash" className="text-blue-600 hover:underline font-medium">渣打 Simply Cash</Link>：<strong>1.5% 無上限</strong></li>
-            <li>• <Link href="/cards/citi-cashback" className="text-blue-600 hover:underline font-medium">Citi Cash Back</Link>：<strong>1% 無上限</strong></li>
-            <li>• <Link href="/cards/hsbc-red" className="text-blue-600 hover:underline font-medium">HSBC Red Card</Link>：<strong>4%（網上）</strong></li>
+            <li>• <Link href="/discover/sc-tax-payment-2025" className="text-blue-600 hover:underline font-medium">渣打交稅優惠</Link>：高達 <strong>$2,300 / 23,000 里</strong></li>
+            <li>• <Link href="/cards/hsbc-vs" className="text-blue-600 hover:underline font-medium">滙豐交稅優惠</Link>：高達 <strong>$1,100 獎賞錢</strong></li>
+            <li>• <Link href="/cards/hangseng-mmpower" className="text-blue-600 hover:underline font-medium">恒生交稅優惠</Link>：高達 <strong>$700 +FUN</strong></li>
           </ul>
         </div>
       </section>
 
-      {/* Section 4: 雲閃付 */}
+      {/* Section 4: 渣打交稅 */}
       <section id="unionpay" className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-          <CreditCard className="h-6 w-6 text-red-500" />
-          4. 雲閃付交稅攻略
+          <CreditCard className="h-6 w-6 text-teal-500" />
+          4. 渣打交稅攻略（最高回贈）
         </h2>
 
         <p>
-          <strong>雲閃付交稅</strong>適合用<strong>銀聯信用卡</strong>嘅用戶，可以賺取回贈：
+          <strong>2025/2026 交稅季</strong>，渣打銀行提供最高回贈優惠：
         </p>
 
-        <div className="not-prose bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 my-6">
-          <h4 className="font-bold text-red-800 dark:text-red-200 mb-2">🔥 雲閃付交稅推薦信用卡</h4>
-          <ul className="text-red-700 dark:text-red-300 text-sm space-y-1">
-            <li>• <Link href="/cards/earnmore" className="text-blue-600 hover:underline font-medium">安信 EarnMORE 銀聯卡</Link>：<strong>2% 無上限</strong>（Apple Pay）</li>
-            <li>• 其他銀聯信用卡：視乎卡種回贈</li>
+        <div className="not-prose bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800 rounded-xl p-4 my-6">
+          <h4 className="font-bold text-teal-800 dark:text-teal-200 mb-2">🔥 渣打交稅優惠（2025/11/18 - 2026/2/2）</h4>
+          <ul className="text-teal-700 dark:text-teal-300 text-sm space-y-2">
+            <li>• 交稅 $2萬-$5萬：<strong>$50-$150</strong> 回贈</li>
+            <li>• 交稅 $5萬-$10萬：<strong>$100-$300</strong> 回贈</li>
+            <li>• 交稅 $10萬-$25萬：<strong>$150-$500</strong> 回贈</li>
+            <li>• 交稅 $25萬+：<strong>$500-$1,500</strong> 回贈</li>
+            <li>• 分期額外獎賞：<strong>$200-$500</strong></li>
+            <li>• 早鳥（12/31前）再加：<strong>$100-$300</strong></li>
           </ul>
-        </div>
-
-        <div className="not-prose bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
-          <div className="flex items-start gap-3">
-            <Info className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
-            <p className="text-amber-700 dark:text-amber-300 text-sm">
-              <strong>注意：</strong>雲閃付交稅只接受<strong>銀聯信用卡</strong>，
-              Visa / Mastercard 唔可以用。
-            </p>
-          </div>
+          <Link href="/discover/sc-tax-payment-2025" className="inline-flex items-center mt-3 text-teal-600 hover:underline font-medium">
+            查看渣打交稅詳情 <ChevronRight className="h-4 w-4" />
+          </Link>
         </div>
       </section>
 
-      {/* Section 5: BoC Pay */}
+      {/* Section 5: 滙豐/恒生交稅 */}
       <section id="bocpay" className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-          <Building className="h-6 w-6 text-orange-500" />
-          5. BoC Pay 交稅攻略
+          <Building className="h-6 w-6 text-red-500" />
+          5. 滙豐 / 恒生 / 中銀交稅攻略
         </h2>
 
         <p>
-          <strong>BoC Pay 交稅</strong>適合<strong>中銀信用卡</strong>用戶，中銀有額外積分優惠：
+          如果你係<strong>滙豐、恒生或中銀客戶</strong>，透過網上理財交稅都有唔錯嘅優惠：
         </p>
 
-        <div className="not-prose bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-xl p-4 my-6">
-          <h4 className="font-bold text-orange-800 dark:text-orange-200 mb-2">🏦 BoC Pay 交稅推薦信用卡</h4>
-          <ul className="text-orange-700 dark:text-orange-300 text-sm space-y-1">
-            <li>• <Link href="/cards/boc-cheers" className="text-blue-600 hover:underline font-medium">中銀 Cheers Visa</Link>：基本積分 + 交稅額外優惠</li>
-            <li>• 中銀其他信用卡：視乎每年推廣活動</li>
-          </ul>
+        <div className="not-prose grid md:grid-cols-3 gap-4 my-6">
+          <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-4 border border-red-200 dark:border-red-800">
+            <h4 className="font-bold text-red-800 dark:text-red-200 mb-2">🔴 滙豐銀行</h4>
+            <p className="text-2xl font-bold text-red-600 mb-1">高達 $1,100</p>
+            <p className="text-red-700 dark:text-red-300 text-sm">
+              交稅 $30,000+<br/>
+              累積簽賬 $10,000<br/>
+              期限：2025/11/17 - 2026/2/28
+            </p>
+          </div>
+          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
+            <h4 className="font-bold text-blue-800 dark:text-blue-200 mb-2">🔵 恒生銀行</h4>
+            <p className="text-2xl font-bold text-blue-600 mb-1">高達 $700</p>
+            <p className="text-blue-700 dark:text-blue-300 text-sm">
+              交稅 $10,000+<br/>
+              累積簽賬 $5,000<br/>
+              期限：2025/11/25 - 2026/3/31
+            </p>
+          </div>
+          <div className="bg-orange-50 dark:bg-orange-900/20 rounded-xl p-4 border border-orange-200 dark:border-orange-800">
+            <h4 className="font-bold text-orange-800 dark:text-orange-200 mb-2">🟠 中銀香港</h4>
+            <p className="text-2xl font-bold text-orange-600 mb-1">高達 $3,888</p>
+            <p className="text-orange-700 dark:text-orange-300 text-sm">
+              透過 BoC Pay / 網上理財<br/>
+              交稅金額愈高愈多<br/>
+              期限：2025/11/1 - 12/30
+            </p>
+          </div>
         </div>
       </section>
 
@@ -571,10 +637,10 @@ export function TaxPaymentGuide() {
         title="📌 交稅推薦信用卡一覽"
         subtitle="點擊查看詳細回贈條款及申請連結"
         cards={[
-          { id: "sc-simply-cash", highlight: "🔥限時$2,300" },
+          { id: "sc-simply-cash", highlight: "🔥渣打$2,300" },
           { id: "sc-cathay", highlight: "🔥23,000里" },
-          { id: "earnmore", highlight: "雲閃付2%" },
-          { id: "citi-cashback", highlight: "分期" },
+          { id: "hsbc-vs", highlight: "🔥滙豐$1,100" },
+          { id: "hangseng-mmpower", highlight: "恒生$700" },
         ]}
       />
 
@@ -587,11 +653,11 @@ export function TaxPaymentGuide() {
 
         <div className="not-prose space-y-3">
           {[
-            { icon: "📱", title: "用 AlipayHK / 雲閃付交稅", desc: "綁定高回贈信用卡，賺取最高 2% 回贈" },
-            { icon: "💳", title: "揀高回贈信用卡", desc: "Simply Cash 1.5%、EarnMORE 2% 無上限" },
-            { icon: "📅", title: "留意銀行優惠", desc: "每年 1-4 月係交稅季，銀行有額外優惠" },
-            { icon: "🔄", title: "考慮免息分期", desc: "大額稅款可申請免息分期，減輕壓力" },
-            { icon: "🎯", title: "配合迎新", desc: "用新信用卡交稅達成迎新簽賬要求" },
+            { icon: "📝", title: "記得登記！", desc: "各銀行交稅優惠都需要預先登記，唔登記就無回贈" },
+            { icon: "💳", title: "揀最高回贈銀行", desc: "渣打 $2,300 / 滙豐 $1,100 / 恒生 $700 / 中銀 $3,888" },
+            { icon: "📅", title: "留意推廣期限", desc: "各銀行推廣期限唔同，渣打 2/2 截止、滙豐 2/28 截止" },
+            { icon: "🔄", title: "考慮分期 + 早鳥", desc: "渣打分期有額外獎賞，早鳥（12/31前）再加 $100-$300" },
+            { icon: "🎯", title: "配合累積簽賬", desc: "滙豐/恒生需額外累積簽賬才可獲獎賞，記得留意條款" },
           ].map((tip, index) => (
             <div key={index} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-4 flex items-start gap-4">
               <span className="text-2xl">{tip.icon}</span>
