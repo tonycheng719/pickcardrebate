@@ -42,7 +42,8 @@ export async function GET() {
       if (item.custom_tags && item.custom_tags.length > 0) {
         tags[item.article_id] = item.custom_tags;
       }
-      if (item.is_pinned) {
+      // 注意：is_pinned 可以是 true 或 false，都要記錄
+      if (item.is_pinned !== null && item.is_pinned !== undefined) {
         pinned[item.article_id] = item.is_pinned;
       }
     });

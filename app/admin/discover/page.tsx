@@ -96,7 +96,8 @@ export default function AdminDiscoverPage() {
             if (s.custom_tags && s.custom_tags.length > 0) {
               tags[s.article_id] = s.custom_tags;
             }
-            if (s.is_pinned) {
+            // 注意：is_pinned 可以是 true 或 false，都要記錄
+            if (s.is_pinned !== null && s.is_pinned !== undefined) {
               pinned[s.article_id] = s.is_pinned;
             }
           });
@@ -202,21 +203,11 @@ export default function AdminDiscoverPage() {
 
   // Save article settings
   const handleSaveSettings = async () => {
-    console.log('=== handleSaveSettings START ===');
-    alert('handleSaveSettings 開始執行');
-    
-    console.log('editingItem:', editingItem);
-    console.log('newIsPinned:', newIsPinned);
-    console.log('newContentType:', newContentType);
-    
     if (!editingItem) {
-      console.error('editingItem is null');
-      alert('ERROR: editingItem is null');
       toast.error('無法儲存：請重新打開設定對話框');
       return;
     }
     
-    alert('editingItem OK, 準備 setIsSaving');
     setIsSaving(true);
     toast.info('正在儲存設定...');
     
@@ -228,8 +219,6 @@ export default function AdminDiscoverPage() {
         customTags: newTags.length > 0 ? newTags : null,
         isPinned: newIsPinned,
       };
-      console.log('Sending payload:', JSON.stringify(payload));
-      alert('準備發送 API: ' + JSON.stringify(payload));
       
       const res = await fetch('/api/admin/article-settings', {
         method: 'POST',
@@ -237,12 +226,7 @@ export default function AdminDiscoverPage() {
         body: JSON.stringify(payload),
       });
 
-      console.log('Response status:', res.status);
-      alert('API 回應 status: ' + res.status);
-      
       const data = await res.json();
-      console.log('Response data:', data);
-      alert('API 回應 data: ' + JSON.stringify(data));
       
       if (data.sqlRequired) {
         toast.error('請先在 Supabase SQL Editor 執行 sql/article_settings.sql');
@@ -250,7 +234,6 @@ export default function AdminDiscoverPage() {
       }
 
       if (!res.ok) {
-        console.error('API error:', data);
         throw new Error(data.error || 'Failed to save');
       }
 
@@ -287,23 +270,12 @@ export default function AdminDiscoverPage() {
         });
       }
       
-      // Update local state - pinned
-      if (newIsPinned) {
-        setArticlePinned(prev => ({ ...prev, [editingItem.id]: true }));
-      } else {
-        setArticlePinned(prev => {
-          const newPinned = { ...prev };
-          delete newPinned[editingItem.id];
-          return newPinned;
-        });
-      }
+      // Update local state - pinned (注意：false 也要記錄)
+      setArticlePinned(prev => ({ ...prev, [editingItem.id]: newIsPinned }));
 
       toast.success('設定已更新');
-      alert('成功！準備關閉對話框');
       setEditDialogOpen(false);
     } catch (error: any) {
-      console.error('Catch error:', error);
-      alert('ERROR: ' + error.message);
       toast.error('更新失敗：' + error.message);
     } finally {
       setIsSaving(false);
@@ -928,13 +900,7 @@ export default function AdminDiscoverPage() {
             </Button>
             <Button 
               type="button" 
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log('🔴 儲存按鈕被點擊');
-                alert('DEBUG: 按鈕被點擊！');
-                handleSaveSettings();
-              }} 
+              onClick={handleSaveSettings} 
               disabled={isSaving}
             >
               {isSaving ? (
