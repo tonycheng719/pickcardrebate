@@ -1225,6 +1225,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 全方位 2% 現金回贈 (1% 基本 + 1% 加碼)
       // 加碼回贈上限 $1,500/年 (即總簽賬上限 $150,000/年)
       // ❌ 不包括：八達通自動增值、電子錢包充值/繳費、P2P 轉賬
+      // 官方 T&C: https://www.primecredit.com/sta-data/tnc/EM_20250409/tnc.html
       { description: "全方位 2%", matchType: "base", percentage: 2.0, cap: 1500, capType: "reward", excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
     tags: ["全方位2%", "懶人必備", "銀聯1%手續費"],

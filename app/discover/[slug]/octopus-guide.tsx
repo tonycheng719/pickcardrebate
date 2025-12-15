@@ -10,23 +10,23 @@ import {
 } from "lucide-react";
 import { CardPreviewSection } from "@/app/discover/components/card-preview-section";
 
-// FAQ 數據
+// FAQ 數據（2025年更新版）
 export const octopusFaqData = [
   {
     question: "八達通自動增值有回贈嗎？",
-    answer: "有！但只有少數信用卡八達通自動增值有回贈，包括：安信 EarnMORE（2%）、渣打 Simply Cash（1.5%）、WeWa 銀聯卡（0.4%）等。大部分銀行信用卡（HSBC、Citi、恒生、DBS 等）八達通自動增值係無回贈！"
+    answer: "有，但選擇有限！推薦：渣打 Simply Cash（1.5%）、Mox Credit（1%）、恒生 enJoy（0.5%）、恒生 MMPOWER（0.4%）、HSBC EveryMile（0.4%）。⚠️ 注意：安信 EarnMORE 官方 T&C 明確排除八達通自動增值，無法獲得 2% 回贈！"
   },
   {
     question: "八達通自動增值信用卡邊張最好？",
-    answer: "2025年推薦：(1) 安信 EarnMORE 2% 無上限（最高）；(2) 渣打 Simply Cash 1.5% 無上限；(3) WeWa 銀聯卡 0.4% 無上限。如果想賺更高回贈，建議用八達通 App 手動增值！"
+    answer: "2025年推薦：(1) 渣打 Simply Cash 1.5% 無上限；(2) Mox Credit 1% 無上限；(3) 恒生 enJoy 0.5% + yuu積分；(4) 恒生 MMPOWER/HSBC EveryMile 0.4%。⚠️ 安信 EarnMORE 八達通自動增值無回贈！"
   },
   {
     question: "八達通 App 增值信用卡有回贈嗎？",
-    answer: "有！透過八達通 App 增值，部分信用卡當「網上簽賬」有高回贈：恒生 MMPOWER 5%（月上限 $500）、HSBC Red Card 4%（月上限 $10,000）、中銀淘寶卡 4%、安信 EarnMORE 2% 無上限。"
+    answer: "⚠️ 2025年更新：大部分銀行已將八達通 App/O!ePay 增值排除在「網上簽賬」高回贈之外！例如恒生 MMPOWER 的 5% 網上簽賬不包括八達通 App 增值，只有 0.4% 基本回贈。建議使用渣打 Simply Cash（1.5%）或 Mox Credit（1%）。"
   },
   {
     question: "八達通自動增值同手動增值有咩分別？",
-    answer: "自動增值：餘額不足時自動從信用卡增值（$150/$250/$500），方便但大部分銀行無回贈。手動增值：透過八達通 App 主動增值，當「網上簽賬」處理，部分卡有高回贈（最高 5%）。建議兩種方式都設定，日常用自動增值，Chok 回贈用手動增值。"
+    answer: "自動增值：餘額不足時自動從信用卡增值（$150/$250/$500），方便但大部分銀行無回贈。手動增值：透過八達通 App 主動增值，以前可當「網上簽賬」獲高回贈，但現在大部分銀行已排除。回贈差異已不大，建議使用簡單方便的自動增值。"
   },
   {
     question: "八達通自動增值上限係幾多？",
@@ -46,7 +46,7 @@ export const octopusFaqData = [
   },
   {
     question: "邊張信用卡八達通 App 增值回贈最高？",
-    answer: "2025年最高回贈：恒生 MMPOWER 5%（需登記，月上限 $500 簽賬即 $200 回贈）。其次係 HSBC Red Card 4%（月上限 $10,000 簽賬）、中銀淘寶卡 4%。"
+    answer: "⚠️ 2025年更新：恒生 MMPOWER 的 5% 網上簽賬已排除八達通 App 增值！HSBC Red 的 4% 網上簽賬亦可能排除。目前推薦：渣打 Simply Cash（1.5%）、Mox Credit（1%）無上限。八達通 App 增值的高回贈玩法已經過時！"
   },
   {
     question: "八達通增值會唔會有手續費？",
@@ -54,43 +54,62 @@ export const octopusFaqData = [
   }
 ];
 
-// 自動增值回贈比較（更新版）
+// 自動增值回贈比較（2025年更新版）
+// 參考：https://www.mrmiles.hk/octopus-credit-card/
 const autoTopUpCards = [
-  {
-    card: "安信 EarnMORE",
-    id: "earnmore",
-    rate: "2%",
-    cap: "無上限",
-    highlight: "🥇 最高回贈",
-    notes: "全方位 2%，八達通自動增值計入",
-    color: "text-yellow-600",
-  },
   {
     card: "渣打 Simply Cash",
     id: "sc-simply-cash",
     rate: "1.5%",
     cap: "無上限",
-    highlight: "🥈 高回贈",
-    notes: "本地簽賬 1.5%，包括八達通",
-    color: "text-gray-400",
-  },
-  {
-    card: "WeWa 銀聯卡",
-    id: "wewa-unionpay",
-    rate: "0.4%",
-    cap: "無上限",
-    highlight: "有回贈",
-    notes: "基本回贈 0.4%，八達通增值計入",
-    color: "text-green-600",
+    highlight: "🥇 最高回贈",
+    notes: "本地簽賬 1.5%，八達通自動增值計入（需確認官方T&C）",
+    color: "text-yellow-600",
   },
   {
     card: "Mox Credit",
     id: "mox-credit",
     rate: "1%",
     cap: "無上限",
-    highlight: "有回贈",
+    highlight: "🥈 高回贈",
     notes: "基本回贈 1%，八達通增值計入",
+    color: "text-gray-400",
+  },
+  {
+    card: "恒生 enJoy Card",
+    id: "hangseng-enjoy",
+    rate: "0.5%",
+    cap: "無上限",
+    highlight: "有回贈",
+    notes: "1X yuu積分 (0.5%)，八達通自動增值計入",
     color: "text-green-600",
+  },
+  {
+    card: "恒生 MMPOWER",
+    id: "hangseng-mmpower",
+    rate: "0.4%",
+    cap: "無上限",
+    highlight: "有回贈",
+    notes: "基本回贈 0.4%，八達通自動增值計入",
+    color: "text-green-600",
+  },
+  {
+    card: "HSBC EveryMile",
+    id: "hsbc-everymile",
+    rate: "0.4%",
+    cap: "無上限",
+    highlight: "有回贈",
+    notes: "基本回贈 0.4% ($12.5/里)，八達通自動增值計入",
+    color: "text-green-600",
+  },
+  {
+    card: "安信 EarnMORE",
+    id: "earnmore",
+    rate: "0%",
+    cap: "-",
+    highlight: "❌ 無回贈",
+    notes: "官方T&C明確排除八達通自動增值",
+    color: "text-gray-400",
   },
   {
     card: "HSBC Visa Signature",
@@ -98,7 +117,7 @@ const autoTopUpCards = [
     rate: "0%",
     cap: "-",
     highlight: "❌ 無回贈",
-    notes: "八達通自動增值無回贈",
+    notes: "八達通自動增值無回贈（需確認）",
     color: "text-gray-400",
   },
   {
@@ -107,84 +126,68 @@ const autoTopUpCards = [
     rate: "0%",
     cap: "-",
     highlight: "❌ 無回贈",
-    notes: "八達通自動增值無回贈",
-    color: "text-gray-400",
-  },
-  {
-    card: "恒生 MMPOWER",
-    id: "hangseng-mmpower",
-    rate: "0%",
-    cap: "-",
-    highlight: "❌ 無回贈",
-    notes: "自動增值無回贈（App 增值有）",
-    color: "text-gray-400",
-  },
-  {
-    card: "DBS Eminent Card",
-    id: "dbs-eminent",
-    rate: "0%",
-    cap: "-",
-    highlight: "❌ 無回贈",
-    notes: "八達通自動增值無回贈",
+    notes: "八達通自動增值無回贈（需確認）",
     color: "text-gray-400",
   },
 ];
 
-// App 增值回贈比較（更新版）
+// App 增值回贈比較（2025年更新版）
+// ⚠️ 注意：大部分銀行已將八達通 App/O!ePay 增值排除在「網上簽賬」之外
+// 以下回贈率需確認官方最新 T&C
 const appTopUpCards = [
-  {
-    card: "恒生 MMPOWER",
-    id: "hangseng-mmpower",
-    rate: "5%",
-    cap: "$500/月簽賬",
-    highlight: "🥇 最高回贈",
-    notes: "網上簽賬 5%，需登記，月上限 $500 回贈",
-    color: "text-yellow-600",
-  },
-  {
-    card: "HSBC Red Card",
-    id: "hsbc-red",
-    rate: "4%",
-    cap: "$10,000/月",
-    highlight: "🥈 高回贈",
-    notes: "網上簽賬 4%，月上限高",
-    color: "text-gray-400",
-  },
-  {
-    card: "中銀淘寶 Visa 卡",
-    id: "boc-taobao",
-    rate: "4%",
-    cap: "$15,000/月",
-    highlight: "高回贈",
-    notes: "網上簽賬 4%，上限較高",
-    color: "text-green-600",
-  },
-  {
-    card: "安信 EarnMORE",
-    id: "earnmore",
-    rate: "2%",
-    cap: "無上限",
-    highlight: "無上限",
-    notes: "全方位 2%，無上限",
-    color: "text-green-600",
-  },
   {
     card: "渣打 Simply Cash",
     id: "sc-simply-cash",
     rate: "1.5%",
     cap: "無上限",
-    highlight: "無上限",
-    notes: "本地簽賬 1.5%，無上限",
-    color: "text-green-600",
+    highlight: "🥇 推薦",
+    notes: "本地簽賬 1.5%，無上限（需確認是否計入）",
+    color: "text-yellow-600",
   },
   {
     card: "Mox Credit",
     id: "mox-credit",
     rate: "1%",
     cap: "無上限",
-    highlight: "無上限",
+    highlight: "推薦",
     notes: "基本回贈 1%，無上限",
     color: "text-green-600",
+  },
+  {
+    card: "恒生 enJoy Card",
+    id: "hangseng-enjoy",
+    rate: "0.5%",
+    cap: "無上限",
+    highlight: "有回贈",
+    notes: "1X yuu積分 (0.5%)，App 增值計入",
+    color: "text-green-600",
+  },
+  {
+    card: "恒生 MMPOWER",
+    id: "hangseng-mmpower",
+    rate: "0.4%",
+    cap: "無上限",
+    highlight: "基本回贈",
+    notes: "⚠️ App 增值被排除在「網上簽賬 5%」之外，只有 0.4%",
+    color: "text-gray-400",
+  },
+  {
+    card: "HSBC Red Card",
+    id: "hsbc-red",
+    rate: "0.4%",
+    cap: "-",
+    highlight: "⚠️ 待確認",
+    notes: "⚠️ 八達通 App 增值可能被排除在「網上簽賬 4%」之外（需確認）",
+    color: "text-gray-400",
+  },
+  {
+    card: "安信 EarnMORE",
+    id: "earnmore",
+    rate: "0%",
+    cap: "-",
+    highlight: "❌ 無回贈",
+    notes: "官方T&C排除電子錢包/八達通增值",
+    color: "text-gray-400",
   },
 ];
 
@@ -212,31 +215,32 @@ const oepayStrategies = [
   },
 ];
 
-// 回贈計算例子
+// 回贈計算例子（2025年更新版）
+// ⚠️ 八達通 App 增值高回贈玩法已過時，大部分銀行已排除
 const chokExamples = [
   {
-    card: "HSBC Red Card",
-    rate: "4%",
-    monthly: "$3,000",
-    rebate: "$120/月",
-    yearly: "$1,440/年",
-    color: "from-red-500 to-red-600",
-  },
-  {
-    card: "恒生 MMPOWER",
-    rate: "5%",
-    monthly: "$4,000",
-    rebate: "$200/月",
-    yearly: "$2,400/年",
+    card: "渣打 Simply Cash",
+    rate: "1.5%",
+    monthly: "$5,000",
+    rebate: "$75/月",
+    yearly: "$900/年",
     color: "from-blue-500 to-blue-600",
   },
   {
-    card: "安信 EarnMORE",
-    rate: "2%",
+    card: "Mox Credit",
+    rate: "1%",
     monthly: "$5,000",
-    rebate: "$100/月",
-    yearly: "$1,200/年",
-    color: "from-indigo-500 to-indigo-600",
+    rebate: "$50/月",
+    yearly: "$600/年",
+    color: "from-purple-500 to-purple-600",
+  },
+  {
+    card: "恒生 enJoy",
+    rate: "0.5%",
+    monthly: "$5,000",
+    rebate: "$25/月",
+    yearly: "$300/年",
+    color: "from-red-500 to-red-600",
   },
 ];
 
@@ -258,15 +262,15 @@ export function OctopusGuide() {
         <div className="grid md:grid-cols-3 gap-4 text-sm">
           <div className="bg-white/20 rounded-lg p-3">
             <p className="font-bold">自動增值最高</p>
-            <p>安信 EarnMORE <span className="text-yellow-200">2%</span></p>
+            <p>渣打 Simply Cash <span className="text-yellow-200">1.5%</span></p>
           </div>
           <div className="bg-white/20 rounded-lg p-3">
-            <p className="font-bold">App 增值最高</p>
-            <p>恒生 MMPOWER <span className="text-yellow-200">5%</span></p>
+            <p className="font-bold">⚠️ App 增值注意</p>
+            <p>大部分銀行已<span className="text-yellow-200">排除高回贈</span></p>
           </div>
           <div className="bg-white/20 rounded-lg p-3">
             <p className="font-bold">Chok 回贈潛力</p>
-            <p>每年可賺 <span className="text-yellow-200">$1,440+</span></p>
+            <p>每年可賺 <span className="text-yellow-200">$600-$900</span></p>
           </div>
         </div>
       </div>
@@ -313,8 +317,8 @@ export function OctopusGuide() {
               <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                 <li>• 餘額不足時自動從信用卡增值</li>
                 <li>• 每次增值 $150/$250/$500</li>
-                <li>• 方便但<strong className="text-red-500">大部分銀行無回贈</strong></li>
-                <li>• 最高回贈：安信 EarnMORE 2%</li>
+                <li>• 簡單方便，部分卡有回贈</li>
+                <li>• 最高回贈：<strong className="text-green-500">渣打 Simply Cash 1.5%</strong></li>
               </ul>
             </div>
             <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4">
@@ -324,20 +328,20 @@ export function OctopusGuide() {
               </div>
               <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                 <li>• 透過八達通 App 主動增值</li>
-                <li>• 當「<strong>網上簽賬</strong>」處理</li>
-                <li>• 部分信用卡有<strong className="text-green-500">高達 5% 回贈</strong></li>
-                <li>• 最高回贈：恒生 MMPOWER 5%</li>
+                <li>• <strong className="text-amber-500">⚠️ 大部分銀行已排除高回贈</strong></li>
+                <li>• 恒生 MMPOWER 5% 網上簽賬<strong className="text-red-500">不包括</strong>八達通 App</li>
+                <li>• 回贈與自動增值相近（約 1-1.5%）</li>
               </ul>
             </div>
           </div>
         </div>
 
-        <div className="not-prose bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4">
+        <div className="not-prose bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
           <div className="flex items-start gap-3">
-            <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-            <p className="text-green-700 dark:text-green-300 text-sm">
-              <strong>重點：</strong>想賺最高回贈，建議同時設定<strong>自動增值（用 EarnMORE）</strong>
-              同<strong>手動增值（用 MMPOWER/Red Card）</strong>，雙軌並行！
+            <AlertTriangle className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
+            <p className="text-amber-700 dark:text-amber-300 text-sm">
+              <strong>⚠️ 2025年重要更新：</strong>大部分銀行已將八達通 App 增值排除在「網上簽賬」高回贈之外！
+              建議使用<strong>渣打 Simply Cash（1.5%）</strong>或<strong>Mox Credit（1%）</strong>做自動增值，簡單直接。
             </p>
           </div>
         </div>
@@ -448,12 +452,12 @@ export function OctopusGuide() {
           </div>
         </div>
 
-        <div className="not-prose bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
+        <div className="not-prose bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
           <div className="flex items-start gap-3">
-            <Info className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
-            <p className="text-blue-700 dark:text-blue-300 text-sm">
-              <strong>提示：</strong>八達通 App 增值最高可賺 <strong>5% 回贈</strong>！
-              比自動增值高 2.5 倍，建議每月用埋 App 增值上限。
+            <AlertTriangle className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
+            <p className="text-amber-700 dark:text-amber-300 text-sm">
+              <strong>⚠️ 重要提醒：</strong>大部分銀行已將八達通 App 增值排除在「網上簽賬」高回贈之外！
+              例如恒生 MMPOWER 5% 網上簽賬<strong>不包括</strong>八達通 App 增值。建議直接用自動增值。
             </p>
           </div>
         </div>
@@ -464,10 +468,10 @@ export function OctopusGuide() {
         title="📌 八達通增值推薦信用卡"
         subtitle="點擊查看詳細回贈條款及申請連結"
         cards={[
-          { id: "earnmore", highlight: "自動增值 2% 最高" },
-          { id: "hangseng-mmpower", highlight: "App 增值 5%" },
-          { id: "hsbc-red", highlight: "App 增值 4%" },
-          { id: "sc-simply-cash", highlight: "1.5% 無上限" },
+          { id: "sc-simply-cash", highlight: "自動增值 1.5% 最高" },
+          { id: "mox-credit", highlight: "自動增值 1% 無上限" },
+          { id: "hangseng-enjoy", highlight: "0.5% + yuu積分" },
+          { id: "hangseng-mmpower", highlight: "自動增值 0.4%" },
         ]}
       />
 
@@ -482,42 +486,42 @@ export function OctopusGuide() {
           <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-4 border border-green-200 dark:border-green-800">
             <h4 className="font-bold text-green-800 dark:text-green-200 mb-3 flex items-center gap-2">
               <RefreshCw className="h-5 w-5" />
-              自動增值 (AAVS)
+              自動增值 (AAVS) ✅ 推薦
             </h4>
             <ul className="text-green-700 dark:text-green-300 text-sm space-y-1">
               <li>✅ 方便，唔使手動操作</li>
               <li>✅ 餘額不足時自動增值</li>
               <li>✅ 部分卡計入迎新簽賬</li>
-              <li>❌ <strong>大部分銀行無回贈</strong></li>
-              <li>❌ 最高只有 2%（EarnMORE）</li>
+              <li>✅ 簡單直接，無需研究條款</li>
+              <li>✅ 最高 1.5%（Simply Cash）</li>
             </ul>
             <p className="mt-3 text-xs text-green-600 dark:text-green-400 font-medium">
-              👉 推薦卡：安信 EarnMORE、渣打 Simply Cash
+              👉 推薦卡：渣打 Simply Cash、Mox Credit
             </p>
           </div>
-          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
-            <h4 className="font-bold text-blue-800 dark:text-blue-200 mb-3 flex items-center gap-2">
+          <div className="bg-amber-50 dark:bg-amber-900/20 rounded-xl p-4 border border-amber-200 dark:border-amber-800">
+            <h4 className="font-bold text-amber-800 dark:text-amber-200 mb-3 flex items-center gap-2">
               <Smartphone className="h-5 w-5" />
-              手動增值（八達通 App）
+              手動增值（八達通 App）⚠️
             </h4>
-            <ul className="text-blue-700 dark:text-blue-300 text-sm space-y-1">
-              <li>✅ 當「網上簽賬」有<strong>高回贈</strong></li>
-              <li>✅ 最高可達 5% 回贈</li>
+            <ul className="text-amber-700 dark:text-amber-300 text-sm space-y-1">
+              <li>⚠️ 大部分銀行已排除「網上簽賬」高回贈</li>
+              <li>❌ MMPOWER 5% 不包括八達通 App</li>
+              <li>❌ HSBC Red 4% 可能不包括（需確認）</li>
               <li>✅ 可以 Chok 回贈轉賬到銀行</li>
-              <li>❌ 需要手動操作</li>
-              <li>❌ 部分銀行有月上限</li>
+              <li>⚠️ 回贈與自動增值相近</li>
             </ul>
-            <p className="mt-3 text-xs text-blue-600 dark:text-blue-400 font-medium">
-              👉 推薦卡：恒生 MMPOWER、HSBC Red Card
+            <p className="mt-3 text-xs text-amber-600 dark:text-amber-400 font-medium">
+              👉 高回贈玩法已過時，建議用自動增值
             </p>
           </div>
         </div>
 
         <div className="not-prose bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl p-4">
-          <h4 className="font-bold text-purple-800 dark:text-purple-200 mb-2">💡 最佳策略：雙軌並行</h4>
+          <h4 className="font-bold text-purple-800 dark:text-purple-200 mb-2">💡 2025年最佳策略：簡單直接</h4>
           <p className="text-purple-700 dark:text-purple-300 text-sm">
-            1. 日常消費用<strong>自動增值（EarnMORE 2%）</strong>- 方便無腦<br/>
-            2. 每月用埋<strong>八達通 App 增值（MMPOWER 5%）</strong>- Chok 回贈
+            ⚠️ 八達通 App 增值高回贈玩法已過時（大部分銀行已排除）<br/>
+            建議直接用<strong>渣打 Simply Cash（1.5%）</strong>或<strong>Mox Credit（1%）</strong>做自動增值，簡單方便！
           </p>
         </div>
       </section>
@@ -577,10 +581,10 @@ export function OctopusGuide() {
         <div className="not-prose space-y-3 my-6">
           {[
             { step: "1", title: "開設八達通銀包", desc: "下載八達通 App，完成身份驗證開設銀包" },
-            { step: "2", title: "綁定高回贈信用卡", desc: "推薦：恒生 MMPOWER（5%）、HSBC Red Card（4%）" },
+            { step: "2", title: "綁定信用卡", desc: "推薦：渣打 Simply Cash（1.5%）、Mox Credit（1%）" },
             { step: "3", title: "增值八達通銀包", desc: "用信用卡增值銀包，每月增值 $3,000-$5,000" },
             { step: "4", title: "轉賬到銀行", desc: "將銀包餘額轉賬到銀行戶口（免手續費）" },
-            { step: "5", title: "賺取回贈", desc: "零成本賺取信用卡回贈！每年可賺 $1,000+" },
+            { step: "5", title: "賺取回贈", desc: "零成本賺取信用卡回贈！每年可賺 $600-$900" },
           ].map((item, index) => (
             <div key={index} className="flex items-start gap-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl p-4">
               <span className="flex-shrink-0 w-8 h-8 rounded-full bg-yellow-500 text-white flex items-center justify-center font-bold">{item.step}</span>
@@ -617,11 +621,11 @@ export function OctopusGuide() {
 
         <div className="not-prose space-y-4 my-6">
           {[
-            { rank: "🥇", card: "安信 EarnMORE", id: "earnmore", rate: "2%", type: "自動增值最佳", reason: "自動增值最高回贈，全方位 2% 無上限，懶人必備" },
-            { rank: "🥈", card: "恒生 MMPOWER", id: "hangseng-mmpower", rate: "5%", type: "App 增值最佳", reason: "八達通 App 增值 5%（需登記），月上限 $500 回贈" },
-            { rank: "🥉", card: "HSBC Red Card", id: "hsbc-red", rate: "4%", type: "App 增值高上限", reason: "八達通 App 增值 4%，月上限 $10,000，上限較高" },
-            { rank: "4️⃣", card: "渣打 Simply Cash", id: "sc-simply-cash", rate: "1.5%", type: "兩者皆可", reason: "自動/手動增值都有 1.5%，無上限，申請門檻低" },
-            { rank: "5️⃣", card: "中銀淘寶 Visa 卡", id: "boc-taobao", rate: "4%", type: "App 增值", reason: "八達通 App 增值當網購 4%，上限 $15,000/月" },
+            { rank: "🥇", card: "渣打 Simply Cash", id: "sc-simply-cash", rate: "1.5%", type: "最高回贈", reason: "自動/手動增值都有 1.5%，無上限，申請門檻低" },
+            { rank: "🥈", card: "Mox Credit", id: "mox-credit", rate: "1%", type: "無門檻", reason: "基本回贈 1%，無上限，無年薪要求，虛擬銀行" },
+            { rank: "🥉", card: "恒生 enJoy Card", id: "hangseng-enjoy", rate: "0.5%", type: "yuu積分", reason: "0.5% yuu積分，可於惠康/萬寧等使用" },
+            { rank: "4️⃣", card: "恒生 MMPOWER", id: "hangseng-mmpower", rate: "0.4%", type: "基本回贈", reason: "自動增值 0.4%，⚠️ App 增值不計 5% 網上簽賬" },
+            { rank: "5️⃣", card: "HSBC EveryMile", id: "hsbc-everymile", rate: "0.4%", type: "儲里數", reason: "自動增值 0.4% ($12.5/里)，適合儲里數用戶" },
           ].map((card, index) => (
             <div key={index} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-4 flex items-center gap-4">
               <span className="text-2xl">{card.rank}</span>
@@ -672,11 +676,11 @@ export function OctopusGuide() {
 
         <div className="not-prose space-y-3">
           {[
-            { icon: "💳", title: "揀啱信用卡", desc: "自動增值用 EarnMORE 2%，App 增值用 MMPOWER 5% / Red Card 4%" },
-            { icon: "📊", title: "留意上限", desc: "MMPOWER App 增值月上限 $500 回贈，Red Card 上限 $10,000 簽賬" },
-            { icon: "🔄", title: "善用 Chok 回贈", desc: "每月用埋八達通銀包增值上限，轉賬到銀行，零成本賺回贈" },
+            { icon: "💳", title: "揀啱信用卡", desc: "推薦渣打 Simply Cash（1.5%）或 Mox Credit（1%），無上限無門檻" },
+            { icon: "⚠️", title: "留意條款更新", desc: "大部分銀行已排除八達通 App 增值的高回贈，使用前請確認最新 T&C" },
+            { icon: "🔄", title: "自動增值較簡單", desc: "2025年起 App 增值高回贈玩法已過時，建議用簡單的自動增值" },
             { icon: "⏰", title: "更新到期卡", desc: "信用卡到期後記住即刻更新自動增值，避免失效" },
-            { icon: "📱", title: "App 增值 > 自動增值", desc: "App 增值回贈高過自動增值，建議每月主動增值" },
+            { icon: "🏪", title: "配合商戶優惠", desc: "恒生 enJoy 八達通增值可儲 yuu 積分，配合惠康/萬寧消費" },
             { icon: "🎁", title: "留意迎新優惠", desc: "部分信用卡將八達通增值計入迎新簽賬，可以賺迎新" },
           ].map((tip, index) => (
             <div key={index} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-4 flex items-start gap-4">
