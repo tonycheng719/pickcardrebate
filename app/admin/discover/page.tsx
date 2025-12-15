@@ -202,10 +202,16 @@ export default function AdminDiscoverPage() {
 
   // Save article settings
   const handleSaveSettings = async () => {
-    if (!editingItem) return;
+    console.log('handleSaveSettings called, editingItem:', editingItem);
+    if (!editingItem) {
+      console.error('editingItem is null');
+      toast.error('無法儲存：請重新打開設定對話框');
+      return;
+    }
     
     setIsSaving(true);
     try {
+      console.log('Saving settings:', { articleId: editingItem.id, contentType: newContentType, tags: newTags, isPinned: newIsPinned });
       const res = await fetch('/api/admin/article-settings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -882,7 +888,7 @@ export default function AdminDiscoverPage() {
             >
               取消
             </Button>
-            <Button onClick={handleSaveSettings} disabled={isSaving}>
+            <Button type="button" onClick={handleSaveSettings} disabled={isSaving}>
               {isSaving ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
