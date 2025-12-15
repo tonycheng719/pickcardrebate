@@ -120,47 +120,94 @@ export default function AdminDiscoverPage() {
     return articleSettings[guide.id] || guide.imageUrl;
   };
 
-  // Filter guides
-  const filteredGuides = useMemo(() => {
-    return GUIDES.filter(guide => 
-      guide.title.toLowerCase().includes(keyword.toLowerCase()) ||
-      guide.description.toLowerCase().includes(keyword.toLowerCase()) ||
-      guide.tags.some(tag => tag.toLowerCase().includes(keyword.toLowerCase()))
-    );
-  }, [keyword]);
+  // 獲取項目的有效分類（自訂分類 > 原始類型）
+  const getEffectiveCategory = (id: string, originalType: 'guide' | 'promo'): 'guide' | 'promo' => {
+    const customCategory = articleCategories[id];
+    if (customCategory === 'guide' || customCategory === 'promo') {
+      return customCategory;
+    }
+    return originalType;
+  };
 
-  // Sort guides by view count
+  // 攻略 Tab：原始攻略（未被改為優惠）+ 被改為攻略的優惠
   const sortedGuides = useMemo(() => {
-    return [...filteredGuides].sort((a, b) => {
+    // 原始攻略，排除被設為「優惠」的
+    const guidesAsGuide = GUIDES.filter(guide => 
+      getEffectiveCategory(guide.id, 'guide') === 'guide' &&
+      (guide.title.toLowerCase().includes(keyword.toLowerCase()) ||
+       guide.description.toLowerCase().includes(keyword.toLowerCase()) ||
+       guide.tags.some(tag => tag.toLowerCase().includes(keyword.toLowerCase())))
+    );
+    
+    // 原始優惠，被設為「攻略」的
+    const promosAsGuide = promos.filter(promo =>
+      getEffectiveCategory(promo.id, 'promo') === 'guide' &&
+      (promo.title.toLowerCase().includes(keyword.toLowerCase()) ||
+       promo.merchant.toLowerCase().includes(keyword.toLowerCase()))
+    ).map(promo => ({
+      ...promo,
+      // 轉換為 Guide 格式
+      tags: [promo.merchant],
+      isNew: false,
+      _originalType: 'promo' as const
+    }));
+    
+    // 合併並按瀏覽量排序
+    const all = [...guidesAsGuide.map(g => ({ ...g, _originalType: 'guide' as const })), ...promosAsGuide];
+    return all.sort((a, b) => {
       const viewA = viewStats[a.id] || 0;
       const viewB = viewStats[b.id] || 0;
       return viewB - viewA;
     });
-  }, [filteredGuides, viewStats]);
+  }, [keyword, promos, articleCategories, viewStats]);
 
-  // Filter and sort promos (pinned first, then by updatedAt)
+  // 優惠 Tab：原始優惠（未被改為攻略）+ 被改為優惠的攻略
   const filteredPromos = useMemo(() => {
-    return promos
-      .filter(promo =>
-        promo.title.toLowerCase().includes(keyword.toLowerCase()) ||
-        promo.merchant.toLowerCase().includes(keyword.toLowerCase())
-      )
-      .sort((a, b) => {
-        // 1. Pinned first
-        if (a.isPinned && !b.isPinned) return -1;
-        if (!a.isPinned && b.isPinned) return 1;
-        
-        // 2. Sort by sortOrder (higher first)
-        const aSortOrder = a.sortOrder || 0;
-        const bSortOrder = b.sortOrder || 0;
-        if (aSortOrder !== bSortOrder) return bSortOrder - aSortOrder;
-        
-        // 3. Sort by updatedAt (newest first)
-        const aUpdated = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
-        const bUpdated = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
-        return bUpdated - aUpdated;
-      });
-  }, [keyword, promos]);
+    // 原始優惠，排除被設為「攻略」的
+    const promosAsPromo = promos.filter(promo =>
+      getEffectiveCategory(promo.id, 'promo') === 'promo' &&
+      (promo.title.toLowerCase().includes(keyword.toLowerCase()) ||
+       promo.merchant.toLowerCase().includes(keyword.toLowerCase()))
+    ).map(p => ({ ...p, _originalType: 'promo' as const }));
+    
+    // 原始攻略，被設為「優惠」的
+    const guidesAsPromo = GUIDES.filter(guide =>
+      getEffectiveCategory(guide.id, 'guide') === 'promo' &&
+      (guide.title.toLowerCase().includes(keyword.toLowerCase()) ||
+       guide.description.toLowerCase().includes(keyword.toLowerCase()) ||
+       guide.tags.some(tag => tag.toLowerCase().includes(keyword.toLowerCase())))
+    ).map(guide => ({
+      id: guide.id,
+      title: guide.title,
+      description: guide.description,
+      merchant: guide.tags[0] || '攻略',
+      imageUrl: guide.imageUrl,
+      expiryDate: '長期有效',
+      isPinned: articlePinned[guide.id] || false,
+      updatedAt: guide.updatedAt,
+      _originalType: 'guide' as const
+    }));
+    
+    // 合併並排序
+    const all = [...promosAsPromo, ...guidesAsPromo];
+    return all.sort((a, b) => {
+      // 1. Pinned first
+      const aIsPinned = articlePinned[a.id] ?? ('isPinned' in a && a.isPinned);
+      const bIsPinned = articlePinned[b.id] ?? ('isPinned' in b && b.isPinned);
+      if (aIsPinned && !bIsPinned) return -1;
+      if (!aIsPinned && bIsPinned) return 1;
+      
+      // 2. Sort by sortOrder (higher first)
+      const aSortOrder = 'sortOrder' in a ? (a.sortOrder || 0) : 0;
+      const bSortOrder = 'sortOrder' in b ? (b.sortOrder || 0) : 0;
+      if (aSortOrder !== bSortOrder) return bSortOrder - aSortOrder;
+      
+      // 3. Sort by updatedAt (newest first)
+      const aUpdated = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+      const bUpdated = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+      return bUpdated - aUpdated;
+    });
+  }, [keyword, promos, articleCategories, articlePinned]);
 
   const totalGuideViews = Object.values(viewStats).reduce((a, b) => a + b, 0);
 
@@ -368,7 +415,7 @@ export default function AdminDiscoverPage() {
               <BookOpen className="h-6 w-6 text-blue-600 dark:text-blue-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{GUIDES.length}</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{sortedGuides.length}</p>
               <p className="text-sm text-gray-500">攻略文章</p>
             </div>
           </CardContent>
@@ -379,7 +426,7 @@ export default function AdminDiscoverPage() {
               <Gift className="h-6 w-6 text-purple-600 dark:text-purple-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{promos.length}</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{filteredPromos.length}</p>
               <p className="text-sm text-gray-500">優惠活動</p>
             </div>
           </CardContent>
@@ -414,11 +461,11 @@ export default function AdminDiscoverPage() {
           <TabsList>
             <TabsTrigger value="guides" className="gap-2">
               <BookOpen className="h-4 w-4" />
-              攻略文章 ({GUIDES.length})
+              攻略文章 ({sortedGuides.length})
             </TabsTrigger>
             <TabsTrigger value="promos" className="gap-2">
               <Gift className="h-4 w-4" />
-              優惠活動 ({promos.length})
+              優惠活動 ({filteredPromos.length})
             </TabsTrigger>
           </TabsList>
           
@@ -453,14 +500,15 @@ export default function AdminDiscoverPage() {
                 </tr>
               </thead>
               <tbody className="divide-y dark:divide-gray-700">
-                {sortedGuides.map((guide, index) => {
-                  const views = viewStats[guide.id] || 0;
+                {sortedGuides.map((item, index) => {
+                  const views = viewStats[item.id] || 0;
                   const isTop3 = index < 3 && views > 0;
-                  const hasCustomCover = !!articleSettings[guide.id];
-                  const coverImage = getCoverImage(guide);
+                  const hasCustomCover = !!articleSettings[item.id];
+                  const coverImage = articleSettings[item.id] || item.imageUrl;
+                  const isFromPromo = item._originalType === 'promo';
                   
                   return (
-                    <tr key={guide.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                    <tr key={item.id} className={`hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors ${isFromPromo ? 'bg-purple-50/30 dark:bg-purple-900/10' : ''}`}>
                       <td className="px-6 py-4">
                         <div className="relative group">
                           {coverImage ? (
@@ -476,7 +524,15 @@ export default function AdminDiscoverPage() {
                             <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-800" title="已自訂封面" />
                           )}
                           <button
-                            onClick={() => handleEditGuide(guide)}
+                            onClick={() => {
+                              setEditingItem({ id: item.id, title: item.title, type: 'guide', imageUrl: item.imageUrl });
+                              setNewCoverUrl(articleSettings[item.id] || item.imageUrl || '');
+                              setNewContentType(articleCategories[item.id] as "guide" | "promo" || "");
+                              setNewTags(articleTags[item.id] || []);
+                              setNewIsPinned(articlePinned[item.id] || false);
+                              setTagInput("");
+                              setEditDialogOpen(true);
+                            }}
                             className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded"
                           >
                             <Pencil className="h-4 w-4 text-white" />
@@ -484,17 +540,17 @@ export default function AdminDiscoverPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <Link href={`/discover/${guide.id}`} target="_blank" className="block group">
+                        <Link href={`/discover/${item.id}`} target="_blank" className="block group">
                           <p className="font-medium text-gray-900 dark:text-white line-clamp-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                            {guide.title}
+                            {item.title}
                             <ExternalLink className="inline-block w-3 h-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
                           </p>
                         </Link>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">{guide.description}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">{item.description}</p>
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex gap-1 flex-wrap">
-                          {guide.tags.slice(0, 3).map(tag => (
+                          {item.tags.slice(0, 3).map(tag => (
                             <span key={tag} className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded-full text-xs text-gray-600 dark:text-gray-300">
                               {tag}
                             </span>
@@ -511,13 +567,18 @@ export default function AdminDiscoverPage() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-1 flex-wrap">
-                          {articlePinned[guide.id] && (
+                          {isFromPromo && (
+                            <span className="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-xs font-medium">
+                              原：優惠
+                            </span>
+                          )}
+                          {articlePinned[item.id] && (
                             <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs font-medium flex items-center gap-0.5">
                               <Pin className="h-3 w-3" />
                               置頂
                             </span>
                           )}
-                          {guide.isNew && (
+                          {item.isNew && (
                             <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium">
                               NEW
                             </span>
@@ -527,21 +588,12 @@ export default function AdminDiscoverPage() {
                               自訂封面
                             </span>
                           )}
-                          {articleCategories[guide.id] && (
-                            <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                              articleCategories[guide.id] === 'promo' 
-                                ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
-                                : 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300'
-                            }`}>
-                              {articleCategories[guide.id] === 'promo' ? '優惠' : '攻略'}
-                            </span>
-                          )}
-                          {articleTags[guide.id] && (
+                          {articleTags[item.id] && (
                             <span className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full text-xs font-medium">
-                              +{articleTags[guide.id].length} 標籤
+                              +{articleTags[item.id].length} 標籤
                             </span>
                           )}
-                          {!articlePinned[guide.id] && !guide.isNew && !hasCustomCover && !articleCategories[guide.id] && !articleTags[guide.id] && (
+                          {!isFromPromo && !articlePinned[item.id] && !item.isNew && !hasCustomCover && !articleTags[item.id] && (
                             <span className="text-gray-400 text-xs">-</span>
                           )}
                         </div>
@@ -552,12 +604,20 @@ export default function AdminDiscoverPage() {
                             variant="ghost" 
                             size="sm" 
                             className="gap-1"
-                            onClick={() => handleEditGuide(guide)}
+                            onClick={() => {
+                              setEditingItem({ id: item.id, title: item.title, type: 'guide', imageUrl: item.imageUrl });
+                              setNewCoverUrl(articleSettings[item.id] || item.imageUrl || '');
+                              setNewContentType(articleCategories[item.id] as "guide" | "promo" || "");
+                              setNewTags(articleTags[item.id] || []);
+                              setNewIsPinned(articlePinned[item.id] || false);
+                              setTagInput("");
+                              setEditDialogOpen(true);
+                            }}
                           >
                             <Settings className="h-3 w-3" />
                             設定
                           </Button>
-                          <Link href={`/discover/${guide.id}`} target="_blank">
+                          <Link href={`/discover/${item.id}`} target="_blank">
                             <Button variant="ghost" size="sm" className="gap-1">
                               <ExternalLink className="h-3 w-3" />
                               查看
@@ -595,85 +655,94 @@ export default function AdminDiscoverPage() {
                 </tr>
               </thead>
               <tbody className="divide-y dark:divide-gray-700">
-                {filteredPromos.map((promo, index) => (
-                  <tr key={promo.id} className={`hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors ${promo.isPinned ? 'bg-amber-50/50 dark:bg-amber-900/10' : ''}`}>
-                    <td className="px-4 py-4 text-gray-400 text-xs">
-                      {index + 1}
-                    </td>
-                    <td className="px-4 py-4">
-                      {promo.imageUrl ? (
-                        <div className="w-12 h-8 rounded overflow-hidden bg-gray-100">
-                          <img src={promo.imageUrl} alt="" className="w-full h-full object-cover" />
-                        </div>
-                      ) : (
-                        <div className="w-12 h-8 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-400">
-                          <ImageIcon className="h-4 w-4" />
-                        </div>
-                      )}
-                    </td>
-                    <td className="px-4 py-4">
-                      <Link href={`/discover/${promo.id}`} target="_blank" className="block group">
-                        <p className="font-medium text-gray-900 dark:text-white line-clamp-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                          {promo.title}
-                          <ExternalLink className="inline-block w-3 h-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </p>
-                      </Link>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">{promo.description}</p>
-                    </td>
-                    <td className="px-4 py-4 text-gray-600 dark:text-gray-300 text-sm">{promo.merchant}</td>
-                    <td className="px-4 py-4 text-gray-500 dark:text-gray-400 text-sm">
-                      {promo.updatedAt || '-'}
-                    </td>
-                    <td className="px-4 py-4 text-gray-500 dark:text-gray-300 text-sm">
-                      <div className="flex items-center gap-1">
-                        <CalendarIcon className="h-3 w-3" />
-                        {promo.expiryDate}
-                      </div>
-                    </td>
-                    <td className="px-4 py-4">
-                      <div className="flex items-center gap-1 flex-wrap">
-                        {(articlePinned[promo.id] ?? promo.isPinned) && (
-                          <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs font-medium flex items-center gap-0.5">
-                            <Pin className="h-3 w-3" />
-                            置頂
-                          </span>
+                {filteredPromos.map((item, index) => {
+                  const isFromGuide = item._originalType === 'guide';
+                  const isPinned = articlePinned[item.id] ?? ('isPinned' in item && item.isPinned);
+                  
+                  return (
+                    <tr key={item.id} className={`hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors ${isPinned ? 'bg-amber-50/50 dark:bg-amber-900/10' : ''} ${isFromGuide ? 'bg-emerald-50/30 dark:bg-emerald-900/10' : ''}`}>
+                      <td className="px-4 py-4 text-gray-400 text-xs">
+                        {index + 1}
+                      </td>
+                      <td className="px-4 py-4">
+                        {item.imageUrl ? (
+                          <div className="w-12 h-8 rounded overflow-hidden bg-gray-100">
+                            <img src={item.imageUrl} alt="" className="w-full h-full object-cover" />
+                          </div>
+                        ) : (
+                          <div className="w-12 h-8 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-400">
+                            <ImageIcon className="h-4 w-4" />
+                          </div>
                         )}
-                        {articleCategories[promo.id] && (
-                          <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                            articleCategories[promo.id] === 'guide' 
-                              ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300'
-                              : 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
-                          }`}>
-                            {articleCategories[promo.id] === 'guide' ? '攻略' : '優惠'}
-                          </span>
-                        )}
-                        {articleTags[promo.id] && (
-                          <span className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full text-xs font-medium">
-                            +{articleTags[promo.id].length} 標籤
-                          </span>
-                        )}
-                      </div>
-                    </td>
-                    <td className="px-4 py-4">
-                      <div className="flex items-center gap-1">
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          className="gap-1"
-                          onClick={() => handleEditPromo(promo)}
-                        >
-                          <Settings className="h-3 w-3" />
-                          設定
-                        </Button>
-                        <Link href={`/discover/${promo.id}`} target="_blank">
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <ExternalLink className="h-3 w-3" />
-                          </Button>
+                      </td>
+                      <td className="px-4 py-4">
+                        <Link href={`/discover/${item.id}`} target="_blank" className="block group">
+                          <p className="font-medium text-gray-900 dark:text-white line-clamp-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                            {item.title}
+                            <ExternalLink className="inline-block w-3 h-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </p>
                         </Link>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                        <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">{item.description}</p>
+                      </td>
+                      <td className="px-4 py-4 text-gray-600 dark:text-gray-300 text-sm">{item.merchant}</td>
+                      <td className="px-4 py-4 text-gray-500 dark:text-gray-400 text-sm">
+                        {item.updatedAt || '-'}
+                      </td>
+                      <td className="px-4 py-4 text-gray-500 dark:text-gray-300 text-sm">
+                        <div className="flex items-center gap-1">
+                          <CalendarIcon className="h-3 w-3" />
+                          {item.expiryDate}
+                        </div>
+                      </td>
+                      <td className="px-4 py-4">
+                        <div className="flex items-center gap-1 flex-wrap">
+                          {isFromGuide && (
+                            <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded-full text-xs font-medium">
+                              原：攻略
+                            </span>
+                          )}
+                          {isPinned && (
+                            <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs font-medium flex items-center gap-0.5">
+                              <Pin className="h-3 w-3" />
+                              置頂
+                            </span>
+                          )}
+                          {articleTags[item.id] && (
+                            <span className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full text-xs font-medium">
+                              +{articleTags[item.id].length} 標籤
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="px-4 py-4">
+                        <div className="flex items-center gap-1">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="gap-1"
+                            onClick={() => {
+                              setEditingItem({ id: item.id, title: item.title, type: 'promo', imageUrl: item.imageUrl });
+                              setNewCoverUrl(articleSettings[item.id] || item.imageUrl || '');
+                              setNewContentType(articleCategories[item.id] as "guide" | "promo" || "");
+                              setNewTags(articleTags[item.id] || []);
+                              setNewIsPinned(articlePinned[item.id] ?? isPinned ?? false);
+                              setTagInput("");
+                              setEditDialogOpen(true);
+                            }}
+                          >
+                            <Settings className="h-3 w-3" />
+                            設定
+                          </Button>
+                          <Link href={`/discover/${item.id}`} target="_blank">
+                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                              <ExternalLink className="h-3 w-3" />
+                            </Button>
+                          </Link>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
             
