@@ -202,7 +202,11 @@ export default function AdminDiscoverPage() {
 
   // Save article settings
   const handleSaveSettings = async () => {
-    console.log('handleSaveSettings called, editingItem:', editingItem);
+    console.log('=== handleSaveSettings START ===');
+    console.log('editingItem:', editingItem);
+    console.log('newIsPinned:', newIsPinned);
+    console.log('newContentType:', newContentType);
+    
     if (!editingItem) {
       console.error('editingItem is null');
       toast.error('無法儲存：請重新打開設定對話框');
@@ -210,21 +214,27 @@ export default function AdminDiscoverPage() {
     }
     
     setIsSaving(true);
+    toast.info('正在儲存設定...');
+    
     try {
-      console.log('Saving settings:', { articleId: editingItem.id, contentType: newContentType, tags: newTags, isPinned: newIsPinned });
+      const payload = {
+        articleId: editingItem.id,
+        coverImageUrl: newCoverUrl || null,
+        contentType: newContentType || null,
+        customTags: newTags.length > 0 ? newTags : null,
+        isPinned: newIsPinned,
+      };
+      console.log('Sending payload:', JSON.stringify(payload));
+      
       const res = await fetch('/api/admin/article-settings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          articleId: editingItem.id,
-          coverImageUrl: newCoverUrl || null,
-          contentType: newContentType || null,
-          customTags: newTags.length > 0 ? newTags : null,
-          isPinned: newIsPinned,
-        }),
+        body: JSON.stringify(payload),
       });
 
+      console.log('Response status:', res.status);
       const data = await res.json();
+      console.log('Response data:', data);
       
       if (data.sqlRequired) {
         toast.error('請先在 Supabase SQL Editor 執行 sql/article_settings.sql');
@@ -232,6 +242,7 @@ export default function AdminDiscoverPage() {
       }
 
       if (!res.ok) {
+        console.error('API error:', data);
         throw new Error(data.error || 'Failed to save');
       }
 
