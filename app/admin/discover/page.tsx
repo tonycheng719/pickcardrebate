@@ -709,21 +709,31 @@ export default function AdminDiscoverPage() {
           <div className="space-y-6 py-4">
             {/* 置頂設定 */}
             <div className="space-y-3">
-              <Label className="text-sm font-medium">置頂</Label>
+              <Label className="text-sm font-medium">置頂狀態</Label>
               <div className="flex gap-2">
                 <Button
                   type="button"
-                  variant={!newIsPinned ? "outline" : "default"}
+                  variant={newIsPinned ? "default" : "outline"}
                   size="sm"
-                  onClick={() => setNewIsPinned(!newIsPinned)}
+                  onClick={() => setNewIsPinned(true)}
                   className={`gap-1 ${newIsPinned ? 'bg-amber-500 hover:bg-amber-600 text-white' : ''}`}
                 >
-                  {newIsPinned ? <Pin className="h-3 w-3" /> : <PinOff className="h-3 w-3" />}
-                  {newIsPinned ? '已置頂' : '未置頂'}
+                  <Pin className="h-3 w-3" />
+                  置頂
+                </Button>
+                <Button
+                  type="button"
+                  variant={!newIsPinned ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setNewIsPinned(false)}
+                  className="gap-1"
+                >
+                  <PinOff className="h-3 w-3" />
+                  不置頂
                 </Button>
               </div>
               <p className="text-xs text-gray-500">
-                置頂的文章會顯示在列表最前面
+                當前狀態：<span className={newIsPinned ? 'text-amber-600 font-bold' : 'text-gray-600'}>{newIsPinned ? '✓ 已置頂' : '未置頂'}</span>
               </p>
             </div>
             
