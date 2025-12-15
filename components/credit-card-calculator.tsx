@@ -855,6 +855,30 @@ export function CreditCardCalculator({
             </div>
           )}
 
+          {/* 稅務局交稅優惠提示 */}
+          {selectedMerchant?.id === "ird" && (
+            <div className="mb-4 p-3 bg-gradient-to-r from-teal-50 to-blue-50 dark:from-teal-900/20 dark:to-blue-900/20 border border-teal-200 dark:border-teal-800 rounded-xl">
+              <div className="flex items-start gap-2">
+                <Sparkles className="w-5 h-5 text-teal-500 shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-bold text-teal-800 dark:text-teal-200">💰 各銀行交稅限時優惠！</p>
+                  <p className="text-xs text-teal-700 dark:text-teal-300 mt-1">
+                    ⚠️ 繳稅無基本回贈，但透過<span className="font-bold">銀行網上理財</span>交稅可享額外獎賞：
+                  </p>
+                  <div className="grid grid-cols-2 gap-1 mt-2 text-xs text-teal-700 dark:text-teal-300">
+                    <div>🔥 <span className="font-bold">渣打</span>：高達 $2,300</div>
+                    <div>🔥 <span className="font-bold">滙豐</span>：高達 $1,100</div>
+                    <div>🔥 <span className="font-bold">恒生</span>：高達 $700</div>
+                    <div>🔥 <span className="font-bold">中銀</span>：高達 $3,888</div>
+                  </div>
+                  <Link href="/discover/tax-payment-guide" className="inline-flex items-center gap-1 text-xs text-teal-600 hover:underline mt-2 font-medium">
+                    查看交稅攻略 <ChevronUp className="w-3 h-3 rotate-90" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* 方案 C: 智能建議模式 */}
           
           {/* CASE 1: 用戶已持有全場最抵卡 - 精簡版 */}
