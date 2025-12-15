@@ -203,16 +203,20 @@ export default function AdminDiscoverPage() {
   // Save article settings
   const handleSaveSettings = async () => {
     console.log('=== handleSaveSettings START ===');
+    alert('handleSaveSettings 開始執行');
+    
     console.log('editingItem:', editingItem);
     console.log('newIsPinned:', newIsPinned);
     console.log('newContentType:', newContentType);
     
     if (!editingItem) {
       console.error('editingItem is null');
+      alert('ERROR: editingItem is null');
       toast.error('無法儲存：請重新打開設定對話框');
       return;
     }
     
+    alert('editingItem OK, 準備 setIsSaving');
     setIsSaving(true);
     toast.info('正在儲存設定...');
     
@@ -225,6 +229,7 @@ export default function AdminDiscoverPage() {
         isPinned: newIsPinned,
       };
       console.log('Sending payload:', JSON.stringify(payload));
+      alert('準備發送 API: ' + JSON.stringify(payload));
       
       const res = await fetch('/api/admin/article-settings', {
         method: 'POST',
@@ -233,8 +238,11 @@ export default function AdminDiscoverPage() {
       });
 
       console.log('Response status:', res.status);
+      alert('API 回應 status: ' + res.status);
+      
       const data = await res.json();
       console.log('Response data:', data);
+      alert('API 回應 data: ' + JSON.stringify(data));
       
       if (data.sqlRequired) {
         toast.error('請先在 Supabase SQL Editor 執行 sql/article_settings.sql');
@@ -291,8 +299,11 @@ export default function AdminDiscoverPage() {
       }
 
       toast.success('設定已更新');
+      alert('成功！準備關閉對話框');
       setEditDialogOpen(false);
     } catch (error: any) {
+      console.error('Catch error:', error);
+      alert('ERROR: ' + error.message);
       toast.error('更新失敗：' + error.message);
     } finally {
       setIsSaving(false);
