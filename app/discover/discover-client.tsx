@@ -496,33 +496,36 @@ export function DiscoverClient() {
     });
   }, [allContent, contentType, tagFilter]);
 
-  // 排序邏輯：1. 置頂優先（後台設定優先） 2. 最後更新時間降序（最新在前）
+  // 排序邏輯：1. 置頂優先 2. 最近更新時間 3. 最新發表時間（按數組原始順序）
   const sortedContent = useMemo(() => {
-    return [...filteredContent].sort((a, b) => {
+    // 先記錄原始索引（代表發表順序，越前面越新）
+    const withIndex = filteredContent.map((item, index) => ({ item, originalIndex: index }));
+    
+    return withIndex.sort((a, b) => {
       // 1. 置頂優先（後台設定 > 原始數據）
-      const aIsPinned = customPinned[a.id] ?? ('isPinned' in a && a.isPinned);
-      const bIsPinned = customPinned[b.id] ?? ('isPinned' in b && b.isPinned);
+      const aIsPinned = customPinned[a.item.id] ?? ('isPinned' in a.item && a.item.isPinned);
+      const bIsPinned = customPinned[b.item.id] ?? ('isPinned' in b.item && b.item.isPinned);
       if (aIsPinned && !bIsPinned) return -1;
       if (!aIsPinned && bIsPinned) return 1;
       
-      // 2. 按 sortOrder 排序（數字越大越前）
-      const aSortOrder = 'sortOrder' in a ? (a.sortOrder || 0) : 0;
-      const bSortOrder = 'sortOrder' in b ? (b.sortOrder || 0) : 0;
-      if (aSortOrder !== bSortOrder) return bSortOrder - aSortOrder;
-      
-      // 3. 按 updatedAt 排序（最新更新在前）
-      const aUpdated = 'updatedAt' in a && a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
-      const bUpdated = 'updatedAt' in b && b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+      // 2. 按 updatedAt 排序（最新更新在前，有 updatedAt 的優先）
+      const aUpdated = 'updatedAt' in a.item && a.item.updatedAt ? new Date(a.item.updatedAt).getTime() : 0;
+      const bUpdated = 'updatedAt' in b.item && b.item.updatedAt ? new Date(b.item.updatedAt).getTime() : 0;
       if (aUpdated !== bUpdated) return bUpdated - aUpdated;
       
-      // 4. 如果沒有 updatedAt，把有 expiryDate 的優惠排在後面（較新的優惠沒有過期日）
-      const aHasExpiry = 'expiryDate' in a && a.expiryDate;
-      const bHasExpiry = 'expiryDate' in b && b.expiryDate;
-      if (aHasExpiry && !bHasExpiry) return 1;
-      if (!aHasExpiry && bHasExpiry) return -1;
+      // 3. 按 publishedAt 排序（如有），否則按 sortOrder
+      const aPublished = 'publishedAt' in a.item && a.item.publishedAt ? new Date(a.item.publishedAt).getTime() : 0;
+      const bPublished = 'publishedAt' in b.item && b.item.publishedAt ? new Date(b.item.publishedAt).getTime() : 0;
+      if (aPublished !== bPublished) return bPublished - aPublished;
       
-      return 0;
-    });
+      // 4. 按 sortOrder 排序（數字越大越前）
+      const aSortOrder = 'sortOrder' in a.item ? (a.item.sortOrder || 0) : 0;
+      const bSortOrder = 'sortOrder' in b.item ? (b.item.sortOrder || 0) : 0;
+      if (aSortOrder !== bSortOrder) return bSortOrder - aSortOrder;
+      
+      // 5. 保持原始順序（越前面越新）
+      return a.originalIndex - b.originalIndex;
+    }).map(({ item }) => item);
   }, [filteredContent, customPinned]);
 
   const contentTypes = [
