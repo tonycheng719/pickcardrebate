@@ -538,13 +538,15 @@ export const HK_CARDS: CreditCard[] = [
       // 餐飲不包括：快餐店、酒店/百貨公司/俱樂部內食肆
       // 網上自選簽賬會計入網上5%，不會計入自選1%
       { description: "自選類別 1% [餐飲(不含快餐)/電子/娛樂,需登記]", matchType: "category", matchValue: ["dining", "electronics", "entertainment"], percentage: 1.0, monthlyMinSpend: 5000, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"], validDateRange: { start: "2024-07-01", end: "2025-12-31" } },
-      // T&C: 基本回饋 0.4%，排除繳費、保險、Alipay/WeChat Pay、八達通增值
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
+      // T&C: 八達通自動增值 0.4% (計基本回贈)
+      { description: "八達通自動增值 0.4%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
+      // T&C: 基本回饋 0.4%，排除繳費、保險、Alipay/WeChat Pay/PayMe (電子錢包充值)
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["網購5%", "外幣6%", "永久免年費", "必須登記", "冬日賞"],
+    tags: ["網購5%", "外幣6%", "永久免年費", "八達通增值", "必須登記", "冬日賞"],
     welcomeOfferText: "迎新簽 $5,000 送 $700 +FUN Dollars (全新客戶) / $300 (現有客戶) / 學生簽$2,000送$300 (首60日)",
-    sellingPoints: ["永久免年費", "海外外幣簽賬 6% (需月簽$5,000)", "網上簽賬 5% (需月簽$5,000)", "自選類別 1% (餐飲/電子/娛樂)", "每月回贈上限 $500", "🔥冬日簽賬賞額外高達$2,800"],
-    note: "⚠️ **需月簽賬滿 $5,000** 並於 hangseng.com/mpower 登記才享優惠！優惠期至 **2025/12/31**。\n\n📌 **重要排除**：\n• 餐飲不包括：快餐店、酒店/百貨公司/俱樂部內食肆\n• Alipay/WeChat Pay 簽賬不計\n• 八達通自動增值不計\n• 網上繳費（水電費、保險等）不計\n• 交稅、保險公司簽賬不計\n\n📌 **自選類別**：餐飲、電子產品、娛樂（最多選2個），網上自選簽賬只計網上5%，不重覆計算。\n\n💡 迎新：全新客戶簽$5,000送$700；現有客戶簽$5,000送$300；學生簽$2,000送$300 (首60日)。13個月內取消會扣回迎新獎賞！\n\n🔥 **冬日簽賬賞**（至2026/2/28）：累積簽賬可享額外高達$2,800回贈！[查看詳情](/discover/hangseng-winter-2025)",
+    sellingPoints: ["永久免年費", "海外外幣簽賬 6% (需月簽$5,000)", "網上簽賬 5% (需月簽$5,000)", "自選類別 1% (餐飲/電子/娛樂)", "八達通自動增值 0.4%", "每月回贈上限 $500", "🔥冬日簽賬賞額外高達$2,800"],
+    note: "⚠️ **需月簽賬滿 $5,000** 並於 hangseng.com/mpower 登記才享優惠！優惠期至 **2025/12/31**。\n\n📌 **重要排除**：\n• 餐飲不包括：快餐店、酒店/百貨公司/俱樂部內食肆\n• Alipay/WeChat Pay/PayMe 簽賬不計\n• 網上繳費（水電費、保險等）不計\n• 交稅、保險公司簽賬不計\n\n✅ **八達通自動增值計 0.4% 基本回贈**\n\n📌 **自選類別**：餐飲、電子產品、娛樂（最多選2個），網上自選簽賬只計網上5%，不重覆計算。\n\n💡 迎新：全新客戶簽$5,000送$700；現有客戶簽$5,000送$300；學生簽$2,000送$300 (首60日)。13個月內取消會扣回迎新獎賞！\n\n🔥 **冬日簽賬賞**（至2026/2/28）：累積簽賬可享額外高達$2,800回贈！[查看詳情](/discover/hangseng-winter-2025)",
     officialApplyUrl: "https://www.hangseng.com/zh-hk/personal/cards/products/mmpower-world-mastercard/",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=212&a=228&sub_id1=pickcardrebate&sub_id2=web",
     promoEndDate: "2025-12-31",
