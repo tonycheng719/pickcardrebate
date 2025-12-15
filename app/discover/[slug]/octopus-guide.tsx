@@ -11,22 +11,23 @@ import {
 import { CardPreviewSection } from "@/app/discover/components/card-preview-section";
 
 // FAQ 數據（2025年更新版）
+// 參考：https://www.mrmiles.hk/octopus-credit-card/
 export const octopusFaqData = [
   {
     question: "八達通自動增值有回贈嗎？",
-    answer: "有，但選擇有限！推薦：渣打 Simply Cash（1.5%）、Mox Credit（1%）、恒生 enJoy（0.5%）、恒生 MMPOWER（0.4%）、HSBC EveryMile（0.4%）。⚠️ 注意：安信 EarnMORE 官方 T&C 明確排除八達通自動增值，無法獲得 2% 回贈！"
+    answer: "有！推薦：渣打 Simply Cash（1.5%）、Citi Cash Back（1%）、Citi Prestige（1%/$6里）、恒生 enJoy（0.5%）、HSBC EveryMile（0.4%/$12.5里）、HSBC VS/Red（0.4%/$25里）、恒生 MMPOWER（0.4%）、DBS Compass（0.4%）。"
   },
   {
     question: "八達通自動增值信用卡邊張最好？",
-    answer: "2025年推薦：(1) 渣打 Simply Cash 1.5% 無上限；(2) Mox Credit 1% 無上限；(3) 恒生 enJoy 0.5% + yuu積分；(4) 恒生 MMPOWER/HSBC EveryMile 0.4%。⚠️ 安信 EarnMORE 八達通自動增值無回贈！"
+    answer: "2025年推薦：現金回贈首選渣打 Simply Cash（1.5%）；里數首選渣打國泰 Mastercard（$6/里）或 HSBC EveryMile（$12.5/里）。⚠️ 安信 EarnMORE 自動增值只有 0.4%，但 Apple Pay 手動增值有 2%！"
   },
   {
     question: "八達通 App 增值信用卡有回贈嗎？",
-    answer: "⚠️ 2025年更新：大部分銀行已將八達通 App/O!ePay 增值排除在「網上簽賬」高回贈之外！例如恒生 MMPOWER 的 5% 網上簽賬不包括八達通 App 增值，只有 0.4% 基本回贈。建議使用渣打 Simply Cash（1.5%）或 Mox Credit（1%）。"
+    answer: "⚠️ 大部分銀行已將八達通 App/O!ePay 增值排除在「網上簽賬」高回贈之外！例如恒生 MMPOWER 的 5% 網上簽賬不包括八達通 App 增值。但 HSBC 信用卡 Apple Pay 手動增值八達通有回贈，安信 EarnMORE 用 Apple Pay 手動增值 Smart Octopus 有 2%！"
   },
   {
     question: "八達通自動增值同手動增值有咩分別？",
-    answer: "自動增值：餘額不足時自動從信用卡增值（$150/$250/$500），方便但大部分銀行無回贈。手動增值：透過八達通 App 主動增值，以前可當「網上簽賬」獲高回贈，但現在大部分銀行已排除。回贈差異已不大，建議使用簡單方便的自動增值。"
+    answer: "自動增值：餘額不足時自動從信用卡增值（$150/$250/$500），大部分銀行有回贈。手動增值：透過 Apple Pay/Google Pay 增值，HSBC 卡有回贈，安信 EarnMORE 用 Apple Pay 手動增值有 2%！"
   },
   {
     question: "八達通自動增值上限係幾多？",
@@ -62,18 +63,27 @@ const autoTopUpCards = [
     id: "sc-simply-cash",
     rate: "1.5%",
     cap: "無上限",
-    highlight: "🥇 最高回贈",
-    notes: "本地簽賬 1.5%，八達通自動增值計入（需確認官方T&C）",
+    highlight: "🥇 現金回贈最高",
+    notes: "本地簽賬 1.5%，八達通自動增值計入，每次上限 $500",
     color: "text-yellow-600",
   },
   {
-    card: "Mox Credit",
-    id: "mox-credit",
+    card: "Citi Cash Back",
+    id: "citi-cashback",
     rate: "1%",
     cap: "無上限",
     highlight: "🥈 高回贈",
-    notes: "基本回贈 1%，八達通增值計入",
+    notes: "基本回贈 1%，八達通自動增值計入，每次上限 $500",
     color: "text-gray-400",
+  },
+  {
+    card: "Citi Prestige",
+    id: "citi-prestige",
+    rate: "1%",
+    cap: "無上限",
+    highlight: "高回贈",
+    notes: "1% / $6里數，八達通自動增值計入，每次上限 $500",
+    color: "text-green-600",
   },
   {
     card: "恒生 enJoy Card",
@@ -82,6 +92,33 @@ const autoTopUpCards = [
     cap: "無上限",
     highlight: "有回贈",
     notes: "1X yuu積分 (0.5%)，八達通自動增值計入",
+    color: "text-green-600",
+  },
+  {
+    card: "HSBC EveryMile",
+    id: "hsbc-everymile",
+    rate: "0.4%",
+    cap: "無上限",
+    highlight: "里數最抵",
+    notes: "0.4% / $12.5里數，八達通自動增值計入，每次上限 $500",
+    color: "text-green-600",
+  },
+  {
+    card: "HSBC Visa Signature",
+    id: "hsbc-vs",
+    rate: "0.4%",
+    cap: "無上限",
+    highlight: "有回贈",
+    notes: "0.4% / $25里數，八達通自動增值計入，每次上限 $500",
+    color: "text-green-600",
+  },
+  {
+    card: "HSBC Red Card",
+    id: "hsbc-red",
+    rate: "0.4%",
+    cap: "無上限",
+    highlight: "有回贈",
+    notes: "0.4% / $25里數，八達通自動增值計入，每次上限 $500",
     color: "text-green-600",
   },
   {
@@ -94,40 +131,22 @@ const autoTopUpCards = [
     color: "text-green-600",
   },
   {
-    card: "HSBC EveryMile",
-    id: "hsbc-everymile",
+    card: "DBS Compass Visa",
+    id: "dbs-compass",
     rate: "0.4%",
     cap: "無上限",
     highlight: "有回贈",
-    notes: "基本回贈 0.4% ($12.5/里)，八達通自動增值計入",
+    notes: "0.4% / $25里數，每次上限 $1,000",
     color: "text-green-600",
   },
   {
     card: "安信 EarnMORE",
     id: "earnmore",
-    rate: "0%",
-    cap: "-",
-    highlight: "❌ 無回贈",
-    notes: "官方T&C明確排除八達通自動增值",
-    color: "text-gray-400",
-  },
-  {
-    card: "HSBC Visa Signature",
-    id: "hsbc-vs",
-    rate: "0%",
-    cap: "-",
-    highlight: "❌ 無回贈",
-    notes: "八達通自動增值無回贈（需確認）",
-    color: "text-gray-400",
-  },
-  {
-    card: "Citi Cash Back",
-    id: "citi-cashback",
-    rate: "0%",
-    cap: "-",
-    highlight: "❌ 無回贈",
-    notes: "八達通自動增值無回贈（需確認）",
-    color: "text-gray-400",
+    rate: "0.4%",
+    cap: "無上限",
+    highlight: "⚠️ 自動增值只有0.4%",
+    notes: "自動增值 0.4%，但 Apple Pay 手動增值有 2%！",
+    color: "text-amber-600",
   },
 ];
 
@@ -261,16 +280,16 @@ export function OctopusGuide() {
         <h3 className="font-bold text-lg mb-3">🔥 {currentYear} 八達通增值回贈重點</h3>
         <div className="grid md:grid-cols-3 gap-4 text-sm">
           <div className="bg-white/20 rounded-lg p-3">
-            <p className="font-bold">自動增值最高</p>
+            <p className="font-bold">現金回贈最高</p>
             <p>渣打 Simply Cash <span className="text-yellow-200">1.5%</span></p>
           </div>
           <div className="bg-white/20 rounded-lg p-3">
-            <p className="font-bold">⚠️ App 增值注意</p>
-            <p>大部分銀行已<span className="text-yellow-200">排除高回贈</span></p>
+            <p className="font-bold">里數回贈最高</p>
+            <p>渣打國泰 <span className="text-yellow-200">$6/里</span></p>
           </div>
           <div className="bg-white/20 rounded-lg p-3">
-            <p className="font-bold">Chok 回贈潛力</p>
-            <p>每年可賺 <span className="text-yellow-200">$600-$900</span></p>
+            <p className="font-bold">Apple Pay 手動增值</p>
+            <p>安信 EarnMORE <span className="text-yellow-200">2%</span></p>
           </div>
         </div>
       </div>
@@ -621,11 +640,11 @@ export function OctopusGuide() {
 
         <div className="not-prose space-y-4 my-6">
           {[
-            { rank: "🥇", card: "渣打 Simply Cash", id: "sc-simply-cash", rate: "1.5%", type: "最高回贈", reason: "自動/手動增值都有 1.5%，無上限，申請門檻低" },
-            { rank: "🥈", card: "Mox Credit", id: "mox-credit", rate: "1%", type: "無門檻", reason: "基本回贈 1%，無上限，無年薪要求，虛擬銀行" },
-            { rank: "🥉", card: "恒生 enJoy Card", id: "hangseng-enjoy", rate: "0.5%", type: "yuu積分", reason: "0.5% yuu積分，可於惠康/萬寧等使用" },
-            { rank: "4️⃣", card: "恒生 MMPOWER", id: "hangseng-mmpower", rate: "0.4%", type: "基本回贈", reason: "自動增值 0.4%，⚠️ App 增值不計 5% 網上簽賬" },
-            { rank: "5️⃣", card: "HSBC EveryMile", id: "hsbc-everymile", rate: "0.4%", type: "儲里數", reason: "自動增值 0.4% ($12.5/里)，適合儲里數用戶" },
+            { rank: "🥇", card: "渣打 Simply Cash", id: "sc-simply-cash", rate: "1.5%", type: "現金回贈最高", reason: "自動增值 1.5%，無上限，每次上限 $500" },
+            { rank: "🥈", card: "Citi Cash Back", id: "citi-cashback", rate: "1%", type: "高回贈", reason: "自動增值 1%，無上限，每次上限 $500" },
+            { rank: "🥉", card: "HSBC EveryMile", id: "hsbc-everymile", rate: "$12.5/里", type: "里數最抵", reason: "HSBC 系內儲里數最抵，$12.5 = 1里，每次上限 $500" },
+            { rank: "4️⃣", card: "渣打國泰 Mastercard", id: "sc-cathay", rate: "$6/里", type: "里數首選", reason: "$6 = 1里，儲里數最強，無上限" },
+            { rank: "5️⃣", card: "安信 EarnMORE", id: "earnmore", rate: "2%", type: "Apple Pay 手動", reason: "Apple Pay 手動增值 Smart Octopus 有 2%！自動增值只有 0.4%" },
           ].map((card, index) => (
             <div key={index} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-4 flex items-center gap-4">
               <span className="text-2xl">{card.rank}</span>

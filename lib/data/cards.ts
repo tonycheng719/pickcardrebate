@@ -25,10 +25,12 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 賞世界 - 海外簽賬 (非港幣交易)，不包括香港進行或以港幣交易的簽賬
       { description: "賞世界 9X (3.6%) [需登記]", matchType: "base", percentage: 3.6, isForeignCurrency: true, cap: 100000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 賞滋味限制：不包括酒席宴會/私人宴會/包場派對/酒店百貨公司俱樂部內飲食專櫃
+      // T&C: 八達通自動增值 0.4% ($25/里) - mrmiles.hk 確認
+      { description: "八達通自動增值 0.4% ($25/里)", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
       // T&C: 基本回饋 0.4% ($250 = $1 RC)，排除電子錢包、繳稅、繳費
-      { description: "基本回饋 0.4% ($25/里)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "基本回饋 0.4% ($25/里)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["餐飲神卡", "最紅自主獎賞", "9X積分", "需登記", "百老滙6%", "Travel Guru"],
+    tags: ["餐飲神卡", "最紅自主獎賞", "9X積分", "需登記", "八達通增值", "百老滙6%", "Travel Guru"],
     imageUrl: "https://pickcardrebate-supabase-kong.zeabur.app/storage/v1/object/public/images/cards/1764329466898-zu95i1newy.png",
     feeWaiverCondition: "首兩年免年費",
     welcomeOfferText: "迎新簽 $8,000 送 $600-$800 獎賞錢 (首60日內)",
@@ -60,10 +62,12 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 網上簽賬 4% (每月首$10,000 = $400獎賞錢上限)
       // 不包括：網上繳費、電子錢包簽賬、保費、證券買賣、租金/物業管理費、廣告服務、八達通增值
       { description: "網上簽賬 4% [每月首$10,000]", matchType: "category", matchValue: "online", percentage: 4.0, cap: 400, capType: "reward", excludeCategories: ["utilities", "insurance", "ewallet"], excludePaymentMethods: ["octopus"] },
+      // T&C: 八達通自動增值 0.4% ($25/里) - mrmiles.hk 確認
+      { description: "八達通自動增值 0.4% ($25/里)", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
       // T&C: 基本獎賞 0.4%
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] }, 
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["payme", "alipay", "wechat_pay"] }, 
     ],
-    tags: ["網購神卡", "永久免年費", "指定商戶8%", "百老滙6%"],
+    tags: ["網購神卡", "永久免年費", "指定商戶8%", "八達通增值", "百老滙6%"],
     annualFee: 0,
     feeWaiverCondition: "永久免年費",
     welcomeOfferText: "迎新簽 $3,000 送 $300 獎賞錢 (首60日)",
@@ -274,11 +278,13 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rules: [
       // T&C: 外幣簽賬 2%
-      { description: "外幣簽賬 2%", matchType: "base", percentage: 2.0, isForeignCurrency: true, excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "外幣簽賬 2%", matchType: "base", percentage: 2.0, isForeignCurrency: true, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      // T&C: 八達通自動增值 1.5% (mrmiles.hk 確認)
+      { description: "八達通自動增值 1.5%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 1.5 },
       // T&C: 港幣簽賬 1.5%
-      { description: "港幣簽賬 1.5%", matchType: "base", percentage: 1.5, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "港幣簽賬 1.5%", matchType: "base", percentage: 1.5, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["現金回贈", "無腦刷", "外幣2%", "繳稅優惠"],
+    tags: ["現金回贈", "無腦刷", "外幣2%", "八達通1.5%", "繳稅優惠"],
     welcomeOfferText: "迎新簽 $8,000 送 $600 現金回贈 (首2個月內)",
     officialApplyUrl: "https://www.sc.com/hk/zh/credit-cards/simply-cash-visa/",
     applyUrl: "https://www.sc.com/hk/zh/credit-cards/simply-cash-visa/",
@@ -639,17 +645,19 @@ export const HK_CARDS: CreditCard[] = [
     feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rules: [
-      { description: "週五六日食肆 3%", matchType: "category", matchValue: ["dining"], percentage: 3.0, validDays: [5, 6, 0], excludePaymentMethods: ["octopus"] },
-      { description: "食肆/酒店 2%", matchType: "category", matchValue: ["dining", "travel"], percentage: 2.0, excludePaymentMethods: ["octopus"] },
+      { description: "週五六日食肆 3%", matchType: "category", matchValue: ["dining"], percentage: 3.0, validDays: [5, 6, 0] },
+      { description: "食肆/酒店 2%", matchType: "category", matchValue: ["dining", "travel"], percentage: 2.0 },
       { description: "外幣 2%", matchType: "base", percentage: 2.0, isForeignCurrency: true },
-      { description: "基本回饋 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus"] },
+      // T&C: 八達通自動增值 1% - mrmiles.hk 確認
+      { description: "八達通自動增值 1%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 1.0 },
+      { description: "基本回饋 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"] },
     ],
-    tags: ["自動回贈", "餐飲2%", "週末餐飲3%"],
+    tags: ["自動回贈", "餐飲2%", "週末餐飲3%", "八達通1%"],
     welcomeOfferText: "迎新簽 $5,000 送 $1,200 現金回贈 (首2個月內)",
     officialApplyUrl: "https://www.citibank.com.hk/zh-hk/credit-cards/citi-cash-back-card.html",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=168&a=228&sub_id1=pickcardrebate&sub_id2=web",
-    sellingPoints: ["週五六日食肆 3% 回贈", "全球食肆及酒店 2% 回贈", "無上限，自動入賬"],
-    note: "⚠️ 不適用於：FPS、八達通增值、繳稅、保費、公共事務費用。",
+    sellingPoints: ["週五六日食肆 3% 回贈", "全球食肆及酒店 2% 回贈", "八達通自動增值 1%", "無上限，自動入賬"],
+    note: "⚠️ 不適用於：FPS、繳稅、保費、公共事務費用。✅ 八達通自動增值有 1% 回贈！",
   },
   {
     id: "citi-rewards",
@@ -839,10 +847,12 @@ export const HK_CARDS: CreditCard[] = [
       // T&C 2025/7/2-12/31: 週三大折日：全港超市 8% (單筆≥$300，每月首$2,000)
       // Apple Pay/Google Pay/Samsung Pay 可以，支付寶/微信支付/PayMe 不可以
       { description: "週三超市 8% [單筆≥$300]", matchType: "category", matchValue: "supermarket", percentage: 8.0, validDays: [3], minSpend: 300, cap: 2000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C: 八達通自動增值 0.4% ($25/里) - mrmiles.hk 確認，每次增值上限 $1,000
+      { description: "八達通自動增值 0.4% ($25/里)", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
       // 基本回贈 0.4%
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["payme", "octopus", "alipay", "wechat_pay"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["payme", "alipay", "wechat_pay"] },
     ],
-    tags: ["週三超市8%", "指定類別2%", "需登記", "衛訊4%"],
+    tags: ["週三超市8%", "指定類別2%", "八達通增值", "需登記", "衛訊4%"],
     officialApplyUrl: "https://www.dbs.com.hk/personal-zh/cards/credit-cards/dbs-compass-visa",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=185&a=228&sub_id1=pickcardrebate&sub_id2=web",
     sellingPoints: ["🔥 週三超市 8% (單筆≥$300)", "指定類別 2% (百貨/家居/油站/AliPay/WeChat Pay) [需登記]", "每月首 $2,000 超市 / $12,500 指定類別"],
@@ -1227,13 +1237,16 @@ export const HK_CARDS: CreditCard[] = [
       // ❌ 不包括：八達通自動增值、電子錢包充值/繳費、P2P 轉賬
       // 官方 T&C: https://www.primecredit.com/sta-data/tnc/EM_20250409/tnc.html
       { description: "全方位 2%", matchType: "base", percentage: 2.0, cap: 1500, capType: "reward", excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
+      // T&C: 八達通自動增值只有 0.4%（不計入 2% 全方位），但 Apple Pay 手動增值 Smart Octopus 有 2%
+      // mrmiles.hk 確認
+      { description: "八達通自動增值 0.4%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
     ],
-    tags: ["全方位2%", "懶人必備", "銀聯1%手續費"],
+    tags: ["全方位2%", "懶人必備", "銀聯1%手續費", "八達通0.4%"],
     welcomeOfferText: "迎新簽 $8,500 送 $500 回贈 / 洗碗機 (首90天內)",
     officialApplyUrl: "https://www.primecredit.com/tc/credit-card/earnmore/",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=182&a=228&sub_id1=pickcardrebate&sub_id2=web",
-    sellingPoints: ["全方位 2% 現金回贈", "1% 加碼回贈上限 $1,500/年", "銀聯外幣手續費 1%", "無需登記"],
-    note: "⚠️ 2% 回贈 = 1% 基本 + 1% 加碼（1% 加碼上限 $1,500/年，即有效簽賬 $150,000/年）。不適用於：八達通自動增值、電子錢包充值/繳費（包括 AlipayHK/PayMe/WeChat Pay）、P2P 轉賬、賭場交易。⚠️ 銀聯卡外幣手續費 1%（2025/1/1起），海外淨回贈約 1%。迎新：簽 $8,500 送 $500 / 簽 $8,800 送平板 / 簽 $9,500 送洗碗機。",
+    sellingPoints: ["全方位 2% 現金回贈", "1% 加碼回贈上限 $1,500/年", "銀聯外幣手續費 1%", "Apple Pay 手動增值八達通 2%", "無需登記"],
+    note: "⚠️ 2% 回贈 = 1% 基本 + 1% 加碼（1% 加碼上限 $1,500/年，即有效簽賬 $150,000/年）。\n\n📌 **八達通增值玩法**：\n• 八達通自動增值：只有 **0.4%**（不計入 2%）\n• Apple Pay 手動增值 Smart Octopus：有 **2%** 回贈！\n\n不適用於：電子錢包充值/繳費（AlipayHK/PayMe/WeChat Pay）、P2P 轉賬、賭場交易。\n⚠️ 銀聯卡外幣手續費 1%（2025/1/1起），海外淨回贈約 1%。\n迎新：簽 $8,500 送 $500 / 簽 $8,800 送平板 / 簽 $9,500 送洗碗機。",
   },
   {
     id: "wewa-unionpay",
