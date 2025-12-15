@@ -915,7 +915,17 @@ export default function AdminDiscoverPage() {
             >
               取消
             </Button>
-            <Button type="button" onClick={handleSaveSettings} disabled={isSaving}>
+            <Button 
+              type="button" 
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('🔴 儲存按鈕被點擊');
+                alert('DEBUG: 按鈕被點擊！');
+                handleSaveSettings();
+              }} 
+              disabled={isSaving}
+            >
               {isSaving ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
