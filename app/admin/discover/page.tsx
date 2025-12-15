@@ -184,7 +184,7 @@ export default function AdminDiscoverPage() {
       imageUrl: guide.imageUrl,
       expiryDate: '長期有效',
       isPinned: articlePinned[guide.id] || false,
-      updatedAt: guide.updatedAt,
+      updatedAt: undefined as string | undefined,
       _originalType: 'guide' as const
     }));
     
