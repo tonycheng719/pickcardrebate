@@ -422,7 +422,7 @@ export default function CardDetailPage() {
           </div>
 
           {/* Right Column - Card Details */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-6 min-w-0">
             {/* Header */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -434,9 +434,9 @@ export default function CardDetailPage() {
               
               {/* Tags */}
               {card.tags && card.tags.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-4">
+                <div className="flex flex-wrap gap-2 mt-4 max-w-full overflow-hidden">
                   {card.tags.map((tag, idx) => (
-                    <span key={idx} className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium">
+                    <span key={idx} className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium whitespace-nowrap">
                       {tag}
                     </span>
                   ))}
