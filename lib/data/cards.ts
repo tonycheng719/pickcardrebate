@@ -535,15 +535,15 @@ export const HK_CARDS: CreditCard[] = [
     feeWaiverCondition: "永久免年費",
     foreignCurrencyFee: 1.95,
     rules: [
-      // T&C: 海外外幣 6% (需月簽賬滿$5,000，每月上限$500回贈，優惠期至2025/12/31)
-      { description: "海外外幣簽賬 6% [需月簽$5,000,需登記]", matchType: "base", percentage: 6.0, monthlyMinSpend: 5000, isForeignCurrency: true, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"], validDateRange: { start: "2024-07-01", end: "2025-12-31" } },
+      // T&C: 海外外幣 6% (需月簽賬滿$5,000，每月上限$500回贈，優惠期延長至2026/3/31)
+      { description: "海外外幣簽賬 6% [需月簽$5,000,需登記]", matchType: "base", percentage: 6.0, monthlyMinSpend: 5000, isForeignCurrency: true, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"], validDateRange: { start: "2024-07-01", end: "2026-03-31" } },
       // T&C: 網上簽賬 5% (需月簽賬滿$5,000，與海外/自選共用$500上限)
       // 不包括網上繳費、保險、電子錢包
-      { description: "網上簽賬 5% [需月簽$5,000,需登記]", matchType: "category", matchValue: "online", percentage: 5.0, monthlyMinSpend: 5000, cap: 500, capType: "reward", excludeCategories: ["ewallet", "utilities", "insurance", "tax"], excludePaymentMethods: ["alipay", "wechat_pay", "octopus"], validDateRange: { start: "2024-07-01", end: "2025-12-31" } },
+      { description: "網上簽賬 5% [需月簽$5,000,需登記]", matchType: "category", matchValue: "online", percentage: 5.0, monthlyMinSpend: 5000, cap: 500, capType: "reward", excludeCategories: ["ewallet", "utilities", "insurance", "tax"], excludePaymentMethods: ["alipay", "wechat_pay", "octopus"], validDateRange: { start: "2024-07-01", end: "2026-03-31" } },
       // T&C: 自選類別 (餐飲/電子產品/娛樂，最多選2個) 1%
       // 餐飲不包括：快餐店、酒店/百貨公司/俱樂部內食肆
       // 網上自選簽賬會計入網上5%，不會計入自選1%
-      { description: "自選類別 1% [餐飲(不含快餐)/電子/娛樂,需登記]", matchType: "category", matchValue: ["dining", "electronics", "entertainment"], percentage: 1.0, monthlyMinSpend: 5000, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"], validDateRange: { start: "2024-07-01", end: "2025-12-31" } },
+      { description: "自選類別 1% [餐飲(不含快餐)/電子/娛樂,需登記]", matchType: "category", matchValue: ["dining", "electronics", "entertainment"], percentage: 1.0, monthlyMinSpend: 5000, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"], validDateRange: { start: "2024-07-01", end: "2026-03-31" } },
       // T&C: 八達通自動增值 0.4% (計基本回贈)
       { description: "八達通自動增值 0.4%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
       // T&C: 基本回饋 0.4%，排除繳費、保險、Alipay/WeChat Pay/PayMe (電子錢包充值)
@@ -552,11 +552,11 @@ export const HK_CARDS: CreditCard[] = [
     tags: ["網購5%", "外幣6%", "永久免年費", "八達通增值", "必須登記", "冬日賞"],
     welcomeOfferText: "迎新簽 $5,000 送 $700 +FUN Dollars (全新客戶) / $300 (現有客戶) / 學生簽$2,000送$300 (首60日)",
     sellingPoints: ["永久免年費", "海外外幣簽賬 6% (需月簽$5,000)", "網上簽賬 5% (需月簽$5,000)", "自選類別 1% (餐飲/電子/娛樂)", "八達通自動增值 0.4%", "每月回贈上限 $500", "🔥冬日簽賬賞額外高達$2,800"],
-    note: "⚠️ **需月簽賬滿 $5,000** 並於 hangseng.com/mpower 登記才享優惠！優惠期至 **2025/12/31**。\n\n📌 **重要排除**：\n• 餐飲不包括：快餐店、酒店/百貨公司/俱樂部內食肆\n• Alipay/WeChat Pay/PayMe 簽賬不計\n• 網上繳費（水電費、保險等）不計\n• 交稅、保險公司簽賬不計\n\n✅ **八達通自動增值計 0.4% 基本回贈**\n\n📌 **自選類別**：餐飲、電子產品、娛樂（最多選2個），網上自選簽賬只計網上5%，不重覆計算。\n\n💡 迎新：全新客戶簽$5,000送$700；現有客戶簽$5,000送$300；學生簽$2,000送$300 (首60日)。13個月內取消會扣回迎新獎賞！\n\n🔥 **冬日簽賬賞**（至2026/2/28）：累積簽賬可享額外高達$2,800回贈！[查看詳情](/discover/hangseng-winter-2025)",
+    note: "⚠️ **需月簽賬滿 $5,000** 並於 hangseng.com/mpower 登記才享優惠！\n\n🎉 **好消息**：+FUN Dollars 回贈計劃已延長至 **2026/3/31**！已登記嘅客戶唔使再登記，之前揀咗嘅消費類別會繼續生效。\n\n📌 **重要排除**：\n• 餐飲不包括：快餐店、酒店/百貨公司/俱樂部內食肆\n• Alipay/WeChat Pay/PayMe 簽賬不計\n• 網上繳費（水電費、保險等）不計\n• 交稅、保險公司簽賬不計\n\n✅ **八達通自動增值計 0.4% 基本回贈**\n\n📌 **自選類別**：餐飲、電子產品、娛樂（最多選2個），網上自選簽賬只計網上5%，不重覆計算。\n\n💡 迎新：全新客戶簽$5,000送$700；現有客戶簽$5,000送$300；學生簽$2,000送$300 (首60日)。13個月內取消會扣回迎新獎賞！\n\n🔥 **冬日簽賬賞**（至2026/2/28）：累積簽賬可享額外高達$2,800回贈！[查看詳情](/discover/hangseng-winter-2025)",
     officialApplyUrl: "https://www.hangseng.com/zh-hk/personal/cards/products/mmpower-world-mastercard/",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=212&a=228&sub_id1=pickcardrebate&sub_id2=web",
-    promoEndDate: "2025-12-31",
-    promoName: "+FUN Dollars獎賞計劃",
+    promoEndDate: "2026-03-31",
+    promoName: "+FUN Dollars獎賞計劃 (延長至3月)",
   },
   {
     id: "hangseng-enjoy",
