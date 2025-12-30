@@ -639,19 +639,17 @@ export default function AdminDiscoverPage() {
             <table className="w-full text-sm text-left">
               <thead className="bg-gray-50 dark:bg-gray-900/50 text-gray-500 dark:text-gray-400 border-b dark:border-gray-700">
                 <tr>
-                  <th className="px-4 py-4 font-medium w-10">#</th>
-                  <th className="px-4 py-4 font-medium">圖片</th>
-                  <th className="px-4 py-4 font-medium">標題</th>
-                  <th className="px-4 py-4 font-medium">商戶</th>
-                  <th className="px-4 py-4 font-medium">
+                  <th className="px-6 py-4 font-medium">封面</th>
+                  <th className="px-6 py-4 font-medium">標題</th>
+                  <th className="px-6 py-4 font-medium">標籤</th>
+                  <th className="px-6 py-4 font-medium">
                     <div className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
-                      更新時間
+                      <CalendarIcon className="h-4 w-4" />
+                      到期日
                     </div>
                   </th>
-                  <th className="px-4 py-4 font-medium">到期日</th>
-                  <th className="px-4 py-4 font-medium">狀態</th>
-                  <th className="px-4 py-4 font-medium">操作</th>
+                  <th className="px-6 py-4 font-medium">狀態</th>
+                  <th className="px-6 py-4 font-medium">操作</th>
                 </tr>
               </thead>
               <tbody className="divide-y dark:divide-gray-700">
@@ -661,21 +659,34 @@ export default function AdminDiscoverPage() {
                   
                   return (
                     <tr key={item.id} className={`hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors ${isPinned ? 'bg-amber-50/50 dark:bg-amber-900/10' : ''} ${isFromGuide ? 'bg-emerald-50/30 dark:bg-emerald-900/10' : ''}`}>
-                      <td className="px-4 py-4 text-gray-400 text-xs">
-                        {index + 1}
+                      <td className="px-6 py-4">
+                        <div className="relative group">
+                          {item.imageUrl ? (
+                            <div className="w-20 h-12 rounded overflow-hidden bg-gray-100">
+                              <img src={item.imageUrl} alt="" className="w-full h-full object-cover" />
+                            </div>
+                          ) : (
+                            <div className="w-20 h-12 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-400">
+                              <ImageIcon className="h-4 w-4" />
+                            </div>
+                          )}
+                          <button
+                            onClick={() => {
+                              setEditingItem({ id: item.id, title: item.title, type: 'promo', imageUrl: item.imageUrl });
+                              setNewCoverUrl(articleSettings[item.id] || item.imageUrl || '');
+                              setNewContentType(articleCategories[item.id] as "guide" | "promo" || "promo");
+                              setNewTags(articleTags[item.id] || []);
+                              setNewIsPinned(isPinned || false);
+                              setTagInput("");
+                              setEditDialogOpen(true);
+                            }}
+                            className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded"
+                          >
+                            <Pencil className="h-4 w-4 text-white" />
+                          </button>
+                        </div>
                       </td>
-                      <td className="px-4 py-4">
-                        {item.imageUrl ? (
-                          <div className="w-12 h-8 rounded overflow-hidden bg-gray-100">
-                            <img src={item.imageUrl} alt="" className="w-full h-full object-cover" />
-                          </div>
-                        ) : (
-                          <div className="w-12 h-8 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-400">
-                            <ImageIcon className="h-4 w-4" />
-                          </div>
-                        )}
-                      </td>
-                      <td className="px-4 py-4">
+                      <td className="px-6 py-4">
                         <Link href={`/discover/${item.id}`} target="_blank" className="block group">
                           <p className="font-medium text-gray-900 dark:text-white line-clamp-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                             {item.title}
@@ -683,18 +694,26 @@ export default function AdminDiscoverPage() {
                           </p>
                         </Link>
                         <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">{item.description}</p>
+                        <p className="text-xs text-purple-600 dark:text-purple-400 mt-0.5">{item.merchant}</p>
                       </td>
-                      <td className="px-4 py-4 text-gray-600 dark:text-gray-300 text-sm">{item.merchant}</td>
-                      <td className="px-4 py-4 text-gray-500 dark:text-gray-400 text-sm">
-                        {item.updatedAt || '-'}
-                      </td>
-                      <td className="px-4 py-4 text-gray-500 dark:text-gray-300 text-sm">
-                        <div className="flex items-center gap-1">
-                          <CalendarIcon className="h-3 w-3" />
-                          {item.expiryDate}
+                      <td className="px-6 py-4">
+                        <div className="flex flex-wrap gap-1">
+                          {item.tags?.slice(0, 3).map((tag, tagIdx) => (
+                            <span key={tagIdx} className="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-300 rounded-full text-xs">
+                              {tag}
+                            </span>
+                          ))}
+                          {item.tags && item.tags.length > 3 && (
+                            <span className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-500 rounded-full text-xs">
+                              +{item.tags.length - 3}
+                            </span>
+                          )}
                         </div>
                       </td>
-                      <td className="px-4 py-4">
+                      <td className="px-6 py-4 text-gray-500 dark:text-gray-300 text-sm">
+                        {item.expiryDate || '-'}
+                      </td>
+                      <td className="px-6 py-4">
                         <div className="flex items-center gap-1 flex-wrap">
                           {isFromGuide && (
                             <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded-full text-xs font-medium">
@@ -707,14 +726,9 @@ export default function AdminDiscoverPage() {
                               置頂
                             </span>
                           )}
-                          {articleTags[item.id] && (
-                            <span className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full text-xs font-medium">
-                              +{articleTags[item.id].length} 標籤
-                            </span>
-                          )}
                         </div>
                       </td>
-                      <td className="px-4 py-4">
+                      <td className="px-6 py-4">
                         <div className="flex items-center gap-1">
                           <Button 
                             variant="ghost" 
