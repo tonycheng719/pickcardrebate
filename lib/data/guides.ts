@@ -12,6 +12,28 @@ export interface Guide {
 }
 
 export const GUIDES: Guide[] = [
+  // 🔥 最新文章放最前
+  {
+    id: "bea-reward-extension-2026",
+    type: "guide",
+    title: "東亞信用卡回贈推廣續期｜GOAL卡/i-Titanium 延長",
+    description: "東亞銀行多張信用卡額外獎分推廣延長！GOAL 卡、World Mastercard 續期至 2026 年 6 月，i-Titanium 卡續期至 12 月，回贈上下限維持不變。",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["東亞銀行", "回贈延期", "GOAL卡", "i-Titanium"],
+    merchant: "優惠",
+    isNew: true,
+  },
+  {
+    id: "unionpay-foreign-fee-2025",
+    type: "guide",
+    title: "銀聯卡外幣手續費調整｜AEON 等銀聯卡開始收 1%",
+    description: "AEON 銀聯信用卡及香港各大銀行銀聯卡已開始收取 1% 外幣交易手續費。了解最新收費詳情、對持卡人嘅影響及替代方案！",
+    imageUrl: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=2071&auto=format&fit=crop",
+    tags: ["銀聯", "外幣手續費", "AEON", "北上消費"],
+    merchant: "優惠",
+    isNew: true,
+  },
+  // 其他攻略文章
   {
     id: "overseas-fee",
     type: "guide",
@@ -229,26 +251,6 @@ export const GUIDES: Guide[] = [
     description: "大新信用卡冬日狂賞！登記後本地食肆享額外5%回贈，網上/旅遊/海外享額外3%回贈。名額8,000人先到先得！",
     imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
     tags: ["大新銀行", "冬日優惠", "現金回贈", "限時"],
-    merchant: "優惠",
-    isNew: true,
-  },
-  {
-    id: "unionpay-foreign-fee-2025",
-    type: "guide",
-    title: "銀聯卡外幣手續費調整｜AEON 等銀聯卡開始收 1%",
-    description: "AEON 銀聯信用卡及香港各大銀行銀聯卡已開始收取 1% 外幣交易手續費。了解最新收費詳情、對持卡人嘅影響及替代方案！",
-    imageUrl: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=2071&auto=format&fit=crop",
-    tags: ["銀聯", "外幣手續費", "AEON", "北上消費"],
-    merchant: "優惠",
-    isNew: true,
-  },
-  {
-    id: "bea-reward-extension-2026",
-    type: "guide",
-    title: "東亞信用卡回贈推廣續期｜GOAL卡/i-Titanium 延長",
-    description: "東亞銀行多張信用卡額外獎分推廣延長！GOAL 卡、World Mastercard 續期至 2026 年 6 月，i-Titanium 卡續期至 12 月，回贈上下限維持不變。",
-    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
-    tags: ["東亞銀行", "回贈延期", "GOAL卡", "i-Titanium"],
     merchant: "優惠",
     isNew: true,
   },
