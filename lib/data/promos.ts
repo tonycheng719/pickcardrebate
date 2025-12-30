@@ -9,7 +9,7 @@ export const PROMOS: Promo[] = [
     description: "DBS Mastercard 限定！Trip.com 預訂機票淨票價滿 $1,500 減 $150、酒店滿 $1,200 減 $120、高鐵滿 $300 減 $30！名額每週二 00:00 更新，記得準時搶！",
     imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2074&auto=format&fit=crop",
     expiryDate: "2026-02-16",
-    relatedCardIds: ["dbs-black-world-mc", "dbs-live-fresh"],
+    relatedCardIds: ["dbs-black", "dbs-live-fresh"],
     tags: ["Trip.com", "DBS", "機票", "酒店", "高鐵", "旅遊", "Mastercard"],
     url: "https://www.dbs.com.hk/personal-zh/promotion/trip-com",
     updatedAt: "2025-12-30",
