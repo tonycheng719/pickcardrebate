@@ -232,5 +232,15 @@ export const GUIDES: Guide[] = [
     merchant: "優惠",
     isNew: true,
   },
+  {
+    id: "unionpay-foreign-fee-2025",
+    type: "guide",
+    title: "銀聯卡外幣手續費調整｜AEON 等銀聯卡開始收 1%",
+    description: "AEON 銀聯信用卡及香港各大銀行銀聯卡已開始收取 1% 外幣交易手續費。了解最新收費詳情、對持卡人嘅影響及替代方案！",
+    imageUrl: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=2071&auto=format&fit=crop",
+    tags: ["銀聯", "外幣手續費", "AEON", "北上消費"],
+    merchant: "優惠",
+    isNew: true,
+  },
 ];
 
