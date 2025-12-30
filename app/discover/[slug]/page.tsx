@@ -1854,7 +1854,7 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
     const lastUpdated = guide.lastUpdated || new Date().toISOString().split('T')[0];
     
     // Get FAQ data for this specific guide
-    const faqData = getGuideFaqData(slug);
+    const faqData = getGuideFaqData(slug) || [];
 
     // Fetch article rating data for SEO
     let avgRating = 0;
@@ -1899,11 +1899,11 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
         },
         {
           "@type": "FAQPage",
-          "mainEntity": faqData.map(faq => ({
+          "mainEntity": Array.isArray(faqData) ? faqData.map(faq => ({
             "@type": "Question",
             "name": faq.question,
             "acceptedAnswer": { "@type": "Answer", "text": faq.answer }
-          }))
+          })) : []
         },
         {
           "@type": "BreadcrumbList",
