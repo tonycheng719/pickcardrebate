@@ -58,6 +58,7 @@ import { DahsingWinterPromoGuide } from "./dahsing-winter-promo-guide";
 import { TuitionFeeGuide, tuitionFeeFaqData } from "./tuition-fee-guide";
 import { ScTaxPayment2025Guide, scTaxPayment2025FaqData } from "./sc-tax-payment-2025";
 import { BeaJcbContactless2025Guide, beaJcbContactless2025FaqData } from "./bea-jcb-contactless-2025";
+import { UnionpayForeignFeeGuide, unionpayForeignFeeFaqData } from "./unionpay-foreign-fee-2025";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 import { ArticleTracker } from "@/app/discover/components/article-tracker";
 import { ArticleReviews } from "@/app/discover/components/article-reviews";
@@ -365,6 +366,34 @@ const GUIDES: Record<string, {
     ],
     publishDate: "2025-10-15",
     readTime: "6 分鐘",
+  },
+  "unionpay-foreign-fee-2025": {
+    id: "unionpay-foreign-fee-2025",
+    title: "銀聯卡外幣手續費調整｜AEON 等銀聯卡開始收 1%",
+    seoTitle: "銀聯卡外幣手續費 2025｜AEON/滙豐/恒生/安信銀聯卡收 1% 手續費｜替代方案",
+    heroTitle: "⚠️ 銀聯卡外幣手續費調整",
+    heroSubtitle: "AEON 等銀聯卡開始收取 1% 外幣交易手續費",
+    description: "AEON 銀聯信用卡及香港各大銀行銀聯卡已開始收取 1% 外幣交易手續費。了解最新收費詳情、對持卡人嘅影響及替代方案！",
+    content: "unionpay-foreign-fee-2025",
+    imageUrl: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=2071&auto=format&fit=crop",
+    tags: ["銀聯", "外幣手續費", "AEON", "北上消費", "海外簽賬"],
+    keywords: [
+      "銀聯卡外幣手續費",
+      "AEON 銀聯卡手續費",
+      "銀聯 1% 手續費",
+      "銀聯卡北上消費",
+      "銀聯卡內地消費",
+      "銀聯卡日本消費",
+      "銀聯卡韓國消費",
+      "HSBC Pulse 手續費",
+      "恒生銀聯手續費",
+      "安信銀聯手續費",
+      "EarnMORE 外幣手續費",
+      "WeWa 外幣手續費",
+    ],
+    publishDate: "2025-12-30",
+    lastUpdated: "2025-12-30",
+    readTime: "5 分鐘",
   },
   "online-shopping-guide": {
     id: "online-shopping-guide",
@@ -1665,6 +1694,8 @@ function getGuideFaqData(guideId: string) {
       return scTaxPayment2025FaqData;
     case "bea-jcb-contactless-2025":
       return beaJcbContactless2025FaqData;
+    case "unionpay-foreign-fee-2025":
+      return unionpayForeignFeeFaqData;
     case "online-shopping-guide":
       return onlineShoppingFaqData;
     case "dining-guide":
@@ -1749,6 +1780,8 @@ function renderGuideContent(guideId: string) {
       return <ScTaxPayment2025Guide />;
     case "bea-jcb-contactless-2025":
       return <BeaJcbContactless2025Guide />;
+    case "unionpay-foreign-fee-2025":
+      return <UnionpayForeignFeeGuide />;
     case "online-shopping-guide":
       return <OnlineShoppingGuide />;
     case "dining-guide":

@@ -967,7 +967,7 @@ export const HK_CARDS: CreditCard[] = [
     bank: "AEON",
     cardNetwork: "unionpay",
     style: { bgColor: "bg-gradient-to-br from-red-600 to-red-800", textColor: "text-white" },
-    foreignCurrencyFee: 0, // 銀聯通常免外幣手續費
+    foreignCurrencyFee: 1, // ⚠️ 2025年起收取1%外幣手續費
     rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 積分 = $1 回贈
     rules: [
       // 🔥「賞」亞洲優惠 - 內地/澳門/台灣 (2025/7/1 - 2026/1/31)
@@ -975,19 +975,19 @@ export const HK_CARDS: CreditCard[] = [
       { description: "🔥內地/澳門/台灣 6% [賞亞洲,需登記]", matchType: "base", percentage: 6.0, isForeignCurrency: true, cap: 100, capType: "reward", validDateRange: { start: "2025-07-01", end: "2026-01-31" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // 🔥「賞」亞洲優惠 - 韓國 (2025/12/1 - 2026/1/31)
       // 15X積分 = 6%，每月上限$200回贈（即每月首$3,333簽賬享6%），需登記
-      { description: "🔥韓國 6% [賞亞洲,需登記]", matchType: "base", percentage: 6.0, isForeignCurrency: true, cap: 200, capType: "reward", validDateRange: { start: "2025-12-01", end: "2026-01-31" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "🔥韓國 6% [賞亞洲,需登記]", matchType: "base", percentage: 6.0, isForeignCurrency: true, cap: 200, capType: "reward", validDateRange: { start: "2025-12-01", end: "2026-1-31" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // 每月20日 AEON 會員日 95折 - 折扣優惠，非回贈
       { description: "每月20日 AEON 95折", matchType: "merchant", matchValue: ["aeon"], percentage: 5.0, validDates: [20], isDiscount: true },
       // 基本回贈：$1 = 1 積分，250 積分 = $1 回贈 (0.4%)
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["AEON會員日", "永久免年費", "銀聯", "內地6%", "韓國6%"],
+    tags: ["AEON會員日", "永久免年費", "銀聯", "內地6%", "韓國6%", "銀聯1%手續費"],
     feeWaiverCondition: "永久免年費",
     welcomeOfferText: "迎新簽 $6,000 送 175,000 積分 ($700) (需手機支付$1,000+App申請)",
     officialApplyUrl: "https://www.aeon.com.hk/tc/credit-card/",
     applyUrl: "https://www.aeon.com.hk/tc/credit-card/",
-    sellingPoints: ["🔥內地/澳門/台灣 6% (需登記)", "🔥韓國 6% (需登記)", "每月20日 AEON 95折 [折扣]", "永久免年費", "免外幣手續費"],
-    note: "⚠️ 每月20日 AEON 95折是購物時直接減價，非事後回贈。迎新須手機支付$1,000並經App申請。\n\n🔥 **「賞」亞洲優惠**（至2026/1/31）：內地/澳門/台灣/韓國簽賬可享6%回贈，須登記！[查看詳情](/discover/aeon-unionpay-asia-2025)",
+    sellingPoints: ["🔥內地/澳門/台灣 6% (需登記)", "🔥韓國 6% (需登記)", "每月20日 AEON 95折 [折扣]", "永久免年費", "⚠️ 外幣手續費 1%"],
+    note: "⚠️ 每月20日 AEON 95折是購物時直接減價，非事後回贈。迎新須手機支付$1,000並經App申請。\n\n⚠️ **外幣手續費調整**：AEON 銀聯卡已開始收取 **1% 外幣手續費**，「賞」亞洲優惠淨回贈約 5%。[了解更多](/discover/unionpay-foreign-fee-2025)\n\n🔥 **「賞」亞洲優惠**（至2026/1/31）：內地/澳門/台灣/韓國簽賬可享6%回贈，須登記！[查看詳情](/discover/aeon-unionpay-asia-2025)",
     promoEndDate: "2026-01-31",
     promoName: "AEON銀聯「賞」亞洲優惠",
   },
