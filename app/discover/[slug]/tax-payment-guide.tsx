@@ -108,6 +108,17 @@ const taxPaymentMethods = [
     cons: ["只限工銀卡"],
   },
   {
+    method: "雲閃付 App 繳稅",
+    fee: "0.6% 服務費",
+    limit: "視乎信用卡額度",
+    creditCardSupport: true,
+    bestCards: [
+      { card: "東亞 銀聯卡", id: "bea-unionpay-diamond", rate: "有回贈" },
+    ],
+    pros: ["可用銀聯卡", "接受多種銀聯卡"],
+    cons: ["0.6% 服務費", "需扣除服務費計算淨回贈"],
+  },
+  {
     method: "政府繳費網站（PPS）",
     fee: "免手續費",
     limit: "無上限",
@@ -314,7 +325,8 @@ export function TaxPaymentGuide() {
             <div>
               <h4 className="font-bold text-amber-800 dark:text-amber-200 mb-1">⚠️ 注意事項</h4>
               <ul className="text-amber-700 dark:text-amber-300 text-sm space-y-1">
-                <li>• AlipayHK、雲閃付等平台可能有<strong>交稅金額上限</strong></li>
+                <li>• <strong>雲閃付交稅收取 0.6% 服務費</strong>，需計算淨回贈</li>
+                <li>• AlipayHK/WeChat Pay 已<strong>不支援信用卡交稅</strong></li>
                 <li>• 部分方法需要<strong>預先綁定信用卡</strong></li>
                 <li>• 銀行優惠可能有<strong>名額限制</strong>，先到先得</li>
               </ul>

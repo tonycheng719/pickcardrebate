@@ -311,13 +311,13 @@ export const PROMOS: Promo[] = [
     id: "wewa-dining-2025",
     title: "WeWa 卡本地餐飲優惠 - 全港食肆高達 10% 現金回贈",
     merchant: "全港食肆",
-    description: "12月限定！憑 WeWa 卡實體卡於全港食肆簽賬，單一簽賬滿 $100 即享 10% 現金回贈！全期額外回贈上限 $500，即可簽約 $5,200！",
+    description: "12月限定！憑 WeWa 卡實體卡於全港食肆簽賬，單一簽賬滿 $100 即享 10% 現金回贈（唔使月簽$1,500）！手機支付需滿足月簽$1,500先有10%，否則得6.4%！",
     imageUrl: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop",
     expiryDate: "2025-12-31",
-    relatedCardIds: ["wewa-unionpay"],
+    relatedCardIds: ["wewa-unionpay", "wewa-visa-signature"],
     tags: ["餐飲", "WeWa", "安信", "10%回贈", "需登記"],
     url: "https://www.primecredit.com/",
-    updatedAt: "2025-12-09",
+    updatedAt: "2025-12-30",
     isPinned: true,
     content: `
 ## 📅 推廣期
@@ -332,20 +332,27 @@ export const PROMOS: Promo[] = [
 
 ## 💰 回贈詳情
 
-### 🪪 實體卡拍卡
+### 🪪 實體卡拍卡 🔥 最推薦
 
 - 優惠回贈：**9.6%**
 - 基本回贈：0.4%
-- **合共：10%** 🔥
+- **合共：10%**
+- ⚠️ **唔使月簽 $1,500！**
 
-### 📱 指定手機支付
+### 📱 手機支付（夠月簽 $1,500）
 
 - 優惠回贈：6%
 - 玩樂類別：3.6%
 - 基本回贈：0.4%
 - **合共：10%**
 
-> 💡 **實體卡拍卡最著數**！唔使揀玩樂類別都有 10%！
+### 📱 手機支付（唔夠月簽 $1,500）
+
+- 優惠回贈：6%
+- 基本回贈：0.4%
+- **合共：6.4%** ⚠️
+
+> 💡 **實體卡拍卡最著數**！唔使揀玩樂類別、唔使月簽 $1,500 都有 10%！
 
 ---
 
@@ -361,7 +368,7 @@ export const PROMOS: Promo[] = [
 
 - ✅ Apple Pay
 - ✅ 銀聯手機閃付（OmyCard App）
-- ✅ 銀聯 QR Code 支付
+- ✅ 銀聯 QR Code 支付（雲閃付）
 
 ---
 
@@ -385,7 +392,8 @@ export const PROMOS: Promo[] = [
 
 ## 💡 識玩攻略
 
-- 🪪 帶實體卡出街食飯，10% 最實際！
+- 🪪 **帶實體卡**出街食飯，10% 最實際！唔使諗月簽$1,500！
+- 📱 用手機支付嘅話，要留意月簽是否夠$1,500
 - 💰 12 月限定，把握機會！
 - 📅 回贈 2026/3/31 前入賬
 `,
