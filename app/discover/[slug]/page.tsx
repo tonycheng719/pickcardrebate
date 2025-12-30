@@ -59,6 +59,7 @@ import { TuitionFeeGuide, tuitionFeeFaqData } from "./tuition-fee-guide";
 import { ScTaxPayment2025Guide, scTaxPayment2025FaqData } from "./sc-tax-payment-2025";
 import { BeaJcbContactless2025Guide, beaJcbContactless2025FaqData } from "./bea-jcb-contactless-2025";
 import { UnionpayForeignFeeGuide, unionpayForeignFeeFaqData } from "./unionpay-foreign-fee-2025";
+import BeaRewardExtension2026Guide, { beaRewardExtensionFaqData } from "./bea-reward-extension-2026";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 import { ArticleTracker } from "@/app/discover/components/article-tracker";
 import { ArticleReviews } from "@/app/discover/components/article-reviews";
@@ -394,6 +395,32 @@ const GUIDES: Record<string, {
     publishDate: "2025-12-30",
     lastUpdated: "2025-12-30",
     readTime: "5 分鐘",
+  },
+  "bea-reward-extension-2026": {
+    id: "bea-reward-extension-2026",
+    title: "東亞信用卡回贈推廣續期｜GOAL卡/i-Titanium 延長",
+    seoTitle: "東亞銀行信用卡回贈延長 2026｜BEA GOAL/Flyer World/i-Titanium 推廣期更新",
+    heroTitle: "📅 東亞信用卡回贈推廣續期",
+    heroSubtitle: "GOAL卡/World Mastercard 續期至 6 月，i-Titanium 續期至 12 月",
+    description: "東亞銀行多張信用卡額外獎分推廣延長！GOAL 卡、World Mastercard 續期至 2026 年 6 月，i-Titanium 卡續期至 12 月，回贈上下限維持不變。",
+    content: "bea-reward-extension-2026",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["東亞銀行", "回贈延期", "GOAL卡", "i-Titanium", "Flyer World"],
+    keywords: [
+      "東亞信用卡回贈",
+      "BEA GOAL 信用卡",
+      "BEA i-Titanium",
+      "BEA Flyer World Mastercard",
+      "東亞 Visa Signature",
+      "東亞銀聯卡",
+      "東亞信用卡優惠",
+      "BEA 額外獎分",
+      "東亞信用卡推廣延長",
+      "東亞信用卡 2026",
+    ],
+    publishDate: "2025-12-30",
+    lastUpdated: "2025-12-30",
+    readTime: "4 分鐘",
   },
   "online-shopping-guide": {
     id: "online-shopping-guide",
@@ -1696,6 +1723,8 @@ function getGuideFaqData(guideId: string) {
       return beaJcbContactless2025FaqData;
     case "unionpay-foreign-fee-2025":
       return unionpayForeignFeeFaqData;
+    case "bea-reward-extension-2026":
+      return beaRewardExtensionFaqData;
     case "online-shopping-guide":
       return onlineShoppingFaqData;
     case "dining-guide":
@@ -1782,6 +1811,8 @@ function renderGuideContent(guideId: string) {
       return <BeaJcbContactless2025Guide />;
     case "unionpay-foreign-fee-2025":
       return <UnionpayForeignFeeGuide />;
+    case "bea-reward-extension-2026":
+      return <BeaRewardExtension2026Guide />;
     case "online-shopping-guide":
       return <OnlineShoppingGuide />;
     case "dining-guide":

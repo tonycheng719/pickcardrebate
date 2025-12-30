@@ -242,5 +242,15 @@ export const GUIDES: Guide[] = [
     merchant: "優惠",
     isNew: true,
   },
+  {
+    id: "bea-reward-extension-2026",
+    type: "guide",
+    title: "東亞信用卡回贈推廣續期｜GOAL卡/i-Titanium 延長",
+    description: "東亞銀行多張信用卡額外獎分推廣延長！GOAL 卡、World Mastercard 續期至 2026 年 6 月，i-Titanium 卡續期至 12 月，回贈上下限維持不變。",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["東亞銀行", "回贈延期", "GOAL卡", "i-Titanium"],
+    merchant: "優惠",
+    isNew: true,
+  },
 ];
 
