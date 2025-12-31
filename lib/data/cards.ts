@@ -1491,20 +1491,27 @@ export const HK_CARDS: CreditCard[] = [
     bank: "信銀國際",
     style: { bgColor: "bg-gradient-to-br from-orange-500 to-red-600", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
+    annualFee: 0,
+    feeWaiverCondition: "永久免年費",
     rules: [
-      // T&C: 食肆及網上簽賬 6%，需每月累積簽滿 $3,800，額外回贈上限 $200
+      // T&C 2026/1/1-2026/6/30: 食肆及網上簽賬 6%，需每月累積簽滿 $3,800，額外回贈上限 $200
+      // 6% = 基本 0.55% + 額外 5.45%
+      // 額外回贈上限 $200 = $200 / 5.45% = $3,670 簽賬
+      // ⚠️ 下限 ($3,800) 高過上限 ($3,670)！
       // 不包括：酒店餐飲、美食廣場/超市/百貨公司內食肆、麵包房、糕點商店
       // 網上不包括：超級市場網上平台
-      { description: "食肆 6% [月簽$3,800]", matchType: "category", matchValue: ["dining"], percentage: 6.0, monthlyMinSpend: 3800, cap: 200, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
-      { description: "網上簽賬 6% [月簽$3,800]", matchType: "category", matchValue: ["online"], percentage: 6.0, monthlyMinSpend: 3800, cap: 200, capType: "reward", excludeCategories: ["ewallet", "supermarket"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "食肆 6% [月簽$3,800]", matchType: "category", matchValue: ["dining"], percentage: 6.0, monthlyMinSpend: 3800, cap: 200, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus", "fps"], validDateRange: { start: "2026-01-01", end: "2026-06-30" } },
+      { description: "網上簽賬 6% [月簽$3,800]", matchType: "category", matchValue: ["online"], percentage: 6.0, monthlyMinSpend: 3800, cap: 200, capType: "reward", excludeCategories: ["ewallet", "supermarket"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus", "fps"], validDateRange: { start: "2026-01-01", end: "2026-06-30" } },
       // T&C: 基本回贈 0.55%，排除電子錢包、八達通、繳費等
-      { description: "基本回饋 0.55%", matchType: "base", percentage: 0.55, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "基本回饋 0.55%", matchType: "base", percentage: 0.55, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme", "fps"] },
     ],
-    tags: ["餐飲6%", "網購6%", "月簽$3800"],
-    sellingPoints: ["食肆及網上簽賬 6% (需月簽$3,800)", "額外回贈每月上限 $200", "基本回贈 0.55%"],
-    note: "⚠️ 食肆/網上 6% 需每月累積簽滿 $3,800！額外回贈上限 $200/月。不適用於：酒店餐飲、美食廣場/超市內食肆、超市網購平台、電子錢包（支付寶/微信支付/PayMe）、八達通增值。",
+    tags: ["餐飲6%", "網購6%", "月簽$3800", "永久免年費"],
+    sellingPoints: ["食肆及網上簽賬 6% (需月簽$3,800)", "額外回贈每月上限 $200", "基本回贈 0.55%", "永久免年費"],
+    note: "## 📌 食肆及網上簽賬 6% 現金回贈\n**推廣期：2026/1/1 - 2026/6/30**\n\n| 簽賬類別 | 回贈 | 月簽要求 | 額外回贈上限 |\n|:---|:---:|:---:|:---:|\n| 食肆 | 6% | $3,800 | $200 |\n| 網上 | 6% | $3,800 | $200 |\n\n---\n\n## ⚠️ 下限高過上限問題\n\n- **月簽下限**：$3,800（需簽滿先有 6%）\n- **額外回贈上限**：$200（相當於簽 $3,670）\n- 即係簽 $3,800 先有 6%，但 $200 上限喺 $3,670 已經爆 Cap！\n- 最後 $130 只有 0.55% 基本回贈\n\n---\n\n## ❌ 不計簽賬\n- 酒店餐飲、美食廣場/超市/百貨公司內食肆、麵包房、糕點商店\n- 超級市場網上平台\n- 電子錢包（支付寶/微信支付/PayMe/轉數快）\n- 八達通增值\n\n---\n\n📅 **2025年12月31日更新**",
     officialApplyUrl: "https://www.cncbinternational.com/personal/credit-card/motion/tc/index.html",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=178&a=228&sub_id1=pickcardrebate&sub_id2=web",
+    promoEndDate: "2026-06-30",
+    promoName: "食肆及網上簽賬 6% 現金回贈",
   },
   {
     id: "cncbi-hkairlines",
