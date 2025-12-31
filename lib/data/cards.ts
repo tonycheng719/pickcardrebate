@@ -370,23 +370,22 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.125, currency: 'Points' }, // 8 pts = 1 mile -> ratio 0.125
     rules: [
-      // T&C 2025/7/1-2025/12/31: 需每月簽滿 $5,000，餐飲+外幣可享 10X 積分 (4%)
+      // T&C 2026/1/1-2026/6/30: 需每月簽滿 $5,000，餐飲+外幣可享 10X 積分 (4%)
       // 餐飲上限：100,000 積分/月 = $10,000 簽賬
       // 外幣上限：250,000 積分/月 = $25,000 簽賬
       // 餐飲+外幣合共上限：300,000 積分/月 = $30,000 簽賬
-      { description: "本地餐飲 4% [月簽$5,000]", matchType: "category", matchValue: ["dining"], percentage: 4.0, monthlyMinSpend: 5000, cap: 10000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
-      { description: "酒店/旅遊 4% [月簽$5,000]", matchType: "category", matchValue: ["travel", "hotel"], percentage: 4.0, monthlyMinSpend: 5000, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
-      { description: "外幣簽賬 4% [月簽$5,000]", matchType: "base", percentage: 4.0, isForeignCurrency: true, monthlyMinSpend: 5000, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
-      // T&C: 不適用於 Alipay/WeChat Pay/PayMe
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      { description: "本地餐飲 4% [月簽$5,000]", matchType: "category", matchValue: ["dining"], percentage: 4.0, monthlyMinSpend: 5000, cap: 10000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "bocpay"], validDateRange: { start: "2026-01-01", end: "2026-06-30" } },
+      { description: "外幣簽賬 4% [月簽$5,000]", matchType: "base", percentage: 4.0, isForeignCurrency: true, monthlyMinSpend: 5000, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "bocpay"], validDateRange: { start: "2026-01-01", end: "2026-06-30" } },
+      // T&C: 不適用於 BoC Pay+/Alipay/WeChat Pay/PayMe
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "bocpay"] },
     ],
     tags: ["餐飲4%", "旅遊4%", "高級卡", "機場貴賓室"],
     welcomeOfferText: "迎新高達 810,000 積分 (54,000里/HK$3,240)",
     officialApplyUrl: "https://www.bochk.com/tc/creditcard/products/cheers.html",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=452&a=228&sub_id1=pickcardrebate&sub_id2=web",
     sellingPoints: ["本地餐飲 10X (4%)", "外幣簽賬 10X (4%)", "需每月簽滿 $5,000", "免費旅遊保險", "機場貴賓室"],
-    note: "💡 【推廣期 2025/7/1-2025/12/31】需每月簽滿 $5,000 方可享餐飲/外幣 10X 積分 (4%)！📊 每月上限：餐飲 $10,000 + 外幣 $25,000（合共 $30,000）。⚠️ 不適用於 Alipay/WeChat Pay/PayMe。✈️ 免費旅遊保險：憑卡支付機票/酒店/套票，即享高達 $780萬人身意外保障。🎫 機場貴賓室：每季度簽滿 $15,000 可享免費2次（同行賓客可同時使用）。🎁 迎新：基本 225,000 + 限時 510,000 + 私人財富/中銀理財額外 75,000 = 高達 810,000 積分（可換巴黎來回機票）！",
-    promoEndDate: "2025-12-31",
+    note: "## 📌 餐飲及旅遊簽賬 10X 積分優惠\n**推廣期：2026/1/1 - 2026/6/30**\n\n| 簽賬類別 | 積分 | 回贈 | 每月上限 |\n|:---|:---:|:---:|:---:|\n| 本地餐飲 | 10X | 4% | $10,000 |\n| 外幣零售 | 10X | 4% | $25,000 |\n| **合共** | - | - | **$30,000** |\n\n⚠️ **條件**：月簽滿 $5,000 方可享用\n❌ **不適用**：BoC Pay+、AlipayHK、WeChat Pay、PayMe\n\n---\n\n## 🎁 其他權益\n- ✈️ **免費旅遊保險**：凴卡支付機票/酒店/套票，即享高達 $780萬人身意外保障\n- 🎫 **機場貴賓室**：每季度簽滿 $15,000 可享免費2次\n- 🍽️ **高級餐廳買一送一**：指定套餐\n- ✈️ **卡塔爾航空 85 折**：推廣至 2026/8/31\n- 🏨 **Hotels.com 75 折**：連續入住4晚或以上\n\n---\n\n📅 **2025年12月31日更新**",
+    promoEndDate: "2026-06-30",
     promoName: "餐飲及旅遊簽賬 10X 積分優惠",
   },
   {
@@ -403,22 +402,22 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.125, currency: 'Points' },
     rules: [
-      // T&C 2025/7/1-2025/12/31: 需每月簽滿 $5,000，餐飲+外幣可享 8X 積分 (3.2%)
-      // 餐飲上限：80,000 積分/月 = $10,000 簽賬
-      // 外幣上限：200,000 積分/月 = $25,000 簽賬
-      // 餐飲+外幣合共上限：240,000 積分/月 = $30,000 簽賬
-      { description: "本地餐飲 3.2% [月簽$5,000]", matchType: "category", matchValue: ["dining"], percentage: 3.2, monthlyMinSpend: 5000, cap: 10000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
-      { description: "外幣簽賬 3.2% [月簽$5,000]", matchType: "base", percentage: 3.2, isForeignCurrency: true, monthlyMinSpend: 5000, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
-      // T&C: 不適用於 Alipay/WeChat Pay/PayMe
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      // T&C 2026/1/1-2026/6/30: 需每月簽滿 $5,000，餐飲+外幣可享 8X 積分 (3.2%)
+      // 餐飲上限：60,000 積分/月 = $7,500 簽賬
+      // 外幣上限：150,000 積分/月 = $18,750 簽賬
+      // 餐飲+外幣合共上限：180,000 積分/月 = $22,500 簽賬
+      { description: "本地餐飲 3.2% [月簽$5,000]", matchType: "category", matchValue: ["dining"], percentage: 3.2, monthlyMinSpend: 5000, cap: 7500, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "bocpay"], validDateRange: { start: "2026-01-01", end: "2026-06-30" } },
+      { description: "外幣簽賬 3.2% [月簽$5,000]", matchType: "base", percentage: 3.2, isForeignCurrency: true, monthlyMinSpend: 5000, cap: 18750, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "bocpay"], validDateRange: { start: "2026-01-01", end: "2026-06-30" } },
+      // T&C: 不適用於 BoC Pay+/Alipay/WeChat Pay/PayMe
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "bocpay"] },
     ],
     tags: ["餐飲3.2%", "外幣3.2%"],
     welcomeOfferText: "迎新高達 390,000 積分 (26,000里/HK$1,560)",
     officialApplyUrl: "https://www.bochk.com/tc/creditcard/products/cheers.html",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=452&a=228&sub_id1=pickcardrebate&sub_id2=web",
     sellingPoints: ["本地餐飲 8X (3.2%)", "外幣簽賬 8X (3.2%)", "需每月簽滿 $5,000"],
-    note: "💡 【推廣期 2025/7/1-2025/12/31】需每月簽滿 $5,000 方可享餐飲/外幣 8X 積分 (3.2%)！📊 每月上限：餐飲 $10,000 + 外幣 $25,000（合共 $30,000）。⚠️ 不適用於 Alipay/WeChat Pay/PayMe。🎁 迎新：基本 150,000 + 限時 165,000 + 私人財富/中銀理財額外 75,000 = 高達 390,000 積分（可換東京來回機票）！",
-    promoEndDate: "2025-12-31",
+    note: "## 📌 餐飲及旅遊簽賬 8X 積分優惠\n**推廣期：2026/1/1 - 2026/6/30**\n\n| 簽賬類別 | 積分 | 回贈 | 每月上限 |\n|:---|:---:|:---:|:---:|\n| 本地餐飲 | 8X | 3.2% | $7,500 |\n| 外幣零售 | 8X | 3.2% | $18,750 |\n| **合共** | - | - | **$22,500** |\n\n⚠️ **條件**：月簽滿 $5,000 方可享用\n❌ **不適用**：BoC Pay+、AlipayHK、WeChat Pay、PayMe\n\n---\n\n📅 **2025年12月31日更新**",
+    promoEndDate: "2026-06-30",
     promoName: "餐飲及旅遊簽賬 8X 積分優惠",
   },
   {
