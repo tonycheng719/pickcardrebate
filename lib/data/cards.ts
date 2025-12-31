@@ -2014,19 +2014,24 @@ export const HK_CARDS: CreditCard[] = [
     bank: "信銀國際",
     style: { bgColor: "bg-gradient-to-br from-red-600 to-red-800", textColor: "text-white" },
     foreignCurrencyFee: 0,
+    annualFee: 0,
+    feeWaiverCondition: "永久免年費",
     rules: [
-      // T&C: 人民幣簽賬/雲閃付App 4% (每月上限$150)
-      { description: "人民幣/雲閃付 4% [上限$150]", matchType: "base", percentage: 4.0, isForeignCurrency: true, cap: 150, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
-      // T&C: 單筆滿CNY4,000 額外6% (每月上限$250)
-      { description: "單筆滿¥4k 額外6% [上限$250]", matchType: "base", percentage: 6.0, isForeignCurrency: true, minSpend: 4000, cap: 250, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C 2026/1/1-2026/6/30: 人民幣簽賬/雲閃付App 4% (每月上限$150)
+      { description: "人民幣/雲閃付 4% [上限$150]", matchType: "base", percentage: 4.0, isForeignCurrency: true, cap: 150, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"], validDateRange: { start: "2026-01-01", end: "2026-06-30" } },
+      // T&C 2026/1/1-2026/6/30: 單筆滿CNY4,000 額外6% (每月上限$250)
+      { description: "單筆滿¥4k 額外6% [上限$250]", matchType: "base", percentage: 6.0, isForeignCurrency: true, minSpend: 4000, cap: 250, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"], validDateRange: { start: "2026-01-01", end: "2026-06-30" } },
       // T&C: 本地簽賬 0.4%，排除繳稅、網上繳費、八達通增值、電子錢包
       { description: "本地簽賬 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["大灣區", "北上", "免手續費", "人民幣10%"],
-    sellingPoints: ["人民幣/雲閃付 4% (月上限$150)", "單筆滿¥4,000 高達10%", "免外幣手續費"],
+    tags: ["大灣區", "北上", "免手續費", "人民幣10%", "永久免年費"],
+    sellingPoints: ["人民幣/雲閃付 4% (月上限$150)", "單筆滿¥4,000 高達10%", "免外幣手續費", "永久免年費"],
+    welcomeOfferText: "迎新：外幣簽賬 10% (上限$1,000) 或 簽$6,000送$600",
     officialApplyUrl: "https://www.cncbinternational.com/personal/credit-card/gba/tc/index.html",
     applyUrl: "https://www.cncbinternational.com/personal/credit-cards/gba-dual-currency-credit-card/tc/index.jsp",
-    note: "⚠️ 人民幣/雲閃付簽賬 4% (月上限$150)。單筆滿 CNY 4,000 可享額外 6% (月上限$250)，合共最高 10%。雲閃付需用商戶掃描付款模式。不適用於：繳稅、網上繳費、八達通自動增值、電子錢包增值。推廣期至 2025年12月31日。",
+    note: "## 📌 人民幣/雲閃付回贈優惠\n**推廣期：2026/1/1 - 2026/6/30**\n\n| 簽賬類別 | 回贈 | 每月上限 |\n|:---|:---:|:---:|\n| 人民幣/雲閃付 | 4% | $150 |\n| 單筆滿 ¥4,000 額外 | +6% | $250 |\n| **合共** | **10%** | **$400** |\n\n---\n\n## 💡 使用技巧\n\n### 🔥 最高 10% 攻略\n- 單筆滿 ¥4,000 = 4% + 6% = **10%**\n- 每月上限 $150 + $250 = **$400**\n\n### ☁️ 雲閃付注意\n- 需用**商戶掃描**付款模式\n- 用戶掃碼模式無回贈\n\n---\n\n## ❌ 不計簽賬\n- 電子錢包（支付寶/微信支付/PayMe）\n- 八達通自動增值\n- 繳稅、網上繳費\n\n---\n\n## 🎁 迎新優惠\n**二選一**：\n1. 外幣簽賬 10% (首3個月，上限$1,000)\n2. 簽滿 $6,000 送 $600\n\n---\n\n📅 **2025年12月31日更新**：推廣期延長至 2026年6月30日",
+    promoEndDate: "2026-06-30",
+    promoName: "人民幣/雲閃付高達10%回贈",
   },
   {
     id: "sc-apoint",
