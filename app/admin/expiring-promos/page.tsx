@@ -5,6 +5,7 @@ import { HK_CARDS } from "@/lib/data/cards";
 import { CreditCard } from "@/lib/types";
 import Link from "next/link";
 import { AlertTriangle, Clock, CheckCircle, Calendar, ExternalLink } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 interface PromoCard extends CreditCard {
   daysUntilExpiry: number;
@@ -14,6 +15,34 @@ interface PromoCard extends CreditCard {
 export default function ExpiringPromosPage() {
   const [promoCards, setPromoCards] = useState<PromoCard[]>([]);
   const [filter, setFilter] = useState<"all" | "expired" | "expiring_soon" | "active">("all");
+  const [cardImages, setCardImages] = useState<Record<string, string>>({});
+
+  // 從 database 獲取卡片圖片
+  useEffect(() => {
+    async function fetchCardImages() {
+      const supabase = createClient();
+      if (!supabase) return;
+      
+      try {
+        const { data } = await supabase
+          .from('cards')
+          .select('id, image_url');
+        
+        if (data) {
+          const images: Record<string, string> = {};
+          data.forEach((card: { id: string; image_url: string | null }) => {
+            if (card.image_url) {
+              images[card.id] = card.image_url;
+            }
+          });
+          setCardImages(images);
+        }
+      } catch (e) {
+        console.error('Failed to fetch card images:', e);
+      }
+    }
+    fetchCardImages();
+  }, []);
 
   useEffect(() => {
     const today = new Date();
@@ -46,6 +75,11 @@ export default function ExpiringPromosPage() {
 
     setPromoCards(cardsWithPromo);
   }, []);
+  
+  // 獲取卡片圖片 (優先用 database，fallback 用本地)
+  const getCardImage = (card: CreditCard) => {
+    return cardImages[card.id] || card.imageUrl || null;
+  };
 
   const filteredCards = promoCards.filter((card) => {
     if (filter === "all") return true;
@@ -201,13 +235,21 @@ export default function ExpiringPromosPage() {
                   </td>
                   <td className="px-4 py-4">
                     <div className="flex items-center gap-3">
-                      <div
-                        className={`w-10 h-6 rounded ${card.style.bgColor} flex items-center justify-center`}
-                      >
-                        <span className={`text-[8px] font-bold ${card.style.textColor}`}>
-                          {card.bank}
-                        </span>
-                      </div>
+                      {getCardImage(card) ? (
+                        <img
+                          src={getCardImage(card)!}
+                          alt={card.name}
+                          className="w-16 h-10 object-contain rounded"
+                        />
+                      ) : (
+                        <div
+                          className={`w-16 h-10 rounded ${card.style.bgColor} flex items-center justify-center`}
+                        >
+                          <span className={`text-[8px] font-bold ${card.style.textColor}`}>
+                            {card.bank}
+                          </span>
+                        </div>
+                      )}
                       <div>
                         <div className="font-medium text-gray-900 dark:text-white text-sm">
                           {card.name}
