@@ -32,6 +32,9 @@ export interface RewardRule {
   validDates?: number[]; // New: 1-31 (day of month, e.g. [20] for 20th of each month)
   validDateRange?: { start: string; end: string }; // New: Promo period
 
+  // Registration Logic
+  requiresRegistration?: boolean; // If true, this rule requires user to register first (not auto-calculated)
+
   condition?: RewardRuleCondition; // Legacy/Advanced conditions
 }
 

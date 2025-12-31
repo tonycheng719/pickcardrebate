@@ -1431,28 +1431,37 @@ export const HK_CARDS: CreditCard[] = [
     annualFee: 0,
     feeWaiverCondition: "永久免年費",
     rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 25,000 積分 = $100 回贈 (0.4%)
+    minIncome: 240000, // 年薪要求 $240,000
     rules: [
-      // T&C 2026/1-3月: 本地餐飲/外賣平台 高達11% (需登記，月簽≥$5,000 + 單筆≥$300 享9%+2%=11%)
-      { description: "本地餐飲/外賣 11% [需登記,月簽≥$5,000,單筆≥$300]", matchType: "category", matchValue: ["dining"], percentage: 11.0, monthlyMinSpend: 5000, minSpend: 300, cap: 400, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"], validDateRange: { start: "2026-01-01", end: "2026-03-31" } },
-      // T&C 2026/1-3月: 月簽<$5,000 或 單筆<$300 享 2%+2%=4%
-      { description: "本地餐飲/外賣 4% [需登記,月簽<$5,000或單筆<$300]", matchType: "category", matchValue: ["dining"], percentage: 4.0, cap: 100, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"], validDateRange: { start: "2026-01-01", end: "2026-03-31" } },
-      // T&C 2026/1-3月: 本地交通 4% (需登記,無簽賬要求)，每階段上限$100
-      { description: "本地交通 4% [需登記]", matchType: "category", matchValue: ["transport"], percentage: 4.0, cap: 100, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"], validDateRange: { start: "2026-01-01", end: "2026-03-31" } },
-      // T&C: 網上零售交易 5X 積分 (2%)，每曆年額外4倍積分上限 300,000 (即簽$75,000)
-      { description: "網購 5X積分 (2%)", matchType: "category", matchValue: ["online"], percentage: 2.0, cap: 75000, capType: "spending", excludeCategories: ["ewallet", "insurance", "tax", "government"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
-      // T&C: Visa 感應式付款 5X 積分 (2%)，每曆年額外4倍積分上限 300,000
-      { description: "Visa感應式支付 5X積分 (2%)", matchType: "paymentMethod", matchValue: ["contactless", "apple_pay", "google_pay", "samsung_pay"], percentage: 2.0, cap: 75000, capType: "spending", excludeCategories: ["ewallet", "insurance", "tax", "government"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
-      // 基本回贈 0.4%，排除電子錢包、八達通、繳費等
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
+      // ========== 基本回贈 (無需登記) ==========
+      // T&C: 網上零售簽賬 5X 積分 (2%)，每曆年首 $75,000 簽賬
+      { description: "網購 2% (5X積分)", matchType: "category", matchValue: ["online"], percentage: 2.0, cap: 75000, capType: "spending", excludeCategories: ["ewallet", "insurance", "tax", "government", "utilities"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C: 拍卡支付 5X 積分 (2%)，每曆年首 $75,000 簽賬
+      { description: "拍卡支付 2% (5X積分)", matchType: "paymentMethod", matchValue: ["contactless", "apple_pay", "google_pay", "samsung_pay"], percentage: 2.0, cap: 75000, capType: "spending", excludeCategories: ["ewallet", "insurance", "tax", "government", "utilities"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C: 八達通自動增值 0.4%
+      { description: "八達通自動增值 0.4%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
+      // T&C: 網上繳費 0.4%
+      { description: "網上繳費 0.4%", matchType: "category", matchValue: ["utilities"], percentage: 0.4 },
+      // 基本回贈 0.4%
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      
+      // ========== 加碼賞 (需登記，唔會自動計入總回贈) ==========
+      // T&C 2026/1-3月: 本地餐飲/外賣 9% (月簽≥$5,000 + 單筆≥$300)
+      // ⚠️ 呢個係額外回贈，唔係加埋基本2%！9%+2%=11% 係分開計
+      { description: "🔥本地餐飲 +9% [需登記,月簽≥$5,000,單筆≥$300]", matchType: "category", matchValue: ["dining"], percentage: 9.0, monthlyMinSpend: 5000, minSpend: 300, cap: 400, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"], validDateRange: { start: "2026-01-01", end: "2026-03-31" }, requiresRegistration: true },
+      // T&C 2026/1-3月: 本地餐飲/外賣 2% (月簽<$5,000 或 單筆<$300)
+      { description: "本地餐飲 +2% [需登記,月簽<$5,000或單筆<$300]", matchType: "category", matchValue: ["dining"], percentage: 2.0, cap: 100, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"], validDateRange: { start: "2026-01-01", end: "2026-03-31" }, requiresRegistration: true },
+      // T&C 2026/1-3月: 本地交通 2% (無簽賬要求)
+      { description: "本地交通 +2% [需登記]", matchType: "category", matchValue: ["transport"], percentage: 2.0, cap: 100, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"], validDateRange: { start: "2026-01-01", end: "2026-03-31" }, requiresRegistration: true },
     ],
-    tags: ["餐飲11%", "交通4%", "網購2%", "需登記", "永久免年費"],
+    tags: ["網購2%", "拍卡2%", "八達通0.4%", "永久免年費"],
     welcomeOfferText: "迎新簽 $6,000 送 $600 現金回贈 (首2個月) / Chill分期$15,000送$800 (首3個月)",
     officialApplyUrl: "https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/eye_card.html",
     applyUrl: "https://www.asia.ccb.com/hongkong/personal/credit-cards/eye-card.html",
-    sellingPoints: ["🔥 本地餐飲/外賣高達 11% (需登記)", "本地交通 4%", "網購及感應式支付 2%", "永久免年費"],
-    note: "💡 **【2026/1-3月新玩法】** 需每月經 App 登記（首2,500名）！\n\n📍 **本地餐飲/外賣**：\n- 月簽 ≥$5,000 + 單筆 ≥$300：享 **11%**（9%+2%）\n- 月簽 <$5,000 或 單筆 <$300：享 **4%**（2%+2%）\n- 每階段上限 **$400**\n- 爆Cap簽賬：約 $4,445（$400÷9%）\n\n📍 **本地交通**：4%（2%+2%），無簽賬要求，每階段上限$100。\n\n📍 **網購/感應式支付**：2%（5X積分），每曆年額外積分上限 300,000。\n\n⚠️ **不計回贈**：電子錢包充值/轉賬、酒店/會所餐飲、保險、RentSmart。\n\n📅 **2025年12月30日更新**：新一期推廣 2026/1/1-3/31",
+    sellingPoints: ["網購/拍卡 2% (5X積分)", "八達通自動增值 0.4%", "永久免年費", "🔥 加碼賞：餐飲最高+9% [需登記]"],
+    note: "## 📌 基本回贈（無需登記）\n- **網購/拍卡支付**：2%（5X積分），每年首 $75,000 簽賬\n- **八達通自動增值**：0.4%\n- **網上繳費**：0.4%\n- **其他簽賬**：0.4%\n\n---\n\n## 🔥 加碼賞（需每月登記，首2,500名）\n**推廣期：2026/1/1 - 3/31**\n\n| 類別 | 條件 | 額外回贈 | 上限/月 |\n|:---|:---|:---:|:---:|\n| 本地餐飲/外賣 | 月簽≥$5,000 + 單筆≥$300 | **+9%** | $400 |\n| 本地餐飲/外賣 | 月簽<$5,000 或 單筆<$300 | +2% | $100 |\n| 本地交通 | 無要求 | +2% | $100 |\n\n💡 **11% 計法**：基本 2%（網購/拍卡）+ 加碼 9% = 11%\n\n⚠️ **爆Cap計算**：$400 ÷ 9% = $4,445\n\n---\n\n## ❌ 不計回贈\n電子錢包（AlipayHK/PayMe/WeChat Pay）增值/轉賬、八達通自動增值（計加碼賞時）、酒店/會所餐飲、保險、RentSmart、稅項。\n\n---\n\n📅 **2025年12月30日更新**",
     promoEndDate: "2026-03-31",
-    promoName: "建行 eye 本地餐飲/交通回贈推廣",
+    promoName: "建行 eye 加碼賞",
   },
   {
     id: "icbc-horoscope",
