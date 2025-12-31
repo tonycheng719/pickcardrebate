@@ -320,9 +320,11 @@ export const HK_CARDS: CreditCard[] = [
     tags: ["Chill商戶10%", "網購5%", "海外5%"],
     welcomeOfferText: "迎新簽 $5,000 送 $500 現金回贈 (World) / 簽 $3,000 送 $300 (Platinum)",
     sellingPoints: ["Chill 商戶 10% (需月簽$3,000)", "海外及網上簽賬 5%", "支援 Apple Pay/Google Pay/Samsung Pay", "永久免年費"],
-    note: "⚠️ Chill 商戶 10% 及網上/海外 5% 需每月簽滿 $3,000 才可享用！「Chill 商戶」及「海外/網上簽賬」額外回贈每月合共上限 $150（兩者合併計算）。合資格手機支付：Apple Pay/Google Pay/Samsung Pay。❌ 不適用於 AlipayHK/WeChat Pay HK/八達通增值/網上繳費/公共事務費用/保險/P2P轉賬。Platinum 版本回贈率較低（8%/4%），門檻 $1,000。迎新：World 版簽 $5,000 送 $500 現金回贈；Platinum 版簽 $3,000 送 $300 現金回贈。",
+    note: "⚠️ Chill 商戶 10% 及網上/海外 5% 需每月簽滿 $3,000 才可享用！「Chill 商戶」及「海外/網上簽賬」額外回贈每月合共上限 $150（兩者合併計算）。合資格手機支付：Apple Pay/Google Pay/Samsung Pay。❌ 不適用於 AlipayHK/WeChat Pay HK/八達通增值/網上繳費/公共事務費用/保險/P2P轉賬。Platinum 版本回贈率較低（8%/4%），門檻 $1,000。迎新：World 版簽 $5,000 送 $500 現金回贈；Platinum 版簽 $3,000 送 $300 現金回贈。\n\n📅 **2025年12月30日更新**：推廣期延長至 **2026年6月30日**",
     officialApplyUrl: "https://www.bochk.com/tc/creditcard/products/chillcard.html",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=456&a=228&sub_id1=pickcardrebate&sub_id2=web",
+    promoEndDate: "2026-06-30",
+    promoName: "Chill 商戶 10% 現金回贈",
   },
   {
     id: "boc-sogo",
@@ -351,8 +353,8 @@ export const HK_CARDS: CreditCard[] = [
     officialApplyUrl: "https://www.bochk.com/tc/creditcard/cardproduct/sogo.html",
     applyUrl: "https://www.bochk.com/tc/creditcard/cardproduct/sogo.html",
     sellingPoints: ["手機支付 5.4% (每月上限$100)", "崇光百貨全年 5%", "崇光超市星期一 5%", "日本 SOGO/西武 5% 折扣"],
-    note: "💡 **手機支付**（Apple Pay/Google Pay/Samsung Pay）額外 5% 回贈（連基本 0.4% 共 5.4%），每月回贈上限 $100（即每月 $2,000 簽賬爆 Cap）。\n\n🛍️ **崇光百貨全年 5%**：適用於崇光百貨指定商戶及產品。\n\n🛒 **崇光超市 Freshmart**：逢星期一 5% 現金折扣。\n\n🇯🇵 **日本優惠**：日本 SOGO/西武滿 ¥1,000 享 5% 折扣；累積滿 ¥10萬可換 $800 崇光禮券。\n\n🍽️ **和三昧日本料理**：9 折優惠。\n\n❌ 不適用於：八達通增值、電子錢包充值/P2P轉賬（AlipayHK/PayMe/WeChat Pay）、繳稅、網上繳費。\n\n🎁 **迎新二選一**：$500 崇光禮券（需簽滿 $5,000）或 手機簽賬 10% (上限$300)。",
-    promoEndDate: "2025-12-31",
+    note: "💡 **手機支付**（Apple Pay/Google Pay/Samsung Pay）額外 5% 回贈（連基本 0.4% 共 5.4%），每月回贈上限 $100（即每月 $2,000 簽賬爆 Cap）。\n\n🛍️ **崇光百貨全年 5%**：適用於崇光百貨指定商戶及產品。\n\n🛒 **崇光超市 Freshmart**：逢星期一 5% 現金折扣。\n\n🇯🇵 **日本優惠**：日本 SOGO/西武滿 ¥1,000 享 5% 折扣；累積滿 ¥10萬可換 $800 崇光禮券。\n\n🍽️ **和三昧日本料理**：9 折優惠。\n\n❌ 不適用於：八達通增值、電子錢包充值/P2P轉賬（AlipayHK/PayMe/WeChat Pay）、繳稅、網上繳費。\n\n🎁 **迎新二選一**：$500 崇光禮券（需簽滿 $5,000）或 手機簽賬 10% (上限$300)。\n\n📅 **2025年12月30日更新**：推廣期延長至 **2026年12月31日**",
+    promoEndDate: "2026-12-31",
     promoName: "手機支付 5% 現金回贈",
   },
   {
