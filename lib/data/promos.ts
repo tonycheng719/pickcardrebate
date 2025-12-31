@@ -3,6 +3,88 @@ import { Promo } from "../types";
 export const PROMOS: Promo[] = [
   // ========== 🔥 最新優惠（置頂） ==========
   {
+    id: "boc-visa-5-percent-2026",
+    title: "🔥 中銀 Visa「狂賞派」｜簽賬高達 5% 回贈！",
+    merchant: "中銀香港",
+    description: "中銀 Visa 信用卡「狂賞派」更新！2026 上半年新增寵物及娛樂類別，取消超市百貨。實體店/網上簽賬高達 5% 回贈，繳費類別已剔除！",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    expiryDate: "2026-06-30",
+    relatedCardIds: ["boc-sogo", "boc-cheers", "boc-cheers-signature"],
+    tags: ["中銀", "Visa", "5%回贈", "寵物", "娛樂", "簽賬優惠"],
+    url: "https://www.bochk.com/tc/creditcard/promotions/offers/ms_1h26v.html",
+    updatedAt: "2025-12-31",
+    isPinned: true,
+    content: `
+## 📅 推廣期
+
+**2026年1月1日 至 2026年6月30日**
+
+---
+
+## 💳 適用信用卡
+
+所有中銀 Visa 信用卡：
+- ✅ BOC SOGO Visa Signature
+- ✅ BOC Cheers Visa Infinite
+- ✅ BOC Cheers Visa Signature
+- ✅ 其他中銀 Visa 卡
+
+---
+
+## 🎁 優惠詳情
+
+### 2026 上半年更新重點
+
+| 項目 | 舊版 | 新版 |
+|:---|:---:|:---:|
+| 超市/百貨 | ✅ | ❌ 已剔除 |
+| 寵物 | ❌ | ✅ 新增 |
+| 娛樂 | ❌ | ✅ 新增 |
+| 繳費 | ✅ | ❌ 已剔除 |
+| 實體店簽賬 | ✅ | ✅ |
+| 網上簽賬 | ✅ | ✅ |
+
+---
+
+## 📊 回贈率
+
+| 簽賬類別 | 回贈 |
+|:---|:---:|
+| 實體店簽賬 | 高達 **5%** |
+| 網上簽賬 | 高達 **5%** |
+| 寵物店 | 高達 **5%** |
+| 娛樂 | 高達 **5%** |
+
+> ⚠️ 每單/每月上下限維持不變
+
+---
+
+## ❌ 不適用類別
+
+- ❌ 繳費（2026 年已剔除）
+- ❌ 超市（2026 年已剔除）
+- ❌ 百貨公司（2026 年已剔除）
+
+---
+
+## 💡 識玩攻略
+
+### 🐕 寵物店簽賬
+- 新增類別！寵物店、寵物用品網購都計！
+
+### 🎮 娛樂簽賬
+- 新增類別！遊戲、串流平台等都計！
+
+### ⚠️ 注意事項
+- 超市/百貨已剔除，唔好再用嚟買日用品
+- 繳費完全唔計，記得用其他卡
+
+---
+
+📅 **2025年12月31日更新**：2026上半年版本更新
+`,
+  },
+  {
     id: "dbs-tripcom-2025",
     title: "🔥 DBS Mastercard x Trip.com｜機票減$150 / 酒店減$120！",
     merchant: "Trip.com",
