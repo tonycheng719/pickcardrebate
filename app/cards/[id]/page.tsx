@@ -630,7 +630,7 @@ export default function CardDetailPage() {
                             <span className="text-gray-500">💡</span>
                             <span className="text-gray-600 dark:text-gray-400">
                               外幣手續費：<span className="font-medium text-orange-600 dark:text-orange-400">{card.foreignCurrencyFee}%</span>
-                              <span className="text-xs ml-1">（海外簽賬已在上方扣除）</span>
+                              <span className="text-xs ml-1">（海外/外幣簽賬時適用）</span>
                             </span>
                           </>
                         )}
