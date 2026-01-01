@@ -14,6 +14,16 @@ export interface Guide {
 export const GUIDES: Guide[] = [
   // 🔥 最新文章放最前
   {
+    id: "boc-visa-crazy-rewards-2026",
+    type: "guide",
+    title: "中銀 Visa 狂賞派攻略｜7大類別高達5%回贈",
+    description: "中銀 Visa 卡「狂賞派」2026 完全攻略！7大類別簽賬高達 5% 回贈，新增寵物+娛樂，繳費/超市已剔除。登記名額 40,000，先到先得！",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["中銀", "Visa", "狂賞派", "5%回贈", "需登記"],
+    merchant: "優惠",
+    isNew: true,
+  },
+  {
     id: "bea-reward-extension-2026",
     type: "guide",
     title: "東亞信用卡回贈推廣續期｜GOAL卡/i-Titanium 延長",

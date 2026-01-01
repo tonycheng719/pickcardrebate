@@ -60,6 +60,7 @@ import { ScTaxPayment2025Guide, scTaxPayment2025FaqData } from "./sc-tax-payment
 import { BeaJcbContactless2025Guide, beaJcbContactless2025FaqData } from "./bea-jcb-contactless-2025";
 import { UnionpayForeignFeeGuide, unionpayForeignFeeFaqData } from "./unionpay-foreign-fee-2025";
 import BeaRewardExtension2026Guide, { beaRewardExtensionFaqData } from "./bea-reward-extension-2026";
+import BocVisaCrazyRewards2026Guide, { bocVisaCrazyRewardsFaqData } from "./boc-visa-crazy-rewards-2026";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 import { ArticleTracker } from "@/app/discover/components/article-tracker";
 import { ArticleReviews } from "@/app/discover/components/article-reviews";
@@ -395,6 +396,31 @@ const GUIDES: Record<string, {
     publishDate: "2025-12-30",
     lastUpdated: "2025-12-30",
     readTime: "5 分鐘",
+  },
+  "boc-visa-crazy-rewards-2026": {
+    id: "boc-visa-crazy-rewards-2026",
+    title: "中銀 Visa 狂賞派攻略｜7大類別高達5%回贈",
+    seoTitle: "中銀 Visa 狂賞派 2026 完全攻略｜7大類別簽賬高達5%回贈｜登記教學",
+    heroTitle: "🔥 中銀 Visa 狂賞派完全攻略",
+    heroSubtitle: "7大類別簽賬高達 5% 回贈！新增寵物+娛樂！",
+    description: "中銀 Visa 卡「狂賞派」2026 完全攻略！7大類別簽賬高達 5% 回贈，新增寵物+娛樂，繳費/超市已剔除。登記名額 40,000，先到先得！",
+    content: "boc-visa-crazy-rewards-2026",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["中銀", "Visa", "狂賞派", "5%回贈", "需登記", "寵物", "娛樂"],
+    keywords: [
+      "中銀 Visa 狂賞派",
+      "中銀信用卡優惠",
+      "BOC Visa 5%回贈",
+      "中銀 SOGO 卡",
+      "中銀 Cheers 卡",
+      "香港信用卡優惠 2026",
+      "中銀 Visa 簽賬回贈",
+      "狂賞派登記",
+      "中銀信用卡 2026",
+    ],
+    publishDate: "2026-01-01",
+    lastUpdated: "2026-01-01",
+    readTime: "6 分鐘",
   },
   "bea-reward-extension-2026": {
     id: "bea-reward-extension-2026",
@@ -1725,6 +1751,8 @@ function getGuideFaqData(guideId: string) {
       return unionpayForeignFeeFaqData;
     case "bea-reward-extension-2026":
       return beaRewardExtensionFaqData;
+    case "boc-visa-crazy-rewards-2026":
+      return bocVisaCrazyRewardsFaqData;
     case "online-shopping-guide":
       return onlineShoppingFaqData;
     case "dining-guide":
@@ -1813,6 +1841,8 @@ function renderGuideContent(guideId: string) {
       return <UnionpayForeignFeeGuide />;
     case "bea-reward-extension-2026":
       return <BeaRewardExtension2026Guide />;
+    case "boc-visa-crazy-rewards-2026":
+      return <BocVisaCrazyRewards2026Guide />;
     case "online-shopping-guide":
       return <OnlineShoppingGuide />;
     case "dining-guide":
