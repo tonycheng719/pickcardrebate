@@ -209,7 +209,17 @@ export default function AdminDiscoverPage() {
     });
   }, [keyword, promos, articleCategories, articlePinned]);
 
-  const totalGuideViews = Object.values(viewStats).reduce((a, b) => a + b, 0);
+  // 計算攻略和優惠的瀏覽數
+  const guideIds = new Set(GUIDES.map(g => g.id));
+  const promoIds = new Set(promos.map(p => p.id));
+  
+  const totalGuideViews = Object.entries(viewStats)
+    .filter(([id]) => guideIds.has(id))
+    .reduce((sum, [, count]) => sum + count, 0);
+    
+  const totalPromoViews = Object.entries(viewStats)
+    .filter(([id]) => promoIds.has(id))
+    .reduce((sum, [, count]) => sum + count, 0);
 
   // Open edit dialog for guide
   const handleEditGuide = (guide: Guide) => {
@@ -445,11 +455,11 @@ export default function AdminDiscoverPage() {
         <Card className="dark:bg-gray-800 dark:border-gray-700">
           <CardContent className="p-4 flex items-center gap-4">
             <div className="p-3 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
-              <Sparkles className="h-6 w-6 text-amber-600 dark:text-amber-400" />
+              <TrendingUp className="h-6 w-6 text-amber-600 dark:text-amber-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{GUIDES.filter(g => g.isNew).length}</p>
-              <p className="text-sm text-gray-500">新文章</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalPromoViews.toLocaleString()}</p>
+              <p className="text-sm text-gray-500">優惠總瀏覽</p>
             </div>
           </CardContent>
         </Card>
@@ -644,6 +654,12 @@ export default function AdminDiscoverPage() {
                   <th className="px-6 py-4 font-medium">標籤</th>
                   <th className="px-6 py-4 font-medium">
                     <div className="flex items-center gap-1">
+                      <Eye className="h-4 w-4" />
+                      瀏覽
+                    </div>
+                  </th>
+                  <th className="px-6 py-4 font-medium">
+                    <div className="flex items-center gap-1">
                       <CalendarIcon className="h-4 w-4" />
                       到期日
                     </div>
@@ -709,6 +725,20 @@ export default function AdminDiscoverPage() {
                             </span>
                           )}
                         </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        {(() => {
+                          const views = viewStats[item.id] || 0;
+                          const isTop3 = index < 3 && views > 0;
+                          return (
+                            <div className="flex items-center gap-2">
+                              {isTop3 && <TrendingUp className="h-4 w-4 text-green-500" />}
+                              <span className={`font-medium ${isTop3 ? 'text-green-600 dark:text-green-400' : views > 0 ? 'text-gray-600 dark:text-gray-300' : 'text-gray-400'}`}>
+                                {views > 0 ? views.toLocaleString() : '-'}
+                              </span>
+                            </div>
+                          );
+                        })()}
                       </td>
                       <td className="px-6 py-4 text-gray-500 dark:text-gray-300 text-sm">
                         {item.expiryDate || '-'}
