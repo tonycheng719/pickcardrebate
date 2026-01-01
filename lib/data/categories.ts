@@ -34,6 +34,13 @@ export const CATEGORIES: Category[] = [
   { id: "tunnel_fee", name: "隧道費", icon: "Car", accentColor: "text-slate-600", bgColor: "bg-slate-50" },
   { id: "parking", name: "停車場", icon: "ParkingCircle", accentColor: "text-blue-600", bgColor: "bg-blue-50" },
   { id: "ev_charging", name: "電動車充電", icon: "BatteryCharging", accentColor: "text-green-600", bgColor: "bg-green-50" },
+  
+  // 中銀狂賞派 7大類別 (2026)
+  { id: "pet", name: "寵物", icon: "Dog", accentColor: "text-amber-500", bgColor: "bg-amber-50" },
+  { id: "medical", name: "醫療", icon: "Stethoscope", accentColor: "text-red-600", bgColor: "bg-red-50" },
+  { id: "jewelry_fashion", name: "珠寶服飾", icon: "Gem", accentColor: "text-purple-600", bgColor: "bg-purple-50" },
+  { id: "hotel_flight", name: "機票酒店", icon: "Plane", accentColor: "text-sky-600", bgColor: "bg-sky-50" },
+  
   { id: "other", name: "其他", icon: "MoreHorizontal", accentColor: "text-gray-500", bgColor: "bg-gray-50" },
   
   // 一般消費

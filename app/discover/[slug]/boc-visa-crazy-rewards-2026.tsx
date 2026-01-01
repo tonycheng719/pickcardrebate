@@ -23,19 +23,23 @@ export const bocVisaCrazyRewardsFaqData = [
   },
   {
     question: "可以用 Apple Pay / Google Pay 簽賬嗎？",
-    answer: "可以！透過 BoC Pay+、Apple Pay、Google Pay、Samsung Pay 付款都計。但 AlipayHK、雲閃付、WeChat Pay HK 等唔計。"
+    answer: "狂賞派：透過 BoC Pay+、Apple Pay、Google Pay、Samsung Pay 付款都計，但雲閃付、AlipayHK、WeChat Pay HK 唔計。狂賞飛：雲閃付都計！"
   },
   {
-    question: "狂賞派可以同其他中銀 Visa 優惠疊加嗎？",
-    answer: "可以！狂賞派可以同 SOGO 卡手機付款優惠、Cheers 卡餐飲/海外優惠疊加使用，雙重賺取回贈！"
+    question: "狂賞派同狂賞飛可以同時登記嗎？",
+    answer: "可以！狂賞派同狂賞飛係兩個獨立優惠，各有各嘅登記連結。用 Cheers VI 卡可以疊加狂賞飛 + Cheers 外幣 4% = 內地/澳門高達 10%！"
+  },
+  {
+    question: "狂賞飛每季要簽幾多？",
+    answer: "內地/澳門每季簽滿 $5,000 回贈 $300 (6%)；其他海外每季簽滿 $10,000 回贈 $300 (3%)。搭配 Cheers VI 最高可達 10%！"
   },
   {
     question: "每月最高可以賺幾多回贈？",
-    answer: "每月最高可賺 $680 現金回贈（本地實體店平日 $120 + 紅日 $300 + 網上平日 $60 + 網上紅日 $200）。推廣期最高可賺 $4,080。"
+    answer: "狂賞派每月最高 $680，推廣期最高 $4,080。狂賞飛每季最高 $600（內地/澳門 $300 + 其他海外 $300），推廣期最高 $1,200。"
   },
   {
     question: "咩係「紅日」？",
-    answer: "紅日指星期日及公眾假期。於紅日簽賬可享 5% 回贈，平日（非紅日）簽賬享 2% 回贈。"
+    answer: "紅日指星期日及公眾假期。於紅日簽賬可享 5% 回贈，平日（非紅日）簽賬享 2% 回贈。只適用於狂賞派。"
   }
 ];
 
@@ -75,10 +79,10 @@ export default function BocVisaCrazyRewards2026Guide() {
           </span>
         </div>
         <h1 className="text-2xl md:text-3xl font-bold mb-3">
-          中銀 Visa 狂賞派完全攻略 🔥
+          中銀 Visa 狂賞派 + 狂賞飛 完全攻略 🔥✈️
         </h1>
         <p className="text-white/90 text-lg">
-          7大類別簽賬高達 5% 回贈！新增寵物+娛樂，但繳費/超市已剔除！
+          狂賞派：7大類別高達 5%！狂賞飛：內地/澳門高達 6%，搭 Cheers VI 最高 10%！
         </p>
       </div>
 
@@ -430,11 +434,99 @@ export default function BocVisaCrazyRewards2026Guide() {
         </div>
       </div>
 
+      {/* 狂賞飛 Section */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl border-2 border-sky-400 dark:border-sky-600 overflow-hidden">
+        <div className="bg-gradient-to-r from-sky-600 to-blue-700 p-4 text-white">
+          <div className="flex items-center gap-2">
+            <Plane className="h-6 w-6" />
+            <h2 className="text-xl font-bold">狂賞飛：海外簽賬高達 6% 回贈！✈️</h2>
+          </div>
+          <p className="text-sky-100 text-sm mt-1">搭配 Cheers VI 最高 10%！</p>
+        </div>
+        
+        <div className="p-6 space-y-4">
+          <div className="flex items-center gap-2 p-3 bg-sky-100 dark:bg-sky-900/30 rounded-lg">
+            <Info className="h-5 w-5 text-sky-600 dark:text-sky-400" />
+            <span className="text-sm text-sky-800 dark:text-sky-300">
+              <strong>狂賞飛</strong>同<strong>狂賞派</strong>係兩個獨立優惠，各有各嘅登記連結！
+            </span>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-gray-100 dark:bg-gray-700">
+                  <th className="px-4 py-3 text-left">地區</th>
+                  <th className="px-4 py-3 text-center">每季累積簽</th>
+                  <th className="px-4 py-3 text-center">回贈</th>
+                  <th className="px-4 py-3 text-center">每季上限</th>
+                  <th className="px-4 py-3 text-center">疊加 Cheers VI</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b dark:border-gray-700 bg-sky-50 dark:bg-sky-900/20">
+                  <td className="px-4 py-3 font-medium">🇨🇳🇲🇴 內地/澳門</td>
+                  <td className="px-4 py-3 text-center">$5,000</td>
+                  <td className="px-4 py-3 text-center text-sky-600 dark:text-sky-400 font-bold">6% ($300)</td>
+                  <td className="px-4 py-3 text-center">$300</td>
+                  <td className="px-4 py-3 text-center text-green-600 dark:text-green-400 font-bold">10% 🔥</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3 font-medium">🌍 其他海外</td>
+                  <td className="px-4 py-3 text-center">$10,000</td>
+                  <td className="px-4 py-3 text-center text-blue-600 dark:text-blue-400 font-bold">3% ($300)</td>
+                  <td className="px-4 py-3 text-center">$300</td>
+                  <td className="px-4 py-3 text-center text-green-600 dark:text-green-400 font-bold">7%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+              <h4 className="font-bold text-green-800 dark:text-green-300 mb-2">✅ 狂賞飛可以計</h4>
+              <ul className="text-sm text-green-700 dark:text-green-400 space-y-1">
+                <li>✅ 實體卡簽賬</li>
+                <li>✅ Apple Pay / Google Pay</li>
+                <li>✅ <strong>雲閃付 App</strong>（狂賞派唔計，但狂賞飛計！）</li>
+                <li>✅ BoC Pay+</li>
+              </ul>
+            </div>
+            <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
+              <h4 className="font-bold text-red-800 dark:text-red-300 mb-2">❌ 狂賞飛唔計</h4>
+              <ul className="text-sm text-red-700 dark:text-red-400 space-y-1">
+                <li>❌ AlipayHK / WeChat Pay HK</li>
+                <li>❌ <strong>網上簽賬</strong>（只限實體店！）</li>
+                <li>❌ 繳費、保險、八達通增值</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
+            <h4 className="font-bold text-amber-800 dark:text-amber-300 mb-2">⏰ 狂賞飛登記資訊</h4>
+            <ul className="text-sm text-amber-700 dark:text-amber-400 space-y-1">
+              <li>📅 推廣期：2026/1/1 - 6/30（分 2 季）</li>
+              <li>🕐 登記期：2026/1/1 10:00 - 2/28 23:59</li>
+              <li>👥 名額：首 30,000 名（狂賞派係 40,000）</li>
+            </ul>
+            <a
+              href="https://iservice.boccc.com.hk/LDPRegistrationWEB/w-verify.jsp?lang=zh_HK&action=register&campaignid=fly2601"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors font-medium"
+            >
+              <ExternalLink className="h-4 w-4" />
+              立即登記狂賞飛
+            </a>
+          </div>
+        </div>
+      </div>
+
       {/* Holiday Calendar */}
       <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
         <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
           <Clock className="h-5 w-5 text-red-600" />
-          推廣期內紅日一覽
+          狂賞派紅日一覽
         </h2>
         
         <div className="grid gap-4 md:grid-cols-3">

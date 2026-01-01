@@ -16,10 +16,10 @@ export const GUIDES: Guide[] = [
   {
     id: "boc-visa-crazy-rewards-2026",
     type: "guide",
-    title: "中銀 Visa 狂賞派攻略｜7大類別高達5%回贈",
-    description: "中銀 Visa 卡「狂賞派」2026 完全攻略！7大類別簽賬高達 5% 回贈，新增寵物+娛樂，繳費/超市已剔除。登記名額 40,000，先到先得！",
+    title: "中銀 Visa 狂賞派+狂賞飛攻略｜本地5%/海外10%",
+    description: "中銀 Visa 卡「狂賞派」+「狂賞飛」2026 完全攻略！狂賞派：7大類別高達 5%；狂賞飛：內地/澳門 6%，搭 Cheers VI 最高 10%！",
     imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
-    tags: ["中銀", "Visa", "狂賞派", "5%回贈", "需登記"],
+    tags: ["中銀", "Visa", "狂賞派", "狂賞飛", "5%回贈", "北上", "需登記"],
     merchant: "優惠",
     isNew: true,
   },
