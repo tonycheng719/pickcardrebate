@@ -111,28 +111,59 @@ export default function BocVisaCrazyRewards2026Guide() {
         </div>
       </div>
 
-      {/* Registration Alert */}
-      <div className="bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-400 dark:border-amber-600 rounded-xl p-6">
+      {/* Registration Alert - Both Links */}
+      <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border-2 border-amber-400 dark:border-amber-600 rounded-xl p-6">
         <div className="flex items-start gap-3">
           <Calendar className="h-6 w-6 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
             <h2 className="font-bold text-amber-800 dark:text-amber-300 text-lg mb-2">
-              ⏰ 記得登記！名額有限！
+              ⏰ 記得登記！兩個優惠各有獨立登記連結！
             </h2>
-            <div className="grid gap-2 text-amber-700 dark:text-amber-400 text-sm">
+            <div className="grid gap-2 text-amber-700 dark:text-amber-400 text-sm mb-4">
               <div><strong>登記期：</strong>2026年1月1日 10:00 - 2月28日 23:59</div>
-              <div><strong>名額：</strong>首 40,000 名，先到先得</div>
               <div><strong>推廣期：</strong>2026年1月1日 - 6月30日</div>
             </div>
-            <a
-              href="https://iservice.boccc.com.hk/LDPRegistrationWEB/w-verify.jsp?lang=zh_HK&action=register&campaignid=rewards2601"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors font-medium"
-            >
-              <ExternalLink className="h-4 w-4" />
-              立即登記
-            </a>
+            
+            {/* Two Registration Buttons */}
+            <div className="grid gap-3 sm:grid-cols-2">
+              {/* 狂賞派 Button */}
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-amber-300 dark:border-amber-700">
+                <div className="flex items-center gap-2 mb-2">
+                  <Store className="h-5 w-5 text-purple-600" />
+                  <span className="font-bold text-gray-900 dark:text-white">狂賞派</span>
+                  <span className="text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-full">本地簽賬</span>
+                </div>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">7大類別 紅日5% / 平日2%<br />名額：40,000</p>
+                <a
+                  href="https://iservice.boccc.com.hk/LDPRegistrationWEB/w-verify.jsp?lang=zh_HK&action=register&campaignid=rewards2601"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium text-sm"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                  登記狂賞派
+                </a>
+              </div>
+              
+              {/* 狂賞飛 Button */}
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-sky-300 dark:border-sky-700">
+                <div className="flex items-center gap-2 mb-2">
+                  <Plane className="h-5 w-5 text-sky-600" />
+                  <span className="font-bold text-gray-900 dark:text-white">狂賞飛</span>
+                  <span className="text-xs bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300 px-2 py-0.5 rounded-full">海外簽賬</span>
+                </div>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">內地/澳門6%、其他海外3%<br />名額：30,000</p>
+                <a
+                  href="https://iservice.boccc.com.hk/LDPRegistrationWEB/w-verify.jsp?lang=zh_HK&action=register&campaignid=fly2601"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 w-full px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors font-medium text-sm"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                  登記狂賞飛
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>

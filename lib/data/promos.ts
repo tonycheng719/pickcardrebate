@@ -3,6 +3,103 @@ import { Promo } from "../types";
 export const PROMOS: Promo[] = [
   // ========== 🔥 最新優惠（置頂） ==========
   {
+    id: "jcb-circlek-2026",
+    title: "🔥 JCB 卡 x OK 便利店｜$30 即減 $10！全年優惠",
+    merchant: "OK 便利店",
+    description: "JCB 卡於 OK 便利店單一簽賬滿 $30 即減 $10（33% 折扣）！每人每日限一次，每月名額先到先得。可疊加東亞 JCB 白金卡 15% 回贈！",
+    imageUrl: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?q=80&w=2074&auto=format&fit=crop",
+    expiryDate: "2026-12-31",
+    relatedCardIds: ["bea-jcb-platinum"],
+    tags: ["JCB", "OK便利店", "即減優惠", "全年優惠", "便利店"],
+    url: "https://www.hk.jcb/zh/consumers/promotions/circlek_cp_202601.html",
+    updatedAt: "2026-01-01",
+    isPinned: true,
+    content: `
+## 📅 推廣期
+
+**2026年1月1日 至 2026年12月31日**（全年優惠！）
+
+---
+
+## 🎫 優惠詳情
+
+| 項目 | 詳情 |
+|:---|:---|
+| 最低消費 | 單一簽賬滿 **$30** |
+| 折扣 | 即減 **$10** (33% off) |
+| 每日限額 | 每人每日限用 **1 次** |
+| 每月名額 | 先到先得，額滿即止 |
+
+---
+
+## ⚠️ 重要提示
+
+> 🗣️ **結賬前必須主動同收銀員講「我要用 JCB 減 $10」！**
+> 如果唔講，佢哋唔會主動扣！
+
+---
+
+## 💳 適用信用卡
+
+✅ **所有 JCB 卡**（全球發行均適用）：
+- ✅ 東亞 JCB 白金卡 🔥 **可疊加 15% 回贈**
+- ✅ 其他銀行 JCB 卡
+
+---
+
+## 🔥 疊加東亞 JCB 15% 回贈！
+
+用**東亞 JCB 白金卡**拍卡付款，可以雙食：
+
+| 優惠 | 金額 |
+|:---|:---:|
+| 原價 | $30 |
+| JCB OK 優惠即減 | -$10 |
+| **實付** | **$20** |
+| 東亞 JCB 15% 回贈 | +$3 |
+| **實際成本** | **$17** |
+| **總節省** | **$13 (43%)** 🔥 |
+
+> 💡 東亞 JCB 15% 需透過 BEA Mall App 登記，月簽 $500 起，每月回贈上限 $100
+
+👉 [查看東亞 JCB 15% 回贈詳情](/discover/bea-jcb-contactless-2025)
+
+---
+
+## ✅ 可以點俾錢？
+
+- ✅ 實體卡拍卡
+- ✅ 直接輸入卡號
+
+## ❌ 唔計
+
+- ❌ **第三方支付平台**（可能包括 Apple Pay / Google Pay）
+- ❌ 不可與其他推廣優惠同時使用
+
+---
+
+## 💡 識玩攻略
+
+1. **入門便宜貨品** - 買 $30 野淨係俾 $20，即係 33% 折扣！
+2. **每日一次** - 可以每日都去一次 OK 便利店
+3. **用東亞 JCB** - 疊加 15% 回贈，實際慳更多！
+4. **記得開口** - 結賬前講「JCB 減 $10」，唔講無人幫你扣！
+5. **留意月額** - 每月名額先到先得，月初去最穩陣
+
+---
+
+📅 **2026年1月1日更新**
+`,
+    faqs: [
+      { question: "一定要講先有得減嗎？", answer: "係！結賬前必須主動同收銀員講「我要用 JCB 減 $10」，否則唔會自動扣減。" },
+      { question: "可以用 Apple Pay 嗎？", answer: "條款列明「不適用於透過第三方支付平台進行的交易」，建議用實體卡拍卡最穩陣。" },
+      { question: "每月名額有幾多？", answer: "官網冇公布確實數字，只係話「先到先得，額滿即止」，建議月初去比較穩陣。" },
+      { question: "可以同其他優惠一齊用嗎？", answer: "唔可以同 OK 便利店其他推廣優惠一齊用，但可以疊加信用卡本身嘅回贈（如東亞 JCB 15%）。" },
+    ],
+    seoTitle: "JCB x OK 便利店優惠 2026｜$30 即減 $10｜全年優惠",
+    seoDescription: "JCB 信用卡於 OK 便利店單一簽賬滿 $30 即減 $10！2026 全年優惠，每人每日限用一次。可疊加東亞 JCB 白金卡 15% 回贈，最高 43% 折扣！",
+  },
+  {
     id: "boc-fly-rewards-2026",
     title: "🔥 中銀「狂賞飛」！內地/澳門高達6%回贈！",
     merchant: "中銀香港",
@@ -26,13 +123,21 @@ export const PROMOS: Promo[] = [
 
 ---
 
-## ⏰ 登記資訊
+## ⏰ 登記資訊（狂賞飛專用）
 
 - **登記期**：2026/1/1 10:00 - 2/28 23:59
 - **名額**：首 30,000 名，先到先得
 - **登記方式**：BoC Pay+ App / 中銀香港 App / 官網
 
-👉 [立即登記](https://iservice.boccc.com.hk/LDPRegistrationWEB/w-verify.jsp?lang=zh_HK&action=register&campaignid=fly2601)
+> 🔔 **重要提醒**：「狂賞飛」同「狂賞派」係兩個獨立優惠，登記連結唔同！呢個係「狂賞飛」嘅登記連結。
+
+### 👉 [立即登記「狂賞飛」](https://iservice.boccc.com.hk/LDPRegistrationWEB/w-verify.jsp?lang=zh_HK&action=register&campaignid=fly2601)
+
+---
+
+**💡 如果你想參加「狂賞派」（7大類別本地簽賬 5% 回贈）：**
+
+👉 [前往狂賞派登記](https://iservice.boccc.com.hk/LDPRegistrationWEB/w-verify.jsp?lang=zh_HK&action=register&campaignid=rewards2601) ｜ [查看狂賞派詳情](/discover/boc-visa-5-percent-2026)
 
 ---
 
@@ -113,13 +218,21 @@ export const PROMOS: Promo[] = [
 
 ---
 
-## ⏰ 登記資訊
+## ⏰ 登記資訊（狂賞派專用）
 
 - **登記期**：2026/1/1 10:00 - 2/28 23:59
 - **名額**：首 40,000 名，先到先得
 - **登記方式**：BoC Pay+ App / 中銀香港 App / 官網
 
-👉 [立即登記](https://iservice.boccc.com.hk/LDPRegistrationWEB/w-verify.jsp?lang=zh_HK&action=register&campaignid=rewards2601)
+> 🔔 **重要提醒**：「狂賞派」同「狂賞飛」係兩個獨立優惠，登記連結唔同！呢個係「狂賞派」嘅登記連結。
+
+### 👉 [立即登記「狂賞派」](https://iservice.boccc.com.hk/LDPRegistrationWEB/w-verify.jsp?lang=zh_HK&action=register&campaignid=rewards2601)
+
+---
+
+**💡 如果你想參加「狂賞飛」（內地/澳門海外 6% 回贈）：**
+
+👉 [前往狂賞飛登記](https://iservice.boccc.com.hk/LDPRegistrationWEB/w-verify.jsp?lang=zh_HK&action=register&campaignid=fly2601) ｜ [查看狂賞飛詳情](/discover/boc-fly-rewards-2026)
 
 ---
 
@@ -1101,16 +1214,91 @@ export const PROMOS: Promo[] = [
     url: "https://www.hangseng.com",
   },
   {
-    id: "dbs-compass-wed-2025",
-    title: "DBS COMPASS VISA 星期三超市 8%",
+    id: "dbs-compass-wed-2026",
+    title: "🔥 DBS COMPASS VISA 週三大折日｜超市 8% 回贈續期至 5 月！",
     merchant: "DBS",
-    description: "逢星期三於超市簽賬滿 $300，可享 8% 回贈（每月上限 $2,000 簽賬額）。",
+    description: "DBS COMPASS VISA 週三大折日續期！2026年1月7日至5月27日，逢星期三於全港超市單一簽賬滿 $300 即享 8% COMPASS Dollar 回贈，每月上限 $2,000 簽賬額，回贈自動入賬！",
     imageUrl: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?q=80&w=2074&auto=format&fit=crop",
-    expiryDate: "2025-12-31",
-    updatedAt: "2025-08-15",
+    expiryDate: "2026-05-27",
+    updatedAt: "2026-01-01",
     relatedCardIds: ["dbs-compass"],
-    tags: ["超市", "星期三", "需登記"],
-    url: "https://www.dbs.com.hk",
+    tags: ["超市", "星期三", "8%回贈", "COMPASS VISA"],
+    url: "https://www.dbs.com.hk/personal-zh/promotion/CV-super-wed",
+    content: `
+## 📅 推廣期
+
+**2026年1月7日 至 2026年5月27日**
+
+每個星期三（共21個推廣曆日）
+
+| 月份 | 推廣曆日 |
+|:---|:---|
+| 1月 | 7日、14日、21日、28日 |
+| 2月 | 4日、11日、18日、25日 |
+| 3月 | 4日、11日、18日、25日 |
+| 4月 | 1日、8日、15日、22日、29日 |
+| 5月 | 6日、13日、20日、27日 |
+
+---
+
+## 🎫 優惠詳情
+
+| 項目 | 詳情 |
+|:---|:---|
+| 適用日子 | 每個**星期三** |
+| 適用商戶 | **全港超級市場** |
+| 最低消費 | 單一淨簽賬滿 **$300** |
+| 回贈率 | **8%** COMPASS Dollar |
+| 每月上限 | 首 **$2,000** 簽賬額 |
+| 每月最高回贈 | **$160** COMPASS Dollar |
+| 回贈計算 | 0.4% 基本 + 7.6% 額外 |
+
+---
+
+## ✅ 付款方式
+
+- ✅ 實體卡拍卡
+- ✅ Apple Pay
+- ✅ Google Pay
+- ✅ Samsung Pay
+
+## ❌ 唔計
+
+- ❌ 支付寶 / AlipayHK
+- ❌ 微信支付 / WeChat Pay
+- ❌ PayMe
+- ❌ 八達通增值
+- ❌ 電子錢包增值
+- ❌ 繳費、保費、繳稅
+
+---
+
+## 💰 COMPASS Dollar 用途
+
+- 💵 **當錢使**：$1 COMPASS Dollar = HK$1，透過 DBS Card+ App 一扣即享
+- ❤️ **捐款**：可透過 eSHOP 捐贈給慈善機構
+
+---
+
+## 💡 識玩攻略
+
+1. **每月買夠 $2,000** - 即賺盡 $160 回贈
+2. **單筆要滿 $300** - 唔夠就冇回贈
+3. **用 Apple Pay/Google Pay** - 更方便，一樣有回贈
+4. **回贈自動入賬** - 無需登記，簡單方便
+
+---
+
+📅 **2026年1月1日更新**
+`,
+    faqs: [
+      { question: "需要登記嗎？", answer: "唔使登記！回贈會自動入賬到你嘅 COMPASS Dollar 戶口。" },
+      { question: "用 Apple Pay 有回贈嗎？", answer: "有！Apple Pay、Google Pay、Samsung Pay 都計。但支付寶、微信支付、PayMe 就唔計。" },
+      { question: "COMPASS Dollar 點用？", answer: "透過 DBS Card+ App，可以用 COMPASS Dollar 直接扣減任何簽賬，$1 COMPASS Dollar = HK$1。" },
+      { question: "每月最多賺幾多？", answer: "每月首 $2,000 超市簽賬有 8% 回贈，即最多賺 $160 COMPASS Dollar。" },
+    ],
+    seoTitle: "DBS COMPASS VISA 週三大折日 2026｜超市 8% 回贈｜續期至5月",
+    seoDescription: "DBS COMPASS VISA 週三大折日續期！2026年1月至5月，逢星期三於全港超市單一簽賬滿$300即享8% COMPASS Dollar回贈，每月上限$2,000簽賬額！",
   },
   {
     id: "fubon-yata-monday-2025",

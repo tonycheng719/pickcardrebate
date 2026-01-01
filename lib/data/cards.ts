@@ -848,9 +848,9 @@ export const HK_CARDS: CreditCard[] = [
       { description: "指定類別 2% [單筆≥$300,需登記]", matchType: "category", matchValue: ["department_store", "home", "petrol"], percentage: 2.0, minSpend: 300, cap: 12500, capType: "spending", excludePaymentMethods: ["payme", "octopus"] },
       // AliPay/WeChat Pay 零售簽賬 2%
       { description: "AliPay/WeChat Pay 2% [單筆≥$300,需登記]", matchType: "paymentMethod", matchValue: ["alipay", "wechat_pay"], percentage: 2.0, minSpend: 300, cap: 12500, capType: "spending" },
-      // T&C 2025/7/2-12/31: 週三大折日：全港超市 8% (單筆≥$300，每月首$2,000)
-      // Apple Pay/Google Pay/Samsung Pay 可以，支付寶/微信支付/PayMe 不可以
-      { description: "週三超市 8% [單筆≥$300]", matchType: "category", matchValue: "supermarket", percentage: 8.0, validDays: [3], minSpend: 300, cap: 2000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C 2026/1/7-5/27: 週三大折日：全港超市 8% (單筆≥$300，每月首$2,000)
+      // 8% = 0.4% 基本 + 7.6% 額外，Apple Pay/Google Pay/Samsung Pay 可以，支付寶/微信支付/PayMe 不可以
+      { description: "週三超市 8% [單筆≥$300]", matchType: "category", matchValue: "supermarket", percentage: 8.0, validDays: [3], minSpend: 300, cap: 2000, capType: "spending", validDateRange: { start: "2026-01-07", end: "2026-05-27" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 八達通自動增值 0.4% ($25/里) - mrmiles.hk 確認，每次增值上限 $1,000
       { description: "八達通自動增值 0.4% ($25/里)", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
       // 基本回贈 0.4%
@@ -860,9 +860,9 @@ export const HK_CARDS: CreditCard[] = [
     officialApplyUrl: "https://www.dbs.com.hk/personal-zh/cards/credit-cards/dbs-compass-visa",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=185&a=228&sub_id1=pickcardrebate&sub_id2=web",
     sellingPoints: ["🔥 週三超市 8% (單筆≥$300)", "指定類別 2% (百貨/家居/油站/AliPay/WeChat Pay) [需登記]", "每月首 $2,000 超市 / $12,500 指定類別"],
-    note: "⚠️ COMPASS VISA 使用 COMPASS Dollar（非 DBS$），獎賞系統不同！【週三大折日 2025/7/2-12/31】全港超市 8% (單筆≥$300，每月首$2,000)，✅ Apple Pay/Google Pay/Samsung Pay 可以，❌ 支付寶/微信支付/PayMe/八達通增值 不可以。【四圍簽，好 COM 賺】需透過 DBS Card+ App 登記！指定類別 2% (單筆≥$300，每月首$12,500)：AliPay/WeChat Pay、百貨公司、家居傢俬、油站。❌ 不計回贈：PayMe、八達通增值、電子錢包增值、繳費、保費、繳稅。\n\n🔥 **DBS x 衛訊優惠**（至2026/2/28）：單一簽賬滿$8,000享$320回贈！[查看詳情](/discover/dbs-wilson-2025)",
-    promoEndDate: "2026-02-28",
-    promoName: "DBS x 衛訊優惠",
+    note: "⚠️ COMPASS VISA 使用 COMPASS Dollar（非 DBS$），獎賞系統不同！\n\n## 🛒 週三大折日（2026/1/7-5/27）\n\n全港超市星期三 8% 回贈（0.4% 基本 + 7.6% 額外）：\n- 單筆簽賬滿 **$300**\n- 每月首 **$2,000** 超市簽賬\n- ✅ Apple Pay/Google Pay/Samsung Pay 可以\n- ❌ 支付寶/微信支付/PayMe/八達通增值 不可以\n- 回贈自動入賬，無需登記\n\n👉 [查看官網詳情](https://www.dbs.com.hk/personal-zh/promotion/CV-super-wed)\n\n---\n\n## 📦 四圍簽，好 COM 賺（需登記）\n\n指定類別 2% (單筆≥$300，每月首$12,500)：\n- AliPay/AliPayHK/WeChat Pay\n- 百貨公司、家居傢俬、油站\n- ⚠️ 需透過 DBS Card+ App 登記！\n\n---\n\n🔥 **DBS x 衛訊優惠**（至2026/2/28）：單一簽賬滿$8,000享$320回贈！[查看詳情](/discover/dbs-wilson-2025)\n\n❌ **不計回贈**：PayMe、八達通增值、電子錢包增值、繳費、保費、繳稅。",
+    promoEndDate: "2026-05-27",
+    promoName: "週三大折日",
   },
 
   // ========================================================================
@@ -1217,12 +1217,12 @@ export const HK_CARDS: CreditCard[] = [
       // 基本獎賞：$250 = $1 (0.4%)
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["JCB", "日本優惠", "Apple Pay 15%", "Google Pay 15%", "藥妝折扣", "機場貴賓室", "松本清3%", "大灣區航空8折", "機場星巴克", "需登記"],
+    tags: ["JCB", "日本優惠", "Apple Pay 15%", "Google Pay 15%", "藥妝折扣", "機場貴賓室", "松本清3%", "大灣區航空8折", "機場星巴克", "OK便利店", "需登記"],
     welcomeOfferText: "迎新優惠請查詢官網",
     officialApplyUrl: "https://www.hkbea.com/html/tc/bea-jcb-platinum-card.html",
     applyUrl: "https://www.hkbea.com/html/tc/bea-jcb-platinum-card.html",
-    sellingPoints: ["🔥Apple Pay/Google Pay 15% (月簽$500,上限$100)", "🔥大灣區航空日本機票 8 折", "香港機場星巴克滿$90減$45", "日本/夏威夷機場貴賓室"],
-    note: "🔥 **Apple Pay / Google Pay 15% 現金回贈**（2025/10/15-2026/3/31）：\n- 需透過 BEA Mall App 登記，首 5,000 名\n- 本地及澳門實體店用手機支付（Apple Pay/Google Pay）或拍卡\n- 每月累積簽賬滿 $500 即享 15% 回贈\n- 每月最高回贈 $100（即每月 $667 簽賬封頂）\n- 整個推廣期最高 $600（階段1: $300 + 階段2: $300）\n\n✈️ **大灣區航空日本機票 8 折**（至2026/1/31）：官網預訂日本來回機票，優惠碼「25JCBHKGPRO」，適用航點：東京、大阪、仙台、札幌。\n\n☕ **香港機場星巴克優惠**（至2026/1/31）：滿$90減$45！需出示登機證。\n\n🛒 **香港松本清 3% 折扣**（至2026/12/31）：需結賬前聲明使用JCB卡。\n\n✈️ **機場貴賓室**：日本及夏威夷機場貴賓室免費使用（至2026/3/31）\n\n❌ **不合資格簽賬**：網上簽賬、電子錢包增值（Alipay/PayMe/WeChat Pay）、八達通增值、稅務繳款、循環付款、儲值卡充值、指定售票網絡（Cityline/快達票等）。\n\n[查看詳情](/discover/bea-jcb-contactless-2025)",
+    sellingPoints: ["🔥Apple Pay/Google Pay 15% (月簽$500,上限$100)", "🔥OK便利店$30減$10 [可疊加]", "大灣區航空日本機票 8 折", "日本/夏威夷機場貴賓室"],
+    note: "🔥 **Apple Pay / Google Pay 15% 現金回贈**（2025/10/15-2026/3/31）：\n- 需透過 BEA Mall App 登記，首 5,000 名\n- 本地及澳門實體店用手機支付（Apple Pay/Google Pay）或拍卡\n- 每月累積簽賬滿 $500 即享 15% 回贈\n- 每月最高回贈 $100（即每月 $667 簽賬封頂）\n- 整個推廣期最高 $600（階段1: $300 + 階段2: $300）\n\n---\n\n🏪 **OK 便利店 $30 減 $10**（2026 全年）：\n- 單一簽賬滿 $30 即減 $10（33% 折扣）\n- 每人每日限用一次，每月名額先到先得\n- **結賬前必須主動講「我要用 JCB 減 $10」**\n- 可疊加 15% 回贈：$30 → 實付 $20 → 回贈 $3 → 實際成本 $17（慳 43%）\n- ⚠️ 建議用實體卡拍卡，第三方支付平台可能不適用\n\n👉 [查看 OK 便利店優惠詳情](/discover/jcb-circlek-2026)\n\n---\n\n✈️ **大灣區航空日本機票 8 折**（至2026/1/31）：官網預訂日本來回機票，優惠碼「25JCBHKGPRO」，適用航點：東京、大阪、仙台、札幌。\n\n☕ **香港機場星巴克優惠**（至2026/1/31）：滿$90減$45！需出示登機證。\n\n🛒 **香港松本清 3% 折扣**（至2026/12/31）：需結賬前聲明使用JCB卡。\n\n✈️ **機場貴賓室**：日本及夏威夷機場貴賓室免費使用（至2026/3/31）\n\n❌ **不合資格簽賬**：網上簽賬、電子錢包增值（Alipay/PayMe/WeChat Pay）、八達通增值、稅務繳款、循環付款、儲值卡充值、指定售票網絡（Cityline/快達票等）。\n\n[查看 15% 回贈詳情](/discover/bea-jcb-contactless-2025)",
     promoEndDate: "2026-03-31",
     promoName: "Apple Pay/Google Pay 15%回贈",
   },
