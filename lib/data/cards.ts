@@ -611,24 +611,24 @@ export const HK_CARDS: CreditCard[] = [
     feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rules: [
-      // T&C: 指定國家外幣簽賬 7% (日本/韓國/泰國/新加坡/澳洲，需月簽賬滿$6,000)
-      // 注意：7% 只適用於指定國家的外幣簽賬，不是旅遊類別
-      { description: "指定國家外幣 7% [日韓泰星澳,月簽$6,000]", matchType: "base", percentage: 7.0, monthlyMinSpend: 6000, isForeignCurrency: true, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
-      // T&C: 其他外幣簽賬 5% (需月簽賬滿$6,000)
-      { description: "其他外幣 5% [月簽$6,000]", matchType: "base", percentage: 5.0, monthlyMinSpend: 6000, isForeignCurrency: true, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
-      // 旅遊類別 (酒店/航空公司/旅行社)
-      { description: "旅遊簽賬 5% [月簽$6,000]", matchType: "category", matchValue: ["travel", "hotel", "airline"], percentage: 5.0, monthlyMinSpend: 6000, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
-      // T&C: 本地交通 5% (九巴/城巴/龍運/港鐵/電車/天星小輪，需月簽賬滿$6,000)
-      { description: "本地交通 5% [月簽$6,000]", matchType: "category", matchValue: ["transport"], percentage: 5.0, monthlyMinSpend: 6000, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
-      // T&C: 本地餐飲 5% (不包括快餐店/酒店內食肆，需月簽賬滿$6,000)
-      { description: "本地餐飲 5% [不含快餐,月簽$6,000]", matchType: "category", matchValue: ["dining"], percentage: 5.0, monthlyMinSpend: 6000, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
+      // 2026年條款變動：https://www.hangseng.com/content/dam/wpb/hase/rwd/personal/cards/pdfs/travelplus_fundollars_tnc_tc.pdf
+      // 1. 只限實體店簽賬，網購全部無回贈
+      // 2. 7% 改為日本/韓國/泰國/內地/台灣/澳門（刪除新加坡/澳洲，新增內地/台灣/澳門）
+      // 3. 取消交通類別
+      // 4. 餐飲計返快餐（但不包括酒店/百貨/會所內食肆）
+      // T&C: 指定國家外幣簽賬 7% (日本/韓國/泰國/內地/澳門/台灣實體店，需月簽賬滿$6,000)
+      { description: "指定國家外幣 7% [日韓泰陸澳台實體店,月簽$6,000]", matchType: "base", percentage: 7.0, monthlyMinSpend: 6000, isForeignCurrency: true, isPhysicalStore: true, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
+      // T&C: 其他國家外幣簽賬 5% (實體店，需月簽賬滿$6,000)
+      { description: "其他外幣 5% [實體店,月簽$6,000]", matchType: "base", percentage: 5.0, monthlyMinSpend: 6000, isForeignCurrency: true, isPhysicalStore: true, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
+      // T&C: 本地餐飲 5% (包括快餐，但不包括酒店/百貨/會所內食肆，需月簽賬滿$6,000)
+      { description: "本地餐飲 5% [含快餐,月簽$6,000]", matchType: "category", matchValue: ["dining"], percentage: 5.0, monthlyMinSpend: 6000, cap: 500, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
       // T&C: 基本回饋 0.4%，排除繳費、保險、Alipay/WeChat Pay、八達通增值、電子錢包充值
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
     ],
-    tags: ["旅遊7%", "餐飲5%", "交通5%", "必須登記", "冬日賞"],
+    tags: ["旅遊7%", "餐飲5%", "實體店限定", "必須登記", "冬日賞"],
     welcomeOfferText: "迎新簽 $5,000 送 $700 Fun Dollars",
-    sellingPoints: ["指定國家外幣 7% (日韓泰星澳)", "其他外幣/本地交通/餐飲 5%", "每月回贈上限 $500", "🔥冬日簽賬賞額外高達$2,800"],
-    note: "⚠️ 需月簽賬滿 $6,000 並登記才享優惠！指定國家：日本/韓國/泰國/新加坡/澳洲。本地交通：九巴/城巴/龍運/港鐵/電車/天星小輪。餐飲不包括快餐店及酒店內食肆。Alipay/WeChat Pay/八達通自動增值/電子錢包充值/易通行增值不計回贈。\n\n🔥 **冬日簽賬賞**（至2026/2/28）：累積簽賬可享額外高達$2,800回贈！[查看詳情](/discover/hangseng-winter-2025)",
+    sellingPoints: ["🔥2026新條款：只限實體店", "指定國家外幣 7% (日韓泰陸澳台)", "其他外幣/餐飲 5% (含快餐)", "每月回贈上限 $500"],
+    note: "## ⚠️ 2026年條款變動（1月1日生效）\n\n**重大改變：**\n1. ❌ **網購全部無回贈** - 只限實體店簽賬\n2. 🔄 **7%國家改變** - 日本/韓國/泰國/內地/台灣/澳門（刪除新加坡/澳洲）\n3. ❌ **取消交通類別** - 港鐵/巴士等不再有5%\n4. ✅ **餐飲計返快餐** - 但酒店/百貨/會所內食肆仍不計\n\n**不變：**\n- 月簽 $6,000 門檻\n- 每月回贈上限 $500\n- 無需重新登記\n\n👉 [查看官方條款](https://www.hangseng.com/content/dam/wpb/hase/rwd/personal/cards/pdfs/travelplus_fundollars_tnc_tc.pdf)\n\n---\n\n🔥 **冬日簽賬賞**（至2026/2/28）：累積簽賬可享額外高達$2,800回贈！[查看詳情](/discover/hangseng-winter-2025)",
     officialApplyUrl: "https://www.hangseng.com/zh-hk/personal/cards/products/travel-plus-visa-signature/",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=688&a=228&sub_id1=pickcardrebate&sub_id2=web",
     promoEndDate: "2026-02-28",
