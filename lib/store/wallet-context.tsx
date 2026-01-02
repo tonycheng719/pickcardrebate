@@ -322,6 +322,25 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
         setUser(profile);
         console.log("[Auth] User hydrated:", profile.email, "Gender:", profile.gender, "BirthYear:", profile.birthYear, "BannedComment:", profileData?.is_banned_comment);
         
+        // Update last_login (only once per browser session to avoid excessive API calls)
+        const lastLoginKey = `lastLoginUpdated_${sessionUser.id}`;
+        const lastLoginUpdated = sessionStorage.getItem(lastLoginKey);
+        if (!lastLoginUpdated) {
+          try {
+            const profileParams = new URLSearchParams({
+              userId: sessionUser.id,
+              email: sessionUser.email || '',
+              name: sessionUser.user_metadata?.full_name || sessionUser.user_metadata?.name || '',
+              avatar: sessionUser.user_metadata?.avatar_url || ''
+            });
+            fetch(`/api/auth/ensure-profile?${profileParams.toString()}`).catch(console.warn);
+            sessionStorage.setItem(lastLoginKey, Date.now().toString());
+            console.log("[Auth] last_login update triggered for:", sessionUser.email);
+          } catch (e) {
+            console.warn("[Auth] Failed to update last_login:", e);
+          }
+        }
+        
         // Start Wallet Sync
         initializeWalletSync(sessionUser.id);
 
