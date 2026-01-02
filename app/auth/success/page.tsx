@@ -41,116 +41,115 @@ export default function AuthSuccessPage() {
         return;
       }
 
-      if (code) {
-        setStatus("exchanging");
-        console.log("Auth Success: Exchanging code for session...");
-        
-        try {
-          const supabase = createClient();
-          const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
-          
-          if (exchangeError) {
-            console.error("Code exchange error:", exchangeError);
-            throw exchangeError;
-          }
-          
-          if (data.session) {
-            console.log("Session established successfully for:", data.session.user.email);
-            console.log("Access token (first 20 chars):", data.session.access_token.substring(0, 20) + "...");
-            
-            setStatus("success");
-            
-            // Store session in multiple localStorage keys to ensure compatibility
-            try {
-              const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://pickcardrebate-supabase-kong.zeabur.app';
-              const hostname = new URL(supabaseUrl).hostname;
-              const projectRef = hostname.split('.')[0];
-              
-              const sessionData = JSON.stringify({
-                access_token: data.session.access_token,
-                refresh_token: data.session.refresh_token,
-                expires_at: Math.floor(Date.now() / 1000) + (data.session.expires_in || 3600),
-                expires_in: data.session.expires_in || 3600,
-                token_type: 'bearer',
-                user: data.session.user
-              });
-              
-              // Store in multiple keys for compatibility
-              localStorage.setItem(`sb-${projectRef}-auth-token`, sessionData);
-              localStorage.setItem('sb-auth-token', sessionData);
-              localStorage.setItem('supabase.auth.token', sessionData);
-              
-              console.log("Session stored in localStorage with keys:", `sb-${projectRef}-auth-token`, 'sb-auth-token', 'supabase.auth.token');
-              
-              // Also try to set the session directly in Supabase client
-              await supabase.auth.setSession({
-                access_token: data.session.access_token,
-                refresh_token: data.session.refresh_token
-              });
-              console.log("Session set directly in Supabase client");
-              
-            } catch (storageError) {
-              console.warn("Failed to store session:", storageError);
-            }
-            
-            // Ensure profile exists and update last_login
-            try {
-              const profileParams = new URLSearchParams({
-                userId: data.session.user.id,
-                email: data.session.user.email || '',
-                name: data.session.user.user_metadata?.full_name || data.session.user.user_metadata?.name || '',
-                avatar: data.session.user.user_metadata?.avatar_url || ''
-              });
-              const profileRes = await fetch(`/api/auth/ensure-profile?${profileParams.toString()}`);
-              const profileData = await profileRes.json();
-              console.log("Profile ensured response:", profileData);
-            } catch (e) {
-              console.warn("Ensure profile failed, but continuing...", e);
-            }
-            
-            toast.success("登入成功！歡迎回來");
-            
-            // Force full page reload to ensure all contexts pick up the new session
-            setTimeout(() => {
-              window.location.href = "/";
-            }, 800);
-            return;
-          }
-        } catch (e: any) {
-          console.error("Session exchange failed:", e);
-          // If code was already used, the user might already be logged in
-          // Check for existing session
-          const supabase = createClient();
-          const { data: { session } } = await supabase.auth.getSession();
-          if (session) {
-            console.log("Session already exists, redirecting...");
-            setStatus("success");
-            toast.success("登入成功！");
-            setTimeout(() => {
-              window.location.href = "/";
-            }, 500);
-            return;
-          }
-          
-          setStatus("error");
-          setErrorMessage(e.message || "驗證失敗");
-          toast.error("登入驗證失敗", { description: "請重新嘗試登入" });
-          setTimeout(() => router.push("/login"), 2000);
-          return;
-        }
-      }
-      
-      // No code in URL, check if already logged in via cookies
+      // First, always check for existing session
       const supabase = createClient();
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session || user) {
+      const { data: { session: existingSession } } = await supabase.auth.getSession();
+      
+      if (existingSession) {
+        console.log("Session already exists for:", existingSession.user.email);
         setStatus("success");
         toast.success("歡迎回來！");
         setTimeout(() => {
           window.location.href = "/";
         }, 500);
-      } else {
-        // No session, no code - redirect to login
+        return;
+      }
+
+      if (code) {
+        setStatus("exchanging");
+        console.log("Auth Success: Exchanging code for session...");
+        
+        // Retry logic for code exchange
+        let retryCount = 0;
+        const maxRetries = 2;
+        
+        while (retryCount <= maxRetries) {
+          try {
+            const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+            
+            if (exchangeError) {
+              // Check if it's a "code already used" error
+              if (exchangeError.message?.includes("already") || exchangeError.message?.includes("expired") || exchangeError.message?.includes("invalid")) {
+                console.warn("Code may have been used/expired, checking for session...");
+                const { data: { session: retrySession } } = await supabase.auth.getSession();
+                if (retrySession) {
+                  console.log("Session found after code error, user is logged in");
+                  setStatus("success");
+                  toast.success("登入成功！");
+                  setTimeout(() => {
+                    window.location.href = "/";
+                  }, 500);
+                  return;
+                }
+              }
+              throw exchangeError;
+            }
+            
+            if (data.session) {
+              console.log("Session established successfully for:", data.session.user.email);
+              setStatus("success");
+              
+              // Ensure profile exists and update last_login
+              try {
+                const profileParams = new URLSearchParams({
+                  userId: data.session.user.id,
+                  email: data.session.user.email || '',
+                  name: data.session.user.user_metadata?.full_name || data.session.user.user_metadata?.name || '',
+                  avatar: data.session.user.user_metadata?.avatar_url || ''
+                });
+                await fetch(`/api/auth/ensure-profile?${profileParams.toString()}`);
+              } catch (e) {
+                console.warn("Ensure profile failed, but continuing...", e);
+              }
+              
+              toast.success("登入成功！歡迎回來");
+              
+              // Force full page reload to ensure all contexts pick up the new session
+              setTimeout(() => {
+                window.location.href = "/";
+              }, 800);
+              return;
+            }
+            break; // Success, exit retry loop
+          } catch (e: any) {
+            console.error(`Session exchange attempt ${retryCount + 1} failed:`, e);
+            retryCount++;
+            
+            if (retryCount <= maxRetries) {
+              // Wait a bit before retrying
+              await new Promise(resolve => setTimeout(resolve, 500));
+            } else {
+              // All retries failed, check for existing session one more time
+              const { data: { session: finalSession } } = await supabase.auth.getSession();
+              if (finalSession) {
+                console.log("Session found after retries, user is logged in");
+                setStatus("success");
+                toast.success("登入成功！");
+                setTimeout(() => {
+                  window.location.href = "/";
+                }, 500);
+                return;
+              }
+              
+              setStatus("error");
+              // Provide more helpful error message
+              let errorMsg = "驗證失敗";
+              if (e.message?.includes("network") || e.message?.includes("fetch")) {
+                errorMsg = "網絡連接問題，請檢查網絡後重試";
+              } else if (e.message?.includes("expired") || e.message?.includes("invalid")) {
+                errorMsg = "登入連結已過期，請重新登入";
+              }
+              setErrorMessage(errorMsg);
+              toast.error("登入驗證失敗", { description: errorMsg });
+              setTimeout(() => router.push("/login"), 2000);
+              return;
+            }
+          }
+        }
+      }
+      
+      // No code in URL, no existing session - redirect to login
+      if (!user) {
         setStatus("error");
         setErrorMessage("未偵測到登入狀態");
         setTimeout(() => router.push("/login"), 2000);
@@ -160,37 +159,65 @@ export default function AuthSuccessPage() {
     handleCodeExchange();
   }, [router, user]); // user is still a dependency but won't cause re-runs due to ref guard
 
-  // Timeout fallback
+  // Timeout fallback - increased to 15 seconds for slower networks
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (status === "verifying" || status === "exchanging") {
-        console.warn("Auth timeout, forcing redirect...");
-        window.location.href = "/";
+        console.warn("Auth timeout, checking session before redirect...");
+        // Before forcing redirect, check if session actually exists
+        const supabase = createClient();
+        supabase.auth.getSession().then(({ data: { session } }) => {
+          if (session) {
+            console.log("Session found during timeout, redirecting as success");
+            setStatus("success");
+            toast.success("登入成功！");
+            setTimeout(() => {
+              window.location.href = "/";
+            }, 500);
+          } else {
+            console.warn("No session found, redirecting to login");
+            setStatus("error");
+            setErrorMessage("登入超時，請重試");
+            toast.error("登入超時", { description: "請重新嘗試登入" });
+            setTimeout(() => router.push("/login"), 1500);
+          }
+        });
       }
-    }, 8000); // 8 second timeout
+    }, 15000); // 15 second timeout
 
     return () => clearTimeout(timeout);
-  }, [status]);
+  }, [status, router]);
 
   // Minimal UI - just show a subtle loading indicator
   // Error state gets a more visible display
   if (status === "error") {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center gap-4 max-w-sm px-4">
           <div className="p-4 bg-red-100 dark:bg-red-900/30 rounded-full">
             <span className="text-4xl">😕</span>
           </div>
           <h1 className="text-xl font-bold text-red-700 dark:text-red-400">登入失敗</h1>
           {errorMessage && (
-            <p className="text-red-500 text-sm max-w-xs text-center">{errorMessage}</p>
+            <p className="text-red-500 text-sm text-center">{errorMessage}</p>
           )}
-          <button 
-            onClick={() => router.push("/login")}
-            className="mt-4 px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg text-sm hover:bg-gray-200 dark:hover:bg-gray-700"
-          >
-            重新登入
-          </button>
+          <div className="flex gap-3 mt-4">
+            <button 
+              onClick={() => window.location.href = "/login"}
+              className="px-5 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+            >
+              重新登入
+            </button>
+            <button 
+              onClick={() => window.location.href = "/"}
+              className="px-5 py-2.5 bg-gray-100 dark:bg-gray-800 rounded-lg text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+            >
+              返回首頁
+            </button>
+          </div>
+          <p className="text-xs text-gray-400 mt-4 text-center">
+            如持續無法登入，請嘗試清除瀏覽器 Cookie 或使用無痕模式
+          </p>
         </div>
       </div>
     );
@@ -202,7 +229,9 @@ export default function AuthSuccessPage() {
       <div className="flex flex-col items-center gap-3">
         <Loader2 className="h-8 w-8 animate-spin text-blue-600 dark:text-blue-400" />
         <p className="text-sm text-gray-500 dark:text-gray-400">
-          {status === "success" ? "跳轉中..." : ""}
+          {status === "success" && "跳轉中..."}
+          {status === "exchanging" && "正在驗證登入..."}
+          {status === "verifying" && "檢查登入狀態..."}
         </p>
       </div>
     </div>
