@@ -24,6 +24,7 @@ export interface RewardRule {
   monthlyMinSpend?: number; // New: Monthly accumulation requirement
 
   isForeignCurrency?: boolean; // If true, only matches if transaction is foreign currency
+  isPhysicalStore?: boolean; // If true, only matches physical store transactions (excludes online)
   excludeCategories?: string[]; // Categories to explicitly exclude
   excludePaymentMethods?: string[]; // Payment methods to explicitly exclude
   
