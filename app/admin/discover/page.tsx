@@ -16,7 +16,7 @@ import {
 import { 
   Search, BookOpen, Eye, ExternalLink, Tag, Image as ImageIcon,
   TrendingUp, Sparkles, CalendarIcon, Gift, Plus, Pencil, RotateCcw, Loader2, Upload,
-  Pin, PinOff, ArrowUp, ArrowDown, Clock, Settings, X
+  Pin, PinOff, ArrowUp, ArrowDown, Clock, Settings, X, Edit
 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
@@ -408,7 +408,7 @@ export default function AdminDiscoverPage() {
               前往探索頁
             </Button>
           </Link>
-          <Link href="/admin/promos/new">
+          <Link href="/admin/discover/new">
             <Button className="gap-2">
               <Plus className="h-4 w-4" />
               新增優惠
@@ -760,6 +760,12 @@ export default function AdminDiscoverPage() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-1">
+                          <Link href={`/admin/discover/${item.id}`}>
+                            <Button variant="ghost" size="sm" className="gap-1">
+                              <Edit className="h-3 w-3" />
+                              編輯
+                            </Button>
+                          </Link>
                           <Button 
                             variant="ghost" 
                             size="sm" 
@@ -793,7 +799,7 @@ export default function AdminDiscoverPage() {
             {/* Info Box */}
             <div className="p-4 bg-gray-50 dark:bg-gray-900/50 border-t dark:border-gray-700">
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                💡 排序邏輯：置頂優惠 → 更新時間（最新在前）。如需修改優惠內容或排序，請編輯 <code className="px-1 py-0.5 bg-gray-200 dark:bg-gray-700 rounded">lib/data/promos.ts</code>
+                💡 點擊「編輯」可修改優惠內容（包括插入圖片）。修改後會儲存到資料庫，覆蓋 <code className="px-1 py-0.5 bg-gray-200 dark:bg-gray-700 rounded">promos.ts</code> 的靜態資料。
               </p>
             </div>
           </div>
