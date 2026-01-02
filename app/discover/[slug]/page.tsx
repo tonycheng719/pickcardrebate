@@ -2123,6 +2123,9 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors pb-24 md:pb-0">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+      <ArticleTracker articleSlug={promo.id} articleTitle={promo.title} />
+      <PageViewTracker pageType="article" pageId={promo.id} pageName={promo.title} />
       <Navbar />
       
       <main className="container mx-auto px-4 py-8 max-w-4xl">

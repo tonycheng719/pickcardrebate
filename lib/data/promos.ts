@@ -105,6 +105,12 @@ A: MTR 分存入邊個 MTR Mobile 賬戶就邊個用，唔可以轉讓。
 
 👉 [前往 MTR 官網了解更多](https://www.mtr.com.hk/mtrmobile/ch/latestpromotion/hsbc/)
 `,
+    faqs: [
+      { question: "我點知自己係咪特選客戶？", answer: "如果你 2025/1/1 - 2026/1/1 從未用獎賞錢換過 MTR 分，你就係特選客戶。" },
+      { question: "我換 $150 會有幾多 MTR 分？", answer: "67,500 分，相當於 $225 車費，即係你用 $150 獎賞錢換到 $225 價值！" },
+      { question: "MTR 分有冇到期日？", answer: "有，一般係賺取後 12 個月內要用。" },
+      { question: "可唔可以俾家人用？", answer: "MTR 分存入邊個 MTR Mobile 賬戶就邊個用，唔可以轉讓。" },
+    ],
   },
   {
     id: "hsbc-red-mcdonalds-2026",
@@ -222,6 +228,13 @@ A: 唔可以，只限主卡。
 3. **記得月底前領獎賞錢** - 唔好俾印花過期
 4. **配合其他優惠** - 麥當勞 App 經常有優惠券
 `,
+    faqs: [
+      { question: "點樣登記參加？", answer: "下載滙豐 Reward+ App，登入後喺「最紅印花卡」區域登記即可。" },
+      { question: "一日食幾餐麥當勞有幾多個印花？", answer: "一日只可以賺取 1 個印花，所以每日只食一餐就夠。" },
+      { question: "印花幾時會出現喺 App？", answer: "簽賬誌賬後 3 個工作天內會反映在滙豐 Reward+ App 的「印花卡」詳情頁面。" },
+      { question: "附屬卡可唔可以參加？", answer: "唔可以，只限 Red 卡主卡持卡人。" },
+      { question: "用麥當勞 App 落單計唔計？", answer: "計！而且仲可以賺埋 Red 卡 4% 網上簽賬回贈，夾埋高達 16.5% 回贈！" },
+    ],
   },
   {
     id: "bea-cny-2026",
@@ -321,6 +334,14 @@ A: 計！本地網購同海外網購都計。
 
 👉 [下載 BEA Mall App 登記](https://www.hkbea.com/html/tc/bea-credit-card-promotions.html)
 `,
+    faqs: [
+      { question: "點樣登記參加？", answer: "下載 BEA Mall App，登入後喺推廣活動區域登記，輸入想要嘅獎賞類型（獎分或里數）。" },
+      { question: "我有 GOAL 卡同 i-Titanium 卡，點計？", answer: "簽賬金額會合併計算，獎賞存入簽賬最高金額嘅卡。" },
+      { question: "我只有現金回贈卡，可以揀里數嗎？", answer: "如果你只持有 GOAL/i-Titanium/JCB白金卡，獎賞會自動設為現金回贈。" },
+      { question: "網購計唔計？", answer: "計！本地網購同海外網購都計。" },
+      { question: "超市簽賬計唔計？", answer: "唔計！任何超市簽賬都係不合資格簽賬。" },
+      { question: "階段 1 登記咗，階段 2 需要再登記嗎？", answer: "唔需要！階段 1 登記後，階段 2 會自動計算。" },
+    ],
   },
   {
     id: "jcb-circlek-2026",
