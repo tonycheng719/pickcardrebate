@@ -6,6 +6,7 @@ import { Loader2 } from "lucide-react";
 import { useWallet } from "@/lib/store/wallet-context";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
+import type { Session } from "@supabase/supabase-js";
 
 export default function AuthSuccessPage() {
   const router = useRouter();
@@ -166,7 +167,7 @@ export default function AuthSuccessPage() {
         console.warn("Auth timeout, checking session before redirect...");
         // Before forcing redirect, check if session actually exists
         const supabase = createClient();
-        supabase.auth.getSession().then(({ data: { session } }) => {
+        supabase.auth.getSession().then(({ data: { session } }: { data: { session: Session | null } }) => {
           if (session) {
             console.log("Session found during timeout, redirecting as success");
             setStatus("success");
