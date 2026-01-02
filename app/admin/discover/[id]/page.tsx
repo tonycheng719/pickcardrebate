@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Save, Loader2, Image as ImageIcon, ExternalLink, Eye } from "lucide-react";
+import { ArrowLeft, Save, Loader2, Image as ImageIcon, ExternalLink, Eye, Upload } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { PROMOS } from "@/lib/data/promos";
@@ -54,6 +54,87 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
   const [tagsInput, setTagsInput] = useState("");
   const [cardIdsInput, setCardIdsInput] = useState("");
   const [previewMode, setPreviewMode] = useState(false);
+  const [uploadingCover, setUploadingCover] = useState(false);
+  const [uploadingContent, setUploadingContent] = useState(false);
+  const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const coverInputRef = useRef<HTMLInputElement>(null);
+  const contentInputRef = useRef<HTMLInputElement>(null);
+
+  // Upload image to Supabase Storage
+  const uploadImage = async (file: File, folder: string = "promos"): Promise<string | null> => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("bucket", "images");
+    formData.append("folder", folder);
+
+    try {
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const { error } = await res.json();
+        throw new Error(error || "上傳失敗");
+      }
+
+      const { url } = await res.json();
+      return url;
+    } catch (error: any) {
+      toast.error(error.message || "圖片上傳失敗");
+      return null;
+    }
+  };
+
+  // Handle cover image upload
+  const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingCover(true);
+    const url = await uploadImage(file, "promos/covers");
+    if (url) {
+      setFormData({ ...formData, imageUrl: url });
+      toast.success("封面圖片已上傳！");
+    }
+    setUploadingCover(false);
+    // Reset input
+    if (coverInputRef.current) coverInputRef.current.value = "";
+  };
+
+  // Handle content image upload (insert into Markdown)
+  const handleContentImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingContent(true);
+    const url = await uploadImage(file, "promos/content");
+    if (url) {
+      // Insert Markdown image at cursor position
+      const textarea = contentTextareaRef.current;
+      if (textarea) {
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const text = formData.content;
+        const imageMarkdown = `\n![${file.name.split('.')[0]}](${url})\n`;
+        const newContent = text.substring(0, start) + imageMarkdown + text.substring(end);
+        setFormData({ ...formData, content: newContent });
+        
+        // Set cursor after inserted image
+        setTimeout(() => {
+          textarea.focus();
+          textarea.selectionStart = textarea.selectionEnd = start + imageMarkdown.length;
+        }, 0);
+      } else {
+        // Append to end if no textarea ref
+        setFormData({ ...formData, content: formData.content + `\n![${file.name.split('.')[0]}](${url})\n` });
+      }
+      toast.success("圖片已插入！");
+    }
+    setUploadingContent(false);
+    // Reset input
+    if (contentInputRef.current) contentInputRef.current.value = "";
+  };
 
   useEffect(() => {
     const loadPromo = async () => {
@@ -290,6 +371,7 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
             ) : (
               <>
                 <Textarea
+                  ref={contentTextareaRef}
                   value={formData.content}
                   onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                   placeholder={`## 📅 推廣期
@@ -321,19 +403,40 @@ A: 唔可以，只限主卡。`}
                   className="font-mono text-sm dark:bg-gray-900 dark:border-gray-600"
                 />
                 
-                <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
-                  <h4 className="font-medium text-amber-800 dark:text-amber-300 flex items-center gap-2">
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                  <h4 className="font-medium text-blue-800 dark:text-blue-300 flex items-center gap-2">
                     <ImageIcon className="h-4 w-4" /> 插入圖片
                   </h4>
-                  <p className="text-sm text-amber-700 dark:text-amber-400 mt-1">
-                    使用 Markdown 語法插入圖片：
+                  <p className="text-sm text-blue-700 dark:text-blue-400 mt-2">
+                    點擊上傳按鈕，圖片會自動插入到游標位置。
                   </p>
-                  <code className="block bg-amber-100 dark:bg-amber-900/40 p-2 rounded mt-2 text-xs">
-                    ![圖片描述](https://圖片URL)
-                  </code>
-                  <p className="text-xs text-amber-600 dark:text-amber-500 mt-2">
-                    💡 圖片可以上傳到 Supabase Storage 或使用外部連結（如 Unsplash）
-                  </p>
+                  <div className="mt-3 flex items-center gap-2">
+                    <input
+                      type="file"
+                      ref={contentInputRef}
+                      onChange={handleContentImageUpload}
+                      accept="image/*"
+                      className="hidden"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => contentInputRef.current?.click()}
+                      disabled={uploadingContent}
+                      className="gap-2"
+                    >
+                      {uploadingContent ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Upload className="h-4 w-4" />
+                      )}
+                      上傳圖片並插入
+                    </Button>
+                    <span className="text-xs text-blue-600 dark:text-blue-400">
+                      或手動輸入：<code className="bg-blue-100 dark:bg-blue-900/40 px-1 rounded">![描述](URL)</code>
+                    </span>
+                  </div>
                 </div>
               </>
             )}
@@ -347,14 +450,37 @@ A: 唔可以，只限主卡。`}
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="imageUrl">封面圖片 URL</Label>
-              <Input
-                id="imageUrl"
-                value={formData.imageUrl}
-                onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                placeholder="https://..."
-                className="dark:bg-gray-900 dark:border-gray-600"
-              />
+              <Label htmlFor="imageUrl">封面圖片</Label>
+              <div className="flex gap-2">
+                <Input
+                  id="imageUrl"
+                  value={formData.imageUrl}
+                  onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                  placeholder="貼上 URL 或點擊右邊上傳..."
+                  className="dark:bg-gray-900 dark:border-gray-600 flex-1"
+                />
+                <input
+                  type="file"
+                  ref={coverInputRef}
+                  onChange={handleCoverUpload}
+                  accept="image/*"
+                  className="hidden"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => coverInputRef.current?.click()}
+                  disabled={uploadingCover}
+                  className="gap-2"
+                >
+                  {uploadingCover ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Upload className="h-4 w-4" />
+                  )}
+                  上傳
+                </Button>
+              </div>
               {formData.imageUrl && (
                 <div className="mt-2">
                   <img
