@@ -864,6 +864,55 @@ const MONEYHERO_PARTNER_OFFERS = [
   },
 
   // ========================================
+  // 恒生 enJoy 卡 (即日起 - 2026/01/30 18:00)
+  // 全新客戶：批卡後30日內簽滿 $500
+  // 現有客戶：批卡後30日內簽滿 $500
+  // ========================================
+  {
+    cardId: "hangseng-enjoy",
+    partnerOffer: {
+      enabled: true,
+      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=213&a=228&sub_id1=pickcardrebate&sub_id2=web",
+      bonusValue: 4980,
+      bonusDescription: "全新客戶5選1：HK$800 Apple禮品卡 / HK$800 惠康現金券 / Delsey行李箱(HK$4,980) / Foreo LUNA 3(HK$2,090) / Marshall喇叭(HK$1,499)",
+      bonusItems: [
+        "HK$800 Apple Store禮品卡",
+        "HK$800 惠康購物現金券",
+        "Delsey 30\" GRENELLE SE Expandable Front Opening Suitcase（價值HK$4,980; 顏色隨機）",
+        "Foreo LUNA 3 潔面及按摩儀（價值HK$2,090）",
+        "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）"
+      ],
+      validFrom: "2025-01-01",
+      validTo: "2026-01-30",
+      requirements: [
+        "全新恒生信用卡客戶（現在及緊接申請日期前12個月內未曾持有任何恒生信用卡/聯營卡/消費卡主卡）",
+        "提交申請後30日內成功獲批信用卡",
+        "批卡後30日內簽賬滿HK$500",
+        "收到表格後7日內填妥「獎賞換領表格」"
+      ],
+      minSpend: 500,
+      minSpendDays: 30,
+      notes: "換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。⚠️ 如經電話申請，需先下載恒生 Mobile App。",
+      existingCustomerOffer: {
+        bonusValue: 999,
+        bonusDescription: "現有客戶5選1：HK$500 Apple禮品卡 / HK$500 惠康現金券 / Marshall Willen II(HK$999) / Braun空氣炸鍋(HK$988) / Foreo fofo洗面機(HK$890)",
+        bonusItems: [
+          "HK$500 Apple Store禮品卡",
+          "HK$500 惠康購物現金券",
+          "Marshall Willen II 小型無線便攜喇叭（價值HK$999）",
+          "Braun MultiFry 3 空氣炸鍋 HF3000（價值HK$988）",
+          "Foreo LUNA fofo 洗面機（價值HK$890）"
+        ],
+        requirements: [
+          "現有恒生信用卡客戶（現在及/或緊接申請日期前12個月內曾持有任何恒生信用卡/聯營卡主卡，不包括消費卡及專享卡）",
+          "過去12個月內未曾持有恒生enJoy卡/消費卡主卡",
+          "批卡後30日內簽賬滿HK$500"
+        ]
+      }
+    }
+  },
+
+  // ========================================
   // 中銀信用卡 (2026/01/02 12:00 - 2026/01/30 18:00)
   // 適用卡種：Cheers Visa Infinite、Cheers Visa Signature、Chill、Go Diamond、Go Platinum
   // ⚠️ 先到先得，送完即止
