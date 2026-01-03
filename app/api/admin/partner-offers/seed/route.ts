@@ -256,7 +256,7 @@ const MONEYHERO_PARTNER_OFFERS = [
   },
 
   // ========================================
-  // 渣打銀行 (2025/12/01 18:00 - 2025/12/31 12:00)
+  // 渣打銀行 (2025/12/31 12:00 - 2026/01/30 18:00)
   // 適用：Smart Card、Simply Cash
   // 條件：毋需簽賬
   // ========================================
@@ -275,18 +275,18 @@ const MONEYHERO_PARTNER_OFFERS = [
         "NESCAFÉ® Dolce Gusto® Genio S Plus 咖啡機 + 6盒咖啡膠囊（價值HK$1,780）",
         "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）"
       ],
-      validFrom: "2025-12-01",
-      validTo: "2025-12-31",
+      validFrom: "2025-12-31",
+      validTo: "2026-01-30",
       requirements: [
-        "全新渣打銀行信用卡客戶",
+        "全新渣打信用卡客戶（過去6個月內未曾持有或取消任何渣打/MANHATTAN信用卡主卡）",
         "毋需簽賬",
-        "2026年1月31日或之前成功獲批信用卡",
+        "2026年2月28日或之前成功獲批信用卡",
         "收到表格後7日內填妥「獎賞換領表格」",
         "批卡後7日內填寫表格及上傳批核證明"
       ],
       minSpend: 0,
       minSpendDays: 0,
-      notes: "渣打信用卡申請參考編號格式: HK + 14位數字。換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
+      notes: "渣打信用卡申請參考編號格式: HK + 14位數字（例：HKxxxxxxxxxxxxxx）。換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。⚠️ MoneyHero 獨家優惠由 MoneyHero 提供，與渣打銀行無關。",
     }
   },
   {
@@ -304,18 +304,18 @@ const MONEYHERO_PARTNER_OFFERS = [
         "NESCAFÉ® Dolce Gusto® Genio S Plus 咖啡機 + 6盒咖啡膠囊（價值HK$1,780）",
         "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）"
       ],
-      validFrom: "2025-12-01",
-      validTo: "2025-12-31",
+      validFrom: "2025-12-31",
+      validTo: "2026-01-30",
       requirements: [
-        "全新渣打銀行信用卡客戶",
+        "全新渣打信用卡客戶（過去6個月內未曾持有或取消任何渣打/MANHATTAN信用卡主卡）",
         "毋需簽賬",
-        "2026年1月31日或之前成功獲批信用卡",
+        "2026年2月28日或之前成功獲批信用卡",
         "收到表格後7日內填妥「獎賞換領表格」",
         "批卡後7日內填寫表格及上傳批核證明"
       ],
       minSpend: 0,
       minSpendDays: 0,
-      notes: "渣打信用卡申請參考編號格式: HK + 14位數字。換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
+      notes: "渣打信用卡申請參考編號格式: HK + 14位數字（例：HKxxxxxxxxxxxxxx）。換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。⚠️ MoneyHero 獨家優惠由 MoneyHero 提供，與渣打銀行無關。",
     }
   },
 
