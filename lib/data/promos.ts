@@ -3,6 +3,112 @@ import { Promo } from "../types";
 export const PROMOS: Promo[] = [
   // ========== 🔥 最新優惠（置頂） ==========
   {
+    id: "moneyhero-citi-2026-jan",
+    title: "💳 MoneyHero x Citi 限時獨家迎新｜高達 $4,288 禮品！",
+    merchant: "MoneyHero",
+    description: "經 MoneyHero 申請 Citi 信用卡，新客戶簽 $4,000 可獲 $2,000 Apple 禮品卡 / $2,000 惠康券 / 飛利浦飲水機（$4,288）/ LG 空氣清新機（$3,690）/ Marshall 藍牙喇叭（$3,499）6 選 1！",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    expiryDate: "2026-01-30",
+    relatedCardIds: ["citi-cashback", "citi-rewards", "citi-premiermiles", "citi-octopus"],
+    tags: ["Citi", "MoneyHero", "迎新優惠", "限時獨家", "新客戶"],
+    url: "https://www.moneyhero.com.hk/zh/credit-card/citi",
+    updatedAt: "2026-01-03",
+    isPinned: true,
+    content: `
+## 📅 重要日期
+
+| 項目 | 日期 |
+|:---|:---|
+| 申請期 | 2025/12/31 12:00 - **2026/1/30 18:00** |
+| 批卡及啟動期限 | **2026/2/28** 或之前 |
+| 簽賬期限 | 批卡成功後 **30 日內** |
+
+---
+
+## 🎁 獨家禮品（6 選 1）
+
+| 禮品 | 價值 |
+|:---|:---:|
+| 🍎 Apple Store 禮品卡 | **$2,000** |
+| 🛒 惠康購物現金券 | **$2,000** |
+| 💧 PHILIPS 飛利浦 RO 純淨飲水機 | **$4,288** |
+| 🐾 LG PuriCare AeroHit 空氣清新機（寵物版） | **$3,690** |
+| 🔊 Marshall Stanmore III 家用藍牙喇叭 | **$3,499** |
+| 📽️ Usatisfy mini 無線音箱 4K 投影機 | **$2,499** |
+
+> 💡 **最抵揀法**：如果你需要實用電器，飛利浦飲水機 $4,288 係價值最高！
+
+---
+
+## ✅ 參加資格
+
+| 條件 | 要求 |
+|:---|:---|
+| 客戶身份 | **新客戶**（過去 12 個月未持有 Citi 信用卡主卡） |
+| 申請渠道 | 必須經 **MoneyHero** 申請 |
+| 簽賬要求 | 累積簽賬滿 **$4,000** |
+
+---
+
+## 💳 適用信用卡
+
+- ✅ Citi 八達通白金卡
+- ✅ Citi Cash Back 信用卡
+- ✅ Citi Rewards 信用卡
+- ✅ Citi Rewards 銀聯信用卡
+- ✅ Citi Premier Miles 信用卡
+- ❌ 學生卡（不適用）
+
+---
+
+## ⚠️ 重要提醒
+
+1. **唔可以同時獲取 Citi 官方迎新**
+   - 領取 MoneyHero 獨家禮品 = 放棄 Citi 自己嘅迎新優惠
+   - 計過先：如果 Citi 官方迎新價值更高，考慮直接喺 Citi 官網申請
+
+2. **申請前設定**
+   - 關閉 AdBlocker
+   - 關閉瀏覽器「私人模式」
+   - 確保 Cookies 已啟用
+
+3. **記低申請編號**
+   - 完成申請後會顯示申請參考編號（如 ABC123456789）
+   - 用嚟查詢進度同領取禮品
+
+---
+
+## 💡 識玩攻略
+
+1. **比較官方 vs MoneyHero**
+   - Citi Cash Back 官方迎新：$1,000 回贈
+   - MoneyHero：$2,000 Apple 卡 / 飲水機 $4,288
+   - 如果你想要實物禮品，MoneyHero 通常更抵
+
+2. **簽賬 $4,000 小貼士**
+   - 交保險 / 水電費 / 寬頻
+   - 買超市禮品卡
+   - 八達通自動增值
+
+3. **建議一次過交齊文件**
+   - 身份證
+   - 入息證明
+   - 住址證明
+   - 加快批核速度
+
+---
+
+👉 [立即經 MoneyHero 申請](https://www.moneyhero.com.hk/zh/credit-card/citi)
+`,
+    faqs: [
+      { question: "我可以同時攞 MoneyHero 禮品同 Citi 官方迎新嗎？", answer: "唔可以！領取 MoneyHero 獨家禮品就唔可以同時獲取 Citi 官方迎新優惠，二擇其一。" },
+      { question: "我 13 個月前 cut 咗 Citi 卡，而家算唔算新客戶？", answer: "算！只要過去 12 個月內未曾持有 Citi 信用卡主卡就係新客戶。" },
+      { question: "簽賬 $4,000 有冇指定商戶？", answer: "冇特別限制，一般零售簽賬都計。但要留意唔包括現金透支、繳交政府費用等。" },
+      { question: "點樣揀禮品？", answer: "成功達成條件後，MoneyHero 會聯絡你揀選禮品，通常喺批卡後 1-2 個月內。" },
+      { question: "我用 Safari 私隱模式申請，會唔會影響？", answer: "會！請關閉私人模式同 AdBlocker，否則 MoneyHero 可能追蹤唔到你嘅申請。" },
+    ],
+  },
+  {
     id: "hsbc-mtr-points-2026",
     title: "🚇 滙豐獎賞錢換 MTR 分額外送 50%！特選客戶免費搭車",
     merchant: "港鐵 MTR",
