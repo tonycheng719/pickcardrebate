@@ -580,6 +580,56 @@ const MONEYHERO_PARTNER_OFFERS = [
       notes: "⚠️ 優惠期至12月21日！換領流程由推廣期結束後起計需時至少16星期。若客戶於開戶後13個月內取消有關信用卡戶口，並已獲贈有關之迎新獎賞，則須繳付同等價值之金額作為手續費。",
     }
   },
+  // ========================================
+  // 恒生 MMPOWER World Mastercard (即日起至 2026/01/30 18:00)
+  // 條件：批卡後30日內簽賬滿HK$400
+  // ⚠️ 全新客戶與現有客戶優惠不同
+  // ========================================
+  {
+    cardId: "hangseng-mmpower",
+    partnerOffer: {
+      enabled: true,
+      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/hang-seng-mmpower-world-mastercard",
+      bonusValue: 4980,
+      bonusDescription: "全新客戶6選1：HK$800 Apple禮品卡/HK$800 惠康現金券/HK$800 現金回贈(FPS)/Delsey 30\"行李箱(HK$4,980)/Foreo LUNA 3(HK$2,090)/Marshall Emberton II(HK$1,499)",
+      bonusItems: [
+        "HK$800 Apple Store禮品卡",
+        "HK$800 惠康購物現金券",
+        "HK$800 現金回贈（經轉數快存入戶口）",
+        "Delsey 30\" GRENELLE SE Expandable Front Opening Suitcase（價值HK$4,980; 顏色隨機）",
+        "Foreo LUNA 3 潔面及按摩儀（價值HK$2,090）",
+        "Marshall Emberton II 藍牙喇叭（價值HK$1,499）"
+      ],
+      validFrom: "2025-12-31",
+      validTo: "2026-01-30",
+      requirements: [
+        "全新恒生信用卡客戶（過去12個月內未曾持有任何恒生信用卡/聯營卡/消費卡主卡）",
+        "提交申請後30日內成功獲批",
+        "批卡後30日內累積簽賬滿HK$400",
+        "收到表格後7日內填妥「獎賞換領表格」"
+      ],
+      minSpend: 400,
+      minSpendDays: 30,
+      notes: "換領流程由推廣期結束後起計需時至少16星期。若客戶於開戶後13個月內取消有關信用卡戶口，並已獲贈有關之迎新獎賞，則須繳付同等價值之金額作為手續費。",
+      // 現有客戶優惠
+      existingCustomerOffer: {
+        bonusValue: 2090,
+        bonusDescription: "現有客戶6選1：HK$600 Apple禮品卡/HK$600 惠康現金券/HK$600 現金回贈(FPS)/Foreo LUNA 3(HK$2,090)/Marshall Willen II(HK$999)/Polaroid Go Gen 2(HK$999)",
+        bonusItems: [
+          "HK$600 Apple Store禮品卡",
+          "HK$600 惠康購物現金券",
+          "HK$600 現金回贈（經轉數快存入戶口）",
+          "Foreo LUNA 3 潔面及按摩儀（價值HK$2,090）",
+          "Marshall Willen II 小型無線便攜喇叭（價值HK$999）",
+          "Polaroid Go Generation 2 即影即有相機（價值HK$999）"
+        ],
+        requirements: [
+          "現有恒生信用卡客戶（過去12個月內曾持有任何恒生信用卡/聯營卡主卡）",
+          "如現在或過去12個月內曾持有MMPOWER卡，不可獲享此優惠"
+        ]
+      }
+    }
+  },
 
   // ========================================
   // 滙豐銀行 HSBC (截至 2025/12/05 23:59)
