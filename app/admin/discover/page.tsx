@@ -41,8 +41,17 @@ interface ArticleSetting {
 
 export default function AdminDiscoverPage() {
   const { promos: dbPromos } = useDataset();
-  // Fallback to static PROMOS if database is empty
-  const promos = dbPromos.length > 0 ? dbPromos : PROMOS;
+  
+  // Merge database promos with static PROMOS
+  // Database promos take priority (override static data)
+  const promos = useMemo(() => {
+    const dbPromoIds = new Set(dbPromos.map(p => p.id));
+    // Start with all static PROMOS that are NOT in database
+    const staticOnly = PROMOS.filter(p => !dbPromoIds.has(p.id));
+    // Combine: database promos + static-only promos
+    return [...dbPromos, ...staticOnly];
+  }, [dbPromos]);
+  
   const [keyword, setKeyword] = useState("");
   const [viewStats, setViewStats] = useState<Record<string, number>>({});
   const [articleSettings, setArticleSettings] = useState<Record<string, string>>({});
