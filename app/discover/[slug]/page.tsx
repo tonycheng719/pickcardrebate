@@ -2226,18 +2226,28 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
                     strong: ({ children }) => (
                       <strong className="font-bold text-gray-900 dark:text-white">{children}</strong>
                     ),
-                    img: ({ src, alt }) => (
-                      <span className="block my-6">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img 
-                          src={src || ''} 
-                          alt={alt || ''} 
-                          className="rounded-xl max-w-full h-auto mx-auto shadow-lg border border-gray-200 dark:border-gray-700"
-                          loading="lazy"
-                        />
-                        {alt && <span className="block text-center text-sm text-gray-500 dark:text-gray-400 mt-2 italic">{alt}</span>}
-                      </span>
-                    ),
+                    img: ({ src, alt }) => {
+                      // Don't show caption if alt looks like a filename (e.g., "螢幕截圖 2026-01-03")
+                      const isFilename = alt && (
+                        alt.includes('螢幕截圖') || 
+                        alt.includes('Screenshot') || 
+                        alt.includes('Screen Shot') ||
+                        alt.match(/^\d+[-_]/) ||
+                        alt.match(/\.(png|jpg|jpeg|gif|webp)$/i)
+                      );
+                      return (
+                        <span className="block my-6">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img 
+                            src={src || ''} 
+                            alt={alt || ''} 
+                            className="rounded-xl max-w-full h-auto mx-auto shadow-lg border border-gray-200 dark:border-gray-700"
+                            loading="lazy"
+                          />
+                          {alt && !isFilename && <span className="block text-center text-sm text-gray-500 dark:text-gray-400 mt-2 italic">{alt}</span>}
+                        </span>
+                      );
+                    },
                     a: ({ href, children }) => (
                       <a 
                         href={href} 
