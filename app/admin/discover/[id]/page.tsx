@@ -236,15 +236,22 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
         body: JSON.stringify(payload),
       });
       
+      const result = await res.json();
+      
       if (!res.ok) {
-        const { error } = await res.json();
-        throw new Error(error || "儲存失敗");
+        // Show detailed error message
+        const errorMsg = result.error || "儲存失敗";
+        console.error("Save error:", errorMsg);
+        toast.error(`❌ 儲存失敗: ${errorMsg}`, { duration: 8000 });
+        setSaving(false);
+        return; // Don't redirect on error
       }
       
-      toast.success(isNew ? "優惠已建立！" : "優惠已更新！");
+      toast.success(isNew ? "✅ 優惠已建立！" : "✅ 優惠已更新！");
       router.push("/admin/discover");
     } catch (error: any) {
-      toast.error(error.message || "儲存失敗");
+      console.error("Save exception:", error);
+      toast.error(`❌ 儲存失敗: ${error.message || "未知錯誤"}`, { duration: 8000 });
     } finally {
       setSaving(false);
     }
