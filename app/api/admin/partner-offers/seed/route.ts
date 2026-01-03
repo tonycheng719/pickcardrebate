@@ -5,7 +5,7 @@ import { adminAuthClient } from '@/lib/supabase/admin-client';
 // 資料來源：MoneyHero 官網條款與細則
 const MONEYHERO_PARTNER_OFFERS = [
   // ========================================
-  // Citi 花旗銀行 (2025/12/01 18:00 - 2025/12/31 12:00)
+  // Citi 花旗銀行 (2025/12/31 12:00 - 2026/01/30 18:00)
   // 適用：八達通白金卡、Cash Back、Rewards、Rewards 銀聯、Premier Miles
   // 條件：批卡後30日內簽賬滿$4,000
   // ========================================
@@ -24,77 +24,21 @@ const MONEYHERO_PARTNER_OFFERS = [
         "HK$2,000 惠康購物現金券",
         "Usatisfy mini 無線音箱4K投影機（價值HK$2,499）"
       ],
-      validFrom: "2025-12-01",
-      validTo: "2025-12-31",
+      validFrom: "2025-12-31",
+      validTo: "2026-01-30",
       requirements: [
         "全新Citi信用卡客戶（過去12個月內未曾持有Citi信用卡主卡）",
         "批卡後30日內累積簽賬滿HK$4,000",
-        "2026年1月31日或之前成功獲批並啟動信用卡",
+        "2026年2月28日或之前成功獲批並啟動信用卡",
         "收到表格後7日內填妥「獎賞換領表格」"
       ],
       minSpend: 4000,
       minSpendDays: 30,
-      notes: "換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
+      notes: "⚠️ 領取MoneyHero獨家優惠不能同時獲取花旗銀行迎新優惠。換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
     }
   },
-  // Citi HKTVmall 信用卡 - 同樣適用Citi優惠
-  {
-    cardId: "citi-hktvmall",
-    partnerOffer: {
-      enabled: true,
-      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/citi-hktvmall-credit-card",
-      bonusValue: 4288,
-      bonusDescription: "獎品6選1：PHILIPS飲水機(HK$4,288)/LG空氣清新機(HK$3,690)/Marshall藍牙喇叭(HK$3,499)/HK$2,000 Apple禮品卡/HK$2,000惠康現金券/4K投影機(HK$2,499)",
-      bonusItems: [
-        "PHILIPS 飛利浦 ADD6920BK RO 純淨飲水機（價值HK$4,288）",
-        "LG AS35GGW20 PuriCare™ AeroHit 空氣清新機 寵物版（價值HK$3,690）",
-        "Marshall Stanmore III 家用藍牙喇叭（價值HK$3,499）",
-        "HK$2,000 Apple Store 禮品卡",
-        "HK$2,000 惠康購物現金券",
-        "Usatisfy mini 無線音箱4K投影機（價值HK$2,499）"
-      ],
-      validFrom: "2025-12-01",
-      validTo: "2025-12-31",
-      requirements: [
-        "全新Citi信用卡客戶（過去12個月內未曾持有Citi信用卡主卡）",
-        "批卡後30日內累積簽賬滿HK$4,000",
-        "2026年1月31日或之前成功獲批並啟動信用卡",
-        "收到表格後7日內填妥「獎賞換領表格」"
-      ],
-      minSpend: 4000,
-      minSpendDays: 30,
-      notes: "換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
-    }
-  },
-  // Citi The Club 信用卡
-  {
-    cardId: "citi-the-club",
-    partnerOffer: {
-      enabled: true,
-      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/citi-the-club-credit-card",
-      bonusValue: 4288,
-      bonusDescription: "獎品6選1：PHILIPS飲水機(HK$4,288)/LG空氣清新機(HK$3,690)/Marshall藍牙喇叭(HK$3,499)/HK$2,000 Apple禮品卡/HK$2,000惠康現金券/4K投影機(HK$2,499)",
-      bonusItems: [
-        "PHILIPS 飛利浦 ADD6920BK RO 純淨飲水機（價值HK$4,288）",
-        "LG AS35GGW20 PuriCare™ AeroHit 空氣清新機 寵物版（價值HK$3,690）",
-        "Marshall Stanmore III 家用藍牙喇叭（價值HK$3,499）",
-        "HK$2,000 Apple Store 禮品卡",
-        "HK$2,000 惠康購物現金券",
-        "Usatisfy mini 無線音箱4K投影機（價值HK$2,499）"
-      ],
-      validFrom: "2025-12-01",
-      validTo: "2025-12-31",
-      requirements: [
-        "全新Citi信用卡客戶（過去12個月內未曾持有Citi信用卡主卡）",
-        "批卡後30日內累積簽賬滿HK$4,000",
-        "2026年1月31日或之前成功獲批並啟動信用卡",
-        "收到表格後7日內填妥「獎賞換領表格」"
-      ],
-      minSpend: 4000,
-      minSpendDays: 30,
-      notes: "換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
-    }
-  },
+  // Citi HKTVmall 信用卡 - 不適用於本期優惠（學生卡除外）
+  // 注意：HKTVmall卡不在本期MoneyHero優惠範圍
   {
     cardId: "citi-octopus",
     partnerOffer: {
@@ -110,17 +54,17 @@ const MONEYHERO_PARTNER_OFFERS = [
         "HK$2,000 惠康購物現金券",
         "Usatisfy mini 無線音箱4K投影機（價值HK$2,499）"
       ],
-      validFrom: "2025-12-01",
-      validTo: "2025-12-31",
+      validFrom: "2025-12-31",
+      validTo: "2026-01-30",
       requirements: [
         "全新Citi信用卡客戶（過去12個月內未曾持有Citi信用卡主卡）",
         "批卡後30日內累積簽賬滿HK$4,000",
-        "2026年1月31日或之前成功獲批並啟動信用卡",
+        "2026年2月28日或之前成功獲批並啟動信用卡",
         "收到表格後7日內填妥「獎賞換領表格」"
       ],
       minSpend: 4000,
       minSpendDays: 30,
-      notes: "換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
+      notes: "⚠️ 領取MoneyHero獨家優惠不能同時獲取花旗銀行迎新優惠。換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
     }
   },
   {
@@ -138,17 +82,17 @@ const MONEYHERO_PARTNER_OFFERS = [
         "HK$2,000 惠康購物現金券",
         "Usatisfy mini 無線音箱4K投影機（價值HK$2,499）"
       ],
-      validFrom: "2025-12-01",
-      validTo: "2025-12-31",
+      validFrom: "2025-12-31",
+      validTo: "2026-01-30",
       requirements: [
         "全新Citi信用卡客戶（過去12個月內未曾持有Citi信用卡主卡）",
         "批卡後30日內累積簽賬滿HK$4,000",
-        "2026年1月31日或之前成功獲批並啟動信用卡",
+        "2026年2月28日或之前成功獲批並啟動信用卡",
         "收到表格後7日內填妥「獎賞換領表格」"
       ],
       minSpend: 4000,
       minSpendDays: 30,
-      notes: "換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
+      notes: "⚠️ 領取MoneyHero獨家優惠不能同時獲取花旗銀行迎新優惠。換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
     }
   },
   {
@@ -166,17 +110,46 @@ const MONEYHERO_PARTNER_OFFERS = [
         "HK$2,000 惠康購物現金券",
         "Usatisfy mini 無線音箱4K投影機（價值HK$2,499）"
       ],
-      validFrom: "2025-12-01",
-      validTo: "2025-12-31",
+      validFrom: "2025-12-31",
+      validTo: "2026-01-30",
       requirements: [
         "全新Citi信用卡客戶（過去12個月內未曾持有Citi信用卡主卡）",
         "批卡後30日內累積簽賬滿HK$4,000",
-        "2026年1月31日或之前成功獲批並啟動信用卡",
+        "2026年2月28日或之前成功獲批並啟動信用卡",
         "收到表格後7日內填妥「獎賞換領表格」"
       ],
       minSpend: 4000,
       minSpendDays: 30,
-      notes: "換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
+      notes: "⚠️ 領取MoneyHero獨家優惠不能同時獲取花旗銀行迎新優惠。換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
+    }
+  },
+  // Citi Rewards 銀聯 (同樣適用)
+  {
+    cardId: "citi-rewards-unionpay",
+    partnerOffer: {
+      enabled: true,
+      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/citi-rewards-unionpay",
+      bonusValue: 4288,
+      bonusDescription: "獎品6選1：PHILIPS飲水機(HK$4,288)/LG空氣清新機(HK$3,690)/Marshall藍牙喇叭(HK$3,499)/HK$2,000 Apple禮品卡/HK$2,000惠康現金券/4K投影機(HK$2,499)",
+      bonusItems: [
+        "PHILIPS 飛利浦 ADD6920BK RO 純淨飲水機（價值HK$4,288）",
+        "LG AS35GGW20 PuriCare™ AeroHit 空氣清新機 寵物版（價值HK$3,690）",
+        "Marshall Stanmore III 家用藍牙喇叭（價值HK$3,499）",
+        "HK$2,000 Apple Store 禮品卡",
+        "HK$2,000 惠康購物現金券",
+        "Usatisfy mini 無線音箱4K投影機（價值HK$2,499）"
+      ],
+      validFrom: "2025-12-31",
+      validTo: "2026-01-30",
+      requirements: [
+        "全新Citi信用卡客戶（過去12個月內未曾持有Citi信用卡主卡）",
+        "批卡後30日內累積簽賬滿HK$4,000",
+        "2026年2月28日或之前成功獲批並啟動信用卡",
+        "收到表格後7日內填妥「獎賞換領表格」"
+      ],
+      minSpend: 4000,
+      minSpendDays: 30,
+      notes: "⚠️ 領取MoneyHero獨家優惠不能同時獲取花旗銀行迎新優惠。換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
     }
   },
 
@@ -959,7 +932,7 @@ export async function POST(request: Request) {
 export async function GET() {
   return NextResponse.json({ 
     source: 'MoneyHero 官網條款與細則',
-    lastUpdated: '2025-12-08',
+    lastUpdated: '2026-01-03',
     availableOffers: MONEYHERO_PARTNER_OFFERS.map(o => ({
       cardId: o.cardId,
       bonusValue: o.partnerOffer.bonusValue,
