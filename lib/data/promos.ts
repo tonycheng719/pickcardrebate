@@ -3,6 +3,123 @@ import { Promo } from "../types";
 export const PROMOS: Promo[] = [
   // ========== 🔥 最新優惠（置頂） ==========
   {
+    id: "amex-platinum-9x-2026",
+    title: "💎 Amex 白金卡「高達 9X」積分加賞計劃｜低至 $2 = 1 里！",
+    merchant: "美國運通",
+    description: "登記後憑 Amex 白金卡於外幣簽賬、指定旅遊商戶（Agoda、Trip.com、Expedia 等）及指定日常消費商戶（惠康、百佳、萬寧等）可獲高達 9X 積分！每季首 $15,000 簽賬適用。",
+    imageUrl: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=2071&auto=format&fit=crop",
+    expiryDate: "2026-06-30",
+    relatedCardIds: ["amex-platinum"],
+    tags: ["美國運通", "白金卡", "積分加賞", "需登記", "里數"],
+    url: "https://www.americanexpress.com/zh-hk/benefits/offers/shopping/platinum-membership-rewards-accelerator/",
+    updatedAt: "2026-01-03",
+    isPinned: true,
+    content: `
+## 📅 推廣期
+
+**2025年8月20日 至 2026年6月30日**
+
+分 4 個曆年季度：
+- **Q1**：2025/8/20 - 9/30
+- **Q2**：2025/10/1 - 12/31
+- **Q3**：2026/1/1 - 3/31
+- **Q4**：2026/4/1 - 6/30
+
+> ⚠️ 必須透過 Amex HK App 登記！
+
+---
+
+## 🎫 積分獎賞詳情
+
+| 簽賬類別 | 額外積分 | 每季上限 | 合計積分 |
+|:---|:---:|:---:|:---:|
+| 🌏 **外幣簽賬** | +5 積分/$1 | 首 $15,000 | **9 積分/$1** |
+| ✈️ **指定旅遊商戶** | +7 積分/$1 | 首 $15,000 | **9 積分/$1** |
+| 🛒 **指定日常消費商戶** | +7 積分/$1 | 首 $15,000 | **9 積分/$1** |
+
+> 💡 以 18 積分 = 1 里計算，**低至 $2 = 1 里**！
+
+---
+
+## ✈️ 指定旅遊商戶
+
+| 類別 | 商戶 |
+|:---|:---|
+| 航空公司 | 直接訂購定期航班（不包括包機、套票） |
+| 網上旅遊 | Agoda、Trip.com、Expedia、Booking.com、Hotels.com、Klook、Airbnb、Hutchgo、Kaligo、CLUBMED、American Express Travel Online |
+
+---
+
+## 🛒 指定日常消費商戶
+
+| 類別 | 商戶（只限門市） |
+|:---|:---|
+| 超市 | 惠康、百佳、FUSION、TASTE、city'super、一田、AEON、DON DON DONKI、759阿信屋、U購Select |
+| 個人護理 | 萬寧、屈臣氏 |
+| 便利店 | OK便利店、VanGO |
+| 百貨 | 崇光、LOG-ON、APITA、UNY、CITISTORE |
+| 油站 | 加德士、Esso、中國石油、Shell |
+
+---
+
+## 📊 回贈率計算
+
+| 情況 | 積分 | 里數兌換率 | 相當於 |
+|:---|:---:|:---:|:---:|
+| 本地一般簽賬（首 $16萬） | 2 積分/$1 | 18:1 | $9 = 1 里 |
+| 外幣簽賬 | 9 積分/$1 | 18:1 | **$2 = 1 里** |
+| 指定旅遊/日常消費 | 9 積分/$1 | 18:1 | **$2 = 1 里** |
+
+---
+
+## 🎁 額外優惠：American Express Travel Online
+
+**2026年1月6日 至 6月30日**
+
+透過 Amex Travel Online 預訂酒店或租車，可獲高達 **$1,100 簽賬回贈**！
+
+| 項目 | 詳情 |
+|:---|:---|
+| 適用卡 | 白金卡、半島白金卡 |
+| 回贈上限 | $1,100 |
+| 需登記 | ✅ 透過 Amex HK App |
+
+> ⚠️ 不適用於 Fine Hotels + Resorts、The Hotel Collection、航班套票
+
+---
+
+## 💎 白金卡權益一覽
+
+| 權益 | 詳情 |
+|:---|:---|
+| 🛫 機場貴賓室 | 全球 1,550+ 間，包括 The Centurion Lounge |
+| 🏨 豪華酒店計劃 | 1,300+ 間酒店享免費升級、雙人早餐、延遲退房（價值 $4,680） |
+| 🍽️ 環球餐饗禮遇 | 全年高達 $2,000 餐飲回贈 |
+| 🎬 百老匯 | 星期五戲票買一送一 |
+| 🛍️ city'super | 正價貨品 97 折 |
+
+---
+
+## ⚠️ 注意事項
+
+1. **必須透過 Amex HK App 登記**
+2. **每季上限 $15,000**（超過後回復基本積分）
+3. **不適用於第三方支付**（支付寶、微信 ❌ / Apple Pay、Google Pay ✅）
+4. **年費 $9,500**（包 2 張附屬卡，不可豁免）
+
+---
+
+👉 [立即登記積分加賞計劃](https://www.americanexpress.com/zh-hk/benefits/offers/shopping/platinum-membership-rewards-accelerator/)
+`,
+    faqs: [
+      { question: "我要點樣登記？", answer: "下載 Amex HK App，登入後喺優惠區域搵「積分加賞計劃」並完成登記。整個推廣期只需登記一次。" },
+      { question: "每季上限 $15,000 係點計？", answer: "外幣、指定旅遊、指定日常消費三個類別各有 $15,000 上限，即係每季最多可以喺三個類別各簽 $15,000 享額外積分。" },
+      { question: "用 PayMe / 支付寶付款計唔計？", answer: "唔計！透過第三方支付（支付寶、微信支付）唔會獲得額外積分。但 Apple Pay、Google Pay、Samsung Pay 就計。" },
+      { question: "網上購物計唔計指定日常消費？", answer: "大部分只限門市簽賬。崇光超市除外（門市及網店均適用）。" },
+      { question: "年費可以豁免嗎？", answer: "唔可以！Amex 白金卡年費 $9,500（包 2 張附屬卡）係固定收費，無得 waive。" },
+    ],
+  },
+  {
     id: "moneyhero-citi-2026-jan",
     title: "💳 MoneyHero x Citi 限時獨家迎新｜高達 $4,288 禮品！",
     merchant: "MoneyHero",
