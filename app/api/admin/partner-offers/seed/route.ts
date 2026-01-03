@@ -442,6 +442,28 @@ const MONEYHERO_PARTNER_OFFERS = [
     }
   },
   {
+    cardId: "wewa-visa-signature",
+    partnerOffer: {
+      enabled: true,
+      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=180&a=228&sub_id1=pickcardrebate&sub_id2=web",
+      bonusValue: 300,
+      bonusDescription: "全新客戶：HK$200 惠康購物現金券 + HK$100現金回贈",
+      bonusItems: ["HK$200 惠康購物現金券", "HK$100現金回贈"],
+      validFrom: "2025-12-31",
+      validTo: "2026-01-30",
+      requirements: [
+        "全新安信信用卡客戶（過去12個月內未曾持有安信信用卡主卡）",
+        "經MoneyHero成功申請 WeWa Visa Signature 卡",
+        "2026年2月28日或之前成功獲批",
+        "批卡成功後30日內累積簽賬滿HK$100",
+        "收到表格後7日內填妥「獎賞換領表格」"
+      ],
+      minSpend: 100,
+      minSpendDays: 30,
+      notes: "換領流程由推廣期結束後起計需時至少16星期。",
+    }
+  },
+  {
     cardId: "earnmore",
     partnerOffer: {
       enabled: true,
