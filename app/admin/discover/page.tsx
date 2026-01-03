@@ -21,6 +21,7 @@ import {
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { GUIDES, Guide } from "@/lib/data/guides";
+import { PROMOS } from "@/lib/data/promos";
 import { useDataset } from "@/lib/admin/data-store";
 import { toast } from "sonner";
 
@@ -39,7 +40,9 @@ interface ArticleSetting {
 }
 
 export default function AdminDiscoverPage() {
-  const { promos } = useDataset();
+  const { promos: dbPromos } = useDataset();
+  // Fallback to static PROMOS if database is empty
+  const promos = dbPromos.length > 0 ? dbPromos : PROMOS;
   const [keyword, setKeyword] = useState("");
   const [viewStats, setViewStats] = useState<Record<string, number>>({});
   const [articleSettings, setArticleSettings] = useState<Record<string, string>>({});
