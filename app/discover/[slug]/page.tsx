@@ -2226,6 +2226,31 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
                     strong: ({ children }) => (
                       <strong className="font-bold text-gray-900 dark:text-white">{children}</strong>
                     ),
+                    img: ({ src, alt }) => (
+                      <span className="block my-6">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img 
+                          src={src || ''} 
+                          alt={alt || ''} 
+                          className="rounded-xl max-w-full h-auto mx-auto shadow-lg border border-gray-200 dark:border-gray-700"
+                          loading="lazy"
+                        />
+                        {alt && <span className="block text-center text-sm text-gray-500 dark:text-gray-400 mt-2 italic">{alt}</span>}
+                      </span>
+                    ),
+                    a: ({ href, children }) => (
+                      <a 
+                        href={href} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="text-emerald-600 dark:text-emerald-400 hover:underline font-medium"
+                      >
+                        {children}
+                      </a>
+                    ),
+                    p: ({ children }) => (
+                      <p className="my-4 text-gray-700 dark:text-gray-300 leading-relaxed">{children}</p>
+                    ),
                   }}
                 >{promo.content}</ReactMarkdown>
               ) : (
