@@ -864,33 +864,112 @@ const MONEYHERO_PARTNER_OFFERS = [
   },
 
   // ========================================
-  // 中銀Go銀聯白金卡 (2025/12/02 18:00 - 2025/12/22 12:00)
+  // 中銀信用卡 (2026/01/02 12:00 - 2026/01/30 18:00)
+  // 適用卡種：Cheers Visa Infinite、Cheers Visa Signature、Chill、Go Diamond、Go Platinum
   // ⚠️ 先到先得，送完即止
   // ========================================
+  {
+    cardId: "boc-cheers",
+    partnerOffer: {
+      enabled: true,
+      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/boc-cheers-card",
+      bonusValue: 2100,
+      bonusDescription: "獎品5選1：HK$800 Apple禮品卡 / HK$800 惠康現金券 / LOJEL行李箱(HK$2,100) / Marshall喇叭(HK$1,499) / BRUNO飲水機(HK$998)",
+      bonusItems: [
+        "HK$800 Apple Store禮品卡",
+        "HK$800 惠康購物現金券",
+        "LOJEL Alto 29吋超輕量拉鍊行李箱（價值HK$2,100; 顏色隨機）",
+        "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）",
+        "BRUNO BAK801 即熱式飲水機（價值HK$998; 顏色隨機）"
+      ],
+      validFrom: "2026-01-02",
+      validTo: "2026-01-30",
+      requirements: [
+        "全新中銀信用卡客戶（現時並未持有或過去12個月內未曾持有/取消任何中銀信用卡主卡）",
+        "2026年2月28日或之前成功獲批信用卡",
+        "收到表格後7日內填妥「獎賞換領表格」"
+      ],
+      minSpend: 0,
+      minSpendDays: 0,
+      notes: "⚠️ 先到先得，送完即止！換領流程由批核後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
+    }
+  },
+  {
+    cardId: "boc-cheers-signature",
+    partnerOffer: {
+      enabled: true,
+      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/boc-cheers-card",
+      bonusValue: 2100,
+      bonusDescription: "獎品5選1：HK$800 Apple禮品卡 / HK$800 惠康現金券 / LOJEL行李箱(HK$2,100) / Marshall喇叭(HK$1,499) / BRUNO飲水機(HK$998)",
+      bonusItems: [
+        "HK$800 Apple Store禮品卡",
+        "HK$800 惠康購物現金券",
+        "LOJEL Alto 29吋超輕量拉鍊行李箱（價值HK$2,100; 顏色隨機）",
+        "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）",
+        "BRUNO BAK801 即熱式飲水機（價值HK$998; 顏色隨機）"
+      ],
+      validFrom: "2026-01-02",
+      validTo: "2026-01-30",
+      requirements: [
+        "全新中銀信用卡客戶（現時並未持有或過去12個月內未曾持有/取消任何中銀信用卡主卡）",
+        "2026年2月28日或之前成功獲批信用卡",
+        "收到表格後7日內填妥「獎賞換領表格」"
+      ],
+      minSpend: 0,
+      minSpendDays: 0,
+      notes: "⚠️ 先到先得，送完即止！換領流程由批核後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
+    }
+  },
+  {
+    cardId: "boc-chill",
+    partnerOffer: {
+      enabled: true,
+      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/boc-chill-card",
+      bonusValue: 2100,
+      bonusDescription: "獎品5選1：HK$800 Apple禮品卡 / HK$800 惠康現金券 / LOJEL行李箱(HK$2,100) / Marshall喇叭(HK$1,499) / BRUNO飲水機(HK$998)",
+      bonusItems: [
+        "HK$800 Apple Store禮品卡",
+        "HK$800 惠康購物現金券",
+        "LOJEL Alto 29吋超輕量拉鍊行李箱（價值HK$2,100; 顏色隨機）",
+        "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）",
+        "BRUNO BAK801 即熱式飲水機（價值HK$998; 顏色隨機）"
+      ],
+      validFrom: "2026-01-02",
+      validTo: "2026-01-30",
+      requirements: [
+        "全新中銀信用卡客戶（現時並未持有或過去12個月內未曾持有/取消任何中銀信用卡主卡）",
+        "2026年2月28日或之前成功獲批信用卡",
+        "收到表格後7日內填妥「獎賞換領表格」"
+      ],
+      minSpend: 0,
+      minSpendDays: 0,
+      notes: "⚠️ 先到先得，送完即止！適用於 Chill World Mastercard 及 Chill Platinum Mastercard。換領流程由批核後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
+    }
+  },
   {
     cardId: "boc-go-platinum",
     partnerOffer: {
       enabled: true,
       applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/boc-go-card",
       bonusValue: 2100,
-      bonusDescription: "獎品5選1：HK$800 Apple禮品卡 / HK$800 惠康現金券 / LOJEL行李箱(HK$2,100) / NESCAFÉ咖啡機(HK$1,780) / Marshall喇叭(HK$1,499)",
+      bonusDescription: "獎品5選1：HK$800 Apple禮品卡 / HK$800 惠康現金券 / LOJEL行李箱(HK$2,100) / Marshall喇叭(HK$1,499) / BRUNO飲水機(HK$998)",
       bonusItems: [
         "HK$800 Apple Store禮品卡",
         "HK$800 惠康購物現金券",
         "LOJEL Alto 29吋超輕量拉鍊行李箱（價值HK$2,100; 顏色隨機）",
-        "NESCAFÉ Dolce Gusto Genio S Plus 膠囊咖啡機連6盒膠囊（價值HK$1,780; 顏色隨機）",
-        "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）"
+        "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）",
+        "BRUNO BAK801 即熱式飲水機（價值HK$998; 顏色隨機）"
       ],
-      validFrom: "2025-12-02",
-      validTo: "2025-12-22",
+      validFrom: "2026-01-02",
+      validTo: "2026-01-30",
       requirements: [
-        "全新中銀信用卡客戶（過去12個月內未曾持有或取消任何中銀信用卡主卡）",
-        "2025年12月31日或之前成功獲批信用卡",
+        "全新中銀信用卡客戶（現時並未持有或過去12個月內未曾持有/取消任何中銀信用卡主卡）",
+        "2026年2月28日或之前成功獲批信用卡",
         "收到表格後7日內填妥「獎賞換領表格」"
       ],
       minSpend: 0,
       minSpendDays: 0,
-      notes: "⚠️ 先到先得，送完即止！適用於中銀 Go 銀聯鑽石卡及中銀 Go 銀聯白金卡。換領流程由批核後起計需時至少16星期。",
+      notes: "⚠️ 先到先得，送完即止！適用於中銀 Go 銀聯鑽石卡及中銀 Go 銀聯白金卡。換領流程由批核後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
     }
   },
   {
@@ -899,24 +978,24 @@ const MONEYHERO_PARTNER_OFFERS = [
       enabled: true,
       applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/boc-go-card",
       bonusValue: 2100,
-      bonusDescription: "獎品5選1：HK$800 Apple禮品卡 / HK$800 惠康現金券 / LOJEL行李箱(HK$2,100) / NESCAFÉ咖啡機(HK$1,780) / Marshall喇叭(HK$1,499)",
+      bonusDescription: "獎品5選1：HK$800 Apple禮品卡 / HK$800 惠康現金券 / LOJEL行李箱(HK$2,100) / Marshall喇叭(HK$1,499) / BRUNO飲水機(HK$998)",
       bonusItems: [
         "HK$800 Apple Store禮品卡",
         "HK$800 惠康購物現金券",
         "LOJEL Alto 29吋超輕量拉鍊行李箱（價值HK$2,100; 顏色隨機）",
-        "NESCAFÉ Dolce Gusto Genio S Plus 膠囊咖啡機連6盒膠囊（價值HK$1,780; 顏色隨機）",
-        "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）"
+        "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）",
+        "BRUNO BAK801 即熱式飲水機（價值HK$998; 顏色隨機）"
       ],
-      validFrom: "2025-12-02",
-      validTo: "2025-12-22",
+      validFrom: "2026-01-02",
+      validTo: "2026-01-30",
       requirements: [
-        "全新中銀信用卡客戶（過去12個月內未曾持有或取消任何中銀信用卡主卡）",
-        "2025年12月31日或之前成功獲批信用卡",
+        "全新中銀信用卡客戶（現時並未持有或過去12個月內未曾持有/取消任何中銀信用卡主卡）",
+        "2026年2月28日或之前成功獲批信用卡",
         "收到表格後7日內填妥「獎賞換領表格」"
       ],
       minSpend: 0,
       minSpendDays: 0,
-      notes: "⚠️ 先到先得，送完即止！適用於中銀 Go 銀聯鑽石卡及中銀 Go 銀聯白金卡。換領流程由批核後起計需時至少16星期。",
+      notes: "⚠️ 先到先得，送完即止！適用於中銀 Go 銀聯鑽石卡及中銀 Go 銀聯白金卡。換領流程由批核後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
     }
   },
 ];
