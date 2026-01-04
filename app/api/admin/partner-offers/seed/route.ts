@@ -580,20 +580,20 @@ const MONEYHERO_PARTNER_OFFERS = [
   },
 
   // ========================================
-  // 恒生銀行 (2025/12/01 10:00 - 2025/12/21 23:59)
+  // 恒生銀行 Travel+ (即日起至 2026/01/30 18:00)
   // 適用：Travel+ Visa Signature 卡
-  // 條件：批卡後30日內簽賬滿HK$100
+  // 條件：提交申請後30日內批卡，批卡後30日內簽賬滿HK$100
   // ========================================
   {
     cardId: "hangseng-travel-plus",
     partnerOffer: {
       enabled: true,
       applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=688&a=228&sub_id1=pickcardrebate&sub_id2=web",
-      bonusValue: 300,
-      bonusDescription: "HK$300 惠康購物現金券",
-      bonusItems: ["HK$300 惠康購物現金券"],
-      validFrom: "2025-12-01",
-      validTo: "2025-12-21",
+      bonusValue: 400,
+      bonusDescription: "獎品2選1：HK$400 Apple Store禮品卡 或 HK$400 惠康購物現金券",
+      bonusItems: ["HK$400 Apple Store禮品卡", "HK$400 惠康購物現金券"],
+      validFrom: "2025-12-22",
+      validTo: "2026-01-30",
       requirements: [
         "全新及現有恒生信用卡客戶",
         "提交申請後30日內成功獲批",
@@ -602,7 +602,7 @@ const MONEYHERO_PARTNER_OFFERS = [
       ],
       minSpend: 100,
       minSpendDays: 30,
-      notes: "⚠️ 優惠期至12月21日！換領流程由推廣期結束後起計需時至少16星期。若客戶於開戶後13個月內取消有關信用卡戶口，並已獲贈有關之迎新獎賞，則須繳付同等價值之金額作為手續費。",
+      notes: "換領流程由推廣期結束後起計需時至少16星期。若客戶於開戶後13個月內取消有關信用卡戶口，並已獲贈有關之迎新獎賞，則須繳付同等價值之金額作為手續費。「全新信用卡客戶」為過去12個月內未曾持有任何恒生信用卡/聯營卡/消費卡主卡之申請人。「現有信用卡客戶」為過去12個月內曾持有恒生信用卡/聯營卡主卡（不包括消費卡及專享卡）之申請人。",
     }
   },
   // ========================================
