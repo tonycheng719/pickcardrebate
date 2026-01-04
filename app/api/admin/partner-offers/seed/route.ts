@@ -241,17 +241,17 @@ const MONEYHERO_PARTNER_OFFERS = [
       enabled: true,
       applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/dbs-live-fresh-card",
       bonusValue: 200,
-      bonusDescription: "HK$200 Apple Store禮品卡",
-      bonusItems: ["HK$200 Apple Store禮品卡"],
-      validFrom: "2025-12-01",
-      validTo: "2025-12-31",
+      bonusDescription: "獎品2選1：HK$200 Apple Store禮品卡 或 HK$200 惠康購物現金券",
+      bonusItems: ["HK$200 Apple Store禮品卡", "HK$200 惠康購物現金券"],
+      validFrom: "2026-01-01",
+      validTo: "2026-01-30",
       requirements: [
         "全新星展信用卡客戶",
         "收到表格後7日內填妥「獎賞換領表格」"
       ],
       minSpend: 0,
       minSpendDays: 0,
-      notes: "高達6%現金回贈，最低年薪要求HK$150,000（大專生版無最低年薪要求）。",
+      notes: "換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
     }
   },
 
