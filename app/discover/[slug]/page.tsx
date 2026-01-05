@@ -62,6 +62,7 @@ import { UnionpayForeignFeeGuide, unionpayForeignFeeFaqData } from "./unionpay-f
 import BeaRewardExtension2026Guide, { beaRewardExtensionFaqData } from "./bea-reward-extension-2026";
 import BocVisaCrazyRewards2026Guide, { bocVisaCrazyRewardsFaqData } from "./boc-visa-crazy-rewards-2026";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
+import { CardMarkdownRenderer } from "@/app/discover/components/card-markdown-renderer";
 import { ArticleTracker } from "@/app/discover/components/article-tracker";
 import { ArticleReviews } from "@/app/discover/components/article-reviews";
 import { PageViewTracker } from "@/components/page-view-tracker";
@@ -2175,94 +2176,10 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
             </div>
 
             {/* Description */}
-            <div className="prose prose-lg dark:prose-invert max-w-none mb-10">
+            <div className="mb-10">
               <p className="lead text-xl text-gray-600 dark:text-gray-300 mb-6 font-medium">{promo.description}</p>
               {promo.content ? (
-                <ReactMarkdown 
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    table: ({ children }) => (
-                      <div className="overflow-x-auto my-6">
-                        <table className="w-full border-collapse border border-gray-200 dark:border-gray-700 text-sm">
-                          {children}
-                        </table>
-                      </div>
-                    ),
-                    thead: ({ children }) => (
-                      <thead className="bg-gray-100 dark:bg-gray-800">{children}</thead>
-                    ),
-                    th: ({ children }) => (
-                      <th className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-left font-semibold">{children}</th>
-                    ),
-                    td: ({ children }) => (
-                      <td className="border border-gray-200 dark:border-gray-700 px-4 py-3">{children}</td>
-                    ),
-                    blockquote: ({ children }) => (
-                      <blockquote className="border-l-4 border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 pl-4 py-3 my-4 rounded-r-lg text-gray-700 dark:text-gray-300 not-prose">
-                        {children}
-                      </blockquote>
-                    ),
-                    h2: ({ children }) => (
-                      <h2 className="text-xl font-bold text-gray-900 dark:text-white mt-8 mb-4 flex items-center gap-2">{children}</h2>
-                    ),
-                    h3: ({ children }) => (
-                      <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mt-6 mb-3">{children}</h3>
-                    ),
-                    hr: () => (
-                      <hr className="my-8 border-gray-200 dark:border-gray-700" />
-                    ),
-                    ul: ({ children }) => (
-                      <ul className="space-y-2 my-4">{children}</ul>
-                    ),
-                    li: ({ children }) => (
-                      <li className="flex items-start gap-2">
-                        <span className="text-emerald-500 mt-1">•</span>
-                        <span>{children}</span>
-                      </li>
-                    ),
-                    ol: ({ children }) => (
-                      <ol className="space-y-3 my-4 list-none">{children}</ol>
-                    ),
-                    strong: ({ children }) => (
-                      <strong className="font-bold text-gray-900 dark:text-white">{children}</strong>
-                    ),
-                    img: ({ src, alt }) => {
-                      // Don't show caption if alt looks like a filename (e.g., "螢幕截圖 2026-01-03")
-                      const isFilename = alt && (
-                        alt.includes('螢幕截圖') || 
-                        alt.includes('Screenshot') || 
-                        alt.includes('Screen Shot') ||
-                        alt.match(/^\d+[-_]/) ||
-                        alt.match(/\.(png|jpg|jpeg|gif|webp)$/i)
-                      );
-                      return (
-                        <span className="block my-6">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img 
-                            src={src || ''} 
-                            alt={alt || ''} 
-                            className="rounded-xl max-w-full h-auto mx-auto shadow-lg border border-gray-200 dark:border-gray-700"
-                            loading="lazy"
-                          />
-                          {alt && !isFilename && <span className="block text-center text-sm text-gray-500 dark:text-gray-400 mt-2 italic">{alt}</span>}
-                        </span>
-                      );
-                    },
-                    a: ({ href, children }) => (
-                      <a 
-                        href={href} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="text-emerald-600 dark:text-emerald-400 hover:underline font-medium"
-                      >
-                        {children}
-                      </a>
-                    ),
-                    p: ({ children }) => (
-                      <p className="my-4 text-gray-700 dark:text-gray-300 leading-relaxed">{children}</p>
-                    ),
-                  }}
-                >{promo.content}</ReactMarkdown>
+                <CardMarkdownRenderer content={promo.content} />
               ) : (
                 <div className="bg-gray-50 dark:bg-gray-800/50 p-6 rounded-xl text-center text-gray-500 dark:text-gray-400 italic">
                   此優惠暫無詳細內容，請點擊下方按鈕前往官網查看。
