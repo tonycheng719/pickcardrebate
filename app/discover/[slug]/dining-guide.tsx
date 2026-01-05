@@ -14,35 +14,35 @@ import { CardPreviewSection } from "@/app/discover/components/card-preview-secti
 export const diningFaqData = [
   {
     question: "食飯信用卡邊張回贈最高？",
-    answer: "HSBC Visa Signature 本地餐飲有 3.6% 回贈、Citi Cash Back 餐飲有 2%、恒生 MMPOWER 食肆有 5%（手機支付）。如果想無上限，渣打 Simply Cash 有 1.5%、安信 EarnMORE 有 2%（Mobile Pay）。"
+    answer: "建行 eye 卡加碼賞最高 9%+2%=11%（需登記、月簽 $5,000、單筆 $300）。AEON Card Purple 有 6%（手機支付）。信銀 Motion 有 6%（月簽 $3,800）。無門檻的話，Citi Cash Back 有 2% 無上限。"
+  },
+  {
+    question: "AEON Card Purple 係咩卡？",
+    answer: "AEON Card Purple 係 AEON Visa、Mastercard、JCB、銀聯嘅統稱。透過「紫賞生活優惠」，用 Apple Pay/Google Pay 於本地食肆簽賬可享 6% 回贈（每月上限 $1,786 簽賬），需於 AEON App 登記。"
   },
   {
     question: "餐飲簽賬定義係咩？",
-    answer: "餐飲簽賬一般指 MCC 代碼為餐廳類別嘅簽賬，包括酒樓、餐廳、快餐店、咖啡店等。外賣平台（Foodpanda、Keeta）通常都計入餐飲。但 7-11、OK 便利店唔計入餐飲。"
+    answer: "餐飲簽賬一般指 MCC 代碼為餐廳類別嘅簽賬，包括酒樓、餐廳、快餐店、咖啡店等。外賣平台（Foodpanda、Keeta）通常計入「網上簽賬」而非餐飲。7-11、OK 便利店唔計入餐飲。"
   },
   {
     question: "用 Apple Pay 食飯有額外回贈嗎？",
-    answer: "有！安信 EarnMORE 用 Apple Pay 餐飲有 2% 無上限、恒生 MMPOWER 有 5%（有上限）。建議用手機支付 (Apple Pay/Google Pay) 食飯，可以賺額外回贈。"
+    answer: "有！AEON Card Purple 用 Apple Pay/Google Pay 食飯有 6%（需登記）、安信 EarnMORE 有 2% 無上限、恒生 MMPOWER 有 5%（有上限）。建議用手機支付食飯，可以賺額外回贈。"
   },
   {
-    question: "Citi Cash Back 餐飲回贈幾多？",
-    answer: "Citi Cash Back Card 餐飲簽賬有 2% 回贈，無上限。係少數餐飲回贈無上限嘅信用卡，適合經常出街食飯嘅人。"
+    question: "建行 eye 卡加碼賞點玩？",
+    answer: "需每月於 CCB App 登記（首2,500名）。月簽滿 $5,000 + 單筆滿 $300 可享 +9% 額外回贈。拍卡支付再加 2%。推廣期至 2026/3/31。爆 Cap 上限：$4,445/月。"
   },
   {
-    question: "HSBC 信用卡餐飲回贈幾多？",
-    answer: "HSBC Visa Signature 本地餐飲有 3.6% 獎賞錢回贈（需登記）。HSBC Red Card 本地餐飲有 1%。建議用 Visa Signature 食飯，回贈較高。"
+    question: "信銀 Motion 點解「下限高過上限」？",
+    answer: "信銀 Motion 需月簽 $3,800 先有 6%，但額外回贈上限 $200（即 $3,636 簽賬已爆 cap）。所以簽 $3,800 時，最後 $164 只有 0.55% 基本回贈。"
   },
   {
     question: "Foodpanda / Keeta 用邊張信用卡最抵？",
-    answer: "外賣平台通常計入「網上簽賬」，恒生 MMPOWER 有 5%、HSBC Red Card 有 4%。部分銀行將外賣計入餐飲類別，如 Citi Cash Back 有 2%。建議查閱銀行條款。"
-  },
-  {
-    question: "酒樓飲茶用邊張卡最抵？",
-    answer: "酒樓計入餐飲類別，HSBC Visa Signature 有 3.6%、Citi Cash Back 有 2%、安信 EarnMORE 用 Apple Pay 有 2%。大額飲茶建議用無上限卡。"
+    answer: "外賣平台通常計入「網上簽賬」，恒生 MMPOWER 有 5%、HSBC Red Card 有 4%。AEON Card Purple 嘅 6% 餐飲回贈唔計外賣 App。建議查閱銀行條款。"
   },
   {
     question: "餐飲信用卡回贈有上限嗎？",
-    answer: "大部分高回贈餐飲卡都有上限：HSBC Visa Signature 每季 $10,000 簽賬（即 $360 回贈）、恒生 MMPOWER 每月 $200 回贈。Citi Cash Back 2%、安信 EarnMORE 2% 無上限。"
+    answer: "大部分高回贈餐飲卡都有上限：建行 eye 加碼賞每月 $400 回贈、AEON Purple 每月 $107 回贈、信銀 Motion 每月 $200 回贈。Citi Cash Back 2%、安信 EarnMORE 2% 無上限。"
   }
 ];
 
@@ -52,8 +52,9 @@ const diningCategories = [
     category: "酒樓/茶餐廳",
     mcc: "5812",
     bestCards: [
-      { card: "HSBC Visa Signature", id: "hsbc-vs", rate: "3.6%" },
-      { card: "Citi Cash Back", id: "citi-cashback", rate: "2%" },
+      { card: "建行 eye 卡", id: "ccb-eye", rate: "9%+" },
+      { card: "AEON Purple", id: "aeon-visa", rate: "6%" },
+      { card: "DBS Eminent", id: "dbs-eminent", rate: "5%" },
     ],
     note: "計入餐飲",
   },
@@ -61,8 +62,9 @@ const diningCategories = [
     category: "快餐店",
     mcc: "5814",
     bestCards: [
-      { card: "HSBC Visa Signature", id: "hsbc-vs", rate: "3.6%" },
-      { card: "安信 EarnMORE", id: "earnmore", rate: "2%" },
+      { card: "建行 eye 卡", id: "ccb-eye", rate: "9%+" },
+      { card: "AEON Purple", id: "aeon-visa", rate: "6%" },
+      { card: "信銀 Motion", id: "cncbi-motion", rate: "6%" },
     ],
     note: "麥當勞/KFC 等",
   },
@@ -70,8 +72,8 @@ const diningCategories = [
     category: "咖啡店",
     mcc: "5814",
     bestCards: [
+      { card: "AEON Purple", id: "aeon-visa", rate: "6%" },
       { card: "Citi Cash Back", id: "citi-cashback", rate: "2%" },
-      { card: "安信 EarnMORE", id: "earnmore", rate: "2%" },
     ],
     note: "Starbucks/Pacific Coffee",
   },
@@ -82,14 +84,14 @@ const diningCategories = [
       { card: "恒生 MMPOWER", id: "hangseng-mmpower", rate: "5%" },
       { card: "HSBC Red Card", id: "hsbc-red", rate: "4%" },
     ],
-    note: "Foodpanda/Keeta",
+    note: "Foodpanda/Keeta（唔計餐飲）",
   },
   {
     category: "酒吧",
     mcc: "5813",
     bestCards: [
+      { card: "建行 eye 卡", id: "ccb-eye", rate: "9%+" },
       { card: "HSBC Visa Signature", id: "hsbc-vs", rate: "3.6%" },
-      { card: "Citi Cash Back", id: "citi-cashback", rate: "2%" },
     ],
     note: "計入餐飲",
   },
@@ -98,13 +100,40 @@ const diningCategories = [
 // 推薦信用卡
 const recommendedCards = [
   {
-    card: "HSBC Visa Signature",
-    id: "hsbc-vs",
-    rate: "3.6%",
-    cap: "$360/季",
-    highlight: "餐飲最強",
-    reason: "本地餐飲 3.6% 回贈，需登記最紅自主獎賞",
-    best: "酒樓、餐廳、快餐店",
+    card: "建行(亞洲) eye 信用卡",
+    id: "ccb-eye",
+    rate: "11%",
+    cap: "$400/月",
+    highlight: "🔥 最高回贈",
+    reason: "加碼賞 9% + 拍卡 2%，需每月登記，月簽 $5,000 + 單筆 $300",
+    best: "每月餐飲 $3,000-$5,000",
+  },
+  {
+    card: "AEON Card Purple",
+    id: "aeon-visa",
+    rate: "6%",
+    cap: "$107/月",
+    highlight: "手機支付",
+    reason: "Apple Pay/Google Pay 於食肆簽賬 6%，需 App 登記",
+    best: "每月餐飲 < $2,000",
+  },
+  {
+    card: "信銀國際 Motion",
+    id: "cncbi-motion",
+    rate: "6%",
+    cap: "$200/月",
+    highlight: "餐飲+網購",
+    reason: "食肆及網上簽賬 6%，需月簽 $3,800",
+    best: "餐飲 + 網購用戶",
+  },
+  {
+    card: "DBS Eminent Card",
+    id: "dbs-eminent",
+    rate: "5%",
+    cap: "$8,000/月",
+    highlight: "上限高",
+    reason: "餐飲/運動服飾/健身/醫療 5%，需登記，單筆 $300",
+    best: "大額餐飲簽賬",
   },
   {
     card: "Citi Cash Back Card",
@@ -113,44 +142,20 @@ const recommendedCards = [
     cap: "無上限",
     highlight: "無上限",
     reason: "餐飲 2% 無上限回贈，適合經常食飯",
-    best: "所有餐飲消費",
-  },
-  {
-    card: "恒生 MMPOWER World",
-    id: "hangseng-mmpower",
-    rate: "5%",
-    cap: "$200/月",
-    highlight: "手機支付",
-    reason: "手機支付（包括餐廳）5% 回贈",
-    best: "Apple Pay 食飯",
-  },
-  {
-    card: "安信 EarnMORE 銀聯卡",
-    id: "earnmore",
-    rate: "2%",
-    cap: "無上限",
-    highlight: "Mobile Pay",
-    reason: "Apple Pay / Google Pay 2% 無上限",
-    best: "手機支付食飯",
-  },
-  {
-    card: "渣打 Simply Cash Visa",
-    id: "sc-simply-cash",
-    rate: "1.5%",
-    cap: "無上限",
-    highlight: "打底神卡",
-    reason: "1.5% 無上限回贈，任何餐飲都適用",
-    best: "爆 Cap 後用",
+    best: "爆 Cap 後打底",
   },
 ];
 
 // 餐飲回贈比較
 const cashbackComparison = [
+  { card: "建行 eye 卡", id: "ccb-eye", dining: "9%+2%", mobilePay: "需拍卡", cap: "$400/月", annual: "免" },
+  { card: "AEON Card Purple", id: "aeon-visa", dining: "6%", mobilePay: "6%", cap: "$107/月", annual: "免" },
+  { card: "信銀 Motion", id: "cncbi-motion", dining: "6%", mobilePay: "-", cap: "$200/月", annual: "免" },
+  { card: "DBS Eminent", id: "dbs-eminent", dining: "5%", mobilePay: "-", cap: "$400/月", annual: "$1,800" },
+  { card: "恒生 Travel+", id: "hangseng-travel-plus", dining: "5%", mobilePay: "-", cap: "$500/月", annual: "$1,800" },
   { card: "HSBC Visa Signature", id: "hsbc-vs", dining: "3.6%", mobilePay: "-", cap: "$360/季", annual: "$2,000" },
   { card: "Citi Cash Back", id: "citi-cashback", dining: "2%", mobilePay: "1%", cap: "無上限", annual: "$1,200" },
-  { card: "恒生 MMPOWER", id: "hangseng-mmpower", dining: "0.4%", mobilePay: "5%", cap: "$200/月", annual: "$300" },
   { card: "安信 EarnMORE", id: "earnmore", dining: "2%", mobilePay: "2%", cap: "無上限", annual: "免" },
-  { card: "Simply Cash", id: "sc-simply-cash", dining: "1.5%", mobilePay: "1.5%", cap: "無上限", annual: "免" },
 ];
 
 export function DiningGuide() {
@@ -162,7 +167,7 @@ export function DiningGuide() {
       <p className="lead text-xl text-gray-600 dark:text-gray-300 mb-6">
         香港人鍾意出街食飯，點解唔用<strong>餐飲信用卡</strong>賺回贈？
         本文教你 <strong>{currentYear} 食飯信用卡攻略</strong>，
-        飲茶、食 lunch、飲咖啡都可以賺高達 <strong>5% 回贈</strong>！
+        飲茶、食 lunch、飲咖啡都可以賺高達 <strong>9%+ 回贈</strong>！
       </p>
 
       {/* 目錄 */}
@@ -193,30 +198,35 @@ export function DiningGuide() {
         
         <p>
           <strong>餐飲信用卡回贈</strong>通常比一般簽賬更高，
-          最高可達 <strong>5%</strong>！以每月食飯 $3,000 為例：
+          最高可達 <strong>9%+</strong>！以每月食飯 $3,000 為例：
         </p>
 
         <div className="not-prose bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 rounded-2xl p-5 border border-orange-200 dark:border-orange-800 my-6">
           <h4 className="font-bold text-orange-800 dark:text-orange-200 mb-3">💰 餐飲回贈例子（每月 $3,000）</h4>
-          <div className="grid md:grid-cols-3 gap-3">
+          <div className="grid md:grid-cols-4 gap-3">
             <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-3 text-center">
-              <p className="text-sm text-gray-500">HSBC VS 3.6%</p>
-              <p className="text-xl font-bold text-orange-600">$108/月</p>
-              <p className="text-xs text-gray-400">有上限</p>
+              <p className="text-sm text-gray-500">建行eye 9%+</p>
+              <p className="text-xl font-bold text-orange-600">$270+/月</p>
+              <p className="text-xs text-gray-400">需登記</p>
+            </div>
+            <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-3 text-center">
+              <p className="text-sm text-gray-500">AEON Purple 6%</p>
+              <p className="text-xl font-bold text-orange-600">$107/月</p>
+              <p className="text-xs text-gray-400">上限$107</p>
+            </div>
+            <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-3 text-center">
+              <p className="text-sm text-gray-500">信銀Motion 6%</p>
+              <p className="text-xl font-bold text-orange-600">$180/月</p>
+              <p className="text-xs text-gray-400">月簽$3,800</p>
             </div>
             <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-3 text-center">
               <p className="text-sm text-gray-500">Citi Cash Back 2%</p>
               <p className="text-xl font-bold text-orange-600">$60/月</p>
               <p className="text-xs text-gray-400">無上限</p>
             </div>
-            <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-3 text-center">
-              <p className="text-sm text-gray-500">EarnMORE 2%</p>
-              <p className="text-xl font-bold text-orange-600">$60/月</p>
-              <p className="text-xs text-gray-400">無上限</p>
-            </div>
           </div>
           <p className="text-orange-700 dark:text-orange-300 text-sm mt-3">
-            一年食飯 $36,000，用 3.6% 回贈可賺 <strong>$1,296</strong>！
+            一年食飯 $36,000，用 9% 回贈可賺 <strong>$3,240</strong>！
           </p>
         </div>
       </section>
@@ -477,10 +487,11 @@ export function DiningGuide() {
         title="📌 餐飲推薦信用卡一覽"
         subtitle="點擊查看詳細回贈條款及申請連結"
         cards={[
-          { id: "hsbc-vs", highlight: "餐飲 3.6%" },
+          { id: "ccb-eye", highlight: "餐飲 9%+" },
+          { id: "aeon-visa", highlight: "餐飲 6% (手機支付)" },
+          { id: "cncbi-motion", highlight: "餐飲 6%" },
+          { id: "dbs-eminent", highlight: "餐飲 5%" },
           { id: "citi-cashback", highlight: "餐飲 2% 無上限" },
-          { id: "earnmore", highlight: "Mobile Pay 2%" },
-          { id: "hangseng-mmpower", highlight: "手機支付 5%" },
         ]}
       />
 
@@ -493,19 +504,33 @@ export function DiningGuide() {
 
         <div className="not-prose space-y-4 my-6">
           <div className="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 rounded-xl p-4 border border-orange-200 dark:border-orange-800">
-            <h4 className="font-bold text-orange-800 dark:text-orange-200 mb-3">🍽️ 食飯達人組合</h4>
+            <h4 className="font-bold text-orange-800 dark:text-orange-200 mb-3">🔥 最高回贈組合（需登記）</h4>
             <div className="grid md:grid-cols-3 gap-3">
               <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-3">
-                <Link href="/cards/hsbc-vs" className="font-medium text-blue-600 hover:underline text-sm">HSBC Visa Signature</Link>
-                <p className="text-xs text-gray-500">餐廳 3.6%（每季首 $10,000）</p>
+                <Link href="/cards/ccb-eye" className="font-medium text-blue-600 hover:underline text-sm">建行 eye 卡</Link>
+                <p className="text-xs text-gray-500">餐飲 9%+（首 $4,445 爆 cap）</p>
               </div>
               <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-3">
-                <Link href="/cards/earnmore" className="font-medium text-blue-600 hover:underline text-sm">安信 EarnMORE</Link>
-                <p className="text-xs text-gray-500">Apple Pay 2% 無上限</p>
+                <Link href="/cards/aeon-visa" className="font-medium text-blue-600 hover:underline text-sm">AEON Purple</Link>
+                <p className="text-xs text-gray-500">餐飲 6%（首 $1,786 爆 cap）</p>
               </div>
               <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-3">
                 <Link href="/cards/citi-cashback" className="font-medium text-blue-600 hover:underline text-sm">Citi Cash Back</Link>
                 <p className="text-xs text-gray-500">餐飲 2% 無上限打底</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-4 border border-green-200 dark:border-green-800">
+            <h4 className="font-bold text-green-800 dark:text-green-200 mb-3">💡 簡單無腦組合</h4>
+            <div className="grid md:grid-cols-2 gap-3">
+              <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-3">
+                <Link href="/cards/citi-cashback" className="font-medium text-blue-600 hover:underline text-sm">Citi Cash Back</Link>
+                <p className="text-xs text-gray-500">餐飲 2% 無上限，無門檻</p>
+              </div>
+              <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-3">
+                <Link href="/cards/earnmore" className="font-medium text-blue-600 hover:underline text-sm">安信 EarnMORE</Link>
+                <p className="text-xs text-gray-500">全方位 2% 無上限</p>
               </div>
             </div>
           </div>

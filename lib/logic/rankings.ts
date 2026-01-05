@@ -53,7 +53,7 @@ export const RANKING_CATEGORIES: CategoryConfig[] = [
     icon: "🍽️",
     description: "餐廳、食肆、外賣平台",
     slug: "best-dining-cards",
-    discoverUrl: "/discover/dining-2026",
+    discoverUrl: "/discover/dining-guide",
     matchCategories: ["dining"],
   },
   {
