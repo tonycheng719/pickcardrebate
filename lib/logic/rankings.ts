@@ -3,7 +3,9 @@ import { HK_CARDS } from "../data/cards";
 
 export type RankingCategory = 
   | "dining" 
-  | "online" 
+  | "online"
+  | "hkd_online"
+  | "foreign_online" 
   | "supermarket" 
   | "travel" 
   | "overseas" 
@@ -54,14 +56,25 @@ export const RANKING_CATEGORIES: CategoryConfig[] = [
     matchCategories: ["dining"],
   },
   {
-    id: "online",
-    name: "網購",
-    nameEn: "Online Shopping",
-    icon: "💻",
-    description: "本地及海外網上購物",
-    slug: "best-online-shopping-cards",
+    id: "hkd_online",
+    name: "港幣網購",
+    nameEn: "HKD Online Shopping",
+    icon: "🛒",
+    description: "HKTVmall、百佳網店等港幣網購",
+    slug: "best-hkd-online-cards",
     discoverUrl: "/discover/hkd-online-shopping-2026",
     matchCategories: ["online"],
+  },
+  {
+    id: "foreign_online",
+    name: "外幣網購",
+    nameEn: "Foreign Online Shopping",
+    icon: "💻",
+    description: "Amazon、iHerb 等外幣網購",
+    slug: "best-foreign-online-cards",
+    discoverUrl: "/discover/foreign-currency-online-shopping-2026",
+    matchCategories: ["online"],
+    isForeignCurrency: true,
   },
   {
     id: "supermarket",
@@ -85,8 +98,8 @@ export const RANKING_CATEGORIES: CategoryConfig[] = [
     id: "overseas",
     name: "海外簽賬",
     nameEn: "Overseas",
-    icon: "🌍",
-    description: "外幣簽賬、海外消費",
+    icon: "✈️",
+    description: "旅行實體店外幣簽賬",
     slug: "best-overseas-cards",
     discoverUrl: "/discover/overseas-spending-2026",
     isForeignCurrency: true,
@@ -487,4 +500,5 @@ export function formatCapAsSpendingLimit(result: RankingResult): string | undefi
   
   return undefined;
 }
+
 

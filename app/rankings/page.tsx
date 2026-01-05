@@ -44,9 +44,11 @@ function getExtraSource(description: string): string {
 const categoryIcons: Record<RankingCategory, React.ReactNode> = {
   dining: <Utensils className="h-5 w-5" />,
   online: <ShoppingCart className="h-5 w-5" />,
+  hkd_online: <ShoppingCart className="h-5 w-5" />,
+  foreign_online: <Globe className="h-5 w-5" />,
   supermarket: <ShoppingCart className="h-5 w-5" />,
   travel: <Plane className="h-5 w-5" />,
-  overseas: <Globe className="h-5 w-5" />,
+  overseas: <Plane className="h-5 w-5" />,
   mobile_payment: <Smartphone className="h-5 w-5" />,
   miles: <Plane className="h-5 w-5" />,
   all_round: <Wallet className="h-5 w-5" />,
