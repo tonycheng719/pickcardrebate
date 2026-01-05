@@ -88,7 +88,7 @@ export const RANKING_CATEGORIES: CategoryConfig[] = [
     icon: "🌍",
     description: "外幣簽賬、海外消費",
     slug: "best-overseas-cards",
-    discoverUrl: "/discover/foreign-currency-online-shopping-2026",
+    discoverUrl: "/discover/overseas-spending-2026",
     isForeignCurrency: true,
   },
   {
