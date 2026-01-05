@@ -931,18 +931,24 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 積分 = $1 回贈
     rules: [
+      // 🔥 紫「賞」生活優惠 - 本地食肆 6% (2025/10/1 - 2026/3/31)
+      // 需用 Apple Pay/Google Pay，每月上限 $107 回贈（即首 $1,786 簽賬），需 App 登記
+      // 不包括網上平台（如外賣App）
+      { description: "🔥本地食肆 6% [手機支付,需登記]", matchType: "category", matchValue: ["dining"], percentage: 6.0, cap: 107, capType: "reward", validDateRange: { start: "2025-10-01", end: "2026-03-31" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"], requiresRegistration: true },
       // 每月20日 AEON 會員日 95折 - 折扣優惠，非回贈
       { description: "每月20日 AEON 95折", matchType: "merchant", matchValue: ["aeon"], percentage: 5.0, validDates: [20], isDiscount: true },
       // 基本回贈：$1 = 1 積分，250 積分 = $1 回贈 (0.4%)
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["AEON會員日", "永久免年費"],
+    tags: ["AEON會員日", "永久免年費", "🔥餐飲6%"],
     feeWaiverCondition: "永久免年費",
     welcomeOfferText: "迎新簽 $6,000 送 175,000 積分 ($700) (需手機支付$1,000+App申請)",
     officialApplyUrl: "https://www.aeon.com.hk/tc/credit-card/",
     applyUrl: "https://www.aeon.com.hk/tc/credit-card/",
-    sellingPoints: ["每月20日 AEON 95折 [折扣]", "永久免年費", "迎新高達 $700 回贈"],
-    note: "⚠️ 每月20日 AEON 95折是購物時直接減價，非事後回贈。迎新：(1) 簽滿$6,000送100,000積分($400)；(2) 當中$1,000透過手機支付額外25,000積分($100)；(3) 經官網/App申請額外50,000積分($200)。不適用於電子錢包增值/轉賬、八達通自動增值、AEON Netmember繳費。",
+    sellingPoints: ["🔥本地食肆 6% [手機支付,需登記]", "每月20日 AEON 95折 [折扣]", "永久免年費", "迎新高達 $700 回贈"],
+    note: "## 🔥 紫「賞」生活優惠\n**推廣期：2025/10/1 - 2026/3/31**\n\n憑 Apple Pay 或 Google Pay 於本地食肆簽賬可享高達 **6% 回贈**（15X 積分）！\n\n| 項目 | 詳情 |\n|:---|:---|\n| 回贈率 | 6% |\n| 付款方式 | Apple Pay / Google Pay |\n| 月簽上限 | $1,786 |\n| 月回贈上限 | $107 |\n| 需登記 | ✅ 需於 AEON App 登記 |\n\n⚠️ **不計回贈**：網上平台（如外賣 App）、酒店/百貨公司/會所內餐飲\n\n---\n\n⚠️ 每月20日 AEON 95折是購物時直接減價，非事後回贈。\n\n📅 **2026年1月更新**",
+    promoEndDate: "2026-03-31",
+    promoName: "紫「賞」生活優惠",
   },
   {
     id: "aeon-mastercard",
@@ -952,18 +958,23 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 積分 = $1 回贈
     rules: [
+      // 🔥 紫「賞」生活優惠 - 本地食肆 6% (2025/10/1 - 2026/3/31)
+      // 需用 Apple Pay/Google Pay，每月上限 $107 回贈（即首 $1,786 簽賬），需 App 登記
+      { description: "🔥本地食肆 6% [手機支付,需登記]", matchType: "category", matchValue: ["dining"], percentage: 6.0, cap: 107, capType: "reward", validDateRange: { start: "2025-10-01", end: "2026-03-31" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"], requiresRegistration: true },
       // 每月20日 AEON 會員日 95折 - 折扣優惠，非回贈
       { description: "每月20日 AEON 95折", matchType: "merchant", matchValue: ["aeon"], percentage: 5.0, validDates: [20], isDiscount: true },
       // 基本回贈：$1 = 1 積分，250 積分 = $1 回贈 (0.4%)
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["AEON會員日", "永久免年費"],
+    tags: ["AEON會員日", "永久免年費", "🔥餐飲6%"],
     feeWaiverCondition: "永久免年費",
     welcomeOfferText: "迎新簽 $6,000 送 175,000 積分 ($700) (需手機支付$1,000+App申請)",
     officialApplyUrl: "https://www.aeon.com.hk/tc/credit-card/",
     applyUrl: "https://www.aeon.com.hk/tc/credit-card/",
-    sellingPoints: ["每月20日 AEON 95折 [折扣]", "永久免年費", "迎新高達 $700 回贈"],
-    note: "⚠️ 每月20日 AEON 95折是購物時直接減價，非事後回贈。迎新：(1) 簽滿$6,000送100,000積分($400)；(2) 當中$1,000透過手機支付額外25,000積分($100)；(3) 經官網/App申請額外50,000積分($200)。不適用於電子錢包增值/轉賬、八達通自動增值、AEON Netmember繳費。",
+    sellingPoints: ["🔥本地食肆 6% [手機支付,需登記]", "每月20日 AEON 95折 [折扣]", "永久免年費", "迎新高達 $700 回贈"],
+    note: "## 🔥 紫「賞」生活優惠\n**推廣期：2025/10/1 - 2026/3/31**\n\n憑 Apple Pay 或 Google Pay 於本地食肆簽賬可享高達 **6% 回贈**（15X 積分）！\n\n| 項目 | 詳情 |\n|:---|:---|\n| 回贈率 | 6% |\n| 付款方式 | Apple Pay / Google Pay |\n| 月簽上限 | $1,786 |\n| 月回贈上限 | $107 |\n| 需登記 | ✅ 需於 AEON App 登記 |\n\n⚠️ **不計回贈**：網上平台（如外賣 App）、酒店/百貨公司/會所內餐飲\n\n---\n\n⚠️ 每月20日 AEON 95折是購物時直接減價，非事後回贈。\n\n📅 **2026年1月更新**",
+    promoEndDate: "2026-03-31",
+    promoName: "紫「賞」生活優惠",
   },
   {
     id: "aeon-unionpay",
@@ -974,6 +985,9 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1, // ⚠️ 2025年起收取1%外幣手續費
     rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 積分 = $1 回贈
     rules: [
+      // 🔥 紫「賞」生活優惠 - 本地食肆 6% (2025/10/1 - 2026/3/31)
+      // 需用 Apple Pay/Google Pay，每月上限 $107 回贈（即首 $1,786 簽賬），需 App 登記
+      { description: "🔥本地食肆 6% [手機支付,需登記]", matchType: "category", matchValue: ["dining"], percentage: 6.0, cap: 107, capType: "reward", validDateRange: { start: "2025-10-01", end: "2026-03-31" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"], requiresRegistration: true },
       // 🔥「賞」亞洲優惠 - 內地/澳門/台灣 (2025/7/1 - 2026/1/31)
       // 15X積分 = 6%，每月上限$100回贈（即每月首$1,667簽賬享6%），需登記
       { description: "🔥內地/澳門/台灣 6% [賞亞洲,需登記]", matchType: "base", percentage: 6.0, isForeignCurrency: true, cap: 100, capType: "reward", validDateRange: { start: "2025-07-01", end: "2026-01-31" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
@@ -985,15 +999,15 @@ export const HK_CARDS: CreditCard[] = [
       // 基本回贈：$1 = 1 積分，250 積分 = $1 回贈 (0.4%)
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["AEON會員日", "永久免年費", "銀聯", "內地6%", "韓國6%", "銀聯1%手續費"],
+    tags: ["AEON會員日", "永久免年費", "銀聯", "🔥餐飲6%", "內地6%", "韓國6%", "銀聯1%手續費"],
     feeWaiverCondition: "永久免年費",
     welcomeOfferText: "迎新簽 $6,000 送 175,000 積分 ($700) (需手機支付$1,000+App申請)",
     officialApplyUrl: "https://www.aeon.com.hk/tc/credit-card/",
     applyUrl: "https://www.aeon.com.hk/tc/credit-card/",
-    sellingPoints: ["🔥內地/澳門/台灣 6% (需登記)", "🔥韓國 6% (需登記)", "每月20日 AEON 95折 [折扣]", "永久免年費", "⚠️ 外幣手續費 1%"],
-    note: "⚠️ 每月20日 AEON 95折是購物時直接減價，非事後回贈。迎新須手機支付$1,000並經App申請。\n\n⚠️ **外幣手續費調整**：AEON 銀聯卡已開始收取 **1% 外幣手續費**，「賞」亞洲優惠淨回贈約 5%。[了解更多](/discover/unionpay-foreign-fee-2025)\n\n🔥 **「賞」亞洲優惠**（至2026/1/31）：內地/澳門/台灣/韓國簽賬可享6%回贈，須登記！[查看詳情](/discover/aeon-unionpay-asia-2025)",
-    promoEndDate: "2026-01-31",
-    promoName: "AEON銀聯「賞」亞洲優惠",
+    sellingPoints: ["🔥本地食肆 6% [手機支付,需登記]", "🔥內地/澳門/台灣 6% (需登記)", "🔥韓國 6% (需登記)", "每月20日 AEON 95折 [折扣]", "永久免年費", "⚠️ 外幣手續費 1%"],
+    note: "## 🔥 紫「賞」生活優惠\n**推廣期：2025/10/1 - 2026/3/31**\n\n憑 Apple Pay 或 Google Pay 於本地食肆簽賬可享高達 **6% 回贈**（15X 積分）！\n\n| 項目 | 詳情 |\n|:---|:---|\n| 回贈率 | 6% |\n| 付款方式 | Apple Pay / Google Pay |\n| 月簽上限 | $1,786 |\n| 月回贈上限 | $107 |\n\n---\n\n## 🔥「賞」亞洲優惠（至2026/1/31）\n\n內地/澳門/台灣/韓國簽賬可享6%回贈，須登記！\n\n⚠️ **外幣手續費調整**：AEON 銀聯卡已開始收取 **1% 外幣手續費**，「賞」亞洲優惠淨回贈約 5%。\n\n---\n\n⚠️ 每月20日 AEON 95折是購物時直接減價，非事後回贈。\n\n📅 **2026年1月更新**",
+    promoEndDate: "2026-03-31",
+    promoName: "紫「賞」生活優惠",
   },
   {
     id: "aeon-jcb",
@@ -1003,19 +1017,25 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 積分 = $1 回贈
     rules: [
+      // 🔥 紫「賞」生活優惠 - 本地食肆 6% (2025/10/1 - 2026/3/31)
+      // 需用 Apple Pay/Google Pay，每月上限 $107 回贈（即首 $1,786 簽賬），需 App 登記
+      // ⚠️ JCB 可能不支援 Apple Pay，需確認
+      { description: "🔥本地食肆 6% [手機支付,需登記]", matchType: "category", matchValue: ["dining"], percentage: 6.0, cap: 107, capType: "reward", validDateRange: { start: "2025-10-01", end: "2026-03-31" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"], requiresRegistration: true },
       // 每月20日 AEON 會員日 95折 - 折扣優惠，非回贈
       { description: "每月20日 AEON 95折", matchType: "merchant", matchValue: ["aeon"], percentage: 5.0, validDates: [20], isDiscount: true },
       // 基本回贈：$1 = 1 積分，250 積分 = $1 回贈 (0.4%)
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["AEON會員日", "永久免年費", "JCB", "日本"],
+    tags: ["AEON會員日", "永久免年費", "JCB", "日本", "🔥餐飲6%"],
     feeWaiverCondition: "永久免年費",
     // JCB 不適用手機支付獎賞，所以最高只有 150,000 積分
     welcomeOfferText: "迎新簽 $6,000 送 150,000 積分 ($600) (需App申請，手機支付獎賞除外)",
     officialApplyUrl: "https://www.aeon.com.hk/tc/credit-card/",
     applyUrl: "https://www.aeon.com.hk/tc/credit-card/",
-    sellingPoints: ["每月20日 AEON 95折 [折扣]", "永久免年費", "迎新高達 $600 回贈", "JCB 網絡適合日本消費"],
-    note: "⚠️ 每月20日 AEON 95折是購物時直接減價，非事後回贈。迎新：(1) 簽滿$6,000送100,000積分($400)；(2) 經官網/App申請額外50,000積分($200)。⚠️ JCB 卡不適用手機支付獎賞！JCB 卡適合日本消費。不適用於電子錢包增值/轉賬、八達通自動增值、AEON Netmember繳費。",
+    sellingPoints: ["🔥本地食肆 6% [手機支付,需登記]", "每月20日 AEON 95折 [折扣]", "永久免年費", "JCB 網絡適合日本消費"],
+    note: "## 🔥 紫「賞」生活優惠\n**推廣期：2025/10/1 - 2026/3/31**\n\n憑 Apple Pay 或 Google Pay 於本地食肆簽賬可享高達 **6% 回贈**（15X 積分）！\n\n| 項目 | 詳情 |\n|:---|:---|\n| 回贈率 | 6% |\n| 付款方式 | Apple Pay / Google Pay |\n| 月簽上限 | $1,786 |\n| 月回贈上限 | $107 |\n| 需登記 | ✅ 需於 AEON App 登記 |\n\n⚠️ **JCB 卡可能不支援 Apple Pay**，建議使用 Google Pay 或選用 Visa/Mastercard 版本。\n\n⚠️ **不計回贈**：網上平台（如外賣 App）、酒店/百貨公司/會所內餐飲\n\n---\n\n⚠️ 每月20日 AEON 95折是購物時直接減價，非事後回贈。\n\n📅 **2026年1月更新**",
+    promoEndDate: "2026-03-31",
+    promoName: "紫「賞」生活優惠",
   },
 
   // ========================================================================
