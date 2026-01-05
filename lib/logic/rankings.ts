@@ -112,6 +112,7 @@ export const RANKING_CATEGORIES: CategoryConfig[] = [
     icon: "📱",
     description: "Apple Pay、Google Pay",
     slug: "best-mobile-payment-cards",
+    discoverUrl: "/discover/payment-methods-guide",
     matchType: "paymentMethod",
     paymentMethods: ["mobile", "apple_pay", "google_pay"],
   },

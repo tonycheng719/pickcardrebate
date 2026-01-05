@@ -10,6 +10,8 @@ import {
   Info, Zap, HelpCircle, Wallet, Store, Laptop,
   CircleDollarSign, TrendingUp, Shield
 } from "lucide-react";
+import { CardTableCell, CardLinkWithImage, CardBadgeWithImage } from "@/app/discover/components/card-link-with-image";
+import { CardPreviewSection } from "@/app/discover/components/card-preview-section";
 
 // FAQ 數據 - SEO 結構化資料
 export const paymentMethodsFaqData = [
@@ -99,52 +101,67 @@ const paymentMethodsData = [
   }
 ];
 
-// 信用卡回贈比較數據
+// 信用卡回贈比較數據（按流動支付回贈率排序）
 const cardComparisonData = [
+  {
+    card: "中銀 SOGO Visa",
+    id: "boc-sogo",
+    physical: "0.4%",
+    mobilePay: "5.4% ⭐",
+    online: "0.4%",
+    cap: "$2,000/月",
+    note: "流動支付額外 5%",
+    highlight: "🥇 流動支付"
+  },
+  {
+    card: "恒生 MMPOWER",
+    id: "hsbc-mmpower",
+    physical: "0.4%",
+    mobilePay: "5% ⭐",
+    online: "5% ⭐",
+    cap: "$200/月",
+    note: "流動支付/網購最抵",
+    highlight: "🥈 流動支付"
+  },
+  {
+    card: "東亞 BEA GOAL",
+    id: "bea-goal",
+    physical: "0.4%",
+    mobilePay: "4.4% ⭐",
+    online: "4.4%",
+    cap: "$200/月",
+    note: "月簽 $2,000 門檻",
+    highlight: "🥉 流動支付"
+  },
+  {
+    card: "安信 WeWa 卡",
+    id: "wewa-unionpay",
+    physical: "0.4%",
+    mobilePay: "4% ⭐",
+    online: "0.4%",
+    cap: "$200/月",
+    note: "需選「手機支付」類別",
+    highlight: "流動支付"
+  },
+  {
+    card: "東亞 i-Titanium",
+    id: "bea-i-titanium",
+    physical: "0.4%",
+    mobilePay: "4% ⭐",
+    online: "4%",
+    cap: "$300/月",
+    note: "月簽 $2,000 門檻",
+    highlight: "流動支付"
+  },
   {
     card: "安信 EarnMORE",
     id: "earnmore",
     physical: "2%",
     mobilePay: "2%",
     online: "2%",
+    cap: "無上限",
     note: "全部一樣，無腦刷",
     highlight: "全能卡"
-  },
-  {
-    card: "渣打 Simply Cash",
-    id: "sc-simply-cash",
-    physical: "1.5%",
-    mobilePay: "1.5%",
-    online: "1.5%",
-    note: "全部一樣，無上限",
-    highlight: "全能卡"
-  },
-  {
-    card: "HSBC Red Card",
-    id: "hsbc-red",
-    physical: "1%",
-    mobilePay: "1%",
-    online: "4% ⭐",
-    note: "網購回贈最高",
-    highlight: "網購卡"
-  },
-  {
-    card: "恒生 MMPOWER",
-    id: "hangseng-mmpower",
-    physical: "0.4%",
-    mobilePay: "5% ⭐",
-    online: "5% ⭐",
-    note: "流動支付/網購最抵",
-    highlight: "流動支付"
-  },
-  {
-    card: "BOC SOGO Visa",
-    id: "boc-sogo",
-    physical: "0.4%",
-    mobilePay: "5.4% ⭐",
-    online: "0.4%",
-    note: "只限門市 Apple Pay",
-    highlight: "流動支付"
   },
   {
     card: "建行 eye 卡",
@@ -152,7 +169,8 @@ const cardComparisonData = [
     physical: "2%",
     mobilePay: "2%",
     online: "2%",
-    note: "餐飲/網購額外獎賞",
+    cap: "$75,000/年",
+    note: "Visa Paywave 有回贈",
     highlight: "全能卡"
   },
   {
@@ -161,9 +179,30 @@ const cardComparisonData = [
     physical: "0.4%",
     mobilePay: "2% ⭐",
     online: "0.4%",
+    cap: "無上限",
     note: "流動支付 5X 積分",
     highlight: "流動支付"
-  }
+  },
+  {
+    card: "渣打 Simply Cash",
+    id: "sc-simply-cash",
+    physical: "1.5%",
+    mobilePay: "1.5%",
+    online: "1.5%",
+    cap: "無上限",
+    note: "全部一樣，無上限",
+    highlight: "打底卡"
+  },
+  {
+    card: "HSBC Red Card",
+    id: "hsbc-red",
+    physical: "1%",
+    mobilePay: "1%",
+    online: "4% ⭐",
+    cap: "$10,000/月",
+    note: "網購 4%（流動支付只有 1%）",
+    highlight: "網購卡"
+  },
 ];
 
 // 電子錢包數據
@@ -359,13 +398,14 @@ export function PaymentMethodsGuide() {
       </p>
 
       <div className="not-prose my-8 overflow-x-auto">
-        <table className="w-full">
+        <table className="w-full bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
           <thead>
-            <tr className="bg-gray-50 dark:bg-gray-800">
+            <tr className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/30">
               <th className="px-4 py-3 text-left text-sm font-medium">信用卡</th>
-              <th className="px-4 py-3 text-center text-sm font-medium">💳 門市實體卡</th>
               <th className="px-4 py-3 text-center text-sm font-medium">📱 流動支付</th>
+              <th className="px-4 py-3 text-center text-sm font-medium">💳 門市實體卡</th>
               <th className="px-4 py-3 text-center text-sm font-medium">💻 網上簽賬</th>
+              <th className="px-4 py-3 text-center text-sm font-medium">每月上限</th>
               <th className="px-4 py-3 text-left text-sm font-medium">備註</th>
             </tr>
           </thead>
@@ -373,40 +413,57 @@ export function PaymentMethodsGuide() {
             {cardComparisonData.map((card, index) => (
               <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                 <td className="px-4 py-3">
-                  <Link href={`/cards/${card.id}`} className="font-medium text-indigo-600 hover:underline">
-                    {card.card}
-                  </Link>
+                  <CardTableCell id={card.id} />
                 </td>
                 <td className="px-4 py-3 text-center">
-                  <span className={card.physical.includes('⭐') ? 'font-bold text-green-600' : ''}>
-                    {card.physical}
-                  </span>
-                </td>
-                <td className="px-4 py-3 text-center">
-                  <span className={card.mobilePay.includes('⭐') ? 'font-bold text-green-600' : ''}>
+                  <span className={card.mobilePay.includes('⭐') ? 'font-bold text-green-600 dark:text-green-400' : ''}>
                     {card.mobilePay}
                   </span>
                 </td>
                 <td className="px-4 py-3 text-center">
-                  <span className={card.online.includes('⭐') ? 'font-bold text-green-600' : ''}>
+                  <span className={card.physical.includes('⭐') ? 'font-bold text-green-600 dark:text-green-400' : 'text-gray-500'}>
+                    {card.physical}
+                  </span>
+                </td>
+                <td className="px-4 py-3 text-center">
+                  <span className={card.online.includes('⭐') ? 'font-bold text-green-600 dark:text-green-400' : 'text-gray-500'}>
                     {card.online}
                   </span>
                 </td>
+                <td className="px-4 py-3 text-center text-sm text-gray-600 dark:text-gray-400">
+                  {card.cap}
+                </td>
                 <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
                   <span className={`px-2 py-0.5 rounded text-xs ${
+                    card.highlight.includes('🥇') ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400' :
+                    card.highlight.includes('🥈') ? 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300' :
+                    card.highlight.includes('🥉') ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400' :
                     card.highlight === '全能卡' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400' :
                     card.highlight === '網購卡' ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400' :
+                    card.highlight === '打底卡' ? 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400' :
                     'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
                   }`}>
                     {card.highlight}
                   </span>
-                  <span className="ml-2">{card.note}</span>
+                  <span className="ml-2 hidden md:inline">{card.note}</span>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      {/* 流動支付推薦卡片 */}
+      <CardPreviewSection 
+        title="📱 流動支付推薦信用卡"
+        subtitle="Apple Pay / Google Pay 回贈最高信用卡"
+        cards={[
+          { id: "boc-sogo", highlight: "5.4%" },
+          { id: "hsbc-mmpower", highlight: "5%" },
+          { id: "bea-goal", highlight: "4.4%" },
+          { id: "wewa-unionpay", highlight: "4%" },
+        ]}
+      />
 
       {/* E-wallet Warning */}
       <h2 id="ewallet" className="flex items-center gap-2 scroll-mt-20">
