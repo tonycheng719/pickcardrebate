@@ -114,22 +114,22 @@ const cardComparisonData = [
     highlight: "🥇 流動支付"
   },
   {
-    card: "恒生 MMPOWER",
-    id: "hsbc-mmpower",
-    physical: "0.4%",
-    mobilePay: "5% ⭐",
-    online: "5% ⭐",
-    cap: "$200/月",
-    note: "流動支付/網購最抵",
-    highlight: "🥈 流動支付"
-  },
-  {
     card: "東亞 BEA GOAL",
     id: "bea-goal",
     physical: "0.4%",
     mobilePay: "4.4% ⭐",
     online: "4.4%",
     cap: "$200/月",
+    note: "月簽 $2,000 門檻",
+    highlight: "🥈 流動支付"
+  },
+  {
+    card: "東亞 i-Titanium",
+    id: "bea-i-titanium",
+    physical: "0.4%",
+    mobilePay: "4% ⭐",
+    online: "4%",
+    cap: "$300/月",
     note: "月簽 $2,000 門檻",
     highlight: "🥉 流動支付"
   },
@@ -141,16 +141,6 @@ const cardComparisonData = [
     online: "0.4%",
     cap: "$200/月",
     note: "需選「手機支付」類別",
-    highlight: "流動支付"
-  },
-  {
-    card: "東亞 i-Titanium",
-    id: "bea-i-titanium",
-    physical: "0.4%",
-    mobilePay: "4% ⭐",
-    online: "4%",
-    cap: "$300/月",
-    note: "月簽 $2,000 門檻",
     highlight: "流動支付"
   },
   {
@@ -192,6 +182,16 @@ const cardComparisonData = [
     cap: "無上限",
     note: "全部一樣，無上限",
     highlight: "打底卡"
+  },
+  {
+    card: "恒生 MMPOWER",
+    id: "hangseng-mmpower",
+    physical: "0.4%",
+    mobilePay: "0.4%",
+    online: "5% ⭐",
+    cap: "$500/月",
+    note: "⚠️ 門市流動支付 0.4%，網購 5%",
+    highlight: "網購卡"
   },
   {
     card: "HSBC Red Card",
@@ -456,11 +456,11 @@ export function PaymentMethodsGuide() {
       {/* 流動支付推薦卡片 */}
       <CardPreviewSection 
         title="📱 流動支付推薦信用卡"
-        subtitle="Apple Pay / Google Pay 回贈最高信用卡"
+        subtitle="Apple Pay / Google Pay 門市回贈最高信用卡"
         cards={[
           { id: "boc-sogo", highlight: "5.4%" },
-          { id: "hsbc-mmpower", highlight: "5%" },
           { id: "bea-goal", highlight: "4.4%" },
+          { id: "bea-i-titanium", highlight: "4%" },
           { id: "wewa-unionpay", highlight: "4%" },
         ]}
       />
