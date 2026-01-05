@@ -127,8 +127,8 @@ export const GUIDES: Guide[] = [
   {
     id: "dining-guide",
     type: "guide",
-    title: "餐飲信用卡攻略｜食飯最高5%回贈",
-    description: "食飯信用卡邊張回贈最高？酒樓、茶餐廳、快餐店、外賣平台都可以賺高達 5% 回贈！Apple Pay 食飯攻略。",
+    title: "餐飲信用卡攻略｜食飯最高9%+回贈",
+    description: "食飯信用卡邊張回贈最高？酒樓、茶餐廳、快餐店、外賣平台都可以賺高達 9%+ 回贈！建行eye 9%+、AEON Purple 6%。",
     imageUrl: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop",
     tags: ["餐飲", "食肆", "外賣"],
     merchant: "攻略",
