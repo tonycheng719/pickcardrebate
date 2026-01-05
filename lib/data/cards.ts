@@ -1782,22 +1782,20 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'direct_rate', baseRate: 6, currency: 'AM' }, // $6/mile standard, better with TRAVO Rewards
     rules: [
-      // T&C: 海外指定商戶 15% 回贈 (2025/7/1-12/31)
-      { description: "指定海外商戶 15% [限時]", matchType: "merchant", matchValue: ["biccamera", "king-power", "lotte-duty-free", "shilla-duty-free", "bicester-village", "burberry"], percentage: 15.0, isForeignCurrency: true },
-      // T&C: TRAVO Rewards 海外簽賬 10 倍積分 (需登記)，上限 400,000 額外積分
-      { description: "海外簽賬 10X積分 [需登記]", matchType: "base", percentage: 4.0, isForeignCurrency: true, cap: 400000, capType: "reward", excludePaymentMethods: ["alipay", "payme", "wechat_pay", "octopus"] },
-      // T&C: TRAVO Rewards 本地餐飲 5 倍積分 (需登記)，上限 100,000 額外積分
-      { description: "本地餐飲 5X積分 [需登記]", matchType: "category", matchValue: ["dining"], percentage: 2.0, cap: 100000, capType: "reward", excludePaymentMethods: ["alipay", "payme", "wechat_pay", "octopus"] },
+      // T&C 2026/1/1-6/30: TRAVO Rewards 海外簽賬 10 倍積分 (需登記)，上限 225,000 額外積分
+      { description: "海外簽賬 10X積分 [需登記]", matchType: "base", percentage: 4.0, isForeignCurrency: true, cap: 225000, capType: "reward", excludePaymentMethods: ["alipay", "payme", "wechat_pay", "octopus"], validDateRange: { start: "2026-01-01", end: "2026-06-30" } },
+      // T&C 2026/1/1-6/30: TRAVO Rewards 本地餐飲 5 倍積分 (需登記)，上限 50,000 額外積分
+      { description: "本地餐飲 5X積分 [需登記]", matchType: "category", matchValue: ["dining"], percentage: 2.0, cap: 50000, capType: "reward", excludePaymentMethods: ["alipay", "payme", "wechat_pay", "octopus"], validDateRange: { start: "2026-01-01", end: "2026-06-30" } },
       // 基本回饋 0.4%
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "payme", "wechat_pay", "octopus"] },
     ],
-    tags: ["海外10X", "餐飲5X", "1.95%手續費", "需登記", "指定商戶15%"],
+    tags: ["海外10X", "餐飲5X", "1.95%手續費", "需登記"],
     welcomeOfferText: "迎新 $600 現金回贈；或申請低息分期兼享 $800 現金回贈",
     officialApplyUrl: "https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/ccb_unionpay_dual_currency_diamond_credit_card.html",
     applyUrl: "https://www.asia.ccb.com/hongkong/personal/credit-cards/travo-world-mastercard.html",
-    sellingPoints: ["🔥 指定海外商戶 15% 回贈 [限時]", "海外簽賬 4% / $1.5/里 [需登記]", "本地餐飲 2% / $3/里 [需登記]", "⚠️ 外幣手續費 1.95%"],
-    note: "⚠️ 【TRAVO Rewards 需登記】推廣期至 2025/12/31。海外簽賬 10X 積分 (4% 或 $1.5/里)，上限 400,000 額外積分；本地餐飲 5X 積分 (2% 或 $3/里)，上限 100,000 額外積分。基本 0.4%。\n\n🔥 【指定海外商戶 15% 回贈】推廣期 2025/7/1-12/31，分兩階段，每階段每商戶可享1次。包括：🇨🇳 支付寶/滴滴/Ole&blt；🇯🇵 BicCamera、JR EAST SUICA (Apple Pay)；🇰🇷 樂天/新羅/新世界免稅店；🇸🇬 樟宜新羅/TANGS；🇹🇭 King Power、Emporium、Paragon；🇬🇧 Bicester Village、Burberry、文華東方、Hertz；🇫🇷🇮🇹🇪🇸 歐洲 Outlet Village、Hertz 等。\n\n⚠️ 外幣簽賬手續費 1.95%，海外簽賬淨回贈約 2.05%。\n\n❌ 不計：電子錢包增值（微信/支付寶/PayMe）、八達通、保險、稅項、賭博。",
-    promoEndDate: "2025-12-31",
+    sellingPoints: ["海外簽賬 4% / $1.5/里 [需登記]", "本地餐飲 2% / $3/里 [需登記]", "⚠️ 外幣手續費 1.95%", "積分預領獎賞 (2-5月)"],
+    note: "## 📌 TRAVO Rewards 計劃\n**推廣期：2026/1/1 - 2026/6/30**\n\n### 🌏 海外零售簽賬獎賞\n| 項目 | 詳情 |\n|:---|:---|\n| 積分倍數 | **10X** (4% 或 $1.5/里) |\n| 額外積分上限 | 225,000 積分 |\n| 簽賬上限 | 約 $25,000 |\n\n### 🍽️ 本地餐飲獎賞\n| 項目 | 詳情 |\n|:---|:---|\n| 積分倍數 | **5X** (2% 或 $3/里) |\n| 額外積分上限 | 50,000 積分 |\n| 簽賬上限 | 約 $12,500 |\n\n---\n\n## 🎁 積分預領獎賞\n- **換領期**：2026/2/1 - 5/31\n- **預領上限**：450,000 積分\n- **清還期**：同年 6/30 前\n- **未清還罰款**：每 100 分 = $1.2\n\n---\n\n## ⚠️ 注意事項\n- 需於網上銀行或手機銀行登記\n- 外幣手續費 1.95%，海外淨回贈約 2.05%\n- 積分獎賞於交易入賬後下月存入\n\n## ❌ 不計簽賬\n- 電子錢包增值（微信/支付寶/PayMe）\n- 八達通、保險、稅項、賭博\n- 餐飲：酒席宴會、酒店/百貨公司/俱樂部內食肆\n\n---\n\n📅 **2026年1月5日更新**：推廣期延長至 2026/6/30，積分上限調整",
+    promoEndDate: "2026-06-30",
     promoName: "TRAVO Rewards 海外/餐飲積分獎賞",
   },
   {
