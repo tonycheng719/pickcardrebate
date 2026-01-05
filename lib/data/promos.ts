@@ -74,6 +74,8 @@ export const PROMOS: Promo[] = [
 
 ### 🥇 富邦 iN Visa 白金卡
 
+{{card:fubon-incard|rate=6.05%淨}}
+
 | 項目 | 詳情 |
 |:---|:---|
 | 網上簽賬回贈 | **8%** (20X 積分) |
@@ -99,6 +101,8 @@ export const PROMOS: Promo[] = [
 
 ### 🥈 sim Credit / sim World Mastercard
 
+{{card-list:sim-credit-card,sim-world-mastercard|rates=6.05%淨,6.05%淨}}
+
 | 項目 | 詳情 |
 |:---|:---|
 | 網上簽賬回贈 | **8%** |
@@ -123,6 +127,8 @@ export const PROMOS: Promo[] = [
 
 ### 🥉 AEON WAKUWAKU
 
+{{card:aeon-wakuwaku|rate=4.05%淨}}
+
 | 項目 | 詳情 |
 |:---|:---|
 | 網上簽賬回贈 | **6%** |
@@ -146,6 +152,8 @@ export const PROMOS: Promo[] = [
 
 ### 🆓 渣打 Smart 卡（免手續費！）
 
+{{card:sc-smart|rate=免手續費}}
+
 | 項目 | 詳情 |
 |:---|:---|
 | 外幣回贈 | 0.56% |
@@ -168,6 +176,8 @@ export const PROMOS: Promo[] = [
 ---
 
 ### 💳 安信 EarnMORE（低手續費）
+
+{{card:earnmore|rate=1%淨}}
 
 | 項目 | 詳情 |
 |:---|:---|
@@ -277,6 +287,8 @@ export const PROMOS: Promo[] = [
 
 ### 🥇 富邦 iN Visa 白金卡
 
+{{card:fubon-incard|rate=8%}}
+
 | 項目 | 詳情 |
 |:---|:---|
 | 網上簽賬回贈 | **8%** (20X 積分) |
@@ -299,6 +311,8 @@ export const PROMOS: Promo[] = [
 
 ### 🥈 sim Credit Card
 
+{{card:sim-credit-card|rate=8%}}
+
 | 項目 | 詳情 |
 |:---|:---|
 | 網上簽賬回贈 | **8%** |
@@ -320,6 +334,8 @@ export const PROMOS: Promo[] = [
 
 ### 🥉 AEON WAKUWAKU
 
+{{card:aeon-wakuwaku|rate=6%}}
+
 | 項目 | 詳情 |
 |:---|:---|
 | 網上簽賬回贈 | **6%** |
@@ -339,6 +355,8 @@ export const PROMOS: Promo[] = [
 ---
 
 ### 🔥 滙豐 Red 卡（推薦！）
+
+{{card:hsbc-red|rate=4%}}
 
 | 項目 | 詳情 |
 |:---|:---|
@@ -362,6 +380,8 @@ export const PROMOS: Promo[] = [
 
 ### 💎 恒生 MMPOWER
 
+{{card:hsbc-mmpower|rate=5%}}
+
 | 項目 | 詳情 |
 |:---|:---|
 | 網上簽賬回贈 | **5%** |
@@ -381,6 +401,8 @@ export const PROMOS: Promo[] = [
 ---
 
 ### 🎯 東亞 BEA GOAL
+
+{{card:bea-goal|rate=4%}}
 
 | 項目 | 詳情 |
 |:---|:---|
