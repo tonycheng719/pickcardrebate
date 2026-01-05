@@ -208,7 +208,7 @@ function CategorySection({ categoryId, cards }: { categoryId: RankingCategory; c
               size="icon"
               variant="ghost"
             />
-            <Link href={`/blog/${category.slug}`}>
+            <Link href={category.discoverUrl || `/blog/${category.slug}`}>
               <Button variant="ghost" size="sm" className="text-emerald-600 hover:text-emerald-700">
                 詳情 <ChevronRight className="h-4 w-4 ml-1" />
               </Button>

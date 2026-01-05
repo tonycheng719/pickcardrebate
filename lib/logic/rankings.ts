@@ -35,6 +35,7 @@ export interface CategoryConfig {
   icon: string;
   description: string;
   slug: string;
+  discoverUrl?: string; // Link to discover article instead of blog
   matchCategories?: string[];
   matchType?: "category" | "base" | "paymentMethod" | "merchant" | "miles";
   isForeignCurrency?: boolean;
@@ -59,6 +60,7 @@ export const RANKING_CATEGORIES: CategoryConfig[] = [
     icon: "💻",
     description: "本地及海外網上購物",
     slug: "best-online-shopping-cards",
+    discoverUrl: "/discover/hkd-online-shopping-2026",
     matchCategories: ["online"],
   },
   {
@@ -86,6 +88,7 @@ export const RANKING_CATEGORIES: CategoryConfig[] = [
     icon: "🌍",
     description: "外幣簽賬、海外消費",
     slug: "best-overseas-cards",
+    discoverUrl: "/discover/foreign-currency-online-shopping-2026",
     isForeignCurrency: true,
   },
   {
