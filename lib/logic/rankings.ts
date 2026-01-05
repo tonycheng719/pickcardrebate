@@ -102,7 +102,7 @@ export const RANKING_CATEGORIES: CategoryConfig[] = [
     icon: "✈️",
     description: "旅行實體店外幣簽賬",
     slug: "best-overseas-cards",
-    discoverUrl: "/discover/overseas-spending-2026",
+    discoverUrl: "/discover/overseas-spending-guide",
     isForeignCurrency: true,
   },
   {

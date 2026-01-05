@@ -14,35 +14,35 @@ import { CardPreviewSection } from "@/app/discover/components/card-preview-secti
 export const overseasSpendingFaqData = [
   {
     question: "海外簽賬信用卡邊張最抵？",
-    answer: "視乎你嘅需求：渣打 Simply Cash 海外 2% 無上限（但有 1.95% 手續費）；SC Smart Card 免外幣手續費；恒生 Travel+ 海外 7% 回贈；SC 國泰 Mastercard 海外 $4/里。建議計算扣除手續費後嘅淨回贈。"
+    answer: "扣除手續費後：sim World MC 最高 6.05%、富邦白金卡台幣 6.05%、恒生 Travel+ 日韓泰新澳 5.05%、恒生 MMPOWER 4.05%。免手續費卡：SC Smart Card、中銀淘寶卡。"
   },
   {
     question: "信用卡海外簽賬手續費幾多？",
-    answer: "一般有兩種手續費：(1) 外幣手續費 (FX Fee) 約 1.95%；(2) 跨境手續費 (CBF) 約 1%。部分銀行兩者都收，合共可達 2.95%。中銀、東亞免 CBF；渣打 Smart Card 免外幣手續費。"
+    answer: "一般有兩種手續費：(1) 外幣手續費 (FX Fee) 約 1.95%；(2) 跨境手續費 (CBF) 約 1%。部分銀行兩者都收。免 FX Fee 卡：SC Smart Card、中銀淘寶卡。銀聯卡一般收 1%。"
   },
   {
     question: "海外簽賬定義係咩？",
-    answer: "海外簽賬指：(1) 喺外國實體店碌卡；(2) 外幣網購；(3) 非香港登記商戶簽賬。注意：港幣跨境簽賬（非香港商戶但用 HKD 結算）可能收 CBF 但唔計入「海外簽賬」回贈。"
+    answer: "海外簽賬指：(1) 喺外國實體店碌卡；(2) 外幣網購；(3) 非香港登記商戶簽賬。注意：港幣跨境簽賬可能收 CBF 但唔計入海外回贈。"
   },
   {
     question: "旅行用邊張信用卡最抵？",
-    answer: "推薦組合：SC 國泰 Mastercard（$4/里儲里數）+ SC Smart Card（免手續費打底）+ 恒生 Travel+（7% 回贈有上限）。根據簽賬金額靈活使用。"
+    answer: "推薦組合：sim World MC（6.05% 淨回贈）+ SC Smart Card（免手續費打底）+ 恒生 Travel+（日韓泰新澳 5.05%）。根據簽賬金額同目的地靈活使用。"
   },
   {
     question: "日本旅行用邊張信用卡？",
-    answer: "日本消費係日圓結算，建議用免外幣手續費卡（SC Smart Card）或高回贈卡（Simply Cash 海外 2%）。日本好多地方接受 Apple Pay。注意 EarnMORE 銀聯卡 2025 年起有 1% 手續費。"
+    answer: "日本消費係日圓結算，推薦：恒生 Travel+（7% 有上限）、sim World MC（8% 有上限）、SC Smart Card（免手續費）。日本好多地方接受 Apple Pay。"
   },
   {
-    question: "歐洲旅行用邊張信用卡？",
-    answer: "歐洲多用歐元，同樣建議用免外幣手續費卡或高回贈卡。注意歐洲商戶可能問你用當地貨幣定港幣結算，一定要揀當地貨幣避免 DCC 陷阱。"
+    question: "台灣旅行用邊張信用卡？",
+    answer: "富邦 Visa 白金卡台幣簽賬 20X = 8%，扣手續費後 6.05%，係台灣旅行首選！上限每月 $5,333。"
   },
   {
     question: "海外網購計唔計海外簽賬？",
-    answer: "視乎銀行定義。大部分銀行：外幣網購計入海外簽賬；港幣網購但非香港商戶可能收 CBF 但唔計入海外回贈。建議查閱銀行條款。"
+    answer: "視乎銀行定義。大部分銀行外幣網購計入海外簽賬。恒生 MMPOWER 海外簽賬 6% + 網購 5% 都計。中銀 Chill Card 網上/海外同享 5%。"
   },
   {
     question: "信用卡海外簽賬回贈有上限嗎？",
-    answer: "大部分高回贈卡都有上限：恒生 Travel+ 每月 $200 回贈上限；SC 國泰 Mastercard 每月 $15,000 簽賬上限。Simply Cash 2%、EarnMORE 2% 無上限。"
+    answer: "大部分高回贈卡都有上限：sim World MC 每月 $2,500、恒生 Travel+ 每月 $7,576。免手續費卡 SC Smart Card、中銀淘寶卡無上限。"
   }
 ];
 
@@ -62,8 +62,9 @@ const popularDestinations = [
     destination: "日本 🇯🇵",
     currency: "JPY",
     bestCards: [
+      { card: "恒生 Travel+", id: "hangseng-travel-plus", rate: "5.05%" },
+      { card: "sim World MC", id: "sim-credit", rate: "6.05%" },
       { card: "SC Smart Card", id: "sc-smart", rate: "免手續費" },
-      { card: "渣打 Simply Cash", id: "sc-simply-cash", rate: "2%" },
     ],
     tips: "好多商戶接受 Apple Pay",
   },
@@ -71,8 +72,8 @@ const popularDestinations = [
     destination: "韓國 🇰🇷",
     currency: "KRW",
     bestCards: [
-      { card: "SC Smart Card", id: "sc-smart", rate: "免手續費" },
-      { card: "渣打 Simply Cash", id: "sc-simply-cash", rate: "2%" },
+      { card: "恒生 Travel+", id: "hangseng-travel-plus", rate: "5.05%" },
+      { card: "sim World MC", id: "sim-credit", rate: "6.05%" },
     ],
     tips: "Samsung Pay 普及",
   },
@@ -80,17 +81,17 @@ const popularDestinations = [
     destination: "台灣 🇹🇼",
     currency: "TWD",
     bestCards: [
-      { card: "SC 國泰 Mastercard", id: "sc-cathay", rate: "$4/里" },
-      { card: "渣打 Simply Cash", id: "sc-simply-cash", rate: "2%" },
+      { card: "富邦白金卡", id: "fubon-platinum", rate: "6.05% 🔥" },
+      { card: "sim World MC", id: "sim-credit", rate: "6.05%" },
     ],
-    tips: "夜市可能只收現金",
+    tips: "富邦台幣 8% 係台灣首選！夜市可能只收現金",
   },
   {
     destination: "泰國 🇹🇭",
     currency: "THB",
     bestCards: [
-      { card: "恒生 Travel+", id: "hangseng-travel-plus", rate: "7%" },
-      { card: "SC Smart Card", id: "sc-smart", rate: "免手續費" },
+      { card: "恒生 Travel+", id: "hangseng-travel-plus", rate: "5.05%" },
+      { card: "恒生 MMPOWER", id: "hangseng-mmpower", rate: "4.05%" },
     ],
     tips: "大型商場接受信用卡",
   },
@@ -98,17 +99,17 @@ const popularDestinations = [
     destination: "歐洲 🇪🇺",
     currency: "EUR",
     bestCards: [
+      { card: "sim World MC", id: "sim-credit", rate: "6.05%" },
       { card: "SC Smart Card", id: "sc-smart", rate: "免手續費" },
-      { card: "渣打 Simply Cash", id: "sc-simply-cash", rate: "2%" },
     ],
-    tips: "小心 DCC 陷阱",
+    tips: "小心 DCC 陷阱，東亞 World MC 不計歐洲",
   },
   {
     destination: "美國 🇺🇸",
     currency: "USD",
     bestCards: [
-      { card: "渣打 Simply Cash", id: "sc-simply-cash", rate: "2%" },
-      { card: "Citi PremierMiles", id: "citi-premiermiles", rate: "$3/里" },
+      { card: "sim World MC", id: "sim-credit", rate: "6.05%" },
+      { card: "SC Smart Card", id: "sc-smart", rate: "免手續費" },
     ],
     tips: "信用卡非常普及",
   },
@@ -117,64 +118,81 @@ const popularDestinations = [
 // 推薦信用卡
 const recommendedCards = [
   {
-    card: "渣打 Simply Cash Visa",
-    id: "sc-simply-cash",
-    rate: "2%",
+    card: "sim World Mastercard",
+    id: "sim-credit",
+    rate: "8%",
     fee: "1.95%",
-    netRate: "0.05%",
-    highlight: "無上限",
-    reason: "海外 2% 無上限，扣除手續費後微賺。適合大額海外簽賬。",
-    best: "大額海外消費",
+    netRate: "6.05%",
+    highlight: "🔥 淨回贈最高",
+    reason: "海外實體簽賬 8%，扣 1.95% 手續費仍有 6.05%！每月上限簽 $2,500。",
+    best: "短途旅行",
+  },
+  {
+    card: "富邦 Visa 白金卡",
+    id: "fubon-platinum",
+    rate: "8% 台幣",
+    fee: "1.95%",
+    netRate: "6.05%",
+    highlight: "台灣旅行",
+    reason: "台幣簽賬 20X = 8%，日韓 10X = 4%。台灣旅行首選！",
+    best: "台灣日韓旅行",
+  },
+  {
+    card: "恒生 Travel+ Visa Signature",
+    id: "hangseng-travel-plus",
+    rate: "7%",
+    fee: "1.95%",
+    netRate: "5.05%",
+    highlight: "日韓泰新澳",
+    reason: "日韓泰新澳 7%，其他外幣 5%。需月簽 $6,000。",
+    best: "亞太區旅行",
+  },
+  {
+    card: "恒生 MMPOWER World MC",
+    id: "hangseng-mmpower",
+    rate: "6%",
+    fee: "1.95%",
+    netRate: "4.05%",
+    highlight: "海外+網購",
+    reason: "海外 6% + 網購 5%，需月簽 $5,000。",
+    best: "經常網購+旅行",
   },
   {
     card: "SC Smart Card",
     id: "sc-smart",
-    rate: "0.55%",
+    rate: "0.55-1.2%",
     fee: "0%",
-    netRate: "0.55%",
+    netRate: "0.55-1.2%",
     highlight: "免手續費",
-    reason: "免外幣手續費，保本唔蝕。適合唔想煩嘅人。",
+    reason: "極少數免外幣手續費 Visa 卡！月簽 $4,000 有 0.56%，$12,000 有 1.2%。",
     best: "穩陣之選",
   },
   {
-    card: "恒生 Travel+ 銀聯卡",
-    id: "hangseng-travel-plus",
-    rate: "7%",
-    fee: "2.95%",
-    netRate: "4.05%",
-    highlight: "回贈最高",
-    reason: "海外 7% 回贈（有上限），扣除手續費後仍有 4%+！",
-    best: "短途旅行",
-  },
-  {
-    card: "SC 國泰 Mastercard",
-    id: "sc-cathay",
-    rate: "$4/里",
-    fee: "1.95%",
-    netRate: "$4/里",
-    highlight: "儲里數",
-    reason: "海外簽賬 $4/里，免 CBF。適合儲 Asia Miles。",
-    best: "儲里數",
-  },
-  {
-    card: "安信 EarnMORE 銀聯卡",
-    id: "earnmore",
-    rate: "2%",
-    fee: "1%",
-    netRate: "1%",
-    highlight: "Mobile Pay",
-    reason: "Apple Pay / Google Pay 海外 2% 無上限。⚠️ 2025/1/1 起銀聯卡外幣手續費 1%。",
-    best: "手機支付",
+    card: "中銀淘寶卡",
+    id: "boc-taobao",
+    rate: "0.4%",
+    fee: "0%",
+    netRate: "0.4%",
+    highlight: "免手續費 MC",
+    reason: "極少數免外幣手續費 Mastercard！保本唔蝕。",
+    best: "備用打底",
   },
 ];
 
 // 回贈比較
 const cashbackComparison = [
-  { card: "恒生 Travel+", id: "hangseng-travel-plus", overseas: "7%", fee: "2.95%", net: "4.05%", cap: "$200/月", annual: "$300" },
-  { card: "Simply Cash", id: "sc-simply-cash", overseas: "2%", fee: "1.95%", net: "0.05%", cap: "無上限", annual: "免" },
-  { card: "SC Smart Card", id: "sc-smart", overseas: "0.55%", fee: "0%", net: "0.55%", cap: "無上限", annual: "免" },
-  { card: "SC 國泰 Mastercard", id: "sc-cathay", overseas: "$4/里", fee: "1.95%", net: "$4/里", cap: "有上限", annual: "$1,800" },
-  { card: "EarnMORE", id: "earnmore", overseas: "2%", fee: "1%", net: "1%", cap: "無上限", annual: "免" },
+  { card: "sim World MC", id: "sim-credit", overseas: "8%", fee: "1.95%", net: "6.05%", cap: "$2,500/月", annual: "免" },
+  { card: "富邦 Visa 白金卡", id: "fubon-platinum", overseas: "8% 台幣", fee: "1.95%", net: "6.05%", cap: "$5,333/月", annual: "$1,200" },
+  { card: "恒生 Travel+", id: "hangseng-travel-plus", overseas: "7%", fee: "1.95%", net: "5.05%", cap: "$7,576/月", annual: "免首年" },
+  { card: "恒生 MMPOWER", id: "hangseng-mmpower", overseas: "6%", fee: "1.95%", net: "4.05%", cap: "$8,929/月", annual: "免" },
+  { card: "東亞 World MC", id: "bea-world-master", overseas: "5%", fee: "1.95%", net: "3.05%", cap: "$10,000/月", annual: "免首年" },
+  { card: "中銀 Chill Card", id: "boc-chill", overseas: "5%", fee: "1.95%", net: "3.05%", cap: "$3,260/月", annual: "免" },
+  { card: "中銀 Cheers Card", id: "boc-cheers", overseas: "4%", fee: "1.95%", net: "2.05%", cap: "$25,000/月", annual: "免首年" },
+  { card: "建行 TRAVO", id: "ccb-travo", overseas: "4%", fee: "1.95%", net: "2.05%", cap: "$25,000/半年", annual: "免" },
+  { card: "安信 WeWa VS", id: "wewa-visa-signature", overseas: "4%", fee: "1.95%", net: "2.05%", cap: "$5,556/月", annual: "$250" },
+  { card: "EarnMORE 銀聯", id: "earnmore", overseas: "2%", fee: "1%", net: "1%", cap: "無上限", annual: "免" },
+  { card: "SC Smart Card", id: "sc-smart", overseas: "0.55-1.2%", fee: "0%", net: "0.55-1.2%", cap: "無上限", annual: "免" },
+  { card: "中銀淘寶卡", id: "boc-taobao", overseas: "0.4%", fee: "0%", net: "0.4%", cap: "無上限", annual: "免" },
 ];
 
 export function OverseasSpendingGuide() {
@@ -186,7 +204,7 @@ export function OverseasSpendingGuide() {
       <p className="lead text-xl text-gray-600 dark:text-gray-300 mb-6">
         去旅行用信用卡簽賬，識揀卡可以賺回贈，唔識揀分分鐘蝕手續費！
         本文教你 <strong>{currentYear} 海外簽賬信用卡攻略</strong>，
-        日本、韓國、台灣、泰國、歐美旅行都適用，最高賺 <strong>7% 回贈</strong>！
+        日本、韓國、台灣、泰國、歐美旅行都適用，扣除手續費後最高賺 <strong>6%+ 回贈</strong>！
       </p>
 
       {/* 目錄 */}
@@ -450,10 +468,11 @@ export function OverseasSpendingGuide() {
         title="📌 海外簽賬推薦信用卡一覽"
         subtitle="點擊查看詳細回贈條款及申請連結"
         cards={[
-          { id: "hangseng-travel-plus", highlight: "海外 7%" },
-          { id: "sc-simply-cash", highlight: "海外 2% 無上限" },
+          { id: "sim-credit", highlight: "海外 6.05% 淨回贈" },
+          { id: "hangseng-travel-plus", highlight: "日韓泰 5.05%" },
+          { id: "hangseng-mmpower", highlight: "海外 4.05%" },
           { id: "sc-smart", highlight: "免手續費" },
-          { id: "sc-cathay", highlight: "$4/里" },
+          { id: "boc-taobao", highlight: "免手續費 MC" },
         ]}
       />
 
@@ -465,34 +484,48 @@ export function OverseasSpendingGuide() {
         </h2>
 
         <div className="not-prose space-y-4 my-6">
-          <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
-            <h4 className="font-bold text-blue-800 dark:text-blue-200 mb-3">✈️ 旅行達人組合</h4>
+          <div className="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 rounded-xl p-4 border border-orange-200 dark:border-orange-800">
+            <h4 className="font-bold text-orange-800 dark:text-orange-200 mb-3">🔥 最高回贈組合</h4>
             <div className="grid md:grid-cols-3 gap-3">
               <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-3">
+                <Link href="/cards/sim-credit" className="font-medium text-blue-600 hover:underline text-sm">sim World MC</Link>
+                <p className="text-xs text-gray-500">海外 6.05%（首 $2,500）</p>
+              </div>
+              <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-3">
                 <Link href="/cards/hangseng-travel-plus" className="font-medium text-blue-600 hover:underline text-sm">恒生 Travel+</Link>
-                <p className="text-xs text-gray-500">海外 7%（每月首 $200 回贈）</p>
+                <p className="text-xs text-gray-500">日韓泰新澳 5.05%</p>
               </div>
               <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-3">
                 <Link href="/cards/sc-smart" className="font-medium text-blue-600 hover:underline text-sm">SC Smart Card</Link>
                 <p className="text-xs text-gray-500">免手續費打底</p>
               </div>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
+            <h4 className="font-bold text-blue-800 dark:text-blue-200 mb-3">🇹🇼 台灣旅行組合</h4>
+            <div className="grid md:grid-cols-2 gap-3">
               <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-3">
-                <Link href="/cards/sc-simply-cash" className="font-medium text-blue-600 hover:underline text-sm">渣打 Simply Cash</Link>
-                <p className="text-xs text-gray-500">爆 Cap 後用 2% 無上限</p>
+                <Link href="/cards/fubon-platinum" className="font-medium text-blue-600 hover:underline text-sm">富邦 Visa 白金卡</Link>
+                <p className="text-xs text-gray-500">台幣 6.05%（首 $5,333）</p>
+              </div>
+              <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-3">
+                <Link href="/cards/sc-smart" className="font-medium text-blue-600 hover:underline text-sm">SC Smart Card</Link>
+                <p className="text-xs text-gray-500">爆 Cap 後用（免手續費）</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-4 border border-purple-200 dark:border-purple-800">
-            <h4 className="font-bold text-purple-800 dark:text-purple-200 mb-3">🎯 儲里數組合</h4>
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-4 border border-green-200 dark:border-green-800">
+            <h4 className="font-bold text-green-800 dark:text-green-200 mb-3">💡 免手續費組合</h4>
             <div className="grid md:grid-cols-2 gap-3">
               <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-3">
-                <Link href="/cards/sc-cathay" className="font-medium text-blue-600 hover:underline text-sm">SC 國泰 Mastercard</Link>
-                <p className="text-xs text-gray-500">海外 $4/里 儲 Asia Miles</p>
+                <Link href="/cards/sc-smart" className="font-medium text-blue-600 hover:underline text-sm">SC Smart Card</Link>
+                <p className="text-xs text-gray-500">免手續費 Visa（0.55-1.2%）</p>
               </div>
               <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-3">
-                <Link href="/cards/citi-premiermiles" className="font-medium text-blue-600 hover:underline text-sm">Citi PremierMiles</Link>
-                <p className="text-xs text-gray-500">海外 $3/里（有手續費）</p>
+                <Link href="/cards/boc-taobao" className="font-medium text-blue-600 hover:underline text-sm">中銀淘寶卡</Link>
+                <p className="text-xs text-gray-500">免手續費 MC（0.4%）</p>
               </div>
             </div>
           </div>
