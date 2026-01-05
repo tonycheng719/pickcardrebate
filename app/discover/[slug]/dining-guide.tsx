@@ -9,6 +9,7 @@ import {
   Star, Smartphone, Info, Zap, MapPin, Percent, Coffee
 } from "lucide-react";
 import { CardPreviewSection } from "@/app/discover/components/card-preview-section";
+import { CardTableCell, CardBadgeWithImage, CardLinkWithImage } from "@/app/discover/components/card-link-with-image";
 
 // FAQ 數據
 export const diningFaqData = [
@@ -296,9 +297,7 @@ export function DiningGuide() {
                 {cashbackComparison.map((card, index) => (
                   <tr key={index}>
                     <td className="px-4 py-3">
-                      <Link href={`/cards/${card.id}`} className="font-medium text-blue-600 hover:underline dark:text-blue-400">
-                        {card.card}
-                      </Link>
+                      <CardTableCell id={card.id} />
                     </td>
                     <td className="px-4 py-3 text-center font-bold text-orange-600 dark:text-orange-400">{card.dining}</td>
                     <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-400">{card.mobilePay}</td>
@@ -337,15 +336,7 @@ export function DiningGuide() {
               </div>
               <div className="flex flex-wrap gap-2">
                 {cat.bestCards.map((card, i) => (
-                  <Link 
-                    key={i} 
-                    href={`/cards/${card.id}`}
-                    className="inline-flex items-center gap-1 px-3 py-1 bg-orange-50 dark:bg-orange-900/20 rounded-full text-sm text-orange-600 dark:text-orange-400 hover:bg-orange-100 dark:hover:bg-orange-900/40 transition-colors"
-                  >
-                    <CreditCard className="h-3 w-3" />
-                    {card.card}
-                    <span className="font-bold">{card.rate}</span>
-                  </Link>
+                  <CardBadgeWithImage key={i} id={card.id} rate={card.rate} />
                 ))}
               </div>
             </div>
@@ -462,21 +453,25 @@ export function DiningGuide() {
         <div className="not-prose space-y-4 my-6">
           {recommendedCards.map((card, index) => (
             <div key={index} className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-4">
-              <div className="flex items-start justify-between">
-                <div>
-                  <span className="text-xl mr-2">{["🥇", "🥈", "🥉", "4️⃣", "5️⃣"][index]}</span>
-                  <Link href={`/cards/${card.id}`} className="font-bold text-blue-600 hover:underline dark:text-blue-400">{card.card}</Link>
-                  <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400">
-                    {card.highlight}
-                  </span>
+              <div className="flex items-start gap-4">
+                {/* 排名 + 卡面圖片 */}
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <span className="text-xl">{["🥇", "🥈", "🥉", "4️⃣", "5️⃣"][index]}</span>
+                  <CardLinkWithImage id={card.id} showRate={false} size="md" />
                 </div>
-                <div className="text-right">
-                  <p className="text-xl font-bold text-orange-600 dark:text-orange-400">{card.rate}</p>
-                  <p className="text-xs text-gray-500">{card.cap}</p>
+                {/* 卡資訊 */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400">
+                      {card.highlight}
+                    </span>
+                    <span className="text-lg font-bold text-orange-600 dark:text-orange-400">{card.rate}</span>
+                    <span className="text-xs text-gray-500">{card.cap}</span>
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{card.reason}</p>
+                  <p className="text-xs text-gray-500 mt-1">最適合：{card.best}</p>
                 </div>
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{card.reason}</p>
-              <p className="text-xs text-gray-500 mt-1">最適合：{card.best}</p>
             </div>
           ))}
         </div>
