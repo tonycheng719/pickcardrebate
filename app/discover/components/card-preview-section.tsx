@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ChevronRight, CreditCard, Star, TrendingUp } from "lucide-react";
 import { HK_CARDS } from "@/lib/data/cards";
+import { useDataset } from "@/lib/admin/data-store";
 
 // 卡片預覽組件
 interface CardPreviewProps {
@@ -12,7 +13,9 @@ interface CardPreviewProps {
 }
 
 export function CardPreview({ id, highlight }: CardPreviewProps) {
-  const card = HK_CARDS.find(c => c.id === id);
+  // 優先使用 DataStore 嘅卡資料（有 DB 圖片），fallback 到 HK_CARDS
+  const { cards: dbCards } = useDataset();
+  const card = dbCards.find(c => c.id === id) || HK_CARDS.find(c => c.id === id);
   
   if (!card) return null;
   
@@ -29,18 +32,21 @@ export function CardPreview({ id, highlight }: CardPreviewProps) {
     >
       <div className="flex items-start gap-3">
         {/* Card Image */}
-        <div className="relative w-16 h-10 flex-shrink-0 rounded-md overflow-hidden bg-gray-100 dark:bg-gray-700">
+        <div className={`relative w-16 h-10 flex-shrink-0 rounded-md overflow-hidden ${card.imageUrl ? 'bg-white dark:bg-gray-900' : (card.style?.bgColor || 'bg-gray-100 dark:bg-gray-700')}`}>
           {card.imageUrl ? (
             <Image
               src={card.imageUrl}
               alt={card.name}
               fill
-              className="object-cover"
+              className="object-contain p-1"
               sizes="64px"
+              unoptimized
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <CreditCard className="h-6 w-6 text-gray-400" />
+              <span className={`text-xs font-bold ${card.style?.textColor || 'text-gray-400'}`}>
+                {card.bank.slice(0, 4)}
+              </span>
             </div>
           )}
         </div>
@@ -95,9 +101,13 @@ export function CardPreviewSection({
   cards,
   columns = 2 
 }: CardPreviewSectionProps) {
+  // 使用 DataStore 嘅卡資料
+  const { cards: dbCards } = useDataset();
+  const allCards = dbCards.length > 0 ? dbCards : HK_CARDS;
+  
   // Filter out cards that don't exist
   if (!cards || cards.length === 0) return null;
-  const validCards = cards.filter(card => HK_CARDS.find(c => c.id === card.id));
+  const validCards = cards.filter(card => allCards.find(c => c.id === card.id));
   
   if (validCards.length === 0) return null;
   
@@ -174,4 +184,3 @@ export const RECOMMENDED_CARDS = {
     { id: "earnmore", highlight: "免年費" },
   ],
 };
-
