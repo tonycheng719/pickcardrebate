@@ -13,33 +13,36 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     annualFee: 2000,
     minIncome: 240000,
+    feeWaiverCondition: "首兩年免年費",
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' }, // $10 = $1 RC = 0.4%
     rules: [
-      // 🔥 最紅冬日賞 - 百老滙 (2025/12/1 - 2026/2/28)
-      // 累積簽賬滿 $10,000 享 6% 回贈 (上限 $900)，單一簽賬需滿 $500，需登記
-      { description: "🔥百老滙 6% [冬日賞,累積$10,000,需登記]", matchType: "merchant", matchValue: ["broadway"], percentage: 6.0, minSpend: 500, cap: 900, capType: "reward", validDateRange: { start: "2025-12-01", end: "2026-02-28" } },
-      // T&C: 最紅自主獎賞 9X (3.6%)，需登記，額外「獎賞錢」簽賬上限 $100,000
-      // Visa Signature: 9X = 5X額外 + 1X基本 + 3X VS專享 = 3.6%
-      // 5大類別：賞滋味/賞購物/賞家居/賞享受/賞世界，可自由分配 5X 額外倍數
+      // ========== 最紅自主獎賞（需登記，每年簽賬上限 $100,000）==========
+      // Visa Signature 專享：9X = 5X額外 + 1X基本 + 3X VS專享 = 3.6%
+      // 五大類別（非自選）：1.6% = 0.4%基本 + 1.2% VS專享
+      // 可自由分配 5X 到一個自選類別
       { description: "最紅自主獎賞 9X (3.6%) [需登記]", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 3.6, cap: 100000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
-      // T&C: 賞世界 - 海外簽賬 (非港幣交易)，不包括香港進行或以港幣交易的簽賬
+      // 賞世界 - 海外實體店簽賬 (非港幣交易)
       { description: "賞世界 9X (3.6%) [需登記]", matchType: "base", percentage: 3.6, isForeignCurrency: true, cap: 100000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
-      // T&C: 賞滋味限制：不包括酒席宴會/私人宴會/包場派對/酒店百貨公司俱樂部內飲食專櫃
-      // T&C: 八達通自動增值 0.4% ($25/里) - mrmiles.hk 確認
-      { description: "八達通自動增值 0.4% ($25/里)", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
-      // T&C: 基本回饋 0.4% ($250 = $1 RC)，排除電子錢包、繳稅、繳費
-      { description: "基本回饋 0.4% ($25/里)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      // ========== Travel Guru 會員計劃（優惠推廣期至 2026/12/31）==========
+      // 只限海外實體店外幣簽賬，需透過 Reward+ App 登記
+      // GO級：+3%（連續3個月累積≥$8,000，上限$500/年）
+      // GING級：+4%（累積≥$30,000 + 3次預訂≥$800，上限$1,200/年）
+      // GURU級：+6%（累積≥$70,000 + 6次預訂≥$800，上限$2,200/年）
+      // ========== 其他 ==========
+      // 八達通自動增值 0.4%
+      { description: "八達通自動增值 0.4%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
+      // 基本回饋 0.4%
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["餐飲神卡", "最紅自主獎賞", "9X積分", "需登記", "八達通增值", "百老滙6%", "Travel Guru"],
+    tags: ["餐飲神卡", "最紅自主獎賞", "9X積分", "需登記", "八達通增值", "Travel Guru"],
     imageUrl: "https://pickcardrebate-supabase-kong.zeabur.app/storage/v1/object/public/images/cards/1764329466898-zu95i1newy.png",
-    feeWaiverCondition: "首兩年免年費",
-    welcomeOfferText: "迎新簽 $8,000 送 $600-$800 獎賞錢 (首60日內)",
+    welcomeOfferText: "迎新簽 $8,000 送 $800 獎賞錢 (網上申請，至2026/2/28)",
     officialApplyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/visa-signature/",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=255&a=228&sub_id1=pickcardrebate&sub_id2=web",
-    sellingPoints: ["最紅自主獎賞 9X (3.6%)，5大類別自由分配", "💡 Travel Guru 海外實體店可達 6.6%~9.6%", "首 $100,000 簽賬享額外獎賞"],
-    note: "⚠️ 【最紅自主獎賞 2026】需於 2026/10/31 前登記！**Visa Signature 專享 9X = 5X額外 + 1X基本 + 3X VS專享 = 3.6%**。5大類別：賞滋味/賞家居/賞享受/賞購物/賞世界，可自由分配 5X 額外倍數。首 $100,000 簽賬享額外獎賞。\n\n🌍 **Travel Guru 會員計劃**（登記期 2025/10/1-10/31）：海外實體店外幣簽賬額外回贈！\n• GO級 +3%（連續3個月簽≥$8,000解鎖，上限$500/年）→ 合共 **6.6%**\n• GING級 +4%（累積≥$30,000，上限$1,200/年）→ 合共 **7.6%**\n• GURU級 +6%（累積≥$70,000，上限$2,200/年）→ 合共 **9.6%**\n⚠️ 2024/9起只限海外實體店，不包括網購、電子錢包、八達通增值。\n\n⚠️ 賞滋味限制：不包括酒席宴會、私人宴會、包場派對、酒店/百貨公司/俱樂部內飲食專櫃。⚠️ 賞世界限制：不包括香港進行或以港幣交易的簽賬。❌ 不適用於電子錢包（Alipay/WeChat Pay/PayMe）、八達通增值、繳稅、網上繳費。\n\n✈️ **香港快運機票半價**（至12/15）：優惠碼 HSBC160，20個航點低至半價！[查看詳情](/discover/hkexpress-hsbc-flash-2025)\n\n🔥 **最紅冬日賞萬寧**（至2026/2/28）：週末高達10%回贈！[查看詳情](/discover/hsbc-mannings-winter-2025)\n\n🔥 **最紅冬日賞百老滙**（至2026/2/28）：累積簽賬滿$10,000享6%回贈！[查看詳情](/discover/hsbc-broadway-winter-2025)",
-    promoEndDate: "2025-12-15",
-    promoName: "香港快運機票低至半價",
+    sellingPoints: ["最紅自主獎賞 9X (3.6%)", "五大類別 1.6%（0.4% + VS專享1.2%）", "🌍 Travel Guru 海外實體店可達 6.6%~9.6%", "每年首 $100,000 簽賬享額外獎賞"],
+    note: "## 📌 最紅自主獎賞（需登記）\n\n**Visa Signature 專享**：9X = 5X額外 + 1X基本 + 3X VS專享 = **3.6%**\n\n| 類別 | 自選類別 | 非自選類別 |\n|:---|:---:|:---:|\n| 賞滋味 | **3.6%** | 1.6% |\n| 賞購物 | **3.6%** | 1.6% |\n| 賞家居 | **3.6%** | 1.6% |\n| 賞享受 | **3.6%** | 1.6% |\n| 賞世界 | **3.6%** | 1.6% |\n\n- 每年簽賬上限 **$100,000**\n- 需於 Reward+ App 登記\n\n⚠️ **賞滋味限制**：不包括酒席宴會、私人宴會、包場派對、酒店/百貨公司/俱樂部內飲食專櫃\n⚠️ **賞世界限制**：不包括香港進行或以港幣交易的簽賬\n\n---\n\n## 🌍 Travel Guru 會員計劃（至 2026/12/31）\n\n**只限海外實體店外幣簽賬，需透過 Reward+ App 登記**\n\n| 會籍等級 | 額外回贈 | 升級條件 | 回贈上限 |\n|:---|:---:|:---|:---:|\n| GO級旅人 | +3% | 連續3個月累積簽≥$8,000 | $500/年 |\n| GING級旅人 | +4% | 累積≥$30,000 + 3次預訂≥$800 | $1,200/年 |\n| GURU級旅人 | +6% | 累積≥$70,000 + 6次預訂≥$800 | $2,200/年 |\n\n**配合最紅自主獎賞「賞世界」3.6%**：\n- GO級：3.6% + 3% = **6.6%**\n- GING級：3.6% + 4% = **7.6%**\n- GURU級：3.6% + 6% = **9.6%**\n\n⚠️ **Travel Guru 不計**：網購、電子錢包、八達通增值、繳費、繳稅\n\n---\n\n## 🎁 迎新優惠（至 2026/2/28）\n\n| 客戶類型 | 簽賬要求 | 獎賞 |\n|:---|:---:|:---|\n| 新客（網上申請） | 60日內簽$8,000 | **$800 獎賞錢** |\n| 新客（櫃檯申請） | 60日內簽$8,000 | $600 獎賞錢 |\n| 現有客戶 | 60日內簽$8,000 | $200 獎賞錢 |\n\n⚠️ 不計迎新：電子錢包、八達通增值、繳費、繳稅\n\n---\n\n## 💡 附屬卡大法\n\n幫無滙豐卡的親友開附屬卡，可以揀不同自選類別，各享 3.6%！\n\n---\n\n## ⚠️ 注意事項\n\n- 海外簽賬手續費：**1.95%**\n- 海外商戶簽港幣（CBF）：**1%**\n- E-banking繳費：0.4%（每月首$10,000）\n- E-banking交稅：無回贈\n- 基本回贈：0.4%\n- ❌ PayMe/支付寶/微信支付：無回贈\n\n📅 **2026年1月7日更新**",
+    promoEndDate: "2026-12-31",
+    promoName: "Travel Guru 會員計劃",
   },
   {
     id: "hsbc-red",
