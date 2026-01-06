@@ -167,7 +167,7 @@ export function CitiPartnerOffersGuide() {
           </div>
           
           <h2 className="text-2xl md:text-3xl font-bold mb-2">
-            MoneyHero X Citi 信用卡
+            🎉 激抵限時優惠
           </h2>
           <p className="text-blue-100 text-lg mb-4">
             限時加碼送 <strong className="text-yellow-300">25,000 里</strong> / <strong className="text-yellow-300">$2,200 現金券</strong> / <strong className="text-yellow-300">Dyson 風筒</strong> / <strong className="text-yellow-300">LOJEL 行李箱</strong>！
