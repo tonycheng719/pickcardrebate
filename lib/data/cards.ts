@@ -1077,29 +1077,36 @@ export const HK_CARDS: CreditCard[] = [
     bank: "東亞銀行",
     style: { bgColor: "bg-gradient-to-br from-purple-500 to-purple-700", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
-    annualFee: 0,
-    feeWaiverCondition: "永久免年費",
+    annualFee: 600,
+    feeWaiverCondition: "首年免年費，之後可致電 waive",
+    minIncome: 40000,
     rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 獎分 = $1 回贈 (0.4%)
     rules: [
-      // T&C 2025: 手機支付 11X 獎分 (4.4%)，需月簽滿 $2,000，每月回贈上限 $200 (即首 $4,545 簽賬)
-      { description: "手機支付 4.4% [月簽$2,000]", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 4.4, monthlyMinSpend: 2000, cap: 200, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
-      // T&C 2025: 網上簽賬 10X 獎分 (4%)，需月簽滿 $2,000，每月回贈上限 $200 (即首 $5,000 簽賬)
-      { description: "網上簽賬 4% [月簽$2,000]", matchType: "category", matchValue: "online", percentage: 4.0, monthlyMinSpend: 2000, cap: 200, capType: "reward", excludeCategories: ["ewallet", "utilities", "insurance", "supermarket", "government"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
-      // T&C 2025: 本地食肆 5X 獎分 (2%)，需月簽滿 $2,000
-      { description: "本地食肆 2% [月簽$2,000]", matchType: "category", matchValue: ["dining"], percentage: 2.0, monthlyMinSpend: 2000, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
-      // T&C 2025: 外幣簽賬 5X 獎分 (2%)，需月簽滿 $2,000
-      { description: "外幣簽賬 2% [月簽$2,000]", matchType: "base", percentage: 2.0, monthlyMinSpend: 2000, isForeignCurrency: true, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
-      // T&C: 基本獎賞 0.4%
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // ========== 額外獎賞（推廣期至 2026/6/30，需月簽$2,000）==========
+      // T&C: Apple Pay/Google Pay 4% 額外 + 0.4% 基本 = 4.4%，每月上限 $200（即首 $4,545 簽賬）
+      { description: "Apple Pay/Google Pay 4.4% [月簽$2,000]", matchType: "paymentMethod", matchValue: ["apple_pay", "google_pay"], percentage: 4.4, monthlyMinSpend: 2000, cap: 200, capType: "reward", validDateRange: { start: "2025-01-01", end: "2026-06-30" }, excludeCategories: ["ewallet", "supermarket", "government"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C: 網上簽賬 4% 額外 + 0.4% 基本 = 4.4%，每月上限 $200（即首 $4,545 簽賬）
+      { description: "網上簽賬 4.4% [月簽$2,000]", matchType: "category", matchValue: ["online"], percentage: 4.4, monthlyMinSpend: 2000, cap: 200, capType: "reward", validDateRange: { start: "2025-01-01", end: "2026-06-30" }, excludeCategories: ["ewallet", "supermarket", "government"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C: 娛樂消費 5% 額外 + 0.4% 基本 = 5.4%（本地主題公園、卡拉OK、電影院、售票網）
+      { description: "娛樂消費 5.4% [月簽$2,000]", matchType: "category", matchValue: ["entertainment"], percentage: 5.4, monthlyMinSpend: 2000, cap: 200, capType: "reward", validDateRange: { start: "2025-01-01", end: "2026-06-30" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C: 旅遊 6% 額外 + 0.4% 基本 = 6.4%（指定旅遊代理、酒店、航空公司）
+      { description: "旅遊 6.4% [月簽$2,000]", matchType: "category", matchValue: ["travel"], percentage: 6.4, monthlyMinSpend: 2000, cap: 200, capType: "reward", validDateRange: { start: "2025-01-01", end: "2026-06-30" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C: 本地交通 6% 額外 + 0.4% 基本 = 6.4%（專營巴士、的士App不含UBER、油站）
+      { description: "本地交通/油站 6.4% [月簽$2,000]", matchType: "category", matchValue: ["transport", "petrol"], percentage: 6.4, monthlyMinSpend: 2000, cap: 200, capType: "reward", validDateRange: { start: "2025-01-01", end: "2026-06-30" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // ========== 基本獎賞 ==========
+      // T&C: 八達通自動增值/政府部門簽賬 0.4%，每月上限 $40 回贈（合共首 $10,000 簽賬）
+      { description: "八達通增值/政府簽賬 0.4% [上限$40/月]", matchType: "paymentMethod", matchValue: ["octopus", "government"], percentage: 0.4, cap: 40, capType: "reward" },
+      // T&C: 基本獎賞 0.4%（$250 = $1）
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet", "supermarket"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["手機支付4.4%", "網購4%", "食肆2%", "海外2%", "永久免年費", "月簽$2000"],
-    welcomeOfferText: "迎新簽 $3,000 送 $300 現金回贈 (首2個月內)",
+    tags: ["手機支付4.4%", "網購4.4%", "旅遊6.4%", "交通6.4%", "娛樂5.4%", "月簽$2000", "首年免年費"],
+    welcomeOfferText: "迎新簽 $3,000 送 $300 現金回贈 (首2個月，至2026/1/20)",
     officialApplyUrl: "https://www.hkbea.com/html/tc/bea-credit-card-goal-card.html",
     applyUrl: "https://www.hkbea.com/html/tc/bea-goal-credit-card.html",
-    sellingPoints: ["🔥 手機支付 11X (4.4%)", "網上簽賬 10X (4%)", "本地食肆 5X (2%)", "外幣簽賬 5X (2%)", "每月回贈上限 $200", "永久免年費"],
-    note: "⚠️ 需每月簽滿 $2,000 才享額外獎分！手機支付 11X (4.4%)、網上簽賬 10X (4%)，每月回贈上限 $200。本地食肆/外幣簽賬 5X (2%)。❌ 不計回贈：超市、電子錢包充值(Alipay/PayMe/WeChat Pay)、保費、透過電子網絡繳款、政府部門。迎新：首2個月簽滿 $3,000 送 $300。12個月內取消扣回迎新。\n\n🧧 **新春自主賞**（2026/1/2-2/28）：每階段簽滿 $8,000 可享額外 3.3% 回贈，疊加本卡最高 **7.7%**！首10,000名，需 BEA Mall App 登記。[查看詳情](/discover/bea-cny-2026)",
-    promoEndDate: "2026-02-28",
-    promoName: "新春自主賞",
+    sellingPoints: ["🔥旅遊/交通/油站 6.4%", "Apple Pay/Google Pay 4.4%", "網上簽賬 4.4%", "娛樂消費 5.4%", "每月回贈上限 $200"],
+    note: "## 📌 額外獎賞（推廣期至 2026/6/30）\n\n**需每月累積簽賬滿 $2,000 方可享額外回贈**\n\n| 類別 | 回贈率 | 上限 |\n|:---|:---:|:---:|\n| 旅遊（旅行社/酒店/航空公司） | **6.4%** | $200/月 |\n| 本地交通/油站 | **6.4%** | $200/月 |\n| 娛樂消費（主題公園/卡拉OK/電影院/售票網） | **5.4%** | $200/月 |\n| Apple Pay / Google Pay | **4.4%** | $200/月 |\n| 網上簽賬 | **4.4%** | $200/月 |\n\n**每月額外回贈上限 $200**（以手機支付/網上簽賬計即上限簽 $4,545）\n\n---\n\n## 📌 本地交通包括\n- 專營巴士（城巴/九巴/龍運）\n- 的士 App（**不包括 UBER**）\n- 本地油站\n\n---\n\n## 🎁 迎新優惠（至 2026/1/20）\n\n| 條件 | 獎賞 |\n|:---|:---|\n| 批卡後首2個月簽滿 $3,000 | **$300 現金回贈** |\n| 需 BEA App 確認信用卡 | ✅ |\n\n⚠️ 不計迎新：電子錢包、八達通增值、超級市場、政府部門\n\n---\n\n## ⚠️ 注意事項\n\n- **海外商戶簽港幣**有 **1% CBF 手續費**（App Store/Netflix/Spotify/Airbnb）\n- **海外簽賬手續費** 1.95%\n- 八達通增值/政府簽賬：每月上限 $40 回贈（首 $10,000）\n- PayMe 計 0.4%（時有時無）\n- 支付寶/微信支付：時有時無\n- 網上理財繳費：無回贈\n- 12個月內取消主卡：扣回迎新\n\n---\n\n## ❌ 不計額外回贈\n超級市場、政府部門、循環付款/自動轉賬、電子錢包增值/轉賬（AlipayHK/PayMe/WeChat Pay）\n\n📅 **2026年1月7日更新**",
+    promoEndDate: "2026-06-30",
+    promoName: "BEA GOAL 額外獎賞計劃",
   },
   {
     id: "bea-flyer-world",
