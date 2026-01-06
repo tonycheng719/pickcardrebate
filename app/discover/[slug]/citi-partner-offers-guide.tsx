@@ -405,7 +405,14 @@ export function CitiPartnerOffersGuide() {
       <section>
         <h2 className="text-2xl font-bold mb-4">🏆 推薦信用卡</h2>
         <CardPreviewSection 
-          cardIds={["citi-cashback", "citi-rewards", "citi-premiermiles", "citi-rewards-unionpay", "citi-prestige", "citi-octopus"]}
+          cards={[
+            { id: "citi-cashback", highlight: "食肆回贈" },
+            { id: "citi-rewards", highlight: "購物娛樂 3%" },
+            { id: "citi-premiermiles", highlight: "儲里數" },
+            { id: "citi-rewards-unionpay", highlight: "北上必備" },
+            { id: "citi-prestige", highlight: "高端旅遊" },
+            { id: "citi-octopus", highlight: "交通 15%" }
+          ]}
           title=""
         />
       </section>
