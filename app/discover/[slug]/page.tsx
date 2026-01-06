@@ -1156,7 +1156,7 @@ const GUIDES: Record<string, {
     seoTitle: "Citi 信用卡合作夥伴獎賞 2026｜MoneyHero 迎新高達 $4,288｜Citi Cash Back/Rewards/PremierMiles",
     heroTitle: "🎁 Citi 信用卡合作夥伴獎賞攻略",
     heroSubtitle: "銀行迎新 + 合作夥伴獎賞 雙重獎賞高達 $4,288+！",
-    description: "經 MoneyHero 申請 Citi 信用卡，除銀行迎新外，更可享額外合作夥伴獎賞高達 $4,288+！Citi Cash Back、Citi Rewards、Citi PremierMiles、Citi Prestige 完全介紹。",
+    description: "經本網指定連結申請 Citi 信用卡，除銀行迎新外，更可享額外獎賞高達 $4,288+！Citi Cash Back、Citi Rewards、Citi PremierMiles 完全介紹。",
     content: "citi-partner-offers",
     imageUrl: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop",
     tags: ["Citi", "合作夥伴", "迎新優惠", "MoneyHero"],
