@@ -385,7 +385,34 @@ export function CitiPartnerOffersGuide() {
           適用 Citi 信用卡
         </h2>
         
-        <div className="overflow-x-auto">
+        {/* 手機版：卡片式佈局 */}
+        <div className="md:hidden space-y-3">
+          {citiPartnerCards.map((card) => (
+            <div key={card.id} className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0">
+                  <CardTableCell id={card.id} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{card.annualFee}</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">{card.bestFor}</p>
+                </div>
+              </div>
+              <a 
+                href={card.applyUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="mt-3 w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
+              >
+                立即申請
+                <ExternalLink className="h-4 w-4" />
+              </a>
+            </div>
+          ))}
+        </div>
+
+        {/* 桌面版：表格佈局 */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
             <thead className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white">
               <tr>
