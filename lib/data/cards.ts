@@ -302,32 +302,40 @@ export const HK_CARDS: CreditCard[] = [
   // ========================================================================
   {
     id: "boc-chill",
-    name: "BOC Chill Card",
+    name: "BOC Chill World Mastercard",
     bank: "BOC",
     style: { bgColor: "bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500", textColor: "text-white" },
     // imageUrl from DB
-    rewardTimeline: "現金回贈",
+    rewardTimeline: "現金回贈（結算後3個月內入賬）",
     annualFee: 600,
-    feeWaiverCondition: "首年免年費",
+    minIncome: 300000,
+    feeWaiverCondition: "首年免年費，持有中銀戶口自動豁免",
     foreignCurrencyFee: 1.95,
-    rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' }, // 15 pts = 1 mile -> ratio 0.0666
+    rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // $1=1分, 25,000分=$100 = 0.4%
     rules: [
-      // T&C: Chill 商戶 10% (World) / 8% (Platinum)，需每月簽滿 $3,000/$1,000，額外回贈上限 $150 (與海外/網上合併計算)
-      { description: "Chill 商戶 10% [月簽$3,000]", matchType: "merchant", matchValue: ["百佳", "屈臣氏", "豐澤", "萬寧", "7-eleven", "circle-k", "麥當勞", "starbucks", "pacific-coffee", "kkbox", "spotify", "netflix", "disney-plus"], percentage: 10.0, monthlyMinSpend: 3000, cap: 150, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay"] },
-      // T&C: 海外及網上簽賬 5% (World) / 4% (Platinum)，需每月簽滿 $3,000/$1,000，額外回贈上限 $150 (與Chill商戶合併計算)
-      { description: "網上簽賬 5% [月簽$3,000]", matchType: "category", matchValue: ["online"], percentage: 5.0, monthlyMinSpend: 3000, cap: 150, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay"], excludeCategories: ["ewallet", "insurance", "utilities", "tax", "government"] },
-      { description: "海外簽賬 5% [月簽$3,000]", matchType: "base", percentage: 5.0, isForeignCurrency: true, monthlyMinSpend: 3000, cap: 150, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay"] },
-      // T&C: 基本回贈 0.4%，排除電子錢包、八達通、繳費等
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
+      // ========== Chill 商戶 10%（需月簽實體店 $1,500）==========
+      // T&C: 需每月於實體店簽滿 $1,500，額外 9.6% + 基本 0.4% = 10%
+      // 商戶：McDonald's、Pacific Coffee、Starbucks、UNIQLO、GU、IKEA、Dyson、Samsung、Sony、LOG-ON
+      // 影視娛樂：全港戲院、Apple TV/Music、App Store、Disney+、Google Play、JOOX、KK Box、MOOV、Netflix、Nintendo、PlayStation、Spotify、YouTube
+      { description: "Chill 商戶 10% [需月簽實體店$1,500]", matchType: "merchant", matchValue: ["mcdonalds", "pacific_coffee", "starbucks", "uniqlo", "gu", "ikea", "dyson", "samsung", "sony", "log_on", "cinema", "apple_tv", "apple_music", "app_store", "disney_plus", "google_play", "joox", "kkbox", "moov", "netflix", "nintendo", "playstation", "spotify", "youtube"], percentage: 10.0, monthlyMinSpend: 1500, isPhysicalStore: true, cap: 150, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "bocpay"] },
+      // ========== 海外及網上簽賬 5%（無簽賬要求）==========
+      // T&C: 額外 4.6% + 基本 0.4% = 5%，無簽賬門檻
+      // 額外回贈上限 $150（與 Chill 商戶合併計算）
+      { description: "網上簽賬 5% [無門檻]", matchType: "category", matchValue: ["online"], percentage: 5.0, cap: 150, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "bocpay"], excludeCategories: ["ewallet", "insurance", "utilities", "tax", "government"] },
+      { description: "海外簽賬 5% [無門檻]", matchType: "base", percentage: 5.0, isForeignCurrency: true, cap: 150, capType: "reward", excludePaymentMethods: ["alipay", "wechat_pay", "bocpay"] },
+      // ========== 八達通自動增值 0.4% ==========
+      { description: "八達通自動增值 0.4%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
+      // ========== 基本回贈 0.4% ==========
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "bocpay"] },
     ],
-    tags: ["Chill商戶10%", "網購5%", "海外5%"],
-    welcomeOfferText: "迎新簽 $5,000 送 $500 現金回贈 (World) / 簽 $3,000 送 $300 (Platinum)",
-    sellingPoints: ["Chill 商戶 10% (需月簽$3,000)", "海外及網上簽賬 5%", "支援 Apple Pay/Google Pay/Samsung Pay", "永久免年費"],
-    note: "⚠️ Chill 商戶 10% 及網上/海外 5% 需每月簽滿 $3,000 才可享用！「Chill 商戶」及「海外/網上簽賬」額外回贈每月合共上限 $150（兩者合併計算）。合資格手機支付：Apple Pay/Google Pay/Samsung Pay。❌ 不適用於 AlipayHK/WeChat Pay HK/八達通增值/網上繳費/公共事務費用/保險/P2P轉賬。Platinum 版本回贈率較低（8%/4%），門檻 $1,000。迎新：World 版簽 $5,000 送 $500 現金回贈；Platinum 版簽 $3,000 送 $300 現金回贈。\n\n📅 **2025年12月30日更新**：推廣期延長至 **2026年6月30日**",
+    tags: ["Chill商戶10%", "網購5%", "海外5%", "無簽賬門檻"],
+    welcomeOfferText: "迎新簽 $5,000 送 $500 現金回贈 (至2026/12/31)",
+    sellingPoints: ["🔥 網上/海外簽賬 5% (無門檻！)", "Chill 商戶 10% (需月簽實體店$1,500)", "八達通自動增值 0.4%", "CBF 手續費僅 0.95%"],
+    note: "## 📌 中銀 Chill World Mastercard\n**推廣期：至 2026/6/30**\n\n### 🌐 網上及海外簽賬\n| 項目 | 詳情 |\n|:---|:---|\n| 回贈率 | **5%**（0.4%基本 + 4.6%額外）|\n| 簽賬門檻 | **無** |\n| 月簽上限 | **$3,260**（額外回贈$150）|\n\n### 🛍️ Chill 商戶簽賬\n| 項目 | 詳情 |\n|:---|:---|\n| 回贈率 | **10%**（0.4%基本 + 9.6%額外）|\n| 簽賬門檻 | 月簽**實體店** $1,500 |\n| 月簽上限 | **$1,562**（額外回贈$150）|\n\n### 🏪 Chill 商戶名單\n**購物消閒**：McDonald's、Pacific Coffee、Starbucks、UNIQLO、GU、IKEA、Dyson、Samsung、Sony、LOG-ON\n\n**影視娛樂**：全港戲院、Apple TV/Music、App Store、Disney+、Google Play、JOOX、KK Box、MOOV、Netflix、Nintendo、PlayStation、Spotify、YouTube\n\n👉 [完整商戶名單](https://www.bochk.com/s/a/chill)\n\n---\n\n## ⚠️ 重要提示\n\n- 額外回贈上限 **$150/月**（Chill商戶 + 網上/海外**合併計算**）\n- 同一簽賬符合多個類別，以較高回贈計算\n- CBF 手續費：**0.95%**（海外網站簽港幣）\n- 外幣手續費：**1.95%**\n- 八達通自動增值：**0.4%**\n\n---\n\n## 🎁 迎新優惠（至 2026/12/31）\n**全新客戶**：批卡後首2個曆月內簽滿 $5,000 → **$500 回贈**\n\n⚠️ 不計迎新：電子錢包轉賬、八達通增值\n\n---\n\n## ❌ 不計回贈\n- BoC Pay+、AlipayHK、WeChat Pay HK\n- 八達通增值（額外回贈）\n- 網上繳費、公共事務費用、保險\n- P2P 轉賬\n\n---\n\n## 💡 Platinum 版本\n如年薪不足 $300,000，可申請 **Chill Platinum Mastercard**：\n- 網上/海外：**4%**（門檻：無）\n- Chill 商戶：**8%**（門檻：月簽實體店 $1,000）\n- 年薪要求：$150,000\n- 永久免年費\n- 學生可申請！\n\n📅 **2026年1月7日更新**",
     officialApplyUrl: "https://www.bochk.com/tc/creditcard/products/chillcard.html",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=456&a=228&sub_id1=pickcardrebate&sub_id2=web",
     promoEndDate: "2026-06-30",
-    promoName: "Chill 商戶 10% 現金回贈",
+    promoName: "網上/海外 5% + Chill 商戶 10%",
   },
   {
     id: "boc-sogo",
