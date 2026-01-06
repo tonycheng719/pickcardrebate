@@ -153,43 +153,161 @@ const citiPartnerCards = [
 export function CitiPartnerOffersGuide() {
   return (
     <div className="space-y-8">
-      {/* 開場介紹 */}
-      <section>
-        <p className="text-lg leading-relaxed mb-4">
-          想申請 Citi 信用卡？經 MoneyHero 申請可以獲得<strong className="text-emerald-600 dark:text-emerald-400">獨家禮品</strong>，
-          <strong className="text-amber-600 dark:text-amber-400">7 款禮品任揀，價值高達 $4,288</strong>！
-        </p>
-        <p className="text-gray-600 dark:text-gray-400 mb-6">
-          本文為你整理所有有 MoneyHero 獨家獎賞的 Citi 信用卡，包括獎賞選項、申請條件、重要日期，以及申請連結。
-        </p>
+      {/* 🔥 頂部限時優惠橫幅 - 類似 MoneyHero 風格 */}
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-600 p-6 md:p-8 text-white">
+        {/* 背景裝飾 */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+        
+        <div className="relative z-10">
+          {/* 標題區 */}
+          <div className="flex flex-wrap items-center gap-2 mb-4">
+            <span className="px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-full animate-pulse">🔥 限時優惠</span>
+            <span className="px-3 py-1 bg-white/20 text-white text-xs font-medium rounded-full">送完即止</span>
+          </div>
+          
+          <h2 className="text-2xl md:text-3xl font-bold mb-2">
+            MoneyHero X Citi 信用卡
+          </h2>
+          <p className="text-blue-100 text-lg mb-4">
+            限時加碼送 <strong className="text-yellow-300">25,000 里</strong> / <strong className="text-yellow-300">$2,200 現金券</strong> / <strong className="text-yellow-300">Dyson 風筒</strong> / <strong className="text-yellow-300">LOJEL 行李箱</strong>！
+          </p>
 
-        {/* 限時優惠框 */}
-        <div className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-950/30 dark:to-orange-950/30 rounded-2xl p-6 border-2 border-red-300 dark:border-red-700 mb-6">
-          <div className="flex items-start gap-3">
-            <Clock className="h-6 w-6 text-red-600 dark:text-red-400 flex-shrink-0 mt-1" />
-            <div>
-              <h3 className="font-bold text-red-900 dark:text-red-100 mb-2">⏰ 限時優惠！推廣期有限</h3>
-              <div className="text-sm text-red-800 dark:text-red-200 space-y-1">
-                <p><strong>申請日期：</strong>2026年1月5日中午12時 至 2026年1月12日下午6時</p>
-                <p><strong>批核期限：</strong>2026年2月28日或之前</p>
-                <p><strong>簽賬要求：</strong>批卡後30日內累積簽賬滿 $4,000</p>
+          {/* 倒計時區 */}
+          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 mb-6 inline-block">
+            <p className="text-sm text-blue-100 mb-1">⏰ 2026年1月12日下午6時前申請可享以下優惠</p>
+            <p className="text-xl font-bold text-yellow-300">📅 優惠期限有限！立即申請</p>
+          </div>
+
+          {/* 獎品圖片區 */}
+          <div className="mb-6">
+            <p className="text-sm text-blue-200 mb-3 font-medium">🎁 7 款獨家禮品任揀 1：</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {/* Apple Store 禮品卡 */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center hover:bg-white/20 transition-colors">
+                <div className="w-16 h-16 mx-auto mb-2 bg-white rounded-lg flex items-center justify-center">
+                  <img 
+                    src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" 
+                    alt="Apple Store" 
+                    className="w-10 h-10 object-contain"
+                  />
+                </div>
+                <p className="text-xs font-medium">Apple Store 禮品卡</p>
+                <p className="text-yellow-300 font-bold text-sm">$2,200</p>
+              </div>
+              
+              {/* 惠康現金券 */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center hover:bg-white/20 transition-colors">
+                <div className="w-16 h-16 mx-auto mb-2 bg-green-500 rounded-lg flex items-center justify-center">
+                  <span className="text-2xl">🛒</span>
+                </div>
+                <p className="text-xs font-medium">惠康購物現金券</p>
+                <p className="text-yellow-300 font-bold text-sm">$2,200</p>
+              </div>
+              
+              {/* Max Miles */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center hover:bg-white/20 transition-colors">
+                <div className="w-16 h-16 mx-auto mb-2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                  <span className="text-2xl">✈️</span>
+                </div>
+                <p className="text-xs font-medium">Max Miles 飛行里數</p>
+                <p className="text-yellow-300 font-bold text-sm">25,000 里</p>
+              </div>
+              
+              {/* Dyson 風筒 */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center hover:bg-white/20 transition-colors">
+                <div className="w-16 h-16 mx-auto mb-2 bg-gray-800 rounded-lg flex items-center justify-center overflow-hidden">
+                  <img 
+                    src="https://dyson-h.assetsadobe2.com/is/image/content/dam/dyson/images/products/primary/419743-01.png?$responsive$&cropPathE=mobile&fit=stretch,1&wid=96" 
+                    alt="Dyson 風筒" 
+                    className="w-14 h-14 object-contain"
+                  />
+                </div>
+                <p className="text-xs font-medium">Dyson 風筒 HD16</p>
+                <p className="text-yellow-300 font-bold text-sm">價值 $3,980</p>
+              </div>
+            </div>
+            
+            {/* 更多獎品 */}
+            <div className="grid grid-cols-3 gap-3 mt-3">
+              {/* Dyson 直髮器 */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center hover:bg-white/20 transition-colors">
+                <div className="w-12 h-12 mx-auto mb-2 bg-gray-800 rounded-lg flex items-center justify-center">
+                  <span className="text-xl">💇</span>
+                </div>
+                <p className="text-xs font-medium">Dyson 直髮器</p>
+                <p className="text-yellow-300 font-bold text-xs">$3,980</p>
+              </div>
+              
+              {/* Philips 飲水機 */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center hover:bg-white/20 transition-colors">
+                <div className="w-12 h-12 mx-auto mb-2 bg-blue-800 rounded-lg flex items-center justify-center">
+                  <span className="text-xl">💧</span>
+                </div>
+                <p className="text-xs font-medium">Philips 飲水機</p>
+                <p className="text-yellow-300 font-bold text-xs">$4,288</p>
+              </div>
+              
+              {/* LOJEL 行李箱 */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center hover:bg-white/20 transition-colors">
+                <div className="w-12 h-12 mx-auto mb-2 bg-orange-600 rounded-lg flex items-center justify-center">
+                  <span className="text-xl">🧳</span>
+                </div>
+                <p className="text-xs font-medium">LOJEL 行李箱 30吋</p>
+                <p className="text-yellow-300 font-bold text-xs">$3,700</p>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* 重點提示框 */}
-        <div className="bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30 rounded-2xl p-6 border border-amber-200 dark:border-amber-800">
-          <div className="flex items-start gap-3">
-            <AlertTriangle className="h-6 w-6 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-1" />
-            <div>
-              <h3 className="font-bold text-amber-900 dark:text-amber-100 mb-2">⚠️ 重要提示</h3>
-              <ul className="text-sm text-amber-800 dark:text-amber-200 space-y-1">
-                <li>• <strong>領取 MoneyHero 獨家優惠不能同時獲取花旗銀行迎新優惠</strong></li>
-                <li>• 只限全新 Citi 信用卡客戶（過去12個月內未曾持有 Citi 信用卡主卡）</li>
-                <li>• 不適用於學生卡</li>
-              </ul>
+          {/* 適用卡種 */}
+          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 mb-6">
+            <p className="text-sm font-medium mb-2">📋 適用 Citi 信用卡：</p>
+            <div className="flex flex-wrap gap-2">
+              <span className="px-2 py-1 bg-white/20 rounded text-xs">Citi Cash Back</span>
+              <span className="px-2 py-1 bg-white/20 rounded text-xs">Citi Rewards</span>
+              <span className="px-2 py-1 bg-white/20 rounded text-xs">Citi Rewards 銀聯</span>
+              <span className="px-2 py-1 bg-white/20 rounded text-xs">Citi PremierMiles</span>
+              <span className="px-2 py-1 bg-white/20 rounded text-xs">Citi 八達通白金卡</span>
             </div>
+          </div>
+
+          {/* CTA 按鈕 */}
+          <div className="flex flex-wrap gap-3">
+            <a 
+              href="https://apply.creatory.moneyhero.com.hk/click?o=168&a=228&sub_id1=pickcardrebate&sub_id2=web"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-bold rounded-xl transition-colors shadow-lg"
+            >
+              <Sparkles className="h-5 w-5" />
+              立即申請 Citi Cash Back
+              <ExternalLink className="h-4 w-4" />
+            </a>
+            <a 
+              href="https://apply.creatory.moneyhero.com.hk/click?o=169&a=228&sub_id1=pickcardrebate&sub_id2=web"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white/20 hover:bg-white/30 text-white font-bold rounded-xl transition-colors"
+            >
+              申請 Citi Rewards
+              <ExternalLink className="h-4 w-4" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* 重要條款提示 */}
+      <section className="bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30 rounded-2xl p-6 border border-amber-200 dark:border-amber-800">
+        <div className="flex items-start gap-3">
+          <AlertTriangle className="h-6 w-6 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-1" />
+          <div>
+            <h3 className="font-bold text-amber-900 dark:text-amber-100 mb-2">⚠️ 重要條款</h3>
+            <ul className="text-sm text-amber-800 dark:text-amber-200 space-y-1">
+              <li>• <strong>領取 MoneyHero 獨家優惠不能同時獲取花旗銀行迎新優惠</strong></li>
+              <li>• 只限全新 Citi 信用卡客戶（過去12個月內未曾持有 Citi 信用卡主卡）</li>
+              <li>• 批卡後30日內累積簽賬滿 $4,000</li>
+              <li>• 不適用於學生卡</li>
+            </ul>
           </div>
         </div>
       </section>
