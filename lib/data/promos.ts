@@ -2804,7 +2804,7 @@ export const PROMOS: Promo[] = [
     imageUrl: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop",
     expiryDate: "2026-01-12",
     updatedAt: "2026-01-06",
-    relatedCardIds: ["citi-cashback", "citi-rewards", "citi-rewards-unionpay", "citi-premiermiles", "citi-octopus", "citi-prestige"],
+    relatedCardIds: ["citi-cashback", "citi-rewards", "citi-rewards-unionpay", "citi-premiermiles", "citi-octopus"],
     tags: ["合作夥伴", "MoneyHero", "Citi", "迎新", "限時"],
     url: "",
     isPinned: true,

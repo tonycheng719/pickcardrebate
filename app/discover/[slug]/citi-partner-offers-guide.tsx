@@ -25,7 +25,7 @@ export const citiPartnerOffersFaqData = [
   },
   {
     question: "申請 Citi 信用卡有咩要求？",
-    answer: "大部分 Citi 信用卡最低入息要求為年薪 $120,000（即月薪 $10,000），Citi Prestige 則要求年薪 $600,000。首年年費通常可獲豁免。"
+    answer: "大部分 Citi 信用卡最低入息要求為年薪 $120,000（即月薪 $10,000）。首年年費通常可獲豁免。"
   },
   {
     question: "MoneyHero 獨家獎賞點樣拎？",
@@ -34,10 +34,6 @@ export const citiPartnerOffersFaqData = [
   {
     question: "Citi Rewards vs Citi Cash Back 邊張好？",
     answer: "Citi Rewards 適合購物娛樂消費（百貨、服裝、電影等）可享 3% 回贈；Citi Cash Back 適合食肆消費，週末食肆 3%、平日食肆 2%。視乎你主要消費類別選擇。"
-  },
-  {
-    question: "Citi PremierMiles 定 Citi Prestige 邊張好？",
-    answer: "PremierMiles 適合一般旅遊愛好者，年費 $1,800 可享 12 次機場貴賓室；Prestige 適合高端旅客，年費 $3,800 但享無限次貴賓室及任何酒店第4晚免費。視乎旅遊頻率及消費能力選擇。"
   },
   {
     question: "Max Miles 點樣用？",
@@ -152,24 +148,6 @@ const citiPartnerCards = [
     bestFor: "每日搭車返工、經常泊車",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=166&a=228&sub_id1=pickcardrebate&sub_id2=web"
   },
-  {
-    id: "citi-prestige",
-    name: "Citi Prestige Card",
-    tagline: "高端旅遊卡",
-    annualFee: "$3,800",
-    minIncome: "$600,000/年",
-    partnerReward: "經 MoneyHero 申請享額外獎賞",
-    bankWelcome: "繳年費送 360,000 積分 (30,000里)",
-    highlights: [
-      "任何酒店第 4 晚免費",
-      "無限次 Priority Pass 機場貴賓室",
-      "海外簽賬 $4/里",
-      "本地簽賬 $6/里",
-      "免費旅遊保險"
-    ],
-    bestFor: "高消費、經常住酒店旅遊",
-    applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=171&a=228&sub_id1=pickcardrebate&sub_id2=web"
-  }
 ];
 
 export function CitiPartnerOffersGuide() {
@@ -288,7 +266,7 @@ export function CitiPartnerOffersGuide() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-              {citiPartnerCards.filter(c => c.id !== "citi-prestige").map((card) => (
+              {citiPartnerCards.map((card) => (
                 <tr key={card.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                   <td className="px-4 py-3">
                     <CardTableCell id={card.id} />
@@ -312,7 +290,7 @@ export function CitiPartnerOffersGuide() {
           </table>
         </div>
         <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-          ⚠️ 不適用於學生卡；Citi Prestige 獎賞有所不同
+          ⚠️ 不適用於學生卡
         </p>
       </section>
 
