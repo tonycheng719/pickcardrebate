@@ -45,17 +45,6 @@ export const citiPartnerOffersFaqData = [
   }
 ];
 
-// 限時獎賞選項
-const partnerRewardOptions = [
-  { name: "HK$2,200 Apple Store 禮品卡", value: "$2,200", icon: "🍎" },
-  { name: "HK$2,200 惠康購物現金券", value: "$2,200", icon: "🛒" },
-  { name: "25,000 Max Miles 飛行里數", value: "25,000里", icon: "✈️" },
-  { name: "PHILIPS 飛利浦 RO 純淨飲水機", value: "$4,288", icon: "💧" },
-  { name: "Dyson Supersonic Nural™ 風筒 HD16", value: "$3,980", icon: "💨" },
-  { name: "Dyson HT01 Airstrait™ 二合一吹風直髮器", value: "$3,980", icon: "💇" },
-  { name: "LOJEL Cubo 30吋 行李箱", value: "$3,700", icon: "🧳" },
-];
-
 // Citi 合作夥伴卡資料
 const citiPartnerCards = [
   {
@@ -321,26 +310,6 @@ export function CitiPartnerOffersGuide() {
               <li>• 不適用於學生卡</li>
             </ul>
           </div>
-        </div>
-      </section>
-
-      {/* 限時獎賞選項 */}
-      <section>
-        <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-          <Gift className="h-6 w-6 text-amber-600" />
-          限時獎賞（7 款任揀 1）
-        </h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {partnerRewardOptions.map((option, index) => (
-            <div key={index} className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-4 flex items-center gap-3">
-              <span className="text-2xl">{option.icon}</span>
-              <div className="flex-1">
-                <p className="font-medium text-gray-900 dark:text-white text-sm">{option.name}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">價值 {option.value}</p>
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 
