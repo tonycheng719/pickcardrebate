@@ -1266,6 +1266,8 @@ export const HK_CARDS: CreditCard[] = [
       // 加碼回贈上限 $1,500/年 (即總簽賬上限 $150,000/年)
       // ❌ 不包括：八達通自動增值、電子錢包充值/繳費、P2P 轉賬
       // 官方 T&C: https://www.primecredit.com/sta-data/tnc/EM_20250409/tnc.html
+      // 流動支付（Apple Pay/Google Pay）也是 2%，因為全方位回贈
+      { description: "流動支付 2% (全方位)", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 2.0, cap: 1500, capType: "reward", excludeCategories: ["ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
       { description: "全方位 2%", matchType: "base", percentage: 2.0, cap: 1500, capType: "reward", excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
       // T&C: 八達通自動增值只有 0.4%（不計入 2% 全方位），但 Apple Pay 手動增值 Smart Octopus 有 2%
       // mrmiles.hk 確認
