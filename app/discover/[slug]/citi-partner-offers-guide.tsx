@@ -140,6 +140,24 @@ const citiPartnerCards = [
     ],
     bestFor: "高消費、經常住酒店旅遊",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=171&a=228&sub_id1=pickcardrebate&sub_id2=web"
+  },
+  {
+    id: "citi-octopus",
+    name: "Citi 八達通白金卡",
+    tagline: "交通回贈之王",
+    annualFee: "$1,800 (首年免)",
+    minIncome: "$120,000/年",
+    partnerReward: "經 MoneyHero 申請享額外獎賞",
+    bankWelcome: "迎新簽 $5,000 + 1次$500自動增值 送 $2,500 回贈",
+    highlights: [
+      "🔥 交通 15% 回贈 (限時至2026/3/31)",
+      "內置八達通功能",
+      "隧道/泊車 5% (月簽$10,000)",
+      "八達通自動增值 0.5%",
+      "需登記：citibank.hk/transreg"
+    ],
+    bestFor: "每日搭車返工、經常泊車",
+    applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=166&a=228&sub_id1=pickcardrebate&sub_id2=web"
   }
 ];
 
@@ -387,7 +405,7 @@ export function CitiPartnerOffersGuide() {
       <section>
         <h2 className="text-2xl font-bold mb-4">🏆 推薦信用卡</h2>
         <CardPreviewSection 
-          cardIds={["citi-cashback", "citi-rewards", "citi-premiermiles", "citi-rewards-unionpay", "citi-prestige"]}
+          cardIds={["citi-cashback", "citi-rewards", "citi-premiermiles", "citi-rewards-unionpay", "citi-prestige", "citi-octopus"]}
           title=""
         />
       </section>

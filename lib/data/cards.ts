@@ -1822,7 +1822,7 @@ export const HK_CARDS: CreditCard[] = [
     tags: ["八達通", "交通15%", "需登記"],
     welcomeOfferText: "迎新簽 $5,000 + 1次$500自動增值 送 $2,500 現金回贈 (首2個月內)",
     officialApplyUrl: "https://www.citibank.com.hk/zh-hk/credit-cards/citi-octopus-card.html",
-    applyUrl: "https://www.citibank.com.hk/chinese/credit-cards/citi-octopus-card.html",
+    applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=166&a=228&sub_id1=pickcardrebate&sub_id2=web",
     sellingPoints: ["🔥 交通 15% 回贈 (限時至2026/3/31)", "內置八達通功能", "隧道/泊車 5% (月簽$10,000)"],
     note: "⚠️ 【限時推廣 2025/10/1-2026/3/31】交通 15% 回贈需登記 (citibank.hk/transreg)，月簽滿 $4,000 可獲 15% 車費回贈 (上限$300)；月簽滿 $10,000 可額外獲 5% 隧道/泊車/電車充電回贈 (合共上限$500)。合資格交通：港鐵、九巴、龍運、城巴、渡輪、綠色專線小巴、電車、的士。不適用於：FPS、繳稅、保費、電子錢包增值/轉賬、八達通自動增值（計算門檻）。",
     promoEndDate: "2026-03-31",
