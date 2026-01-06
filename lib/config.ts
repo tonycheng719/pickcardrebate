@@ -14,7 +14,7 @@ export const CONFIG = {
    * Set to true when partner welcome offers are active
    * Set to false when partner welcome offers are suspended
    */
-  PARTNER_MODE_ENABLED: false, // ← 改為 true 啟用合作夥伴連結
+  PARTNER_MODE_ENABLED: true, // ← 合作夥伴連結已啟用
   
   /**
    * Default miles value for calculations
