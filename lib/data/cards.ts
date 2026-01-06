@@ -1868,25 +1868,34 @@ export const HK_CARDS: CreditCard[] = [
   },
   {
     id: "ccb-travo",
-    name: "建行(亞洲) TRAVO World Mastercard",
+    name: "建行(亞洲) TRAVO Mastercard",
     bank: "建行(亞洲)",
     style: { bgColor: "bg-gradient-to-br from-sky-600 to-blue-800", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
-    rewardConfig: { method: 'direct_rate', baseRate: 6, currency: 'AM' }, // $6/mile standard, better with TRAVO Rewards
+    annualFee: 0,
+    feeWaiverCondition: "永久免年費",
+    minIncome: 240000,
+    rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 25,000 積分 = $100 (0.4%)
     rules: [
-      // T&C 2026/1/1-6/30: TRAVO Rewards 海外簽賬 10 倍積分 (需登記)，上限 225,000 額外積分
-      { description: "海外簽賬 10X積分 [需登記]", matchType: "base", percentage: 4.0, isForeignCurrency: true, cap: 225000, capType: "reward", excludePaymentMethods: ["alipay", "payme", "wechat_pay", "octopus"], validDateRange: { start: "2026-01-01", end: "2026-06-30" } },
-      // T&C 2026/1/1-6/30: TRAVO Rewards 本地餐飲 5 倍積分 (需登記)，上限 50,000 額外積分
-      { description: "本地餐飲 5X積分 [需登記]", matchType: "category", matchValue: ["dining"], percentage: 2.0, cap: 50000, capType: "reward", excludePaymentMethods: ["alipay", "payme", "wechat_pay", "octopus"], validDateRange: { start: "2026-01-01", end: "2026-06-30" } },
+      // T&C 2026/1/1-6/30: TRAVO Rewards 海外迪士尼/環球影城 15% (每半年上限 $1,000)
+      { description: "海外迪士尼/環球影城 15% [需登記]", matchType: "merchant", matchValue: ["disney", "universal_studios"], percentage: 15.0, cap: 1000, capType: "spending", isForeignCurrency: true, excludePaymentMethods: ["alipay", "payme", "wechat_pay", "octopus"] },
+      // T&C 2026/1/1-6/30: TRAVO Rewards 海外簽賬 10X積分 = 4% (每半年上限 $25,000)
+      { description: "海外簽賬 4% [需登記]", matchType: "base", percentage: 4.0, isForeignCurrency: true, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "payme", "wechat_pay", "octopus"] },
+      // T&C 2026/1/1-6/30: TRAVO Rewards 本地餐飲 5X積分 = 2% (每半年上限 $12,500)
+      { description: "本地餐飲 2% [需登記]", matchType: "category", matchValue: ["dining"], percentage: 2.0, cap: 12500, capType: "spending", excludePaymentMethods: ["alipay", "payme", "wechat_pay", "octopus"] },
+      // 八達通自動增值 0.4%
+      { description: "八達通自動增值 0.4%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
+      // 網上繳費 0.4%
+      { description: "網上繳費 0.4%", matchType: "category", matchValue: ["utilities"], percentage: 0.4 },
       // 基本回饋 0.4%
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "payme", "wechat_pay", "octopus"] },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "payme", "wechat_pay"] },
     ],
-    tags: ["海外10X", "餐飲5X", "1.95%手續費", "需登記"],
-    welcomeOfferText: "迎新 $600 現金回贈；或申請低息分期兼享 $800 現金回贈",
-    officialApplyUrl: "https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/ccb_unionpay_dual_currency_diamond_credit_card.html",
-    applyUrl: "https://www.asia.ccb.com/hongkong/personal/credit-cards/travo-world-mastercard.html",
-    sellingPoints: ["海外簽賬 4% / $1.5/里 [需登記]", "本地餐飲 2% / $3/里 [需登記]", "⚠️ 外幣手續費 1.95%", "積分預領獎賞 (2-5月)"],
-    note: "## 📌 TRAVO Rewards 計劃\n**推廣期：2026/1/1 - 2026/6/30**\n\n### 🌏 海外零售簽賬獎賞\n| 項目 | 詳情 |\n|:---|:---|\n| 積分倍數 | **10X** (4% 或 $1.5/里) |\n| 額外積分上限 | 225,000 積分 |\n| 簽賬上限 | 約 $25,000 |\n\n### 🍽️ 本地餐飲獎賞\n| 項目 | 詳情 |\n|:---|:---|\n| 積分倍數 | **5X** (2% 或 $3/里) |\n| 額外積分上限 | 50,000 積分 |\n| 簽賬上限 | 約 $12,500 |\n\n---\n\n## 🎁 積分預領獎賞\n- **換領期**：2026/2/1 - 5/31\n- **預領上限**：450,000 積分\n- **清還期**：同年 6/30 前\n- **未清還罰款**：每 100 分 = $1.2\n\n---\n\n## ⚠️ 注意事項\n- 需於網上銀行或手機銀行登記\n- 外幣手續費 1.95%，海外淨回贈約 2.05%\n- 積分獎賞於交易入賬後下月存入\n\n## ❌ 不計簽賬\n- 電子錢包增值（微信/支付寶/PayMe）\n- 八達通、保險、稅項、賭博\n- 餐飲：酒席宴會、酒店/百貨公司/俱樂部內食肆\n\n---\n\n📅 **2026年1月5日更新**：推廣期延長至 2026/6/30，積分上限調整",
+    tags: ["🔥海外4%", "餐飲2%", "迪士尼15%", "永久免年費", "需登記"],
+    welcomeOfferText: "迎新簽 $6,000 送 $600 現金回贈 (首2個月內，至2026/1/31)",
+    officialApplyUrl: "https://www.asia.ccb.com/hongkong/personal/credit-cards/travo-mastercard.html",
+    applyUrl: "https://www.asia.ccb.com/hongkong/personal/credit-cards/travo-mastercard.html",
+    sellingPoints: ["🔥 海外簽賬 4% / $1.5/里 [需登記]", "本地餐飲 2% / $3/里 [需登記]", "🎢 海外迪士尼/環球影城 15%", "永久免年費", "無簽賬下限"],
+    note: "## 📌 TRAVO Rewards 計劃\n**推廣期：2026/1/1 - 2026/6/30**\n\n### 🌏 海外零售簽賬獎賞\n| 項目 | 詳情 |\n|:---|:---|\n| 積分倍數 | **10X** (4% 或 $1.5/里) |\n| 每半年上限 | **$25,000** |\n| 簽賬下限 | **無** |\n\n### 🍽️ 本地餐飲獎賞\n| 項目 | 詳情 |\n|:---|:---|\n| 積分倍數 | **5X** (2% 或 $3/里) |\n| 每半年上限 | **$12,500** |\n\n### 🎢 海外迪士尼/環球影城\n| 項目 | 詳情 |\n|:---|:---|\n| 回贈率 | **15%** |\n| 每半年上限 | **$1,000** |\n| 適用範圍 | 包括官網購買門票 |\n\n---\n\n## 🎁 積分預領獎賞\n- **換領期**：2026/2/1 - 5/31\n- **預領上限**：450,000 積分\n- **清還期**：同年 6/30 前\n- **未清還罰款**：每 100 分 = $1.2\n\n---\n\n## ⚠️ 注意事項\n- 需於網上銀行或手機銀行登記 TRAVO Rewards\n- 外幣手續費 1.95%，海外淨回贈約 **2.05%**\n- 積分有效期最長 **2 年**\n- 換分最少 25,000 分 = $100\n- 換里數有手續費\n\n## ❌ 不計簽賬\n- 電子錢包增值/轉賬（微信/支付寶/PayMe）\n- 保險、稅項、賭博\n- 餐飲：酒席宴會、酒店/百貨公司/俱樂部內食肆\n\n---\n\n## 🎁 迎新優惠（至2026/1/31）\n- 全新客戶批卡後首 2 個月簽滿 $6,000 → **$600 回贈**\n- 不包括電子錢包轉賬及八達通自動增值\n\n📅 **2026年1月7日更新**",
     promoEndDate: "2026-06-30",
     promoName: "TRAVO Rewards 海外/餐飲積分獎賞",
   },
