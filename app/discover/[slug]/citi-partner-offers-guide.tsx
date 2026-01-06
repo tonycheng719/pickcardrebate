@@ -1,6 +1,6 @@
 // Citi 信用卡合作夥伴獎賞攻略文章內容組件
 // 用於 /discover/citi-partner-offers 頁面
-// SEO 優化：針對「Citi 信用卡迎新」「MoneyHero Citi」「Citi 信用卡優惠」等關鍵字
+// SEO 優化：針對「Citi 信用卡迎新」「Citi 信用卡優惠」「Citi 信用卡申請」等關鍵字
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -16,11 +16,11 @@ import { CardPreviewSection } from "@/app/discover/components/card-preview-secti
 // FAQ 數據 - SEO 結構化資料
 export const citiPartnerOffersFaqData = [
   {
-    question: "經合作夥伴申請 Citi 信用卡有咩好處？",
-    answer: "經 MoneyHero 申請，可以獲得額外獎賞（7 款禮品任揀，包括 $2,200 Apple Store 禮品卡、25,000 Max Miles、Dyson 風筒等），比直接去銀行官網申請更著數。注意：領取 MoneyHero 獨家優惠不能同時獲取花旗銀行迎新優惠。"
+    question: "經本網指定連結申請 Citi 信用卡有咩好處？",
+    answer: "經本網指定連結申請，可以獲得額外獎賞（7 款禮品任揀，包括 $2,200 Apple Store 禮品卡、25,000 Max Miles、Dyson 風筒等），比直接去銀行官網申請更著數。注意：領取限時獎賞不能同時獲取花旗銀行迎新優惠。"
   },
   {
-    question: "MoneyHero 獨家獎賞有咩選擇？",
+    question: "限時獎賞有咩選擇？",
     answer: "7 款禮品任揀：HK$2,200 Apple Store 禮品卡 / HK$2,200 惠康購物現金券 / 25,000 Max Miles 飛行里數 / PHILIPS 飛利浦 RO 純淨飲水機（價值HK$4,288）/ Dyson Supersonic Nural™ 風筒 HD16（價值HK$3,980）/ Dyson HT01 Airstrait™ 二合一吹風直髮器（價值HK$3,980）/ LOJEL Cubo 30吋行李箱（價值HK$3,700）"
   },
   {
@@ -28,8 +28,8 @@ export const citiPartnerOffersFaqData = [
     answer: "大部分 Citi 信用卡最低入息要求為年薪 $120,000（即月薪 $10,000）。首年年費通常可獲豁免。"
   },
   {
-    question: "MoneyHero 獨家獎賞點樣拎？",
-    answer: "需要在指定時間內：1) 經 MoneyHero 連結申請；2) 2026年2月28日前批核並啟動信用卡；3) 批卡後30日內累積簽賬滿 $4,000。完成後會收到 MoneyHero 電郵通知領取獎賞。"
+    question: "限時獎賞點樣拎？",
+    answer: "需要在指定時間內：1) 經本網指定連結申請；2) 2026年2月28日前批核並啟動信用卡；3) 批卡後30日內累積簽賬滿 $4,000。完成後會收到電郵通知領取獎賞。"
   },
   {
     question: "Citi Rewards vs Citi Cash Back 邊張好？",
@@ -37,15 +37,15 @@ export const citiPartnerOffersFaqData = [
   },
   {
     question: "Max Miles 點樣用？",
-    answer: "Max Miles 可以：1) 即時兌換電子禮券（如 Starbucks、HKTVMall）；2) 以 1:1 比例轉換里數至航空夥伴（如國泰航空，最低 1,000 里）；3) 累積里數兌換機票（20,000 里可換日本機票）。選擇 Max Miles 時，請確保登記 MoneyHero 獨家獎賞的電郵地址與 Hey Max 賬戶的電郵地址相同。"
+    answer: "Max Miles 可以：1) 即時兌換電子禮券（如 Starbucks、HKTVMall）；2) 以 1:1 比例轉換里數至航空夥伴（如國泰航空，最低 1,000 里）；3) 累積里數兌換機票（20,000 里可換日本機票）。選擇 Max Miles 時，請確保登記獎賞的電郵地址與 Hey Max 賬戶的電郵地址相同。"
   },
   {
     question: "已持有 Citi 信用卡可以再申請嗎？",
-    answer: "MoneyHero 獨家獎賞只限全新 Citi 信用卡客戶（過去12個月內未曾持有 Citi 信用卡主卡）。學生卡不適用。"
+    answer: "限時獎賞只限全新 Citi 信用卡客戶（過去12個月內未曾持有 Citi 信用卡主卡）。學生卡不適用。"
   }
 ];
 
-// MoneyHero 獨家獎賞選項
+// 限時獎賞選項
 const partnerRewardOptions = [
   { name: "HK$2,200 Apple Store 禮品卡", value: "$2,200", icon: "🍎" },
   { name: "HK$2,200 惠康購物現金券", value: "$2,200", icon: "🛒" },
@@ -65,7 +65,7 @@ const citiPartnerCards = [
     annualFee: "$1,800 (首年免)",
     minIncome: "$120,000/年",
     partnerReward: "7 款禮品任揀（價值高達 $4,288）",
-    bankWelcome: "⚠️ 領取 MoneyHero 獨家優惠不能同時獲取花旗銀行迎新優惠",
+    bankWelcome: "⚠️ 領取限時獎賞不能同時獲取花旗銀行迎新優惠",
     highlights: [
       "週五六日食肆 3% 回贈",
       "全球食肆及酒店 2% 回贈",
@@ -83,7 +83,7 @@ const citiPartnerCards = [
     annualFee: "$1,800 (首年免)",
     minIncome: "$120,000/年",
     partnerReward: "7 款禮品任揀（價值高達 $4,288）",
-    bankWelcome: "⚠️ 領取 MoneyHero 獨家優惠不能同時獲取花旗銀行迎新優惠",
+    bankWelcome: "⚠️ 領取限時獎賞不能同時獲取花旗銀行迎新優惠",
     highlights: [
       "購物和娛樂 3% 回贈 (8.1X積分)",
       "百貨公司、服裝店、化妝品店、電影院",
@@ -101,7 +101,7 @@ const citiPartnerCards = [
     annualFee: "$1,800 (首年免)",
     minIncome: "$120,000/年",
     partnerReward: "7 款禮品任揀（價值高達 $4,288）",
-    bankWelcome: "⚠️ 領取 MoneyHero 獨家優惠不能同時獲取花旗銀行迎新優惠",
+    bankWelcome: "⚠️ 領取限時獎賞不能同時獲取花旗銀行迎新優惠",
     highlights: [
       "一卡雙幣 (港幣/人民幣)",
       "購物和娛樂 3% 回贈",
@@ -119,7 +119,7 @@ const citiPartnerCards = [
     annualFee: "$1,800 (首年免)",
     minIncome: "$120,000/年",
     partnerReward: "7 款禮品任揀（價值高達 $4,288）",
-    bankWelcome: "⚠️ 領取 MoneyHero 獨家優惠不能同時獲取花旗銀行迎新優惠",
+    bankWelcome: "⚠️ 領取限時獎賞不能同時獲取花旗銀行迎新優惠",
     highlights: [
       "外幣簽賬低至 $4/里",
       "旅遊/酒店/航空 $4/里",
@@ -137,7 +137,7 @@ const citiPartnerCards = [
     annualFee: "$1,800 (首年免)",
     minIncome: "$120,000/年",
     partnerReward: "7 款禮品任揀（價值高達 $4,288）",
-    bankWelcome: "⚠️ 領取 MoneyHero 獨家優惠不能同時獲取花旗銀行迎新優惠",
+    bankWelcome: "⚠️ 領取限時獎賞不能同時獲取花旗銀行迎新優惠",
     highlights: [
       "🔥 交通 15% 回贈 (限時至2026/3/31)",
       "內置八達通功能",
@@ -153,7 +153,7 @@ const citiPartnerCards = [
 export function CitiPartnerOffersGuide() {
   return (
     <div className="space-y-8">
-      {/* 🔥 頂部限時優惠橫幅 - 類似 MoneyHero 風格 */}
+      {/* 🔥 頂部限時優惠橫幅 */}
       <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-600 p-6 md:p-8 text-white">
         {/* 背景裝飾 */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
@@ -181,15 +181,15 @@ export function CitiPartnerOffersGuide() {
 
           {/* 獎品圖片區 */}
           <div className="mb-6">
-            <p className="text-sm text-blue-200 mb-3 font-medium">🎁 7 款獨家禮品任揀 1：</p>
+            <p className="text-sm text-blue-200 mb-3 font-medium">🎁 7 款限時禮品任揀 1：</p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {/* Apple Store 禮品卡 */}
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center hover:bg-white/20 transition-colors">
-                <div className="w-16 h-16 mx-auto mb-2 bg-white rounded-lg flex items-center justify-center">
+                <div className="w-16 h-16 mx-auto mb-2 bg-white rounded-lg flex items-center justify-center overflow-hidden">
                   <img 
-                    src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" 
-                    alt="Apple Store" 
-                    className="w-10 h-10 object-contain"
+                    src="/images/promos/apple-giftcard.png" 
+                    alt="Apple Store 禮品卡" 
+                    className="w-14 h-14 object-contain"
                   />
                 </div>
                 <p className="text-xs font-medium">Apple Store 禮品卡</p>
@@ -216,9 +216,9 @@ export function CitiPartnerOffersGuide() {
               
               {/* Dyson 風筒 */}
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center hover:bg-white/20 transition-colors">
-                <div className="w-16 h-16 mx-auto mb-2 bg-gray-800 rounded-lg flex items-center justify-center overflow-hidden">
+                <div className="w-16 h-16 mx-auto mb-2 bg-white rounded-lg flex items-center justify-center overflow-hidden">
                   <img 
-                    src="https://dyson-h.assetsadobe2.com/is/image/content/dam/dyson/images/products/primary/419743-01.png?$responsive$&cropPathE=mobile&fit=stretch,1&wid=96" 
+                    src="/images/promos/dyson-hairdryer.png" 
                     alt="Dyson 風筒" 
                     className="w-14 h-14 object-contain"
                   />
@@ -232,8 +232,12 @@ export function CitiPartnerOffersGuide() {
             <div className="grid grid-cols-3 gap-3 mt-3">
               {/* Dyson 直髮器 */}
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center hover:bg-white/20 transition-colors">
-                <div className="w-12 h-12 mx-auto mb-2 bg-gray-800 rounded-lg flex items-center justify-center">
-                  <span className="text-xl">💇</span>
+                <div className="w-14 h-14 mx-auto mb-2 bg-white rounded-lg flex items-center justify-center overflow-hidden">
+                  <img 
+                    src="/images/promos/dyson-straightener.png" 
+                    alt="Dyson 直髮器" 
+                    className="w-12 h-12 object-contain"
+                  />
                 </div>
                 <p className="text-xs font-medium">Dyson 直髮器</p>
                 <p className="text-yellow-300 font-bold text-xs">$3,980</p>
@@ -241,8 +245,12 @@ export function CitiPartnerOffersGuide() {
               
               {/* Philips 飲水機 */}
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center hover:bg-white/20 transition-colors">
-                <div className="w-12 h-12 mx-auto mb-2 bg-blue-800 rounded-lg flex items-center justify-center">
-                  <span className="text-xl">💧</span>
+                <div className="w-14 h-14 mx-auto mb-2 bg-white rounded-lg flex items-center justify-center overflow-hidden">
+                  <img 
+                    src="/images/promos/philips-water.png" 
+                    alt="Philips 飲水機" 
+                    className="w-12 h-12 object-contain"
+                  />
                 </div>
                 <p className="text-xs font-medium">Philips 飲水機</p>
                 <p className="text-yellow-300 font-bold text-xs">$4,288</p>
@@ -250,8 +258,12 @@ export function CitiPartnerOffersGuide() {
               
               {/* LOJEL 行李箱 */}
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center hover:bg-white/20 transition-colors">
-                <div className="w-12 h-12 mx-auto mb-2 bg-orange-600 rounded-lg flex items-center justify-center">
-                  <span className="text-xl">🧳</span>
+                <div className="w-14 h-14 mx-auto mb-2 bg-white rounded-lg flex items-center justify-center overflow-hidden">
+                  <img 
+                    src="/images/promos/lojel-cubo.png" 
+                    alt="LOJEL 行李箱" 
+                    className="w-12 h-12 object-contain"
+                  />
                 </div>
                 <p className="text-xs font-medium">LOJEL 行李箱 30吋</p>
                 <p className="text-yellow-300 font-bold text-xs">$3,700</p>
@@ -303,7 +315,7 @@ export function CitiPartnerOffersGuide() {
           <div>
             <h3 className="font-bold text-amber-900 dark:text-amber-100 mb-2">⚠️ 重要條款</h3>
             <ul className="text-sm text-amber-800 dark:text-amber-200 space-y-1">
-              <li>• <strong>領取 MoneyHero 獨家優惠不能同時獲取花旗銀行迎新優惠</strong></li>
+              <li>• <strong>領取限時獎賞不能同時獲取花旗銀行迎新優惠</strong></li>
               <li>• 只限全新 Citi 信用卡客戶（過去12個月內未曾持有 Citi 信用卡主卡）</li>
               <li>• 批卡後30日內累積簽賬滿 $4,000</li>
               <li>• 不適用於學生卡</li>
@@ -312,11 +324,11 @@ export function CitiPartnerOffersGuide() {
         </div>
       </section>
 
-      {/* MoneyHero 獨家獎賞選項 */}
+      {/* 限時獎賞選項 */}
       <section>
         <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
           <Gift className="h-6 w-6 text-amber-600" />
-          MoneyHero 獨家獎賞（7 款任揀 1）
+          限時獎賞（7 款任揀 1）
         </h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -449,7 +461,7 @@ export function CitiPartnerOffersGuide() {
                   <div className="bg-amber-50 dark:bg-amber-900/20 rounded-xl p-4 border border-amber-200 dark:border-amber-800">
                     <div className="flex items-center gap-2 mb-2">
                       <Gift className="h-5 w-5 text-amber-600" />
-                      <span className="font-bold text-amber-900 dark:text-amber-100">MoneyHero 獨家獎賞</span>
+                      <span className="font-bold text-amber-900 dark:text-amber-100">限時獎賞</span>
                     </div>
                     <p className="text-amber-800 dark:text-amber-200 font-medium text-sm">{card.partnerReward}</p>
                   </div>
@@ -495,7 +507,7 @@ export function CitiPartnerOffersGuide() {
                   className="flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold rounded-xl transition-all"
                 >
                   <Sparkles className="h-5 w-5" />
-                  立即申請享獨家獎賞
+                  立即申請享限時獎賞
                   <ExternalLink className="h-4 w-4" />
                 </a>
               </div>
@@ -513,13 +525,13 @@ export function CitiPartnerOffersGuide() {
 
         <div className="bg-gradient-to-r from-sky-50 to-blue-50 dark:from-sky-950/30 dark:to-blue-950/30 rounded-2xl border border-sky-200 dark:border-sky-800 p-6">
           <p className="text-sm text-sky-800 dark:text-sky-200 mb-4">
-            選擇 <strong>25,000 Max Miles</strong> 作為獨家獎賞時，請確保登記 MoneyHero 獨家獎賞的電郵地址需與 Hey Max 賬戶的電郵地址相同。
+            選擇 <strong>25,000 Max Miles</strong> 作為獎賞時，請確保登記的電郵地址需與 Hey Max 賬戶的電郵地址相同。
           </p>
           
           <ol className="space-y-3 text-sm text-sky-900 dark:text-sky-100">
             <li className="flex items-start gap-3">
               <span className="flex-shrink-0 w-6 h-6 bg-sky-600 text-white rounded-full flex items-center justify-center text-xs font-bold">1</span>
-              <span>MoneyHero 將透過電子郵件寄送專屬 Max Miles 兌換連結</span>
+              <span>將透過電子郵件寄送專屬 Max Miles 兌換連結</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="flex-shrink-0 w-6 h-6 bg-sky-600 text-white rounded-full flex items-center justify-center text-xs font-bold">2</span>
@@ -569,7 +581,7 @@ export function CitiPartnerOffersGuide() {
             </li>
             <li className="flex items-start gap-3">
               <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5 flex-shrink-0" />
-              <span className="text-gray-700 dark:text-gray-300"><strong>領取 MoneyHero 獨家優惠不能同時獲取花旗銀行迎新優惠</strong></span>
+              <span className="text-gray-700 dark:text-gray-300"><strong>領取限時獎賞不能同時獲取花旗銀行迎新優惠</strong></span>
             </li>
           </ul>
         </div>
@@ -586,7 +598,7 @@ export function CitiPartnerOffersGuide() {
           <ul className="space-y-3 text-amber-900 dark:text-amber-100">
             <li className="flex items-start gap-2">
               <span className="text-amber-600">⚠️</span>
-              <span><strong>領取 MoneyHero 獨家優惠不能同時獲取花旗銀行迎新優惠</strong></span>
+              <span><strong>領取限時獎賞不能同時獲取花旗銀行迎新優惠</strong></span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-amber-600">⚠️</span>
@@ -633,7 +645,7 @@ export function CitiPartnerOffersGuide() {
 
       {/* CTA */}
       <section className="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-2xl p-8 text-center text-white">
-        <h2 className="text-2xl font-bold mb-2">🎁 立即申請享獨家獎賞！</h2>
+        <h2 className="text-2xl font-bold mb-2">🎁 立即申請享限時獎賞！</h2>
         <p className="text-blue-100 mb-2">7 款禮品任揀，價值高達 $4,288</p>
         <p className="text-blue-200 text-sm mb-6">⏰ 推廣期：2026年1月5日 - 1月12日</p>
         <div className="flex flex-wrap justify-center gap-3">
