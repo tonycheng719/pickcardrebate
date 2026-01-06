@@ -39,11 +39,19 @@ export default function BeaRewardExtension2026Guide() {
     },
     {
       name: "BEA Flyer World Mastercard",
-      id: "bea-world-master",
+      id: "bea-flyer-world",
       oldDate: "2025-12-31",
       newDate: "2026-06-30",
       highlights: ["海外簽賬 $2.5/里 (4.8%)", "本地食肆 $5/里 (2.4%)", "積分無限期", "亞洲萬里通直接入賬"],
       color: "from-sky-600 to-blue-800"
+    },
+    {
+      name: "東亞 World Mastercard",
+      id: "bea-world-mastercard",
+      oldDate: "2025-12-31",
+      newDate: "2026-06-30",
+      highlights: ["指定類別 5%", "外幣/食肆/電子產品", "月簽 $4,000 門檻", "需 BEA Mall App 登記"],
+      color: "from-amber-600 to-orange-800"
     },
     {
       name: "BEA i-Titanium 信用卡",

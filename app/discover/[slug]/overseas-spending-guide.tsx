@@ -186,7 +186,7 @@ const cashbackComparison = [
   { card: "富邦 Visa 白金卡", id: "fubon-platinum", overseas: "8% 台幣", fee: "1.95%", net: "6.05%", cap: "$5,333/月", annual: "$1,200" },
   { card: "恒生 Travel+", id: "hangseng-travel-plus", overseas: "7%", fee: "1.95%", net: "5.05%", cap: "$7,576/月", annual: "免首年" },
   { card: "恒生 MMPOWER", id: "hangseng-mmpower", overseas: "6%", fee: "1.95%", net: "4.05%", cap: "$8,929/月", annual: "免" },
-  { card: "東亞 World MC", id: "bea-world-master", overseas: "5%", fee: "1.95%", net: "3.05%", cap: "$10,000/月", annual: "免首年" },
+  { card: "東亞 World MC", id: "bea-world-mastercard", overseas: "5%", fee: "1.95%", net: "3.05%", cap: "$10,000/月", annual: "免首年" },
   { card: "中銀 Chill Card", id: "boc-chill", overseas: "5%", fee: "1.95%", net: "3.05%", cap: "$3,260/月", annual: "免" },
   { card: "中銀 Cheers Card", id: "boc-cheers", overseas: "4%", fee: "1.95%", net: "2.05%", cap: "$25,000/月", annual: "免首年" },
   { card: "建行 TRAVO", id: "ccb-travo", overseas: "4%", fee: "1.95%", net: "2.05%", cap: "$25,000/半年", annual: "免" },

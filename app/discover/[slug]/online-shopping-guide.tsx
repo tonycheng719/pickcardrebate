@@ -94,7 +94,7 @@ const onlinePlatforms = [
     currency: "HKD（跨境）",
     bestCards: [
       { card: "中銀卡", id: "boc-cheers", rate: "免 CBF" },
-      { card: "東亞卡", id: "bea-world-master", rate: "免 CBF" },
+      { card: "東亞卡", id: "bea-world-mastercard", rate: "免 CBF" },
     ],
     note: "部分銀行收 CBF",
   },

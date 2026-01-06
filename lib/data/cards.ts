@@ -1102,7 +1102,7 @@ export const HK_CARDS: CreditCard[] = [
     promoName: "新春自主賞",
   },
   {
-    id: "bea-world-master",
+    id: "bea-flyer-world",
     name: "BEA Flyer World Mastercard",
     bank: "東亞銀行",
     style: { bgColor: "bg-gradient-to-br from-sky-600 to-blue-800", textColor: "text-white" },
@@ -1127,6 +1127,44 @@ export const HK_CARDS: CreditCard[] = [
     note: "💡 【推廣期延長至 2026/6/30】海外簽賬 $2.5/里 (4.8%@$0.12/里估值)，本地食肆 $5/里 (2.4%)，其他本地 $5/里 (0.4%)。⚠️ 不計回贈：電子錢包充值(Alipay/PayMe/WeChat Pay)、保費、透過電子網絡繳款。八達通自動增值/政府部門簽賬每月上限 $40 回贈。迎新：簽$4,000送$400回贈 或 簽$5,000-$100,000送5,000-70,000里。12個月內取消扣回迎新。年費 $1,800，首年免。\n\n🧧 **新春自主賞**（2026/1/2-2/28）：每階段簽滿 $8,000 可享額外 3.3% 回贈，疊加本卡最高 **8.3%**！首10,000名，需 BEA Mall App 登記。[查看詳情](/discover/bea-cny-2026)",
     promoEndDate: "2026-02-28",
     promoName: "新春自主賞",
+  },
+  {
+    id: "bea-world-mastercard",
+    name: "東亞 World Mastercard",
+    bank: "東亞銀行",
+    style: { bgColor: "bg-gradient-to-br from-amber-600 to-orange-800", textColor: "text-white" },
+    foreignCurrencyFee: 1.95,
+    annualFee: 1800,
+    feeWaiverCondition: "首年免年費，之後致電可 waive",
+    minIncome: 40000,
+    rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 25,000 獎分 = $100 (Pay with Points)
+    rules: [
+      // T&C 2026/6/30: BEA 簽賬獎分計劃，月簽滿 $4,000 + BEA Mall App 登記
+      // 指定類別 12.5X 積分 = 5% 回贈 (25,000分=$100)
+      // 每月上限 115,000 額外獎分 = 簽 $10,000 指定類別
+      // 外幣簽賬 5% (歐洲實體簽賬除外)
+      { description: "外幣簽賬 5% [月簽$4,000,需登記]", matchType: "base", percentage: 5.0, monthlyMinSpend: 4000, cap: 10000, capType: "spending", isForeignCurrency: true, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      // 本地食肆/酒類專賣店 5%
+      { description: "本地食肆 5% [月簽$4,000,需登記]", matchType: "category", matchValue: ["dining"], percentage: 5.0, monthlyMinSpend: 4000, cap: 10000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      // 本地電器/電子產品 5%
+      { description: "本地電子產品 5% [月簽$4,000,需登記]", matchType: "category", matchValue: ["electronics"], percentage: 5.0, monthlyMinSpend: 4000, cap: 10000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      // 本地運動服飾/健身中心/醫療服務 5% (獸醫除外)
+      { description: "本地運動/健身/醫療 5% [月簽$4,000,需登記]", matchType: "category", matchValue: ["sports", "fitness", "medical"], percentage: 5.0, monthlyMinSpend: 4000, cap: 10000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      // 八達通自動增值 0.33% (連同政府簽賬每月上限 $40)
+      { description: "八達通自動增值 0.33%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.33, cap: 40, capType: "reward" },
+      // PayMe 0.33%
+      { description: "PayMe 0.33%", matchType: "paymentMethod", matchValue: ["payme"], percentage: 0.33 },
+      // 基本回贈 0.33% (30,000分=$100)，但指定類別可用 Pay with Points 0.4%
+      { description: "基本回饋 0.33%", matchType: "base", percentage: 0.33, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet", "supermarket", "travel"], excludePaymentMethods: ["alipay", "wechat_pay", "octopus", "payme"] },
+    ],
+    tags: ["🔥食肆5%", "🔥海外5%", "電子產品5%", "月簽$4000", "需登記"],
+    welcomeOfferText: "迎新優惠詳見官網",
+    sellingPoints: ["🔥 指定類別 12.5X (5%)", "外幣簽賬 5% (1.95%手續費)", "本地食肆 5%", "本地電子產品 5%", "本地運動/健身/醫療 5%", "月簽 $4,000 門檻", "需 BEA Mall App 登記"],
+    officialApplyUrl: "https://www.hkbea.com/html/tc/bea-credit-card-world-mastercard.html",
+    applyUrl: "https://www.hkbea.com/html/tc/bea-credit-card-world-mastercard.html",
+    note: "💡 【推廣期至 2026/6/30】BEA 簽賬獎分計劃，指定類別享 12.5X 積分 = **5% 回贈**！\n\n| 指定類別 | 回贈率 |\n|:---|:---|\n| 外幣簽賬 | 5% (1.95%手續費) |\n| 本地食肆、酒類專賣店 | 5% |\n| 本地電器、電子產品商店 | 5% |\n| 本地運動服飾、健身中心、醫療服務 | 5% |\n\n⚠️ **門檻要求**：\n- 每月簽滿 $4,000 才享額外獎分\n- 需透過 **BEA Mall App** 登記\n- 每月指定類別上限簽 $10,000（回 115,000 額外獎分）\n\n❌ **不計回贈**：歐洲實體簽賬、超市、旅行社、政府部門、網上繳費\n\n💰 **Pay with Points**：用 25,000 分抵銷 $100 食肆/海外簽賬，計出 5% 回贈\n\n📅 2026年1月更新",
+    promoEndDate: "2026-06-30",
+    promoName: "BEA 簽賬獎分計劃",
   },
   {
     id: "bea-i-titanium",

@@ -1241,7 +1241,7 @@ export const PROMOS: Promo[] = [
     description: "2026新春限定！東亞信用卡每階段累積簽賬滿指定金額，可享高達額外3.3%回贈。首10,000名登記，可疊加 World Mastercard 5%、GOAL卡4.4%、i-Titanium卡4%！",
     imageUrl: "https://images.unsplash.com/photo-1548690312-e3b507d8c110?q=80&w=2048&auto=format&fit=crop",
     expiryDate: "2026-02-28",
-    relatedCardIds: ["bea-world-master", "bea-goal", "bea-i-titanium", "bea-jcb-platinum"],
+    relatedCardIds: ["bea-world-mastercard", "bea-flyer-world", "bea-goal", "bea-i-titanium", "bea-jcb-platinum"],
     tags: ["東亞銀行", "新春優惠", "額外回贈", "需登記", "限首10000名"],
     url: "https://www.hkbea.com/html/tc/bea-credit-card-promotions.html",
     updatedAt: "2026-01-02",

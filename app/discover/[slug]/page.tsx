@@ -1615,7 +1615,7 @@ function OverseasFeeGuide() {
             <h4 className="font-bold text-emerald-800 dark:text-emerald-200 mb-2">🌐 海外網購首選</h4>
             <ul className="space-y-2 text-sm text-emerald-700 dark:text-emerald-300">
               <li>• <Link href="/cards/boc-cheers" className="text-blue-600 hover:underline font-medium">中銀 Cheers</Link>：不收 CBF</li>
-              <li>• <Link href="/cards/bea-world-master" className="text-blue-600 hover:underline font-medium">東亞 World Master</Link>：不收 CBF</li>
+              <li>• <Link href="/cards/bea-world-mastercard" className="text-blue-600 hover:underline font-medium">東亞 World Mastercard</Link>：不收 CBF</li>
               <li>• <Link href="/cards/sc-simply-cash" className="text-blue-600 hover:underline font-medium">渣打 Simply Cash</Link>：海外 2% 回贈</li>
             </ul>
             <Link href="/blog/best-online-shopping-cards">
