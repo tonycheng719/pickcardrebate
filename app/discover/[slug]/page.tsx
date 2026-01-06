@@ -61,6 +61,7 @@ import { BeaJcbContactless2025Guide, beaJcbContactless2025FaqData } from "./bea-
 import { UnionpayForeignFeeGuide, unionpayForeignFeeFaqData } from "./unionpay-foreign-fee-2025";
 import BeaRewardExtension2026Guide, { beaRewardExtensionFaqData } from "./bea-reward-extension-2026";
 import BocVisaCrazyRewards2026Guide, { bocVisaCrazyRewardsFaqData } from "./boc-visa-crazy-rewards-2026";
+import { CitiPartnerOffersGuide, citiPartnerOffersFaqData } from "./citi-partner-offers-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 import { CardMarkdownRenderer } from "@/app/discover/components/card-markdown-renderer";
 import { ArticleTracker } from "@/app/discover/components/article-tracker";
@@ -1149,6 +1150,32 @@ const GUIDES: Record<string, {
     publishDate: "2025-01-01",
     readTime: "12 分鐘",
   },
+  "citi-partner-offers": {
+    id: "citi-partner-offers",
+    title: "Citi 信用卡合作夥伴獎賞攻略｜MoneyHero 迎新優惠高達 $4,288+",
+    seoTitle: "Citi 信用卡合作夥伴獎賞 2026｜MoneyHero 迎新高達 $4,288｜Citi Cash Back/Rewards/PremierMiles",
+    heroTitle: "🎁 Citi 信用卡合作夥伴獎賞攻略",
+    heroSubtitle: "銀行迎新 + 合作夥伴獎賞 雙重獎賞高達 $4,288+！",
+    description: "經 MoneyHero 申請 Citi 信用卡，除銀行迎新外，更可享額外合作夥伴獎賞高達 $4,288+！Citi Cash Back、Citi Rewards、Citi PremierMiles、Citi Prestige 完全介紹。",
+    content: "citi-partner-offers",
+    imageUrl: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop",
+    tags: ["Citi", "合作夥伴", "迎新優惠", "MoneyHero"],
+    keywords: [
+      "Citi 信用卡迎新",
+      "Citi 信用卡優惠",
+      "MoneyHero Citi",
+      "Citi Cash Back 迎新",
+      "Citi Rewards 迎新",
+      "Citi PremierMiles 迎新",
+      "Citi Prestige 迎新",
+      "Citi 信用卡申請",
+      "信用卡合作夥伴獎賞",
+      "信用卡迎新優惠 2026",
+      "Citi 銀聯卡",
+    ],
+    publishDate: "2026-01-06",
+    readTime: "8 分鐘",
+  },
 };
 
 // Generate static params for both promos and guides
@@ -1758,6 +1785,8 @@ function getGuideFaqData(guideId: string) {
       return beaRewardExtensionFaqData;
     case "boc-visa-crazy-rewards-2026":
       return bocVisaCrazyRewardsFaqData;
+    case "citi-partner-offers":
+      return citiPartnerOffersFaqData;
     case "online-shopping-guide":
       return onlineShoppingFaqData;
     case "dining-guide":
@@ -1848,6 +1877,8 @@ function renderGuideContent(guideId: string) {
       return <BeaRewardExtension2026Guide />;
     case "boc-visa-crazy-rewards-2026":
       return <BocVisaCrazyRewards2026Guide />;
+    case "citi-partner-offers":
+      return <CitiPartnerOffersGuide />;
     case "online-shopping-guide":
       return <OnlineShoppingGuide />;
     case "dining-guide":
