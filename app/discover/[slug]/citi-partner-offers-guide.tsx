@@ -212,7 +212,7 @@ export function CitiPartnerOffersGuide() {
               {citiPartnerCards.map((card) => (
                 <tr key={card.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                   <td className="px-4 py-3">
-                    <CardTableCell cardId={card.id} cardName={card.name} />
+                    <CardTableCell id={card.id} />
                   </td>
                   <td className="px-4 py-3 text-sm">{card.annualFee}</td>
                   <td className="px-4 py-3 text-sm font-medium text-amber-600 dark:text-amber-400">{card.partnerReward}</td>
