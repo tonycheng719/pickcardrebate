@@ -673,17 +673,22 @@ export const HK_CARDS: CreditCard[] = [
     minIncome: 120000,
     feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
-    rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' }, // 15 pts = 1 mile
+    rewardConfig: { method: 'conversion', ratio: 270, currency: 'Points' }, // 270 pts = $1 現金回贈
     rules: [
-      // 流動支付 5X (Apple Pay/Google Pay/Samsung Pay，不包括八達通增值/電子錢包增值)
-      { description: "流動支付 2% [上限$50,000簽賬]", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 2.0, cap: 50000, capType: "spending", excludeCategories: ["ewallet"], excludePaymentMethods: ["octopus", "payme", "alipay", "wechat_pay"] },
-      { description: "超市/百貨 5X (2%)", matchType: "category", matchValue: ["supermarket", "department_store"], percentage: 2.0 },
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"] },
+      // T&C 2024/10/31: 購物和娛樂 8.1X 積分 = 3% 回贈
+      // MCC: 百貨公司(5311)/服裝店(5611,5621,5631,5651,5655,5661,5691,5699)/鐘錶珠寶(5944)/皮具(5948)/化妝品(5977)/專門零售(5999)
+      // MCC: 有線電視(4899)/數碼媒體(5815,5816,5817,5818)/電影院(7832)/演出票務(7922)/遊樂園(7996)
+      { description: "購物和娛樂 3% (8.1X積分)", matchType: "category", matchValue: ["shopping", "entertainment", "department_store", "clothing", "cosmetics", "jewelry", "cinema", "streaming", "theme_park"], percentage: 3.0, cap: 113400, capType: "reward", excludeCategories: ["supermarket"], excludePaymentMethods: ["octopus", "payme", "alipay", "wechat_pay", "fps"] },
+      // T&C 2024/10/31: 本地流動支付 2.7X 積分 = 1% 回贈 (只限港幣)
+      // 如同時符合購物娛樂，只計較高的 8.1X
+      { description: "流動支付 1% (2.7X積分) [本地港幣]", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 1.0, cap: 113400, capType: "reward", excludeCategories: ["ewallet"], excludePaymentMethods: ["octopus", "payme", "alipay", "wechat_pay", "fps"] },
+      // T&C: 基本積分 1X = 0.37%
+      { description: "基本回饋 0.37% (1X積分)", matchType: "base", percentage: 0.37, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "payme", "alipay", "wechat_pay", "fps"] },
     ],
-    tags: ["Apple Pay之選", "積分", "流動支付"],
+    tags: ["購物娛樂3%", "流動支付1%", "積分永不過期"],
     welcomeOfferText: "🔥 經 MoneyHero 申請：高達 $4,288 獎賞 + $2,200 Apple Store 禮品卡",
-    sellingPoints: ["流動支付 5X 積分 (Apple Pay/Google Pay/Samsung Pay)", "超市/百貨 5X 積分", "積分永不過期"],
-    note: "⚠️ 流動支付 5X 需使用 Apple Pay/Google Pay/Samsung Pay！八達通增值/電子錢包增值不計。每月額外積分上限 50,000 分。\n\n🔥 **MoneyHero 限時優惠**：經指定連結申請可獲高達 $4,288 獎賞，包括 $2,200 Apple Store 禮品卡！",
+    sellingPoints: ["購物和娛樂 3% 回贈 (8.1X積分)", "本地流動支付 1% 回贈 (2.7X積分)", "積分永不過期", "里數兌換免手續費"],
+    note: "## 📌 Citi Rewards 積分計劃\n**生效日期：2024年10月31日起**\n\n| 類別 | 積分倍數 | 回贈率 |\n|:---|:---|:---|\n| 購物和娛樂 | 8.1X | **3%** |\n| 本地流動支付 | 2.7X | **1%** |\n| 其他簽賬 | 1X | 0.37% |\n\n---\n\n### 🛍️ 購物和娛樂類別\n百貨公司、服裝店、鞋店、化妝品店、鐘錶珠寶、電影院、演唱會、主題樂園、串流平台 (Netflix/Spotify等)\n\n### 📱 流動支付\nApple Pay、Google Pay、Samsung Pay（只限本地港幣簽賬）\n\n---\n\n### ⚠️ 注意事項\n- 每月額外積分上限 **113,400 分**（購物娛樂+流動支付合併計算）\n- 基本積分無上限\n- 用流動支付買購物娛樂類商品，只計較高的 3%（不會重複計算）\n- **超市不計購物類別**\n\n---\n\n🔥 **MoneyHero 限時優惠**：經指定連結申請可獲高達 $4,288 獎賞！",
     officialApplyUrl: "https://www.citibank.com.hk/zh-hk/credit-cards/citi-rewards-card.html",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=169&a=228&sub_id1=pickcardrebate&sub_id2=web",
   },
@@ -696,21 +701,19 @@ export const HK_CARDS: CreditCard[] = [
     minIncome: 120000,
     feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 0, // 銀聯免手續費
-    rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' }, // 15 pts = 1 mile
+    rewardConfig: { method: 'conversion', ratio: 270, currency: 'Points' }, // 270 pts = $1 現金回贈
     rules: [
-      // T&C: 一卡雙幣 - 本地及海外以港幣計算，中國內地以人民幣結算
-      // T&C: 購物和娛樂簽賬高達 3% 積分回贈
-      { description: "購物/娛樂 3%", matchType: "category", matchValue: ["shopping", "entertainment"], percentage: 3.0 },
-      // T&C: 流動支付 5X (Apple Pay/Google Pay/Samsung Pay)
-      { description: "流動支付 2% [上限$50,000簽賬]", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 2.0, cap: 50000, capType: "spending", excludeCategories: ["ewallet"], excludePaymentMethods: ["octopus", "payme", "alipay", "wechat_pay"] },
-      // T&C: 超市/百貨 5X
-      { description: "超市/百貨 5X (2%)", matchType: "category", matchValue: ["supermarket", "department_store"], percentage: 2.0 },
-      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"] },
+      // T&C 2024/10/31: 購物和娛樂 8.1X 積分 = 3% 回贈 (包括內地簽賬)
+      { description: "購物和娛樂 3% (8.1X積分)", matchType: "category", matchValue: ["shopping", "entertainment", "department_store", "clothing", "cosmetics", "jewelry", "cinema", "streaming", "theme_park"], percentage: 3.0, cap: 113400, capType: "reward", excludeCategories: ["supermarket"], excludePaymentMethods: ["octopus", "payme", "alipay", "wechat_pay", "fps"] },
+      // T&C 2024/10/31: 本地流動支付 2.7X 積分 = 1% 回贈 (只限港幣)
+      { description: "流動支付 1% (2.7X積分) [本地港幣]", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 1.0, cap: 113400, capType: "reward", excludeCategories: ["ewallet"], excludePaymentMethods: ["octopus", "payme", "alipay", "wechat_pay", "fps"] },
+      // T&C: 基本積分 1X = 0.37%
+      { description: "基本回饋 0.37% (1X積分)", matchType: "base", percentage: 0.37, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "payme", "alipay", "wechat_pay", "fps"] },
     ],
-    tags: ["銀聯", "一卡雙幣", "免外幣手續費", "流動支付"],
+    tags: ["銀聯", "一卡雙幣", "購物娛樂3%", "免外幣手續費"],
     welcomeOfferText: "🔥 經 MoneyHero 申請：高達 $4,288 獎賞 + $2,200 Apple Store 禮品卡",
-    sellingPoints: ["一卡雙幣 (港幣/人民幣)", "購物和娛樂高達 3% 回贈", "流動支付 5X 積分", "免外幣手續費 (銀聯)", "積分永不過期"],
-    note: "⚠️ 一卡雙幣：本地及海外簽賬以港幣計算，中國內地簽賬以人民幣結算，無需擔心匯率波動。里數兌換手續費 $200。\n\n🔥 **MoneyHero 限時優惠**：經指定連結申請可獲高達 $4,288 獎賞，包括 $2,200 Apple Store 禮品卡！",
+    sellingPoints: ["一卡雙幣 (港幣/人民幣)", "購物和娛樂 3% 回贈 (8.1X積分)", "內地簽賬同享 3% 回贈", "免外幣手續費 (銀聯)", "積分永不過期"],
+    note: "## 📌 Citi Rewards 銀聯卡積分計劃\n**生效日期：2024年10月31日起**\n\n| 類別 | 積分倍數 | 回贈率 |\n|:---|:---|:---|\n| 購物和娛樂 | 8.1X | **3%** |\n| 本地流動支付 | 2.7X | **1%** |\n| 其他簽賬 | 1X | 0.37% |\n\n---\n\n### 💳 一卡雙幣優勢\n- 本地及海外簽賬：港幣結算\n- 中國內地簽賬：人民幣結算，無匯率風險\n- **內地購物娛樂同享 3% 回贈！**\n\n### 🛍️ 購物和娛樂類別\n百貨公司、服裝店、鞋店、化妝品店、電影院、串流平台等\n\n---\n\n### ⚠️ 注意事項\n- 每月額外積分上限 **113,400 分**\n- 里數兌換手續費 $200\n- 免外幣手續費（銀聯卡優勢）\n\n---\n\n🔥 **MoneyHero 限時優惠**：經指定連結申請可獲高達 $4,288 獎賞！",
     officialApplyUrl: "https://www.citibank.com.hk/zh-hk/credit-cards/citi-rewards-unionpay-card.html",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=170&a=228&sub_id1=pickcardrebate&sub_id2=web",
   },
