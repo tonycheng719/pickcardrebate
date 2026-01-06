@@ -264,7 +264,7 @@ export function CitiPartnerOffersGuide() {
               <div className="p-6">
                 {/* 信用卡封面 */}
                 <div className="mb-6">
-                  <CardLinkWithImage cardId={card.id} showDetails={false} />
+                  <CardLinkWithImage id={card.id} size="lg" showRate={false} />
                 </div>
 
                 {/* 獎賞資訊 */}
