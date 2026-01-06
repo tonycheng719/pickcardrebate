@@ -2795,4 +2795,18 @@ export const PROMOS: Promo[] = [
     tags: ["超市", "星期一", "折扣", "一田"],
     url: "https://www.fubonbank.com.hk/tc/cards/bonus-points-program/yata-credit-card.html",
   },
+  // ========== 🎁 合作夥伴優惠 ==========
+  {
+    id: "citi-partner-offers",
+    title: "🎁 Citi 信用卡合作夥伴獎賞攻略｜MoneyHero 獨家禮品高達 $4,288！",
+    merchant: "MoneyHero",
+    description: "經 MoneyHero 申請 Citi 信用卡，7 款禮品任揀！Apple Store 禮品卡 $2,200 / Dyson 風筒 / 25,000 Max Miles 等。限時至 2026年1月12日！",
+    imageUrl: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop",
+    expiryDate: "2026-01-12",
+    updatedAt: "2026-01-06",
+    relatedCardIds: ["citi-cashback", "citi-rewards", "citi-rewards-unionpay", "citi-premiermiles", "citi-octopus", "citi-prestige"],
+    tags: ["合作夥伴", "MoneyHero", "Citi", "迎新", "限時"],
+    url: "",
+    isPinned: true,
+  },
 ];
