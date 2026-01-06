@@ -644,7 +644,7 @@ export const HK_CARDS: CreditCard[] = [
     bank: "Citi",
     style: { bgColor: "bg-gradient-to-br from-blue-700 to-blue-900", textColor: "text-white" },
     // imageUrl from DB
-    annualFee: 1200,
+    annualFee: 1800,
     minIncome: 120000,
     feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
@@ -657,11 +657,11 @@ export const HK_CARDS: CreditCard[] = [
       { description: "基本回饋 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"] },
     ],
     tags: ["自動回贈", "餐飲2%", "週末餐飲3%", "八達通1%"],
-    welcomeOfferText: "迎新簽 $5,000 送 $1,200 現金回贈 (首2個月內)",
+    welcomeOfferText: "🔥 經 MoneyHero 申請：高達 $4,288 獎賞 + $2,200 Apple Store 禮品卡",
     officialApplyUrl: "https://www.citibank.com.hk/zh-hk/credit-cards/citi-cash-back-card.html",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=168&a=228&sub_id1=pickcardrebate&sub_id2=web",
     sellingPoints: ["週五六日食肆 3% 回贈", "全球食肆及酒店 2% 回贈", "八達通自動增值 1%", "無上限，自動入賬"],
-    note: "⚠️ 不適用於：FPS、繳稅、保費、公共事務費用。✅ 八達通自動增值有 1% 回贈！",
+    note: "⚠️ 不適用於：FPS、繳稅、保費、公共事務費用。✅ 八達通自動增值有 1% 回贈！\n\n🔥 **MoneyHero 限時優惠**：經指定連結申請可獲高達 $4,288 獎賞，包括 $2,200 Apple Store 禮品卡！",
   },
   {
     id: "citi-rewards",
@@ -681,11 +681,38 @@ export const HK_CARDS: CreditCard[] = [
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"] },
     ],
     tags: ["Apple Pay之選", "積分", "流動支付"],
-    welcomeOfferText: "迎新簽 $5,000 送 $1,200 回贈",
+    welcomeOfferText: "🔥 經 MoneyHero 申請：高達 $4,288 獎賞 + $2,200 Apple Store 禮品卡",
     sellingPoints: ["流動支付 5X 積分 (Apple Pay/Google Pay/Samsung Pay)", "超市/百貨 5X 積分", "積分永不過期"],
-    note: "⚠️ 流動支付 5X 需使用 Apple Pay/Google Pay/Samsung Pay！八達通增值/電子錢包增值不計。每月額外積分上限 50,000 分。",
+    note: "⚠️ 流動支付 5X 需使用 Apple Pay/Google Pay/Samsung Pay！八達通增值/電子錢包增值不計。每月額外積分上限 50,000 分。\n\n🔥 **MoneyHero 限時優惠**：經指定連結申請可獲高達 $4,288 獎賞，包括 $2,200 Apple Store 禮品卡！",
     officialApplyUrl: "https://www.citibank.com.hk/zh-hk/credit-cards/citi-rewards-card.html",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=169&a=228&sub_id1=pickcardrebate&sub_id2=web",
+  },
+  {
+    id: "citi-rewards-unionpay",
+    name: "Citi Rewards 銀聯信用卡",
+    bank: "Citi",
+    style: { bgColor: "bg-gradient-to-br from-red-600 to-red-800", textColor: "text-white" },
+    annualFee: 1800,
+    minIncome: 120000,
+    feeWaiverCondition: "首年免年費",
+    foreignCurrencyFee: 0, // 銀聯免手續費
+    rewardConfig: { method: 'conversion', ratio: 0.0666, currency: 'Points' }, // 15 pts = 1 mile
+    rules: [
+      // T&C: 一卡雙幣 - 本地及海外以港幣計算，中國內地以人民幣結算
+      // T&C: 購物和娛樂簽賬高達 3% 積分回贈
+      { description: "購物/娛樂 3%", matchType: "category", matchValue: ["shopping", "entertainment"], percentage: 3.0 },
+      // T&C: 流動支付 5X (Apple Pay/Google Pay/Samsung Pay)
+      { description: "流動支付 2% [上限$50,000簽賬]", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 2.0, cap: 50000, capType: "spending", excludeCategories: ["ewallet"], excludePaymentMethods: ["octopus", "payme", "alipay", "wechat_pay"] },
+      // T&C: 超市/百貨 5X
+      { description: "超市/百貨 5X (2%)", matchType: "category", matchValue: ["supermarket", "department_store"], percentage: 2.0 },
+      { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance"] },
+    ],
+    tags: ["銀聯", "一卡雙幣", "免外幣手續費", "流動支付"],
+    welcomeOfferText: "🔥 經 MoneyHero 申請：高達 $4,288 獎賞 + $2,200 Apple Store 禮品卡",
+    sellingPoints: ["一卡雙幣 (港幣/人民幣)", "購物和娛樂高達 3% 回贈", "流動支付 5X 積分", "免外幣手續費 (銀聯)", "積分永不過期"],
+    note: "⚠️ 一卡雙幣：本地及海外簽賬以港幣計算，中國內地簽賬以人民幣結算，無需擔心匯率波動。里數兌換手續費 $200。\n\n🔥 **MoneyHero 限時優惠**：經指定連結申請可獲高達 $4,288 獎賞，包括 $2,200 Apple Store 禮品卡！",
+    officialApplyUrl: "https://www.citibank.com.hk/zh-hk/credit-cards/citi-rewards-unionpay-card.html",
+    applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=170&a=228&sub_id1=pickcardrebate&sub_id2=web",
   },
   {
     id: "citi-premiermiles",
@@ -694,7 +721,7 @@ export const HK_CARDS: CreditCard[] = [
     style: { bgColor: "bg-gradient-to-br from-slate-600 to-slate-800", textColor: "text-white" },
     // imageUrl from DB
     annualFee: 1800,
-    minIncome: 150000,
+    minIncome: 120000,
     feeWaiverCondition: "首年免年費",
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 0.0833, currency: 'Points' }, // 12 pts = 1 mile
@@ -703,12 +730,12 @@ export const HK_CARDS: CreditCard[] = [
       { description: "外幣簽賬 $4/里 (3%*)", matchType: "base", percentage: 2.25, isForeignCurrency: true }, // $20000/m for $3/mile promo often active
       { description: "本地簽賬 $8/里 (1.1%)", matchType: "base", percentage: 1.1, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus"] },
     ],
-    tags: ["旅遊", "里數"],
-    welcomeOfferText: "迎新簽 $5,000 送 240,000積分 (20,000里) (首2個月內)",
+    tags: ["旅遊", "里數", "機場貴賓室"],
+    welcomeOfferText: "🔥 經 MoneyHero 申請：高達 $4,288 獎賞 + $2,200 Apple Store 禮品卡",
     officialApplyUrl: "https://www.citibank.com.hk/zh-hk/credit-cards/citi-premiermiles-card.html",
-    applyUrl: "https://www.citibank.com.hk/chinese/credit-cards/citi-premiermiles-card.html",
-    sellingPoints: ["外幣簽賬低至 HK$3/里 (需滿額)", "免費享用機場貴賓室"],
-    note: "⚠️ 不適用於：FPS、八達通增值、繳稅、保費、公共事務費用。",
+    applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=167&a=228&sub_id1=pickcardrebate&sub_id2=web",
+    sellingPoints: ["外幣簽賬低至 HK$3/里 (月簽$20,000)", "每年 12 次免費機場貴賓室", "積分永不過期，免兌換手續費", "免費旅遊保險"],
+    note: "⚠️ 不適用於：FPS、八達通增值、繳稅、保費、公共事務費用。\n\n💡 **里數攻略**：月簽 $20,000 可解鎖 $3/里！12次機場貴賓室需簽賬滿 $5,000 (30天內)。\n\n🔥 **MoneyHero 限時優惠**：經指定連結申請可獲高達 $4,288 獎賞，包括 $2,200 Apple Store 禮品卡！",
   },
   {
     id: "citi-prestige",
@@ -726,12 +753,12 @@ export const HK_CARDS: CreditCard[] = [
       { description: "海外簽賬 $4/里", matchType: "base", percentage: 2.5, isForeignCurrency: true }, // 3pts/$ * 0.0833 = 0.25 miles/$ -> $4/mile
       { description: "本地簽賬 $6/里", matchType: "base", percentage: 1.67, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus"] }, // 2pts/$ * 0.0833 = 0.166 miles/$ -> $6/mile
     ],
-    tags: ["高端", "年費卡", "旅遊"],
+    tags: ["高端", "年費卡", "旅遊", "機場貴賓室"],
     welcomeOfferText: "迎新繳年費 $3,800 送 360,000積分 (30,000里)",
     officialApplyUrl: "https://www.citibank.com.hk/zh-hk/credit-cards/citi-prestige-card.html",
     applyUrl: "https://www.citibank.com.hk/chinese/credit-cards/citi-prestige-card.html",
-    sellingPoints: ["任何酒店第 4 晚免費", "無限次使用機場貴賓室", "年資獎賞"],
-    note: "⚠️ 年費 $3,800。不適用於：FPS、八達通增值、繳稅、保費、公共事務費用。",
+    sellingPoints: ["任何酒店第 4 晚免費", "無限次使用機場貴賓室", "年資獎賞", "免費旅遊保險"],
+    note: "⚠️ 年費 $3,800。不適用於：FPS、八達通增值、繳稅、保費、公共事務費用。\n\n💡 **高端禮遇**：任何酒店連續入住 4 晚，第 4 晚免費！無限次 Priority Pass 機場貴賓室。",
   },
 
   // ========================================================================
