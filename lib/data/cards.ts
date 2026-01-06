@@ -570,17 +570,20 @@ export const HK_CARDS: CreditCard[] = [
     // imageUrl from DB
     annualFee: 0,
     feeWaiverCondition: "永久免年費",
+    minIncome: 150000,
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 200, currency: 'yuu積分' }, // 200 yuu points = $1 cash
     rules: [
-      // T&C: 7-Eleven 全年 95折 - 折扣優惠，非回贈
-      { description: "7-Eleven 全年 95折", matchType: "merchant", matchValue: ["7-eleven"], percentage: 5.0, isDiscount: true },
-      // 惠康/Market Place: 每月3/13/23日 92折 - 折扣優惠，非回贈
-      { description: "惠康 92折 [3/13/23號]", matchType: "merchant", matchValue: ["wellcome"], percentage: 8.0, validDates: [3, 13, 23], isDiscount: true, minSpend: 100 },
-      // 萬寧: 每月1/20日 94折 - 折扣優惠，非回贈
+      // ========== 折扣優惠 (直接減價，非回贈) ==========
+      // 惠康/Market Place: 每月3/13/23日 92折 - 折扣優惠，單一簽賬滿$100
+      { description: "惠康/Market Place 92折 [3/13/23號,滿$100]", matchType: "merchant", matchValue: ["wellcome", "market_place"], percentage: 8.0, validDates: [3, 13, 23], isDiscount: true, minSpend: 100 },
+      // 萬寧: 每月1/20日 94折 - 折扣優惠
       { description: "萬寧 94折 [1/20號]", matchType: "merchant", matchValue: ["mannings"], percentage: 6.0, validDates: [1, 20], isDiscount: true },
-      // T&C: 指定食肆 4X yuu積分 (2%) - Pizza Hut/PHD/KFC/美心中菜/美心西餐/m.a.x. concepts/美心快餐/麵包西餅店/星巴克/并并屋/魚尚
-      { description: "指定食肆 4X yuu積分 (2%)", matchType: "merchant", matchValue: ["pizzahut", "phd", "kfc", "maxims", "maxims_palace", "jade_garden", "peking_garden", "starbucks", "arome", "mx", "simplylife", "canteen", "deli_o", "paper_stone", "homebake", "urban_bakery"], percentage: 2.0 },
+      // 7-Eleven: 每月8/18日 95折 - 折扣優惠
+      { description: "7-Eleven 95折 [8/18號]", matchType: "merchant", matchValue: ["7-eleven"], percentage: 5.0, validDates: [8, 18], isDiscount: true },
+      // ========== yuu 積分獎賞 ==========
+      // T&C: 指定食肆 4X yuu積分 (2%) - Pizza Hut/PHD/KFC/美心中菜/美心西餐/m.a.x. concepts/美心快餐/麵包西餅店/星巴克/丼丼屋/魚尚
+      { description: "指定食肆 4X yuu積分 (2%)", matchType: "merchant", matchValue: ["pizzahut", "phd", "kfc", "maxims", "maxims_palace", "jade_garden", "peking_garden", "starbucks", "arome", "mx", "simplylife", "canteen", "deli_o", "paper_stone", "homebake", "urban_bakery", "dondonya", "sakana"], percentage: 2.0 },
       // T&C: 惠康/Market Place/萬寧/7-Eleven/宜家/GNC/3hreesixty/Oliver's 3X yuu積分 (1.5%)
       { description: "惠康/萬寧/7-Eleven/宜家/GNC 3X yuu積分 (1.5%)", matchType: "merchant", matchValue: ["wellcome", "market_place", "mannings", "7-eleven", "ikea", "gnc", "3hreesixty", "olivers"], percentage: 1.5 },
       // T&C: Shell 油站 2X yuu積分 (1%)
@@ -592,13 +595,14 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 其他商戶 1X yuu積分 (0.5%)，排除電子錢包充值（八達通自動增值除外）
       { description: "基本回饋 1X yuu積分 (0.5%)", matchType: "base", percentage: 0.5, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["儲分", "食肆優惠", "yuu積分", "折扣日", "7-Eleven 95折", "八達通增值", "冬日賞"],
-    sellingPoints: ["7-Eleven 全年 95折 [折扣]", "惠康 92折 (3/13/23號) [折扣]", "萬寧 94折 (1/20號) [折扣]", "指定食肆 4X yuu積分 (2%)", "yuu 積分可當現金使用 (200積分=$1)", "八達通自動增值計積分", "🔥冬日簽賬賞額外高達560,000 yuu"],
-    note: "⚠️ 【yuu積分獎賞】4X (2%)：Pizza Hut/PHD/KFC/美心中菜(翠園/美心皇宮/八月花等)/美心西餐/m.a.x. concepts(simplylife/吉谷舍等)/美心快餐(MX/can.teen)/麵包西餅(東海堂/美心西餅/Paper Stone)/星巴克/并并屋/魚尚。3X (1.5%)：7-Eleven/IKEA/萬寧/惠康/Market Place/3hreesixty/Oliver's/GNC。2X (1%)：Shell油站/美心其他品牌。1X (0.5%)：其他商戶。✅ 八達通自動增值計積分！❌ 不計積分：現金透支、分期計劃、e-Banking繳費、電子錢包充值（八達通自動增值除外）、易通行增值。折扣優惠與積分可同時享有！需綁定 yuu App。\n\n🔥 **冬日簽賬賞**（至2026/2/28）：累積簽賬可享額外高達560,000 yuu積分！[查看詳情](/discover/hangseng-winter-2025)",
+    tags: ["儲分", "食肆優惠", "yuu積分", "惠康92折", "萬寧94折", "八達通增值", "永久免年費"],
+    welcomeOfferText: "新客簽$5,000送140,000 yuu ($700) / 舊客送60,000 yuu ($300) (首60日，至2026/12/31)",
+    sellingPoints: ["🛒惠康92折 (3/13/23號)", "💊萬寧94折 (1/20號)", "🏪7-Eleven 95折 (8/18號)", "🍕指定食肆 4X yuu (2%)", "八達通增值計積分", "永久免年費"],
+    note: "## 📌 特約商戶折扣（直接減價）\n\n| 商戶 | 折扣 | 日期 | 條件 |\n|:---|:---:|:---:|:---:|\n| 惠康/Market Place | **92折** | 3、13、23號 | 滿$100 |\n| 萬寧 | **94折** | 1、20號 | - |\n| 7-Eleven | **95折** | 8、18號 | - |\n| IKEA | 免費送貨 | 每月第1&3個周三 | - |\n\n---\n\n## 📌 食肆優惠\n\n| 商戶 | 優惠 | 日期 |\n|:---|:---|:---:|\n| 美心中菜 | 主餐牌低至5折 | 逢周四 |\n| 美心中菜 | 指定晚市套餐5折 | 周五至日 |\n| KFC | 堂食/外賣自取88折 | 逢周一 |\n| Pizza Hut | 堂食低至88折（滿$250減$30）| 逢周二 |\n| Starbucks | 滿$100送中杯飲品 | 逢周日 |\n\n---\n\n## 📌 yuu 積分獎賞\n\n| 商戶 | yuu積分 | 回贈率 |\n|:---|:---:|:---:|\n| Pizza Hut/PHD/KFC/美心中菜/西餐/m.a.x./快餐/麵包西餅/星巴克/丼丼屋/魚尚 | **4X** | 2% |\n| 惠康/Market Place/萬寧/7-Eleven/IKEA/GNC/3hreesixty/Oliver's | **3X** | 1.5% |\n| Shell 油站/美心其他品牌 | **2X** | 1% |\n| 其他商戶 | 1X | 0.5% |\n\n💡 需綁定 yuu App（200積分 = $1）\n\n---\n\n## 🎁 迎新優惠（至 2026/12/31）\n\n| 客戶類型 | 條件 | 獎賞 |\n|:---|:---|:---|\n| 全新客戶 | 60日內簽$5,000 + 綁定yuu | **140,000 yuu ($700)** |\n| 現有客戶 | 60日內簽$5,000 + 綁定yuu | **60,000 yuu ($300)** |\n\n⚠️ 全新客戶：過往12個月無持有恒生信用卡\n⚠️ 現有客戶：過往12個月無持有恒生enJoy卡\n⚠️ 不計迎新：電子錢包、八達通自動增值\n\n---\n\n## ⚠️ 注意事項\n\n- **海外商戶簽港幣**有 **1% CBF 手續費**\n- PayMe/支付寶/微信支付：無回贈\n- 網上理財繳費：無回贈\n- yuu 積分只可在特約商戶使用\n\n📅 **2026年1月7日更新**",
     officialApplyUrl: "https://www.hangseng.com/zh-hk/personal/cards/products/enjoy-card/",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=213&a=228&sub_id1=pickcardrebate&sub_id2=web",
-    promoEndDate: "2026-02-28",
-    promoName: "恒生冬日簽賬賞",
+    promoEndDate: "2026-12-31",
+    promoName: "恒生 enJoy 卡迎新優惠",
   },
   {
     id: "hangseng-travel-plus",
