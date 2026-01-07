@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import Head from "next/head";
 import Script from "next/script";
 import { CreditCard } from "@/lib/types";
