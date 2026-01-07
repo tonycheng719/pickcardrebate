@@ -29,7 +29,6 @@ export function parseNote(card: CreditCard): ParsedNote {
   // 優先使用 card.exclusions（如果已有）
   if (card.exclusions && card.exclusions.length > 0) {
     result.exclusions = card.exclusions;
-    return result;
   }
   
   if (!card.note) return result;
