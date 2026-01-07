@@ -168,6 +168,61 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://www.hsbc.com.hk/content/dam/hsbc/hk/docs/credit-cards/visa-signature/special-reward-tnc.pdf",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // HSBC Visa Signature 卡專享優惠（商戶折扣）
+  // ========================================================================
+  {
+    cardId: "hsbc-vs-exclusive",
+    cardName: "HSBC Visa Signature（專享優惠）",
+    bank: "HSBC",
+    documentName: "滙豐Visa Signature卡專享優惠之條款及細則",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-12-31",
+    rewardRates: [
+      // 英皇戲院
+      { 
+        category: "英皇戲院戲票", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "買4送4（需用 Visa 感應式付款），每日限1次" 
+      },
+      { 
+        category: "英皇戲院爆谷", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "優惠（需用 Visa 感應式付款）" 
+      },
+      // 麗新餐飲
+      { 
+        category: "麗新餐飲", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "85折（只限堂食，每枱限用1次）" 
+      },
+    ],
+    exclusions: [
+      "以電子錢包所作的交易（包括增值電子錢包）",
+      "英皇戲院：IMAX 2D/3D、MX4D、貴賓影院 the CORONET",
+      "英皇戲院：優惠戲票（小童/學生/長者/會員）",
+      "英皇戲院：優惠場次（早場/中午場/午夜場）",
+      "英皇戲院：優先場、特備節目、非電影節目",
+      "麗新餐飲：外賣服務、零售服務",
+      "麗新餐飲：服務費、瓶裝清酒/葡萄酒/烈酒",
+      "麗新餐飲：特別菜單、促銷菜單、自定菜單、包廂用餐",
+    ],
+    warnings: [
+      "⚠️ 這是折扣優惠，不是回贈！",
+      "英皇戲院不適用日子：1/1、2/17-19、4/3-7、5/1、5/25、6/19、7/1、9/26、10/1、10/19、12/25-26",
+      "麗新餐飲不適用日子：1/1、2/14、2/16-20、4/3-7、5/10、6/21、9/25-26、12/22、12/24-26、12/31",
+      "優惠名額有限，先到先得",
+    ],
+    officialSource: "https://www.redhotoffers.hsbc.com.hk/media/100722293/2026-Visa-Signature-Card-Exclusive-Offers_TnC_TC.pdf",
+    lastUpdated: "2026-01-08",
+  },
   
   // ========================================================================
   // 中銀 Chill World Mastercard
