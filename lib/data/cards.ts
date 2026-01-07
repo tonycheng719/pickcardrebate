@@ -1845,13 +1845,13 @@ export const HK_CARDS: CreditCard[] = [
     rules: [
       // ========== 網上簽賬 8% (需月簽非網上$1,000 + 單筆$500) ==========
       // T&C: 於相同曆月內累積合資格非網上零售簽賬滿$1,000，單筆滿$500之網上零售簽賬可享8%
-      { description: "網購 8% [需月簽非網上$1,000+單筆$500]", matchType: "category", matchValue: "online", percentage: 8.0, minSpend: 500, monthlyMinSpend: 1000, isPhysicalStore: true, cap: 200, capType: "reward", validDateRange: { from: "2025-11-01", to: "2026-01-31" }, excludeCategories: ["ewallet", "utilities", "insurance", "government", "tax"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "網購 8% [需月簽非網上$1,000+單筆$500]", matchType: "category", matchValue: "online", percentage: 8.0, minSpend: 500, monthlyMinSpend: 1000, isPhysicalStore: true, cap: 200, capType: "reward", validDateRange: { start: "2025-11-01", end: "2026-01-31" }, excludeCategories: ["ewallet", "utilities", "insurance", "government", "tax"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // ========== 指定本地公共交通 8% (sim Credit Card 限定) ==========
       // T&C: 城巴、九巴、龍運、港鐵（拍卡出入閘）、電車、天星小輪
-      { description: "交通 8% [港鐵/巴士/電車/天星小輪]", matchType: "merchant", matchValue: ["mtr", "kmb", "citybus", "lwb", "tram", "starferry"], percentage: 8.0, monthlyMinSpend: 1000, isPhysicalStore: true, cap: 200, capType: "reward", validDateRange: { from: "2025-11-01", to: "2026-01-31" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "交通 8% [港鐵/巴士/電車/天星小輪]", matchType: "merchant", matchValue: ["mtr", "kmb", "citybus", "lwb", "tram", "starferry"], percentage: 8.0, monthlyMinSpend: 1000, isPhysicalStore: true, cap: 200, capType: "reward", validDateRange: { start: "2025-11-01", end: "2026-01-31" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // ========== 指定商戶 3% ==========
       // T&C: Adidas、@cosme STORE、Fila、PUMA、松本清香港、東京生活館
-      { description: "指定商戶 3% [Adidas/PUMA/松本清等]", matchType: "merchant", matchValue: ["adidas", "cosme_store", "fila", "puma", "matsumoto_kiyoshi", "tokyo_lifestyle"], percentage: 3.0, validDateRange: { from: "2025-11-01", to: "2026-01-31" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "指定商戶 3% [Adidas/PUMA/松本清等]", matchType: "merchant", matchValue: ["adidas", "cosme_store", "fila", "puma", "matsumoto_kiyoshi", "tokyo_lifestyle"], percentage: 3.0, validDateRange: { start: "2025-11-01", end: "2026-01-31" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // ========== 基本回贈 0.4% ==========
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
@@ -1877,13 +1877,13 @@ export const HK_CARDS: CreditCard[] = [
     rules: [
       // ========== 網上簽賬 8% (需月簽非網上$1,000 + 單筆$500) ==========
       // T&C: 於相同曆月內累積合資格非網上零售簽賬滿$1,000，單筆滿$500之網上零售簽賬可享8%
-      { description: "網購 8% [需月簽非網上$1,000+單筆$500]", matchType: "category", matchValue: "online", percentage: 8.0, minSpend: 500, monthlyMinSpend: 1000, isPhysicalStore: true, cap: 200, capType: "reward", validDateRange: { from: "2025-11-01", to: "2026-01-31" }, excludeCategories: ["ewallet", "utilities", "insurance", "government", "tax"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "網購 8% [需月簽非網上$1,000+單筆$500]", matchType: "category", matchValue: "online", percentage: 8.0, minSpend: 500, monthlyMinSpend: 1000, isPhysicalStore: true, cap: 200, capType: "reward", validDateRange: { start: "2025-11-01", end: "2026-01-31" }, excludeCategories: ["ewallet", "utilities", "insurance", "government", "tax"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // ========== 海外非網上零售簽賬 8% (sim World 限定) ==========
       // T&C: 外幣簽賬之香港境外零售簽賬（網上海外簽賬視為網購）
-      { description: "海外實體店 8% [需月簽非網上$1,000]", matchType: "base", percentage: 8.0, isForeignCurrency: true, isPhysicalStore: true, monthlyMinSpend: 1000, cap: 200, capType: "reward", validDateRange: { from: "2025-11-01", to: "2026-01-31" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "海外實體店 8% [需月簽非網上$1,000]", matchType: "base", percentage: 8.0, isForeignCurrency: true, isPhysicalStore: true, monthlyMinSpend: 1000, cap: 200, capType: "reward", validDateRange: { start: "2025-11-01", end: "2026-01-31" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // ========== 指定商戶 3% ==========
       // T&C: Adidas、@cosme STORE、Fila、PUMA、松本清香港、東京生活館
-      { description: "指定商戶 3% [Adidas/PUMA/松本清等]", matchType: "merchant", matchValue: ["adidas", "cosme_store", "fila", "puma", "matsumoto_kiyoshi", "tokyo_lifestyle"], percentage: 3.0, validDateRange: { from: "2025-11-01", to: "2026-01-31" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "指定商戶 3% [Adidas/PUMA/松本清等]", matchType: "merchant", matchValue: ["adidas", "cosme_store", "fila", "puma", "matsumoto_kiyoshi", "tokyo_lifestyle"], percentage: 3.0, validDateRange: { start: "2025-11-01", end: "2026-01-31" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // ========== 基本回贈 0.4% ==========
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
