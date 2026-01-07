@@ -206,9 +206,21 @@ export default function CardDetailPage() {
 
   const isInWallet = hasCard(card.id);
   
-  // 獲取簽賬上限、簽賬下限、回贈上限資訊
+  // 獲取簽賬上限、簽賬下限、回贈上限資訊（用於限時優惠區塊）
   const capInfo = useMemo(() => getCardCapInfo(card), [card]);
   const capDisplay = useMemo(() => formatCapInfo(capInfo), [capInfo]);
+  
+  // 計算最高回贈和基本回贈
+  const maxRate = useMemo(() => {
+    if (!card.rules || card.rules.length === 0) return 0;
+    return Math.max(...card.rules.map(r => r.percentage));
+  }, [card.rules]);
+  
+  const baseRate = useMemo(() => {
+    if (!card.rules || card.rules.length === 0) return 0;
+    const baseRule = card.rules.find(r => r.matchType === 'base' && !r.isForeignCurrency);
+    return baseRule?.percentage || 0.4;
+  }, [card.rules]);
   
   // FAQ Data for card
   const faqItems = [
@@ -646,12 +658,80 @@ export default function CardDetailPage() {
               </Card>
             </motion.div>
 
+            {/* 限時優惠區塊 */}
+            {(capInfo.promoEndDate || capInfo.rewardCap || capInfo.spendingCap || capInfo.minSpend) && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <Card className="border-purple-200 dark:border-purple-800 bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20">
+                  <CardContent className="p-5">
+                    <div className="flex items-center gap-2 mb-4">
+                      <span className="text-xl">🔥</span>
+                      <h2 className="font-semibold text-purple-900 dark:text-purple-100">限時優惠</h2>
+                      {capDisplay.promoText && (
+                        <span className={`ml-auto text-xs px-2 py-1 rounded-full ${
+                          capInfo.daysUntilExpiry !== undefined && capInfo.daysUntilExpiry <= 7 
+                            ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' 
+                            : capInfo.daysUntilExpiry !== undefined && capInfo.daysUntilExpiry <= 30 
+                            ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'
+                            : 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
+                        }`}>
+                          {capDisplay.promoText}
+                        </span>
+                      )}
+                    </div>
+                    
+                    <div className="grid sm:grid-cols-3 gap-4 text-sm">
+                      {capDisplay.spendingCapText && (
+                        <div className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-purple-100 dark:border-purple-800">
+                          <p className="text-gray-500 dark:text-gray-400 text-xs mb-1">簽賬上限</p>
+                          <p className="font-bold text-blue-600 dark:text-blue-400 text-lg">
+                            {capDisplay.spendingCapText}
+                          </p>
+                        </div>
+                      )}
+                      
+                      {capDisplay.rewardCapText && (
+                        <div className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-purple-100 dark:border-purple-800">
+                          <p className="text-gray-500 dark:text-gray-400 text-xs mb-1">回贈上限</p>
+                          <p className="font-bold text-emerald-600 dark:text-emerald-400 text-lg">
+                            {capDisplay.rewardCapText}
+                          </p>
+                        </div>
+                      )}
+                      
+                      {capDisplay.minSpendText && (
+                        <div className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-purple-100 dark:border-purple-800">
+                          <p className="text-gray-500 dark:text-gray-400 text-xs mb-1">簽賬下限</p>
+                          <p className={`font-bold text-lg ${capInfo.hasMinSpendIssue ? 'text-red-600 dark:text-red-400' : 'text-orange-600 dark:text-orange-400'}`}>
+                            {capDisplay.minSpendText}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* 下限高過上限警告 */}
+                    {capDisplay.warningText && (
+                      <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg">
+                        <div className="flex items-start gap-2">
+                          <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0 mt-0.5" />
+                          <p className="text-xs text-red-600 dark:text-red-300">{capDisplay.warningText}</p>
+                        </div>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+
             {/* Important Notes */}
             {card.note && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
+                transition={{ delay: 0.35 }}
               >
                 <Card className="border-orange-200 dark:border-orange-800 bg-orange-50 dark:bg-orange-900/20">
                   <CardContent className="p-5">
@@ -734,56 +814,25 @@ export default function CardDetailPage() {
                       </div>
                     )}
                     
-                    {/* === 新增：簽賬上限、簽賬下限、回贈上限 === */}
-                    {capDisplay.spendingCapText && (
+                    {/* 最高回贈 */}
+                    {maxRate > 0 && (
                       <div>
-                        <p className="text-gray-500 dark:text-gray-400">簽賬上限</p>
-                        <p className="font-medium text-blue-600 dark:text-blue-400">
-                          {capDisplay.spendingCapText}
+                        <p className="text-gray-500 dark:text-gray-400">最高回贈</p>
+                        <p className="font-medium text-lg text-emerald-600 dark:text-emerald-400">
+                          {maxRate}%
                         </p>
                       </div>
                     )}
                     
-                    {capDisplay.rewardCapText && (
+                    {/* 基本回贈 */}
+                    {baseRate > 0 && (
                       <div>
-                        <p className="text-gray-500 dark:text-gray-400">回贈上限</p>
-                        <p className="font-medium text-emerald-600 dark:text-emerald-400">
-                          {capDisplay.rewardCapText}
+                        <p className="text-gray-500 dark:text-gray-400">基本回贈</p>
+                        <p className="font-medium text-gray-900 dark:text-white">
+                          {baseRate}%
                         </p>
                       </div>
                     )}
-                    
-                    {capDisplay.minSpendText && (
-                      <div>
-                        <p className="text-gray-500 dark:text-gray-400">簽賬下限</p>
-                        <p className={`font-medium ${capInfo.hasMinSpendIssue ? 'text-red-600 dark:text-red-400' : 'text-orange-600 dark:text-orange-400'}`}>
-                          {capDisplay.minSpendText}
-                        </p>
-                      </div>
-                    )}
-                    
-                    {capDisplay.promoText && (
-                      <div>
-                        <p className="text-gray-500 dark:text-gray-400">推廣期</p>
-                        <p className={`font-medium ${capInfo.daysUntilExpiry !== undefined && capInfo.daysUntilExpiry <= 7 ? 'text-red-600 dark:text-red-400' : capInfo.daysUntilExpiry !== undefined && capInfo.daysUntilExpiry <= 30 ? 'text-orange-600 dark:text-orange-400' : 'text-gray-900 dark:text-white'}`}>
-                          {capDisplay.promoText}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* 下限高過上限警告 */}
-                  {capDisplay.warningText && (
-                    <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-                      <div className="flex items-start gap-2">
-                        <AlertCircle className="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" />
-                        <div>
-                          <p className="text-sm font-medium text-red-700 dark:text-red-400">⚠️ 簽賬下限高過上限</p>
-                          <p className="text-xs text-red-600 dark:text-red-300 mt-1">{capDisplay.warningText}</p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
                 </CardContent>
               </Card>
             </motion.div>
