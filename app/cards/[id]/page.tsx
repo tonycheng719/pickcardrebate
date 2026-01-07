@@ -987,45 +987,6 @@ export default function CardDetailPage() {
                       </div>
                     )}
                     
-                    {/* 簽賬上限 */}
-                    {capDisplay.spendingCapText && (
-                      <div className="flex items-start gap-2">
-                        <span className="text-gray-400">📊</span>
-                        <div>
-                          <p className="text-gray-500 dark:text-gray-400 text-xs">簽賬上限</p>
-                          <p className="font-medium text-blue-600 dark:text-blue-400">
-                            {capDisplay.spendingCapText}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                    
-                    {/* 回贈上限 */}
-                    {capDisplay.rewardCapText && (
-                      <div className="flex items-start gap-2">
-                        <span className="text-gray-400">💎</span>
-                        <div>
-                          <p className="text-gray-500 dark:text-gray-400 text-xs">回贈上限</p>
-                          <p className="font-medium text-purple-600 dark:text-purple-400">
-                            {capDisplay.rewardCapText}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                    
-                    {/* 簽賬下限 */}
-                    {capDisplay.minSpendText && (
-                      <div className="flex items-start gap-2">
-                        <span className="text-gray-400">⚠️</span>
-                        <div>
-                          <p className="text-gray-500 dark:text-gray-400 text-xs">簽賬下限</p>
-                          <p className={`font-medium ${capInfo.hasMinSpendIssue ? 'text-red-600 dark:text-red-400' : 'text-amber-600 dark:text-amber-400'}`}>
-                            {capDisplay.minSpendText}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                    
                     {/* 推廣期 */}
                     {capDisplay.promoText && (
                       <div className="flex items-start gap-2">
@@ -1044,7 +1005,109 @@ export default function CardDetailPage() {
                         </div>
                       </div>
                     )}
+                    
+                    {/* 簽賬下限 */}
+                    {capDisplay.minSpendText && (
+                      <div className="flex items-start gap-2">
+                        <span className="text-gray-400">⚠️</span>
+                        <div>
+                          <p className="text-gray-500 dark:text-gray-400 text-xs">簽賬下限</p>
+                          <p className={`font-medium ${capInfo.hasMinSpendIssue ? 'text-red-600 dark:text-red-400' : 'text-amber-600 dark:text-amber-400'}`}>
+                            {capDisplay.minSpendText}
+                          </p>
+                        </div>
+                      </div>
+                    )}
                   </div>
+                  
+                  {/* 回贈上限表格（分類顯示） */}
+                  {(capInfo.regularCaps && capInfo.regularCaps.length > 0) || (capInfo.promoCaps && capInfo.promoCaps.length > 0) ? (
+                    <div className="mt-6 pt-4 border-t border-gray-100 dark:border-gray-800">
+                      <h3 className="font-medium text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                        💎 回贈上限
+                      </h3>
+                      
+                      {/* 常規優惠 */}
+                      {capInfo.regularCaps && capInfo.regularCaps.length > 0 && (
+                        <div className="mb-4">
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">📌 常規優惠</p>
+                          <div className="overflow-x-auto">
+                            <table className="w-full text-sm">
+                              <thead>
+                                <tr className="border-b border-gray-200 dark:border-gray-700">
+                                  <th className="text-left py-2 px-2 text-gray-500 dark:text-gray-400 font-medium">類別</th>
+                                  <th className="text-right py-2 px-2 text-gray-500 dark:text-gray-400 font-medium">回贈率</th>
+                                  <th className="text-right py-2 px-2 text-gray-500 dark:text-gray-400 font-medium">回贈上限</th>
+                                  <th className="text-right py-2 px-2 text-gray-500 dark:text-gray-400 font-medium">簽賬上限</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {capInfo.regularCaps.map((cap, idx) => (
+                                  <tr key={idx} className="border-b border-gray-100 dark:border-gray-800 last:border-0">
+                                    <td className="py-2 px-2 text-gray-900 dark:text-white">
+                                      {cap.category}
+                                      {cap.note && (
+                                        <span className="text-xs text-gray-500 dark:text-gray-400 block">{cap.note}</span>
+                                      )}
+                                    </td>
+                                    <td className="py-2 px-2 text-right text-emerald-600 dark:text-emerald-400 font-medium">{cap.rate}%</td>
+                                    <td className="py-2 px-2 text-right text-purple-600 dark:text-purple-400 font-medium">${cap.rewardCap.toLocaleString()}</td>
+                                    <td className="py-2 px-2 text-right text-blue-600 dark:text-blue-400">${cap.spendingCap.toLocaleString()}</td>
+                                  </tr>
+                                ))}
+                                {capInfo.regularCaps.length > 1 && (
+                                  <tr className="bg-gray-50 dark:bg-gray-800/50">
+                                    <td className="py-2 px-2 text-gray-900 dark:text-white font-medium">合計</td>
+                                    <td className="py-2 px-2"></td>
+                                    <td className="py-2 px-2 text-right text-purple-600 dark:text-purple-400 font-bold">
+                                      ${capInfo.totalRegularRewardCap?.toLocaleString()}/月
+                                    </td>
+                                    <td className="py-2 px-2"></td>
+                                  </tr>
+                                )}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* 推廣期優惠 */}
+                      {capInfo.promoCaps && capInfo.promoCaps.length > 0 && (
+                        <div>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1">
+                            🔥 推廣期優惠
+                            {capInfo.promoCaps[0]?.promoEndDate && (
+                              <span className="text-orange-500">
+                                （至 {new Date(capInfo.promoCaps[0].promoEndDate).toLocaleDateString('zh-HK', { year: 'numeric', month: 'numeric', day: 'numeric' })}）
+                              </span>
+                            )}
+                          </p>
+                          <div className="overflow-x-auto">
+                            <table className="w-full text-sm">
+                              <thead>
+                                <tr className="border-b border-gray-200 dark:border-gray-700">
+                                  <th className="text-left py-2 px-2 text-gray-500 dark:text-gray-400 font-medium">類別</th>
+                                  <th className="text-right py-2 px-2 text-gray-500 dark:text-gray-400 font-medium">回贈率</th>
+                                  <th className="text-right py-2 px-2 text-gray-500 dark:text-gray-400 font-medium">回贈上限</th>
+                                  <th className="text-left py-2 px-2 text-gray-500 dark:text-gray-400 font-medium">備註</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {capInfo.promoCaps.map((cap, idx) => (
+                                  <tr key={idx} className="border-b border-gray-100 dark:border-gray-800 last:border-0">
+                                    <td className="py-2 px-2 text-gray-900 dark:text-white">{cap.category}</td>
+                                    <td className="py-2 px-2 text-right text-orange-600 dark:text-orange-400 font-medium">{cap.rate}%</td>
+                                    <td className="py-2 px-2 text-right text-purple-600 dark:text-purple-400 font-medium">${cap.rewardCap.toLocaleString()}</td>
+                                    <td className="py-2 px-2 text-gray-500 dark:text-gray-400 text-xs">{cap.note || '-'}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ) : null}
                 </CardContent>
               </Card>
             </motion.div>

@@ -8,8 +8,22 @@
 import { CreditCard, RewardRule } from '@/lib/types';
 import { getCardTerms, formatPeriod } from '@/lib/data/card-terms';
 
+/**
+ * 分類上限（單個類別的上限資訊）
+ */
+export interface CategoryCap {
+  category: string;      // 類別名稱（從 description 提取）
+  rate: number;          // 回贈率
+  rewardCap: number;     // 回贈上限
+  spendingCap: number;   // 簽賬上限
+  period: string;        // "月" | "推廣期"
+  isPromo?: boolean;     // 是否推廣期優惠
+  promoEndDate?: string; // 推廣期結束日期
+  note?: string;         // 備註（如：累積$10,000、單筆≥$500）
+}
+
 export interface CapInfo {
-  // 回贈上限
+  // 回贈上限（保留向後兼容）
   rewardCap?: {
     amount: number;
     period: string;  // "月" | "季" | "半年" | "年" | "推廣期"
@@ -17,7 +31,7 @@ export interface CapInfo {
     note?: string;
   };
   
-  // 簽賬上限（最高回贈對應的簽賬金額）
+  // 簽賬上限（保留向後兼容）
   spendingCap?: {
     amount: number;
     period: string;
@@ -43,6 +57,69 @@ export interface CapInfo {
   // 推廣期
   promoEndDate?: string;
   daysUntilExpiry?: number;
+  
+  // 新增：分類上限（分開顯示）
+  regularCaps?: CategoryCap[];     // 常規優惠
+  promoCaps?: CategoryCap[];       // 推廣期優惠
+  totalRegularRewardCap?: number;  // 常規合計回贈上限
+  totalPromoRewardCap?: number;    // 推廣期合計回贈上限
+}
+
+/**
+ * 從 rule.description 提取簡短類別名稱
+ */
+function extractCategoryName(description: string): string {
+  // 移除前綴符號
+  let name = description.replace(/^[🔥⚡💥🎁✨]+\s*/, '');
+  
+  // 移除方括號內容但保留關鍵資訊
+  const bracketMatch = name.match(/\[(.+?)\]/);
+  const bracketInfo = bracketMatch ? bracketMatch[1] : '';
+  name = name.replace(/\s*\[.+?\]/g, '');
+  
+  // 截取主要類別名稱（取第一個空格或百分比之前的部分）
+  const mainName = name.split(/\s+\d+%|\s+\(|$/)[0].trim();
+  
+  return mainName || name;
+}
+
+/**
+ * 從 rule 提取備註資訊
+ */
+function extractNoteFromRule(rule: RewardRule): string | undefined {
+  const notes: string[] = [];
+  
+  // 單筆最低消費
+  if (rule.minSpend) {
+    notes.push(`單筆≥$${rule.minSpend.toLocaleString()}`);
+  }
+  
+  // 月簽要求
+  if (rule.monthlyMinSpend) {
+    notes.push(`月簽$${rule.monthlyMinSpend.toLocaleString()}`);
+  }
+  
+  // 需登記
+  if (rule.requiresRegistration) {
+    notes.push('需登記');
+  }
+  
+  // 從 description 提取方括號內的資訊
+  const bracketMatch = rule.description.match(/\[(.+?)\]/);
+  if (bracketMatch) {
+    const bracketContent = bracketMatch[1];
+    // 排除已經處理過的資訊
+    if (!bracketContent.includes('月簽') && 
+        !bracketContent.includes('單筆') &&
+        !bracketContent.includes('需登記')) {
+      // 提取有用的資訊如 "累積$10,000"
+      if (bracketContent.includes('累積')) {
+        notes.push(bracketContent);
+      }
+    }
+  }
+  
+  return notes.length > 0 ? notes.join(', ') : undefined;
 }
 
 /**
@@ -50,6 +127,7 @@ export interface CapInfo {
  */
 export function getCardCapInfo(card: CreditCard): CapInfo {
   const info: CapInfo = {};
+  const today = new Date();
   
   // 先嘗試從 card-terms.ts 獲取（最準確）
   const terms = getCardTerms(card.id);
@@ -94,70 +172,101 @@ export function getCardCapInfo(card: CreditCard): CapInfo {
     if (terms.promoEndDate) {
       info.promoEndDate = terms.promoEndDate;
       const endDate = new Date(terms.promoEndDate);
-      const today = new Date();
       const diffTime = endDate.getTime() - today.getTime();
       info.daysUntilExpiry = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     }
-    
-    return info;
   }
   
-  // Fallback: 從 rules 中提取（排除折扣規則）
+  // 從 rules 中提取分類上限（排除折扣規則）
   const rulesWithCap = card.rules.filter(r => r.cap !== undefined && !r.isDiscount);
   
   if (rulesWithCap.length > 0) {
-    // 分開處理簽賬上限和回贈上限
-    const rewardCapRules = rulesWithCap.filter(r => r.capType === 'reward');
-    const spendingCapRules = rulesWithCap.filter(r => r.capType === 'spending');
+    const regularCaps: CategoryCap[] = [];
+    const promoCaps: CategoryCap[] = [];
     
-    // 優先處理 spendingCapRules（簽賬上限）- 這是更常見的情況
-    if (spendingCapRules.length > 0) {
-      // 找出最高回贈率的規則（這是用戶最關心的）
-      const highestRateRule = spendingCapRules.reduce((max, r) => 
-        r.percentage > max.percentage ? r : max
-      );
+    for (const rule of rulesWithCap) {
+      // 判斷是否為推廣期優惠
+      let isPromo = false;
+      let promoEndDate: string | undefined;
       
-      const maxSpendingCap = highestRateRule.cap!;
-      info.spendingCap = {
-        amount: maxSpendingCap,
-        period: "月",
+      if (rule.validDateRange) {
+        const endDate = new Date(rule.validDateRange.end);
+        isPromo = true;
+        promoEndDate = rule.validDateRange.end;
+        
+        // 如果已過期，跳過
+        if (endDate < today) continue;
+      }
+      
+      // 計算簽賬上限和回贈上限
+      let rewardCap: number;
+      let spendingCap: number;
+      
+      if (rule.capType === 'spending') {
+        spendingCap = rule.cap!;
+        rewardCap = Math.round(spendingCap * (rule.percentage / 100));
+      } else {
+        // capType === 'reward' 或未指定
+        rewardCap = rule.cap!;
+        spendingCap = Math.round(rewardCap / (rule.percentage / 100));
+      }
+      
+      const cap: CategoryCap = {
+        category: extractCategoryName(rule.description),
+        rate: rule.percentage,
+        rewardCap,
+        spendingCap,
+        period: isPromo ? '推廣期' : '月',
+        isPromo,
+        promoEndDate,
+        note: extractNoteFromRule(rule),
       };
       
-      // 計算回贈上限 = 簽賬上限 × 回贈率
-      const calculatedRewardCap = Math.round(maxSpendingCap * (highestRateRule.percentage / 100));
-      info.rewardCap = {
-        amount: calculatedRewardCap,
-        period: "月",
-        isShared: spendingCapRules.some(r => r.shareCapWith),
-      };
-    } else if (rewardCapRules.length > 0) {
-      // 如果只有回贈上限（capType: 'reward'）
+      if (isPromo) {
+        promoCaps.push(cap);
+      } else {
+        regularCaps.push(cap);
+      }
+    }
+    
+    // 按回贈率排序（高到低）
+    regularCaps.sort((a, b) => b.rate - a.rate);
+    promoCaps.sort((a, b) => b.rate - a.rate);
+    
+    if (regularCaps.length > 0) {
+      info.regularCaps = regularCaps;
+      info.totalRegularRewardCap = regularCaps.reduce((sum, c) => sum + c.rewardCap, 0);
+    }
+    
+    if (promoCaps.length > 0) {
+      info.promoCaps = promoCaps;
+      info.totalPromoRewardCap = promoCaps.reduce((sum, c) => sum + c.rewardCap, 0);
+    }
+    
+    // 向後兼容：設置總上限（如果 terms 沒有提供）
+    if (!info.rewardCap && (regularCaps.length > 0 || promoCaps.length > 0)) {
+      const allCaps = [...regularCaps, ...promoCaps];
+      const totalRewardCap = allCaps.reduce((sum, c) => sum + c.rewardCap, 0);
+      
       // 找出最高回贈率的規則
-      const highestRateRule = rewardCapRules.reduce((max, r) => 
-        r.percentage > max.percentage ? r : max
+      const highestRateCap = allCaps.reduce((max, c) => 
+        c.rate > max.rate ? c : max
       );
       
-      const maxRewardCap = highestRateRule.cap!;
-      const sharedCap = rewardCapRules.some(r => r.shareCapWith);
-      
       info.rewardCap = {
-        amount: maxRewardCap,
+        amount: totalRewardCap,
         period: "月",
-        isShared: sharedCap,
       };
       
-      // 計算對應的簽賬上限（使用最高回贈率）
-      const spendingCapAmount = Math.round(maxRewardCap / (highestRateRule.percentage / 100));
-      
       info.spendingCap = {
-        amount: spendingCapAmount,
-        period: "月",
+        amount: highestRateCap.spendingCap,
+        period: highestRateCap.period,
       };
     }
     
     // 簽賬門檻（排除折扣規則）
     const minSpendRules = card.rules.filter(r => r.monthlyMinSpend !== undefined && !r.isDiscount);
-    if (minSpendRules.length > 0) {
+    if (minSpendRules.length > 0 && !info.minSpend) {
       const maxMinSpend = Math.max(...minSpendRules.map(r => r.monthlyMinSpend!));
       const minSpendRule = minSpendRules.find(r => r.monthlyMinSpend === maxMinSpend);
       
@@ -177,10 +286,9 @@ export function getCardCapInfo(card: CreditCard): CapInfo {
   }
   
   // 推廣期（從 card 或 rules）
-  if (card.promoEndDate) {
+  if (card.promoEndDate && !info.promoEndDate) {
     info.promoEndDate = card.promoEndDate;
     const endDate = new Date(card.promoEndDate);
-    const today = new Date();
     const diffTime = endDate.getTime() - today.getTime();
     info.daysUntilExpiry = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   }
@@ -245,4 +353,3 @@ export function formatCapInfo(info: CapInfo): {
   
   return result;
 }
-
