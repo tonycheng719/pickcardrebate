@@ -29,6 +29,7 @@ import { ShareSection } from "@/components/share-section";
 import { ShareButton } from "@/components/share-button";
 import { PARTNER_MODE_ENABLED } from "@/lib/config";
 import { getCardCapInfo, formatCapInfo } from "@/lib/utils/card-cap-info";
+import { getSceneRatings } from "@/lib/utils/scene-ratings";
 
 // Apply Button Component - switches between official and partner URLs based on config
 function ApplyButton({ card }: { card: CreditCard }) {
@@ -221,6 +222,9 @@ export default function CardDetailPage() {
     const baseRule = card.rules.find(r => r.matchType === 'base' && !r.isForeignCurrency);
     return baseRule?.percentage || 0.4;
   }, [card.rules]);
+  
+  // 計算適用場景評分
+  const sceneRatings = useMemo(() => getSceneRatings(card), [card]);
   
   // FAQ Data for card
   const faqItems = [
@@ -552,6 +556,56 @@ export default function CardDetailPage() {
               </motion.div>
             )}
 
+            {/* 適用場景評分 - 方案 A */}
+            {sceneRatings.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.22 }}
+              >
+                <Card>
+                  <CardContent className="p-5">
+                    <h2 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                      🎯 適用場景評分
+                    </h2>
+                    <div className="grid sm:grid-cols-2 gap-3">
+                      {sceneRatings.map((scene, idx) => (
+                        <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg">{scene.icon}</span>
+                            <div>
+                              <p className="text-sm font-medium text-gray-900 dark:text-white">{scene.scene}</p>
+                              {scene.note && (
+                                <p className="text-xs text-gray-500 dark:text-gray-400">{scene.note}</p>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className={`text-sm font-bold ${
+                              scene.rating >= 4 ? 'text-emerald-600 dark:text-emerald-400' :
+                              scene.rating >= 3 ? 'text-blue-600 dark:text-blue-400' :
+                              scene.rating >= 2 ? 'text-amber-600 dark:text-amber-400' :
+                              'text-gray-500 dark:text-gray-400'
+                            }`}>
+                              {scene.rate.toFixed(1)}%
+                            </span>
+                            <span className={`text-sm ${
+                              scene.rating >= 4 ? 'text-emerald-500' :
+                              scene.rating >= 3 ? 'text-blue-500' :
+                              scene.rating >= 2 ? 'text-amber-500' :
+                              'text-gray-400'
+                            }`}>
+                              {'★'.repeat(scene.rating)}{'☆'.repeat(5 - scene.rating)}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+
             {/* Reward Rules - 整合推廣期、警告、登記提示 */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -719,7 +773,7 @@ export default function CardDetailPage() {
               </motion.div>
             )}
 
-            {/* Card Info */}
+            {/* Card Info - 強化版（方案 C） */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -727,80 +781,168 @@ export default function CardDetailPage() {
             >
               <Card>
                 <CardContent className="p-5">
-                  <h2 className="font-semibold text-gray-900 dark:text-white mb-4">卡片資訊</h2>
+                  <h2 className="font-semibold text-gray-900 dark:text-white mb-4">📋 卡片資訊</h2>
                   <div className="grid sm:grid-cols-2 gap-4 text-sm">
+                    {/* 年費 */}
                     {(card.annualFee !== undefined || card.feeWaiverCondition) && (
-                      <div>
-                        <p className="text-gray-500 dark:text-gray-400">年費</p>
-                        <div className="font-medium text-gray-900 dark:text-white">
-                          {card.annualFee !== undefined && card.annualFee > 0 ? (
-                            <span className="text-lg font-bold text-orange-600 dark:text-orange-400">
-                              HK${card.annualFee.toLocaleString()}
-                            </span>
-                          ) : card.annualFee === 0 ? (
-                            <span className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
-                              永久免年費
-                            </span>
-                          ) : null}
-                          {card.feeWaiverCondition && card.annualFee !== 0 && (
-                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                              {card.feeWaiverCondition}
-                            </p>
-                          )}
+                      <div className="flex items-start gap-2">
+                        <span className="text-gray-400">💰</span>
+                        <div>
+                          <p className="text-gray-500 dark:text-gray-400 text-xs">年費</p>
+                          <div className="font-medium text-gray-900 dark:text-white">
+                            {card.annualFee !== undefined && card.annualFee > 0 ? (
+                              <span className="font-bold text-orange-600 dark:text-orange-400">
+                                HK${card.annualFee.toLocaleString()}
+                              </span>
+                            ) : card.annualFee === 0 ? (
+                              <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                                永久免年費
+                              </span>
+                            ) : null}
+                            {card.feeWaiverCondition && card.annualFee !== 0 && (
+                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                                {card.feeWaiverCondition}
+                              </p>
+                            )}
+                          </div>
                         </div>
                       </div>
                     )}
+                    
+                    {/* 外幣手續費 */}
                     {card.foreignCurrencyFee !== undefined && (
-                      <div>
-                        <p className="text-gray-500 dark:text-gray-400">外幣手續費</p>
-                        <p className="font-medium text-gray-900 dark:text-white">
-                          {card.foreignCurrencyFee === 0 ? '豁免' : `${card.foreignCurrencyFee}%`}
-                        </p>
-                      </div>
-                    )}
-                    {card.minIncome && (
-                      <div>
-                        <p className="text-gray-500 dark:text-gray-400">最低年薪</p>
-                        <div className="font-medium text-gray-900 dark:text-white">
-                          HK${card.minIncome.toLocaleString()}
-                          {card.incomeNote && (
-                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                              {card.incomeNote}
-                            </p>
-                          )}
+                      <div className="flex items-start gap-2">
+                        <span className="text-gray-400">🌐</span>
+                        <div>
+                          <p className="text-gray-500 dark:text-gray-400 text-xs">外幣手續費</p>
+                          <p className={`font-medium ${card.foreignCurrencyFee === 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-gray-900 dark:text-white'}`}>
+                            {card.foreignCurrencyFee === 0 ? '豁免' : `${card.foreignCurrencyFee}%`}
+                          </p>
                         </div>
                       </div>
                     )}
-                    {card.rewardTimeline && (
-                      <div>
-                        <p className="text-gray-500 dark:text-gray-400">回贈入賬</p>
-                        <p className="font-medium text-gray-900 dark:text-white">{card.rewardTimeline}</p>
+                    
+                    {/* 最低年薪 */}
+                    {card.minIncome && (
+                      <div className="flex items-start gap-2">
+                        <span className="text-gray-400">💵</span>
+                        <div>
+                          <p className="text-gray-500 dark:text-gray-400 text-xs">最低年薪</p>
+                          <div className="font-medium text-gray-900 dark:text-white">
+                            HK${card.minIncome.toLocaleString()}
+                            {card.incomeNote && (
+                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                                {card.incomeNote}
+                              </p>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     )}
+                    
+                    {/* 回贈入賬 */}
+                    {card.rewardTimeline && (
+                      <div className="flex items-start gap-2">
+                        <span className="text-gray-400">⏱️</span>
+                        <div>
+                          <p className="text-gray-500 dark:text-gray-400 text-xs">回贈入賬</p>
+                          <p className="font-medium text-gray-900 dark:text-white">{card.rewardTimeline}</p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* 積分類型 */}
                     {card.rewardConfig?.currency && (
-                      <div>
-                        <p className="text-gray-500 dark:text-gray-400">積分類型</p>
-                        <p className="font-medium text-gray-900 dark:text-white">{card.rewardConfig.currency}</p>
+                      <div className="flex items-start gap-2">
+                        <span className="text-gray-400">🎯</span>
+                        <div>
+                          <p className="text-gray-500 dark:text-gray-400 text-xs">積分類型</p>
+                          <p className="font-medium text-gray-900 dark:text-white">{card.rewardConfig.currency}</p>
+                        </div>
                       </div>
                     )}
                     
                     {/* 最高回贈 */}
                     {maxRate > 0 && (
-                      <div>
-                        <p className="text-gray-500 dark:text-gray-400">最高回贈</p>
-                        <p className="font-medium text-lg text-emerald-600 dark:text-emerald-400">
-                          {maxRate}%
-                        </p>
+                      <div className="flex items-start gap-2">
+                        <span className="text-gray-400">📈</span>
+                        <div>
+                          <p className="text-gray-500 dark:text-gray-400 text-xs">最高回贈</p>
+                          <p className="font-medium text-lg text-emerald-600 dark:text-emerald-400">
+                            {maxRate}%
+                          </p>
+                        </div>
                       </div>
                     )}
                     
                     {/* 基本回贈 */}
                     {baseRate > 0 && (
-                      <div>
-                        <p className="text-gray-500 dark:text-gray-400">基本回贈</p>
-                        <p className="font-medium text-gray-900 dark:text-white">
-                          {baseRate}%
-                        </p>
+                      <div className="flex items-start gap-2">
+                        <span className="text-gray-400">📉</span>
+                        <div>
+                          <p className="text-gray-500 dark:text-gray-400 text-xs">基本回贈</p>
+                          <p className="font-medium text-gray-900 dark:text-white">
+                            {baseRate}%
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* 簽賬上限 */}
+                    {capDisplay.spendingCapText && (
+                      <div className="flex items-start gap-2">
+                        <span className="text-gray-400">📊</span>
+                        <div>
+                          <p className="text-gray-500 dark:text-gray-400 text-xs">簽賬上限</p>
+                          <p className="font-medium text-blue-600 dark:text-blue-400">
+                            {capDisplay.spendingCapText}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* 回贈上限 */}
+                    {capDisplay.rewardCapText && (
+                      <div className="flex items-start gap-2">
+                        <span className="text-gray-400">💎</span>
+                        <div>
+                          <p className="text-gray-500 dark:text-gray-400 text-xs">回贈上限</p>
+                          <p className="font-medium text-purple-600 dark:text-purple-400">
+                            {capDisplay.rewardCapText}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* 簽賬下限 */}
+                    {capDisplay.minSpendText && (
+                      <div className="flex items-start gap-2">
+                        <span className="text-gray-400">⚠️</span>
+                        <div>
+                          <p className="text-gray-500 dark:text-gray-400 text-xs">簽賬下限</p>
+                          <p className={`font-medium ${capInfo.hasMinSpendIssue ? 'text-red-600 dark:text-red-400' : 'text-amber-600 dark:text-amber-400'}`}>
+                            {capDisplay.minSpendText}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* 推廣期 */}
+                    {capDisplay.promoText && (
+                      <div className="flex items-start gap-2">
+                        <span className="text-gray-400">📅</span>
+                        <div>
+                          <p className="text-gray-500 dark:text-gray-400 text-xs">推廣期</p>
+                          <p className={`font-medium ${
+                            capInfo.daysUntilExpiry !== undefined && capInfo.daysUntilExpiry <= 7 
+                              ? 'text-red-600 dark:text-red-400' 
+                              : capInfo.daysUntilExpiry !== undefined && capInfo.daysUntilExpiry <= 30 
+                              ? 'text-orange-600 dark:text-orange-400'
+                              : 'text-purple-600 dark:text-purple-400'
+                          }`}>
+                            {capDisplay.promoText}
+                          </p>
+                        </div>
                       </div>
                     )}
                   </div>
