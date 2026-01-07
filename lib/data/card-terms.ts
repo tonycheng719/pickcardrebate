@@ -855,6 +855,129 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://www.hsbc.com.hk/credit-cards/offers/travel-guru/",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // HSBC Red 信用卡獎賞計劃（指定商戶8%、網上4%）
+  // ========================================================================
+  {
+    cardId: "hsbc-red-rewards",
+    cardName: "HSBC Red 信用卡獎賞計劃",
+    bank: "HSBC",
+    documentName: "滙豐Red信用卡獎賞計劃之條款及細則",
+    promoStartDate: "2025-09-01",
+    promoEndDate: "2026-03-31",
+    rewardCap: {
+      type: "extra",
+      amount: 500,  // 指定商戶$100 + 網上$400
+      period: "monthly",
+      note: "指定商戶 $100 + 網上簽賬 $400（分開計算）"
+    },
+    spendingCap: {
+      amount: 11250,  // 指定商戶$1,250 + 網上$10,000
+      period: "monthly",
+      calculation: "指定商戶 $1,250（$100÷8%）+ 網上 $10,000（$400÷4%）"
+    },
+    rewardRates: [
+      // 指定商戶
+      { 
+        category: "指定商戶", 
+        totalRate: 8.0, 
+        baseRate: 0.4, 
+        extraRate: 7.6, 
+        note: "壽司郎/譚仔三哥/譚仔雲南/The Coffee Academïcs/GU/Decathlon/lululemon/NAMCO/TAITO STATION（香港分店，百貨專櫃除外）；每月上限 $100 獎賞錢（首 $1,250）" 
+      },
+      // 網上簽賬
+      { 
+        category: "網上簽賬", 
+        totalRate: 4.0, 
+        baseRate: 0.4, 
+        extraRate: 3.6, 
+        note: "每月上限 $400 獎賞錢（首 $10,000）" 
+      },
+      // 基本
+      { 
+        category: "其他簽賬", 
+        totalRate: 0.4, 
+        baseRate: 0.4, 
+        extraRate: 0, 
+        note: "基本獎賞" 
+      },
+    ],
+    exclusions: [
+      // 指定商戶
+      "指定商戶：百貨公司專櫃及特賣場",
+      "指定商戶：以電子錢包內信用卡所作之任何簽賬",
+      // 網上簽賬
+      "網上繳費（包括滙豐網上理財、網上繳費平台）",
+      "以電子錢包內信用卡所作之任何簽賬",
+      "保費簽賬",
+      "證券買賣簽賬",
+      "繳付租金／物業管理費簽賬",
+      "廣告服務之簽賬",
+      "「八達通自動增值」服務及增值八達通之簽賬",
+      // 通用
+      "任何增值電子錢包之交易",
+      "有濫用或欺詐行為之交易",
+    ],
+    warnings: [
+      "⚠️ 指定商戶與網上簽賬回贈上限分開計算",
+      "⚠️ 同一簽賬符合多個類別，只會按「指定商戶」計算",
+      "外幣簽賬會兌換至港幣計算",
+      "取消/退款交易會被扣除獎賞錢",
+    ],
+    officialSource: "https://www.hsbc.com.hk/content/dam/hsbc/hk/tc/docs/credit-cards/reward-scheme-terms-and-conditions.pdf",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // HSBC Red 麥當勞印花卡獎賞
+  // ========================================================================
+  {
+    cardId: "hsbc-red-mcdonalds",
+    cardName: "HSBC Red 麥當勞印花卡獎賞",
+    bank: "HSBC",
+    documentName: "滙豐Reward+最紅印花卡獎賞–麥當勞之條款及細則",
+    promoStartDate: "2026-01-02",
+    promoEndDate: "2026-12-31",
+    rewardCap: {
+      type: "extra",  // 額外獎賞錢
+      amount: 360,    // 全年上限
+      period: "annual",
+      note: "每月上限 $30（8印花）；全年上限 $360（96印花）"
+    },
+    minSpend: {
+      amount: 30,
+      period: "monthly",  // 單筆滿 $30
+      type: "category",
+      note: "單一簽賬淨額滿 $30；每日限1個印花"
+    },
+    rewardRates: [
+      { 
+        category: "麥當勞印花", 
+        totalRate: 0, 
+        baseRate: 0.4, 
+        extraRate: 0, 
+        note: "每月簽滿 4 次 $30+ = $15 獎賞錢；每月上限 8 印花 = $30" 
+      },
+    ],
+    exclusions: [
+      "以電子錢包所作的交易（包括增值電子錢包）",
+      "所有未誌賬、取消以及退款的交易",
+      "附屬卡（⚠️ 只限主卡）",
+      "現金券/禮物卡使用",
+    ],
+    warnings: [
+      "⚠️ 只限 HSBC Red 信用卡主卡（附屬卡不適用）",
+      "⚠️ 每日只可賺取 1 個印花（即使多次簽賬）",
+      "⚠️ 每月印花需於月底後 20 天內領取，否則過期無效",
+      "⚠️ 不同月份印花不可合併使用",
+      "需於 Reward+ App 登記及收集印花",
+      "印花於誌賬後 3 個工作天內顯示",
+      "參與商戶：香港麥當勞餐廳及麥當勞 App",
+    ],
+    officialSource: "https://www.hsbc.com.hk/content/dam/hsbc/hk/tc/docs/red/terms-and-conditions-mcdonald.pdf",
+    lastUpdated: "2026-01-08",
+  },
 ];
 
 // ========================================================================
