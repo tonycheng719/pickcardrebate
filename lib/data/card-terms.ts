@@ -207,6 +207,57 @@ export const cardTerms: CardTerms[] = [
   },
 
   // ========================================================================
+  // 安信 WeWa Visa Signature
+  // ========================================================================
+  {
+    cardId: "wewa-visa-signature",
+    cardName: "WeWa Visa Signature 卡",
+    bank: "安信",
+    promoStartDate: "2025-07-01",
+    promoEndDate: "2026-06-30",
+    rewardCap: {
+      type: "extra",  // 額外回贈上限
+      amount: 200,
+      period: "monthly",
+      note: "玩樂類別 4 選 1 共用上限"
+    },
+    spendingCap: {
+      // hkcashrebate 說是 $25,000，但 $200 ÷ 4% = $5,000
+      // $25,000 可能是「合資格簽賬上限」（包括基本 0.4%）
+      // 實際能獲 4% 回贈的簽賬上限是 $5,000
+      amount: 5000,  
+      period: "monthly",
+      calculation: "$200 ÷ 4% = $5,000"
+    },
+    minSpend: {
+      amount: 1500,
+      period: "monthly",
+      type: "total",
+      note: "需月簽滿 $1,500 先有 4% 回贈"
+    },
+    rewardRates: [
+      { category: "手機支付", totalRate: 4.0, baseRate: 0.4, extraRate: 3.6, note: "Apple Pay（僅 iOS）" },
+      { category: "旅遊", totalRate: 4.0, baseRate: 0.4, extraRate: 3.6, note: "航空公司/酒店/旅行社" },
+      { category: "海外", totalRate: 4.0, baseRate: 0.4, extraRate: 3.6, note: "淨約 2.05%（扣手續費）" },
+      { category: "線上娛樂", totalRate: 4.0, baseRate: 0.4, extraRate: 3.6, note: "Netflix/Spotify/Steam 等" },
+      { category: "八達通自動增值", totalRate: 0.4, baseRate: 0.4, extraRate: 0 },
+      { category: "其他簽賬", totalRate: 0.4, baseRate: 0.4, extraRate: 0 },
+    ],
+    exclusions: [
+      "電子錢包充值/轉賬",
+      "分期付款",
+      "賭場",
+      "繳費",
+    ],
+    warnings: [
+      "手機支付僅支援 iOS 使用 Apple Pay，Android 不支援",
+      "Visa 外幣手續費約 1.95%",
+    ],
+    officialSource: "https://www.primecredit.com/tc/credit-card/wewa/",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
   // sim Credit Card 基本版
   // ========================================================================
   {

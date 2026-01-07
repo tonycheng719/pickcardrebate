@@ -755,7 +755,7 @@ export default function CardDetailPage() {
                     
                     {capDisplay.minSpendText && (
                       <div>
-                        <p className="text-gray-500 dark:text-gray-400">簽賬門檻</p>
+                        <p className="text-gray-500 dark:text-gray-400">簽賬下限</p>
                         <p className={`font-medium ${capInfo.hasMinSpendIssue ? 'text-red-600 dark:text-red-400' : 'text-orange-600 dark:text-orange-400'}`}>
                           {capDisplay.minSpendText}
                         </p>
@@ -772,13 +772,13 @@ export default function CardDetailPage() {
                     )}
                   </div>
                   
-                  {/* 門檻高過上限警告 */}
+                  {/* 下限高過上限警告 */}
                   {capDisplay.warningText && (
                     <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
                       <div className="flex items-start gap-2">
                         <AlertCircle className="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" />
                         <div>
-                          <p className="text-sm font-medium text-red-700 dark:text-red-400">⚠️ 簽賬門檻高過上限</p>
+                          <p className="text-sm font-medium text-red-700 dark:text-red-400">⚠️ 簽賬下限高過上限</p>
                           <p className="text-xs text-red-600 dark:text-red-300 mt-1">{capDisplay.warningText}</p>
                         </div>
                       </div>
