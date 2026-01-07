@@ -552,7 +552,7 @@ export default function CardDetailPage() {
               </motion.div>
             )}
 
-            {/* Reward Rules */}
+            {/* Reward Rules - 整合推廣期、警告、登記提示 */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -560,10 +560,24 @@ export default function CardDetailPage() {
             >
               <Card>
                 <CardContent className="p-5">
-                  <h2 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                    <CardIcon className="h-5 w-5 text-blue-500" />
-                    回贈規則
-                  </h2>
+                  {/* 標題列：回贈規則 + 推廣期 */}
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                      <CardIcon className="h-5 w-5 text-blue-500" />
+                      回贈規則
+                    </h2>
+                    {capDisplay.promoText && (
+                      <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${
+                        capInfo.daysUntilExpiry !== undefined && capInfo.daysUntilExpiry <= 7 
+                          ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' 
+                          : capInfo.daysUntilExpiry !== undefined && capInfo.daysUntilExpiry <= 30 
+                          ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'
+                          : 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
+                      }`}>
+                        推廣期 {capDisplay.promoText}
+                      </span>
+                    )}
+                  </div>
                   <div className="space-y-3">
                     {card.rules.map((rule, idx) => {
                       // Calculate base rate and extra rate
@@ -654,49 +668,43 @@ export default function CardDetailPage() {
                       </div>
                     </div>
                   )}
+                  
+                  {/* 需登記提示 */}
+                  {card.rules.some(r => r.requiresRegistration) && (
+                    <div className="mt-4 p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20">
+                      <div className="flex items-center gap-2 text-sm">
+                        <span className="text-blue-600 dark:text-blue-400">📝</span>
+                        <span className="text-blue-700 dark:text-blue-300 font-medium">
+                          部分優惠需先登記
+                        </span>
+                        {card.registrationUrl && (
+                          <a 
+                            href={card.registrationUrl} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="ml-auto text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+                          >
+                            立即登記 <ExternalLink className="h-3 w-3" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* 下限高過上限警告 */}
+                  {capDisplay.warningText && (
+                    <div className="mt-4 p-3 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
+                      <div className="flex items-start gap-2 text-sm">
+                        <span className="text-red-500 mt-0.5">⚠️</span>
+                        <span className="text-red-700 dark:text-red-300">
+                          {capDisplay.warningText}
+                        </span>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </motion.div>
-
-            {/* 限時優惠區塊 - 只顯示推廣期和重要警告 */}
-            {(capInfo.promoEndDate || capInfo.hasMinSpendIssue) && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                <Card className={`border ${capInfo.hasMinSpendIssue ? 'border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20' : 'border-purple-200 dark:border-purple-800 bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20'}`}>
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="text-lg">{capInfo.hasMinSpendIssue ? '⚠️' : '🔥'}</span>
-                        <span className={`font-medium ${capInfo.hasMinSpendIssue ? 'text-red-900 dark:text-red-100' : 'text-purple-900 dark:text-purple-100'}`}>
-                          {capInfo.hasMinSpendIssue ? '注意事項' : '限時優惠'}
-                        </span>
-                      </div>
-                      {capDisplay.promoText && (
-                        <span className={`text-xs px-2 py-1 rounded-full ${
-                          capInfo.daysUntilExpiry !== undefined && capInfo.daysUntilExpiry <= 7 
-                            ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' 
-                            : capInfo.daysUntilExpiry !== undefined && capInfo.daysUntilExpiry <= 30 
-                            ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'
-                            : 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
-                        }`}>
-                          {capDisplay.promoText}
-                        </span>
-                      )}
-                    </div>
-                    
-                    {/* 下限高過上限警告 */}
-                    {capDisplay.warningText && (
-                      <div className="mt-3 text-sm text-red-600 dark:text-red-300">
-                        {capDisplay.warningText}
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              </motion.div>
-            )}
 
             {/* Important Notes */}
             {card.note && (
