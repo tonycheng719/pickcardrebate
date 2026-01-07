@@ -75,8 +75,8 @@ export const cardTerms: CardTerms[] = [
   // HSBC Visa Signature - 2026 最紅自主獎賞
   // ========================================================================
   {
-    cardId: "hsbc-vs",
-    cardName: "HSBC Visa Signature",
+    cardId: "hsbc-vs-red-hot",
+    cardName: "HSBC Visa Signature（最紅自主獎賞）",
     bank: "HSBC",
     documentName: "2026「最紅自主獎賞」使用條款及細則",
     promoStartDate: "2026-01-01",
@@ -112,6 +112,60 @@ export const cardTerms: CardTerms[] = [
       "海外商戶簽港幣（CBF）手續費 1%",
     ],
     officialSource: "https://www.hsbc.com.hk/content/dam/hsbc/hk/tc/docs/credit-cards/rewards/2026-red-hot-rewards-of-your-choice-terms-and-conditions.pdf",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // HSBC Visa Signature 卡特別獎賞推廣（額外 3X）
+  // ========================================================================
+  {
+    cardId: "hsbc-vs-special",
+    cardName: "HSBC Visa Signature（特別獎賞）",
+    bank: "HSBC",
+    documentName: "滙豐Visa Signature卡特別獎賞推廣條款及細則",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-12-31",
+    rewardCap: {
+      type: "extra",  // 額外 3X 獎賞錢
+      amount: 1200,   // $100,000 × 1.2%
+      period: "annual",
+      note: "首 $100,000 合資格簽賬享額外 3X（1.2%）"
+    },
+    spendingCap: {
+      amount: 100000,
+      period: "annual",
+      calculation: "每年首 $100,000 簽賬享額外 3X"
+    },
+    rewardRates: [
+      { category: "賞滋味（餐飲）", totalRate: 1.2, baseRate: 0, extraRate: 1.2, note: "額外 3X，不包括酒店/百貨/俱樂部內食肆" },
+      { category: "賞購物（指定商戶）", totalRate: 1.2, baseRate: 0, extraRate: 1.2, note: "額外 3X，參閱 hsbc.com.hk/rewards" },
+      { category: "賞家居（指定商戶）", totalRate: 1.2, baseRate: 0, extraRate: 1.2, note: "額外 3X，參閱 hsbc.com.hk/rewards" },
+      { category: "賞享受（指定商戶）", totalRate: 1.2, baseRate: 0, extraRate: 1.2, note: "額外 3X，參閱 hsbc.com.hk/rewards" },
+      { category: "賞世界（海外/內地/澳門）", totalRate: 1.2, baseRate: 0, extraRate: 1.2, note: "額外 3X，香港/港幣簽賬除外" },
+    ],
+    exclusions: [
+      "財務及銀行費用（年費、財務費用、逾期費用）",
+      "透過滙豐流動理財及/或網上理財繳費",
+      "購買及/或充值儲值卡的交易",
+      "以電子錢包所作的交易（包括增值電子錢包）",
+      "現金貸款、現金套現、簽賬分期計劃",
+      "於非金融機構的交易（包括購買外匯、匯票及旅行支票）",
+      "於金融機構的交易（包括購買銀行產品及服務）",
+      "電匯",
+      "賭博交易",
+      "繳稅",
+      "所有未誌賬/取消/退款的交易",
+      "賞滋味：酒席宴會、私人宴會、包場派對、酒店/百貨公司/俱樂部內飲食專櫃",
+      "賞購物/賞家居/賞享受：百貨公司專櫃及特賣場",
+      "賞世界：香港進行或以港幣交易的簽賬",
+    ],
+    warnings: [
+      "此為 VS 卡專享額外 3X，與最紅自主獎賞 5X 分開計算",
+      "VS 卡總計：1X基本 + 3X特別獎賞 + 5X最紅自主獎賞 = 9X (3.6%)",
+      "首 $100,000 簽賬上限（同一持卡人所有卡合併計算）",
+      "外幣簽賬會兌換至港幣計算",
+    ],
+    officialSource: "https://www.hsbc.com.hk/content/dam/hsbc/hk/docs/credit-cards/visa-signature/special-reward-tnc.pdf",
     lastUpdated: "2026-01-08",
   },
   
