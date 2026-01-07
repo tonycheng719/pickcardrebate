@@ -978,6 +978,173 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://www.hsbc.com.hk/content/dam/hsbc/hk/tc/docs/red/terms-and-conditions-mcdonald.pdf",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // HSBC Pulse 銀聯雙幣鑽石信用卡特別獎賞推廣
+  // ========================================================================
+  {
+    cardId: "hsbc-pulse-unionpay-special",
+    cardName: "HSBC Pulse 銀聯雙幣鑽石信用卡（特別獎賞）",
+    bank: "HSBC",
+    documentName: "滙豐Pulse銀聯雙幣鑽石信用卡特別獎賞推廣條款及細則",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-06-30",
+    rewardCap: {
+      type: "extra",  // 額外 5X 獎賞錢
+      amount: 1600,   // $80,000 × 2%（額外5X = 2%）
+      period: "promo",
+      note: "首 $80,000 合資格簽賬享額外 5X（主卡+附屬卡合併計算）"
+    },
+    spendingCap: {
+      amount: 80000,
+      period: "promo",
+      calculation: "推廣期內首 $80,000 合資格簽賬"
+    },
+    rewardRates: [
+      { 
+        category: "中國內地及澳門（二維碼/流動支付）", 
+        totalRate: 2.4, 
+        baseRate: 0.4, 
+        extraRate: 2.0, 
+        note: "額外 5X = 2%；需透過 QR Code 或 Apple Pay/Google Pay/Samsung Pay 付款" 
+      },
+    ],
+    exclusions: [
+      "於香港或其他非中國內地及澳門進行的簽賬交易",
+      "以港幣或其他非人民幣及澳門元的外幣進行的簽賬交易",
+      "財務及銀行費用（年費、財務費用、逾期費用）",
+      "郵購、傳真及電話訂購",
+      "透過滙豐流動理財及/或網上理財繳費",
+      "購買及/或充值儲值卡或電子錢包（八達通自動增值、增值八達通、PayMe 增值）",
+      "以電子錢包所作的交易（包括增值電子錢包）",
+      "八達通自動增值",
+      "現金貸款、現金套現、簽賬分期計劃",
+      "於非金融機構的交易（包括購買外匯、匯票及旅行支票）",
+      "於金融機構的交易（包括購買銀行產品及服務）",
+      "電匯",
+      "賭博交易",
+      "繳稅",
+      "所有未誌賬/取消/退款的交易",
+    ],
+    warnings: [
+      "⚠️ 只適用於中國內地及澳門（根據銀聯國家代碼）",
+      "⚠️ 只計人民幣及澳門元簽賬",
+      "⚠️ 需使用 QR Code 付款（Reward+ App / 雲閃付 App）或流動支付（Apple Pay/Google Pay/Samsung Pay）",
+      "⚠️ QR Code 付款只限主卡持有人使用",
+      "主卡及附屬卡的合資格簽賬會合併計算上限",
+      "澳門元簽賬會兌換至港幣計算",
+    ],
+    officialSource: "https://www.hsbc.com.hk/content/dam/hsbc/hk/tc/docs/credit-cards/unionpay-dual-currency/diamond-card-terms-and-conditions.pdf",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // HSBC 信用卡迎新推廣優惠（通用）
+  // ========================================================================
+  {
+    cardId: "hsbc-welcome-offer",
+    cardName: "滙豐信用卡迎新推廣優惠",
+    bank: "HSBC",
+    documentName: "滙豐信用卡迎新推廣優惠之條款及細則",
+    promoStartDate: "2025-03-01",
+    promoEndDate: "2026-02-28",
+    minSpend: {
+      amount: 8000,  // 卓越理財/VS/EveryMile/Pulse 要 $8,000；其他要 $5,800
+      period: "promo",
+      type: "total",
+      note: "發卡後首 60 日內累積簽賬：卓越理財/VS/EveryMile/Pulse = $8,000；滙財金/easy/銀聯 = $5,800"
+    },
+    rewardRates: [
+      // 卓越理財
+      { 
+        category: "滙豐卓越理財信用卡® - 全新客戶（網上申請）", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "$800 獎賞錢（簽 $8,000）" 
+      },
+      { 
+        category: "滙豐卓越理財信用卡® - 全新客戶", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "$600 獎賞錢（簽 $8,000）" 
+      },
+      { 
+        category: "滙豐卓越理財信用卡® - 現有客戶", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "$200 獎賞錢（簽 $8,000）" 
+      },
+      // VS/EveryMile/Pulse
+      { 
+        category: "VS/EveryMile/Pulse - 全新客戶（網上申請）", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "$800 獎賞錢（簽 $8,000）" 
+      },
+      { 
+        category: "VS/EveryMile/Pulse - 全新客戶", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "$600 獎賞錢（簽 $8,000）" 
+      },
+      { 
+        category: "VS/EveryMile/Pulse - 現有客戶", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "$200 獎賞錢（簽 $8,000）" 
+      },
+      // 滙財金/easy/銀聯
+      { 
+        category: "滙財金/easy/銀聯 - 全新客戶", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "$600 獎賞錢 或 35,000 易賞錢積分（簽 $5,800）" 
+      },
+      { 
+        category: "滙財金/easy/銀聯 - 現有客戶", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "$200 獎賞錢 或 15,000 易賞錢積分（簽 $5,800）" 
+      },
+    ],
+    exclusions: [
+      "財務及銀行費用（年費、財務費用、逾期費用）",
+      "以附屬卡作的交易",
+      "郵購、傳真及電話訂購",
+      "透過滙豐流動理財及/或網上理財繳費",
+      "購買及/或充值儲值卡的交易（包括增值八達通）",
+      "以電子錢包所作的交易（包括增值電子錢包）",
+      "八達通自動增值",
+      "於「獎賞錢」購物網及其他推廣進行的換購交易",
+      "現金貸款、現金套現、簽賬分期計劃",
+      "於非金融機構的交易（包括購買外匯、匯票及旅行支票）",
+      "於金融機構的交易（包括購買銀行產品及服務）",
+      "電匯",
+      "賭博交易",
+      "繳稅",
+      "自動轉賬、循環付款",
+      "所有未誌賬/取消/退款的交易",
+    ],
+    warnings: [
+      "⚠️ 12個月內曾取消任何滙豐信用卡不可參加",
+      "⚠️ 附屬卡不適用",
+      "⚠️ 13個月內取消卡會被扣回獎賞",
+      "人民幣簽賬只適用於 Pulse 銀聯卡，港幣/人民幣 1:1 計算",
+      "獎賞錢於完成要求後 2 個月內入賬",
+      "易賞錢積分（如選擇）於完成要求後 4 個月內入賬",
+      "easy 卡需於發卡後 30 日內綁定易賞錢 App",
+    ],
+    officialSource: "https://www.hsbc.com.hk/content/dam/hsbc/hk/tc/docs/credit-cards/offers/welcome-terms-and-conditions.pdf",
+    lastUpdated: "2026-01-08",
+  },
 ];
 
 // ========================================================================
