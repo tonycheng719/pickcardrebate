@@ -505,6 +505,151 @@ export const cardTerms: CardTerms[] = [
   },
 
   // ========================================================================
+  // HSBC EveryMile 信用卡
+  // ========================================================================
+  {
+    cardId: "hsbc-everymile",
+    cardName: "HSBC EveryMile 信用卡",
+    bank: "HSBC",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-06-30",
+    rewardRates: [
+      // 指定日常及旅遊消費
+      { 
+        category: "指定日常及旅遊消費", 
+        totalRate: 2.5, 
+        baseRate: 0.4, 
+        extraRate: 2.1, 
+        note: "咖啡店(Starbucks/Pacific Coffee/Lady M等)、本地交通(港鐵/巴士/的士)、跨境交通、旅遊服務(AVIS/HERTZ等)；$2/里" 
+      },
+      // 本地及海外簽賬
+      { 
+        category: "本地及海外簽賬", 
+        totalRate: 1.0, 
+        baseRate: 0.4, 
+        extraRate: 0.6, 
+        note: "非指定類別的一般簽賬；$5/里" 
+      },
+      // 其他指定簽賬（只有基本）
+      { 
+        category: "八達通自動增值/網上繳費", 
+        totalRate: 0.4, 
+        baseRate: 0.4, 
+        extraRate: 0, 
+        note: "$12.5/里" 
+      },
+      { 
+        category: "本地超市", 
+        totalRate: 0.4, 
+        baseRate: 0.4, 
+        extraRate: 0, 
+        note: "⚠️ 超市只有 0.4%！$12.5/里" 
+      },
+      { 
+        category: "保費/證券/租金/廣告", 
+        totalRate: 0.4, 
+        baseRate: 0.4, 
+        extraRate: 0, 
+        note: "⚠️ 只有基本 0.4%！$12.5/里" 
+      },
+    ],
+    exclusions: [
+      "財務及銀行費用",
+      "現金貸款、現金套現、簽賬分期計劃",
+      "繳稅",
+      "購買及/或充值儲值卡或電子錢包（八達通自動增值除外）",
+      "以電子錢包所作的交易（包括增值電子錢包）",
+      "郵購、傳真及電話訂購",
+      "透過滙豐流動理財及/或網上理財繳費",
+      "於非金融機構的交易（包括購買外匯、匯票及旅行支票）",
+      "於金融機構的交易（包括購買銀行產品及服務）",
+      "電匯",
+      "賭博交易",
+      "自動轉賬、循環付款",
+      "所有未誌賬/取消/退款的交易",
+    ],
+    warnings: [
+      "⚠️ 不適用於「最紅自主獎賞」和「Visa Signature 卡專享優惠」",
+      "⚠️ 不適用於「Travel Guru 會員計劃」",
+      "⚠️ 本地超市只有 0.4%（不是 2.5%）！",
+      "⚠️ 保費、證券、租金、廣告只有 0.4%",
+      "優惠兌換率：$1 獎賞錢 = 20 里",
+      "首年年費豁免",
+      "海外簽賬手續費 1.95%",
+    ],
+    officialSource: "https://www.hsbc.com.hk/content/dam/hsbc/hk/tc/docs/credit-cards/everymile/everymile-rewards-scheme-travel-benefits.pdf",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // HSBC EveryMile 限時額外迎新（2026/1/7-2/28）
+  // ========================================================================
+  {
+    cardId: "hsbc-everymile-welcome-2026",
+    cardName: "HSBC EveryMile 限時額外迎新優惠",
+    bank: "HSBC",
+    promoStartDate: "2026-01-07",
+    promoEndDate: "2026-02-28",
+    minSpend: {
+      amount: 40000,
+      period: "promo" as const,
+      type: "total",
+      note: "發卡後首60日內累積簽賬"
+    },
+    rewardRates: [
+      // 全新客戶
+      { 
+        category: "全新客戶 - 簽$40,000-$119,999", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "額外 $1,000 獎賞錢（20,000里）" 
+      },
+      { 
+        category: "全新客戶 - 簽$120,000+", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "額外 $4,600 獎賞錢（92,000里）🔥" 
+      },
+      // 現有客戶
+      { 
+        category: "現有客戶 - 簽$40,000+", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "額外 $250 獎賞錢（5,000里）" 
+      },
+    ],
+    exclusions: [
+      "財務及銀行費用（年費、財務費用、逾期費用）",
+      "以附屬卡作的交易",
+      "郵購、傳真及電話訂購",
+      "透過滙豐流動理財及/或網上理財繳費",
+      "購買及/或充值儲值卡的交易（包括增值八達通）",
+      "以電子錢包所作的交易（包括增值電子錢包）",
+      "八達通自動增值",
+      "於「獎賞錢」購物網及其他推廣進行的換購交易",
+      "現金貸款、現金套現、簽賬分期計劃",
+      "於非金融機構的交易（包括購買外匯、匯票及旅行支票）",
+      "於金融機構的交易（包括購買銀行產品及服務）",
+      "電匯",
+      "賭博交易",
+      "繳稅",
+      "自動轉賬、循環付款",
+      "所有未誌賬/取消/退款的交易",
+    ],
+    warnings: [
+      "⚠️ 12個月內曾取消任何滙豐信用卡不可參加",
+      "⚠️ 附屬卡不適用",
+      "⚠️ 13個月內取消卡會被扣回獎賞",
+      "需透過滙豐網頁/網上理財/HSBC HK App 申請",
+    ],
+    officialSource: "https://www.hsbc.com.hk/content/dam/hsbc/hk/tc/docs/credit-cards/offers/p4-acq-offer-tnc.pdf",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
   // HSBC Travel Guru 會員計劃
   // ========================================================================
   {
