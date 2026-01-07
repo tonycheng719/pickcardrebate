@@ -154,12 +154,13 @@ export const HK_CARDS: CreditCard[] = [
       // T&C 2025: 內地/澳門 QR Code/流動支付 額外5倍 (2%) + 基本0.4% + 賞世界2% = 4.4%
       // 簽賬上限 $80,000
       { description: "內地/澳門 QR Code/流動支付 4.4%", matchType: "base", percentage: 4.4, isForeignCurrency: true, cap: 80000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
-      // T&C: 最紅自主獎賞「賞世界」
-      { description: "最紅自主獎賞 (賞世界) 2.4%", matchType: "category", matchValue: "china", percentage: 2.4, cap: 100000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C: 最紅自主獎賞 6X = 5X額外 + 1X基本 = 2.4%（五選一共用上限）
+      { description: "最紅自主獎賞 6X (2.4%) [需登記,五選一]", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 2.4, cap: 100000, capType: "spending", capPeriod: "yearly", shareCapWith: "hsbc_pulse_red_hot", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "賞世界 6X (2.4%) [需登記,五選一]", matchType: "base", percentage: 2.4, isForeignCurrency: true, cap: 100000, capType: "spending", capPeriod: "yearly", shareCapWith: "hsbc_pulse_red_hot", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 基本回饋 0.4%，排除電子錢包、繳稅、繳費、PayMe增值
       { description: "基本回饋 0.4% ($25/里)", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
-    tags: ["北上消費", "銀聯", "免手續費", "內地4.4%", "百老滙8%"],
+    tags: ["北上消費", "銀聯", "免手續費", "內地4.4%", "百老滙8%", "最紅自主獎賞"],
     welcomeOfferText: "迎新簽 $8,000 送 $600-$800 獎賞錢 (首60日內)",
     officialApplyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/pulse-unionpay/",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=259&a=228&sub_id1=pickcardrebate&sub_id2=web",
@@ -184,13 +185,14 @@ export const HK_CARDS: CreditCard[] = [
       // 🔥 最紅冬日賞 - 百老滙 (2025/12/1 - 2026/2/28)
       // 累積簽賬滿 $10,000 享 6% 回贈 (上限 $900)，單一簽賬需滿 $500，需登記
       { description: "🔥百老滙 6% [冬日賞,累積$10,000,需登記]", matchType: "merchant", matchValue: ["broadway"], percentage: 6.0, minSpend: 500, cap: 900, capType: "reward", validDateRange: { start: "2025-12-01", end: "2026-02-28" } },
-      // T&C: 最紅自主獎賞適用
-      { description: "海外/網上簽賬 2.4%", matchType: "category", matchValue: ["travel", "online"], percentage: 2.4, minSpend: 8000, excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
+      // T&C: 最紅自主獎賞 6X = 5X額外 + 1X基本 = 2.4%（五選一共用上限）
+      { description: "最紅自主獎賞 6X (2.4%) [需登記,五選一]", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 2.4, cap: 100000, capType: "spending", capPeriod: "yearly", shareCapWith: "hsbc_premier_red_hot", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "賞世界 6X (2.4%) [需登記,五選一]", matchType: "base", percentage: 2.4, isForeignCurrency: true, cap: 100000, capType: "spending", capPeriod: "yearly", shareCapWith: "hsbc_premier_red_hot", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 基本回饋 0.4%，排除電子錢包、繳稅、繳費
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["卓越理財", "旅遊", "百老滙6%"],
-    sellingPoints: ["卓越理財客戶專享", "指定類別額外獎賞錢"],
+    tags: ["卓越理財", "旅遊", "百老滙6%", "最紅自主獎賞"],
+    sellingPoints: ["卓越理財客戶專享", "最紅自主獎賞 6X (2.4%)", "指定類別額外獎賞錢"],
     note: "⚠️ 需月簽賬滿 $8,000 才享 2.4% 回贈！不適用於電子錢包簽賬、繳稅、網上繳費。僅限卓越理財客戶申請。\n\n🔥 **最紅冬日賞萬寧**（至2026/2/28）：週末高達10%回贈！[查看詳情](/discover/hsbc-mannings-winter-2025)\n\n🔥 **最紅冬日賞百老滙**（至2026/2/28）：累積簽賬滿$10,000享6%回贈！[查看詳情](/discover/hsbc-broadway-winter-2025)",
     officialApplyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/premier/",
     promoEndDate: "2026-02-28",
@@ -208,12 +210,13 @@ export const HK_CARDS: CreditCard[] = [
     rules: [
       // T&C: 網上繳付指定學院學費 2.4% 額外獎賞錢 (每階段上限$200，全期$400)
       { description: "指定學院學費 2.4% [網上繳費]", matchType: "category", matchValue: ["education"], percentage: 2.4, cap: 200, capType: "reward" },
-      // T&C: 最紅自主獎賞適用
-      { description: "最紅自主獎賞 2.4%", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 2.4, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // T&C: 最紅自主獎賞 6X = 5X額外 + 1X基本 = 2.4%（五選一共用上限，學生卡上限較低）
+      { description: "最紅自主獎賞 6X (2.4%) [需登記,五選一]", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 2.4, cap: 25000, capType: "spending", capPeriod: "yearly", shareCapWith: "hsbc_student_red_hot", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "賞世界 6X (2.4%) [需登記,五選一]", matchType: "base", percentage: 2.4, isForeignCurrency: true, cap: 25000, capType: "spending", capPeriod: "yearly", shareCapWith: "hsbc_student_red_hot", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 基本回饋 0.4%
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
-    tags: ["學生卡", "交學費2.4%", "永久免年費"],
+    tags: ["學生卡", "交學費2.4%", "永久免年費", "最紅自主獎賞"],
     welcomeOfferText: "迎新簽 $2,000 送 $300 獎賞錢 (首60日內)",
     officialApplyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/gold/",
     applyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/gold/",
@@ -2117,11 +2120,12 @@ export const HK_CARDS: CreditCard[] = [
       { description: "豐澤 95折 [每月10號]", matchType: "merchant", matchValue: ["fortress"], percentage: 5.0, validDates: [10], isDiscount: true, minSpend: 2000 },
       // VIP會員 6倍易賞錢 (2.4%) - 回贈，需綁定易賞錢App
       { description: "百佳/屈臣氏/豐澤 VIP 2.4%", matchType: "merchant", matchValue: ["parknshop", "watsons", "fortress"], percentage: 2.4 },
-      // 最紅自主獎賞 (需登記) - 回贈
-      { description: "最紅自主獎賞 2.4%", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 2.4, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // 最紅自主獎賞 6X = 5X額外 + 1X基本 = 2.4%（五選一共用上限）
+      { description: "最紅自主獎賞 6X (2.4%) [需登記,五選一]", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 2.4, cap: 25000, capType: "spending", capPeriod: "yearly", shareCapWith: "hsbc_easy_red_hot", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "賞世界 6X (2.4%) [需登記,五選一]", matchType: "base", percentage: 2.4, isForeignCurrency: true, cap: 25000, capType: "spending", capPeriod: "yearly", shareCapWith: "hsbc_easy_red_hot", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
-    tags: ["易賞錢", "百佳", "屈臣氏", "折扣日"],
+    tags: ["易賞錢", "百佳", "屈臣氏", "折扣日", "最紅自主獎賞"],
     feeWaiverCondition: "首兩年免年費",
     welcomeOfferText: "迎新送一年「易賞錢」VIP 會籍 (6倍積分) + 簽 $5,800 送 $600 獎賞錢",
     officialApplyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/gold/",
