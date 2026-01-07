@@ -70,7 +70,7 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 基本獎賞 0.4%
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["payme", "alipay", "wechat_pay"] }, 
     ],
-    tags: ["網購神卡", "永久免年費", "指定商戶8%", "八達通增值", "麥當勞印花"],
+    tags: ["網購神卡", "永久免年費", "指定商戶8%", "麥當勞印花"],
     annualFee: 0,
     feeWaiverCondition: "永久免年費",
     welcomeOfferText: "迎新簽 $3,000 送 $300 獎賞錢 (首60日)",
@@ -85,7 +85,7 @@ export const HK_CARDS: CreditCard[] = [
       { name: "lululemon", rate: "8%", category: "服飾" },
       { name: "麥當勞", rate: "16.5%", category: "餐飲" },
     ],
-    exclusions: ["網上繳費", "電子錢包簽賬", "保費", "證券", "租金", "廣告", "八達通增值"],
+    exclusions: ["網上繳費", "電子錢包簽賬", "保費", "證券", "租金", "廣告"],
     note: "🍔 **麥當勞印花獎賞 2026**（全年）：\n- 簽賬滿 $30 = 1 個印花（每日限1個）\n- 同月儲齊 4 個印花 = $15 獎賞錢\n- 每月上限 8 印花 = $30，全年上限 $360\n- 用麥當勞 App 可疊加 4% 網上回贈，最高 **16.5%**！\n- ⚠️ 只限主卡，附屬卡不適用\n\n👉 [查看麥當勞印花詳情](/discover/hsbc-red-mcdonalds-2026)\n\n---\n\n⚠️ 【推廣期 2025/9/1-2026/3/31】指定商戶 8%：🍽️ 壽司郎/譚仔三哥/譚仔雲南/The Coffee Academïcs；👕 GU/Decathlon/lululemon；🎮 NAMCO/TAITO STATION（只限香港分店，百貨公司專櫃除外）。每月上限 $100 獎賞錢（首 $1,250）。網上簽賬 4% 每月上限 $400（首 $10,000）。網上不計：網上繳費、電子錢包簽賬、保費、證券、租金、廣告、八達通增值。實體超市只有 0.4%！\n\n🔥 **最紅冬日賞萬寧**（至2026/2/28）：週末高達10%回贈！[查看詳情](/discover/hsbc-mannings-winter-2025)\n\n🔥 **最紅冬日賞百老滙**（至2026/2/28）：累積簽賬滿$10,000享6%回贈！[查看詳情](/discover/hsbc-broadway-winter-2025)",
     promoEndDate: "2026-12-31",
     promoName: "麥當勞印花獎賞",
