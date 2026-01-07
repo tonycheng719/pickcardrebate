@@ -658,20 +658,24 @@ export default function CardDetailPage() {
               </Card>
             </motion.div>
 
-            {/* 限時優惠區塊 */}
-            {(capInfo.promoEndDate || capInfo.rewardCap || capInfo.spendingCap || capInfo.minSpend) && (
+            {/* 限時優惠區塊 - 只顯示推廣期和重要警告 */}
+            {(capInfo.promoEndDate || capInfo.hasMinSpendIssue) && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
               >
-                <Card className="border-purple-200 dark:border-purple-800 bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20">
-                  <CardContent className="p-5">
-                    <div className="flex items-center gap-2 mb-4">
-                      <span className="text-xl">🔥</span>
-                      <h2 className="font-semibold text-purple-900 dark:text-purple-100">限時優惠</h2>
+                <Card className={`border ${capInfo.hasMinSpendIssue ? 'border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20' : 'border-purple-200 dark:border-purple-800 bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20'}`}>
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">{capInfo.hasMinSpendIssue ? '⚠️' : '🔥'}</span>
+                        <span className={`font-medium ${capInfo.hasMinSpendIssue ? 'text-red-900 dark:text-red-100' : 'text-purple-900 dark:text-purple-100'}`}>
+                          {capInfo.hasMinSpendIssue ? '注意事項' : '限時優惠'}
+                        </span>
+                      </div>
                       {capDisplay.promoText && (
-                        <span className={`ml-auto text-xs px-2 py-1 rounded-full ${
+                        <span className={`text-xs px-2 py-1 rounded-full ${
                           capInfo.daysUntilExpiry !== undefined && capInfo.daysUntilExpiry <= 7 
                             ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' 
                             : capInfo.daysUntilExpiry !== undefined && capInfo.daysUntilExpiry <= 30 
@@ -683,42 +687,10 @@ export default function CardDetailPage() {
                       )}
                     </div>
                     
-                    <div className="grid sm:grid-cols-3 gap-4 text-sm">
-                      {capDisplay.spendingCapText && (
-                        <div className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-purple-100 dark:border-purple-800">
-                          <p className="text-gray-500 dark:text-gray-400 text-xs mb-1">簽賬上限</p>
-                          <p className="font-bold text-blue-600 dark:text-blue-400 text-lg">
-                            {capDisplay.spendingCapText}
-                          </p>
-                        </div>
-                      )}
-                      
-                      {capDisplay.rewardCapText && (
-                        <div className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-purple-100 dark:border-purple-800">
-                          <p className="text-gray-500 dark:text-gray-400 text-xs mb-1">回贈上限</p>
-                          <p className="font-bold text-emerald-600 dark:text-emerald-400 text-lg">
-                            {capDisplay.rewardCapText}
-                          </p>
-                        </div>
-                      )}
-                      
-                      {capDisplay.minSpendText && (
-                        <div className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-purple-100 dark:border-purple-800">
-                          <p className="text-gray-500 dark:text-gray-400 text-xs mb-1">簽賬下限</p>
-                          <p className={`font-bold text-lg ${capInfo.hasMinSpendIssue ? 'text-red-600 dark:text-red-400' : 'text-orange-600 dark:text-orange-400'}`}>
-                            {capDisplay.minSpendText}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                    
                     {/* 下限高過上限警告 */}
                     {capDisplay.warningText && (
-                      <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg">
-                        <div className="flex items-start gap-2">
-                          <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0 mt-0.5" />
-                          <p className="text-xs text-red-600 dark:text-red-300">{capDisplay.warningText}</p>
-                        </div>
+                      <div className="mt-3 text-sm text-red-600 dark:text-red-300">
+                        {capDisplay.warningText}
                       </div>
                     )}
                   </CardContent>
