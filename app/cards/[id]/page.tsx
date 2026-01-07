@@ -833,6 +833,7 @@ export default function CardDetailPage() {
                         </p>
                       </div>
                     )}
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>
