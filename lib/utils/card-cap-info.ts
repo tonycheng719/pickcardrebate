@@ -102,8 +102,8 @@ export function getCardCapInfo(card: CreditCard): CapInfo {
     return info;
   }
   
-  // Fallback: 從 rules 中提取
-  const rulesWithCap = card.rules.filter(r => r.cap !== undefined);
+  // Fallback: 從 rules 中提取（排除折扣規則）
+  const rulesWithCap = card.rules.filter(r => r.cap !== undefined && !r.isDiscount);
   
   if (rulesWithCap.length > 0) {
     // 分開處理簽賬上限和回贈上限
@@ -155,8 +155,8 @@ export function getCardCapInfo(card: CreditCard): CapInfo {
       };
     }
     
-    // 簽賬門檻
-    const minSpendRules = card.rules.filter(r => r.monthlyMinSpend !== undefined);
+    // 簽賬門檻（排除折扣規則）
+    const minSpendRules = card.rules.filter(r => r.monthlyMinSpend !== undefined && !r.isDiscount);
     if (minSpendRules.length > 0) {
       const maxMinSpend = Math.max(...minSpendRules.map(r => r.monthlyMinSpend!));
       const minSpendRule = minSpendRules.find(r => r.monthlyMinSpend === maxMinSpend);
