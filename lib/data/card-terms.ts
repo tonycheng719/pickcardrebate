@@ -36,7 +36,7 @@ export interface CardTerms {
   // 簽賬門檻
   minSpend?: {
     amount: number;
-    period: "monthly" | "quarterly" | "semi-annual" | "annual";
+    period: "monthly" | "quarterly" | "semi-annual" | "annual" | "promo";  // promo = 推廣期內一次性
     type?: "total" | "physical" | "category";  // 總簽賬 / 實體店 / 指定類別
     note?: string;
   };
@@ -592,7 +592,7 @@ export const cardTerms: CardTerms[] = [
     promoEndDate: "2026-02-28",
     minSpend: {
       amount: 40000,
-      period: "promo" as const,
+      period: "promo",
       type: "total",
       note: "發卡後首60日內累積簽賬"
     },
