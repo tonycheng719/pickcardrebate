@@ -83,6 +83,20 @@ export interface CreditCard {
   
   // Bank Promo (銀行簽賬推廣)
   bankPromo?: BankPromo;
+  
+  // Featured Merchants (優惠商戶)
+  featuredMerchants?: FeaturedMerchant[];
+  
+  // Exclusions (不計回贈項目) - 精簡版，只顯示警告
+  exclusions?: string[];
+}
+
+// 優惠商戶
+export interface FeaturedMerchant {
+  name: string;
+  rate: string; // e.g. "6%", "9折"
+  logo?: string;
+  category?: string; // e.g. "餐飲", "購物"
 }
 
 export interface Merchant {

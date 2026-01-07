@@ -30,6 +30,7 @@ import { ShareButton } from "@/components/share-button";
 import { PARTNER_MODE_ENABLED } from "@/lib/config";
 import { getCardCapInfo, formatCapInfo } from "@/lib/utils/card-cap-info";
 import { getSceneRatings } from "@/lib/utils/scene-ratings";
+import { parseNote } from "@/lib/utils/parse-note";
 
 // Apply Button Component - switches between official and partner URLs based on config
 function ApplyButton({ card }: { card: CreditCard }) {
@@ -225,6 +226,9 @@ export default function CardDetailPage() {
   
   // 計算適用場景評分
   const sceneRatings = useMemo(() => getSceneRatings(card), [card]);
+  
+  // 解析 note 獲取精簡版內容
+  const parsedNote = useMemo(() => parseNote(card), [card]);
   
   // FAQ Data for card
   const faqItems = [
@@ -750,8 +754,51 @@ export default function CardDetailPage() {
               </Card>
             </motion.div>
 
-            {/* Important Notes */}
-            {card.note && (
+            {/* 優惠商戶 - 方案 D */}
+            {card.featuredMerchants && card.featuredMerchants.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.28 }}
+              >
+                <Card>
+                  <CardContent className="p-5">
+                    <h2 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                      🏪 優惠商戶
+                    </h2>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                      {card.featuredMerchants.map((merchant, idx) => (
+                        <div key={idx} className="flex items-center gap-2 p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700">
+                          {merchant.logo ? (
+                            <img 
+                              src={merchant.logo} 
+                              alt={merchant.name}
+                              className="w-8 h-8 object-contain rounded"
+                            />
+                          ) : (
+                            <div className="w-8 h-8 rounded bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold">
+                              {merchant.name.slice(0, 1)}
+                            </div>
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{merchant.name}</p>
+                            {merchant.category && (
+                              <p className="text-xs text-gray-500 dark:text-gray-400">{merchant.category}</p>
+                            )}
+                          </div>
+                          <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                            {merchant.rate}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+
+            {/* 重要須知 - 精簡版 */}
+            {(parsedNote.exclusions.length > 0 || parsedNote.warnings.length > 0) && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -761,11 +808,46 @@ export default function CardDetailPage() {
                   <CardContent className="p-5">
                     <div className="flex items-start gap-3">
                       <AlertCircle className="h-5 w-5 text-orange-600 dark:text-orange-400 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <p className="font-semibold text-orange-900 dark:text-orange-100 mb-2">重要須知</p>
-                        <p className="text-sm text-orange-800 dark:text-orange-200 whitespace-pre-wrap leading-relaxed">
-                          {renderNoteWithLinks(card.note)}
-                        </p>
+                      <div className="space-y-3">
+                        <p className="font-semibold text-orange-900 dark:text-orange-100">重要須知</p>
+                        
+                        {/* 不計回贈項目 */}
+                        {parsedNote.exclusions.length > 0 && (
+                          <div>
+                            <p className="text-sm font-medium text-orange-800 dark:text-orange-200 mb-1">❌ 不計回贈</p>
+                            <p className="text-sm text-orange-700 dark:text-orange-300">
+                              {parsedNote.exclusions.join('、')}
+                            </p>
+                          </div>
+                        )}
+                        
+                        {/* 警告 */}
+                        {parsedNote.warnings.length > 0 && (
+                          <div className="space-y-1">
+                            {parsedNote.warnings.map((warning, idx) => (
+                              <p key={idx} className="text-sm text-orange-700 dark:text-orange-300 flex items-start gap-1">
+                                <span>⚠️</span>
+                                <span>{warning}</span>
+                              </p>
+                            ))}
+                          </div>
+                        )}
+                        
+                        {/* 優惠連結 */}
+                        {parsedNote.promoLinks.length > 0 && (
+                          <div className="flex flex-wrap gap-2 pt-2">
+                            {parsedNote.promoLinks.map((link, idx) => (
+                              <Link 
+                                key={idx}
+                                href={link.url}
+                                className="inline-flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                              >
+                                <span>👉</span>
+                                <span>{link.text}</span>
+                              </Link>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </CardContent>
