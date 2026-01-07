@@ -106,39 +106,51 @@ export function getCardCapInfo(card: CreditCard): CapInfo {
   const rulesWithCap = card.rules.filter(r => r.cap !== undefined);
   
   if (rulesWithCap.length > 0) {
-    // 找出最高的回贈上限
+    // 分開處理簽賬上限和回贈上限
     const rewardCapRules = rulesWithCap.filter(r => r.capType === 'reward');
-    const spendingCapRules = rulesWithCap.filter(r => r.capType === 'spending' || !r.capType);
+    const spendingCapRules = rulesWithCap.filter(r => r.capType === 'spending');
     
-    if (rewardCapRules.length > 0) {
-      const maxRewardCap = Math.max(...rewardCapRules.map(r => r.cap!));
+    // 優先處理 spendingCapRules（簽賬上限）- 這是更常見的情況
+    if (spendingCapRules.length > 0) {
+      // 找出最高回贈率的規則（這是用戶最關心的）
+      const highestRateRule = spendingCapRules.reduce((max, r) => 
+        r.percentage > max.percentage ? r : max
+      );
+      
+      const maxSpendingCap = highestRateRule.cap!;
+      info.spendingCap = {
+        amount: maxSpendingCap,
+        period: "月",
+      };
+      
+      // 計算回贈上限 = 簽賬上限 × 回贈率
+      const calculatedRewardCap = Math.round(maxSpendingCap * (highestRateRule.percentage / 100));
+      info.rewardCap = {
+        amount: calculatedRewardCap,
+        period: "月",
+        isShared: spendingCapRules.some(r => r.shareCapWith),
+      };
+    } else if (rewardCapRules.length > 0) {
+      // 如果只有回贈上限（capType: 'reward'）
+      // 找出最高回贈率的規則
+      const highestRateRule = rewardCapRules.reduce((max, r) => 
+        r.percentage > max.percentage ? r : max
+      );
+      
+      const maxRewardCap = highestRateRule.cap!;
       const sharedCap = rewardCapRules.some(r => r.shareCapWith);
       
       info.rewardCap = {
         amount: maxRewardCap,
-        period: "月",  // 預設月
+        period: "月",
         isShared: sharedCap,
       };
       
       // 計算對應的簽賬上限（使用最高回贈率）
-      const highestRateRule = rewardCapRules.reduce((max, r) => 
-        r.percentage > max.percentage ? r : max
-      );
       const spendingCapAmount = Math.round(maxRewardCap / (highestRateRule.percentage / 100));
       
       info.spendingCap = {
         amount: spendingCapAmount,
-        period: "月",
-        perCategory: rewardCapRules.map(r => ({
-          category: r.description.split(' ')[0],  // 取第一個詞作為類別
-          amount: Math.round(r.cap! / (r.percentage / 100)),
-          rate: r.percentage,
-        })),
-      };
-    } else if (spendingCapRules.length > 0) {
-      const maxSpendingCap = Math.max(...spendingCapRules.map(r => r.cap!));
-      info.spendingCap = {
-        amount: maxSpendingCap,
         period: "月",
       };
     }

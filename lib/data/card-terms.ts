@@ -330,6 +330,50 @@ export const cardTerms: CardTerms[] = [
   },
 
   // ========================================================================
+  // 東亞 World Mastercard
+  // ========================================================================
+  {
+    cardId: "bea-world-mastercard",
+    cardName: "東亞 World Mastercard",
+    bank: "東亞銀行",
+    promoStartDate: "2025-07-01",
+    promoEndDate: "2026-06-30",
+    spendingCap: {
+      amount: 10000,
+      period: "monthly",
+      calculation: "指定類別每月上限簽 $10,000（回 115,000 額外獎分）"
+    },
+    minSpend: {
+      amount: 4000,
+      period: "monthly",
+      type: "total",
+      note: "需月簽滿 $4,000 + BEA Mall App 登記"
+    },
+    rewardRates: [
+      { category: "外幣簽賬", totalRate: 5.0, baseRate: 0.33, extraRate: 4.67, note: "歐洲實體簽賬除外" },
+      { category: "本地食肆", totalRate: 5.0, baseRate: 0.33, extraRate: 4.67 },
+      { category: "本地電子產品", totalRate: 5.0, baseRate: 0.33, extraRate: 4.67 },
+      { category: "運動/健身/醫療", totalRate: 5.0, baseRate: 0.33, extraRate: 4.67 },
+      { category: "八達通自動增值", totalRate: 0.33, baseRate: 0.33, extraRate: 0, note: "連同政府簽賬每月上限 $40 回贈" },
+      { category: "其他簽賬", totalRate: 0.33, baseRate: 0.33, extraRate: 0 },
+    ],
+    exclusions: [
+      "歐洲實體簽賬（外幣類別）",
+      "超市",
+      "旅行社",
+      "政府部門",
+      "網上繳費",
+    ],
+    warnings: [
+      "需透過 BEA Mall App 登記",
+      "外幣手續費 1.95%",
+      "Pay with Points: 25,000 分抵銷 $100 = 5% 回贈",
+    ],
+    officialSource: "https://www.hkbea.com/html/tc/bea-credit-card-world-mastercard.html",
+    lastUpdated: "2026-01-07",
+  },
+
+  // ========================================================================
   // 建行 TRAVO Mastercard
   // ========================================================================
   {
