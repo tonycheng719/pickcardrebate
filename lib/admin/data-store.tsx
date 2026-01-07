@@ -51,6 +51,9 @@ function mapCardFromDB(dbCard: any): CreditCard {
         promoEndDate: localCard?.promoEndDate, // Preserve promoEndDate from local
         promoName: localCard?.promoName, // Preserve promoName from local
         partnerOffer: dbCard.partner_offer || localCard?.partnerOffer, // Partner offer from DB or local
+        // 優惠商戶和不計回贈 - 從本地靜態數據取得
+        featuredMerchants: localCard?.featuredMerchants,
+        exclusions: localCard?.exclusions,
     };
 }
 
