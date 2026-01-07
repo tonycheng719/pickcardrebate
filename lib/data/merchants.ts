@@ -191,4 +191,21 @@ export const POPULAR_MERCHANTS: Merchant[] = [
 
   // ========== 電動車充電 ==========
   { id: "ev_charging", name: "電動車充電站", categoryIds: ["ev_charging"], aliases: ["ev charging", "充電站", "電動車"], logo: "🔌", accentColor: "#16a34a", isGeneral: true },
+
+  // ========== 戲院 ==========
+  { id: "emperor_cinemas", name: "英皇戲院 Emperor Cinemas", categoryIds: ["entertainment"], aliases: ["英皇戲院", "emperor cinemas", "emperor"], logo: "🎬", accentColor: "#7c3aed" },
+  { id: "cinema_city", name: "Cinema City", categoryIds: ["entertainment"], aliases: ["cinema city"], logo: "🎬", accentColor: "#dc2626" },
+  { id: "golden_harvest", name: "嘉禾院線 Golden Harvest", categoryIds: ["entertainment"], aliases: ["嘉禾", "golden harvest"], logo: "🎬", accentColor: "#f59e0b" },
+  { id: "mcl", name: "MCL Cinemas", categoryIds: ["entertainment"], aliases: ["mcl"], logo: "🎬", accentColor: "#1d4ed8" },
+  { id: "ua_cinemas", name: "UA Cinemas", categoryIds: ["entertainment"], aliases: ["ua", "ua cinemas"], logo: "🎬", accentColor: "#000000" },
+  { id: "broadway_circuit", name: "百老匯院線 Broadway Circuit", categoryIds: ["entertainment"], aliases: ["百老匯院線", "broadway circuit", "百老匯戲院"], logo: "🎬", accentColor: "#dc2626" },
+
+  // ========== 麗新餐飲 Lai Sun Dining ==========
+  { id: "lai_sun_dining", name: "麗新餐飲 Lai Sun Dining", categoryIds: ["dining"], aliases: ["麗新", "lai sun"], logo: "🍽️", accentColor: "#b45309", isGeneral: true },
+  { id: "donpachi", name: "DON.PACHI 丼八", categoryIds: ["dining"], aliases: ["donpachi", "丼八", "don pachi"], logo: "🍱", accentColor: "#dc2626" },
+  { id: "hutong", name: "胡同 Hutong", categoryIds: ["dining"], aliases: ["胡同", "hutong"], logo: "🥟", accentColor: "#b45309" },
+  { id: "megan_kitchen", name: "名人坊 Megan's Kitchen", categoryIds: ["dining"], aliases: ["名人坊", "megan's kitchen", "megan kitchen"], logo: "🥢", accentColor: "#f59e0b" },
+  { id: "aqua", name: "AQUA", categoryIds: ["dining"], aliases: ["aqua"], logo: "🍸", accentColor: "#0ea5e9" },
+  { id: "wagyu_kaiseki_den", name: "和牛懷石 殿 Wagyu Kaiseki Den", categoryIds: ["dining"], aliases: ["和牛懷石", "wagyu kaiseki", "殿"], logo: "🥩", accentColor: "#78350f" },
+  { id: "nikushou", name: "肉匠 Nikushou", categoryIds: ["dining"], aliases: ["肉匠", "nikushou"], logo: "🥩", accentColor: "#dc2626" },
 ];
