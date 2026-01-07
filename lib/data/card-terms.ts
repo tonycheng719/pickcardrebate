@@ -69,6 +69,49 @@ export interface CardTerms {
 
 export const cardTerms: CardTerms[] = [
   // ========================================================================
+  // HSBC Visa Signature - 2026 最紅自主獎賞
+  // ========================================================================
+  {
+    cardId: "hsbc-vs",
+    cardName: "HSBC Visa Signature",
+    bank: "HSBC",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-12-31",
+    rewardCap: {
+      type: "total",
+      amount: 3600,  // $100,000 × 3.6%
+      period: "annual",
+      note: "五大類別共用上限（賞滋味/賞購物/賞家居/賞享受/賞世界），需自選一類享 9X"
+    },
+    spendingCap: {
+      amount: 100000,
+      period: "annual",
+      calculation: "每年首 $100,000 簽賬享額外獎賞"
+    },
+    rewardRates: [
+      { category: "自選類別 9X", totalRate: 3.6, baseRate: 0.4, extraRate: 3.2, note: "1X基本 + 3X VS專享 + 5X額外（五選一）" },
+      { category: "非自選類別 4X", totalRate: 1.6, baseRate: 0.4, extraRate: 1.2, note: "1X基本 + 3X VS專享" },
+      { category: "八達通自動增值", totalRate: 0.4, baseRate: 0.4, extraRate: 0 },
+      { category: "其他簽賬", totalRate: 0.4, baseRate: 0.4, extraRate: 0 },
+    ],
+    exclusions: [
+      "賞滋味：酒席宴會、私人宴會、包場派對、酒店/百貨公司/俱樂部內飲食專櫃",
+      "賞世界：香港進行或以港幣交易的簽賬",
+      "電子錢包（AlipayHK/WeChat Pay/PayMe）",
+      "八達通自動增值（只有 0.4%）",
+      "繳費、繳稅",
+    ],
+    warnings: [
+      "五大類別共用 $100,000/年簽賬上限，只能選一類享 9X",
+      "需於 Reward+ App 登記選擇自選類別",
+      "海外簽賬手續費 1.95%",
+      "海外商戶簽港幣（CBF）手續費 1%",
+    ],
+    officialSource: "https://www.hsbc.com.hk/content/dam/hsbc/hk/tc/docs/credit-cards/rewards/2026-red-hot-rewards-of-your-choice-terms-and-conditions.pdf",
+    lastUpdated: "2026-01-08",
+  },
+  
+  // ========================================================================
   // 中銀 Chill World Mastercard
   // ========================================================================
   {

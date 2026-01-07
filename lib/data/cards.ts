@@ -16,13 +16,14 @@ export const HK_CARDS: CreditCard[] = [
     feeWaiverCondition: "首兩年免年費",
     rewardConfig: { method: 'conversion', ratio: 10, currency: 'RC' }, // $10 = $1 RC = 0.4%
     rules: [
-      // ========== 最紅自主獎賞（需登記，每年簽賬上限 $100,000）==========
+      // ========== 最紅自主獎賞（需登記，每年簽賬上限 $100,000，五選一共用）==========
       // Visa Signature 專享：9X = 5X額外 + 1X基本 + 3X VS專享 = 3.6%
       // 五大類別（非自選）：1.6% = 0.4%基本 + 1.2% VS專享
-      // 可自由分配 5X 到一個自選類別
-      { description: "最紅自主獎賞 9X (3.6%) [需登記]", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 3.6, cap: 100000, capType: "spending", capPeriod: "yearly", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
-      // 賞世界 - 海外實體店簽賬 (非港幣交易)
-      { description: "賞世界 9X (3.6%) [需登記]", matchType: "base", percentage: 3.6, isForeignCurrency: true, cap: 100000, capType: "spending", capPeriod: "yearly", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // 可自由分配 5X 到一個自選類別（賞滋味/賞購物/賞家居/賞享受/賞世界）
+      // ⚠️ 五個類別共用 $100,000/年上限，只能選一類享 9X
+      { description: "最紅自主獎賞 9X (3.6%) [需登記,五選一]", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 3.6, cap: 100000, capType: "spending", capPeriod: "yearly", shareCapWith: "hsbc_vs_red_hot", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // 賞世界 - 海外實體店簽賬 (非港幣交易) - 與上述共用上限
+      { description: "賞世界 9X (3.6%) [需登記,五選一]", matchType: "base", percentage: 3.6, isForeignCurrency: true, cap: 100000, capType: "spending", capPeriod: "yearly", shareCapWith: "hsbc_vs_red_hot", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // ========== Travel Guru 會員計劃（優惠推廣期至 2026/12/31）==========
       // 只限海外實體店外幣簽賬，需透過 Reward+ App 登記
       // GO級：+3%（連續3個月累積≥$8,000，上限$500/年）

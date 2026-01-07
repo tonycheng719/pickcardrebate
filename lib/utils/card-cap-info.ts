@@ -184,7 +184,14 @@ export function getCardCapInfo(card: CreditCard): CapInfo {
     const regularCaps: CategoryCap[] = [];
     const promoCaps: CategoryCap[] = [];
     
+    // 追蹤已處理的共用上限組
+    const processedSharedCaps = new Set<string>();
+    
     for (const rule of rulesWithCap) {
+      // 如果是共用上限且已處理過，跳過
+      if (rule.shareCapWith && processedSharedCaps.has(rule.shareCapWith)) {
+        continue;
+      }
       // 判斷是否為推廣期優惠
       let isPromo = false;
       let promoEndDate: string | undefined;
@@ -223,15 +230,36 @@ export function getCardCapInfo(card: CreditCard): CapInfo {
         period = '推廣期';
       }
       
+      // 處理共用上限
+      let category = extractCategoryName(rule.description);
+      let note = extractNoteFromRule(rule);
+      
+      if (rule.shareCapWith) {
+        // 找出所有共用此上限的規則
+        const sharedRules = rulesWithCap.filter(r => r.shareCapWith === rule.shareCapWith);
+        if (sharedRules.length > 1) {
+          // 合併類別名稱，提取簡短名稱
+          const categories = sharedRules.map(r => {
+            const name = extractCategoryName(r.description);
+            // 簡化名稱
+            return name.replace(/\s*9X.*$/, '').replace(/\s*\(.+\)$/, '').trim();
+          });
+          category = categories[0]; // 使用第一個類別名稱
+          note = `五選一：${categories.join('/')}`;
+        }
+        // 標記此共用組已處理
+        processedSharedCaps.add(rule.shareCapWith);
+      }
+      
       const cap: CategoryCap = {
-        category: extractCategoryName(rule.description),
+        category,
         rate: rule.percentage,
         rewardCap,
         spendingCap,
         period,
         isPromo,
         promoEndDate,
-        note: extractNoteFromRule(rule),
+        note,
       };
       
       if (isPromo) {
