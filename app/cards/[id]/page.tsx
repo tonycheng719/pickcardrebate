@@ -137,7 +137,7 @@ export default function CardDetailPage() {
   const params = useParams();
   const router = useRouter();
   const cardId = params.id as string;
-  const { cards } = useDataset();
+  const { cards, merchants } = useDataset();
   const { addCard, hasCard, user } = useWallet();
   const { getReviewsByCardId, fetchReviewsForCard } = useReviews();
   const [cardImageError, setCardImageError] = useState(false);
@@ -189,6 +189,17 @@ export default function CardDetailPage() {
       )
       .slice(0, 4);
   }, [card, cards]);
+  
+  // 查找商戶 logo（從 merchants 數據中）
+  const getMerchantLogo = useCallback((merchantName: string) => {
+    // 嘗試精確匹配或部分匹配
+    const merchant = merchants.find(m => 
+      m.name === merchantName || 
+      m.name.toLowerCase().includes(merchantName.toLowerCase()) ||
+      merchantName.toLowerCase().includes(m.name.toLowerCase())
+    );
+    return merchant?.logo;
+  }, [merchants]);
 
   if (!card) {
     return (
@@ -767,11 +778,13 @@ export default function CardDetailPage() {
                       🏪 優惠商戶
                     </h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                      {card.featuredMerchants.map((merchant, idx) => (
+                      {card.featuredMerchants.map((merchant, idx) => {
+                        const logo = merchant.logo || getMerchantLogo(merchant.name);
+                        return (
                         <div key={idx} className="flex items-center gap-2 p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700">
-                          {merchant.logo ? (
+                          {logo ? (
                             <img 
-                              src={merchant.logo} 
+                              src={logo} 
                               alt={merchant.name}
                               className="w-8 h-8 object-contain rounded"
                             />
@@ -790,7 +803,8 @@ export default function CardDetailPage() {
                             {merchant.rate}
                           </span>
                         </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </CardContent>
                 </Card>
