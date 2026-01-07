@@ -48,6 +48,9 @@ export function getSceneRatings(card: CreditCard): SceneRating[] {
     let bestRate = baseRate;
     
     for (const rule of card.rules) {
+      // 跳過折扣規則（折扣 ≠ 回贈）
+      if (rule.isDiscount) continue;
+      
       // 檢查是否匹配該場景
       const matchesType = scene.matchTypes.includes(rule.matchType);
       
