@@ -14,6 +14,9 @@ export interface CardTerms {
   cardName: string;
   bank: string;
   
+  // 條款文件
+  documentName?: string;  // 條款名稱（無則從 officialSource URL 提取）
+  
   // 推廣期
   promoStartDate?: string;
   promoEndDate?: string;
@@ -75,6 +78,7 @@ export const cardTerms: CardTerms[] = [
     cardId: "hsbc-vs",
     cardName: "HSBC Visa Signature",
     bank: "HSBC",
+    documentName: "2026「最紅自主獎賞」使用條款及細則",
     promoStartDate: "2026-01-01",
     promoEndDate: "2026-12-31",
     rewardCap: {
@@ -511,6 +515,7 @@ export const cardTerms: CardTerms[] = [
     cardId: "hsbc-everymile",
     cardName: "HSBC EveryMile 信用卡",
     bank: "HSBC",
+    documentName: "滙豐EveryMile信用卡獎賞計劃之條款及細則",
     promoStartDate: "2026-01-01",
     promoEndDate: "2026-06-30",
     rewardRates: [
@@ -588,6 +593,7 @@ export const cardTerms: CardTerms[] = [
     cardId: "hsbc-everymile-welcome-2026",
     cardName: "HSBC EveryMile 限時額外迎新優惠",
     bank: "HSBC",
+    documentName: "滙豐EveryMile信用卡限時額外迎新獎賞優惠之條款及細則",
     promoStartDate: "2026-01-07",
     promoEndDate: "2026-02-28",
     minSpend: {
@@ -656,6 +662,7 @@ export const cardTerms: CardTerms[] = [
     cardId: "hsbc-travel-guru",
     cardName: "滙豐 Travel Guru 會員計劃",
     bank: "HSBC",
+    documentName: "滙豐Travel Guru會員計劃之簽賬獎賞條款及細則",
     promoStartDate: "2025-04-01",
     promoEndDate: "2026-12-31",
     rewardCap: {
