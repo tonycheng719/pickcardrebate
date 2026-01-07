@@ -79,7 +79,7 @@ const popularDestinations = [
     tips: "Samsung Pay 普及",
   },
   {
-    destination: "台灣 🇹🇼",
+    destination: "台灣 🌏",
     currency: "TWD",
     bestCards: [
       { card: "富邦白金卡", id: "fubon-platinum", rate: "6.05% 🔥" },
@@ -498,7 +498,7 @@ export function OverseasSpendingGuide() {
           </div>
 
           <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
-            <h4 className="font-bold text-blue-800 dark:text-blue-200 mb-3">🇹🇼 台灣旅行組合</h4>
+            <h4 className="font-bold text-blue-800 dark:text-blue-200 mb-3">🌏 台灣旅行組合</h4>
             <div className="grid md:grid-cols-2 gap-3">
               <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-3">
                 <Link href="/cards/fubon-platinum" className="font-medium text-blue-600 hover:underline text-sm">富邦 Visa 白金卡</Link>
