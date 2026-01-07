@@ -677,16 +677,6 @@ export default function CardDetailPage() {
                         <span className="text-blue-700 dark:text-blue-300 font-medium">
                           部分優惠需先登記
                         </span>
-                        {card.registrationUrl && (
-                          <a 
-                            href={card.registrationUrl} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="ml-auto text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
-                          >
-                            立即登記 <ExternalLink className="h-3 w-3" />
-                          </a>
-                        )}
                       </div>
                     </div>
                   )}
