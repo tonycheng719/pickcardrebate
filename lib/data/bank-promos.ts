@@ -187,8 +187,7 @@ export const HSBC_BROADWAY_WINTER_PROMO: BankPromo = {
   validFrom: "2025-12-01",
   validTo: "2026-02-28",
   maxReward: "$900 獎賞錢",
-  registrationUrl: "https://www.redhotoffers.hsbc.com.hk/tc/latest-offers/broadway-winteroffer/",
-  termsUrl: "https://www.redhotoffers.hsbc.com.hk/tc/latest-offers/broadway-winteroffer/",
+  // 暫無確認的登記連結，只顯示「需登記」
   
   phases: [
     {
@@ -229,8 +228,7 @@ export const HSBC_MANNINGS_WINTER_PROMO: BankPromo = {
   validFrom: "2025-12-01",
   validTo: "2026-02-28",
   maxReward: "$300 獎賞錢",
-  registrationUrl: "https://www.redhotoffers.hsbc.com.hk/tc/latest-offers/mannings-winteroffer/",
-  termsUrl: "https://www.redhotoffers.hsbc.com.hk/tc/latest-offers/mannings-winteroffer/",
+  // 暫無確認的登記連結，只顯示「需登記」
   
   phases: [
     {

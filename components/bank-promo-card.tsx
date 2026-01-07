@@ -195,8 +195,8 @@ export function BankPromoCard({ promo, cardBank, isVisaCard = false, isEnjoyCard
           </div>
         )}
         
-        {/* Registration Button */}
-        {promo.registrationUrl && (
+        {/* Registration Button or Notice */}
+        {promo.registrationUrl ? (
           <a 
             href={promo.registrationUrl} 
             target="_blank" 
@@ -211,6 +211,13 @@ export function BankPromoCard({ promo, cardBank, isVisaCard = false, isEnjoyCard
               <ExternalLink className="h-4 w-4 ml-2" />
             </Button>
           </a>
+        ) : (
+          <div className="mb-4 p-3 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">
+            <p className="text-sm text-amber-700 dark:text-amber-300 flex items-center gap-2">
+              <span>📝</span>
+              <span>此優惠需登記參加</span>
+            </p>
+          </div>
         )}
         
         {/* Expandable Details */}
