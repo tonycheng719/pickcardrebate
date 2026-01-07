@@ -19,8 +19,10 @@ export function CardPreview({ id, highlight }: CardPreviewProps) {
   
   if (!card) return null;
   
-  // 計算最高回贈率
+  // 計算最高回贈率（排除折扣規則 - 折扣不是回贈！）
   const maxRate = card.rules.reduce((max, rule) => {
+    // 跳過折扣規則
+    if (rule.isDiscount) return max;
     if (rule.percentage && rule.percentage > max) return rule.percentage;
     return max;
   }, 0);

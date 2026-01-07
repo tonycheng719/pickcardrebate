@@ -223,10 +223,13 @@ export default function CardDetailPage() {
   const capInfo = useMemo(() => getCardCapInfo(card), [card]);
   const capDisplay = useMemo(() => formatCapInfo(capInfo), [capInfo]);
   
-  // 計算最高回贈和基本回贈
+  // 計算最高回贈和基本回贈（排除折扣規則）
   const maxRate = useMemo(() => {
     if (!card.rules || card.rules.length === 0) return 0;
-    return Math.max(...card.rules.map(r => r.percentage));
+    // 排除折扣規則（isDiscount: true）- 折扣不是回贈！
+    const rebateRules = card.rules.filter(r => !r.isDiscount);
+    if (rebateRules.length === 0) return 0;
+    return Math.max(...rebateRules.map(r => r.percentage));
   }, [card.rules]);
   
   const baseRate = useMemo(() => {
