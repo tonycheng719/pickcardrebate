@@ -414,3 +414,74 @@ export function formatPeriod(period: string): string {
   }
 }
 
+/**
+ * 檢查條款是否已過期
+ * @param terms 條款資料
+ * @param daysAfterExpiry 過期後多少天才算需要清理（預設 15 天）
+ */
+export function isTermsExpired(terms: CardTerms, daysAfterExpiry: number = 15): boolean {
+  if (!terms.promoEndDate) return false;
+  
+  const endDate = new Date(terms.promoEndDate);
+  const expiryDate = new Date(endDate);
+  expiryDate.setDate(expiryDate.getDate() + daysAfterExpiry);
+  
+  return new Date() > expiryDate;
+}
+
+/**
+ * 獲取所有有效（未過期）的條款
+ * @param daysAfterExpiry 過期後多少天才算需要清理（預設 15 天）
+ */
+export function getActiveTerms(daysAfterExpiry: number = 15): CardTerms[] {
+  return cardTerms.filter(t => !isTermsExpired(t, daysAfterExpiry));
+}
+
+/**
+ * 獲取所有已過期需要清理的條款
+ * @param daysAfterExpiry 過期後多少天才算需要清理（預設 15 天）
+ */
+export function getExpiredTerms(daysAfterExpiry: number = 15): CardTerms[] {
+  return cardTerms.filter(t => isTermsExpired(t, daysAfterExpiry));
+}
+
+/**
+ * 檢查條款是否快將過期（7 天內）
+ */
+export function isTermsExpiringSoon(terms: CardTerms, daysBeforeExpiry: number = 7): boolean {
+  if (!terms.promoEndDate) return false;
+  
+  const endDate = new Date(terms.promoEndDate);
+  const warningDate = new Date();
+  warningDate.setDate(warningDate.getDate() + daysBeforeExpiry);
+  
+  return endDate <= warningDate && endDate >= new Date();
+}
+
+/**
+ * 獲取所有快將過期的條款
+ */
+export function getExpiringSoonTerms(daysBeforeExpiry: number = 7): CardTerms[] {
+  return cardTerms.filter(t => isTermsExpiringSoon(t, daysBeforeExpiry));
+}
+
+/**
+ * 格式化簽賬門檻提示
+ * 用於在卡片顯示醒目的簽賬門檻警告
+ */
+export function formatMinSpendWarning(terms: CardTerms): string | null {
+  if (!terms.minSpend) return null;
+  
+  const period = formatPeriod(terms.minSpend.period);
+  const amount = terms.minSpend.amount.toLocaleString();
+  
+  // 檢查是否門檻高過上限
+  if (hasMinSpendIssue(terms)) {
+    const capAmount = terms.spendingCap?.amount.toLocaleString();
+    return `🚨 簽賬門檻 $${amount}/${period} > 簽賬上限 $${capAmount}/${period}！需簽超過上限先有高回贈`;
+  }
+  
+  // 一般簽賬門檻提示
+  return `⚠️ 需月簽滿 $${amount} 先有高回贈`;
+}
+
