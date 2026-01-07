@@ -28,6 +28,7 @@ import { PageViewTracker } from "@/components/page-view-tracker";
 import { ShareSection } from "@/components/share-section";
 import { ShareButton } from "@/components/share-button";
 import { PARTNER_MODE_ENABLED } from "@/lib/config";
+import { getCardCapInfo, formatCapInfo } from "@/lib/utils/card-cap-info";
 
 // Apply Button Component - switches between official and partner URLs based on config
 function ApplyButton({ card }: { card: CreditCard }) {
@@ -204,6 +205,10 @@ export default function CardDetailPage() {
   }
 
   const isInWallet = hasCard(card.id);
+  
+  // 獲取簽賬上限、簽賬下限、回贈上限資訊
+  const capInfo = useMemo(() => getCardCapInfo(card), [card]);
+  const capDisplay = useMemo(() => formatCapInfo(capInfo), [capInfo]);
   
   // FAQ Data for card
   const faqItems = [
@@ -728,7 +733,57 @@ export default function CardDetailPage() {
                         <p className="font-medium text-gray-900 dark:text-white">{card.rewardConfig.currency}</p>
                       </div>
                     )}
+                    
+                    {/* === 新增：簽賬上限、簽賬下限、回贈上限 === */}
+                    {capDisplay.spendingCapText && (
+                      <div>
+                        <p className="text-gray-500 dark:text-gray-400">簽賬上限</p>
+                        <p className="font-medium text-blue-600 dark:text-blue-400">
+                          {capDisplay.spendingCapText}
+                        </p>
+                      </div>
+                    )}
+                    
+                    {capDisplay.rewardCapText && (
+                      <div>
+                        <p className="text-gray-500 dark:text-gray-400">回贈上限</p>
+                        <p className="font-medium text-emerald-600 dark:text-emerald-400">
+                          {capDisplay.rewardCapText}
+                        </p>
+                      </div>
+                    )}
+                    
+                    {capDisplay.minSpendText && (
+                      <div>
+                        <p className="text-gray-500 dark:text-gray-400">簽賬門檻</p>
+                        <p className={`font-medium ${capInfo.hasMinSpendIssue ? 'text-red-600 dark:text-red-400' : 'text-orange-600 dark:text-orange-400'}`}>
+                          {capDisplay.minSpendText}
+                        </p>
+                      </div>
+                    )}
+                    
+                    {capDisplay.promoText && (
+                      <div>
+                        <p className="text-gray-500 dark:text-gray-400">推廣期</p>
+                        <p className={`font-medium ${capInfo.daysUntilExpiry !== undefined && capInfo.daysUntilExpiry <= 7 ? 'text-red-600 dark:text-red-400' : capInfo.daysUntilExpiry !== undefined && capInfo.daysUntilExpiry <= 30 ? 'text-orange-600 dark:text-orange-400' : 'text-gray-900 dark:text-white'}`}>
+                          {capDisplay.promoText}
+                        </p>
+                      </div>
+                    )}
                   </div>
+                  
+                  {/* 門檻高過上限警告 */}
+                  {capDisplay.warningText && (
+                    <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                      <div className="flex items-start gap-2">
+                        <AlertCircle className="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="text-sm font-medium text-red-700 dark:text-red-400">⚠️ 簽賬門檻高過上限</p>
+                          <p className="text-xs text-red-600 dark:text-red-300 mt-1">{capDisplay.warningText}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </motion.div>
