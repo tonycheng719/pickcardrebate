@@ -111,7 +111,7 @@ export function getSceneRatings(card: CreditCard): SceneRating[] {
     // 只添加有實際意義的場景（至少有基本回贈）
     let note: string | undefined;
     if (scene.isForeignCurrency && card.foreignCurrencyFee) {
-      note = `${bestRate}% - ${card.foreignCurrencyFee}% 手續費 = ${netRate.toFixed(1)}% 淨回贈`;
+      note = `${bestRate}% - ${card.foreignCurrencyFee}% 手續費 = ${netRate.toFixed(2)}% 淨回贈`;
     } else if (bestRule?.monthlyMinSpend) {
       note = `需月簽 $${bestRule.monthlyMinSpend.toLocaleString()}`;
     } else if (bestRule?.cap) {

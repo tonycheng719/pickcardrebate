@@ -602,7 +602,7 @@ export default function CardDetailPage() {
                               scene.rating >= 2 ? 'text-amber-600 dark:text-amber-400' :
                               'text-gray-500 dark:text-gray-400'
                             }`}>
-                              {scene.rate.toFixed(1)}%
+                              {scene.rate.toFixed(2)}%
                             </span>
                             <span className={`text-sm ${
                               scene.rating >= 4 ? 'text-emerald-500' :
@@ -686,7 +686,7 @@ export default function CardDetailPage() {
                                 </span>
                               ) : (
                                 <span>
-                                  {baseRate.toFixed(1)}% 基本 + <span className="text-blue-500">{extraRate.toFixed(1)}%</span> 額外 = <span className="text-emerald-600 dark:text-emerald-400 font-medium">{rule.percentage}% 總回贈</span>
+                                  {baseRate.toFixed(2)}% 基本 + <span className="text-blue-500">{extraRate.toFixed(2)}%</span> 額外 = <span className="text-emerald-600 dark:text-emerald-400 font-medium">{rule.percentage}% 總回贈</span>
                                 </span>
                               )}
                             </div>

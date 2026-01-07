@@ -108,7 +108,7 @@ export function RewardBreakdown({
         <>
           <div className="flex justify-between items-center text-gray-600 dark:text-gray-400">
             <span>總回贈</span>
-            <span>{percentage.toFixed(1)}%</span>
+            <span>{percentage.toFixed(2)}%</span>
           </div>
           <div className="flex justify-between items-center text-red-500">
             <span>外幣手續費</span>
@@ -137,7 +137,7 @@ export function RewardBreakdown({
         <>
           <div className="flex justify-between items-center text-gray-600 dark:text-gray-400">
             <span>基本回贈</span>
-            <span>{baseRate.toFixed(1)}%</span>
+            <span>{baseRate.toFixed(2)}%</span>
           </div>
           <div className="flex justify-between items-start text-gray-600 dark:text-gray-400">
             <div className="flex-1 min-w-0 pr-2">
@@ -146,12 +146,12 @@ export function RewardBreakdown({
                 {extraSource}
               </div>
             </div>
-            <span className="text-blue-600 shrink-0">+{extraRate.toFixed(1)}%</span>
+            <span className="text-blue-600 shrink-0">+{extraRate.toFixed(2)}%</span>
           </div>
           <div className="border-t border-gray-200 dark:border-gray-700 pt-1 mt-1">
             <div className="flex justify-between items-center font-medium text-emerald-600 dark:text-emerald-400">
               <span>總回贈</span>
-              <span>{percentage.toFixed(1)}%</span>
+              <span>{percentage.toFixed(2)}%</span>
             </div>
             <div className="flex justify-between items-center text-gray-500 mt-0.5">
               <span>回贈金額</span>
@@ -164,7 +164,7 @@ export function RewardBreakdown({
         <>
           <div className="flex justify-between items-center text-gray-600 dark:text-gray-400">
             <span>基本回贈</span>
-            <span>{percentage.toFixed(1)}%</span>
+            <span>{percentage.toFixed(2)}%</span>
           </div>
           <div className="flex justify-between items-center text-gray-500 mt-0.5">
             <span>回贈金額</span>
@@ -239,7 +239,7 @@ export function RewardBreakdownInline({
   if (shouldShowFxBreakdown) {
     return (
       <span className="text-[10px] text-gray-500">
-        {percentage.toFixed(1)}% - {fxFee}% 手續費 = <span className="text-emerald-600 font-medium">{netPercentage.toFixed(2)}%</span>
+        {percentage.toFixed(2)}% - {fxFee}% 手續費 = <span className="text-emerald-600 font-medium">{netPercentage.toFixed(2)}%</span>
       </span>
     );
   }
@@ -247,7 +247,7 @@ export function RewardBreakdownInline({
   if (hasExtraRate) {
     return (
       <span className="text-[10px] text-gray-500">
-        {baseRate.toFixed(1)}% 基本 + <span className="text-blue-600">{extraRate.toFixed(1)}%</span> 額外
+        {baseRate.toFixed(2)}% 基本 + <span className="text-blue-600">{extraRate.toFixed(2)}%</span> 額外
       </span>
     );
   }

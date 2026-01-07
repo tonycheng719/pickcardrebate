@@ -129,13 +129,13 @@ function CardRow({ result, rank, showFxFee = false, showMiles = false }: { resul
               ${result.dollarsPerMile}/里
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400">
-              ≈ {result.percentage.toFixed(1)}% 回贈
+              ≈ {result.percentage.toFixed(2)}% 回贈
             </div>
           </>
         ) : showFxFee && result.netPercentage !== undefined ? (
           <>
             <div className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
-              {result.netPercentage.toFixed(1)}%
+              {result.netPercentage.toFixed(2)}%
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400">
               {result.percentage}% - {result.foreignCurrencyFee === 0 ? '0%' : `${result.foreignCurrencyFee}%`}費
@@ -153,7 +153,7 @@ function CardRow({ result, rank, showFxFee = false, showMiles = false }: { resul
               if (extraRate > 0.01) {
                 return (
                   <div className="text-[10px] text-gray-500 dark:text-gray-400">
-                    {baseRate.toFixed(1)}% 基本 + <span className="text-blue-500">{extraRate.toFixed(1)}%</span> 額外
+                    {baseRate.toFixed(2)}% 基本 + <span className="text-blue-500">{extraRate.toFixed(2)}%</span> 額外
                   </div>
                 );
               }
@@ -183,7 +183,7 @@ function CategorySection({ categoryId, cards }: { categoryId: RankingCategory; c
   
   // Generate share text
   const shareText = rankings.slice(0, 5).map((r, i) => 
-    `${i + 1}. ${r.card.name} ${r.netPercentage !== undefined ? r.netPercentage.toFixed(1) : r.percentage}%`
+    `${i + 1}. ${r.card.name} ${r.netPercentage !== undefined ? r.netPercentage.toFixed(2) : r.percentage}%`
   ).join('\n');
   
   return (
