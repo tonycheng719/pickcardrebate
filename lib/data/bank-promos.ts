@@ -179,10 +179,94 @@ export const HANGSENG_WINTER_PROMO: BankPromo = {
   notes: "獎賞將於2026年5月底前存入。enJoy卡客戶會賺取yuu積分（$150 = 30,000 yuu積分）。如同時登記「豐澤購物激賞」，12月豐澤簽賬不計入本推廣。"
 };
 
+// HSBC「最紅冬日賞」百老滙推廣
+export const HSBC_BROADWAY_WINTER_PROMO: BankPromo = {
+  id: "hsbc-broadway-winter-2025",
+  name: "最紅冬日賞百老滙",
+  description: "百老滙累積簽賬滿 $10,000 享 6% 獎賞錢回贈！",
+  validFrom: "2025-12-01",
+  validTo: "2026-02-28",
+  maxReward: "$900 獎賞錢",
+  registrationUrl: "https://www.redhotoffers.hsbc.com.hk/tc/latest-offers/broadway-winteroffer/",
+  termsUrl: "https://www.redhotoffers.hsbc.com.hk/tc/latest-offers/broadway-winteroffer/",
+  
+  phases: [
+    {
+      name: "推廣期",
+      startDate: "2025-12-01",
+      endDate: "2026-02-28",
+      tiers: [
+        { 
+          minSpend: 10000, 
+          reward: "6% 獎賞錢回贈", 
+          rewardValue: 600,
+        },
+      ]
+    }
+  ],
+  
+  requirements: [
+    "須透過最紅優惠網站登記",
+    "累積百老滙簽賬滿 $10,000",
+    "單一簽賬需滿 $500",
+    "回贈上限 $900 獎賞錢",
+  ],
+  
+  exclusions: [
+    "百老滙網店簽賬",
+    "購買禮品卡/現金券",
+    "分期付款",
+  ],
+  
+  notes: "配合 HSBC Red 網上 4% 回贈，可達 10% 總回贈！獎賞錢將於 2026 年 5 月存入。"
+};
+
+// HSBC「最紅冬日賞」萬寧推廣
+export const HSBC_MANNINGS_WINTER_PROMO: BankPromo = {
+  id: "hsbc-mannings-winter-2025",
+  name: "最紅冬日賞萬寧",
+  description: "週末萬寧簽賬享高達 10% 獎賞錢回贈！",
+  validFrom: "2025-12-01",
+  validTo: "2026-02-28",
+  maxReward: "$300 獎賞錢",
+  registrationUrl: "https://www.redhotoffers.hsbc.com.hk/tc/latest-offers/mannings-winteroffer/",
+  termsUrl: "https://www.redhotoffers.hsbc.com.hk/tc/latest-offers/mannings-winteroffer/",
+  
+  phases: [
+    {
+      name: "推廣期",
+      startDate: "2025-12-01",
+      endDate: "2026-02-28",
+      tiers: [
+        { 
+          minSpend: 0, 
+          reward: "週末 10% 獎賞錢回贈", 
+          rewardValue: 100, // 每月上限
+        },
+      ]
+    }
+  ],
+  
+  requirements: [
+    "須透過最紅優惠網站登記",
+    "只限星期六、日及公眾假期",
+    "每月回贈上限 $100 獎賞錢",
+  ],
+  
+  exclusions: [
+    "萬寧網店簽賬",
+    "購買禮品卡/現金券",
+  ],
+  
+  notes: "週末萬寧購物首選！獎賞錢將於簽賬誌賬後 60 日內存入。"
+};
+
 // 導出所有銀行推廣
 export const BANK_PROMOS: Record<string, BankPromo> = {
   "hangseng-winter-2025": HANGSENG_WINTER_PROMO,
   "dahsing-winter-2025": DAHSING_WINTER_PROMO,
+  "hsbc-broadway-winter-2025": HSBC_BROADWAY_WINTER_PROMO,
+  "hsbc-mannings-winter-2025": HSBC_MANNINGS_WINTER_PROMO,
 };
 
 // 根據銀行獲取適用的推廣
@@ -193,6 +277,9 @@ export function getPromosForBank(bank: string): BankPromo[] {
   }
   if (bankLower.includes("dah sing") || bankLower.includes("大新")) {
     return [DAHSING_WINTER_PROMO];
+  }
+  if (bankLower.includes("hsbc") || bankLower.includes("滙豐")) {
+    return [HSBC_BROADWAY_WINTER_PROMO, HSBC_MANNINGS_WINTER_PROMO];
   }
   return [];
 }
