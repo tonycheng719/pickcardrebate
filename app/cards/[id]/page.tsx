@@ -1060,7 +1060,7 @@ export default function CardDetailPage() {
                                     <td className="py-2 px-2 text-gray-900 dark:text-white font-medium">合計</td>
                                     <td className="py-2 px-2"></td>
                                     <td className="py-2 px-2 text-right text-purple-600 dark:text-purple-400 font-bold">
-                                      ${capInfo.totalRegularRewardCap?.toLocaleString()}/月
+                                      ${capInfo.totalRegularRewardCap?.toLocaleString()}/{capInfo.regularCaps[0]?.period || '月'}
                                     </td>
                                     <td className="py-2 px-2"></td>
                                   </tr>

@@ -211,12 +211,24 @@ export function getCardCapInfo(card: CreditCard): CapInfo {
         spendingCap = Math.round(rewardCap / (rule.percentage / 100));
       }
       
+      // 確定週期
+      let period = '月';
+      if (isPromo) {
+        period = '推廣期';
+      } else if (rule.capPeriod === 'yearly') {
+        period = '年';
+      } else if (rule.capPeriod === 'semiannual') {
+        period = '半年';
+      } else if (rule.capPeriod === 'promo') {
+        period = '推廣期';
+      }
+      
       const cap: CategoryCap = {
         category: extractCategoryName(rule.description),
         rate: rule.percentage,
         rewardCap,
         spendingCap,
-        period: isPromo ? '推廣期' : '月',
+        period,
         isPromo,
         promoEndDate,
         note: extractNoteFromRule(rule),

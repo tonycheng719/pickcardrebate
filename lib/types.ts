@@ -18,6 +18,7 @@ export interface RewardRule {
   // Cap Logic
   cap?: number; // Default is 'spending cap' unless capType is specified
   capType?: 'spending' | 'reward'; // New: Distinguish between spending limit and reward limit
+  capPeriod?: 'monthly' | 'yearly' | 'semiannual' | 'promo'; // New: Cap period (default: monthly)
   shareCapWith?: string; // New: Group ID for shared cap (e.g. "mmpower_online_mobile")
 
   minSpend?: number;

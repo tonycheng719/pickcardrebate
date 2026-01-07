@@ -20,9 +20,9 @@ export const HK_CARDS: CreditCard[] = [
       // Visa Signature 專享：9X = 5X額外 + 1X基本 + 3X VS專享 = 3.6%
       // 五大類別（非自選）：1.6% = 0.4%基本 + 1.2% VS專享
       // 可自由分配 5X 到一個自選類別
-      { description: "最紅自主獎賞 9X (3.6%) [需登記]", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 3.6, cap: 100000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "最紅自主獎賞 9X (3.6%) [需登記]", matchType: "category", matchValue: ["dining", "supermarket", "lifestyle", "home", "entertainment"], percentage: 3.6, cap: 100000, capType: "spending", capPeriod: "yearly", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // 賞世界 - 海外實體店簽賬 (非港幣交易)
-      { description: "賞世界 9X (3.6%) [需登記]", matchType: "base", percentage: 3.6, isForeignCurrency: true, cap: 100000, capType: "spending", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "賞世界 9X (3.6%) [需登記]", matchType: "base", percentage: 3.6, isForeignCurrency: true, cap: 100000, capType: "spending", capPeriod: "yearly", excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // ========== Travel Guru 會員計劃（優惠推廣期至 2026/12/31）==========
       // 只限海外實體店外幣簽賬，需透過 Reward+ App 登記
       // GO級：+3%（連續3個月累積≥$8,000，上限$500/年）
@@ -1476,8 +1476,8 @@ export const HK_CARDS: CreditCard[] = [
       // ❌ 不包括：八達通自動增值、電子錢包充值/繳費、P2P 轉賬
       // 官方 T&C: https://www.primecredit.com/sta-data/tnc/EM_20250409/tnc.html
       // 流動支付（Apple Pay/Google Pay）也是 2%，因為全方位回贈
-      { description: "流動支付 2% (全方位)", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 2.0, cap: 1500, capType: "reward", excludeCategories: ["ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
-      { description: "全方位 2%", matchType: "base", percentage: 2.0, cap: 1500, capType: "reward", excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "流動支付 2% (全方位)", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 2.0, cap: 1500, capType: "reward", capPeriod: "yearly", excludeCategories: ["ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
+      { description: "全方位 2%", matchType: "base", percentage: 2.0, cap: 1500, capType: "reward", capPeriod: "yearly", excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus", "alipay", "wechat_pay", "payme"] },
       // T&C: 八達通自動增值只有 0.4%（不計入 2% 全方位），但 Apple Pay 手動增值 Smart Octopus 有 2%
       // mrmiles.hk 確認
       { description: "八達通自動增值 0.4%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
@@ -1664,9 +1664,9 @@ export const HK_CARDS: CreditCard[] = [
     rules: [
       // ========== 基本回贈 (無需登記) ==========
       // T&C: 網上零售簽賬 5X 積分 (2%)，每曆年首 $75,000 簽賬（額外4倍上限 300,000 積分）
-      { description: "網購 2% (5X積分)", matchType: "category", matchValue: ["online"], percentage: 2.0, cap: 75000, capType: "spending", excludeCategories: ["ewallet", "insurance", "tax", "government", "utilities"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "網購 2% (5X積分)", matchType: "category", matchValue: ["online"], percentage: 2.0, cap: 75000, capType: "spending", capPeriod: "yearly", excludeCategories: ["ewallet", "insurance", "tax", "government", "utilities"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: Visa 感應式付款 5X 積分 (2%)，每曆年首 $75,000 簽賬（與網購共用上限）
-      { description: "Visa payWave 拍卡 2% (5X積分)", matchType: "paymentMethod", matchValue: ["contactless", "apple_pay", "google_pay", "samsung_pay"], percentage: 2.0, cap: 75000, capType: "spending", excludeCategories: ["ewallet", "insurance", "tax", "government", "utilities"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "Visa payWave 拍卡 2% (5X積分)", matchType: "paymentMethod", matchValue: ["contactless", "apple_pay", "google_pay", "samsung_pay"], percentage: 2.0, cap: 75000, capType: "spending", capPeriod: "yearly", excludeCategories: ["ewallet", "insurance", "tax", "government", "utilities"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // T&C: 八達通自動增值 0.4%
       { description: "八達通自動增值 0.4%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
       // T&C: 網上理財繳費 0.4%
@@ -2050,11 +2050,11 @@ export const HK_CARDS: CreditCard[] = [
     rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 25,000 積分 = $100 (0.4%)
     rules: [
       // T&C 2026/1/1-6/30: TRAVO Rewards 海外迪士尼/環球影城 15% (每半年上限 $1,000)
-      { description: "海外迪士尼/環球影城 15% [需登記]", matchType: "merchant", matchValue: ["disney", "universal_studios"], percentage: 15.0, cap: 1000, capType: "spending", isForeignCurrency: true, excludePaymentMethods: ["alipay", "payme", "wechat_pay", "octopus"] },
+      { description: "海外迪士尼/環球影城 15% [需登記]", matchType: "merchant", matchValue: ["disney", "universal_studios"], percentage: 15.0, cap: 1000, capType: "spending", capPeriod: "semiannual", isForeignCurrency: true, excludePaymentMethods: ["alipay", "payme", "wechat_pay", "octopus"] },
       // T&C 2026/1/1-6/30: TRAVO Rewards 海外簽賬 10X積分 = 4% (每半年上限 $25,000)
-      { description: "海外簽賬 4% [需登記]", matchType: "base", percentage: 4.0, isForeignCurrency: true, cap: 25000, capType: "spending", excludePaymentMethods: ["alipay", "payme", "wechat_pay", "octopus"] },
+      { description: "海外簽賬 4% [需登記]", matchType: "base", percentage: 4.0, isForeignCurrency: true, cap: 25000, capType: "spending", capPeriod: "semiannual", excludePaymentMethods: ["alipay", "payme", "wechat_pay", "octopus"] },
       // T&C 2026/1/1-6/30: TRAVO Rewards 本地餐飲 5X積分 = 2% (每半年上限 $12,500)
-      { description: "本地餐飲 2% [需登記]", matchType: "category", matchValue: ["dining"], percentage: 2.0, cap: 12500, capType: "spending", excludePaymentMethods: ["alipay", "payme", "wechat_pay", "octopus"] },
+      { description: "本地餐飲 2% [需登記]", matchType: "category", matchValue: ["dining"], percentage: 2.0, cap: 12500, capType: "spending", capPeriod: "semiannual", excludePaymentMethods: ["alipay", "payme", "wechat_pay", "octopus"] },
       // 八達通自動增值 0.4%
       { description: "八達通自動增值 0.4%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
       // 網上繳費 0.4%
