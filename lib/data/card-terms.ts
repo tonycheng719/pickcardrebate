@@ -4845,6 +4845,206 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://www.aeon.com.hk/tc/credit-card/promotion/welcome-offer",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // 東亞銀行信用卡禮遇及簽賬獎賞（多卡條款）
+  // 來源：https://www.hkbea.com/pdf/tc/credit-card/master-reward-tnc_tc.pdf
+  // ========================================================================
+  {
+    cardId: "bea-reward-program",
+    cardName: "東亞銀行信用卡禮遇及簽賬獎賞",
+    bank: "東亞",
+    applicableCards: [
+      { cardId: "bea-goal", cardName: "BEA GOAL 信用卡", note: "需每月簽$2,000享額外回贈" },
+      { cardId: "bea-i-titanium", cardName: "i-Titanium 信用卡", note: "需每月簽$2,000享i-Dollar" },
+      { cardId: "bea-jcb-platinum", cardName: "JCB 白金卡" },
+      { cardId: "bea-centennial", cardName: "CENTENNIAL World Elite Mastercard 卡", note: "外幣$5=1里" },
+      { cardId: "bea-world-mc", cardName: "World Mastercard 卡", note: "需登記+每月簽$4,000" },
+      { cardId: "bea-supreme-world-mc", cardName: "顯卓理財 World Mastercard 卡", note: "需登記+每月簽$4,000" },
+      { cardId: "bea-flyer-world-mc", cardName: "Flyer World Mastercard 卡" },
+      { cardId: "bea-unionpay-diamond", cardName: "銀聯雙幣鑽石信用卡", note: "人民幣簽賬4.8%" },
+      { cardId: "bea-unionpay-platinum", cardName: "銀聯雙幣白金信用卡" },
+      { cardId: "bea-visa-signature", cardName: "Visa Signature 卡", note: "本地食肆6X" },
+      { cardId: "bea-mc-platinum", cardName: "Mastercard 白金卡" },
+      { cardId: "bea-visa-platinum", cardName: "Visa 白金卡" },
+    ],
+    documentName: "東亞銀行信用卡禮遇及簽賬獎賞之條款及細則",
+    promoStartDate: "2025-01-01",
+    promoEndDate: "2026-12-31",
+    rewardRates: [
+      // BEA GOAL 信用卡
+      { 
+        category: "BEA GOAL - 網上購物/手機付款", 
+        totalRate: 4.4, 
+        baseRate: 0.4, 
+        extraRate: 4.0, 
+        note: "需每月簽$2,000（至2026/6/30）" 
+      },
+      { 
+        category: "BEA GOAL - 娛樂消費", 
+        totalRate: 5.4, 
+        baseRate: 0.4, 
+        extraRate: 5.0, 
+        note: "主題公園/卡拉OK/電影院（至2026/6/30）🔥" 
+      },
+      { 
+        category: "BEA GOAL - 旅遊/本地交通", 
+        totalRate: 6.4, 
+        baseRate: 0.4, 
+        extraRate: 6.0, 
+        note: "旅行社/酒店/航空/巴士/的士/油站（至2026/6/30）🔥🔥" 
+      },
+      // i-Titanium 信用卡
+      { 
+        category: "i-Titanium - 網上購物/手機付款", 
+        totalRate: 4.0, 
+        baseRate: 0.4, 
+        extraRate: 3.6, 
+        note: "需每月簽$2,000，i-Dollar回贈（至2026/12/31）" 
+      },
+      // World Mastercard / 顯卓理財 World Mastercard
+      { 
+        category: "World MC/顯卓理財 - 外幣/食肆/電子產品/醫健", 
+        totalRate: 5.0, 
+        baseRate: 0.4, 
+        extraRate: 4.6, 
+        note: "12.5X獎分，需登記+每月簽$4,000（至2026/6/30）🔥🔥🔥" 
+      },
+      // 銀聯雙幣鑽石信用卡
+      { 
+        category: "銀聯雙幣鑽石 - 外幣簽賬（港幣賬戶）", 
+        totalRate: 4.0, 
+        baseRate: 0.4, 
+        extraRate: 3.6, 
+        note: "10X獎分（至2026/12/31）🔥🔥" 
+      },
+      { 
+        category: "銀聯雙幣鑽石 - 人民幣簽賬（人民幣賬戶）", 
+        totalRate: 4.8, 
+        baseRate: 0.4, 
+        extraRate: 4.4, 
+        note: "12X獎分（至2026/12/31）🔥🔥🔥" 
+      },
+      { 
+        category: "銀聯雙幣鑽石 - 本地食肆", 
+        totalRate: 1.2, 
+        baseRate: 0.4, 
+        extraRate: 0.8, 
+        note: "3X獎分（至2026/12/31）" 
+      },
+      // Visa Signature 卡
+      { 
+        category: "Visa Signature - 本地食肆", 
+        totalRate: 2.4, 
+        baseRate: 0.4, 
+        extraRate: 2.0, 
+        note: "6X獎分（至2026/12/31）🔥🔥" 
+      },
+      { 
+        category: "Visa Signature - 外幣簽賬", 
+        totalRate: 1.6, 
+        baseRate: 0.4, 
+        extraRate: 1.2, 
+        note: "4X獎分（至2026/12/31）" 
+      },
+      // CENTENNIAL World Elite
+      { 
+        category: "CENTENNIAL - 外幣簽賬（飛行里數）", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "$5 = 1 亞洲萬里通里數（至2026/3/31）🔥" 
+      },
+      { 
+        category: "CENTENNIAL - 本地零售（飛行里數）", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "$6.25 = 1 亞洲萬里通里數（至2026/3/31）" 
+      },
+    ],
+    rewardCap: {
+      type: "extra",
+      amount: 200,
+      period: "monthly",
+      note: "BEA GOAL每月上限$200；i-Titanium每月上限$300；World MC每月115,000獎分；銀聯鑽石每月100,000獎分",
+    },
+    minSpend: {
+      amount: 2000,
+      period: "monthly",
+      type: "total",
+      note: "BEA GOAL/i-Titanium需每月簽$2,000；World MC需每月簽$4,000",
+    },
+    exclusions: [
+      "現金透支",
+      "結單分期供款、好用錢、結餘轉賬",
+      "購買及/或充值儲值卡或電子錢包（PayMe/八達通自動增值除外）",
+      "網上繳費（銀行/信用卡/信貸財務/證券/稅務/教育/保險）",
+      "賭博交易",
+      "歐洲經濟區實體店簽賬",
+      "保費交易",
+      "超級市場、旅行社、政府部門簽賬（不獲額外獎賞）",
+      "循環付款及/或自動轉賬（不獲額外獎賞）",
+      "未誌賬/取消/退款的交易",
+    ],
+    warnings: [
+      "📌 政府部門及八達通自動增值每月上限 $40 回贈或 10,000 獎分",
+      "📌 World MC 需於 BEA Mall App 登記方可享額外獎賞",
+      "📌 CENTENNIAL 兌換里數需收取手續費",
+      "⚠️ 獎分兌換率：200獎分 = $1",
+      "額外獎賞於下個曆月 8-16 日存入",
+    ],
+    officialSource: "https://www.hkbea.com/pdf/tc/credit-card/master-reward-tnc_tc.pdf",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // BEA GOAL 信用卡迎新獎賞
+  // 來源：https://www.hkbea.com/pdf/tc/credit-card/BEAGOAL/GOALWO_TC.pdf
+  // ========================================================================
+  {
+    cardId: "bea-goal-welcome",
+    cardName: "BEA GOAL 信用卡迎新獎賞",
+    bank: "東亞",
+    documentName: "BEA GOAL信用卡迎新獎賞條款及細則",
+    promoStartDate: "2025-06-23",
+    promoEndDate: "2026-01-20",
+    minSpend: {
+      amount: 3000,
+      period: "promo",
+      type: "total",
+      note: "發卡後首2個月內累積簽賬滿$3,000",
+    },
+    rewardRates: [
+      { 
+        category: "迎新現金回贈", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "簽滿$3,000 = $300現金回贈 🔥" 
+      },
+    ],
+    exclusions: [
+      "附屬卡交易",
+      "好用錢、Pay My Way 分期供款",
+      "現金透支及手續費",
+      "八達通增值（包括自動增值）",
+      "購買及/或充值儲值卡",
+      "電子錢包增值/轉賬/零售（AlipayHK/PayMe/WeChat Pay HK）",
+      "超級市場、政府部門簽賬",
+      "賭場交易、籌碼兌換、外幣兌換",
+      "網上/ATM繳款、稅務繳費",
+      "循環付款、自動轉賬",
+      "未誌賬/取消/退款的交易",
+    ],
+    warnings: [
+      "⚠️ 新客戶：申請日前6個月內未持有任何東亞銀行信用卡主卡",
+      "⚠️ 12個月內取消卡會被扣回迎新獎賞",
+      "現金回贈於2026年5月31日前存入",
+    ],
+    officialSource: "https://www.hkbea.com/pdf/tc/credit-card/BEAGOAL/GOALWO_TC.pdf",
+    lastUpdated: "2026-01-08",
+  },
 ];
 
 // ========================================================================
