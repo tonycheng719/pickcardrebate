@@ -5134,6 +5134,69 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://www.hkbea.com/pdf/tc/credit-card/wmc_tnc_tc.pdf",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // 東亞銀行銀聯雙幣鑽石信用卡迎新獎賞
+  // 來源：https://www.hkbea.com/pdf/tc/credit-card/upd_tnc_tc.pdf
+  // ========================================================================
+  {
+    cardId: "bea-unionpay-diamond-welcome",
+    cardName: "東亞銀聯雙幣鑽石卡迎新獎賞",
+    bank: "東亞",
+    applicableCards: [
+      { cardId: "bea-unionpay-diamond", cardName: "銀聯雙幣鑽石信用卡" },
+    ],
+    documentName: "東亞銀行銀聯雙幣鑽石信用卡「高達HK$400 + CNY400現金回贈」迎新獎賞條款及細則",
+    promoStartDate: "2025-09-29",
+    promoEndDate: "2026-01-20",
+    minSpend: {
+      amount: 4000,
+      period: "promo",
+      type: "total",
+      note: "發卡後首3個月內累積簽賬",
+    },
+    rewardRates: [
+      // 本地及海外零售簽賬
+      { 
+        category: "迎新獎賞 (a) 本地及海外零售簽賬", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "簽滿HK$4,000 = HK$400現金回贈 🔥" 
+      },
+      // 人民幣零售簽賬
+      { 
+        category: "迎新獎賞 (b) 人民幣零售簽賬", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "簽滿CNY4,000 = CNY400現金回贈 🔥" 
+      },
+    ],
+    exclusions: [
+      "附屬卡交易",
+      "好用錢、Pay My Way 分期供款",
+      "現金透支及手續費",
+      "八達通增值（包括自動增值、網上或手機）",
+      "購買及/或充值儲值卡",
+      "電子錢包增值/轉賬/零售（Alipay/AlipayHK/PayMe/WeChat Pay）",
+      "超級市場、政府部門簽賬",
+      "賭場交易、籌碼兌換、外幣兌換",
+      "網上/ATM繳款、稅務繳費",
+      "循環付款、自動轉賬",
+      "未誌賬/取消/退款的交易",
+    ],
+    warnings: [
+      "📌 兩部分可獨立或同時獲享，合共最高HK$400 + CNY400",
+      "📌 (a)本地及海外零售簽賬不包括人民幣",
+      "📌 (b)人民幣簽賬可於中國內地使用雲閃付付款",
+      "⚠️ 新客戶：申請日前6個月內未持有任何東亞銀行信用卡主卡",
+      "⚠️ 12個月內取消卡會被扣回迎新獎賞",
+      "現金回贈於2026/7/31前存入相對貨幣賬戶",
+    ],
+    officialSource: "https://www.hkbea.com/pdf/tc/credit-card/upd_tnc_tc.pdf",
+    lastUpdated: "2026-01-08",
+  },
 ];
 
 // ========================================================================
