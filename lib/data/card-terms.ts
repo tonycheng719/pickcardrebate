@@ -3345,6 +3345,85 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://www.citibank.com.hk/chinese/credit-cards/welcome-offers/tnc/Card-Welcome-Offer-TnC-0925-v1.pdf",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // Citi ThankYou Rewards 積分獎賞計劃
+  // ========================================================================
+  {
+    cardId: "citi-thankyou-rewards",
+    cardName: "Citi ThankYou Rewards 積分獎賞計劃",
+    bank: "花旗",
+    documentName: "Citi ThankYou Rewards 條款及細則修訂通知",
+    promoStartDate: "2026-03-03",
+    rewardRates: [
+      { 
+        category: "Citi Prestige 本地簽賬", 
+        totalRate: 1.67, 
+        baseRate: 1.67, 
+        extraRate: 0, 
+        note: "$6 = 12積分 = 1里 🔥" 
+      },
+      { 
+        category: "Citi Prestige 海外/網上外幣簽賬", 
+        totalRate: 2.5, 
+        baseRate: 2.5, 
+        extraRate: 0, 
+        note: "$4 = 12積分 = 1里 🔥🔥" 
+      },
+      { 
+        category: "Citi PremierMiles 本地簽賬", 
+        totalRate: 0.83, 
+        baseRate: 0.83, 
+        extraRate: 0, 
+        note: "$8 = 12積分 = 1里" 
+      },
+      { 
+        category: "Citi PremierMiles 海外/網上外幣簽賬", 
+        totalRate: 1.67, 
+        baseRate: 1.67, 
+        extraRate: 0, 
+        note: "$4 = 12積分 = 1里 🔥" 
+      },
+      { 
+        category: "Citi Rewards 流動支付", 
+        totalRate: 2.0, 
+        baseRate: 0.4, 
+        extraRate: 1.6, 
+        note: "$5 = 5X積分 = 1里 🔥🔥" 
+      },
+      { 
+        category: "Citi Rewards 購物/娛樂", 
+        totalRate: 2.0, 
+        baseRate: 0.4, 
+        extraRate: 1.6, 
+        note: "$5 = 5X積分 = 1里 🔥🔥" 
+      },
+    ],
+    exclusions: [
+      "現金透支",
+      "銀行費用",
+      "結餘轉賬、折現計劃、Quick Cash",
+      "繳交稅款",
+      "賭場交易",
+      "網上繳費",
+      "保險交易",
+      "慈善/非牟利機構交易",
+      "轉數快(FPS)交易",
+      "動態貨幣兌換交易",
+      "未誌賬/取消/退款交易",
+    ],
+    warnings: [
+      "📌 積分轉換里數需 $200 手續費（2026年3月3日起）",
+      "📌 適用卡：Prestige/PremierMiles/Plus/Rewards/HKTVmall/Gold/Classic",
+      "⚠️ 不適用：The Club/Cash Back/Clear/八達通卡",
+      "⚠️ 拖欠90天以上：積分作廢",
+      "⚠️ 取消信用卡：積分即時作廢",
+      "最低兌換：1,500里",
+      "可兌換：國泰/英航/阿聯酋/長榮/法航/IHG/澳航/卡塔爾/新航/泰航/維珍",
+    ],
+    officialSource: "https://www.citibank.com.hk/chinese/credit-cards/thankyou-rewards_noa_cn.pdf",
+    lastUpdated: "2026-01-08",
+  },
 ];
 
 // ========================================================================
