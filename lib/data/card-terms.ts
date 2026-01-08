@@ -7990,7 +7990,7 @@ export const cardTerms: CardTerms[] = [
     rewardCap: {
       type: "extra",
       amount: 50000,
-      period: "statement",
+      period: "monthly",
       note: "星期一獎勵積分：每月結單周期最多 **50,000分**",
     },
     exclusions: [
