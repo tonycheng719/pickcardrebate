@@ -4340,6 +4340,131 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://www.dbs.com.hk/iwov-resources/pdf/creditcards/eminent-tnc-5percent-rebate2026-zh.pdf",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // DBS Black World Mastercard 基本獎賞
+  // ========================================================================
+  {
+    cardId: "dbs-black-world-mc-rewards",
+    cardName: "DBS Black World Mastercard 基本獎賞",
+    bank: "星展",
+    documentName: "DBS Black Card DBS$ 兌換比率",
+    rewardRates: [
+      { 
+        category: "海外簽賬", 
+        totalRate: 1.2, 
+        baseRate: 1.2, 
+        extraRate: 0, 
+        note: "$250 = DBS$3 = $4/里 🔥🔥" 
+      },
+      { 
+        category: "本地簽賬", 
+        totalRate: 0.8, 
+        baseRate: 0.8, 
+        extraRate: 0, 
+        note: "$250 = DBS$2 = $6/里 🔥" 
+      },
+      { 
+        category: "八達通自動增值", 
+        totalRate: 0.4, 
+        baseRate: 0.4, 
+        extraRate: 0, 
+        note: "$250 = DBS$1 = $12/里" 
+      },
+      { 
+        category: "信用卡免息分期供款", 
+        totalRate: 0.4, 
+        baseRate: 0.4, 
+        extraRate: 0, 
+        note: "$250 = DBS$1 = $12/里" 
+      },
+    ],
+    warnings: [
+      "📌 海外簽賬指香港以外外幣交易（港幣/澳門幣不計）",
+      "📌 DBS$48 = 1,000里數",
+      "里數兌換：亞洲萬里通/Avios/KrisFlyer等",
+    ],
+    officialSource: "https://www.dbs.com.hk/iwov-resources/pdf/creditcards/DBS-Black-Card-Conversion-Rates.pdf",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // DBS Black World Mastercard 海外簽賬 HK$2=1里 推廣
+  // ========================================================================
+  {
+    cardId: "dbs-black-world-mc-overseas",
+    cardName: "DBS Black World Mastercard 海外簽賬 HK$2=1里 推廣",
+    bank: "星展",
+    documentName: "DBS Black World Mastercard 海外簽賬低至 HK$2=1里推廣的條款及細則",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-12-31",
+    minSpend: {
+      amount: 20000,
+      period: "monthly",
+      type: "total",
+      note: "每月累積零售簽賬需達$20,000",
+    },
+    rewardCap: {
+      type: "extra",
+      amount: 240,  // DBS$240/月
+      period: "monthly",
+      note: "每月額外獎賞上限DBS$240，全年上限DBS$2,880",
+    },
+    spendingCap: {
+      amount: 20000,
+      period: "monthly",
+      calculation: "海外簽賬每月首$20,000享額外3X DBS$（$250=DBS$6）",
+    },
+    rewardRates: [
+      { 
+        category: "海外簽賬（達門檻後）", 
+        totalRate: 2.4, 
+        baseRate: 1.2, 
+        extraRate: 1.2, 
+        note: "$250 = 6X DBS$ = $2/里 🔥🔥🔥" 
+      },
+      { 
+        category: "海外簽賬（基本）", 
+        totalRate: 1.2, 
+        baseRate: 1.2, 
+        extraRate: 0, 
+        note: "$250 = 3X DBS$ = $4/里" 
+      },
+      { 
+        category: "本地簽賬", 
+        totalRate: 0.8, 
+        baseRate: 0.8, 
+        extraRate: 0, 
+        note: "$250 = 2X DBS$ = $6/里" 
+      },
+    ],
+    exclusions: [
+      "八達通自動增值服務交易金額（包括申請費/手續費）",
+      "信用卡免息分期貸款/商戶免息分期付款計劃",
+      "現金透支及其手續費/行政費",
+      "籌碼兌換/外幣兌換",
+      "認購基金/證券買賣",
+      "信用卡年費/財務費用/逾期費用",
+      "迅用錢/結餘轉戶/現金轉戶/Flexi Shopping",
+      "海外銷售點的港幣/澳門幣交易",
+      "繳付保費/稅項",
+      "繳費交易（iBanking/繳費易/DBS Card+）",
+      "轉賬交易",
+      "購買/充值儲值卡",
+      "取消/退款/索償中的交易",
+    ],
+    warnings: [
+      "📌 需透過 DBS Card+ 登記參加",
+      "📌 每月需累積簽賬達$20,000方享額外獎賞",
+      "📌 電子錢包零售每月首$5,000計入合資格簽賬",
+      "⚠️ 每月額外獎賞上限 DBS$240（約5,000里）",
+      "⚠️ 全年額外獎賞上限 DBS$2,880（約60,000里）",
+      "⚠️ 即時外幣兌換選港幣結算不計海外簽賬",
+      "額外獎賞於每月完結後1個月內發放",
+    ],
+    officialSource: "https://www.dbs.com.hk/iwov-resources/pdf/creditcards/BlackMC_CVP_2026_TnC_CN.pdf",
+    lastUpdated: "2026-01-08",
+  },
 ];
 
 // ========================================================================
