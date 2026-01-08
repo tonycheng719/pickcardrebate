@@ -1385,6 +1385,342 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://av.sc.com/hk/zh/content/docs/hk-promo-smart-tnc.pdf",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // 渣打國泰萬事達卡 FanFest 禮遇（繳稅里數優惠）
+  // ========================================================================
+  {
+    cardId: "sc-cathay-fanfest",
+    cardName: "渣打國泰Mastercard® FanFest禮遇",
+    bank: "渣打",
+    documentName: "渣打國泰Mastercard®里賞FanFest禮遇之條款及細則",
+    promoStartDate: "2025-10-31",
+    promoEndDate: "2026-01-15",
+    minSpend: {
+      amount: 10000,
+      period: "promo",
+      type: "total",
+      note: "發卡後首 2 個月內累積合資格簽賬（不包括繳稅）"
+    },
+    rewardRates: [
+      { 
+        category: "國泰萬事達卡 - 繳稅里數", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "HK$4 = 1 里（上限 20,000 里）" 
+      },
+      { 
+        category: "國泰萬事達卡 優先理財 - 繳稅里數", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "HK$3 = 1 里（上限 40,000 里）🔥" 
+      },
+      { 
+        category: "國泰萬事達卡 優先私人理財 - 繳稅里數", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "HK$2 = 1 里（上限 80,000 里）🔥🔥" 
+      },
+    ],
+    exclusions: [
+      "現金透支、兌換籌碼、保險費用",
+      "經紀人和交易商之債券",
+      "八達通自動增值",
+      "透過互聯網/ATM/電話銀行繳費（只限渣打網上理財/SC Mobile App繳稅）",
+      "任何電子錢包轉賬（P2P、八達通銀包、支付寶）",
+      "未誌賬/取消/退款/偽造/未經許可的交易",
+      "透過支付寶/微信支付/八達通App繳稅",
+    ],
+    warnings: [
+      "⚠️ 全新客戶：過去 6 個月內沒有取消任何渣打/MANHATTAN信用卡",
+      "⚠️ 需簽滿 $10,000 合資格簽賬 + 另外繳稅才享 FanFest 禮遇",
+      "⚠️ 繳稅須透過渣打網上理財或 SC Mobile App",
+      "⚠️ 1年內取消卡會被扣回里數",
+      "⚠️ 須於 2026/2/12 前批核",
+      "不能與現有迎新禮遇同享（二擇一）",
+      "里數於 2026/7/31 前存入國泰會員賬戶",
+    ],
+    officialSource: "https://av.sc.com/hk/content/docs/hk-cc-tncs-fanfest.pdf",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // 渣打國泰萬事達卡指定類別簽賬獎賞計劃
+  // ========================================================================
+  {
+    cardId: "sc-cathay-selected-categories",
+    cardName: "渣打國泰萬事達卡指定類別簽賬獎賞計劃",
+    bank: "渣打",
+    documentName: "渣打國泰萬事達卡指定類別簽賬獎賞計劃條款及細則",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-03-31",
+    rewardRates: [
+      // 優先私人理財
+      { 
+        category: "海外簽賬（優先私人理財）", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "HK$2 = 1 里（已包基本里數）🔥🔥" 
+      },
+      { 
+        category: "食肆/酒店（優先私人理財）", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "HK$4 = 1 里（已包基本里數）" 
+      },
+      // 優先理財
+      { 
+        category: "海外簽賬（優先理財）", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "HK$3 = 1 里（已包基本里數）🔥" 
+      },
+      { 
+        category: "食肆/酒店（優先理財）", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "HK$4 = 1 里（已包基本里數）" 
+      },
+      // 普通卡
+      { 
+        category: "食肆/酒店/海外（普通卡）", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "HK$4 = 1 里（已包基本里數）" 
+      },
+    ],
+    exclusions: [
+      "保費簽賬",
+      "透過渣打網上理財/電話理財繳費",
+      "八達通銀包/支付寶/FPS轉賬",
+      "賭博交易、經紀人和交易商之債券",
+      "於非金融/金融機構購買外匯、匯票、產品及服務",
+      "電匯、寶石和金屬、手錶和珠寶批發",
+      "現金透支、結餘轉賬、兌現分期、繳稅",
+      "未誌賬/取消/退款/偽造/未經許可的交易",
+      "食肆：酒席宴會、私人宴會、包場派對、私房菜、酒店/美食廣場/超市/百貨公司內食肆",
+      "酒店：透過第三方平台（旅行社、OTA、訂房中介）預訂",
+    ],
+    warnings: [
+      "📌 食肆須港幣結算",
+      "📌 酒店須直接於酒店或官網預訂並港幣結算",
+      "📌 海外簽賬 = 非港幣結算",
+      "已包含基本獎賞計劃里數",
+      "主卡及附屬卡簽賬合併計算",
+      "餘額滾存至下月計算",
+    ],
+    officialSource: "https://av.sc.com/hk/content/docs/hk-cc-cx-card-selected-category-tnc.pdf",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // 渣打國泰萬事達卡額外5,000里數特別禮遇（現有客戶）
+  // ========================================================================
+  {
+    cardId: "sc-cathay-extra-5k",
+    cardName: "渣打國泰Mastercard® 額外5,000里數特別禮遇",
+    bank: "渣打",
+    documentName: "渣打國泰Mastercard® 額外5,000里數特別禮遇之條款及細則",
+    promoStartDate: "2025-10-31",
+    promoEndDate: "2026-01-15",
+    rewardRates: [
+      { 
+        category: "現有客戶迎新", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "現有客戶申請可獲 5,000 里" 
+      },
+    ],
+    warnings: [
+      "⚠️ 只適用於現有信用卡客戶",
+      "⚠️ 1年內取消卡會被扣回里數",
+      "⚠️ 須於 2026/2/12 前批核",
+      "不可與其他申請優惠同享",
+      "里數於 2026/7/31 前存入國泰會員賬戶",
+    ],
+    officialSource: "https://av.sc.com/hk/content/docs/hk-cc-tncs-cxam-ex5kmiles.pdf",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // 渣打國泰萬事達卡獎賞計劃（基本）
+  // ========================================================================
+  {
+    cardId: "sc-cathay-base-rewards",
+    cardName: "渣打國泰萬事達卡獎賞計劃",
+    bank: "渣打",
+    documentName: "渣打國泰萬事達卡獎賞計劃條款及細則",
+    rewardRates: [
+      { 
+        category: "一般簽賬", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "HK$6 = 1 里（基本）" 
+      },
+      { 
+        category: "八達通自動增值", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "HK$6 = 1 里（計入合資格簽賬）" 
+      },
+    ],
+    exclusions: [
+      "保費簽賬",
+      "透過渣打網上理財/電話理財繳費",
+      "八達通銀包/支付寶/FPS轉賬",
+      "賭博交易、經紀人和交易商之債券",
+      "於非金融/金融機構購買外匯、匯票、產品及服務",
+      "電匯、寶石和金屬、手錶和珠寶批發",
+      "現金透支、結餘轉賬、兌現分期、繳稅",
+      "未誌賬/取消/退款/偽造/未經許可的交易",
+    ],
+    warnings: [
+      "主卡及附屬卡簽賬合併計算",
+      "餘額滾存至下月計算",
+      "外幣簽賬會轉換為港幣計算",
+      "里數於月結單後 7 個工作天內存入國泰會員賬戶",
+    ],
+    officialSource: "https://av.sc.com/hk/content/docs/hk-cx-t0-tnc.pdf",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // 渣打國泰萬事達卡國泰及香港快運簽賬額外獎賞
+  // ========================================================================
+  {
+    cardId: "sc-cathay-cxuo-bonus",
+    cardName: "渣打國泰萬事達卡國泰及香港快運簽賬額外獎賞",
+    bank: "渣打",
+    documentName: "渣打國泰萬事達卡國泰及香港快運簽賬額外獎賞條款及細則",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-06-30",
+    rewardCap: {
+      type: "extra",
+      amount: 2667,  // 一次性額外里數
+      period: "promo",
+      note: "累積簽 HK$8,000 國泰/香港快運獲 2,667 里（每階段最多一次）"
+    },
+    minSpend: {
+      amount: 8000,
+      period: "promo",
+      type: "category",
+      note: "累積國泰/香港快運簽賬滿 HK$8,000"
+    },
+    rewardRates: [
+      { 
+        category: "國泰/香港快運簽賬", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "累積 HK$8,000 = 額外 2,667 里（每階段最多一次）" 
+      },
+    ],
+    warnings: [
+      "📌 階段1：2026/1/1 - 3/31",
+      "📌 階段2：2026/4/1 - 6/30",
+      "⚠️ 整個推廣期最多獲 2,667 里（階段1或2二擇一）",
+      "適用於國泰航空機票、國泰品味購物、國泰假期、香港快運機票及免稅品",
+      "主卡及附屬卡簽賬合併計算",
+    ],
+    officialSource: "https://av.sc.com/hk/content/docs/hk-cxuo-bonus-miles-tnc.pdf",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // 渣打國泰萬事達卡會籍積分簽賬獎賞
+  // ========================================================================
+  {
+    cardId: "sc-cathay-status-points",
+    cardName: "渣打國泰萬事達卡會籍積分簽賬獎賞",
+    bank: "渣打",
+    documentName: "渣打國泰萬事達卡會籍積分簽賬獎賞條款及細則",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-12-31",
+    rewardCap: {
+      type: "extra",
+      amount: 100,  // 最高會籍積分
+      period: "annual",
+      note: "全年最高 100 會籍積分"
+    },
+    minSpend: {
+      amount: 100000,
+      period: "promo",
+      type: "total",
+      note: "每 HK$100,000 合資格簽賬 = 20 會籍積分"
+    },
+    rewardRates: [
+      { 
+        category: "會籍積分獎賞", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "每 HK$100,000 = 20 會籍積分（上限 100 積分/年）🔥" 
+      },
+    ],
+    exclusions: [
+      "現金透支、兌換籌碼、保險費用、繳稅",
+      "八達通銀包/支付寶/微信支付/FPS轉賬",
+      "透過互聯網/網上銀行/ATM/電話銀行繳費",
+      "推廣期前簽賬的商戶免息分期每月供款",
+      "兌現分期、月結單分期之供款及利息/手續費",
+      "賭博交易、經紀人和交易商之債券",
+      "於非金融/金融機構購買外匯、匯票、產品及服務",
+      "電匯、寶石和金屬、手錶和珠寶批發",
+      "未誌賬/取消/退款/偽造/未經許可的交易",
+    ],
+    warnings: [
+      "📌 階段1：1-3月，階段2：4-6月，階段3：7-9月，階段4：10-12月",
+      "📌 不足 HK$100,000 的餘額可累積至下階段",
+      "📌 會籍積分以 20 的倍數獎賞（無部分獎賞）",
+      "主卡及附屬卡簽賬合併計算",
+      "有助升級國泰銀卡/金卡/鑽石卡會籍",
+    ],
+    officialSource: "https://av.sc.com/hk/content/docs/hk-cx-marco-polo-tnc.pdf",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // 渣打國泰萬事達卡出糧客戶額外2,000里數特別禮遇
+  // ========================================================================
+  {
+    cardId: "sc-cathay-payroll-2k",
+    cardName: "渣打國泰萬事達卡出糧客戶額外2,000里數特別禮遇",
+    bank: "渣打",
+    documentName: "渣打國泰萬事達卡出糧客戶額外2,000里數特別禮遇條款及細則",
+    promoStartDate: "2025-12-02",
+    promoEndDate: "2026-04-30",
+    rewardRates: [
+      { 
+        category: "出糧客戶迎新", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "全新客戶 + 出糧客戶 = 額外 2,000 里" 
+      },
+    ],
+    warnings: [
+      "⚠️ 須為渣打出糧客戶（自動轉賬出糧服務）",
+      "⚠️ 須於網上申請",
+      "⚠️ 全新客戶：過去 6 個月內沒有取消任何渣打/MANHATTAN信用卡",
+      "⚠️ 1年內取消卡會被扣回里數",
+      "⚠️ 須於 2026/7/31 前批核",
+      "可與迎新禮遇或 FanFest 禮遇同享 🔥",
+      "里數於 2026/10/31 前存入國泰會員賬戶",
+    ],
+    officialSource: "https://av.sc.com/hk/content/docs/hk-tncs-cxam-payroll2konline.pdf",
+    lastUpdated: "2026-01-08",
+  },
 ];
 
 // ========================================================================
