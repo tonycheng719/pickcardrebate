@@ -4582,6 +4582,223 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://www.dbs.com.hk/iwov-resources/pdf/creditcards/TnC_CV_SuperWed2026_zh_Jan-May.pdf",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // AEON CARD WAKUWAKU 迎新現金回贈
+  // ========================================================================
+  {
+    cardId: "aeon-wakuwaku-welcome",
+    cardName: "AEON CARD WAKUWAKU 迎新現金回贈",
+    bank: "AEON",
+    documentName: "AEON CARD WAKUWAKU 迎新現金回贈條款及細則",
+    promoStartDate: "2024-06-01",
+    promoEndDate: "2026-02-28",
+    minSpend: {
+      amount: 8000,
+      period: "promo",
+      type: "total",
+      note: "短訊發出日起60天內累積簽賬滿$8,000",
+    },
+    rewardRates: [
+      { 
+        category: "迎新(一) Apple Pay/Google Pay簽賬", 
+        totalRate: 10, 
+        baseRate: 0, 
+        extraRate: 10, 
+        note: "累積簽$8,000後，當中AP/GP簽賬享10%回贈（上限$500）🔥🔥🔥" 
+      },
+      { 
+        category: "迎新(二) 八達通自動增值", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "首次自動增值享$50回贈" 
+      },
+      { 
+        category: "迎新(二) 繳租金(Rentsmart/Reap/Keychain Pay)", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "享$50回贈" 
+      },
+      { 
+        category: "迎新(二) 商戶自動轉賬", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "登記並完成一次享$50回贈" 
+      },
+      { 
+        category: "迎新(二) App Store/Google Play消費", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "任何單一簽賬享$50回贈" 
+      },
+      { 
+        category: "迎新(三) 經App申請", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "推廣代碼「WAKUWAKU」+ 完成一宗簽賬享$200回贈 🔥" 
+      },
+    ],
+    exclusions: [
+      "現金預支/現金套現分期",
+      "AEON Netmember繳費",
+      "電子錢包增值/轉賬（AlipayHK/PayMe/WeChat Pay HK）",
+      "八達通增值金額（迎新一不計）",
+      "電子錢包增值（迎新一不計）",
+      "手續費/年費/逾期費用/利息",
+      "AEON自主分期計劃",
+      "籌碼兌換等賭博交易",
+      "未誌賬/取消/退款/欺詐交易",
+    ],
+    warnings: [
+      "📌 迎新回贈以WAKU COIN發放（需於App兌換）",
+      "📌 簽賬期：短訊發出日起60天內",
+      "📌 迎新(一)：需先累積簽$8,000，AP/GP簽賬享10%（上限$500）",
+      "📌 迎新(二)：4項指定類別各$50，最多$200",
+      "📌 迎新(三)：經App申請輸入「WAKUWAKU」享$200",
+      "⚠️ 新客戶：12個月內未持有任何AEON信用卡",
+      "⚠️ WAKU COIN於發出後24個月內有效",
+      "回贈於簽賬期結束後3個月內誌入",
+      "迎新總值最高可達$900！🔥🔥🔥",
+    ],
+    officialSource: "https://www.aeon.com.hk/tc/pdf/credit-card/AEONCARDWAKUWAKU_WO_TC.pdf",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // AEON CARD WAKUWAKU 獎賞計劃
+  // ========================================================================
+  {
+    cardId: "aeon-wakuwaku-rewards",
+    cardName: "AEON CARD WAKUWAKU 獎賞計劃",
+    bank: "AEON",
+    documentName: "AEON CARD WAKUWAKU 獎賞計劃條款及細則",
+    promoStartDate: "2025-05-01",
+    promoEndDate: "2026-02-28",
+    rewardCap: {
+      type: "extra",
+      amount: 200,
+      period: "monthly",
+      note: "每月結單周期額外獎賞上限$200",
+    },
+    rewardRates: [
+      { 
+        category: "網上簽賬", 
+        totalRate: 6.0, 
+        baseRate: 0.4, 
+        extraRate: 5.6, 
+        note: "港幣或外幣網上簽賬 🔥🔥🔥" 
+      },
+      { 
+        category: "日本海外簽賬", 
+        totalRate: 3.0, 
+        baseRate: 0.4, 
+        extraRate: 2.6, 
+        note: "日本以日元簽賬 🔥🔥" 
+      },
+      { 
+        category: "本地餐飲簽賬", 
+        totalRate: 1.0, 
+        baseRate: 0.4, 
+        extraRate: 0.6, 
+        note: "香港酒樓/餐廳/快餐店/酒店餐飲" 
+      },
+      { 
+        category: "其他簽賬", 
+        totalRate: 0.4, 
+        baseRate: 0.4, 
+        extraRate: 0, 
+        note: "八達通增值/AEON分期/保險等" 
+      },
+    ],
+    exclusions: [
+      "現金預支/現金套現分期",
+      "AEON Netmember繳費",
+      "電子錢包增值/轉賬（AlipayHK/PayMe/WeChat Pay HK）",
+      "手續費/年費/逾期費用/利息",
+      "AEON自主分期計劃",
+      "籌碼兌換等賭博交易",
+      "未誌賬/取消/退款/欺詐交易",
+      "保險交易（網上簽賬不計）",
+      "電子錢包簽賬（網上簽賬不計）",
+      "AEON商戶免息分期（網上簽賬不計）",
+    ],
+    warnings: [
+      "📌 回贈以WAKU COIN發放（需於App兌換）",
+      "📌 基本回贈0.4%無上限",
+      "📌 額外回贈每月結單周期上限$200",
+      "⚠️ 重疊類別優先次序：網上>日本>本地餐飲>其他",
+      "⚠️ WAKU COIN於發出後24個月內有效",
+    ],
+    officialSource: "https://www.aeon.com.hk/tc/pdf/credit-card/AEONCARDWAKUWAKU_RBBD_TC.pdf",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // AEON 信用卡迎新簽賬獎賞
+  // ========================================================================
+  {
+    cardId: "aeon-card-welcome",
+    cardName: "AEON 信用卡迎新簽賬獎賞",
+    bank: "AEON",
+    documentName: "AEON信用卡「迎新簽賬獎賞」推廣條款及細則",
+    promoStartDate: "2025-03-01",
+    promoEndDate: "2026-02-28",
+    minSpend: {
+      amount: 6000,
+      period: "promo",
+      type: "total",
+      note: "短訊發出日起60天內累積簽賬滿$6,000",
+    },
+    rewardRates: [
+      { 
+        category: "累積簽賬獎賞", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "簽滿$6,000 = 100,000積分（約$400）🔥🔥" 
+      },
+      { 
+        category: "手機支付獎賞", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "當中$1,000用AP/GP/QR Pay = 額外25,000積分（約$100）" 
+      },
+      { 
+        category: "網上迎新獎賞", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "經網站/App申請 + 完成單一簽賬 = 額外50,000積分（約$200）🔥" 
+      },
+    ],
+    exclusions: [
+      "現金預支/現金套現分期",
+      "AEON Netmember繳費",
+      "AEON自主分期計劃",
+      "流動轉賬/增值交易（PayMe/AP/WeChat Pay/AlipayHK等）",
+      "商戶支付（PayMe等）",
+      "八達通自動增值",
+      "賭博交易",
+      "退款/無效/未誌賬/取消的簽賬",
+    ],
+    warnings: [
+      "📌 適用於：AEON Visa/萬事達/銀聯信用卡",
+      "📌 手機支付獎賞不適用於AEON JCB信用卡",
+      "📌 簽賬期：迎新短訊發出日起60天內",
+      "⚠️ 新客戶：12個月內未持有任何AEON信用卡",
+      "⚠️ 不適用於附屬卡",
+      "回贈於簽賬期結束後1個月內誌入",
+      "迎新總值最高175,000積分（約$700）！🔥🔥",
+    ],
+    officialSource: "https://www.aeon.com.hk/tc/credit-card/promotion/welcome-offer",
+    lastUpdated: "2026-01-08",
+  },
 ];
 
 // ========================================================================
