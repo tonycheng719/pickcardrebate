@@ -7569,6 +7569,284 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://www.citibank.com.hk/chinese/credit-cards/pdf/octopus-cards/terms-and-conditions.pdf",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // 建行（亞洲）TRAVO World Mastercard 迎新禮品
+  // 來源：https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/travo_tnc.html
+  // ========================================================================
+  {
+    cardId: "ccb-travo-welcome",
+    cardName: "建行（亞洲）TRAVO World Mastercard 迎新禮品",
+    bank: "建行（亞洲）",
+    applicableCards: [
+      { cardId: "ccb-travo-world", cardName: "建行（亞洲）TRAVO World Mastercard" },
+    ],
+    documentName: "建行（亞洲）TRAVO World Mastercard全新客戶迎新禮品條款及細則",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-01-31",
+    rewardRates: [
+      { 
+        category: "禮品1：$800現金回贈（Chill分期）", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "發卡後首3個月內申請6個月+「Chill分期」，總金額達 **$15,000** 🔥🔥" 
+      },
+      { 
+        category: "禮品2：$600現金回贈（簽賬）", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "發卡後首2個月內總簽賬達 **$6,000** 🔥" 
+      },
+    ],
+    minSpend: {
+      amount: 6000,
+      period: "promo",
+      note: "禮品1需$15,000分期 / 禮品2需$6,000簽賬",
+    },
+    exclusions: [
+      "未誌賬交易、轉賬、現金透支",
+      "結餘轉戶、分期貸款、免息分期計劃",
+      "電子錢包交易/增值/轉賬（AlipayHK、PayMe、WeChat Pay HK）",
+      "保險公司保費、自動轉賬",
+      "八達通自動增值（包括電子錢包）",
+      "RentSmart租好啲簽賬",
+      "繳費、電匯、賭博交易、循環付款",
+      "慈善捐款、電話/傳真/郵寄購物",
+      "繳交稅款、費用及收費",
+      "取消或退款交易",
+    ],
+    warnings: [
+      "📌 **二選一**：禮品1及禮品2不可同時享有",
+      "📌 須於申請表格選擇迎新禮品，**選定後不可更改**",
+      "📌 未選擇/選多項 → 預設禮品2",
+      "📌 現金回贈於符合要求後 **6個月內** 誌賬",
+      "⚠️ 申請前 **12個月內** 未持有任何建行（亞洲）信用卡主卡",
+      "⚠️ 發卡後 **12個月內取消卡** 會扣除迎新獎賞等值金額",
+    ],
+    officialSource: "https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/travo_tnc.html",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // 建行（亞洲）TRAVO Mastercard「TRAVO Rewards」積分獎賞計劃
+  // 來源：https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/tnc_travo_cash_rebate.html
+  // ========================================================================
+  {
+    cardId: "ccb-travo-rewards",
+    cardName: "建行（亞洲）TRAVO Mastercard「TRAVO Rewards」積分獎賞計劃",
+    bank: "建行（亞洲）",
+    applicableCards: [
+      { cardId: "ccb-travo-world", cardName: "建行（亞洲）TRAVO World Mastercard" },
+      { cardId: "ccb-travo", cardName: "建行（亞洲）TRAVO Mastercard" },
+    ],
+    documentName: "建行（亞洲）TRAVO Mastercard「TRAVO Rewards」條款及細則",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-06-30",
+    rewardRates: [
+      { 
+        category: "海外零售簽賬獎賞", 
+        totalRate: 10, 
+        baseRate: 1, 
+        extraRate: 9, 
+        note: "非港幣零售簽賬 **10倍積分** 🔥🔥🔥（上限：225,000額外積分）" 
+      },
+      { 
+        category: "本地餐飲獎賞", 
+        totalRate: 5, 
+        baseRate: 1, 
+        extraRate: 4, 
+        note: "本地餐飲簽賬 **5倍積分** 🔥🔥（上限：50,000額外積分）" 
+      },
+      { 
+        category: "積分預領獎賞", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "可預領最高 **450,000積分**（2026/2/1-5/31申請，須於6/30前清還）" 
+      },
+    ],
+    rewardCap: {
+      type: "extra",
+      amount: 225000,
+      period: "promo",
+      note: "海外零售：225,000額外積分 / 本地餐飲：50,000額外積分",
+    },
+    exclusions: [
+      "現金透支、電子轉賬",
+      "信用額套現分期、Chill分期簽賬分期",
+      "財務費用、逾期手續費及其他費用",
+      "保險公司保單貸款繳費",
+      "銀行/信用卡服務及信貸財務機構繳費",
+      "繳稅",
+      "賭博交易、半現金交易",
+      "電子錢包增值/轉賬（微信支付、支付寶、PayMe）",
+      "取消/還原/退回交易、未誌賬交易",
+      "酒席宴會、私人宴會、包場派對（餐飲類別）",
+      "酒店/百貨公司/俱樂部/會所內餐飲（餐飲類別）",
+    ],
+    warnings: [
+      "📌 **需登記**：網上銀行或手機銀行登記",
+      "📌 多張卡只需登記一次，簽賬合併計算",
+      "📌 積分於交易入賬後下個曆月內存入",
+      "⚠️ **積分預領**：未清還按每100積分 = $1.2 扣除",
+    ],
+    officialSource: "https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/tnc_travo_cash_rebate.html",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // 建行（亞洲）TRAVO Mastercard Expedia 預訂酒店優惠
+  // 來源：https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/tnc_expedia.html
+  // ========================================================================
+  {
+    cardId: "ccb-travo-expedia",
+    cardName: "建行（亞洲）TRAVO Mastercard Expedia 預訂酒店優惠",
+    bank: "建行（亞洲）",
+    applicableCards: [
+      { cardId: "ccb-travo-world", cardName: "建行（亞洲）TRAVO World Mastercard" },
+      { cardId: "ccb-travo", cardName: "建行（亞洲）TRAVO Mastercard" },
+    ],
+    documentName: "建行（亞洲）TRAVO Mastercard Expedia 預訂酒店條款及細則",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-06-30",
+    rewardRates: [
+      { 
+        category: "Expedia酒店預訂", 
+        totalRate: 0.85, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "優惠碼「**TRAVO15**」預訂酒店享 **85折**，每筆最多$350折扣 🔥🔥" 
+      },
+    ],
+    rewardCap: {
+      type: "total",
+      amount: 350,
+      period: "transaction",
+      note: "每筆交易最多$350折扣",
+    },
+    warnings: [
+      "📌 **優惠碼**：TRAVO15",
+      "📌 **指定網頁**：www.expedia.com.hk/ccba",
+      "📌 每月名額 **350個**，先到先得",
+      "📌 每月每會員最多使用 **2次**",
+      "📌 住宿期：2026/1/1 - 9/30",
+      "⚠️ 須以港幣全數付款",
+      "⚠️ 不適用電子錢包/流動支付（Apple Pay、Google Pay、Alipay等）",
+    ],
+    officialSource: "https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/tnc_expedia.html",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // 建行（亞洲）TRAVO Mastercard 指定主題樂園簽賬回贈
+  // 來源：https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/tnc_themepark.html
+  // ========================================================================
+  {
+    cardId: "ccb-travo-themepark",
+    cardName: "建行（亞洲）TRAVO Mastercard 指定主題樂園簽賬回贈",
+    bank: "建行（亞洲）",
+    applicableCards: [
+      { cardId: "ccb-travo-world", cardName: "建行（亞洲）TRAVO World Mastercard" },
+      { cardId: "ccb-travo", cardName: "建行（亞洲）TRAVO Mastercard" },
+    ],
+    documentName: "建行（亞洲）TRAVO Mastercard 指定主題樂園簽賬回贈計劃條款及細則",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-06-30",
+    rewardRates: [
+      { 
+        category: "指定主題樂園簽賬", 
+        totalRate: 15, 
+        baseRate: 0, 
+        extraRate: 15, 
+        note: "迪士尼/環球影城（中國/法國/日本/新加坡/美國）**15%現金回贈** 🔥🔥🔥" 
+      },
+    ],
+    rewardCap: {
+      type: "total",
+      amount: 150,
+      period: "promo",
+      note: "每卡推廣期最高$150現金回贈（主卡/附屬卡分別計算）",
+    },
+    warnings: [
+      "📌 **指定樂園**：中國/法國/日本/新加坡/美國迪士尼樂園及環球影城",
+      "📌 **合資格簽賬**：門票、酒店住宿、餐飲、購物（非港幣交易）",
+      "📌 回贈於合資格簽賬後 **30個曆日內** 存入",
+      "📌 主卡/附屬卡回贈分別計算",
+    ],
+    officialSource: "https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/tnc_themepark.html",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // 建行（亞洲）TRAVO World Mastercard 海外商戶簽賬回贈
+  // 來源：https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/tnc_merchantsoffer.html
+  // ========================================================================
+  {
+    cardId: "ccb-travo-overseas-merchants",
+    cardName: "建行（亞洲）TRAVO World Mastercard 海外商戶簽賬回贈",
+    bank: "建行（亞洲）",
+    applicableCards: [
+      { cardId: "ccb-travo-world", cardName: "建行（亞洲）TRAVO World Mastercard" },
+    ],
+    documentName: "建行（亞洲）TRAVO World Mastercard 海外商戶簽賬回贈條款及細則",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-06-30",
+    rewardRates: [
+      { 
+        category: "🇨🇳 支付寶", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "滿RMB40 → 回贈 **RMB6**（每階段），推廣期最高RMB12" 
+      },
+      { 
+        category: "🇨🇳 滴滴", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "滿RMB100 → 回贈 **RMB15**（每階段），推廣期最高RMB30" 
+      },
+      { 
+        category: "🇨🇳 美團/大眾點評", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "滿RMB100 → 回贈 **RMB15**（每階段），推廣期最高RMB30" 
+      },
+      { 
+        category: "🇯🇵 三越伊勢丹", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "滿JPY80,000 → 回贈 **JPY12,000**（每階段），推廣期最高JPY24,000 🔥🔥" 
+      },
+      { 
+        category: "🇯🇵 JR EAST SUICA（Apple Pay增值）", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "滿JPY4,000 → 回贈 **JPY600**（每階段），推廣期最高JPY1,200" 
+      },
+      { 
+        category: "🇯🇵 MITSUI OUTLET PARK（大阪門真/札幌北廣島/幕張）", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "滿JPY80,000 → 回贈 **JPY12,000**（每階段），推廣期最高JPY24,000 🔥🔥" 
+      },
+    ],
+    warnings: [
+      "📌 **兩個階段**：第一階段1/1-3/31、第二階段4/1-6/30",
+      "📌 每階段每商戶可享回贈 **1次**",
+      "📌 主卡/附屬卡回贈分別計算",
+      "📌 回贈於合資格簽賬後 **30個曆日內** 存入",
+      "⚠️ JR EAST SUICA 僅限 **Apple Pay增值**（不適用Mobile Suica、車站售票機）",
+    ],
+    officialSource: "https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/tnc_merchantsoffer.html",
+    lastUpdated: "2026-01-08",
+  },
 ];
 
 // ========================================================================
