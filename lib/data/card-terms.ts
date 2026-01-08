@@ -6153,8 +6153,10 @@ export const cardTerms: CardTerms[] = [
         note: "5倍積分（含基本1倍）= 2%回贈 🔥（每25,000積分=$100）" 
       },
     ],
-    spendingCap: {
-      yearlyLimit: 300000,
+    rewardCap: {
+      type: "extra",
+      amount: 300000,
+      period: "annual",
       note: "每曆年度（1/1-12/31）額外4倍積分上限300,000積分",
     },
     exclusions: [
