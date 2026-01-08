@@ -1782,6 +1782,268 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://av.sc.com/hk/zh/content/docs/hk-promo-simply-cash-tnc.pdf",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // 中銀 Chill World Mastercard 獎賞計劃
+  // ========================================================================
+  {
+    cardId: "boc-chill-world-rewards",
+    cardName: "中銀 Chill World Mastercard 獎賞計劃",
+    bank: "中銀",
+    documentName: "中銀 Chill Card 一般條款及細則",
+    promoStartDate: "2024-01-01",
+    promoEndDate: "2026-06-30",
+    rewardCap: {
+      type: "extra",
+      amount: 150,
+      period: "monthly",
+      note: "海外/網上/Chill商戶之額外回贈合共上限$150/月"
+    },
+    minSpend: {
+      amount: 1500,
+      period: "monthly",
+      type: "physical",
+      note: "⚠️ Chill商戶10%需月簽實體卡滿$1,500"
+    },
+    rewardRates: [
+      { 
+        category: "基本簽賬（簽賬得FUN）", 
+        totalRate: 0.4, 
+        baseRate: 0.4, 
+        extraRate: 0, 
+        note: "HK$1 = 1 分 = 0.4%回贈" 
+      },
+      { 
+        category: "海外簽賬", 
+        totalRate: 5.0, 
+        baseRate: 0.4, 
+        extraRate: 4.6, 
+        note: "需外幣結算（港幣結算不計）🔥" 
+      },
+      { 
+        category: "網上簽賬", 
+        totalRate: 5.0, 
+        baseRate: 0.4, 
+        extraRate: 4.6, 
+        note: "不限貨幣及地點 🔥" 
+      },
+      { 
+        category: "Chill 商戶", 
+        totalRate: 10.0, 
+        baseRate: 0.4, 
+        extraRate: 9.6, 
+        note: "需月簽實體卡滿$1,500（見 bochk.com/s/a/chill）🔥🔥" 
+      },
+    ],
+    exclusions: [
+      "電子錢包簽賬（BoC Pay+、AlipayHK、WeChat Pay HK）",
+      "積FUN錢交易",
+      "現金透支、結餘轉戶",
+      "自動轉賬、八達通自動增值",
+      "分期付款（現金分期、月結單分期、商戶免息分期）",
+      "年費、財務費用、手續費",
+      "繳費（稅款、通訊費、會費、學費、租金、水電）",
+      "PayPal/支付寶繳費",
+      "購買/充值儲值卡或電子錢包",
+      "P2P轉賬",
+      "金融機構/非金融機構產品（存款、外匯、保險、基金、股票）",
+      "賭博交易、慈善機構交易",
+      "未誌賬/取消/退款/偽造/未經許可的交易",
+    ],
+    warnings: [
+      "📌 海外/網上/Chill商戶額外回贈合共上限 $150/月",
+      "⚠️ Chill商戶10%需月簽實體卡滿$1,500",
+      "⚠️ 海外簽賬需外幣結算（港幣結算的外幣簽賬不計）",
+      "✅ 基本0.4%回贈無上限",
+      "現金回贈於結算後3個月內自動存入",
+      "需於交易日後7天內誌賬",
+      "主卡及附屬卡合併計算",
+    ],
+    officialSource: "https://www.bochk.com/dam/boccreditcard/chillcard/chill_tnc_TC.pdf",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // 中銀 Chill World Mastercard 迎新獎賞
+  // ========================================================================
+  {
+    cardId: "boc-chill-world-welcome",
+    cardName: "中銀 Chill World Mastercard 迎新獎賞",
+    bank: "中銀",
+    documentName: "中銀 Chill Card 迎新獎賞條款及細則",
+    promoStartDate: "2024-01-01",
+    promoEndDate: "2026-12-31",
+    minSpend: {
+      amount: 5000,
+      period: "promo",
+      type: "total",
+      note: "發卡當月及其後首2個曆月內累積簽賬"
+    },
+    rewardRates: [
+      { 
+        category: "Chill World 迎新", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "簽 $5,000 = $500 現金回贈" 
+      },
+    ],
+    exclusions: [
+      "電子錢包簽賬（BoC Pay+、AlipayHK、WeChat Pay HK）",
+      "積FUN錢交易",
+      "現金透支、結餘轉戶",
+      "自動轉賬、八達通自動增值",
+      "分期付款（現金分期、月結單分期、商戶免息分期）",
+      "年費、財務費用、手續費",
+      "繳費（稅款、通訊費、會費、學費、租金、水電）",
+      "PayPal/支付寶繳費",
+      "購買/充值儲值卡或電子錢包",
+      "P2P轉賬",
+      "金融機構/非金融機構產品（存款、外匯、保險、基金、股票）",
+      "賭博交易、慈善機構交易",
+    ],
+    warnings: [
+      "⚠️ 不適用於現有中銀港幣/雙幣信用卡主卡持有人",
+      "⚠️ 不適用於12個月內曾取消中銀信用卡人士",
+      "⚠️ 需啟動實體卡",
+      "⚠️ 12個月內取消主卡會被扣回迎新獎賞",
+      "需於交易日後7天內誌賬",
+      "現金回贈於發卡後4個曆月內存入",
+    ],
+    officialSource: "https://www.bochk.com/dam/boccreditcard/chillcard/chill_wg_tc.pdf",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // 中銀 Chill Platinum Mastercard 獎賞計劃
+  // ========================================================================
+  {
+    cardId: "boc-chill-platinum-rewards",
+    cardName: "中銀 Chill Platinum Mastercard 獎賞計劃",
+    bank: "中銀",
+    documentName: "中銀 Chill Card 一般條款及細則",
+    promoStartDate: "2024-01-01",
+    promoEndDate: "2026-06-30",
+    rewardCap: {
+      type: "extra",
+      amount: 150,
+      period: "monthly",
+      note: "海外/網上/Chill商戶之額外回贈合共上限$150/月"
+    },
+    minSpend: {
+      amount: 1000,
+      period: "monthly",
+      type: "physical",
+      note: "⚠️ Chill商戶8%需月簽實體卡滿$1,000"
+    },
+    rewardRates: [
+      { 
+        category: "基本簽賬（簽賬得FUN）", 
+        totalRate: 0.4, 
+        baseRate: 0.4, 
+        extraRate: 0, 
+        note: "HK$1 = 1 分 = 0.4%回贈" 
+      },
+      { 
+        category: "海外簽賬", 
+        totalRate: 4.0, 
+        baseRate: 0.4, 
+        extraRate: 3.6, 
+        note: "需外幣結算（港幣結算不計）" 
+      },
+      { 
+        category: "網上簽賬", 
+        totalRate: 4.0, 
+        baseRate: 0.4, 
+        extraRate: 3.6, 
+        note: "不限貨幣及地點" 
+      },
+      { 
+        category: "Chill 商戶", 
+        totalRate: 8.0, 
+        baseRate: 0.4, 
+        extraRate: 7.6, 
+        note: "需月簽實體卡滿$1,000（見 bochk.com/s/a/chill）🔥" 
+      },
+    ],
+    exclusions: [
+      "電子錢包簽賬（BoC Pay+、AlipayHK、WeChat Pay HK）",
+      "積FUN錢交易",
+      "現金透支、結餘轉戶",
+      "自動轉賬、八達通自動增值",
+      "分期付款（現金分期、月結單分期、商戶免息分期）",
+      "年費、財務費用、手續費",
+      "繳費（稅款、通訊費、會費、學費、租金、水電）",
+      "PayPal/支付寶繳費",
+      "購買/充值儲值卡或電子錢包",
+      "P2P轉賬",
+      "金融機構/非金融機構產品（存款、外匯、保險、基金、股票）",
+      "賭博交易、慈善機構交易",
+      "未誌賬/取消/退款/偽造/未經許可的交易",
+    ],
+    warnings: [
+      "📌 海外/網上/Chill商戶額外回贈合共上限 $150/月",
+      "⚠️ Chill商戶8%需月簽實體卡滿$1,000",
+      "⚠️ 海外簽賬需外幣結算（港幣結算的外幣簽賬不計）",
+      "✅ 基本0.4%回贈無上限",
+      "現金回贈於結算後3個月內自動存入",
+      "需於交易日後7天內誌賬",
+      "主卡及附屬卡合併計算",
+    ],
+    officialSource: "https://www.bochk.com/dam/boccreditcard/chillcard/chill_tnc_TC.pdf",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // 中銀 Chill Platinum Mastercard 迎新獎賞
+  // ========================================================================
+  {
+    cardId: "boc-chill-platinum-welcome",
+    cardName: "中銀 Chill Platinum Mastercard 迎新獎賞",
+    bank: "中銀",
+    documentName: "中銀 Chill Card 迎新獎賞條款及細則",
+    promoStartDate: "2024-01-01",
+    promoEndDate: "2026-12-31",
+    minSpend: {
+      amount: 3000,
+      period: "promo",
+      type: "total",
+      note: "發卡當月及其後首2個曆月內累積簽賬"
+    },
+    rewardRates: [
+      { 
+        category: "Chill Platinum 迎新", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "簽 $3,000 = $300 現金回贈" 
+      },
+    ],
+    exclusions: [
+      "電子錢包簽賬（BoC Pay+、AlipayHK、WeChat Pay HK）",
+      "積FUN錢交易",
+      "現金透支、結餘轉戶",
+      "自動轉賬、八達通自動增值",
+      "分期付款（現金分期、月結單分期、商戶免息分期）",
+      "年費、財務費用、手續費",
+      "繳費（稅款、通訊費、會費、學費、租金、水電）",
+      "PayPal/支付寶繳費",
+      "購買/充值儲值卡或電子錢包",
+      "P2P轉賬",
+      "金融機構/非金融機構產品（存款、外匯、保險、基金、股票）",
+      "賭博交易、慈善機構交易",
+    ],
+    warnings: [
+      "⚠️ 不適用於現有中銀港幣/雙幣信用卡主卡持有人",
+      "⚠️ 不適用於12個月內曾取消中銀信用卡人士",
+      "⚠️ 需啟動實體卡",
+      "⚠️ 12個月內取消主卡會被扣回迎新獎賞",
+      "需於交易日後7天內誌賬",
+      "現金回贈於發卡後4個曆月內存入",
+    ],
+    officialSource: "https://www.bochk.com/dam/boccreditcard/chillcard/chill_wg_tc.pdf",
+    lastUpdated: "2026-01-08",
+  },
 ];
 
 // ========================================================================
