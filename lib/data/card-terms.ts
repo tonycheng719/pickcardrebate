@@ -8106,6 +8106,106 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://www.fubonbank.com.hk/tc/cards/credit-card-products/yata-visa-card.html#box-tnc",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // 富邦 Visa Infinite 卡迎新禮品及積分計劃
+  // 來源：https://www.fubonbank.com.hk/tc/cards/credit-card-products/visa-infinite-card.html#box-tnc
+  // ========================================================================
+  {
+    cardId: "fubon-visa-infinite",
+    cardName: "富邦 Visa Infinite 卡迎新禮品及積分計劃",
+    bank: "富邦銀行",
+    applicableCards: [
+      { cardId: "fubon-visa-infinite", cardName: "富邦 Visa Infinite 卡" },
+    ],
+    documentName: "富邦 Visa Infinite 卡迎新禮品及其他優惠條款及細則",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-06-30",
+    minSpend: {
+      amount: 10000,
+      period: "promo",
+      note: "迎新：發卡後首3個月內累積認可零售簽賬及/或現金透支滿$10,000",
+    },
+    rewardRates: [
+      { 
+        category: "🇹🇼 新台幣簽賬", 
+        totalRate: 10, 
+        baseRate: 2.5, 
+        extraRate: 7.5, 
+        note: "**20X積分** = **10%回贈** = **$0.75/里** 🔥🔥🔥" 
+      },
+      { 
+        category: "🇯🇵🇰🇷 日圓/韓圜簽賬", 
+        totalRate: 5, 
+        baseRate: 2.5, 
+        extraRate: 2.5, 
+        note: "**10X積分** = **5%回贈** = **$1.5/里** 🔥🔥" 
+      },
+      { 
+        category: "非港幣簽賬", 
+        totalRate: 2.5, 
+        baseRate: 0.5, 
+        extraRate: 2, 
+        note: "**5X積分** = **2.5%回贈** = **$3/里**" 
+      },
+      { 
+        category: "本地網上商戶簽賬（需登記）", 
+        totalRate: 5, 
+        baseRate: 0.5, 
+        extraRate: 4.5, 
+        note: "高達 **10X積分** = **5%回贈** = **$1.5/里** 🔥🔥（需話音系統登記）" 
+      },
+      { 
+        category: "星期六、日本地簽賬（滿$300）", 
+        totalRate: 1, 
+        baseRate: 0.5, 
+        extraRate: 0.5, 
+        note: "**2X積分** = **1%回贈** = **$7.5/里**" 
+      },
+      { 
+        category: "本地簽賬", 
+        totalRate: 0.5, 
+        baseRate: 0.5, 
+        extraRate: 0, 
+        note: "**1X積分** = **0.5%回贈** = **$15/里**" 
+      },
+      { 
+        category: "八達通自動增值", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "每次增值獲 **100分**（不論金額）" 
+      },
+    ],
+    exclusions: [
+      "繳稅、網上繳款、結欠轉賬（迎新不計）",
+      "分期付款、手續費、財務費用、年費（迎新不計）",
+      "自動轉賬交易（迎新不計）",
+      "八達通自動增值（迎新不計）",
+      "賭博交易",
+      "稅務局繳費、保險或公積金服務類別繳費",
+      "0息分期零用錢、自由式分期計劃",
+    ],
+    warnings: [
+      "📌 **迎新要求**：發卡後首3個月簽賬滿 **$10,000**",
+      "📌 **新台幣簽賬**：**20X積分** = **$0.75/里** 🔥🔥🔥",
+      "📌 **日圓/韓圜簽賬**：**10X積分** = **$1.5/里** 🔥🔥",
+      "📌 **非港幣簽賬**：**5X積分** = **$3/里**",
+      "📌 **本地網上商戶**：高達 **10X積分**（需登記：2566 8181 話音系統按1>7>2）",
+      "📌 **機場貴賓室**：首曆年最多 **4次**（2次免費+2次簽賬優惠）",
+      "📌 **簽賬優惠**：使用後60天內簽賬滿$4,000 → 退還$390",
+      "📌 **全球旅遊意外保障**：最高 **$780萬**（18-64歲）",
+      "📌 **轎車接送**：香港國際機場 **52折** 優惠",
+      "📌 積分計劃有效期至 **2026年6月30日**",
+      "📌 **里數兌換**：15分 = 1「亞洲萬里通」里數（手續費$250-$500）",
+      "⚠️ 迎新只適用於 **未持有任何富邦信用卡** 的客戶",
+      "⚠️ 過往 **6個月內** 曾取消富邦卡者不適用迎新",
+      "⚠️ 開戶後 **14個月內取消卡** 會扣除迎新禮品成本",
+      "⚠️ 貴賓室未達簽賬要求：120天內扣除$390",
+    ],
+    officialSource: "https://www.fubonbank.com.hk/tc/cards/credit-card-products/visa-infinite-card.html#box-tnc",
+    lastUpdated: "2026-01-08",
+  },
 ];
 
 // ========================================================================
