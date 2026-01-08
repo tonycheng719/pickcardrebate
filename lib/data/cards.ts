@@ -1252,6 +1252,7 @@ export const HK_CARDS: CreditCard[] = [
     id: "bea-flyer-world",
     name: "BEA Flyer World Mastercard",
     bank: "東亞銀行",
+    hidden: true, // 已隱藏
     style: { bgColor: "bg-gradient-to-br from-sky-600 to-blue-800", textColor: "text-white" },
     foreignCurrencyFee: 1.95,
     annualFee: 1800,

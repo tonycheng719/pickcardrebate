@@ -4861,7 +4861,7 @@ export const cardTerms: CardTerms[] = [
       { cardId: "bea-centennial", cardName: "CENTENNIAL World Elite Mastercard 卡", note: "外幣$5=1里" },
       { cardId: "bea-world-mc", cardName: "World Mastercard 卡", note: "需登記+每月簽$4,000" },
       { cardId: "bea-supreme-world-mc", cardName: "顯卓理財 World Mastercard 卡", note: "需登記+每月簽$4,000" },
-      { cardId: "bea-flyer-world-mc", cardName: "Flyer World Mastercard 卡" },
+      // { cardId: "bea-flyer-world-mc", cardName: "Flyer World Mastercard 卡" }, // 已隱藏
       { cardId: "bea-unionpay-diamond", cardName: "銀聯雙幣鑽石信用卡", note: "人民幣簽賬4.8%" },
       { cardId: "bea-unionpay-platinum", cardName: "銀聯雙幣白金信用卡" },
       { cardId: "bea-visa-signature", cardName: "Visa Signature 卡", note: "本地食肆6X" },
