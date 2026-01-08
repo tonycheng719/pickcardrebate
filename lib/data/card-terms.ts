@@ -7144,6 +7144,76 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://www.americanexpress.com/content/dam/amex/hk/ch/campaigns/explorer-credit-card/Explorer_BAUWelcomeOffer_TnC_CH.pdf",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // 美國運通 x 百老匯院線優惠
+  // 來源：https://www.americanexpress.com/content/dam/amex/hk/benefits/pdf/TnCs_Broadway2026.pdf
+  // ========================================================================
+  {
+    cardId: "amex-broadway-2026",
+    cardName: "美國運通 x 百老匯院線優惠 2026",
+    bank: "美國運通",
+    applicableCards: [
+      { cardId: "amex-centurion", cardName: "美國運通 Centurion 卡" },
+      { cardId: "amex-platinum-charge", cardName: "美國運通白金卡" },
+      { cardId: "amex-peninsula-platinum", cardName: "美國運通半島白金卡" },
+      { cardId: "amex-platinum-credit", cardName: "美國運通白金信用卡" },
+      { cardId: "amex-blue-cash", cardName: "美國運通 Blue Cash 信用卡" },
+      { cardId: "amex-charter", cardName: "美國運通 Charter 卡" },
+      { cardId: "amex-explorer", cardName: "美國運通 Explorer 信用卡" },
+      { cardId: "amex-gold", cardName: "美國運通金卡" },
+      { cardId: "amex-i.t", cardName: "美國運通 i.t 卡" },
+    ],
+    documentName: "美國運通 x 百老匯院線優惠條款及細則",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-12-31",
+    rewardRates: [
+      { 
+        category: "優惠一：8折（指定卡）", 
+        totalRate: 0.8, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "3D、2D、IMAX 正價戲票 **8折** 🔥🔥（Centurion/白金卡/半島白金/白金信用卡/Blue Cash/Charter卡）" 
+      },
+      { 
+        category: "優惠二：9折（所有美國運通卡）", 
+        totalRate: 0.9, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "4DX、3D、2D、IMAX 正價戲票 **9折**（所有香港簽發美國運通卡）" 
+      },
+      { 
+        category: "優惠三：星期五買一送一（指定卡）", 
+        totalRate: 0.5, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "逢星期五 3D、2D、IMAX 正價戲票 **買一送一** 🔥🔥🔥（Centurion/白金卡/半島白金/白金信用卡/Charter卡，不包括Blue Cash）" 
+      },
+    ],
+    exclusions: [
+      "1月1日、2月16-25日、12月17-31日之電影場次",
+      "HK$35或以下戲票",
+      "透過購票熱線購買之戲票",
+      "所有星期二、早場及午場電影",
+      "與電影發行商有特別協議之電影",
+      "VIP HOUSE（優惠一及三不適用）",
+      "4DX電影（優惠一及三不適用）",
+      "電影節（所有優惠不適用）",
+      "美國運通公司卡",
+      "非香港簽發的美國運通卡",
+      "美國運通特許發卡公司簽發之卡",
+    ],
+    warnings: [
+      "📌 **參與戲院**：百老匯院線、Premiere Cinemas、PALACE、MOViE MOViE、B+ cinema、My Cinema",
+      "📌 每日最多購買 **8張** 戲票",
+      "📌 只適用於售票處或戲院網站購票",
+      "📌 優惠三只適用於星期五 8am 至星期六凌晨 4am 之電影",
+      "⚠️ 網上購票須支付 Cinema.com.hk 手續費（不獲優惠）",
+      "⚠️ 所有優惠**不可同時使用**，亦不可與其他優惠同時使用",
+    ],
+    officialSource: "https://www.americanexpress.com/content/dam/amex/hk/benefits/pdf/TnCs_Broadway2026.pdf",
+    lastUpdated: "2026-01-08",
+  },
 ];
 
 // ========================================================================
