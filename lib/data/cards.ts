@@ -495,6 +495,7 @@ export const HK_CARDS: CreditCard[] = [
     id: "boc-gba",
     name: "BOC 大灣區一卡通",
     bank: "BOC",
+    hidden: true, // ⚠️ 2025年6月起已改名為「中銀Go卡」，舊卡已停發
     style: { bgColor: "bg-gradient-to-br from-blue-600 to-cyan-600", textColor: "text-white" },
     // imageUrl from DB
     annualFee: 800,
@@ -508,7 +509,7 @@ export const HK_CARDS: CreditCard[] = [
     tags: ["大灣區", "北上"],
     welcomeOfferText: "迎新手機簽賬 10% 回贈 (上限$300)",
     sellingPoints: ["內地簽賬高達 4% 回贈", "支援內地交通乘車碼"],
-    note: "⚠️ 不適用於 Alipay/WeChat Pay/PayMe 簽賬。迎新：手機簽賬 (Apple Pay/Google Pay/Samsung Pay/Huawei Pay/雲閃付 App) 享 10% 回贈，上限 $300。",
+    note: "⚠️ 此卡已於2025年6月改名為「中銀Go卡」，請參考新卡資料。不適用於 Alipay/WeChat Pay/PayMe 簽賬。",
     officialApplyUrl: "https://www.bochk.com/tc/creditcard/products/gba.html",
   },
   {
