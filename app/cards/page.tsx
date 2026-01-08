@@ -7,7 +7,7 @@ import { useWallet } from "@/lib/store/wallet-context";
 import { useReviews } from "@/lib/store/reviews-context";
 import type { CreditCard } from "@/lib/types";
 import { 
-    Plus, Check, ExternalLink, MessageSquare, Star, Search, X, Info, Scale, ArrowLeft
+    Plus, Check, ExternalLink, MessageSquare, Star, Search, X, Info, Scale, ArrowLeft, AlertTriangle
 } from "lucide-react";
 import {
   Dialog,
@@ -271,7 +271,7 @@ function CardItem({ card }: { card: CreditCard }) {
                 )}
 
                 {card.welcomeOfferText && (
-                  <div className="mb-6 rounded-2xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 p-4">
+                  <div className="mb-4 rounded-2xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 p-4">
                     <p className="text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-300 mb-1">
                       迎新優惠進行中
                     </p>
@@ -291,6 +291,33 @@ function CardItem({ card }: { card: CreditCard }) {
                         </a>
                       );
                     })()}
+                  </div>
+                )}
+
+                {/* 不計回贈項目 - 付款方式警告 */}
+                {card.exclusions && card.exclusions.length > 0 && (
+                  <div className="mb-4 rounded-xl border border-red-200 dark:border-red-800/50 bg-red-50 dark:bg-red-900/20 p-3">
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <AlertTriangle className="h-3.5 w-3.5 text-red-500 dark:text-red-400" />
+                      <p className="text-xs font-semibold text-red-600 dark:text-red-400">
+                        不計回贈
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {card.exclusions.slice(0, 6).map((item, idx) => (
+                        <span 
+                          key={idx} 
+                          className="inline-flex items-center px-2 py-0.5 rounded-md bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300 text-xs"
+                        >
+                          {item}
+                        </span>
+                      ))}
+                      {card.exclusions.length > 6 && (
+                        <span className="text-xs text-red-500 dark:text-red-400 px-1">
+                          +{card.exclusions.length - 6} 項
+                        </span>
+                      )}
+                    </div>
                   </div>
                 )}
                 
