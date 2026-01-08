@@ -87,7 +87,8 @@ export default function CardTermsAdminPage() {
     const expired = cardTerms.filter(t => getStatus(t) === "expired").length;
     const expiring = cardTerms.filter(t => getStatus(t) === "expiring").length;
     const active = cardTerms.filter(t => getStatus(t) === "active").length;
-    return { expired, expiring, active, total: cardTerms.length };
+    const multiCard = cardTerms.filter(t => t.applicableCards && t.applicableCards.length > 0).length;
+    return { expired, expiring, active, total: cardTerms.length, multiCard };
   }, []);
 
   return (
@@ -98,7 +99,7 @@ export default function CardTermsAdminPage() {
       </h1>
 
       {/* 統計卡片 */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
         <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
           <div className="text-2xl font-bold">{stats.total}</div>
           <div className="text-sm text-gray-500">總條款</div>
@@ -114,6 +115,10 @@ export default function CardTermsAdminPage() {
         <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-4 border border-red-200 dark:border-red-800">
           <div className="text-2xl font-bold text-red-600">{stats.expired}</div>
           <div className="text-sm text-red-600">已到期</div>
+        </div>
+        <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 border border-purple-200 dark:border-purple-800">
+          <div className="text-2xl font-bold text-purple-600">{stats.multiCard}</div>
+          <div className="text-sm text-purple-600">多卡條款</div>
         </div>
       </div>
 
@@ -190,6 +195,20 @@ export default function CardTermsAdminPage() {
                     <td className="px-4 py-3">
                       <div className="font-medium text-gray-900 dark:text-white">{terms.cardName}</div>
                       <div className="text-sm text-gray-500">{terms.bank}</div>
+                      {terms.applicableCards && terms.applicableCards.length > 0 && (
+                        <div className="mt-1 flex flex-wrap gap-1">
+                          {terms.applicableCards.map((card, idx) => (
+                            <span 
+                              key={idx}
+                              className="inline-flex items-center px-1.5 py-0.5 rounded text-xs bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400"
+                              title={card.note || card.cardName}
+                            >
+                              {card.cardName}
+                              {card.note && <span className="ml-0.5 text-purple-500">*</span>}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </td>
                     <td className="px-4 py-3">
                       <div className="text-sm text-gray-900 dark:text-white max-w-xs truncate" title={getDocumentName(terms)}>
@@ -276,6 +295,7 @@ export default function CardTermsAdminPage() {
         <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
           <li>• 🟡 快到期（30天內）：需要開始尋找新條款</li>
           <li>• 🔴 已到期：需要更新或移除</li>
+          <li>• <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400">紫色標籤</span> 表示此條款適用於多張卡片</li>
           <li>• 點擊「文件」可直接打開官方條款 PDF</li>
           <li>• 條款數據位於 <code className="bg-blue-100 dark:bg-blue-900 px-1 rounded">lib/data/card-terms.ts</code></li>
         </ul>

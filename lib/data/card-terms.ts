@@ -14,6 +14,13 @@ export interface CardTerms {
   cardName: string;
   bank: string;
   
+  // 適用卡片（如果條款適用於多張卡）
+  applicableCards?: {
+    cardId: string;
+    cardName: string;
+    note?: string;  // 例如 "JCB 不適用手機支付獎賞"
+  }[];
+  
   // 條款文件
   documentName?: string;  // 條款名稱（無則從 officialSource URL 提取）
   
@@ -1045,6 +1052,15 @@ export const cardTerms: CardTerms[] = [
     cardId: "hsbc-welcome-offer",
     cardName: "滙豐信用卡迎新推廣優惠",
     bank: "HSBC",
+    applicableCards: [
+      { cardId: "hsbc-premier", cardName: "滙豐卓越理財信用卡®" },
+      { cardId: "hsbc-vs", cardName: "滙豐 Visa Signature 卡" },
+      { cardId: "hsbc-everymile", cardName: "滙豐 EveryMile 信用卡" },
+      { cardId: "hsbc-pulse-unionpay", cardName: "滙豐 Pulse 銀聯雙幣鑽石信用卡" },
+      { cardId: "hsbc-unionpay", cardName: "滙豐銀聯雙幣信用卡" },
+      { cardId: "hsbc-gold", cardName: "滙豐滙財金卡" },
+      { cardId: "hsbc-easy", cardName: "滙豐 easy 信用卡", note: "需於30日內綁定易賞錢App" },
+    ],
     documentName: "滙豐信用卡迎新推廣優惠之條款及細則",
     promoStartDate: "2025-03-01",
     promoEndDate: "2026-02-28",
@@ -1214,6 +1230,13 @@ export const cardTerms: CardTerms[] = [
     cardId: "sc-welcome-offer",
     cardName: "渣打信用卡網上申請迎新禮遇",
     bank: "渣打",
+    applicableCards: [
+      { cardId: "sc-cathay-mc", cardName: "渣打國泰萬事達卡", note: "最高40,000里" },
+      { cardId: "sc-cathay-mc-priority", cardName: "渣打國泰萬事達卡 優先理財", note: "最高100,000里" },
+      { cardId: "sc-cathay-mc-private", cardName: "渣打國泰萬事達卡 優先私人理財", note: "最高120,000里" },
+      { cardId: "sc-simply-cash", cardName: "渣打 Simply Cash Visa 卡" },
+      { cardId: "sc-smart", cardName: "渣打 Smart 信用卡" },
+    ],
     documentName: "渣打網上申請迎新禮遇條款及細則",
     promoStartDate: "2025-12-02",
     promoEndDate: "2026-01-15",
@@ -3240,6 +3263,17 @@ export const cardTerms: CardTerms[] = [
     cardId: "citi-welcome-offers",
     cardName: "Citi 信用卡迎新獎賞",
     bank: "花旗",
+    applicableCards: [
+      { cardId: "citi-prestige", cardName: "Citi Prestige 信用卡", note: "繳付年費$3,800獲贈360,000積分" },
+      { cardId: "citi-premiermiles", cardName: "Citi PremierMiles 信用卡" },
+      { cardId: "citi-cash-back", cardName: "Citi Cash Back 信用卡" },
+      { cardId: "citi-rewards-mc", cardName: "Citi Rewards 萬事達卡" },
+      { cardId: "citi-rewards-up", cardName: "Citi Rewards 銀聯卡" },
+      { cardId: "citi-octopus", cardName: "Citi 八達通白金卡" },
+      { cardId: "citi-hktvmall", cardName: "Citi HKTVmall 信用卡" },
+      { cardId: "citi-plus", cardName: "Citi Plus® 信用卡", note: "需持有Citi Plus銀行賬戶" },
+      { cardId: "citi-the-club", cardName: "Citi The Club 信用卡", note: "首1,000名額外獎賞" },
+    ],
     documentName: "迎新獎賞之條款及細則",
     promoStartDate: "2026-01-03",
     promoEndDate: "2026-02-02",
@@ -4161,6 +4195,12 @@ export const cardTerms: CardTerms[] = [
     cardId: "dbs-welcome-offers",
     cardName: "DBS 信用卡迎新優惠",
     bank: "星展",
+    applicableCards: [
+      { cardId: "dbs-black-world", cardName: "DBS Black World Mastercard", note: "迎新最高30,000里" },
+      { cardId: "dbs-eminent", cardName: "DBS Eminent Card" },
+      { cardId: "dbs-compass", cardName: "DBS COMPASS VISA" },
+      { cardId: "dbs-live-fresh", cardName: "DBS Live Fresh Card" },
+    ],
     documentName: "DBS 信用卡迎新優惠條款及細則",
     promoStartDate: "2026-01-07",
     promoEndDate: "2026-04-02",
@@ -4745,6 +4785,12 @@ export const cardTerms: CardTerms[] = [
     cardId: "aeon-card-welcome",
     cardName: "AEON 信用卡迎新簽賬獎賞",
     bank: "AEON",
+    applicableCards: [
+      { cardId: "aeon-visa", cardName: "AEON Visa 信用卡" },
+      { cardId: "aeon-mastercard", cardName: "AEON 萬事達信用卡" },
+      { cardId: "aeon-unionpay", cardName: "AEON 銀聯信用卡" },
+      { cardId: "aeon-jcb", cardName: "AEON JCB 信用卡", note: "手機支付獎賞不適用" },
+    ],
     documentName: "AEON信用卡「迎新簽賬獎賞」推廣條款及細則",
     promoStartDate: "2025-03-01",
     promoEndDate: "2026-02-28",
