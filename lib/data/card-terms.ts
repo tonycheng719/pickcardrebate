@@ -2657,6 +2657,168 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://www.bochk.com/dam/boccreditcard/cheers_TnC_TC.pdf",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // 中銀 Go 銀聯鑽石卡 獎賞計劃
+  // ========================================================================
+  {
+    cardId: "boc-go-diamond-rewards",
+    cardName: "中銀 Go 銀聯鑽石卡 獎賞計劃",
+    bank: "中銀",
+    documentName: "中銀Go卡推廣優惠條款及細則",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-06-30",
+    rewardCap: {
+      type: "extra",
+      amount: 200,
+      period: "monthly",
+      note: "Go商戶$100 + 手機簽賬$100 合共上限$200/月"
+    },
+    minSpend: {
+      amount: 1500,
+      period: "monthly",
+      type: "total",
+      note: "⚠️ 需月簽滿$1,500（豁免至2026年6月30日）"
+    },
+    rewardRates: [
+      { 
+        category: "基本簽賬（簽賬得FUN）", 
+        totalRate: 0.4, 
+        baseRate: 0.4, 
+        extraRate: 0, 
+        note: "HK$1 = 1 分 = 0.4%回贈" 
+      },
+      { 
+        category: "指定Go商戶", 
+        totalRate: 5.0, 
+        baseRate: 0.4, 
+        extraRate: 4.6, 
+        note: "需月簽滿$1,500（豁免中），上限$100/月 🔥🔥" 
+      },
+      { 
+        category: "全球手機簽賬（雲閃付/Apple Pay/Huawei Pay/BoC Pay）", 
+        totalRate: 1.2, 
+        baseRate: 0.4, 
+        extraRate: 0.8, 
+        note: "3X積分，需月簽滿$1,500（豁免中），上限$100/月 🔥" 
+      },
+      { 
+        category: "海外簽賬（外幣，人民幣除外）", 
+        totalRate: 0.8, 
+        baseRate: 0.4, 
+        extraRate: 0.4, 
+        note: "2X積分，無上限 ✅" 
+      },
+    ],
+    exclusions: [
+      "BoC Pay/BoC Pay+、Alipay、WeChat Pay（Go商戶不計）",
+      "Alipay、WeChat Pay（手機簽賬不計）",
+      "積FUN錢交易",
+      "現金透支、結餘轉戶",
+      "自動轉賬、八達通增值",
+      "分期付款（現金分期、月結單分期、商戶免息分期）",
+      "年費、財務費用、手續費",
+      "繳費（稅款、通訊費、會費、學費、租金、水電）",
+      "PayPal/支付寶繳費",
+      "購買/充值儲值卡或電子錢包",
+      "金融機構/非金融機構產品（存款、外匯、保險、基金、股票）",
+      "賭博交易、慈善機構交易",
+    ],
+    warnings: [
+      "📌 Go商戶5%上限 $100/月",
+      "📌 手機簽賬3X上限 $100/月（=25,000分）",
+      "✅ 海外簽賬2X無上限",
+      "⚠️ 需月簽滿$1,500（目前豁免至2026/6/30）",
+      "⚠️ Go商戶不計BoC Pay",
+      "⚠️ 手機簽賬不計Alipay/WeChat Pay",
+      "⚠️ 海外簽賬不包括人民幣",
+      "需於交易日後7天內誌賬",
+      "人民幣簽賬以1:1兌港幣計算",
+    ],
+    officialSource: "https://www.bochk.com/dam/boccreditcard/gocard/gocardoffer_TC.pdf",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // 中銀 Go 銀聯白金卡 獎賞計劃
+  // ========================================================================
+  {
+    cardId: "boc-go-platinum-rewards",
+    cardName: "中銀 Go 銀聯白金卡 獎賞計劃",
+    bank: "中銀",
+    documentName: "中銀Go卡推廣優惠條款及細則",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-06-30",
+    rewardCap: {
+      type: "extra",
+      amount: 200,
+      period: "monthly",
+      note: "Go商戶$100 + 手機簽賬$100 合共上限$200/月"
+    },
+    minSpend: {
+      amount: 1500,
+      period: "monthly",
+      type: "total",
+      note: "⚠️ 需月簽滿$1,500（豁免至2026年6月30日）"
+    },
+    rewardRates: [
+      { 
+        category: "基本簽賬（簽賬得FUN）", 
+        totalRate: 0.4, 
+        baseRate: 0.4, 
+        extraRate: 0, 
+        note: "HK$1 = 1 分 = 0.4%回贈" 
+      },
+      { 
+        category: "指定Go商戶", 
+        totalRate: 5.0, 
+        baseRate: 0.4, 
+        extraRate: 4.6, 
+        note: "需月簽滿$1,500（豁免中），上限$100/月 🔥🔥" 
+      },
+      { 
+        category: "全球手機簽賬（雲閃付/Apple Pay/Huawei Pay/BoC Pay）", 
+        totalRate: 0.8, 
+        baseRate: 0.4, 
+        extraRate: 0.4, 
+        note: "2X積分，需月簽滿$1,500（豁免中），上限$100/月" 
+      },
+      { 
+        category: "海外簽賬（外幣，人民幣除外）", 
+        totalRate: 0.8, 
+        baseRate: 0.4, 
+        extraRate: 0.4, 
+        note: "2X積分，無上限 ✅" 
+      },
+    ],
+    exclusions: [
+      "BoC Pay/BoC Pay+、Alipay、WeChat Pay（Go商戶不計）",
+      "Alipay、WeChat Pay（手機簽賬不計）",
+      "積FUN錢交易",
+      "現金透支、結餘轉戶",
+      "自動轉賬、八達通增值",
+      "分期付款（現金分期、月結單分期、商戶免息分期）",
+      "年費、財務費用、手續費",
+      "繳費（稅款、通訊費、會費、學費、租金、水電）",
+      "PayPal/支付寶繳費",
+      "購買/充值儲值卡或電子錢包",
+      "金融機構/非金融機構產品（存款、外匯、保險、基金、股票）",
+      "賭博交易、慈善機構交易",
+    ],
+    warnings: [
+      "📌 Go商戶5%上限 $100/月",
+      "📌 手機簽賬2X上限 $100/月（=25,000分）",
+      "✅ 海外簽賬2X無上限",
+      "⚠️ 需月簽滿$1,500（目前豁免至2026/6/30）",
+      "⚠️ Go商戶不計BoC Pay",
+      "⚠️ 手機簽賬不計Alipay/WeChat Pay",
+      "⚠️ 海外簽賬不包括人民幣",
+      "需於交易日後7天內誌賬",
+      "人民幣簽賬以1:1兌港幣計算",
+    ],
+    officialSource: "https://www.bochk.com/dam/boccreditcard/gocard/gocardoffer_TC.pdf",
+    lastUpdated: "2026-01-08",
+  },
 ];
 
 // ========================================================================
