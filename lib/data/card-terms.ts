@@ -8416,6 +8416,80 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://av.sc.com/hk/content/docs/hk-cc-apointcard-rewards-tnc.pdf",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // 中銀淘寶 World 萬事達卡 迎新及優惠條款
+  // 來源：https://www.bochk.com/creditcard/pdf/chi/taobao_product_TnC.pdf
+  //       https://www.bochk.com/creditcard/pdf/chi/taobao_TnC.pdf
+  // ========================================================================
+  {
+    cardId: "boc-taobao-world",
+    cardName: "中銀淘寶 World 萬事達卡迎新及優惠條款",
+    bank: "中銀香港",
+    applicableCards: [
+      { cardId: "boc-taobao-world", cardName: "中銀淘寶 World 萬事達卡" },
+    ],
+    documentName: "中銀淘寶 World 萬事達卡推廣優惠條款及細則",
+    promoStartDate: "2025-01-01",
+    promoEndDate: "2026-12-31",
+    rewardRates: [
+      { 
+        category: "📱 迎新：手機簽賬（Apple Pay/Google Pay/Samsung Pay/雲閃付）", 
+        totalRate: 10, 
+        baseRate: 0, 
+        extraRate: 10, 
+        note: "**10%現金回贈** 🔥🔥🔥，簽賬期最高回贈 **$300**" 
+      },
+      { 
+        category: "🛒 0%淘寶手續費（透過AlipayHK付款）", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "手機淘寶/淘寶網透過AlipayHK以此卡付款，**免手續費** 🔥🔥" 
+      },
+      { 
+        category: "🌏 0%海外簽賬手續費", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "海外實體/網上商戶，**免海外手續費** 🔥🔥🔥" 
+      },
+    ],
+    rewardCap: {
+      type: "total",
+      amount: 300,
+      period: "promo",
+      note: "迎新期間（發卡當月+首2個曆月）手機簽賬最高回贈$300",
+    },
+    exclusions: [
+      "現金透支、現金存戶",
+      "未誌賬的商戶免息分期計劃金額",
+      "年費、財務費用、手續費、結餘轉戶",
+      "網上繳費交易、繳稅",
+      "郵購、電話或傳真訂購",
+      "賭博交易、八達通增值",
+      "外匯、匯票、旅行支票",
+      "購買加密貨幣",
+      "儲值卡/禮物卡/電子錢包增值",
+      "Alipay、WeChat Pay、PayMe、BoC Pay+交易",
+      "P2P現金轉賬",
+      "淘寶：手續費少於$0.1的訂單、閑魚平台、虛擬幣/話費充值卡等非實物類商品",
+    ],
+    warnings: [
+      "📌 **迎新獎賞**：手機簽賬（Apple Pay/Google Pay/Samsung Pay/Huawei Pay/雲閃付）享 **10%現金回贈**",
+      "📌 **迎新上限**：每賬戶（主卡+附屬卡）最高 **$300**",
+      "📌 **迎新簽賬期**：發卡當月 + 首兩個曆月",
+      "📌 **0%淘寶手續費**：透過AlipayHK App以此卡於淘寶付款 🔥🔥",
+      "📌 **0%海外手續費**：海外實體/網上商戶簽賬 🔥🔥🔥",
+      "📌 淘寶付款需設定「幣種設置」為 **HKD**",
+      "📌 現金回贈於發卡後 **4個曆月內** 誌入主卡賬戶",
+      "⚠️ 迎新不適用於 **現有中銀港幣/雙幣信用卡主卡持有人**",
+      "⚠️ 申請日期前 **12個月內** 曾取消或曾持有上述信用卡者不適用",
+      "⚠️ 發卡後 **12個月內取消主卡** 會扣除迎新獎賞",
+    ],
+    officialSource: "https://www.bochk.com/creditcard/pdf/chi/taobao_TnC.pdf",
+    lastUpdated: "2026-01-08",
+  },
 ];
 
 // ========================================================================
