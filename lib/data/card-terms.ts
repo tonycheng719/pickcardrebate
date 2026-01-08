@@ -5351,6 +5351,7 @@ export const cardTerms: CardTerms[] = [
       },
     ],
     rewardCap: {
+      type: "extra",
       amount: 800,
       period: "promo",
       note: "優惠期內1%加碼現金回贈上限為$800（即簽$80,000可賺盡）",
@@ -5550,6 +5551,7 @@ export const cardTerms: CardTerms[] = [
       },
     ],
     rewardCap: {
+      type: "extra",
       amount: 200,
       period: "monthly",
       note: "每張WeWa卡每曆月3.6%回贈上限$200（即每月自選類別簽$5,556可賺盡）",
@@ -6216,6 +6218,7 @@ export const cardTerms: CardTerms[] = [
       },
     ],
     rewardCap: {
+      type: "extra",
       amount: 400,
       period: "monthly",
       note: "每階段回贈上限$400，推廣期最高$1,200",
@@ -6480,6 +6483,7 @@ export const cardTerms: CardTerms[] = [
       note: "每月累積合資格零售簽賬滿$3,800",
     },
     rewardCap: {
+      type: "extra",
       amount: 200,
       period: "monthly",
       note: "額外現金回贈每月上限$200",
