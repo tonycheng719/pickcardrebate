@@ -5374,6 +5374,213 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://www.primecredit.com/wp-content/uploads/2025/12/C20251153_EarnMORE2026Q1_MKTWEB_300.pdf",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // 安信 WeWa 信用卡迎新優惠
+  // 來源：https://www.wewacard.com/wp-content/uploads/2025/06/C20250457_WeWa-TnC_20250701_v1.pdf
+  // ========================================================================
+  {
+    cardId: "wewa-welcome",
+    cardName: "安信 WeWa 卡迎新優惠",
+    bank: "安信",
+    applicableCards: [
+      { cardId: "wewa-visa-signature", cardName: "WeWa Visa Signature 卡" },
+      { cardId: "wewa-visa-platinum", cardName: "WeWa Visa 白金卡" },
+      { cardId: "wewa-unionpay", cardName: "WeWa 銀聯鑽石卡" },
+    ],
+    documentName: "WeWa 信用卡迎新優惠之條款及細則",
+    promoStartDate: "2025-07-01",
+    promoEndDate: "2026-02-28",
+    minSpend: {
+      amount: 8500,
+      period: "promo",
+      type: "total",
+      note: "發卡後首90天內累積簽賬",
+    },
+    rewardRates: [
+      { 
+        category: "迎新選項1 - LG 顯示器", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "簽滿$8,800 = LG 27吋全高清IPS智能顯示器 (27U511SA-W)" 
+      },
+      { 
+        category: "迎新選項2 - 藍芽喇叭", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "簽滿$8,800 = Marshall Emberton II 便攜式藍芽喇叭" 
+      },
+      { 
+        category: "迎新選項3 - 現金回贈", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "簽滿$8,500 = $500現金回贈 🔥" 
+      },
+      { 
+        category: "迎新選項4 - 免息分期套現", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "無簽賬要求 = 高達$90,000免息免手續費6期分期套現" 
+      },
+      { 
+        category: "迎新選項5 - 學生優惠", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "簽滿$2,000 = $200現金回贈（只限全日制大學/大專學生）" 
+      },
+    ],
+    exclusions: [
+      "現金透支及手續費",
+      "賭場交易",
+      "電子錢包轉賬/充值（P2P支付服務）",
+      "現金分期、分期金額",
+      "未入賬/取消/退回/偽造之交易",
+      "所有未經授權之交易",
+    ],
+    warnings: [
+      "📌 迎新選項一經選定後不可更改",
+      "📌 未選擇迎新優惠將自動獲得$500現金回贈",
+      "📌 八達通自動增值計入合資格簽賬",
+      "⚠️ 新客戶：6個月內未持有任何安信信用卡",
+      "⚠️ 12個月內取消卡會收取$600行政費",
+      "禮品需時約4-6個月，如缺貨可改$1,000回贈",
+    ],
+    officialSource: "https://www.wewacard.com/wp-content/uploads/2025/06/C20250457_WeWa-TnC_20250701_v1.pdf",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // 安信 WeWa 現金回贈計劃（常規條款）
+  // 來源：https://www.wewacard.com/wp-content/uploads/2025/06/C20250457_WeWa-TnC_20250701_v1.pdf
+  // ========================================================================
+  {
+    cardId: "wewa-cashback",
+    cardName: "安信 WeWa 卡現金回贈計劃",
+    bank: "安信",
+    applicableCards: [
+      { cardId: "wewa-visa-signature", cardName: "WeWa Visa Signature 卡" },
+      { cardId: "wewa-visa-platinum", cardName: "WeWa Visa 白金卡" },
+      { cardId: "wewa-unionpay", cardName: "WeWa 銀聯鑽石卡" },
+    ],
+    documentName: "WeWa 現金回贈計劃條款及細則",
+    rewardRates: [
+      { 
+        category: "基本零售簽賬", 
+        totalRate: 0.4, 
+        baseRate: 0.4, 
+        extraRate: 0, 
+        note: "每消費$250 = $1回贈（0.4%）" 
+      },
+      { 
+        category: "八達通自動增值", 
+        totalRate: 0.4, 
+        baseRate: 0.4, 
+        extraRate: 0, 
+        note: "每增值$250 = $1回贈（0.4%）" 
+      },
+    ],
+    spendingCap: {
+      monthlyLimit: undefined,
+      note: "每月可獲贈之基本現金回贈並無上限",
+    },
+    exclusions: [
+      "現金透支及手續費",
+      "賭場交易",
+      "電子錢包轉賬/充值（P2P支付服務）",
+      "現金分期、分期金額",
+      "未入賬/取消/退回/偽造之交易",
+    ],
+    warnings: [
+      "基本現金回贈於下一期月結單存入",
+      "不足$250之交易亦會按比率計算（取至2位小數）",
+    ],
+    officialSource: "https://www.wewacard.com/wp-content/uploads/2025/06/C20250457_WeWa-TnC_20250701_v1.pdf",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // 安信 WeWa 玩樂類別 4 選 1 優惠
+  // 來源：https://www.wewacard.com/wp-content/uploads/2025/05/WeWa-Cash-Rebate-TC_to-CORM_-202505013_C20250432_r1.pdf
+  // ========================================================================
+  {
+    cardId: "wewa-fun-category",
+    cardName: "安信 WeWa 卡玩樂類別 4 選 1 優惠",
+    bank: "安信",
+    applicableCards: [
+      { cardId: "wewa-visa-signature", cardName: "WeWa Visa Signature 卡" },
+      { cardId: "wewa-visa-platinum", cardName: "WeWa Visa 白金卡" },
+      { cardId: "wewa-unionpay", cardName: "WeWa 銀聯鑽石卡" },
+    ],
+    documentName: "WeWa 玩樂類別 4 選 1 優惠條款及細則",
+    promoStartDate: "2025-07-01",
+    promoEndDate: "2026-06-30",
+    minSpend: {
+      amount: 1500,
+      period: "monthly",
+      type: "total",
+      note: "每曆月合資格零售簽賬累積滿$1,500",
+    },
+    rewardRates: [
+      { 
+        category: "自選玩樂類別1 - 手機支付", 
+        totalRate: 4, 
+        baseRate: 0.4, 
+        extraRate: 3.6, 
+        note: "Apple Pay / 銀聯手機閃付 / 銀聯二維碼支付 = 4%回贈 🔥" 
+      },
+      { 
+        category: "自選玩樂類別2 - 旅遊簽賬", 
+        totalRate: 4, 
+        baseRate: 0.4, 
+        extraRate: 3.6, 
+        note: "旅行社、航空公司、酒店（客房住宿）= 4%回贈 🔥" 
+      },
+      { 
+        category: "自選玩樂類別3 - 海外簽賬", 
+        totalRate: 4, 
+        baseRate: 0.4, 
+        extraRate: 3.6, 
+        note: "非香港登記商戶外幣交易 = 4%回贈 🔥" 
+      },
+      { 
+        category: "自選玩樂類別4 - 線上娛樂", 
+        totalRate: 4, 
+        baseRate: 0.4, 
+        extraRate: 3.6, 
+        note: "Apple App Store/Disney+/Netflix/Spotify/Steam/Xbox/YouTube = 4%回贈 🔥" 
+      },
+    ],
+    spendingCap: {
+      monthlyLimit: 200,
+      note: "每張WeWa卡每曆月3.6%回贈上限$200（即每月自選類別簽$5,556可賺盡）",
+    },
+    exclusions: [
+      "八達通自動增值",
+      "購買及/或充值儲值卡（包括八達通）",
+      "自動轉賬交易",
+      "分期計劃",
+      "繳費",
+      "電子錢包轉賬/增值",
+      "賭場交易",
+      "購買現金券",
+      "未入賬/取消/退回/偽造之交易",
+    ],
+    warnings: [
+      "📌 需每月簽滿$1,500方可享3.6%自選類別回贈",
+      "📌 自選類別一經選定後不可更改",
+      "📌 未選擇將自動選擇「手機支付」",
+      "📌 手機支付暫不支援使用 WeWa Visa + Android 手機",
+      "⚠️ 八達通自動增值不計入玩樂類別回贈",
+      "回贈於該曆月完結後2個月內存入",
+    ],
+    officialSource: "https://www.wewacard.com/wp-content/uploads/2025/05/WeWa-Cash-Rebate-TC_to-CORM_-202505013_C20250432_r1.pdf",
+    lastUpdated: "2026-01-08",
+  },
 ];
 
 // ========================================================================
