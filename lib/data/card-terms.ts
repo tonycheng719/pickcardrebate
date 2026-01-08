@@ -6132,6 +6132,180 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://www.dahsing.com/pdf/credit_card/cc_365carwash_tnc_tc.pdf",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // 建行（亞洲）eye信用卡額外積分獎賞計劃
+  // 來源：https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/tnc_extra_bp_rewards.html
+  // ========================================================================
+  {
+    cardId: "ccb-eye-bonus-points",
+    cardName: "建行（亞洲）eye信用卡額外積分獎賞計劃",
+    bank: "建行（亞洲）",
+    applicableCards: [
+      { cardId: "ccb-eye", cardName: "建行（亞洲）eye信用卡" },
+    ],
+    documentName: "建行(亞洲)eye信用卡額外積分獎賞計劃條款及細則 (2025年1月1日起生效)",
+    promoStartDate: "2025-01-01",
+    rewardRates: [
+      { 
+        category: "網上零售交易", 
+        totalRate: 2, 
+        baseRate: 0.4, 
+        extraRate: 1.6, 
+        note: "5倍積分（含基本1倍）= 2%回贈 🔥（每25,000積分=$100）" 
+      },
+      { 
+        category: "Visa感應式付款（拍卡支付）", 
+        totalRate: 2, 
+        baseRate: 0.4, 
+        extraRate: 1.6, 
+        note: "5倍積分（含基本1倍）= 2%回贈 🔥（每25,000積分=$100）" 
+      },
+    ],
+    spendingCap: {
+      yearlyLimit: 300000,
+      note: "每曆年度（1/1-12/31）額外4倍積分上限300,000積分",
+    },
+    exclusions: [
+      "增值電子錢包或轉賬（微信支付、支付寶、PayMe）",
+      "繳交保險公司之任何費用",
+      "賭博交易",
+      "半現金交易（金融/非金融機構）",
+      "繳交稅項、政府賬單",
+      "任何被取消或被退款之交易",
+    ],
+    warnings: [
+      "📌 附屬卡簽賬計入主卡會員消費",
+      "📌 額外積分於合資格交易誌賬後存入",
+      "📌 兌換率：每25,000積分 = $100現金回贈（即2%）",
+    ],
+    officialSource: "https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/tnc_extra_bp_rewards.html",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // 建行（亞洲）eye信用卡本地餐飲、外賣平台及交通簽賬高達11%現金回贈計劃
+  // 來源：https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/tnc_eye_cash_rebate.html
+  // ========================================================================
+  {
+    cardId: "ccb-eye-dining-cashback",
+    cardName: "建行（亞洲）eye信用卡本地餐飲/外賣/交通高達11%現金回贈計劃",
+    bank: "建行（亞洲）",
+    applicableCards: [
+      { cardId: "ccb-eye", cardName: "建行（亞洲）eye信用卡" },
+    ],
+    documentName: "建行(亞洲)eye信用卡本地餐飲、外賣平台及交通簽賬高達11%現金回贈計劃條款及細則",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-03-31",
+    minSpend: {
+      amount: 5000,
+      period: "monthly",
+      type: "category",
+      note: "本地餐飲/外賣平台：每階段簽滿$5,000 + 單筆≥$300 享9%回贈",
+    },
+    rewardRates: [
+      { 
+        category: "本地餐飲/外賣平台（達門檻）", 
+        totalRate: 11, 
+        baseRate: 2, 
+        extraRate: 9, 
+        note: "簽滿$5,000 + 單筆≥$300 = 9%回贈 + 額外積分2% = 共11% 🔥🔥" 
+      },
+      { 
+        category: "本地餐飲/外賣平台（未達門檻）", 
+        totalRate: 4, 
+        baseRate: 2, 
+        extraRate: 2, 
+        note: "未達門檻 = 2%回贈 + 額外積分2% = 共4%" 
+      },
+      { 
+        category: "本地交通", 
+        totalRate: 4, 
+        baseRate: 2, 
+        extraRate: 2, 
+        note: "無需門檻 = 2%回贈 + 額外積分2% = 共4%" 
+      },
+    ],
+    spendingCap: {
+      monthlyLimit: 400,
+      note: "每階段回贈上限$400，推廣期最高$1,200",
+    },
+    exclusions: [
+      "電子錢包簽賬/增值/轉賬（AlipayHK, PayMe, WeChat Pay HK）（符合餐飲/交通除外）",
+      "自動轉賬簽賬",
+      "所有八達通自動增值（包括電子錢包之八達通增值）",
+      "保險公司之保險計劃的保費",
+      "RentSmart租好啲之簽賬",
+      "繳費、電匯、賭博交易、循環付款",
+      "慈善機構捐款",
+      "繳交稅務款項",
+      "任何被取消或被退款之交易",
+    ],
+    warnings: [
+      "📌 **需登記**：每階段首2,500名，先到先得",
+      "📌 須於建行（港澳）手機App登記",
+      "📌 分三階段：1月/2月/3月，每階段需重新登記",
+      "📌 合資格餐飲：香港餐廳食肆（不包括酒席宴會、私人宴會、酒店/百貨公司/俱樂部內飲食專櫃）",
+      "📌 合資格交通：港鐵全線、城巴/九巴/龍運、新渡輪/天星小輪/港九小輪、電車",
+      "現金回贈於2026/4/30前誌賬",
+    ],
+    officialSource: "https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/tnc_eye_cash_rebate.html",
+    lastUpdated: "2026-01-08",
+  },
+
+  // ========================================================================
+  // 建行（亞洲）eye信用卡迎新禮品
+  // 來源：https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/tnc_eye_welcome_gifts.html
+  // ========================================================================
+  {
+    cardId: "ccb-eye-welcome",
+    cardName: "建行（亞洲）eye信用卡迎新禮品",
+    bank: "建行（亞洲）",
+    applicableCards: [
+      { cardId: "ccb-eye", cardName: "建行（亞洲）eye信用卡" },
+    ],
+    documentName: "eye信用卡全新客戶迎新禮品之條款及細則",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-02-28",
+    rewardRates: [
+      { 
+        category: "禮品1：$800現金回贈", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "發卡後首3個月申請「Chill分期」≥6個月 + 總金額≥$15,000 🔥" 
+      },
+      { 
+        category: "禮品2：$600現金回贈", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "發卡後首2個月簽賬滿$6,000" 
+      },
+    ],
+    exclusions: [
+      "所有未誌賬之交易",
+      "轉賬、現金透支、結餘轉戶、分期貸款",
+      "所有免息分期計劃",
+      "電子錢包所作的交易/增值/轉賬（AlipayHK, PayMe, WeChat Pay HK）",
+      "保險公司之保險計劃的保費",
+      "自動轉賬、所有八達通自動增值",
+      "RentSmart租好啲之簽賬",
+      "繳費、電匯、賭博交易、循環付款",
+      "慈善機構捐款",
+      "繳交稅務款項",
+      "任何被取消或被退款之交易",
+    ],
+    warnings: [
+      "📌 禮品1與禮品2**不可同時享有**，需於申請表格選擇",
+      "📌 未選擇或選擇多於一項將自動分配禮品2",
+      "⚠️ 新客戶：12個月內未持有任何建行（亞洲）信用卡主卡",
+      "⚠️ 12個月內取消卡會扣除等值行政費用",
+      "現金回贈於符合要求後6個月內誌賬",
+    ],
+    officialSource: "https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/tnc_eye_welcome_gifts.html",
+    lastUpdated: "2026-01-08",
+  },
 ];
 
 // ========================================================================
