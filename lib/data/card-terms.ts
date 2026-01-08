@@ -1721,6 +1721,67 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://av.sc.com/hk/content/docs/hk-tncs-cxam-payroll2konline.pdf",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // 渣打 Simply Cash Visa 卡獎賞計劃
+  // ========================================================================
+  {
+    cardId: "sc-simply-cash-rewards",
+    cardName: "渣打 Simply Cash Visa 卡獎賞計劃",
+    bank: "渣打",
+    documentName: "渣打Simply Cash Visa卡獎賞計劃條款及細則",
+    rewardRates: [
+      { 
+        category: "本地簽賬（港幣）", 
+        totalRate: 1.5, 
+        baseRate: 1.5, 
+        extraRate: 0, 
+        note: "以港幣誌賬之合資格簽賬" 
+      },
+      { 
+        category: "海外簽賬（非港幣）", 
+        totalRate: 2.0, 
+        baseRate: 2.0, 
+        extraRate: 0, 
+        note: "以港幣以外之貨幣誌賬之合資格簽賬 🔥" 
+      },
+      { 
+        category: "八達通自動增值", 
+        totalRate: 1.5, 
+        baseRate: 1.5, 
+        extraRate: 0, 
+        note: "計入合資格簽賬（港幣）" 
+      },
+    ],
+    exclusions: [
+      "八達通銀包(O! ePay)/支付寶增值",
+      "「快速支付系統」(FPS) 轉賬",
+      "保費簽賬",
+      "透過渣打網上理財/電話理財/銀通繳費易繳費",
+      "電話購物、郵購",
+      "賭博交易",
+      "經紀人和交易商之債券",
+      "於非金融機構購買外匯、匯票、旅行支票",
+      "於金融機構購買產品、服務、存款、貸款及信貸",
+      "金融機構之銀行櫃檯服務",
+      "電匯和匯票、資金劃轉",
+      "寶石和金屬、手錶和珠寶批發",
+      "現金透支、結餘轉賬、兌現分期、兌現年息優惠",
+      "繳稅",
+      "財務收費及費用",
+      "未誌賬/取消/退款/偽造/未經許可的交易",
+    ],
+    warnings: [
+      "✅ 無簽賬門檻",
+      "✅ 無回贈上限",
+      "現金回贈需於「360°全面賞」平台手動換領（最低$50）",
+      "現金回贈調低至最接近之仙位數值（無條件捨去）",
+      "主卡及附屬卡簽賬合併計算",
+      "優先理財/Premium理財/出糧客戶可享年費豁免",
+    ],
+    officialSource: "https://av.sc.com/hk/zh/content/docs/hk-promo-simply-cash-tnc.pdf",
+    lastUpdated: "2026-01-08",
+  },
 ];
 
 // ========================================================================
