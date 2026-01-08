@@ -1145,6 +1145,67 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://www.hsbc.com.hk/content/dam/hsbc/hk/tc/docs/credit-cards/offers/welcome-terms-and-conditions.pdf",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // HSBC 滙財金卡─學生卡迎新推廣優惠
+  // ========================================================================
+  {
+    cardId: "hsbc-student-welcome",
+    cardName: "滙豐滙財金卡─學生卡迎新優惠",
+    bank: "HSBC",
+    documentName: "滙豐滙財金卡─學生卡迎新推廣優惠之條款及細則",
+    promoStartDate: "2025-04-01",
+    promoEndDate: "2026-03-31",
+    minSpend: {
+      amount: 2000,
+      period: "promo",
+      type: "total",
+      note: "發卡後首 60 日內累積簽賬滿 $2,000"
+    },
+    rewardRates: [
+      { 
+        category: "全新信用卡客戶", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "$300 獎賞錢（簽 $2,000）" 
+      },
+      { 
+        category: "現有信用卡客戶", 
+        totalRate: 0, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "$200 獎賞錢（簽 $2,000）" 
+      },
+    ],
+    exclusions: [
+      "財務及銀行費用（年費、財務費用、逾期費用）",
+      "以附屬卡作的交易",
+      "郵購、傳真及電話訂購",
+      "透過滙豐流動理財及/或網上理財繳費",
+      "購買及/或充值儲值卡的交易（包括增值八達通）",
+      "以電子錢包所作的交易（包括增值電子錢包）",
+      "八達通自動增值",
+      "於「獎賞錢」購物網及其他推廣進行的換購交易",
+      "現金貸款、現金套現、簽賬分期計劃",
+      "於非金融機構的交易（包括購買外匯、匯票及旅行支票）",
+      "於金融機構的交易（包括購買銀行產品及服務）",
+      "電匯",
+      "賭博交易",
+      "繳稅",
+      "自動轉賬、循環付款",
+      "所有未誌賬/取消/退款的交易",
+    ],
+    warnings: [
+      "⚠️ 12個月內曾取消任何滙豐信用卡不可參加",
+      "⚠️ 13個月內取消卡會被扣回獎賞",
+      "✅ 永久年費豁免",
+      "獎賞錢於完成要求後 2 個月內入賬",
+      "只限學生申請（需持有效學生證）",
+    ],
+    officialSource: "https://www.hsbc.com.hk/content/dam/hsbc/hk/tc/docs/credit-cards/student/terms-and-conditions.pdf",
+    lastUpdated: "2026-01-08",
+  },
 ];
 
 // ========================================================================
