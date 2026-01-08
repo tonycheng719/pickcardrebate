@@ -8017,6 +8017,95 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://www.citibank.com.hk/chinese/credit-cards/hktvmall-card/",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // 富邦一田 Visa 白金卡迎新禮品及積分計劃
+  // 來源：https://www.fubonbank.com.hk/tc/cards/credit-card-products/yata-visa-card.html#box-tnc
+  // ========================================================================
+  {
+    cardId: "fubon-yata-visa-platinum",
+    cardName: "富邦一田 Visa 白金卡迎新禮品及積分計劃",
+    bank: "富邦銀行",
+    applicableCards: [
+      { cardId: "fubon-yata-visa-platinum", cardName: "富邦一田 Visa 白金卡" },
+    ],
+    documentName: "富邦一田 Visa 白金卡迎新禮品及其他優惠條款及細則",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-06-30",
+    minSpend: {
+      amount: 2800,
+      period: "promo",
+      note: "迎新：發卡後首3個月內累積認可零售簽賬及/或現金透支滿$2,800",
+    },
+    rewardRates: [
+      { 
+        category: "一田百貨「月月多簽多賞」", 
+        totalRate: 2.5, 
+        baseRate: 0, 
+        extraRate: 2.5, 
+        note: "每月累積簽賬滿 **$2,000** → 獲 **$50** 一田現金禮券（截數日：每月15日）🔥🔥" 
+      },
+      { 
+        category: "一田百貨「累積結餘獎賞」", 
+        totalRate: 1, 
+        baseRate: 0, 
+        extraRate: 1, 
+        note: "半年內累積滿 **$5,000** → 額外獲 **$50** 一田現金禮券（截數日：4月15日/10月15日）" 
+      },
+      { 
+        category: "一田信用卡積分計劃", 
+        totalRate: 0.4, 
+        baseRate: 0.4, 
+        extraRate: 0, 
+        note: "每 $1 = 1分，每 **25,000分** = $100現金回贈（0.4%回贈）" 
+      },
+      { 
+        category: "一田百貨服裝及家庭用品（正價）", 
+        totalRate: 0.9, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "正價貨品 **9折** 🔥" 
+      },
+      { 
+        category: "一田超市（逢星期一）", 
+        totalRate: 0.95, 
+        baseRate: 0, 
+        extraRate: 0, 
+        note: "逢星期一購物 **95折**" 
+      },
+    ],
+    rewardCap: {
+      type: "total",
+      amount: 0,
+      period: "monthly",
+      note: "白金卡每月積分上限 = 信用額 × 3倍",
+    },
+    exclusions: [
+      "現金貸款、手續費、財務費用、年費",
+      "稅務局、保險或公積金服務類別繳費",
+      "賭場交易",
+      "儲值支付工具付款及/或充值簽賬交易",
+      "繳稅、網上繳款、結欠轉賬（迎新不計）",
+      "分期付款、自動轉賬交易（迎新不計）",
+      "八達通自動增值（迎新不計）",
+    ],
+    warnings: [
+      "📌 **迎新要求**：發卡後首3個月簽賬滿 **$2,800**",
+      "📌 **永久免年費** ✨（條件：每年續期前12個月內最低還款未逾期2次或以上）",
+      "📌 **月月多簽多賞**：每月滿$2,000 → $50一田現金禮券（回贈高達 **2.5%**）🔥🔥",
+      "📌 **累積結餘獎賞**：半年滿$5,000 → 額外$50一田現金禮券",
+      "📌 **積分計劃**：每25,000分 = $100現金回贈",
+      "📌 **全年折扣**：一田百貨正價貨品 **9折** / 公價及減價 **95折**",
+      "📌 **免費送貨**：一田購物滿$600",
+      "📌 **免息分期**：一田購買指定貨品滿$1,500，最長36個月",
+      "📌 積分有效期 **最長1年**（以會籍年度計算），過期自動註銷",
+      "⚠️ 迎新只適用於 **未持有任何富邦信用卡** 的客戶",
+      "⚠️ 過往 **6個月內** 曾取消富邦卡者不適用迎新",
+      "⚠️ 開戶後 **14個月內取消卡** 會扣除迎新禮品成本",
+    ],
+    officialSource: "https://www.fubonbank.com.hk/tc/cards/credit-card-products/yata-visa-card.html#box-tnc",
+    lastUpdated: "2026-01-08",
+  },
 ];
 
 // ========================================================================
