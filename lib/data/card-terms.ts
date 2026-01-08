@@ -8273,6 +8273,74 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://www.fubonbank.com.hk/tc/cards/credit-card-products/incard.html",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // 信銀國際大灣區雙幣信用卡現金回贈及10%優惠
+  // 來源：https://www.cncbinternational.com/_promotion/201111/rewards-programs/tc/tnc_cash_rebate_dcc.pdf
+  //       https://www.cncbinternational.com/_document/personal/credit-cards/gba_10percent_tncs_tc.pdf
+  // ========================================================================
+  {
+    cardId: "cncbi-gba-dual-currency",
+    cardName: "信銀國際大灣區雙幣信用卡現金回贈及10%優惠",
+    bank: "信銀國際",
+    applicableCards: [
+      { cardId: "cncbi-gba-dual-currency", cardName: "信銀國際大灣區雙幣信用卡" },
+    ],
+    documentName: "信銀國際大灣區雙幣信用卡現金回贈及10%現金回贈優惠條款及細則",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-06-30",
+    rewardRates: [
+      { 
+        category: "基本現金回贈（所有合資格簽賬）", 
+        totalRate: 0.4, 
+        baseRate: 0.4, 
+        extraRate: 0, 
+        note: "本地零售、海外簽賬、現金透支、網上購物、自動轉賬等" 
+      },
+      { 
+        category: "🇨🇳 合資格人民幣簽賬 / 雲閃付App簽賬", 
+        totalRate: 4, 
+        baseRate: 0.4, 
+        extraRate: 3.6, 
+        note: "**4%現金回贈**（已包括基本0.4%），每月上限$150 🔥🔥" 
+      },
+      { 
+        category: "🇨🇳 單一人民幣簽賬滿RMB4,000+", 
+        totalRate: 10, 
+        baseRate: 4, 
+        extraRate: 6, 
+        note: "額外 **6%現金回贈**，總計高達 **10%** 🔥🔥🔥，每月上限$250" 
+      },
+    ],
+    rewardCap: {
+      type: "total",
+      amount: 400,
+      period: "monthly",
+      note: "人民幣/雲閃付4%上限$150 + 額外6%上限$250 = 每月最高$400",
+    },
+    exclusions: [
+      "結餘轉賬、套現分期計劃、Dollar$mart私人分期貸款",
+      "「月結單都分期」、「任何賬單都分期」、「幾時都分期交稅」還款額",
+      "手續費及其他費用、基金/月供投資計劃供款",
+      "繳付予稅務局款項、賭場交易",
+      "年費、財務費用",
+      "八達通自動增值、網上銀行繳費",
+      "電子錢包增值/轉賬（P2P支付或轉賬服務）",
+      "雲閃付App用戶掃描商戶碼、賬單支付、服務及慈善支付、交通費用支付",
+    ],
+    warnings: [
+      "📌 **基本回贈**：所有合資格簽賬 **0.4%**",
+      "📌 **人民幣/雲閃付App**：**4%現金回贈**（每月上限$150）🔥🔥",
+      "📌 **單一人民幣簽賬滿RMB4,000**：額外 **6%**，總計 **10%** 🔥🔥🔥",
+      "📌 **雲閃付App**：僅限商戶掃描付款模式（不包括用戶掃描商戶碼）",
+      "📌 每筆簽賬僅享10%回贈 **一次**（人民幣+雲閃付不重複計算）",
+      "📌 人民幣簽賬以 **1:1兌換港幣** 計算",
+      "📌 額外回贈於推廣期完結後 **3個月內** 存入",
+      "📌 每月基本回贈上限 = 共用信用額 × 0.4%",
+    ],
+    officialSource: "https://www.cncbinternational.com/_document/personal/credit-cards/gba_10percent_tncs_tc.pdf",
+    lastUpdated: "2026-01-08",
+  },
 ];
 
 // ========================================================================
