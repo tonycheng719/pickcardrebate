@@ -5311,10 +5311,7 @@ export const cardTerms: CardTerms[] = [
         note: "每增值$250 = $1回贈（0.4%）" 
       },
     ],
-    spendingCap: {
-      monthlyLimit: undefined, // 無上限
-      note: "每月可獲贈之現金回贈並無上限",
-    },
+    // 無簽賬上限
     exclusions: [
       "現金透支及手續費",
       "賭場交易",
@@ -5353,9 +5350,9 @@ export const cardTerms: CardTerms[] = [
         note: "每消費$100 = $2回贈（2%，已含基本1%）🔥" 
       },
     ],
-    spendingCap: {
-      monthlyLimit: undefined,
-      promoLimit: 800, // 加碼上限$800
+    rewardCap: {
+      amount: 800,
+      period: "promo",
       note: "優惠期內1%加碼現金回贈上限為$800（即簽$80,000可賺盡）",
     },
     exclusions: [
@@ -5484,10 +5481,7 @@ export const cardTerms: CardTerms[] = [
         note: "每增值$250 = $1回贈（0.4%）" 
       },
     ],
-    spendingCap: {
-      monthlyLimit: undefined,
-      note: "每月可獲贈之基本現金回贈並無上限",
-    },
+    // 無簽賬上限
     exclusions: [
       "現金透支及手續費",
       "賭場交易",
@@ -5555,8 +5549,9 @@ export const cardTerms: CardTerms[] = [
         note: "Apple App Store/Disney+/Netflix/Spotify/Steam/Xbox/YouTube = 4%回贈 🔥" 
       },
     ],
-    spendingCap: {
-      monthlyLimit: 200,
+    rewardCap: {
+      amount: 200,
+      period: "monthly",
       note: "每張WeWa卡每曆月3.6%回贈上限$200（即每月自選類別簽$5,556可賺盡）",
     },
     exclusions: [
@@ -5618,10 +5613,7 @@ export const cardTerms: CardTerms[] = [
         note: "透過流動支付之電子錢包增值（包括八達通增值）0.5%回贈" 
       },
     ],
-    spendingCap: {
-      monthlyLimit: undefined,
-      note: "現金回贈無上限",
-    },
+    // 無簽賬上限
     exclusions: [
       "現金透支",
       "自動轉賬",
@@ -5978,10 +5970,7 @@ export const cardTerms: CardTerms[] = [
         note: "每$1 = 8積分（1基本+7額外）🔥 每月上限50,000額外積分" 
       },
     ],
-    spendingCap: {
-      monthlyLimit: undefined,
-      note: "易通行：每月上限25,000額外積分（需簽$1,000）；汽車相關：每月上限50,000額外積分（需簽$5,000）",
-    },
+    // 易通行：每月上限25,000額外積分（需簽$1,000）；汽車相關：每月上限50,000額外積分（需簽$5,000）
     exclusions: [
       "快易通自動增值（已於2026/2/23終止服務）",
     ],
@@ -6226,8 +6215,9 @@ export const cardTerms: CardTerms[] = [
         note: "無需門檻 = 2%回贈 + 額外積分2% = 共4%" 
       },
     ],
-    spendingCap: {
-      monthlyLimit: 400,
+    rewardCap: {
+      amount: 400,
+      period: "monthly",
       note: "每階段回贈上限$400，推廣期最高$1,200",
     },
     exclusions: [
