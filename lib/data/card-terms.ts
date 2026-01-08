@@ -8206,6 +8206,73 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://www.fubonbank.com.hk/tc/cards/credit-card-products/visa-infinite-card.html#box-tnc",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // 富邦 iN VISA 白金卡迎新優惠及積分計劃
+  // 來源：https://www.fubonbank.com.hk/tc/cards/credit-card-products/incard.html
+  // ========================================================================
+  {
+    cardId: "fubon-in-visa-platinum",
+    cardName: "富邦 iN VISA 白金卡迎新優惠及積分計劃",
+    bank: "富邦銀行",
+    applicableCards: [
+      { cardId: "fubon-in-visa-platinum", cardName: "富邦 iN VISA 白金卡" },
+    ],
+    documentName: "富邦 iN VISA 白金卡迎新優惠及積分計劃條款及細則",
+    promoStartDate: "2026-01-01",
+    promoEndDate: "2026-06-30",
+    minSpend: {
+      amount: 5000,
+      period: "promo",
+      note: "迎新：發卡後首3個月內累積合資格交易及/或現金透支滿$5,000",
+    },
+    rewardRates: [
+      { 
+        category: "🌐 網上簽賬（每月滿$1,000）", 
+        totalRate: 8, 
+        baseRate: 0.4, 
+        extraRate: 7.6, 
+        note: "**20X積分** = **8%回贈** 🔥🔥🔥（基本1X + 額外19X）" 
+      },
+      { 
+        category: "其他零售簽賬", 
+        totalRate: 0.4, 
+        baseRate: 0.4, 
+        extraRate: 0, 
+        note: "**1X積分** = **0.4%回贈**" 
+      },
+    ],
+    rewardCap: {
+      type: "extra",
+      amount: 62500,
+      period: "monthly",
+      note: "網上簽賬額外積分：每月最多 **62,500積分**",
+    },
+    exclusions: [
+      "現金貸款、手續費、財務費用、年費",
+      "稅務局繳費、保險或公積金服務類別繳費",
+      "賭博交易、八達通自動增值",
+      "0息分期零用錢、自由式分期計劃",
+      "儲值支付工具（Alipay、WeChat Pay、PayMe）",
+      "繳稅、網上繳款、結欠轉賬（迎新不計）",
+      "分期付款、自動轉賬交易（迎新不計）",
+    ],
+    warnings: [
+      "📌 **迎新要求**：發卡後首3個月簽賬滿 **$5,000** → **$150現金回贈**",
+      "📌 **網上簽賬**：**20X積分** = **8%回贈** 🔥🔥🔥",
+      "📌 **每月簽賬門檻**：累積滿 **$1,000** 才可獲額外積分",
+      "📌 網上簽賬額外積分上限：每月最多 **62,500積分**",
+      "📌 基本積分上限：每月最高 = 信用額 × **3倍**",
+      "📌 積分有效期 **最長1年**（以會籍年度計算），過期自動註銷",
+      "📌 **積分兌換**：250分 = $1現金回贈（Fubon+手機銀行/網上銀行）",
+      "📌 **換領表格**：5,000分 = $20（+$10行政費）",
+      "⚠️ 迎新只適用於 **未持有任何富邦信用卡** 的客戶",
+      "⚠️ 過往 **6個月內** 曾取消富邦卡者不適用迎新",
+      "⚠️ 開戶後 **14個月內取消卡** 會扣除迎新禮品成本",
+    ],
+    officialSource: "https://www.fubonbank.com.hk/tc/cards/credit-card-products/incard.html",
+    lastUpdated: "2026-01-08",
+  },
 ];
 
 // ========================================================================
