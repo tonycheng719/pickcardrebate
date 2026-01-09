@@ -8490,6 +8490,75 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://www.bochk.com/creditcard/pdf/chi/taobao_TnC.pdf",
     lastUpdated: "2026-01-08",
   },
+
+  // ========================================================================
+  // HK Express x HSBC 優惠條款
+  // ========================================================================
+  {
+    cardId: "hsbc-hkexpress-flashsale-jan2026",
+    cardName: "HK Express x 滙豐信用卡 2026新年優惠",
+    bank: "HSBC",
+    applicableCards: [
+      { cardId: "hsbc-vs", cardName: "HSBC Visa Signature" },
+      { cardId: "hsbc-red", cardName: "HSBC Red Credit Card" },
+      { cardId: "hsbc-everymile", cardName: "HSBC EveryMile" },
+      { cardId: "hsbc-mmpower", cardName: "滙豐 MMPOWER 卡" },
+      { cardId: "hsbc-platinum", cardName: "滙豐白金 Visa 卡" },
+      { cardId: "hsbc-gold", cardName: "滙豐金卡" },
+      { cardId: "hsbc-green", cardName: "滙豐綠色信用卡" },
+    ],
+    documentName: "HK Express HSBC Credit Cards Special Sales Reward Campaign Terms and Conditions",
+    promoStartDate: "2026-01-09",
+    promoEndDate: "2026-01-11",
+    rewardRates: [
+      {
+        category: "✈️ 指定航點機票",
+        totalRate: 15,
+        baseRate: 0,
+        extraRate: 15,
+        note: "高達 **15% 票價折扣** 🔥🔥🔥（北京大興、三亞、台北、高雄、福岡、小松、名古屋、沖繩、大阪、檳城、吉隆坡梳邦、克拉克、首爾、大邱、曼谷、峴港、富國島）",
+      },
+      {
+        category: "🎁 行李代金券",
+        totalRate: 0,
+        baseRate: 0,
+        extraRate: 0,
+        note: "每筆訂單送 **$380 行李代金券**（相當於免費 20KG 寄艙行李）🔥🔥🔥",
+      },
+    ],
+    minSpend: {
+      amount: 0,
+      period: "promo",
+      note: "無最低簽賬要求",
+    },
+    rewardCap: {
+      type: "total",
+      amount: 4000,
+      period: "promo",
+      note: "首 4,000 張代金券，先到先得",
+    },
+    exclusions: [
+      "滙豐銀聯卡",
+      "滙豐扣賬卡",
+      "HK Express 微信小程序預訂",
+      "「管理我的訂位」付款",
+      "「網上預辦登機」付款",
+      "機票取消或改期後代金券失效",
+    ],
+    warnings: [
+      "📅 **預訂日期**：2026年1月9日 10:00 至 2026年1月11日 23:45",
+      "📅 **旅遊日期**：2026年2月1日 至 2026年6月30日",
+      "🎫 **優惠碼**：**HSBCUO26**",
+      "✅ **適用渠道**：HK Express 官網 / HK Express App",
+      "✅ **可為親友預訂**：持卡人無需親自乘搭",
+      "🎁 **代金券發放**：預訂後 4 星期內以電郵發送",
+      "🎁 **代金券用途**：行李、餐飲、U-First 優先服務（❌ 不可用於座位選擇、保險、機票票價）",
+      "⚠️ **名額有限**：首 **4,000 張** 代金券，先到先得！",
+      "⚠️ 代金券餘額不退還、不可轉讓",
+    ],
+    officialSource: "https://www.hkexpress.com/-/media/Plan/Specials%20Offers/Promotions/20260109_hsbc_flashsale/HSBC%20promo%20Terms%20and%20Conditions%20Jan26%20special%20promo%20%20Final%20Version.pdf",
+    lastUpdated: "2026-01-09",
+  },
 ];
 
 // ========================================================================
