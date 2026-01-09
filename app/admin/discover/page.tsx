@@ -42,14 +42,16 @@ interface ArticleSetting {
 export default function AdminDiscoverPage() {
   const { promos: dbPromos } = useDataset();
   
-  // Merge database promos with static PROMOS
-  // Database promos take priority (override static data)
+  // 合併本地 PROMOS 和資料庫 promos（資料庫優先覆蓋）
+  // 這樣本地新增的文章會自動顯示
   const promos = useMemo(() => {
-    const dbPromoIds = new Set(dbPromos.map(p => p.id));
-    // Start with all static PROMOS that are NOT in database
-    const staticOnly = PROMOS.filter(p => !dbPromoIds.has(p.id));
-    // Combine: database promos + static-only promos
-    return [...dbPromos, ...staticOnly];
+    // 以本地 PROMOS 為基礎
+    const promoMap = new Map(PROMOS.map(p => [p.id, p]));
+    // 資料庫數據覆蓋本地數據
+    for (const p of dbPromos) {
+      promoMap.set(p.id, p);
+    }
+    return Array.from(promoMap.values());
   }, [dbPromos]);
   
   const [keyword, setKeyword] = useState("");
