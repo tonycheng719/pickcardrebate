@@ -14,12 +14,9 @@ import { useWallet } from "@/lib/store/wallet-context";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { PROMOS } from "@/lib/data/promos";
-import { GUIDES } from "@/lib/data/guides";
-
-// ✅ GUIDES 已從 lib/data/guides.ts 統一管理
-// ✅ 新增文章只需要修改 lib/data/guides.ts 一個檔案！
-// ✅ 然後在 app/discover/[slug]/page.tsx 加入 guide 內容即可
+// 注意：PROMOS 和 GUIDES 現在統一從資料庫載入
+// 不再使用本地文件 lib/data/promos.ts 和 lib/data/guides.ts
+// 新增文章請使用 Admin 後台或同步腳本
 
 type ContentType = "all" | "promo" | "guide";
 
@@ -80,16 +77,8 @@ export function DiscoverClient() {
     return customCovers[item.id] || item.imageUrl || '';
   };
 
-  // 合併本地 PROMOS 和資料庫 promos（資料庫數據優先覆蓋）
-  const displayPromos = useMemo(() => {
-    // 以本地 PROMOS 為基礎
-    const promoMap = new Map(PROMOS.map(p => [p.id, p]));
-    // 資料庫數據覆蓋本地數據
-    for (const p of promos) {
-      promoMap.set(p.id, p);
-    }
-    return Array.from(promoMap.values());
-  }, [promos]);
+  // 直接使用資料庫中的 promos（不再合併本地數據）
+  const displayPromos = promos;
 
   const handleReportSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -109,36 +98,27 @@ export function DiscoverClient() {
     }
   };
 
-  // 合併優惠和攻略，根據後台設定的分類覆蓋預設類型
+  // 所有內容現在都從資料庫載入，用 content_type 區分 guide 和 promo
+  // customCategories 可以覆蓋原始類型
   const allContent = useMemo(() => {
-    const guides = GUIDES.map(g => {
-      // 檢查後台是否有自訂分類
-      const overrideType = customCategories[g.id];
-      const effectiveType = overrideType || "guide";
-      // 合併自訂標籤
-      const effectiveTags = customTags[g.id] || g.tags;
-      return { 
-        ...g, 
-        contentType: effectiveType as "guide" | "promo",
-        tags: effectiveTags,
-      };
-    });
-    
-    const promoItems = displayPromos.map(p => {
-      // 檢查後台是否有自訂分類
+    return displayPromos.map(p => {
+      // 優先使用後台自訂分類，其次使用資料庫 content_type，預設為 promo
+      const dbContentType = (p as any).contentType || 'promo';
       const overrideType = customCategories[p.id];
-      const effectiveType = overrideType || "promo";
+      const effectiveType = overrideType || dbContentType;
       // 合併自訂標籤
       const effectiveTags = customTags[p.id] || p.tags;
+      // 判斷是否為 guide 類型（用於顯示）
+      const isGuide = effectiveType === 'guide';
       return { 
         ...p, 
-        contentType: effectiveType as "guide" | "promo", 
-        type: "promo" as const,
+        contentType: effectiveType as "guide" | "promo",
+        type: isGuide ? "guide" as const : "promo" as const,
         tags: effectiveTags,
+        // 如果是 guide，補充缺少的欄位
+        isNew: (p as any).isNew || false,
       };
     });
-    
-    return [...guides, ...promoItems];
   }, [displayPromos, customCategories, customTags]);
 
   // 根據類型和標籤篩選

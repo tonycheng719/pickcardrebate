@@ -5,7 +5,7 @@ import { CreditCard, Merchant, Promo, Category } from "../types";
 import { HK_CARDS } from "../data/cards";
 import { POPULAR_MERCHANTS } from "../data/merchants";
 import { CATEGORIES } from "../data/categories";
-import { PROMOS } from "../data/promos";
+// 注意：PROMOS 已移至資料庫，不再從本地文件載入
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 
@@ -122,7 +122,15 @@ function mapPromoFromDB(dbPromo: any): Promo {
         imageUrl: dbPromo.image_url,
         expiryDate: dbPromo.expiry_date,
         relatedCardIds: dbPromo.related_card_ids || [],
-        content: dbPromo.content // Map content from DB
+        content: dbPromo.content,
+        // 新欄位：用於區分 guide 和 promo
+        contentType: dbPromo.content_type || 'promo',
+        isNew: dbPromo.is_new || false,
+        isPinned: dbPromo.is_pinned || false,
+        seoTitle: dbPromo.seo_title,
+        seoDescription: dbPromo.seo_description,
+        faqs: dbPromo.faqs || [],
+        updatedAt: dbPromo.updated_at,
     };
 }
 
@@ -131,13 +139,21 @@ function mapPromoToDB(promo: Promo): any {
         id: promo.id,
         title: promo.title,
         description: promo.description,
-        content: promo.content, // Map content to DB
+        content: promo.content,
         merchant: promo.merchant,
         tags: promo.tags,
         image_url: promo.imageUrl,
         url: promo.url,
         expiry_date: promo.expiryDate,
-        related_card_ids: promo.relatedCardIds
+        related_card_ids: promo.relatedCardIds,
+        // 新欄位
+        content_type: (promo as any).contentType || 'promo',
+        is_new: (promo as any).isNew || false,
+        is_pinned: promo.isPinned || false,
+        seo_title: promo.seoTitle,
+        seo_description: promo.seoDescription,
+        faqs: promo.faqs,
+        updated_at: promo.updatedAt || new Date().toISOString(),
     };
 }
 
@@ -209,7 +225,8 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
   // Start with cached data or local data IMMEDIATELY to avoid white screen
   const [cards, setCards] = useState<CreditCard[]>(HK_CARDS); 
   const [merchants, setMerchants] = useState<Merchant[]>(getCachedMerchants);
-  const [promos, setPromos] = useState<Promo[]>(PROMOS);
+  // Promos 現在只從資料庫載入，不再使用本地文件
+  const [promos, setPromos] = useState<Promo[]>([]);
   const [isLoading, setIsLoading] = useState(true); // Still track loading for admin/background sync
   
   const supabase = createClient();
@@ -317,20 +334,15 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
             }
         }
 
-        // 3. Promos - USE API ROUTE to bypass RLS
-        // 合併本地 PROMOS 和資料庫數據（資料庫優先覆蓋）
+        // 3. Promos - 只從資料庫載入（不再使用本地文件）
         try {
             const promosRes = await fetch('/api/admin/promos', { signal: controller.signal });
             if (promosRes.ok) {
                 const { promos: promosData } = await promosRes.json();
                 
-                if (promosData) {
-                    // 以本地 PROMOS 為基礎，資料庫數據覆蓋
-                    const promoMap = new Map(PROMOS.map(p => [p.id, p]));
-                    for (const dbPromo of promosData) {
-                        promoMap.set(dbPromo.id, mapPromoFromDB(dbPromo));
-                    }
-                    setPromos(Array.from(promoMap.values()));
+                if (promosData && promosData.length > 0) {
+                    // 直接使用資料庫數據
+                    setPromos(promosData.map(mapPromoFromDB));
                 }
             }
         } catch (e: any) {
@@ -532,7 +544,8 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Special function to seed DB if empty
+  // Special function to seed DB if empty (Cards & Merchants only)
+  // Promos 現在使用專用的同步腳本：scripts/sync-to-db.ts
   const uploadInitialData = async () => {
     setIsLoading(true);
     try {
@@ -561,11 +574,8 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
         for (const merchant of POPULAR_MERCHANTS) {
             await supabase.from('merchants').upsert(mapMerchantToDB(merchant));
         }
-        // Upload Promos
-        for (const promo of PROMOS) {
-            await supabase.from('promos').upsert(mapPromoToDB(promo));
-        }
-        toast.success("初始化數據已上傳！");
+        // 注意：Promos 不再從這裡上傳，請使用 scripts/sync-to-db.ts
+        toast.success("Cards & Merchants 已上傳！Promos 請用同步腳本。");
         await refreshData();
     } catch (e) {
         console.error(e);

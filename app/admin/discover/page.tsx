@@ -20,10 +20,22 @@ import {
 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { GUIDES, Guide } from "@/lib/data/guides";
-import { PROMOS } from "@/lib/data/promos";
+// 注意：GUIDES 和 PROMOS 現在統一從資料庫載入，不再使用本地文件
 import { useDataset } from "@/lib/admin/data-store";
 import { toast } from "sonner";
+
+// Guide 介面定義（原本在 lib/data/guides.ts）
+interface Guide {
+  id: string;
+  type: "guide";
+  title: string;
+  description: string;
+  imageUrl: string;
+  tags: string[];
+  merchant: string;
+  isNew: boolean;
+  viewCount?: number;
+}
 
 interface ViewStat {
   page_id: string;
@@ -40,19 +52,29 @@ interface ArticleSetting {
 }
 
 export default function AdminDiscoverPage() {
-  const { promos: dbPromos } = useDataset();
+  // 所有文章現在都從資料庫載入（不再合併本地數據）
+  const { promos } = useDataset();
   
-  // 合併本地 PROMOS 和資料庫 promos（資料庫優先覆蓋）
-  // 這樣本地新增的文章會自動顯示
-  const promos = useMemo(() => {
-    // 以本地 PROMOS 為基礎
-    const promoMap = new Map(PROMOS.map(p => [p.id, p]));
-    // 資料庫數據覆蓋本地數據
-    for (const p of dbPromos) {
-      promoMap.set(p.id, p);
-    }
-    return Array.from(promoMap.values());
-  }, [dbPromos]);
+  // 從資料庫中分離出 guides 和 promos
+  const guides = useMemo(() => {
+    return promos
+      .filter(p => (p as any).contentType === 'guide')
+      .map(p => ({
+        id: p.id,
+        type: 'guide' as const,
+        title: p.title,
+        description: p.description,
+        imageUrl: p.imageUrl || '',
+        tags: p.tags,
+        merchant: p.merchant,
+        isNew: (p as any).isNew || false,
+      }));
+  }, [promos]);
+  
+  // 過濾出純優惠文章（不是 guide）
+  const promoItems = useMemo(() => {
+    return promos.filter(p => (p as any).contentType !== 'guide');
+  }, [promos]);
   
   const [keyword, setKeyword] = useState("");
   const [viewStats, setViewStats] = useState<Record<string, number>>({});
@@ -76,6 +98,23 @@ export default function AdminDiscoverPage() {
   
   // Pinned settings (from article_settings)
   const [articlePinned, setArticlePinned] = useState<Record<string, boolean>>({});
+  
+  // Create new article dialog
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [newArticle, setNewArticle] = useState({
+    id: '',
+    title: '',
+    description: '',
+    merchant: '',
+    imageUrl: '',
+    tags: [] as string[],
+    contentType: 'promo' as 'guide' | 'promo',
+    expiryDate: '',
+    content: '',
+    isPinned: false,
+  });
+  const [createTagInput, setCreateTagInput] = useState("");
+  const [isCreating, setIsCreating] = useState(false);
 
   // Fetch view stats and article settings
   useEffect(() => {
@@ -143,77 +182,67 @@ export default function AdminDiscoverPage() {
     return originalType;
   };
 
-  // 攻略 Tab：原始攻略（未被改為優惠）+ 被改為攻略的優惠
+  // 攻略 Tab：所有 contentType === 'guide' 的文章（考慮後台覆蓋）
   const sortedGuides = useMemo(() => {
-    // 原始攻略，排除被設為「優惠」的
-    const guidesAsGuide = GUIDES.filter(guide => 
-      getEffectiveCategory(guide.id, 'guide') === 'guide' &&
-      (guide.title.toLowerCase().includes(keyword.toLowerCase()) ||
-       guide.description.toLowerCase().includes(keyword.toLowerCase()) ||
-       guide.tags.some(tag => tag.toLowerCase().includes(keyword.toLowerCase())))
-    );
+    // 篩選出有效類型為 guide 的文章
+    const filtered = promos.filter(item => {
+      const dbType = (item as any).contentType || 'promo';
+      const effectiveType = getEffectiveCategory(item.id, dbType);
+      if (effectiveType !== 'guide') return false;
+      
+      // 關鍵字篩選
+      const kw = keyword.toLowerCase();
+      return item.title.toLowerCase().includes(kw) ||
+        item.description.toLowerCase().includes(kw) ||
+        item.tags.some(tag => tag.toLowerCase().includes(kw));
+    });
     
-    // 原始優惠，被設為「攻略」的
-    const promosAsGuide = promos.filter(promo =>
-      getEffectiveCategory(promo.id, 'promo') === 'guide' &&
-      (promo.title.toLowerCase().includes(keyword.toLowerCase()) ||
-       promo.merchant.toLowerCase().includes(keyword.toLowerCase()))
-    ).map(promo => ({
-      ...promo,
-      // 轉換為 Guide 格式
-      tags: [promo.merchant],
-      isNew: false,
-      _originalType: 'promo' as const
-    }));
-    
-    // 合併並按瀏覽量排序
-    const all = [...guidesAsGuide.map(g => ({ ...g, _originalType: 'guide' as const })), ...promosAsGuide];
-    return all.sort((a, b) => {
+    // 轉換為 Guide 格式並排序
+    return filtered.map(item => ({
+      id: item.id,
+      type: 'guide' as const,
+      title: item.title,
+      description: item.description,
+      imageUrl: item.imageUrl || '',
+      tags: item.tags,
+      merchant: item.merchant,
+      isNew: (item as any).isNew || false,
+      _originalType: ((item as any).contentType || 'promo') as 'guide' | 'promo',
+    })).sort((a, b) => {
       const viewA = viewStats[a.id] || 0;
       const viewB = viewStats[b.id] || 0;
       return viewB - viewA;
     });
   }, [keyword, promos, articleCategories, viewStats]);
 
-  // 優惠 Tab：原始優惠（未被改為攻略）+ 被改為優惠的攻略
+  // 優惠 Tab：所有 contentType !== 'guide' 的文章（考慮後台覆蓋）
   const filteredPromos = useMemo(() => {
-    // 原始優惠，排除被設為「攻略」的
-    const promosAsPromo = promos.filter(promo =>
-      getEffectiveCategory(promo.id, 'promo') === 'promo' &&
-      (promo.title.toLowerCase().includes(keyword.toLowerCase()) ||
-       promo.merchant.toLowerCase().includes(keyword.toLowerCase()))
-    ).map(p => ({ ...p, _originalType: 'promo' as const }));
+    // 篩選出有效類型為 promo 的文章
+    const filtered = promos.filter(item => {
+      const dbType = (item as any).contentType || 'promo';
+      const effectiveType = getEffectiveCategory(item.id, dbType);
+      if (effectiveType !== 'promo') return false;
+      
+      // 關鍵字篩選
+      const kw = keyword.toLowerCase();
+      return item.title.toLowerCase().includes(kw) ||
+        item.merchant.toLowerCase().includes(kw);
+    });
     
-    // 原始攻略，被設為「優惠」的
-    const guidesAsPromo = GUIDES.filter(guide =>
-      getEffectiveCategory(guide.id, 'guide') === 'promo' &&
-      (guide.title.toLowerCase().includes(keyword.toLowerCase()) ||
-       guide.description.toLowerCase().includes(keyword.toLowerCase()) ||
-       guide.tags.some(tag => tag.toLowerCase().includes(keyword.toLowerCase())))
-    ).map(guide => ({
-      id: guide.id,
-      title: guide.title,
-      description: guide.description,
-      merchant: guide.tags[0] || '攻略',
-      imageUrl: guide.imageUrl,
-      expiryDate: '長期有效',
-      isPinned: articlePinned[guide.id] || false,
-      updatedAt: undefined as string | undefined,
-      _originalType: 'guide' as const
-    }));
-    
-    // 合併並排序
-    const all = [...promosAsPromo, ...guidesAsPromo];
-    return all.sort((a, b) => {
+    // 添加排序信息並排序
+    return filtered.map(p => ({
+      ...p,
+      _originalType: ((p as any).contentType || 'promo') as 'guide' | 'promo',
+    })).sort((a, b) => {
       // 1. Pinned first
-      const aIsPinned = articlePinned[a.id] ?? ('isPinned' in a && a.isPinned);
-      const bIsPinned = articlePinned[b.id] ?? ('isPinned' in b && b.isPinned);
+      const aIsPinned = articlePinned[a.id] ?? a.isPinned;
+      const bIsPinned = articlePinned[b.id] ?? b.isPinned;
       if (aIsPinned && !bIsPinned) return -1;
       if (!aIsPinned && bIsPinned) return 1;
       
       // 2. Sort by sortOrder (higher first)
-      const aSortOrder = 'sortOrder' in a ? (a.sortOrder || 0) : 0;
-      const bSortOrder = 'sortOrder' in b ? (b.sortOrder || 0) : 0;
+      const aSortOrder = a.sortOrder || 0;
+      const bSortOrder = b.sortOrder || 0;
       if (aSortOrder !== bSortOrder) return bSortOrder - aSortOrder;
       
       // 3. Sort by updatedAt (newest first)
@@ -224,8 +253,8 @@ export default function AdminDiscoverPage() {
   }, [keyword, promos, articleCategories, articlePinned]);
 
   // 計算攻略和優惠的瀏覽數
-  const guideIds = new Set(GUIDES.map(g => g.id));
-  const promoIds = new Set(promos.map(p => p.id));
+  const guideIds = new Set(sortedGuides.map(g => g.id));
+  const promoIds = new Set(filteredPromos.map(p => p.id));
   
   const totalGuideViews = Object.entries(viewStats)
     .filter(([id]) => guideIds.has(id))
@@ -270,6 +299,104 @@ export default function AdminDiscoverPage() {
   // Remove tag
   const handleRemoveTag = (tagToRemove: string) => {
     setNewTags(newTags.filter(t => t !== tagToRemove));
+  };
+
+  // Create new article handlers
+  const handleAddCreateTag = () => {
+    if (createTagInput.trim() && !newArticle.tags.includes(createTagInput.trim())) {
+      setNewArticle(prev => ({
+        ...prev,
+        tags: [...prev.tags, createTagInput.trim()]
+      }));
+      setCreateTagInput("");
+    }
+  };
+  
+  const handleRemoveCreateTag = (tagToRemove: string) => {
+    setNewArticle(prev => ({
+      ...prev,
+      tags: prev.tags.filter(t => t !== tagToRemove)
+    }));
+  };
+  
+  const generateArticleId = (title: string) => {
+    return title
+      .toLowerCase()
+      .replace(/[^\w\s\u4e00-\u9fff]/g, '')
+      .replace(/\s+/g, '-')
+      .slice(0, 50)
+      + '-' + Date.now().toString(36);
+  };
+  
+  const handleCreateArticle = async () => {
+    if (!newArticle.title.trim()) {
+      toast.error('請輸入文章標題');
+      return;
+    }
+    if (!newArticle.description.trim()) {
+      toast.error('請輸入文章描述');
+      return;
+    }
+    if (!newArticle.merchant.trim()) {
+      toast.error('請輸入商戶/分類名稱');
+      return;
+    }
+    
+    setIsCreating(true);
+    
+    try {
+      const articleId = newArticle.id || generateArticleId(newArticle.title);
+      
+      const payload = {
+        id: articleId,
+        title: newArticle.title,
+        description: newArticle.description,
+        merchant: newArticle.merchant,
+        image_url: newArticle.imageUrl || null,
+        tags: newArticle.tags,
+        content_type: newArticle.contentType,
+        expiry_date: newArticle.expiryDate || (newArticle.contentType === 'guide' ? '長期有效' : null),
+        content: newArticle.content || null,
+        is_pinned: newArticle.isPinned,
+        is_new: true,
+        updated_at: new Date().toISOString(),
+      };
+      
+      const res = await fetch('/api/admin/promos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to create article');
+      }
+      
+      toast.success('文章已創建！');
+      setCreateDialogOpen(false);
+      
+      // Reset form
+      setNewArticle({
+        id: '',
+        title: '',
+        description: '',
+        merchant: '',
+        imageUrl: '',
+        tags: [],
+        contentType: 'promo',
+        expiryDate: '',
+        content: '',
+        isPinned: false,
+      });
+      
+      // Refresh data
+      window.location.reload();
+    } catch (err: any) {
+      toast.error(`創建失敗：${err.message}`);
+    } finally {
+      setIsCreating(false);
+    }
   };
 
   // Save article settings
