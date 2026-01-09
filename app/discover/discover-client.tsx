@@ -80,7 +80,16 @@ export function DiscoverClient() {
     return customCovers[item.id] || item.imageUrl || '';
   };
 
-  const displayPromos = promos.length > 0 ? promos : PROMOS;
+  // 合併本地 PROMOS 和資料庫 promos（資料庫數據優先覆蓋）
+  const displayPromos = useMemo(() => {
+    // 以本地 PROMOS 為基礎
+    const promoMap = new Map(PROMOS.map(p => [p.id, p]));
+    // 資料庫數據覆蓋本地數據
+    for (const p of promos) {
+      promoMap.set(p.id, p);
+    }
+    return Array.from(promoMap.values());
+  }, [promos]);
 
   const handleReportSubmit = (e: React.FormEvent) => {
     e.preventDefault();
