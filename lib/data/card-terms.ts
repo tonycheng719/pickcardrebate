@@ -8502,7 +8502,6 @@ export const cardTerms: CardTerms[] = [
       { cardId: "hsbc-vs", cardName: "HSBC Visa Signature" },
       { cardId: "hsbc-red", cardName: "HSBC Red Credit Card" },
       { cardId: "hsbc-everymile", cardName: "HSBC EveryMile" },
-      { cardId: "hsbc-mmpower", cardName: "滙豐 MMPOWER 卡" },
       { cardId: "hsbc-platinum", cardName: "滙豐白金 Visa 卡" },
       { cardId: "hsbc-gold", cardName: "滙豐金卡" },
       { cardId: "hsbc-green", cardName: "滙豐綠色信用卡" },

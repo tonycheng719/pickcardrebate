@@ -9,7 +9,7 @@ export const PROMOS: Promo[] = [
     description: "網購外幣簽賬邊張卡最抵？本文比較香港各大信用卡外幣網購回贈率，扣除 1.95% 手續費後淨賺幾多？免手續費卡又有邊幾張？一文睇清！",
     imageUrl: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop",
     expiryDate: "2026-12-31",
-    relatedCardIds: ["fubon-incard", "sim-credit-card", "sim-world-mastercard", "aeon-wakuwaku", "cncbi-motion", "hsbc-mmpower", "boc-chill", "hsbc-red", "ccb-travo", "sc-smart", "earnmore", "boc-taobao"],
+    relatedCardIds: ["fubon-incard", "sim-credit-card", "sim-world-mastercard", "aeon-wakuwaku", "cncbi-motion", "hangseng-mmpower", "boc-chill", "hsbc-red", "ccb-travo", "sc-smart", "earnmore", "boc-taobao"],
     tags: ["攻略", "外幣網購", "排行榜", "免手續費", "2026"],
     url: "",
     updatedAt: "2026-01-05",
@@ -240,7 +240,7 @@ export const PROMOS: Promo[] = [
     description: "港幣網購邊張卡最抵？本文比較香港各大信用卡港幣網購回贈率，由 8% 到 4%，仲有指定商戶額外優惠！一文睇清 2026 年最新排行榜！",
     imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
     expiryDate: "2026-12-31",
-    relatedCardIds: ["fubon-incard", "sim-credit-card", "aeon-wakuwaku", "cncbi-motion", "hsbc-mmpower", "hsbc-red", "bea-goal", "bea-i-titanium", "dbs-live-fresh"],
+    relatedCardIds: ["fubon-incard", "sim-credit-card", "aeon-wakuwaku", "cncbi-motion", "hangseng-mmpower", "hsbc-red", "bea-goal", "bea-i-titanium", "dbs-live-fresh"],
     tags: ["攻略", "港幣網購", "排行榜", "2026"],
     url: "",
     updatedAt: "2026-01-05",
@@ -380,7 +380,7 @@ export const PROMOS: Promo[] = [
 
 ### 💎 恒生 MMPOWER
 
-{{card:hsbc-mmpower|rate=5%}}
+{{card:hangseng-mmpower|rate=5%}}
 
 | 項目 | 詳情 |
 |:---|:---|
@@ -396,7 +396,7 @@ export const PROMOS: Promo[] = [
 **缺點：**
 - ❌ 需月簽滿 $5,000 才有額外獎賞
 
-👉 [查看恒生 MMPOWER 詳情](/cards/hsbc-mmpower)
+👉 [查看恒生 MMPOWER 詳情](/cards/hangseng-mmpower)
 
 ---
 
@@ -2818,7 +2818,7 @@ export const PROMOS: Promo[] = [
     imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2074&auto=format&fit=crop",
     expiryDate: "2026-01-11",
     updatedAt: "2026-01-09",
-    relatedCardIds: ["hsbc-vs", "hsbc-red", "hsbc-everymile", "hsbc-mmpower", "hsbc-platinum", "hsbc-gold", "hsbc-green"],
+    relatedCardIds: ["hsbc-vs", "hsbc-red", "hsbc-everymile", "hsbc-platinum", "hsbc-gold", "hsbc-green"],
     tags: ["航空", "限時", "HK Express", "HSBC", "Flash Sale", "行李代金券"],
     url: "https://www.hkexpress.com/zh-HK/Plan/Special-Offers/Promotions/hsbc_flashsale_20260109",
     isPinned: true,
@@ -2877,7 +2877,7 @@ export const PROMOS: Promo[] = [
 
 ## 💳 適用信用卡
 
-{{card-list:hsbc-vs,hsbc-red,hsbc-everymile,hsbc-mmpower}}
+{{card-list:hsbc-vs,hsbc-red,hsbc-everymile}}
 
 **所有滙豐信用卡均適用**（不包括銀聯及扣賬卡）
 
