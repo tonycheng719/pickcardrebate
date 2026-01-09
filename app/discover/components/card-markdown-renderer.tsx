@@ -327,7 +327,8 @@ export function CardMarkdownRenderer({ content, className = "" }: CardMarkdownRe
     // 替換所有特殊語法為佔位符
     const regex = /\{\{(card|card-list|card-table|card-grid):([^}]+)\}\}/g;
     const processed = content.replace(regex, (match, type, params) => {
-      const placeholder = `__CARD_COMPONENT_${counter++}__`;
+      // 使用 @@@ 作為佔位符前後綴，避免 markdown 把 __ 解析成粗體
+      const placeholder = `@@@CARD_COMPONENT_${counter++}@@@`;
       
       if (type === "card") {
         const [id, ...rest] = params.split("|");
@@ -374,15 +375,15 @@ export function CardMarkdownRenderer({ content, className = "" }: CardMarkdownRe
           // 處理段落，檢查是否包含佔位符
           p: ({ children }) => {
             // 如果段落只包含一個佔位符，直接返回組件
-            if (typeof children === "string" && children.match(/^__CARD_COMPONENT_\d+__$/)) {
+            if (typeof children === "string" && children.match(/^@@@CARD_COMPONENT_\d+@@@$/)) {
               const component = cardComponents.get(children);
               return component ? <>{component}</> : <p>{children}</p>;
             }
             
             // 如果段落包含佔位符混合文字，需要分割處理
-            if (typeof children === "string" && children.includes("__CARD_COMPONENT_")) {
+            if (typeof children === "string" && children.includes("@@@CARD_COMPONENT_")) {
               const parts: React.ReactNode[] = [];
-              const regex = /__CARD_COMPONENT_\d+__/g;
+              const regex = /@@@CARD_COMPONENT_\d+@@@/g;
               let lastIndex = 0;
               let match;
               let key = 0;
@@ -407,12 +408,12 @@ export function CardMarkdownRenderer({ content, className = "" }: CardMarkdownRe
             // 處理 children 為數組的情況
             if (Array.isArray(children)) {
               const processedChildren = children.map((child, index) => {
-                if (typeof child === "string" && child.match(/^__CARD_COMPONENT_\d+__$/)) {
+                if (typeof child === "string" && child.match(/^@@@CARD_COMPONENT_\d+@@@$/)) {
                   return cardComponents.get(child) || child;
                 }
-                if (typeof child === "string" && child.includes("__CARD_COMPONENT_")) {
+                if (typeof child === "string" && child.includes("@@@CARD_COMPONENT_")) {
                   const parts: React.ReactNode[] = [];
-                  const regex = /__CARD_COMPONENT_\d+__/g;
+                  const regex = /@@@CARD_COMPONENT_\d+@@@/g;
                   let lastIndex = 0;
                   let match;
                   let key = 0;
