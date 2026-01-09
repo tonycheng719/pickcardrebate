@@ -318,13 +318,19 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
         }
 
         // 3. Promos - USE API ROUTE to bypass RLS
+        // 合併本地 PROMOS 和資料庫數據（資料庫優先覆蓋）
         try {
             const promosRes = await fetch('/api/admin/promos', { signal: controller.signal });
             if (promosRes.ok) {
                 const { promos: promosData } = await promosRes.json();
                 
-                if (promosData && promosData.length > 0) {
-                    setPromos(promosData.map(mapPromoFromDB));
+                if (promosData) {
+                    // 以本地 PROMOS 為基礎，資料庫數據覆蓋
+                    const promoMap = new Map(PROMOS.map(p => [p.id, p]));
+                    for (const dbPromo of promosData) {
+                        promoMap.set(dbPromo.id, mapPromoFromDB(dbPromo));
+                    }
+                    setPromos(Array.from(promoMap.values()));
                 }
             }
         } catch (e: any) {
