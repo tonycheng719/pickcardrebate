@@ -26,7 +26,7 @@ export function DiscoverClient() {
   
   const [isReporting, setIsReporting] = useState(false);
   const { user, followPromo, unfollowPromo, isPromoFollowed } = useWallet();
-  const { promos } = useDataset();
+  const { promos, isLoading } = useDataset();
   
   // 從 URL 讀取篩選狀態
   const contentType = (searchParams.get("type") as ContentType) || "all";
@@ -280,6 +280,28 @@ export function DiscoverClient() {
 
         {/* Content Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* 載入骨架屏 */}
+          {isLoading && sortedContent.length === 0 && (
+            <>
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="animate-pulse">
+                  <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden ring-1 ring-gray-200 dark:ring-gray-700">
+                    <div className="h-40 bg-gray-200 dark:bg-gray-700" />
+                    <div className="p-4 space-y-3">
+                      <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-3/4" />
+                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full" />
+                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-2/3" />
+                      <div className="flex gap-2 pt-2">
+                        <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded-full w-16" />
+                        <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded-full w-20" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
+          
           {sortedContent.map((item, index) => {
             const isGuide = item.contentType === "guide";
             const isFollowed = !isGuide && isPromoFollowed(item.id);
