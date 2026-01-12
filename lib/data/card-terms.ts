@@ -2723,7 +2723,21 @@ export const cardTerms: CardTerms[] = [
         totalRate: 1.2, 
         baseRate: 0.4, 
         extraRate: 0.8, 
-        note: "3X積分，需月簽滿$1,500（豁免中），上限$100/月 🔥" 
+        note: "3X積分，需月簽滿$1,500（豁免中），上限$100/月" 
+      },
+      { 
+        category: "📱 本地手機簽賬額外（需登記）", 
+        totalRate: 4.0, 
+        baseRate: 0.4, 
+        extraRate: 3.6, 
+        note: "10X積分=4%回贈，上限簽$2,500賺25,000分/月 🔥🔥" 
+      },
+      { 
+        category: "📱 內地手機簽賬額外（需登記）", 
+        totalRate: 8.0, 
+        baseRate: 0.4, 
+        extraRate: 7.6, 
+        note: "20X積分=8%回贈，上限簽$1,250賺25,000分/月 🔥🔥🔥" 
       },
       { 
         category: "海外簽賬（外幣，人民幣除外）", 
@@ -2749,17 +2763,81 @@ export const cardTerms: CardTerms[] = [
     ],
     warnings: [
       "📌 Go商戶5%上限 $100/月",
-      "📌 手機簽賬3X上限 $100/月（=25,000分）",
+      "📌 本地手機簽賬10X上限 $2,500簽賬/月（=25,000分=$100回贈）🔥",
+      "📌 內地手機簽賬20X上限 $1,250簽賬/月（=25,000分=$100回贈）🔥",
       "✅ 海外簽賬2X無上限",
       "⚠️ 需月簽滿$1,500（目前豁免至2026/6/30）",
       "⚠️ Go商戶不計BoC Pay",
       "⚠️ 手機簽賬不計Alipay/WeChat Pay",
       "⚠️ 海外簽賬不包括人民幣",
+      "⚠️ 手機簽賬額外優惠需登記（首30,000名）",
       "需於交易日後7天內誌賬",
       "人民幣簽賬以1:1兌港幣計算",
     ],
     officialSource: "https://www.bochk.com/dam/boccreditcard/gocard/gocardoffer_TC.pdf",
-    lastUpdated: "2026-01-08",
+    lastUpdated: "2026-01-12",
+  },
+
+  // ========================================================================
+  // 中銀 Go 銀聯鑽石卡「內地及本地手機簽賬額外積分優惠」
+  // ========================================================================
+  {
+    cardId: "boc-go-diamond-mobile-pay-2026q1",
+    cardName: "中銀Go鑽石卡 內地及本地手機簽賬額外積分優惠",
+    bank: "中銀",
+    documentName: "中銀Go卡「內地及本地手機簽賬額外積分優惠」條款及細則",
+    promoStartDate: "2026-01-09",
+    promoEndDate: "2026-03-31",
+    registrationRequired: true,
+    registrationDeadline: "2026-03-31",
+    registrationUrl: "https://www.bochk.com/s/a/gompq126",
+    registrationQuota: 30000,
+    rewardCap: {
+      type: "extra",
+      amount: 100,
+      period: "monthly",
+      note: "每月上限25,000分=$100回贈"
+    },
+    rewardRates: [
+      { 
+        category: "本地手機簽賬（Apple Pay/BoC Pay+/雲閃付二維碼/Huawei Pay）", 
+        totalRate: 4.0, 
+        baseRate: 0.4, 
+        extraRate: 3.6, 
+        note: "10X積分=4%回贈，每月上限簽$2,500 🔥🔥" 
+      },
+      { 
+        category: "內地手機簽賬（Apple Pay/BoC Pay+/雲閃付二維碼/Huawei Pay）", 
+        totalRate: 8.0, 
+        baseRate: 0.4, 
+        extraRate: 7.6, 
+        note: "20X積分=8%回贈，每月上限簽$1,250 🔥🔥🔥" 
+      },
+    ],
+    exclusions: [
+      "Alipay、WeChat Pay",
+      "積FUN錢交易",
+      "現金透支、結餘轉戶",
+      "自動轉賬、八達通增值",
+      "分期付款（現金分期、月結單分期、商戶免息分期）",
+      "年費、財務費用、手續費",
+      "繳費（稅款、通訊費、會費、學費、租金、水電）",
+      "PayPal/支付寶繳費",
+      "購買/充值儲值卡或電子錢包",
+      "金融機構/非金融機構產品（存款、外匯、保險、基金、股票）",
+      "賭博交易、慈善機構交易",
+    ],
+    warnings: [
+      "⚠️ 需登記！首30,000名額滿即止",
+      "📌 本地：每$1=10分=4%回贈，上限簽$2,500/月",
+      "📌 內地：每$1=20分=8%回贈，上限簽$1,250/月",
+      "📌 本地+內地共用25,000分/月上限",
+      "⚠️ 不計Alipay/WeChat Pay",
+      "⚠️ 需於交易日後7天內誌賬",
+      "💡 適合搭配SOGO VS卡（覆蓋不收信用卡但收BoC Pay的商戶）",
+    ],
+    officialSource: "https://iservice.boccc.com.hk/LDPRegistrationWEB/w-verify.jsp?lang=zh_HK&action=register&campaignid=goreward2601",
+    lastUpdated: "2026-01-12",
   },
 
   // ========================================================================
@@ -2807,6 +2885,20 @@ export const cardTerms: CardTerms[] = [
         note: "2X積分，需月簽滿$1,500（豁免中），上限$100/月" 
       },
       { 
+        category: "📱 本地手機簽賬額外（需登記）", 
+        totalRate: 2.0, 
+        baseRate: 0.4, 
+        extraRate: 1.6, 
+        note: "5X積分=2%回贈，每月上限簽$5,000賺25,000分/月 🔥" 
+      },
+      { 
+        category: "📱 內地手機簽賬額外（需登記）", 
+        totalRate: 4.0, 
+        baseRate: 0.4, 
+        extraRate: 3.6, 
+        note: "10X積分=4%回贈，每月上限簽$2,500賺25,000分/月 🔥🔥" 
+      },
+      { 
         category: "海外簽賬（外幣，人民幣除外）", 
         totalRate: 0.8, 
         baseRate: 0.4, 
@@ -2830,17 +2922,80 @@ export const cardTerms: CardTerms[] = [
     ],
     warnings: [
       "📌 Go商戶5%上限 $100/月",
-      "📌 手機簽賬2X上限 $100/月（=25,000分）",
+      "📌 本地手機簽賬5X上限 $5,000簽賬/月（=25,000分=$100回贈）🔥",
+      "📌 內地手機簽賬10X上限 $2,500簽賬/月（=25,000分=$100回贈）🔥",
       "✅ 海外簽賬2X無上限",
       "⚠️ 需月簽滿$1,500（目前豁免至2026/6/30）",
       "⚠️ Go商戶不計BoC Pay",
       "⚠️ 手機簽賬不計Alipay/WeChat Pay",
       "⚠️ 海外簽賬不包括人民幣",
+      "⚠️ 手機簽賬額外優惠需登記（首30,000名）",
       "需於交易日後7天內誌賬",
       "人民幣簽賬以1:1兌港幣計算",
     ],
     officialSource: "https://www.bochk.com/dam/boccreditcard/gocard/gocardoffer_TC.pdf",
-    lastUpdated: "2026-01-08",
+    lastUpdated: "2026-01-12",
+  },
+
+  // ========================================================================
+  // 中銀 Go 銀聯白金卡「內地及本地手機簽賬額外積分優惠」
+  // ========================================================================
+  {
+    cardId: "boc-go-platinum-mobile-pay-2026q1",
+    cardName: "中銀Go白金卡 內地及本地手機簽賬額外積分優惠",
+    bank: "中銀",
+    documentName: "中銀Go卡「內地及本地手機簽賬額外積分優惠」條款及細則",
+    promoStartDate: "2026-01-09",
+    promoEndDate: "2026-03-31",
+    registrationRequired: true,
+    registrationDeadline: "2026-03-31",
+    registrationUrl: "https://www.bochk.com/s/a/gompq126",
+    registrationQuota: 30000,
+    rewardCap: {
+      type: "extra",
+      amount: 100,
+      period: "monthly",
+      note: "每月上限25,000分=$100回贈"
+    },
+    rewardRates: [
+      { 
+        category: "本地手機簽賬（Apple Pay/BoC Pay+/雲閃付二維碼/Huawei Pay）", 
+        totalRate: 2.0, 
+        baseRate: 0.4, 
+        extraRate: 1.6, 
+        note: "5X積分=2%回贈，每月上限簽$5,000 🔥" 
+      },
+      { 
+        category: "內地手機簽賬（Apple Pay/BoC Pay+/雲閃付二維碼/Huawei Pay）", 
+        totalRate: 4.0, 
+        baseRate: 0.4, 
+        extraRate: 3.6, 
+        note: "10X積分=4%回贈，每月上限簽$2,500 🔥🔥" 
+      },
+    ],
+    exclusions: [
+      "Alipay、WeChat Pay",
+      "積FUN錢交易",
+      "現金透支、結餘轉戶",
+      "自動轉賬、八達通增值",
+      "分期付款（現金分期、月結單分期、商戶免息分期）",
+      "年費、財務費用、手續費",
+      "繳費（稅款、通訊費、會費、學費、租金、水電）",
+      "PayPal/支付寶繳費",
+      "購買/充值儲值卡或電子錢包",
+      "金融機構/非金融機構產品（存款、外匯、保險、基金、股票）",
+      "賭博交易、慈善機構交易",
+    ],
+    warnings: [
+      "⚠️ 需登記！首30,000名額滿即止",
+      "📌 本地：每$1=5分=2%回贈，上限簽$5,000/月",
+      "📌 內地：每$1=10分=4%回贈，上限簽$2,500/月",
+      "📌 本地+內地共用25,000分/月上限",
+      "⚠️ 不計Alipay/WeChat Pay",
+      "⚠️ 需於交易日後7天內誌賬",
+    ],
+    officialSource: "https://iservice.boccc.com.hk/LDPRegistrationWEB/w-verify.jsp?lang=zh_HK&action=register&campaignid=goreward2601",
+    lastUpdated: "2026-01-12",
   },
 
   // ========================================================================
