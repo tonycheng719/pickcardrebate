@@ -2788,10 +2788,6 @@ export const cardTerms: CardTerms[] = [
     documentName: "中銀Go卡「內地及本地手機簽賬額外積分優惠」條款及細則",
     promoStartDate: "2026-01-09",
     promoEndDate: "2026-03-31",
-    registrationRequired: true,
-    registrationDeadline: "2026-03-31",
-    registrationUrl: "https://www.bochk.com/s/a/gompq126",
-    registrationQuota: 30000,
     rewardCap: {
       type: "extra",
       amount: 100,
@@ -2828,7 +2824,7 @@ export const cardTerms: CardTerms[] = [
       "賭博交易、慈善機構交易",
     ],
     warnings: [
-      "⚠️ 需登記！首30,000名額滿即止",
+      "⚠️ 需登記！首30,000名額滿即止（登記：www.bochk.com/s/a/gompq126）",
       "📌 本地：每$1=10分=4%回贈，上限簽$2,500/月",
       "📌 內地：每$1=20分=8%回贈，上限簽$1,250/月",
       "📌 本地+內地共用25,000分/月上限",
@@ -2947,10 +2943,6 @@ export const cardTerms: CardTerms[] = [
     documentName: "中銀Go卡「內地及本地手機簽賬額外積分優惠」條款及細則",
     promoStartDate: "2026-01-09",
     promoEndDate: "2026-03-31",
-    registrationRequired: true,
-    registrationDeadline: "2026-03-31",
-    registrationUrl: "https://www.bochk.com/s/a/gompq126",
-    registrationQuota: 30000,
     rewardCap: {
       type: "extra",
       amount: 100,
@@ -2987,7 +2979,7 @@ export const cardTerms: CardTerms[] = [
       "賭博交易、慈善機構交易",
     ],
     warnings: [
-      "⚠️ 需登記！首30,000名額滿即止",
+      "⚠️ 需登記！首30,000名額滿即止（登記：www.bochk.com/s/a/gompq126）",
       "📌 本地：每$1=5分=2%回贈，上限簽$5,000/月",
       "📌 內地：每$1=10分=4%回贈，上限簽$2,500/月",
       "📌 本地+內地共用25,000分/月上限",
