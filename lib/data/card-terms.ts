@@ -6612,6 +6612,95 @@ export const cardTerms: CardTerms[] = [
   },
 
   // ========================================================================
+  // 工銀亞洲（ICBC）信用卡簽賬獎賞調整（2026年3月16日生效）
+  // 來源：https://v.icbc.com.cn/userfiles/resources/icbc/haiwai/asia/download/tc/2026/noa_spending_rewards_credit_cards_260119_tc.pdf
+  // ========================================================================
+  {
+    cardId: "icbc-spending-rewards-update-202603",
+    cardName: "工銀亞洲信用卡簽賬獎賞調整（2026年3月16日生效）",
+    bank: "工銀亞洲",
+    applicableCards: [
+      { cardId: "icbc-sup-visa-sig", cardName: "工銀聯合出版信用卡-Visa Signature卡" },
+      { cardId: "icbc-sup-unionpay", cardName: "工銀聯合出版雙幣信用卡-銀聯鑽石卡/白金卡/虛擬卡" },
+      { cardId: "icbc-gba", cardName: "工銀粵港澳灣區信用卡-萬事達卡世界卡/白金卡" },
+      { cardId: "icbc-gba-unionpay", cardName: "工銀粵港澳灣區雙幣信用卡-銀聯鑽石卡/白金卡" },
+      { cardId: "icbc-horoscope", cardName: "工銀宇宙星座信用卡-Visa Signature卡" },
+      { cardId: "icbc-horoscope-unionpay", cardName: "工銀宇宙星座雙幣信用卡-銀聯鑽石卡/白金卡" },
+      { cardId: "icbc-chimelong", cardName: "工銀長隆信用卡-Visa白金卡" },
+      { cardId: "icbc-chimelong-unionpay", cardName: "工銀長隆雙幣信用卡-銀聯白金卡" },
+      { cardId: "icbc-virtual", cardName: "工銀信用卡-Visa/萬事達卡虛擬卡" },
+      { cardId: "icbc-unionpay-virtual", cardName: "工銀雙幣信用卡-銀聯虛擬卡" },
+      { cardId: "icbc-axa", cardName: "工銀AXA安盛信用卡-萬事達卡白金卡/虛擬卡" },
+      { cardId: "icbc-axa-unionpay", cardName: "工銀AXA安盛雙幣信用卡-銀聯白金卡/虛擬卡" },
+      { cardId: "icbc-caritas", cardName: "工銀香港明愛信用卡-萬事達卡白金卡/金卡/普通卡" },
+    ],
+    documentName: "有關工銀信用卡簽賬獎賞調整相關交易定義的通知",
+    promoStartDate: "2026-03-16",
+    rewardRates: [
+      { 
+        category: "香港本地超市/雜貨店/便利店/食品雜貨店購物", 
+        totalRate: 0.5, 
+        baseRate: 0.5, 
+        extraRate: 0, 
+        note: "⚠️降級！每$1只得1分/0.5%回贈" 
+      },
+      { 
+        category: "香港本地餐廳/麵包店/糕餅店", 
+        totalRate: 0.5, 
+        baseRate: 0.5, 
+        extraRate: 0, 
+        note: "⚠️降級！每$1只得1分/0.5%回贈" 
+      },
+      { 
+        category: "購買物業、汽車、批發", 
+        totalRate: 0.5, 
+        baseRate: 0.5, 
+        extraRate: 0, 
+        note: "⚠️降級！每$1只得1分/0.5%回贈" 
+      },
+      { 
+        category: "醫院費用、學費", 
+        totalRate: 0.5, 
+        baseRate: 0.5, 
+        extraRate: 0, 
+        note: "⚠️降級！每$1只得1分/0.5%回贈" 
+      },
+    ],
+    exclusions: [
+      // 原有不計回贈
+      "現金透支、結餘轉戶",
+      "信用卡現金兌現金額/稅務及私人貸款金額/商戶分期金額及其還款額",
+      "電子錢包簽賬/增值/轉賬（Alipay/PayMe/Tap & Go/WeChat Pay）",
+      "八達通增值/自動增值",
+      "捐款、賭場籌碼、博彩交易",
+      "自動轉賬、未經許可的簽賬",
+      "所有繳費（信用卡費用/分期還款/財務收費/逾期手續費/服務費）",
+      "保險費用、公共事務費用",
+      "繳交稅項、強積金供款",
+      "中國內地超市購物、物業、汽車、批發、醫院費用、學費",
+      "燃油、交通運輸費用",
+      // 新增不計回贈 ⚠️
+      "金融機構交易（證券經紀商及交易商）⚠️新增",
+      "電子遊戲商場/機構消費 ⚠️新增",
+      "電影院 ⚠️新增",
+      "停車場 ⚠️新增",
+      "汽車租賃 ⚠️新增",
+      "通訊費、會費 ⚠️新增",
+      "慈善/非牟利機構交易 ⚠️新增",
+    ],
+    warnings: [
+      "🚨 2026年3月16日起生效！條款大幅收緊",
+      "⚠️ 新增無回贈類別：電影院、停車場、汽車租賃、電子遊戲場、金融機構交易",
+      "⚠️ 新增無回贈類別：通訊費、會費、慈善/非牟利機構交易",
+      "📉 降級類別（只有0.5%/1分）：本地超市、雜貨店、便利店、餐廳、麵包店、物業、汽車、批發、醫院、學費",
+      "💡 建議補底卡：Simply Cash（1.5%全部簽賬）或 EarnMORE（2%所有簽賬）",
+      "⚠️ 已持有工銀卡用戶：請留意3月16日後的簽賬回贈會大幅減少",
+    ],
+    officialSource: "https://v.icbc.com.cn/userfiles/resources/icbc/haiwai/asia/download/tc/2026/noa_spending_rewards_credit_cards_260119_tc.pdf",
+    lastUpdated: "2026-01-19",
+  },
+
+  // ========================================================================
   // 信銀國際（CNCBI）Motion信用卡 - 食肆及網上簽賬6%現金回贈
   // 來源：https://www.cncbinternational.com/_document/personal/motion_credit_card/tc/motion_cardcvp_tnc_tc.pdf
   // ========================================================================
