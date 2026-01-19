@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { CreditCard, Wallet, LogOut, Settings, Moon, Sun, Coins, Plane, MessageCircle, CalendarDays } from "lucide-react";
+import Image from "next/image";
+import { Wallet, LogOut, Settings, Moon, Sun, Coins, Plane, MessageCircle, CalendarDays } from "lucide-react";
 import { Button } from "./ui/button";
 import { useWallet } from "@/lib/store/wallet-context";
 import { useTheme } from "./theme-provider";
@@ -51,13 +52,15 @@ export function Navbar() {
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2 font-bold text-xl text-blue-600 dark:text-blue-400 active:scale-95 transition-transform">
-          <div className="bg-blue-600 dark:bg-blue-500 text-white p-1.5 rounded-lg">
-            <CreditCard className="h-5 w-5" />
-          </div>
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-300">
-            PickCardRebate
-          </span>
+        <Link href="/" className="flex items-center active:scale-95 transition-transform">
+          <Image
+            src="/logo.png"
+            alt="PickCardRebate"
+            width={180}
+            height={48}
+            className="h-8 sm:h-10 w-auto"
+            priority
+          />
         </Link>
         
         <nav className="flex items-center gap-1 md:gap-3 flex-shrink-0">

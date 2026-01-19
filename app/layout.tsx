@@ -114,7 +114,7 @@ const organizationSchema = {
   "@type": "Organization",
   "name": "PickCardRebate",
   "url": "https://pickcardrebate.com",
-  "logo": "https://pickcardrebate.com/og-image.png",
+  "logo": "https://pickcardrebate.com/logo.png",
   "description": "香港信用卡回贈比較平台，幫助消費者找出最高回贈的信用卡。",
   "sameAs": []
 };
