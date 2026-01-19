@@ -2200,6 +2200,94 @@ export const cardTerms: CardTerms[] = [
   },
 
   // ========================================================================
+  // 中銀信用卡「崇光百貨新年簽賬賞高達5%回贈優惠」
+  // 來源：https://www.bochk.com/s/a/sogocny2026
+  // ========================================================================
+  {
+    cardId: "boc-sogo-cny-2026",
+    cardName: "中銀信用卡「崇光百貨新年簽賬賞」額外5%回贈",
+    bank: "中銀",
+    applicableCards: [
+      { cardId: "boc-sogo-vs", cardName: "中銀崇光 Visa Signature 卡", note: "5%回贈，上限$400" },
+      { cardId: "boc-sogo-platinum", cardName: "中銀崇光 Visa 白金卡", note: "5%回贈，上限$400" },
+      { cardId: "boc-visa", cardName: "其他中銀Visa信用卡", note: "3%回贈，上限$300" },
+      { cardId: "boc-unionpay", cardName: "其他中銀銀聯信用卡", note: "3%回贈，上限$300" },
+    ],
+    documentName: "中銀信用卡「崇光百貨新年簽賬賞高達5%回贈優惠」條款及細則",
+    promoStartDate: "2026-01-07",
+    promoEndDate: "2026-02-28",
+    minSpend: {
+      amount: 5000,
+      period: "promo",
+      type: "total",
+      note: "推廣期內累積簽賬滿$5,000"
+    },
+    rewardCap: {
+      type: "extra",
+      amount: 400,
+      period: "promo",
+      note: "中銀崇光Visa卡上限$400（簽$8,000封頂）；其他中銀卡上限$300（簽$10,000封頂）"
+    },
+    rewardRates: [
+      { 
+        category: "中銀崇光Visa卡 - 崇光百貨（銅鑼灣/啟德/網店）", 
+        totalRate: 5.0, 
+        baseRate: 0, 
+        extraRate: 5.0, 
+        note: "需登記，累積簽滿$5,000可享，上限$400🔥" 
+      },
+      { 
+        category: "其他中銀Visa/銀聯卡 - 崇光百貨", 
+        totalRate: 3.0, 
+        baseRate: 0, 
+        extraRate: 3.0, 
+        note: "需登記，累積簽滿$5,000可享，上限$300" 
+      },
+      { 
+        category: "疊加：崇光VS卡本身指定商戶5%", 
+        totalRate: 5.0, 
+        baseRate: 5.0, 
+        extraRate: 0, 
+        note: "全年SOGO指定商戶5%回贈（無上限）" 
+      },
+      { 
+        category: "疊加：全年手機支付5%", 
+        totalRate: 5.0, 
+        baseRate: 0, 
+        extraRate: 5.0, 
+        note: "每月上限簽$2,000" 
+      },
+    ],
+    exclusions: [
+      "積FUN錢交易",
+      "結餘轉戶金額、自動轉賬",
+      "八達通增值/自動增值",
+      "分期付款（現金分期、月結單分期、商戶免息分期）",
+      "年費、財務費用、手續費",
+      "繳費（稅款、通訊費、會費、學費、水電）",
+      "PayPal/支付寶繳費",
+      "購買/充值儲值卡或電子錢包",
+      "金融機構/非金融機構產品（存款、外匯、保險、基金、股票、樓宇買賣）",
+      "賭博交易、慈善及非牟利機構交易",
+      "折扣扣除金額、禮券/現金券使用部分",
+    ],
+    warnings: [
+      "⚠️ 需登記！首15,000名額滿即止",
+      "📌 登記網址：www.bochk.com/s/a/sogocny2026",
+      "📌 簽賬下限$5,000（推廣期內累積）",
+      "📌 中銀崇光VS卡：5%回贈，上限$400（簽$8,000封頂）",
+      "📌 其他中銀卡：3%回贈，上限$300（簽$10,000封頂）",
+      "💡 可疊加：本身5% + 此推廣5% + 手機支付5%",
+      "⚠️ 手機支付每月上限$2,000，實際上唔會有15%咁高",
+      "📊 例子：簽$5,000 = $250+$250+$100 = $600（12%）",
+      "⚠️ 需於交易日後7天內誌賬",
+      "💰 回贈於2026年5月31日或之前入賬",
+    ],
+    officialSource: "https://iservice.boccc.com.hk/LDPRegistrationWEB/w-verify.jsp?lang=zh_HK&action=register&campaignid=sogo2601",
+    lastUpdated: "2026-01-19",
+  },
+
+  // ========================================================================
   // 中銀 Cheers Visa Infinite Card 獎賞計劃
   // ========================================================================
   {
