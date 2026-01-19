@@ -1715,14 +1715,21 @@ export const HK_CARDS: CreditCard[] = [
     rules: [
       // T&C: $1 = 1 分，可換現金回贈或飛行里數
       // 國航 8分=1公里，港航 10分=1金鵬里數
-      { description: "本地/海外簽賬 1.5%", matchType: "base", percentage: 1.5, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"] },
+      // ⚠️ 2026/3/16起條款大幅收緊
+      { description: "本地/海外簽賬 1.5%", matchType: "base", percentage: 1.5, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet", "cinema", "parking", "gas", "transport"] },
     ],
     tags: ["星座卡", "高回贈", "飛行里數"],
     welcomeOfferText: "迎新簽 $3,000 送 $700 免找數簽賬額 (首2個月內)",
     officialApplyUrl: "https://www.icbcasia.com/tc/personal/cards/credit-cards/horoscope-visa-signature-card/",
     applyUrl: "https://www.icbcasia.com/tc/personal/cards/credit-cards/horoscope-visa-signature-card/",
     sellingPoints: ["本地及海外簽賬 1.5% 現金回贈", "自選星座設計", "積分可換國航/港航里數"],
-    note: "⚠️ 每 $1 = 1 分。可換國航里數 (8分=1公里) 或港航里數 (10分=1金鵬里數)。積分有效期最少 1 年。迎新：首2個月簽 $3,000 送 $700 免找數簽賬額。發卡後 12 個月內取消卡將被扣除迎新等值金額。",
+    exclusions: [
+      "電影院🚨", "停車場🚨", "汽車租賃🚨", "入油🚨", "電子遊戲場🚨",
+      "本地超市/便利店(降至0.5%)", "本地餐廳/麵包店(降至0.5%)",
+      "電子錢包(Alipay/PayMe/WeChat/Tap&Go)", "八達通增值",
+      "保險", "證券/金融機構", "繳費", "通訊費", "會費",
+    ],
+    note: "🚨 **2026/3/16起條款大幅收緊！**\n\n**❌ 無回贈**：電影院、停車場、汽車租賃、入油、交通、電子遊戲場、金融機構、通訊費、會費、慈善機構\n\n**📉 降至0.5%**：本地超市/便利店/雜貨店、餐廳/麵包店/糕餅店、物業、汽車、批發、醫院、學費\n\n💡 建議補底卡：Simply Cash(1.5%) 或 EarnMORE(2%)\n\n---\n\n每 $1 = 1 分。可換國航里數 (8分=1公里) 或港航里數 (10分=1金鵬里數)。積分有效期最少 1 年。迎新：首2個月簽 $3,000 送 $700 免找數簽賬額。發卡後 12 個月內取消卡將被扣除迎新等值金額。",
   },
 
   // ========================================================================
