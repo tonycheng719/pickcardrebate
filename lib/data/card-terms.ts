@@ -9002,6 +9002,63 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://www.hk.bankcomm.com/hk/uploadhk/infos/202601/07/7049561/20260107154755_2026%20Apple%20Pay%20Reward%20Promotion_TnC_TC.pdf",
     lastUpdated: "2026-01-09",
   },
+
+  // ========================================================================
+  // HSBC Mastercard PCLO 個人化信用卡優惠 - 7-11 / 天仁茗茶
+  // ========================================================================
+  {
+    cardId: "hsbc-mastercard-pclo-7eleven-tenren-2026",
+    cardName: "滙豐Mastercard PCLO 7-Eleven/天仁茗茶優惠",
+    bank: "HSBC",
+    applicableCards: [
+      { cardId: "hsbc-premier-mc", cardName: "HSBC Premier Mastercard" },
+      { cardId: "hsbc-vs", cardName: "HSBC Visa Signature", note: "需為 Mastercard 版本" },
+    ],
+    documentName: "滙豐Mastercard®個人化信用卡優惠 (PCLO) 計劃條款及細則",
+    rewardCap: {
+      type: "total",
+      amount: 20,
+      period: "promo",
+      note: "7-11 和天仁茗茶各 $20 回贈，合共 $40"
+    },
+    minSpend: {
+      amount: 20,
+      period: "promo",
+      type: "total",
+      note: "單一簽賬滿 $20"
+    },
+    rewardRates: [
+      {
+        category: "7-Eleven",
+        totalRate: 100,
+        baseRate: 0,
+        extraRate: 100,
+        note: "簽滿 $20 回贈 $20（100%回贈）"
+      },
+      {
+        category: "天仁茗茶",
+        totalRate: 100,
+        baseRate: 0,
+        extraRate: 100,
+        note: "簽滿 $20 回贈 $20（100%回贈）"
+      },
+    ],
+    exclusions: [
+      "透過電子錢包付款（包括但不限於支付寶和微信支付）",
+      "非港幣交易",
+      "須先登記才簽賬，消費後登記無效",
+    ],
+    warnings: [
+      "🔥 **100%回贈**：簽$20送$20！",
+      "⚠️ **只限首次註冊 PCLO 用戶**",
+      "📌 必須**先登記後簽賬**，消費後登記無效",
+      "📌 每個優惠需獨立登記",
+      "📌 回贈於 30 個曆日內自動入賬",
+      "📌 月結單以「HSBCPCLO」標註",
+    ],
+    officialSource: "https://hkg.mastercardservices.com/hsbc/landing-page?language=zn_HK",
+    lastUpdated: "2026-01-20",
+  },
 ];
 
 // ========================================================================
