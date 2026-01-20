@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, Image, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, FlatList, StyleSheet, Image, ActivityIndicator, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Colors, BankColors } from '@/constants/Colors';
@@ -15,14 +15,15 @@ export default function CardsScreen() {
   const [cards, setCards] = useState<CardData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   // 從 API 載入信用卡資料
   useEffect(() => {
     loadCards();
   }, []);
 
-  const loadCards = async () => {
-    setLoading(true);
+  const loadCards = async (isRefresh = false) => {
+    if (!isRefresh) setLoading(true);
     setError(null);
     
     const response = await api.getCards();
@@ -34,7 +35,14 @@ export default function CardsScreen() {
     }
     
     setLoading(false);
+    if (isRefresh) setRefreshing(false);
   };
+
+  // 下拉更新
+  const handleRefresh = useCallback(() => {
+    setRefreshing(true);
+    loadCards(true);
+  }, []);
 
   // 過濾卡片
   const filteredCards = cards.filter(card => {
@@ -151,6 +159,17 @@ export default function CardsScreen() {
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            tintColor={colors.primary}
+            colors={[colors.primary, '#10B981', '#F59E0B']}
+            progressBackgroundColor={colors.backgroundCard}
+            title={refreshing ? "更新中..." : "下拉更新信用卡"}
+            titleColor={colors.textMuted}
+          />
+        }
         ListHeaderComponent={
           <Text style={[styles.listHeader, { color: colors.textMuted }]}>
             共 {filteredCards.length} 張信用卡

@@ -166,6 +166,10 @@ export default function DiscoverScreen() {
               refreshing={refreshing}
               onRefresh={() => loadPromos(true)}
               tintColor={colors.primary}
+              colors={[colors.primary, '#10B981', '#F59E0B']}
+              progressBackgroundColor={colors.backgroundCard}
+              title="下拉更新..."
+              titleColor={colors.textMuted}
             />
           }
           ListEmptyComponent={

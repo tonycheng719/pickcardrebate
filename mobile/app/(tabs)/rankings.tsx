@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator, Image, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, BankColors } from '@/constants/Colors';
 import { Layout } from '@/constants/Layout';
@@ -27,14 +27,15 @@ export default function RankingsScreen() {
   const [rankings, setRankings] = useState<RankingItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   // 載入排行榜數據
   useEffect(() => {
     loadRankings(selectedCategory);
   }, [selectedCategory]);
 
-  const loadRankings = async (category: string) => {
-    setLoading(true);
+  const loadRankings = async (category: string, isRefresh = false) => {
+    if (!isRefresh) setLoading(true);
     setError(null);
     
     const response = await api.getRankings(category, 10);
@@ -46,7 +47,14 @@ export default function RankingsScreen() {
     }
     
     setLoading(false);
+    if (isRefresh) setRefreshing(false);
   };
+
+  // 下拉更新
+  const handleRefresh = useCallback(() => {
+    setRefreshing(true);
+    loadRankings(selectedCategory, true);
+  }, [selectedCategory]);
 
   const handleCardPress = (cardId: string) => {
     router.push(`/card/${cardId}`);
@@ -95,7 +103,21 @@ export default function RankingsScreen() {
       </ScrollView>
 
       {/* 排行榜 */}
-      <ScrollView style={styles.rankingList} showsVerticalScrollIndicator={false}>
+      <ScrollView 
+        style={styles.rankingList} 
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            tintColor={colors.primary}
+            colors={[colors.primary, '#10B981', '#F59E0B']}
+            progressBackgroundColor={colors.backgroundCard}
+            title={refreshing ? "更新中..." : "下拉更新排行榜"}
+            titleColor={colors.textMuted}
+          />
+        }
+      >
         <View style={styles.header}>
           <Text style={[styles.headerTitle, { color: colors.text }]}>
             {RANKING_CATEGORIES.find(c => c.id === selectedCategory)?.icon}{' '}

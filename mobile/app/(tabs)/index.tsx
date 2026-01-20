@@ -14,6 +14,7 @@ import {
   Linking,
   Modal,
   Dimensions,
+  RefreshControl,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -66,6 +67,9 @@ export default function CalculatorScreen() {
   
   // 滾動位置狀態（用於顯示/隱藏回到頂部按鈕）
   const [showScrollTop, setShowScrollTop] = useState(false);
+  
+  // 下拉更新狀態
+  const [refreshing, setRefreshing] = useState(false);
 
   // 處理滾動事件
   const handleScroll = useCallback((event: any) => {
@@ -76,6 +80,25 @@ export default function CalculatorScreen() {
   // 回到頂部
   const scrollToTop = useCallback(() => {
     scrollViewRef.current?.scrollTo({ y: 0, animated: true });
+  }, []);
+
+  // 下拉更新 - 重新獲取商戶數據
+  const handleRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      const response = await api.getMerchants();
+      if (response.data) {
+        setMerchantsFromApi(response.data.merchants);
+      }
+      // 清除計算結果
+      setCalculatedResults([]);
+      setSelectedMerchant(null);
+      setAmount('');
+    } catch (error) {
+      console.error('Refresh failed:', error);
+    } finally {
+      setRefreshing(false);
+    }
   }, []);
 
   // 獲取商戶數據（包含 logo）
@@ -488,6 +511,17 @@ export default function CalculatorScreen() {
         contentContainerStyle={styles.scrollContent}
         onScroll={handleScroll}
         scrollEventThrottle={16}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            tintColor={colors.primary}
+            colors={[colors.primary, '#10B981', '#F59E0B']}
+            progressBackgroundColor={colors.backgroundCard}
+            title={refreshing ? "更新中..." : "下拉更新商戶數據"}
+            titleColor={colors.textMuted}
+          />
+        }
       >
         {/* 標題區 */}
         <View style={styles.headerSection}>
