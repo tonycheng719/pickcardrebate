@@ -585,36 +585,51 @@ export default function CalculatorScreen() {
         {/* 商戶列表 */}
         <View style={styles.merchantSection}>
           <View style={styles.merchantGrid}>
-            {currentMerchants.map((merchant) => (
-              <TouchableOpacity
-                key={merchant.id}
-                style={[
-                  styles.merchantCard,
-                  {
-                    backgroundColor: selectedMerchant?.id === merchant.id 
-                      ? colors.primaryLight 
-                      : colors.backgroundCard,
-                    borderColor: selectedMerchant?.id === merchant.id 
-                      ? colors.primary 
-                      : colors.border,
-                  },
-                ]}
-                onPress={() => handleSelectMerchant(merchant)}
-              >
-                <Text style={styles.merchantIcon}>
-                  {MERCHANT_CATEGORIES.find(c => c.id === merchant.category)?.icon || '🏪'}
-                </Text>
-                <Text 
+            {currentMerchants.map((merchant) => {
+              // 檢查 logo 是否為有效的 URL（而非 emoji）
+              const hasValidLogo = merchant.logo && 
+                typeof merchant.logo === 'string' && 
+                (merchant.logo.startsWith('http') || merchant.logo.startsWith('/'));
+              
+              return (
+                <TouchableOpacity
+                  key={merchant.id}
                   style={[
-                    styles.merchantName, 
-                    { color: colors.text }
+                    styles.merchantCard,
+                    {
+                      backgroundColor: selectedMerchant?.id === merchant.id 
+                        ? colors.primaryLight 
+                        : colors.backgroundCard,
+                      borderColor: selectedMerchant?.id === merchant.id 
+                        ? colors.primary 
+                        : colors.border,
+                    },
                   ]}
-                  numberOfLines={2}
+                  onPress={() => handleSelectMerchant(merchant)}
                 >
-                  {merchant.name}
-                </Text>
-              </TouchableOpacity>
-            ))}
+                  {hasValidLogo ? (
+                    <Image 
+                      source={{ uri: merchant.logo }} 
+                      style={styles.merchantLogo}
+                      resizeMode="contain"
+                    />
+                  ) : (
+                    <Text style={styles.merchantIcon}>
+                      {merchant.logo || '🏪'}
+                    </Text>
+                  )}
+                  <Text 
+                    style={[
+                      styles.merchantName, 
+                      { color: colors.text }
+                    ]}
+                    numberOfLines={2}
+                  >
+                    {merchant.name}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
           </View>
         </View>
 
@@ -986,6 +1001,12 @@ const styles = StyleSheet.create({
   },
   merchantIcon: {
     fontSize: 24,
+    marginBottom: 4,
+  },
+  merchantLogo: {
+    width: 32,
+    height: 32,
+    borderRadius: 6,
     marginBottom: 4,
   },
   merchantName: {
