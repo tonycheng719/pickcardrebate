@@ -94,13 +94,30 @@ export interface RankingItem {
   name: string;
   bank: string;
   rate: number;
+  grossRate?: number;
   ruleDescription: string | null;
   imageUrl: string | null;
   tags: string[];
+  // 額外信息
+  cap?: number;
+  capType?: string;
+  capAsSpending?: number;
+  minSpend?: number;
+  monthlyMinSpend?: number;
+  conditions?: string[];
+  foreignCurrencyFee?: number;
+  // 里數卡專用
+  dollarsPerMile?: number;
+  milesProgram?: string;
 }
 
 export interface RankingsResponse {
   category: string;
+  categoryName?: string;
+  categoryIcon?: string;
+  categoryDescription?: string;
+  isForeignCurrency?: boolean;
+  isMilesCategory?: boolean;
   rankings: RankingItem[];
   count: number;
 }

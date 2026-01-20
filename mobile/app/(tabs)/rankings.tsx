@@ -5,26 +5,28 @@ import { Colors, BankColors } from '@/constants/Colors';
 import { Layout } from '@/constants/Layout';
 import { useColorScheme } from '@/components/useColorScheme';
 import { Card, RewardBadge } from '@/components/ui';
-import { api, RankingItem } from '@/lib/api/client';
+import { api, RankingItem, RankingsResponse } from '@/lib/api/client';
 import { router } from 'expo-router';
 
-// 排行榜類別
+// 排行榜類別 - 與 Web 版一致
 const RANKING_CATEGORIES = [
+  { id: 'dining', name: '食飯', icon: '🍽️' },
+  { id: 'hkd_online', name: '港幣網購', icon: '🛒' },
+  { id: 'foreign_online', name: '外幣網購', icon: '💻' },
   { id: 'supermarket', name: '超市', icon: '🛒' },
-  { id: 'dining', name: '餐飲', icon: '🍽️' },
   { id: 'travel', name: '旅遊', icon: '✈️' },
-  { id: 'online', name: '網購', icon: '💻' },
-  { id: 'transport', name: '交通', icon: '🚇' },
-  { id: 'mobile_pay', name: '手機支付', icon: '📱' },
-  { id: 'foreign', name: '外幣', icon: '🌍' },
-  { id: 'entertainment', name: '娛樂', icon: '🎬' },
+  { id: 'overseas', name: '海外簽賬', icon: '✈️' },
+  { id: 'mobile_payment', name: '流動支付', icon: '📱' },
+  { id: 'miles', name: '換里數', icon: '✈️' },
+  { id: 'all_round', name: '全能補底', icon: '💳' },
 ];
 
 export default function RankingsScreen() {
   const colorScheme = useColorScheme() ?? 'light';
   const colors = Colors[colorScheme];
-  const [selectedCategory, setSelectedCategory] = useState('supermarket');
+  const [selectedCategory, setSelectedCategory] = useState('dining');
   const [rankings, setRankings] = useState<RankingItem[]>([]);
+  const [categoryData, setCategoryData] = useState<Partial<RankingsResponse>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
@@ -42,6 +44,7 @@ export default function RankingsScreen() {
     
     if (response.data) {
       setRankings(response.data.rankings);
+      setCategoryData(response.data);
     } else {
       setError(response.error || '無法載入排行榜');
     }
@@ -200,8 +203,21 @@ export default function RankingsScreen() {
                     )}
                   </View>
 
-                  {/* 回贈率 */}
-                  <RewardBadge rate={card.rate} size="lg" />
+                  {/* 回贈率或里數兌換率 */}
+                  {categoryData.isMilesCategory && card.dollarsPerMile ? (
+                    <View style={[styles.milesBadge, { backgroundColor: colors.primaryLight }]}>
+                      <Text style={[styles.milesRate, { color: colors.primary }]}>
+                        {`$${card.dollarsPerMile}/里`}
+                      </Text>
+                      {card.milesProgram && (
+                        <Text style={[styles.milesProgram, { color: colors.textMuted }]}>
+                          {card.milesProgram}
+                        </Text>
+                      )}
+                    </View>
+                  ) : (
+                    <RewardBadge rate={card.rate} size="lg" />
+                  )}
                 </View>
               </Card>
             );
@@ -327,5 +343,19 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: Layout.fontSize.base,
+  },
+  milesBadge: {
+    paddingHorizontal: Layout.spacing.md,
+    paddingVertical: Layout.spacing.xs,
+    borderRadius: Layout.radius.md,
+    alignItems: 'flex-end',
+  },
+  milesRate: {
+    fontSize: Layout.fontSize.base,
+    fontWeight: Layout.fontWeight.bold,
+  },
+  milesProgram: {
+    fontSize: Layout.fontSize.xs,
+    marginTop: 2,
   },
 });
