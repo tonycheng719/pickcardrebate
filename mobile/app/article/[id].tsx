@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, Image, ActivityIndicator, Linking, useWindowDimensions } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Image, ActivityIndicator, Linking, useWindowDimensions, Share, TouchableOpacity, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Stack, useLocalSearchParams, router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -39,6 +39,24 @@ export default function ArticleDetailScreen() {
   useEffect(() => {
     if (id) loadArticle(id);
   }, [id]);
+
+  // 分享文章
+  const handleShare = async () => {
+    if (!article) return;
+    
+    try {
+      const shareUrl = `https://pickcardrebate.com/discover/${id}`;
+      await Share.share({
+        title: article.title,
+        message: Platform.OS === 'ios' 
+          ? article.title 
+          : `${article.title}\n\n${article.description}\n\n${shareUrl}`,
+        url: Platform.OS === 'ios' ? shareUrl : undefined,
+      });
+    } catch (error) {
+      console.log('Share error:', error);
+    }
+  };
 
   const loadArticle = async (articleId: string) => {
     setLoading(true);
@@ -97,6 +115,11 @@ export default function ArticleDetailScreen() {
         options={{ 
           title: article.contentType === 'guide' ? '攻略' : '優惠',
           headerBackTitle: '返回',
+          headerRight: () => (
+            <TouchableOpacity onPress={handleShare} style={styles.shareButton}>
+              <Ionicons name="share-outline" size={24} color="#3B82F6" />
+            </TouchableOpacity>
+          ),
         }} 
       />
       
@@ -211,6 +234,10 @@ export default function ArticleDetailScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  shareButton: {
+    padding: 8,
+    marginRight: 4,
   },
   centerContainer: {
     flex: 1,

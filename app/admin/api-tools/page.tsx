@@ -15,7 +15,11 @@ import {
   Copy,
   Check,
   Play,
-  EyeOff
+  EyeOff,
+  Smartphone,
+  Calculator,
+  Trophy,
+  BookOpen
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -165,6 +169,54 @@ const API_TOOLS: ApiTool[] = [
     method: "GET",
     icon: <Database className="w-5 h-5" />,
     category: "數據查詢",
+  },
+  
+  // Mobile App API
+  {
+    id: "mobile-cards",
+    name: "Mobile - 獲取信用卡",
+    description: "供 Mobile App 使用的信用卡 API，包含圖片和排行數據",
+    endpoint: "/api/mobile/cards",
+    method: "GET",
+    icon: <Smartphone className="w-5 h-5" />,
+    category: "Mobile App API",
+  },
+  {
+    id: "mobile-merchants",
+    name: "Mobile - 獲取商戶",
+    description: "供 Mobile App 使用的商戶 API，包含後台上傳的 logo",
+    endpoint: "/api/mobile/merchants",
+    method: "GET",
+    icon: <Store className="w-5 h-5" />,
+    category: "Mobile App API",
+  },
+  {
+    id: "mobile-calculate",
+    name: "Mobile - 計算回贈",
+    description: "核心計算 API，輸入商戶和金額計算最佳信用卡回贈",
+    endpoint: "/api/mobile/calculate",
+    method: "POST",
+    icon: <Calculator className="w-5 h-5" />,
+    category: "Mobile App API",
+    body: JSON.stringify({ query: "惠康", amount: 500, paymentMethod: "physical_card", limit: 5 }),
+  },
+  {
+    id: "mobile-rankings",
+    name: "Mobile - 獲取排行榜",
+    description: "按類別獲取信用卡回贈排行榜",
+    endpoint: "/api/mobile/rankings?category=supermarket&limit=5",
+    method: "GET",
+    icon: <Trophy className="w-5 h-5" />,
+    category: "Mobile App API",
+  },
+  {
+    id: "mobile-promos",
+    name: "Mobile - 獲取優惠文章",
+    description: "獲取優惠和攻略文章列表",
+    endpoint: "/api/mobile/promos?limit=10",
+    method: "GET",
+    icon: <BookOpen className="w-5 h-5" />,
+    category: "Mobile App API",
   },
 ];
 

@@ -107,6 +107,13 @@ export interface RankingsResponse {
 
 // ==================== 計算結果類型 ====================
 
+// 回贈組成項目
+export interface RewardBreakdownItem {
+  label: string;
+  percentage: number;
+  description?: string;
+}
+
 export interface CalculateResult {
   rank: number;
   cardId: string;
@@ -123,6 +130,14 @@ export interface CalculateResult {
   fxFee?: number;
   discountPercentage?: number;
   discountAmount?: number;
+  // 回贈組成（與網站一致）
+  rewardBreakdown?: {
+    baseRate: number;        // 基本回贈
+    bonusRate: number;       // 額外回贈
+    bonusDescription?: string; // 額外回贈說明
+    totalRate: number;       // 總回贈
+    capAmount?: number;      // 上限
+  };
   spendingSuggestion?: {
     targetAmount: number;
     ruleDescription: string;
@@ -145,6 +160,8 @@ export interface CalculateResult {
     overCapReward: number;
     totalReward: number;
   };
+  // 申請鏈接
+  applyUrl?: string;
 }
 
 export interface CalculateResponse {
@@ -154,6 +171,29 @@ export interface CalculateResponse {
   results: CalculateResult[];
   count: number;
   totalFound: number;
+}
+
+// 商戶類型
+export interface MerchantData {
+  id: string;
+  name: string;
+  categoryIds: string[];
+  logo?: string;
+  accentColor?: string;
+  isGeneral?: boolean;
+  aliases?: string[];
+}
+
+export interface CategoryData {
+  id: string;
+  name: string;
+  icon: string;
+  merchantIds: string[];
+}
+
+export interface MerchantsResponse {
+  merchants: MerchantData[];
+  categories: CategoryData[];
 }
 
 // ==================== API 方法 ====================
@@ -182,22 +222,23 @@ export const api = {
     return request<RankingsResponse>(`/mobile/rankings?${searchParams.toString()}`);
   },
   
-  // 計算回贈 - 核心功能
+  // 計算回贈 - 核心功能（使用 POST）
   calculate: (params: {
     query: string;
     amount?: number;
     paymentMethod?: string;
     isForeignCurrency?: boolean;
     limit?: number;
+    rewardPreference?: 'cash' | 'miles';
   }) => {
-    const searchParams = new URLSearchParams();
-    searchParams.set('query', params.query);
-    if (params.amount) searchParams.set('amount', params.amount.toString());
-    if (params.paymentMethod) searchParams.set('paymentMethod', params.paymentMethod);
-    if (params.isForeignCurrency) searchParams.set('isForeignCurrency', 'true');
-    if (params.limit) searchParams.set('limit', params.limit.toString());
-    return request<CalculateResponse>(`/mobile/calculate?${searchParams.toString()}`);
+    return request<CalculateResponse>('/mobile/calculate', {
+      method: 'POST',
+      body: JSON.stringify(params),
+    });
   },
+  
+  // 獲取商戶列表（包含 logo）
+  getMerchants: () => request<MerchantsResponse>('/mobile/merchants'),
 };
 
 export { API_BASE_URL };

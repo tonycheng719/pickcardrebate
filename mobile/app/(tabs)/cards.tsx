@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, Image, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
 import { Colors, BankColors } from '@/constants/Colors';
 import { Layout } from '@/constants/Layout';
 import { useColorScheme } from '@/components/useColorScheme';
@@ -47,7 +48,7 @@ export default function CardsScreen() {
     const bankColor = BankColors[item.bank] || BankColors.default;
     
     return (
-      <Card style={styles.cardItem} onPress={() => {}}>
+      <Card style={styles.cardItem} onPress={() => router.push(`/card/${item.id}`)}>
         <View style={styles.cardRow}>
           {/* 卡片圖片或顏色標識 */}
           {item.imageUrl ? (
