@@ -23,7 +23,7 @@ import { Layout } from '@/constants/Layout';
 import { useColorScheme } from '@/components/useColorScheme';
 import { Card, RewardBadge } from '@/components/ui';
 import { MERCHANT_CATEGORIES, MERCHANTS, searchMerchants } from '@/lib/data/merchants';
-import { api, CalculateResult, MerchantData, CategoryData } from '@/lib/api/client';
+import { api, CalculateResult, MerchantData } from '@/lib/api/client';
 import type { Merchant } from '@/lib/types';
 
 // 支付方式選項（與網站一致）
@@ -58,7 +58,6 @@ export default function CalculatorScreen() {
   
   // 商戶數據（從 API 獲取）
   const [merchantsFromApi, setMerchantsFromApi] = useState<MerchantData[]>([]);
-  const [categoriesFromApi, setCategoriesFromApi] = useState<CategoryData[]>([]);
   const [isLoadingMerchants, setIsLoadingMerchants] = useState(true);
   
   // 「點解係呢張？」Modal 狀態
@@ -86,7 +85,6 @@ export default function CalculatorScreen() {
         const response = await api.getMerchants();
         if (response.data) {
           setMerchantsFromApi(response.data.merchants);
-          setCategoriesFromApi(response.data.categories);
         }
       } catch (error) {
         console.error('Failed to fetch merchants:', error);

@@ -193,7 +193,6 @@ export interface CategoryData {
 
 export interface MerchantsResponse {
   merchants: MerchantData[];
-  categories: CategoryData[];
 }
 
 // ==================== API 方法 ====================

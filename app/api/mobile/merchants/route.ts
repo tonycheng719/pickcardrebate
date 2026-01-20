@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminAuthClient } from "@/lib/supabase/admin-client";
-import { POPULAR_MERCHANTS, MERCHANT_CATEGORIES } from "@/lib/data/merchants";
+import { POPULAR_MERCHANTS } from "@/lib/data/merchants";
 
 export const dynamic = 'force-dynamic';
 
@@ -53,20 +53,14 @@ export async function GET(request: NextRequest) {
       };
     });
 
-    // 返回商戶和分類數據
+    // 返回商戶數據
     return NextResponse.json({
       merchants: mergedMerchants,
-      categories: MERCHANT_CATEGORIES.map(cat => ({
-        id: cat.id,
-        name: cat.name,
-        icon: cat.icon,
-        merchantIds: cat.merchants.map(m => m.id),
-      })),
     }, { headers: corsHeaders });
   } catch (error) {
     console.error("Internal error fetching merchants:", error);
     return NextResponse.json(
-      { error: "Internal Server Error", merchants: [], categories: [] },
+      { error: "Internal Server Error", merchants: [] },
       { status: 500, headers: corsHeaders }
     );
   }
