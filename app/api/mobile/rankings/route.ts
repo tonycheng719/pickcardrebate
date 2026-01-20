@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
       const dbCard = dbCardMap.get(card.id);
       return {
         ...card,
-        imageUrl: dbCard?.image_url || card.imageUrl || null,
+        imageUrl: dbCard?.image_url || card.imageUrl || undefined,
       };
     });
 
