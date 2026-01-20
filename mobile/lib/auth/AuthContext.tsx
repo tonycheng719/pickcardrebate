@@ -59,7 +59,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const WebBrowser = await import('expo-web-browser');
         const Linking = await import('expo-linking');
         
-        const redirectUrl = Linking.createURL('auth/callback');
+        // 使用 app scheme 作為 redirect URL
+        const redirectUrl = 'pickcardrebate://auth/callback';
+        
+        console.log('[Auth] Redirect URL:', redirectUrl);
         
         const { data, error } = await supabase.auth.signInWithOAuth({
           provider: 'google',
@@ -72,13 +75,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (error) throw error;
         
         if (data?.url) {
-          const result = await WebBrowser.openAuthSessionAsync(data.url, redirectUrl);
+          console.log('[Auth] Opening auth URL:', data.url);
+          
+          // 完成 WebBrowser warm up
+          await WebBrowser.warmUpAsync();
+          
+          const result = await WebBrowser.openAuthSessionAsync(
+            data.url, 
+            redirectUrl,
+            { showInRecents: true }
+          );
+          
+          // 清理
+          await WebBrowser.coolDownAsync();
+          
+          console.log('[Auth] Result:', result.type);
           
           if (result.type === 'success') {
             const url = result.url;
-            const params = new URLSearchParams(url.split('#')[1]);
-            const accessToken = params.get('access_token');
-            const refreshToken = params.get('refresh_token');
+            // 嘗試從 hash 或 query string 獲取 token
+            const hashParams = new URLSearchParams(url.split('#')[1] || '');
+            const queryParams = new URLSearchParams(url.split('?')[1]?.split('#')[0] || '');
+            
+            const accessToken = hashParams.get('access_token') || queryParams.get('access_token');
+            const refreshToken = hashParams.get('refresh_token') || queryParams.get('refresh_token');
+            
+            console.log('[Auth] Got tokens:', !!accessToken, !!refreshToken);
             
             if (accessToken && refreshToken) {
               await supabase.auth.setSession({
@@ -106,9 +128,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (error) throw error;
       } else {
         const WebBrowser = await import('expo-web-browser');
-        const Linking = await import('expo-linking');
         
-        const redirectUrl = Linking.createURL('auth/callback');
+        // 使用 app scheme 作為 redirect URL
+        const redirectUrl = 'pickcardrebate://auth/callback';
+        
+        console.log('[Auth] Apple Redirect URL:', redirectUrl);
         
         const { data, error } = await supabase.auth.signInWithOAuth({
           provider: 'apple',
@@ -121,13 +145,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (error) throw error;
         
         if (data?.url) {
-          const result = await WebBrowser.openAuthSessionAsync(data.url, redirectUrl);
+          console.log('[Auth] Opening Apple auth URL:', data.url);
+          
+          await WebBrowser.warmUpAsync();
+          
+          const result = await WebBrowser.openAuthSessionAsync(
+            data.url,
+            redirectUrl,
+            { showInRecents: true }
+          );
+          
+          await WebBrowser.coolDownAsync();
+          
+          console.log('[Auth] Apple Result:', result.type);
           
           if (result.type === 'success') {
             const url = result.url;
-            const params = new URLSearchParams(url.split('#')[1]);
-            const accessToken = params.get('access_token');
-            const refreshToken = params.get('refresh_token');
+            const hashParams = new URLSearchParams(url.split('#')[1] || '');
+            const queryParams = new URLSearchParams(url.split('?')[1]?.split('#')[0] || '');
+            
+            const accessToken = hashParams.get('access_token') || queryParams.get('access_token');
+            const refreshToken = hashParams.get('refresh_token') || queryParams.get('refresh_token');
+            
+            console.log('[Auth] Apple Got tokens:', !!accessToken, !!refreshToken);
             
             if (accessToken && refreshToken) {
               await supabase.auth.setSession({
