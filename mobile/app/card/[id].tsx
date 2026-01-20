@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, Image, TouchableOpacity, ActivityIndicator, Linking } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Image, TouchableOpacity, ActivityIndicator, Linking, Share } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Stack, useLocalSearchParams, router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -80,6 +80,24 @@ export default function CardDetailScreen() {
     }
   };
 
+  // 分享信用卡
+  const handleShare = async () => {
+    if (!card) return;
+    
+    try {
+      const topRate = Math.max(...card.rules.map(r => r.percentage));
+      const shareUrl = `https://pickcardrebate.com/cards/${card.id}`;
+      
+      await Share.share({
+        title: card.name,
+        message: `💳 ${card.name}\n🏦 ${card.bank}\n⭐ 最高 ${topRate}% 回贈\n\n查看詳情：${shareUrl}`,
+        url: shareUrl,
+      });
+    } catch (error) {
+      console.log('Share error:', error);
+    }
+  };
+
   if (loading) {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
@@ -114,6 +132,11 @@ export default function CardDetailScreen() {
         options={{ 
           title: card.name,
           headerBackTitle: '返回',
+          headerRight: () => (
+            <TouchableOpacity onPress={handleShare} style={styles.shareButton}>
+              <Ionicons name="share-outline" size={24} color={colors.primary} />
+            </TouchableOpacity>
+          ),
         }} 
       />
       
@@ -371,6 +394,10 @@ const styles = StyleSheet.create({
   footer: {
     padding: Layout.spacing.lg,
     borderTopWidth: 1,
+  },
+  shareButton: {
+    padding: 8,
+    marginRight: 4,
   },
 });
 
