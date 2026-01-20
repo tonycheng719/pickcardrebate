@@ -64,6 +64,20 @@ export default function CalculatorScreen() {
   // 「點解係呢張？」Modal 狀態
   const [whyModalVisible, setWhyModalVisible] = useState(false);
   const [selectedCardForWhy, setSelectedCardForWhy] = useState<CalculateResult | null>(null);
+  
+  // 滾動位置狀態（用於顯示/隱藏回到頂部按鈕）
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  // 處理滾動事件
+  const handleScroll = useCallback((event: any) => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    setShowScrollTop(offsetY > 300);
+  }, []);
+
+  // 回到頂部
+  const scrollToTop = useCallback(() => {
+    scrollViewRef.current?.scrollTo({ y: 0, animated: true });
+  }, []);
 
   // 獲取商戶數據（包含 logo）
   useEffect(() => {
@@ -165,6 +179,10 @@ export default function CalculatorScreen() {
 
       if (response.data) {
         setCalculatedResults(response.data.results);
+        // 計算完成後自動滾動到結果區域
+        setTimeout(() => {
+          scrollViewRef.current?.scrollTo({ y: 700, animated: true });
+        }, 100);
       } else {
         Alert.alert('錯誤', response.error || '計算失敗');
       }
@@ -470,6 +488,8 @@ export default function CalculatorScreen() {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={styles.scrollContent}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
       >
         {/* 標題區 */}
         <View style={styles.headerSection}>
@@ -837,6 +857,17 @@ export default function CalculatorScreen() {
           </View>
         </View>
       </Modal>
+
+      {/* 回到頂部浮動按鈕 */}
+      {showScrollTop && (
+        <TouchableOpacity
+          style={[styles.scrollTopBtn, { backgroundColor: colors.primary }]}
+          onPress={scrollToTop}
+          activeOpacity={0.8}
+        >
+          <Ionicons name="arrow-up" size={24} color="#FFFFFF" />
+        </TouchableOpacity>
+      )}
     </SafeAreaView>
   );
 }
@@ -895,6 +926,22 @@ const styles = StyleSheet.create({
   rewardToggleText: {
     fontSize: Layout.fontSize.sm,
     fontWeight: Layout.fontWeight.bold,
+  },
+  // 回到頂部按鈕
+  scrollTopBtn: {
+    position: 'absolute',
+    bottom: 100,
+    right: 20,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
   categoryScroll: {
     marginTop: Layout.spacing.md,
