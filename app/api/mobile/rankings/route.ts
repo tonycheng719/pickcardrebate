@@ -43,33 +43,35 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get('category') || 'supermarket';
     const limit = parseInt(searchParams.get('limit') || '10');
 
-    // 取得資料庫中的卡片圖片
-    let dbCardMap = new Map<string, { image_url: string | null }>();
+    // 取得資料庫中的卡片數據（圖片和隱藏狀態）
+    let dbCardMap = new Map<string, { image_url: string | null; hidden: boolean | null }>();
     try {
       const { data: dbCards } = await adminAuthClient
         .from('cards')
-        .select('id, image_url');
+        .select('id, image_url, hidden');
       if (dbCards) {
         dbCardMap = new Map(dbCards.map((c: any) => [c.id, c]));
       }
     } catch (e) {
-      console.warn("Could not fetch card images");
+      console.warn("Could not fetch card data from DB");
     }
 
-    // 合併數據庫圖片 URL 到 HK_CARDS
-    const cardsWithImages = HK_CARDS.map(card => {
+    // 合併數據庫數據到 HK_CARDS（圖片 URL 和隱藏狀態）
+    const cardsWithDbData = HK_CARDS.map(card => {
       const dbCard = dbCardMap.get(card.id);
       return {
         ...card,
         imageUrl: dbCard?.image_url || card.imageUrl || undefined,
+        // DB hidden 優先（允許管理員控制可見性）
+        hidden: dbCard?.hidden ?? card.hidden,
       };
     });
 
     // 映射類別
     const mappedCategory = CATEGORY_MAP[category] || 'supermarket';
     
-    // 使用 Web 版的排名邏輯
-    const webRankings = getRankingsByCategory(mappedCategory, limit, cardsWithImages);
+    // 使用 Web 版的排名邏輯（會自動過濾 hidden 卡片）
+    const webRankings = getRankingsByCategory(mappedCategory, limit, cardsWithDbData);
     
     // 轉換格式給 App 使用
     const rankings = webRankings.map(result => {
