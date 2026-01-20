@@ -1191,6 +1191,27 @@ function isGuide(slug: string): boolean {
   return slug in GUIDES;
 }
 
+// Map database fields to Promo type (snake_case -> camelCase)
+function mapPromoFromDB(dbPromo: any): Promo {
+  return {
+    id: dbPromo.id,
+    title: dbPromo.title,
+    merchant: dbPromo.merchant,
+    description: dbPromo.description,
+    imageUrl: dbPromo.image_url,
+    expiryDate: dbPromo.expiry_date,
+    relatedCardIds: dbPromo.related_card_ids || [],
+    tags: dbPromo.tags || [],
+    url: dbPromo.url,
+    content: dbPromo.content,
+    isPinned: dbPromo.is_pinned || false,
+    seoTitle: dbPromo.seo_title,
+    seoDescription: dbPromo.seo_description,
+    faqs: dbPromo.faqs || [],
+    updatedAt: dbPromo.updated_at,
+  };
+}
+
 // Get promo data
 async function getPromo(id: string): Promise<Promo | null> {
   try {
@@ -1202,7 +1223,7 @@ async function getPromo(id: string): Promise<Promo | null> {
       .eq("id", id)
       .single();
 
-    if (data) return data as Promo;
+    if (data) return mapPromoFromDB(data);
   } catch (e) {
     console.error("getPromo exception:", e);
   }
