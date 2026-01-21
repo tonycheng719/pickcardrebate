@@ -56,7 +56,7 @@ export interface EventParams {
   [key: string]: unknown;
 }
 
-// Firebase Analytics 實例（延遲加載）
+// Firebase Analytics 實例
 let analytics: any = null;
 let isInitialized = false;
 
@@ -65,17 +65,17 @@ export async function initializeAnalytics(): Promise<void> {
   if (isInitialized) return;
   
   try {
-    // 動態導入 Firebase Analytics（僅在需要時加載）
-    const firebaseAnalytics = await import('@react-native-firebase/analytics');
-    analytics = firebaseAnalytics.default();
+    // 導入 Firebase Analytics
+    const firebaseAnalytics = require('@react-native-firebase/analytics').default;
+    analytics = firebaseAnalytics();
     isInitialized = true;
-    console.log('[Analytics] Firebase Analytics initialized');
     
-    // 設置用戶屬性
+    // 啟用 Analytics 收集
     await analytics.setAnalyticsCollectionEnabled(true);
+    console.log('[Analytics] Firebase Analytics initialized successfully');
   } catch (error) {
-    // Firebase 未安裝時使用 fallback
-    console.log('[Analytics] Firebase not available, using fallback');
+    // Firebase 未正確配置時使用 fallback
+    console.log('[Analytics] Firebase not available, using fallback:', error);
     isInitialized = true;
   }
 }
