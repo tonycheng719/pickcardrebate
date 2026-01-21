@@ -267,7 +267,35 @@ export default function CalculatorScreen() {
     if (!selectedMerchant || calculatedResults.length === 0) return;
     
     const topCard = calculatedResults[0];
-    const shareText = `在 ${selectedMerchant.name} 消費 $${amount || '0'}，最抵用 ${topCard.cardName}！可獲 ${topCard.percentage}% 回贈 ≈ $${topCard.rewardAmount.toFixed(2)}\n\n由 PickCardRebate 計算 https://pickcardrebate.com`;
+    const isBestOwned = myCardIds.includes(topCard.cardId);
+    
+    // 構建更詳細的分享內容
+    let shareText = `🏆 ${selectedMerchant.name} 最抵攻略\n\n`;
+    shareText += `💰 消費金額: $${amount || '0'}\n`;
+    shareText += `💳 最抵信用卡: ${topCard.cardName}\n`;
+    shareText += `📊 回贈比率: ${topCard.percentage}%\n`;
+    shareText += `🎁 預計回贈: $${topCard.rewardAmount.toFixed(2)}\n`;
+    
+    if (isBestOwned) {
+      shareText += `\n✅ 剛好我有這張卡！\n`;
+    } else if (myCardIds.length > 0) {
+      // 找出用戶持有的最佳卡
+      const myBestCard = calculatedResults.find(r => myCardIds.includes(r.cardId));
+      if (myBestCard) {
+        shareText += `\n💚 我持有的最佳卡: ${myBestCard.cardName} (${myBestCard.percentage}%)\n`;
+      }
+    }
+    
+    // 添加其他推薦
+    if (calculatedResults.length > 1) {
+      shareText += `\n📋 其他推薦:\n`;
+      calculatedResults.slice(1, 4).forEach((card, idx) => {
+        shareText += `${idx + 2}. ${card.cardName} - ${card.percentage}%\n`;
+      });
+    }
+    
+    shareText += `\n🔗 由 PickCardRebate 計算\n`;
+    shareText += `https://pickcardrebate.com`;
     
     try {
       await Share.share({

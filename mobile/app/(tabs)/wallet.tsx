@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, Image } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, Image, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -10,6 +10,18 @@ import { Button, Card } from '@/components/ui';
 import { useAuth } from '@/lib/auth/AuthContext';
 import { getMyCards, syncWalletFromCloud, MyCard } from '@/lib/storage/myCards';
 
+const API_BASE = 'https://pickcardrebate.com';
+
+interface Transaction {
+  id: string;
+  merchant_name: string;
+  amount: number;
+  reward_amount: number;
+  payment_method: string;
+  transaction_date: string;
+  card_id?: string;
+}
+
 export default function WalletScreen() {
   const colorScheme = useColorScheme() ?? 'light';
   const colors = Colors[colorScheme];
@@ -17,30 +29,79 @@ export default function WalletScreen() {
   const [signingIn, setSigningIn] = useState(false);
   const [myCards, setMyCards] = useState<MyCard[]>([]);
   const [syncing, setSyncing] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  
+  // 交易統計
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [monthlySpending, setMonthlySpending] = useState(0);
+  const [monthlyReward, setMonthlyReward] = useState(0);
+  const [transactionCount, setTransactionCount] = useState(0);
 
-  // 載入用戶卡包 - 登入後從雲端同步
+  // 載入數據
+  const loadData = useCallback(async () => {
+    if (user?.id) {
+      await Promise.all([loadMyCards(), loadTransactions()]);
+    } else {
+      const cards = await getMyCards();
+      setMyCards(cards);
+    }
+  }, [user?.id]);
+
   useEffect(() => {
-    loadMyCards();
-  }, [user]);
+    loadData();
+  }, [loadData]);
+
+  // 下拉刷新
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await loadData();
+    setRefreshing(false);
+  }, [loadData]);
 
   const loadMyCards = async () => {
     if (user?.id) {
-      // 已登入：從雲端同步
       setSyncing(true);
       try {
         const cards = await syncWalletFromCloud(user.id);
         setMyCards(cards);
       } catch (error) {
         console.error('Sync failed:', error);
-        // 同步失敗時載入本地資料
         const localCards = await getMyCards();
         setMyCards(localCards);
       }
       setSyncing(false);
-    } else {
-      // 未登入：載入本地資料
-      const cards = await getMyCards();
-      setMyCards(cards);
+    }
+  };
+
+  // 載入交易記錄
+  const loadTransactions = async () => {
+    if (!user?.id) return;
+    
+    try {
+      const res = await fetch(`${API_BASE}/api/user/transactions?userId=${user.id}`);
+      if (res.ok) {
+        const data: Transaction[] = await res.json();
+        setTransactions(data);
+        
+        // 計算本月統計
+        const now = new Date();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+        
+        const thisMonthTx = data.filter(tx => {
+          const txDate = new Date(tx.transaction_date);
+          return txDate.getMonth() === currentMonth && txDate.getFullYear() === currentYear;
+        });
+        
+        const spending = thisMonthTx.reduce((sum, tx) => sum + (tx.amount || 0), 0);
+        const reward = thisMonthTx.reduce((sum, tx) => sum + (tx.reward_amount || 0), 0);
+        
+        setMonthlySpending(spending);
+        setMonthlyReward(reward);
+        setTransactionCount(data.length);
+      }
+    } catch (error) {
+      console.error('Load transactions failed:', error);
     }
   };
 
@@ -146,7 +207,12 @@ export default function WalletScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView 
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         {/* 用戶信息 */}
         <View style={styles.userSection}>
           <View style={[styles.avatar, { backgroundColor: colors.primary }]}>
@@ -161,12 +227,30 @@ export default function WalletScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* 回贈統計 */}
-        <Card style={styles.statsCard}>
-          <Text style={[styles.statsTitle, { color: colors.textMuted }]}>本月回贈</Text>
-          <Text style={[styles.statsValue, { color: colors.rewardGreen }]}>$0.00</Text>
-          <Text style={[styles.statsHint, { color: colors.textMuted }]}>開始記錄消費以追蹤回贈</Text>
-        </Card>
+        {/* 統計卡片 - 與 Web 版一致 */}
+        <View style={styles.statsRow}>
+          <Card style={[styles.statCard, { flex: 1 }]}>
+            <Ionicons name="trending-down" size={20} color="#EF4444" />
+            <Text style={[styles.statLabel, { color: colors.textMuted }]}>本月支出</Text>
+            <Text style={[styles.statValue, { color: colors.text }]}>
+              ${monthlySpending.toFixed(0)}
+            </Text>
+          </Card>
+          <Card style={[styles.statCard, { flex: 1 }]}>
+            <Ionicons name="gift" size={20} color="#10B981" />
+            <Text style={[styles.statLabel, { color: colors.textMuted }]}>本月回贈</Text>
+            <Text style={[styles.statValue, { color: colors.rewardGreen }]}>
+              ${monthlyReward.toFixed(2)}
+            </Text>
+          </Card>
+          <Card style={[styles.statCard, { flex: 1 }]}>
+            <Ionicons name="receipt" size={20} color="#6366F1" />
+            <Text style={[styles.statLabel, { color: colors.textMuted }]}>記賬記錄</Text>
+            <Text style={[styles.statValue, { color: colors.text }]}>
+              {transactionCount} 筆
+            </Text>
+          </Card>
+        </View>
 
         {/* 快捷功能 */}
         <View style={styles.quickActions}>
@@ -281,17 +365,67 @@ export default function WalletScreen() {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={[styles.sectionTitle, { color: colors.text }]}>最近消費</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push('/wallet/transactions')}>
               <Text style={[styles.sectionAction, { color: colors.primary }]}>查看全部</Text>
             </TouchableOpacity>
           </View>
           
-          <Card style={styles.emptyCard}>
-            <Ionicons name="receipt-outline" size={40} color={colors.textMuted} />
-            <Text style={[styles.emptyText, { color: colors.textMuted }]}>
-              尚無消費記錄
-            </Text>
-          </Card>
+          {transactions.length === 0 ? (
+            <Card style={styles.emptyCard}>
+              <Ionicons name="receipt-outline" size={40} color={colors.textMuted} />
+              <Text style={[styles.emptyText, { color: colors.textMuted }]}>
+                尚無消費記錄
+              </Text>
+              <Button 
+                onPress={() => router.push('/wallet/transactions')} 
+                variant="outline" 
+                size="sm" 
+                style={{ marginTop: 12 }}
+              >
+                + 新增記賬
+              </Button>
+            </Card>
+          ) : (
+            <View style={styles.transactionList}>
+              {transactions.slice(0, 5).map((tx) => (
+                <TouchableOpacity 
+                  key={tx.id}
+                  style={[styles.transactionItem, { backgroundColor: colors.backgroundCard, borderColor: colors.border }]}
+                  onPress={() => router.push('/wallet/transactions')}
+                >
+                  <View style={styles.transactionLeft}>
+                    <Text style={[styles.transactionMerchant, { color: colors.text }]} numberOfLines={1}>
+                      {tx.merchant_name}
+                    </Text>
+                    <Text style={[styles.transactionMeta, { color: colors.textMuted }]}>
+                      {tx.transaction_date} • {tx.payment_method || '實體卡'}
+                    </Text>
+                  </View>
+                  <View style={styles.transactionRight}>
+                    <Text style={[styles.transactionAmount, { color: colors.text }]}>
+                      -${tx.amount.toFixed(0)}
+                    </Text>
+                    {tx.reward_amount > 0 && (
+                      <Text style={[styles.transactionReward, { color: colors.rewardGreen }]}>
+                        +${tx.reward_amount.toFixed(2)}
+                      </Text>
+                    )}
+                  </View>
+                </TouchableOpacity>
+              ))}
+              {transactions.length > 5 && (
+                <TouchableOpacity 
+                  style={[styles.viewMoreBtn, { borderColor: colors.border }]}
+                  onPress={() => router.push('/wallet/transactions')}
+                >
+                  <Text style={[styles.viewMoreText, { color: colors.primary }]}>
+                    查看更多 ({transactions.length - 5} 筆)
+                  </Text>
+                  <Ionicons name="chevron-forward" size={16} color={colors.primary} />
+                </TouchableOpacity>
+              )}
+            </View>
+          )}
         </View>
 
         <View style={{ height: 100 }} />
@@ -390,22 +524,25 @@ const styles = StyleSheet.create({
     fontSize: Layout.fontSize.sm,
     marginTop: 2,
   },
-  statsCard: {
-    marginHorizontal: Layout.spacing.lg,
+  statsRow: {
+    flexDirection: 'row',
+    paddingHorizontal: Layout.spacing.lg,
+    gap: Layout.spacing.sm,
+    marginBottom: Layout.spacing.md,
+  },
+  statCard: {
     alignItems: 'center',
-    paddingVertical: Layout.spacing.xl,
+    paddingVertical: Layout.spacing.md,
+    paddingHorizontal: Layout.spacing.sm,
   },
-  statsTitle: {
-    fontSize: Layout.fontSize.sm,
-    marginBottom: Layout.spacing.xs,
-  },
-  statsValue: {
-    fontSize: Layout.fontSize['3xl'],
-    fontWeight: Layout.fontWeight.bold,
-  },
-  statsHint: {
+  statLabel: {
     fontSize: Layout.fontSize.xs,
-    marginTop: Layout.spacing.sm,
+    marginTop: Layout.spacing.xs,
+  },
+  statValue: {
+    fontSize: Layout.fontSize.lg,
+    fontWeight: Layout.fontWeight.bold,
+    marginTop: 2,
   },
   quickActions: {
     flexDirection: 'row',
@@ -502,5 +639,54 @@ const styles = StyleSheet.create({
   moreCardsText: {
     fontSize: Layout.fontSize.base,
     fontWeight: Layout.fontWeight.bold,
+  },
+  // 交易列表樣式
+  transactionList: {
+    gap: Layout.spacing.sm,
+  },
+  transactionItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: Layout.spacing.md,
+    borderRadius: Layout.radius.lg,
+    borderWidth: 1,
+  },
+  transactionLeft: {
+    flex: 1,
+    marginRight: Layout.spacing.md,
+  },
+  transactionMerchant: {
+    fontSize: Layout.fontSize.base,
+    fontWeight: Layout.fontWeight.semibold,
+  },
+  transactionMeta: {
+    fontSize: Layout.fontSize.xs,
+    marginTop: 2,
+  },
+  transactionRight: {
+    alignItems: 'flex-end',
+  },
+  transactionAmount: {
+    fontSize: Layout.fontSize.base,
+    fontWeight: Layout.fontWeight.bold,
+  },
+  transactionReward: {
+    fontSize: Layout.fontSize.xs,
+    fontWeight: Layout.fontWeight.medium,
+  },
+  viewMoreBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: Layout.spacing.md,
+    borderRadius: Layout.radius.lg,
+    borderWidth: 1,
+    borderStyle: 'dashed',
+  },
+  viewMoreText: {
+    fontSize: Layout.fontSize.sm,
+    fontWeight: Layout.fontWeight.medium,
+    marginRight: 4,
   },
 });

@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { updateWidgetData } from '../widget';
 
 const MY_CARDS_KEY = '@my_cards';
 const WALLET_SYNC_KEY = '@wallet_last_sync';
@@ -83,6 +84,18 @@ export async function syncWalletFromCloud(userId: string): Promise<MyCard[]> {
     // 4. 存儲到本地
     await AsyncStorage.setItem(MY_CARDS_KEY, JSON.stringify(myCards));
     await AsyncStorage.setItem(WALLET_SYNC_KEY, new Date().toISOString());
+    
+    // 5. 更新 Widget 數據
+    try {
+      await updateWidgetData(myCards.map(c => ({
+        id: c.id,
+        name: c.name,
+        bank: c.bank,
+        imageUrl: c.imageUrl,
+      })));
+    } catch (e) {
+      console.log('[Wallet] Widget update failed (non-critical):', e);
+    }
     
     return myCards;
   } catch (error) {

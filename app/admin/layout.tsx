@@ -26,6 +26,7 @@ import {
   FileText,
   Bell,
   Receipt,
+  Clock,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AdminAuthProvider, useAdminAuth } from "@/components/admin/admin-auth-context";
@@ -37,6 +38,7 @@ const menuItems = [
   { name: "會員管理", href: "/admin/users", icon: Users },
   { name: "消費記錄", href: "/admin/transactions", icon: Receipt },
   { name: "推送通知", href: "/admin/notifications", icon: Bell },
+  { name: "優惠到期提醒", href: "/admin/offer-reminders", icon: Clock },
   { name: "信用卡庫", href: "/admin/cards", icon: CreditCard },
   { name: "條款管理", href: "/admin/card-terms", icon: FileText },
   { name: "合作夥伴迎新", href: "/admin/partner-offers", icon: Gift },
