@@ -186,6 +186,10 @@ export default function CalculatorScreen() {
     }
 
     const amountNum = parseFloat(amount) || 0;
+    if (amountNum <= 0) {
+      Alert.alert('提示', '請輸入消費金額');
+      return;
+    }
     setIsCalculating(true);
     setExpandedCards(new Set(['0'])); // 重置展開狀態
 
@@ -743,12 +747,12 @@ export default function CalculatorScreen() {
           <TouchableOpacity
             style={[
               styles.calculateBtn,
-              { 
-                backgroundColor: selectedMerchant ? colors.primary : colors.borderLight,
+              {
+                backgroundColor: (selectedMerchant && amount && parseFloat(amount) > 0) ? colors.primary : colors.borderLight,
               }
             ]}
             onPress={handleCalculate}
-            disabled={!selectedMerchant || isCalculating}
+            disabled={!selectedMerchant || !amount || parseFloat(amount) <= 0 || isCalculating}
           >
             {isCalculating ? (
               <ActivityIndicator color="#FFFFFF" size="small" />
