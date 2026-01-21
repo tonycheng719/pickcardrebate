@@ -13,44 +13,65 @@ function MobileCallbackContent() {
   const [message, setMessage] = useState('正在處理登入...');
 
   useEffect(() => {
-    // 從 URL hash 或 query params 獲取 tokens
-    const hash = typeof window !== 'undefined' ? window.location.hash : '';
-    const hashParams = new URLSearchParams(hash.replace('#', ''));
-    
-    const accessToken = hashParams.get('access_token') || searchParams.get('access_token');
-    const refreshToken = hashParams.get('refresh_token') || searchParams.get('refresh_token');
-    const error = hashParams.get('error') || searchParams.get('error');
-    const errorDescription = hashParams.get('error_description') || searchParams.get('error_description');
-
-    if (error) {
-      setStatus('error');
-      setMessage(`登入失敗: ${errorDescription || error}`);
-      return;
-    }
-
-    if (accessToken && refreshToken) {
-      // 構建 deep link URL
-      const deepLinkUrl = `pickcardrebate://auth/callback#access_token=${accessToken}&refresh_token=${refreshToken}`;
+    // 延遲執行以確保 hash 已完全載入
+    const processCallback = () => {
+      // 從 URL hash 或 query params 獲取 tokens
+      const fullUrl = window.location.href;
+      const hash = window.location.hash || '';
       
-      setStatus('success');
-      setMessage('登入成功！正在返回 App...');
+      console.log('[MobileCallback] Full URL:', fullUrl);
+      console.log('[MobileCallback] Hash:', hash);
+      
+      // 解析 hash（移除開頭的 #）
+      const hashString = hash.startsWith('#') ? hash.substring(1) : hash;
+      const hashParams = new URLSearchParams(hashString);
+      
+      // 也檢查 query string（某些情況下 tokens 可能在 query 中）
+      const accessToken = hashParams.get('access_token') || searchParams.get('access_token');
+      const refreshToken = hashParams.get('refresh_token') || searchParams.get('refresh_token');
+      const error = hashParams.get('error') || searchParams.get('error');
+      const errorDescription = hashParams.get('error_description') || searchParams.get('error_description');
 
-      // 嘗試打開 app
-      window.location.href = deepLinkUrl;
+      console.log('[MobileCallback] Access Token exists:', !!accessToken);
+      console.log('[MobileCallback] Refresh Token exists:', !!refreshToken);
 
-      // 如果 3 秒後還在這個頁面，顯示手動返回按鈕
-      setTimeout(() => {
-        setMessage('如果沒有自動返回 App，請點擊下方按鈕');
-      }, 3000);
-    } else {
-      setStatus('error');
-      setMessage('未收到登入資訊，請重試');
-    }
+      if (error) {
+        setStatus('error');
+        setMessage(`登入失敗: ${errorDescription || error}`);
+        return;
+      }
+
+      if (accessToken && refreshToken) {
+        // 構建 deep link URL
+        const deepLinkUrl = `pickcardrebate://auth/callback#access_token=${accessToken}&refresh_token=${refreshToken}`;
+        
+        console.log('[MobileCallback] Redirecting to:', deepLinkUrl.substring(0, 50) + '...');
+        
+        setStatus('success');
+        setMessage('登入成功！正在返回 App...');
+
+        // 嘗試打開 app
+        window.location.href = deepLinkUrl;
+
+        // 如果 3 秒後還在這個頁面，顯示手動返回按鈕
+        setTimeout(() => {
+          setMessage('如果沒有自動返回 App，請點擊下方按鈕');
+        }, 3000);
+      } else {
+        setStatus('error');
+        setMessage(`未收到登入資訊，請重試\n\nDebug: hash=${hash.substring(0, 50)}`);
+      }
+    };
+
+    // 等待 100ms 確保 URL hash 已完全載入
+    const timer = setTimeout(processCallback, 100);
+    return () => clearTimeout(timer);
   }, [searchParams]);
 
   const handleManualRedirect = () => {
-    const hash = typeof window !== 'undefined' ? window.location.hash : '';
-    const hashParams = new URLSearchParams(hash.replace('#', ''));
+    const hash = window.location.hash || '';
+    const hashString = hash.startsWith('#') ? hash.substring(1) : hash;
+    const hashParams = new URLSearchParams(hashString);
     
     const accessToken = hashParams.get('access_token') || searchParams.get('access_token');
     const refreshToken = hashParams.get('refresh_token') || searchParams.get('refresh_token');
@@ -58,6 +79,8 @@ function MobileCallbackContent() {
     if (accessToken && refreshToken) {
       const deepLinkUrl = `pickcardrebate://auth/callback#access_token=${accessToken}&refresh_token=${refreshToken}`;
       window.location.href = deepLinkUrl;
+    } else {
+      alert('無法取得登入資訊，請重新登入');
     }
   };
 
