@@ -17,11 +17,21 @@ import { Colors, BankColors } from '@/constants/Colors';
 import { Layout } from '@/constants/Layout';
 import { useColorScheme } from '@/components/useColorScheme';
 import { api, CardItem } from '@/lib/api/client';
-import { MyCard, getMyCards, addCardToWallet, removeCardFromWallet } from '@/lib/storage/myCards';
+import { useAuth } from '@/lib/auth/AuthContext';
+import { 
+  MyCard, 
+  getMyCards, 
+  addCardToWallet, 
+  removeCardFromWallet,
+  syncWalletFromCloud,
+  addCardToCloud,
+  removeCardFromCloud,
+} from '@/lib/storage/myCards';
 
 export default function MyCardsScreen() {
   const colorScheme = useColorScheme() ?? 'light';
   const colors = Colors[colorScheme];
+  const { user } = useAuth();
   
   const [myCards, setMyCards] = useState<MyCard[]>([]);
   const [allCards, setAllCards] = useState<CardItem[]>([]);
@@ -31,20 +41,24 @@ export default function MyCardsScreen() {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [user]);
 
   const loadData = async (isRefresh = false) => {
     if (!isRefresh) setLoading(true);
     
-    // 同時載入用戶卡包和所有卡片
-    const [savedCards, response] = await Promise.all([
-      getMyCards(),
-      api.getCards(),
-    ]);
-    
-    setMyCards(savedCards);
+    // 載入所有卡片
+    const response = await api.getCards();
     if (response.data) {
       setAllCards(response.data.cards);
+    }
+    
+    // 載入用戶卡包（已登入：從雲端同步，未登入：本地）
+    if (user?.id) {
+      const cloudCards = await syncWalletFromCloud(user.id);
+      setMyCards(cloudCards);
+    } else {
+      const savedCards = await getMyCards();
+      setMyCards(savedCards);
     }
     
     setLoading(false);
@@ -54,21 +68,35 @@ export default function MyCardsScreen() {
   const handleRefresh = useCallback(() => {
     setRefreshing(true);
     loadData(true);
-  }, []);
+  }, [user]);
 
   const handleAddCard = async (card: CardItem) => {
-    const success = await addCardToWallet({
-      id: card.id,
-      name: card.name,
-      bank: card.bank,
-      imageUrl: card.imageUrl || undefined,
-    });
-    
-    if (success) {
-      setMyCards(await getMyCards());
-      setShowAddCard(false);
+    // 已登入：同步到雲端
+    if (user?.id) {
+      const cloudSuccess = await addCardToCloud(user.id, card.id);
+      if (cloudSuccess) {
+        // 重新同步
+        const updatedCards = await syncWalletFromCloud(user.id);
+        setMyCards(updatedCards);
+        setShowAddCard(false);
+      } else {
+        Alert.alert('錯誤', '添加卡片失敗，請重試');
+      }
     } else {
-      Alert.alert('提示', '此卡已在您的卡包中');
+      // 未登入：本地存儲
+      const success = await addCardToWallet({
+        id: card.id,
+        name: card.name,
+        bank: card.bank,
+        imageUrl: card.imageUrl || undefined,
+      });
+      
+      if (success) {
+        setMyCards(await getMyCards());
+        setShowAddCard(false);
+      } else {
+        Alert.alert('提示', '此卡已在您的卡包中');
+      }
     }
   };
 
@@ -82,8 +110,20 @@ export default function MyCardsScreen() {
           text: '移除', 
           style: 'destructive',
           onPress: async () => {
-            await removeCardFromWallet(card.id);
-            setMyCards(await getMyCards());
+            if (user?.id) {
+              // 已登入：從雲端移除
+              const cloudSuccess = await removeCardFromCloud(user.id, card.id);
+              if (cloudSuccess) {
+                const updatedCards = await syncWalletFromCloud(user.id);
+                setMyCards(updatedCards);
+              } else {
+                Alert.alert('錯誤', '移除卡片失敗，請重試');
+              }
+            } else {
+              // 未登入：本地移除
+              await removeCardFromWallet(card.id);
+              setMyCards(await getMyCards());
+            }
           }
         },
       ]
@@ -107,16 +147,20 @@ export default function MyCardsScreen() {
     
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['bottom']}>
-        <Stack.Screen 
-          options={{ 
-            title: '添加信用卡', 
-            headerLeft: () => (
-              <TouchableOpacity onPress={() => setShowAddCard(false)}>
-                <Text style={{ color: colors.primary, fontSize: 17 }}>取消</Text>
-              </TouchableOpacity>
-            ),
-          }} 
-        />
+        <Stack.Screen options={{ headerShown: false }} />
+        
+        {/* 自定義頭部 */}
+        <View style={[styles.customHeader, { backgroundColor: colors.background, borderBottomColor: colors.border }]}>
+          <TouchableOpacity 
+            onPress={() => setShowAddCard(false)}
+            style={styles.headerButton}
+          >
+            <Text style={{ color: colors.primary, fontSize: 17 }}>取消</Text>
+          </TouchableOpacity>
+          <Text style={[styles.headerTitle, { color: colors.text }]}>添加信用卡</Text>
+          <View style={styles.headerButton} />
+        </View>
+        
         <ScrollView style={styles.cardList}>
           {availableCards.length === 0 ? (
             <View style={styles.emptyState}>
@@ -256,6 +300,22 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  customHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: Layout.spacing.md,
+    paddingVertical: Layout.spacing.md,
+    borderBottomWidth: 1,
+  },
+  headerButton: {
+    width: 60,
+  },
+  headerTitle: {
+    fontSize: 17,
+    fontWeight: '600',
+    textAlign: 'center',
   },
   scrollView: {
     flex: 1,

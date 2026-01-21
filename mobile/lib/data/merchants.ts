@@ -171,6 +171,13 @@ export const MERCHANT_CATEGORIES: MerchantCategory[] = [
 // 所有商戶（扁平化列表）
 export const MERCHANTS: Merchant[] = MERCHANT_CATEGORIES.flatMap(cat => cat.merchants);
 
+// 熱門商戶
+export const POPULAR_MERCHANTS: Merchant[] = [
+  ...MERCHANT_CATEGORIES.find(c => c.id === 'supermarket')?.merchants.slice(0, 5) || [],
+  ...MERCHANT_CATEGORIES.find(c => c.id === 'dining')?.merchants.slice(0, 5) || [],
+  ...MERCHANT_CATEGORIES.find(c => c.id === 'online')?.merchants.slice(0, 5) || [],
+];
+
 // 取得所有商戶（扁平化）
 export function getAllMerchants(): Merchant[] {
   return MERCHANTS;

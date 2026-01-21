@@ -8,7 +8,7 @@ import { Layout } from '@/constants/Layout';
 import { useColorScheme } from '@/components/useColorScheme';
 import { Button, Card } from '@/components/ui';
 import { useAuth } from '@/lib/auth/AuthContext';
-import { getMyCards, MyCard } from '@/lib/storage/myCards';
+import { getMyCards, syncWalletFromCloud, MyCard } from '@/lib/storage/myCards';
 
 export default function WalletScreen() {
   const colorScheme = useColorScheme() ?? 'light';
@@ -16,15 +16,32 @@ export default function WalletScreen() {
   const { user, loading, signInWithGoogle, signInWithApple, signOut } = useAuth();
   const [signingIn, setSigningIn] = useState(false);
   const [myCards, setMyCards] = useState<MyCard[]>([]);
+  const [syncing, setSyncing] = useState(false);
 
-  // 載入用戶卡包
+  // 載入用戶卡包 - 登入後從雲端同步
   useEffect(() => {
     loadMyCards();
-  }, []);
+  }, [user]);
 
   const loadMyCards = async () => {
-    const cards = await getMyCards();
-    setMyCards(cards);
+    if (user?.id) {
+      // 已登入：從雲端同步
+      setSyncing(true);
+      try {
+        const cards = await syncWalletFromCloud(user.id);
+        setMyCards(cards);
+      } catch (error) {
+        console.error('Sync failed:', error);
+        // 同步失敗時載入本地資料
+        const localCards = await getMyCards();
+        setMyCards(localCards);
+      }
+      setSyncing(false);
+    } else {
+      // 未登入：載入本地資料
+      const cards = await getMyCards();
+      setMyCards(cards);
+    }
   };
 
   const handleGoogleSignIn = async () => {
@@ -198,12 +215,22 @@ export default function WalletScreen() {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={[styles.sectionTitle, { color: colors.text }]}>我的信用卡</Text>
-            <TouchableOpacity onPress={() => router.push('/wallet/my-cards')}>
-              <Text style={[styles.sectionAction, { color: colors.primary }]}>管理</Text>
-            </TouchableOpacity>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+              {syncing && <ActivityIndicator size="small" color={colors.primary} />}
+              <TouchableOpacity onPress={() => router.push('/wallet/my-cards')}>
+                <Text style={[styles.sectionAction, { color: colors.primary }]}>管理</Text>
+              </TouchableOpacity>
+            </View>
           </View>
           
-          {myCards.length === 0 ? (
+          {syncing ? (
+            <Card style={styles.emptyCard}>
+              <ActivityIndicator size="large" color={colors.primary} />
+              <Text style={[styles.emptyText, { color: colors.textMuted, marginTop: 12 }]}>
+                正在同步雲端資料...
+              </Text>
+            </Card>
+          ) : myCards.length === 0 ? (
             <Card style={styles.emptyCard}>
               <Ionicons name="add-circle-outline" size={40} color={colors.textMuted} />
               <Text style={[styles.emptyText, { color: colors.textMuted }]}>

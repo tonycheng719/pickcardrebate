@@ -60,6 +60,7 @@ export interface Merchant {
   category: string;
   aliases?: string[];
   icon?: string;
+  logo?: string;
   paymentMethods?: string[];
 }
 

@@ -1,7 +1,8 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback, useRef } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { Platform, Alert, Linking } from 'react-native';
 import { getSupabase } from '../supabase/client';
+import { registerForPushNotifications } from '../notifications/push';
 
 interface AuthContextType {
   user: User | null;
@@ -82,10 +83,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     // 監聽 auth 變化
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       console.log('[Auth] Auth state changed:', _event, session?.user?.email);
       setSession(session);
       setUser(session?.user ?? null);
+      
+      // 用戶登入後註冊 Push Token
+      if (_event === 'SIGNED_IN' && session?.user?.id && Platform.OS !== 'web') {
+        try {
+          await registerForPushNotifications(session.user.id);
+          console.log('[Auth] Push token registered for user');
+        } catch (e) {
+          console.log('[Auth] Push token registration failed:', e);
+        }
+      }
     });
 
     // 監聽 deep link（僅限 native）

@@ -26,6 +26,7 @@ import { Card, RewardBadge } from '@/components/ui';
 import { MERCHANT_CATEGORIES, MERCHANTS, searchMerchants } from '@/lib/data/merchants';
 import { api, CalculateResult, MerchantData } from '@/lib/api/client';
 import type { Merchant } from '@/lib/types';
+import { PersonalizedRecommendations } from '@/components/PersonalizedRecommendations';
 
 // 支付方式選項（與網站一致）
 const PAYMENT_METHODS = [
@@ -546,6 +547,9 @@ export default function CalculatorScreen() {
             選擇商戶與消費方式，即刻知道哪張卡最抵。
           </Text>
         </View>
+
+        {/* 個人化推薦 */}
+        <PersonalizedRecommendations />
 
         {/* 現金/里數切換 */}
         <View style={styles.rewardToggleContainer}>

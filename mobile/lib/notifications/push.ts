@@ -1,9 +1,13 @@
+import { Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
-import { Platform } from 'react-native';
-import { supabase } from '../supabase/client';
+import Constants from 'expo-constants';
 
-// 設定通知處理
+const API_BASE = 'https://pickcardrebate.com';
+const PUSH_TOKEN_KEY = '@push_token';
+
+// 設置通知處理
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -12,22 +16,15 @@ Notifications.setNotificationHandler({
   }),
 });
 
-/**
- * 註冊 Push 通知
- */
-export async function registerForPushNotificationsAsync(): Promise<string | null> {
-  let token: string | null = null;
-
-  if (Platform.OS === 'android') {
-    await Notifications.setNotificationChannelAsync('default', {
-      name: 'default',
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#4E8DF5',
-    });
+// 註冊推送通知
+export async function registerForPushNotifications(userId?: string): Promise<string | null> {
+  if (!Device.isDevice) {
+    console.log('[Push] Must use physical device for Push Notifications');
+    return null;
   }
 
-  if (Device.isDevice) {
+  try {
+    // 檢查權限
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
 
@@ -37,84 +34,99 @@ export async function registerForPushNotificationsAsync(): Promise<string | null
     }
 
     if (finalStatus !== 'granted') {
-      console.log('Push notification permission denied');
+      console.log('[Push] Permission not granted');
       return null;
     }
 
-    try {
-      const projectId = '21a95a24-7cf6-44c2-8823-8d2f9c4b88ac'; // PickCardRebate project ID
-      const tokenData = await Notifications.getExpoPushTokenAsync({ projectId });
-      token = tokenData.data;
-    } catch (error) {
-      console.error('Error getting push token:', error);
+    // 獲取 Expo Push Token
+    const projectId = Constants.expoConfig?.extra?.eas?.projectId;
+    const token = await Notifications.getExpoPushTokenAsync({
+      projectId,
+    });
+
+    console.log('[Push] Token:', token.data);
+
+    // 存儲到本地
+    await AsyncStorage.setItem(PUSH_TOKEN_KEY, token.data);
+
+    // 如果有用戶 ID，註冊到服務器
+    if (userId) {
+      await registerTokenToServer(userId, token.data);
     }
-  } else {
-    console.log('Push notifications require a physical device');
-  }
 
-  return token;
-}
-
-/**
- * 保存 Push Token 到資料庫
- */
-export async function savePushToken(userId: string, token: string): Promise<void> {
-  try {
-    await supabase
-      .from('user_push_tokens')
-      .upsert({
-        user_id: userId,
-        push_token: token,
-        platform: Platform.OS,
-        updated_at: new Date().toISOString(),
-      }, {
-        onConflict: 'user_id',
+    // Android 需要設置通知頻道
+    if (Platform.OS === 'android') {
+      await Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#3B82F6',
       });
+    }
+
+    return token.data;
   } catch (error) {
-    console.error('Error saving push token:', error);
+    console.error('[Push] Registration error:', error);
+    return null;
   }
 }
 
-/**
- * 監聽通知
- */
+// 註冊 Token 到服務器
+export async function registerTokenToServer(userId: string, token: string): Promise<boolean> {
+  try {
+    const response = await fetch(`${API_BASE}/api/user/push-token`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userId,
+        token,
+        platform: Platform.OS,
+      }),
+    });
+
+    if (response.ok) {
+      console.log('[Push] Token registered to server');
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error('[Push] Server registration error:', error);
+    return false;
+  }
+}
+
+// 移除服務器上的 Token
+export async function unregisterToken(userId: string): Promise<boolean> {
+  try {
+    const response = await fetch(`${API_BASE}/api/user/push-token?userId=${userId}`, {
+      method: 'DELETE',
+    });
+    return response.ok;
+  } catch (error) {
+    console.error('[Push] Unregister error:', error);
+    return false;
+  }
+}
+
+// 獲取本地存儲的 Token
+export async function getStoredToken(): Promise<string | null> {
+  try {
+    return await AsyncStorage.getItem(PUSH_TOKEN_KEY);
+  } catch {
+    return null;
+  }
+}
+
+// 添加通知監聽器
 export function addNotificationListener(
-  callback: (notification: Notifications.Notification) => void
+  onReceive: (notification: Notifications.Notification) => void,
+  onResponse: (response: Notifications.NotificationResponse) => void
 ) {
-  return Notifications.addNotificationReceivedListener(callback);
-}
+  const receiveSubscription = Notifications.addNotificationReceivedListener(onReceive);
+  const responseSubscription = Notifications.addNotificationResponseReceivedListener(onResponse);
 
-/**
- * 監聯通知點擊
- */
-export function addNotificationResponseListener(
-  callback: (response: Notifications.NotificationResponse) => void
-) {
-  return Notifications.addNotificationResponseReceivedListener(callback);
+  return () => {
+    receiveSubscription.remove();
+    responseSubscription.remove();
+  };
 }
-
-/**
- * 發送本地通知（測試用）
- */
-export async function sendLocalNotification(
-  title: string,
-  body: string,
-  data?: Record<string, any>
-): Promise<void> {
-  await Notifications.scheduleNotificationAsync({
-    content: {
-      title,
-      body,
-      data,
-    },
-    trigger: null, // 立即發送
-  });
-}
-
-/**
- * 取消所有通知
- */
-export async function cancelAllNotifications(): Promise<void> {
-  await Notifications.cancelAllScheduledNotificationsAsync();
-}
-
