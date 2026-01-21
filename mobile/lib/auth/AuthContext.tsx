@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Session, User } from '@supabase/supabase-js';
-import { Platform } from 'react-native';
+import { Platform, Alert } from 'react-native';
 import { getSupabase } from '../supabase/client';
 
 interface AuthContextType {
@@ -58,10 +58,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Native: 使用 WebBrowser
         const WebBrowser = await import('expo-web-browser');
         const Linking = await import('expo-linking');
+        const Constants = await import('expo-constants');
         
-        // 使用 app scheme 作為 redirect URL
-        const redirectUrl = 'pickcardrebate://auth/callback';
+        // 使用網頁中間層處理 OAuth callback
+        // 這樣可以避免 Supabase GOTRUE_URI_ALLOW_LIST 配置問題
+        const redirectUrl = 'https://pickcardrebate.com/auth/mobile-callback';
         
+        // App scheme 用於接收從網頁傳回的 tokens
+        const appSchemeUrl = 'pickcardrebate://auth/callback';
+        
+        const expoConstants = Constants.default;
+        const isExpoGo = expoConstants.appOwnership === 'expo';
+        
+        console.log('[Auth] Is Expo Go:', isExpoGo);
+        
+        console.log('[Auth] Is Expo Go:', isExpoGo);
         console.log('[Auth] Redirect URL:', redirectUrl);
         
         const { data, error } = await supabase.auth.signInWithOAuth({
@@ -69,6 +80,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           options: {
             redirectTo: redirectUrl,
             skipBrowserRedirect: true,
+            queryParams: {
+              // 強制使用 PKCE flow
+              access_type: 'offline',
+              prompt: 'consent',
+            },
           },
         });
 
@@ -80,10 +96,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           // 完成 WebBrowser warm up
           await WebBrowser.warmUpAsync();
           
+          // 監聽 app scheme URL（網頁會 redirect 到這個 URL）
           const result = await WebBrowser.openAuthSessionAsync(
             data.url, 
-            redirectUrl,
-            { showInRecents: true }
+            appSchemeUrl,
+            { 
+              showInRecents: true,
+              preferEphemeralSession: true, // 不保存 session，避免登入狀態混亂
+            }
           );
           
           // 清理
@@ -93,6 +113,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           
           if (result.type === 'success') {
             const url = result.url;
+            console.log('[Auth] Callback URL:', url);
+            
             // 嘗試從 hash 或 query string 獲取 token
             const hashParams = new URLSearchParams(url.split('#')[1] || '');
             const queryParams = new URLSearchParams(url.split('?')[1]?.split('#')[0] || '');
@@ -107,6 +129,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 access_token: accessToken,
                 refresh_token: refreshToken,
               });
+            } else {
+              // 顯示診斷資訊
+              console.warn('[Auth] No tokens found in callback URL');
+              console.warn('[Auth] Full callback URL:', url);
+              Alert.alert(
+                '登入診斷',
+                `收到的回調 URL:\n${url.substring(0, 150)}...\n\n` +
+                `預期的 redirect URL:\n${redirectUrl}\n\n` +
+                `請確認 Supabase GOTRUE_URI_ALLOW_LIST 包含上述 redirect URL`,
+                [{ text: '了解' }]
+              );
+            }
+          } else if (result.type === 'cancel') {
+            console.log('[Auth] User cancelled login');
+          } else if (result.type === 'dismiss') {
+            console.log('[Auth] Browser was dismissed');
+            // 檢查是否可能已經登入
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+              console.log('[Auth] Found existing session after dismiss');
             }
           }
         }
@@ -128,9 +170,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (error) throw error;
       } else {
         const WebBrowser = await import('expo-web-browser');
+        const Linking = await import('expo-linking');
+        const Constants = await import('expo-constants');
         
-        // 使用 app scheme 作為 redirect URL
-        const redirectUrl = 'pickcardrebate://auth/callback';
+        // 使用網頁中間層處理 OAuth callback
+        const redirectUrl = 'https://pickcardrebate.com/auth/mobile-callback';
+        const appSchemeUrl = 'pickcardrebate://auth/callback';
         
         console.log('[Auth] Apple Redirect URL:', redirectUrl);
         
@@ -151,8 +196,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           
           const result = await WebBrowser.openAuthSessionAsync(
             data.url,
-            redirectUrl,
-            { showInRecents: true }
+            appSchemeUrl,
+            { 
+              showInRecents: true,
+              preferEphemeralSession: true,
+            }
           );
           
           await WebBrowser.coolDownAsync();
@@ -161,6 +209,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           
           if (result.type === 'success') {
             const url = result.url;
+            console.log('[Auth] Apple Callback URL:', url);
+            
             const hashParams = new URLSearchParams(url.split('#')[1] || '');
             const queryParams = new URLSearchParams(url.split('?')[1]?.split('#')[0] || '');
             
