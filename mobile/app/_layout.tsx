@@ -10,6 +10,7 @@ import 'react-native-reanimated';
 import { useColorScheme } from '@/components/useColorScheme';
 import { Colors } from '@/constants/Colors';
 import { AuthProvider } from '@/lib/auth/AuthContext';
+import { initializeAnalytics } from '@/lib/analytics';
 
 export {
   ErrorBoundary,
@@ -35,6 +36,8 @@ export default function RootLayout() {
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
+      // 初始化 Analytics
+      initializeAnalytics();
     }
   }, [loaded]);
 

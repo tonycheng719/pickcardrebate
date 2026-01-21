@@ -43,6 +43,7 @@ const menuItems = [
   { name: "商戶資料", href: "/admin/merchants", icon: Store },
   { name: "探索內容", href: "/admin/discover", icon: Eye },
   { name: "搜尋分析", href: "/admin/analytics", icon: BarChart3 },
+  { name: "App Analytics", href: "/admin/app-analytics", icon: Receipt },
   { name: "計算機記錄", href: "/admin/search-logs", icon: Calculator },
   { name: "比較功能統計", href: "/admin/compare-stats", icon: Scale },
   { name: "回報審核", href: "/admin/moderation", icon: MessageSquare },
