@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { CATEGORIES } from '@/lib/data/categories';
-import { ALL_MERCHANTS } from '@/lib/data/merchants';
+import { POPULAR_MERCHANTS } from '@/lib/data/merchants';
 
 function getServiceClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -77,7 +77,7 @@ export async function GET(request: Request) {
     const recommendations: any[] = [];
 
     // 熱門商戶推薦
-    const popularMerchants = ALL_MERCHANTS.slice(0, 20);
+    const popularMerchants = POPULAR_MERCHANTS.slice(0, 20);
 
     for (const merchant of popularMerchants) {
       // 找出這個商戶最適合的卡

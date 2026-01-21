@@ -38,9 +38,7 @@
       "expo-router",
       "expo-font",
       "expo-secure-store",
-      "expo-web-browser",
-      "@react-native-firebase/app",
-      "@react-native-firebase/analytics"
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true
