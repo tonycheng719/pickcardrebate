@@ -27,6 +27,8 @@ import { MERCHANT_CATEGORIES, MERCHANTS, searchMerchants } from '@/lib/data/merc
 import { api, CalculateResult, MerchantData } from '@/lib/api/client';
 import type { Merchant } from '@/lib/types';
 import { PersonalizedRecommendations } from '@/components/PersonalizedRecommendations';
+import { useAuth } from '@/lib/auth/AuthContext';
+import { getMyCards, MyCard } from '@/lib/storage/myCards';
 
 // 支付方式選項（與網站一致）
 const PAYMENT_METHODS = [
@@ -45,6 +47,12 @@ export default function CalculatorScreen() {
   const colors = Colors[colorScheme];
   const scrollViewRef = useRef<ScrollView>(null);
   const amountInputRef = useRef<View>(null);
+  const { user } = useAuth();
+
+  // 用戶持有的卡片
+  const [myCardIds, setMyCardIds] = useState<string[]>([]);
+  const [showMyOwnedCards, setShowMyOwnedCards] = useState(true);
+  const [showOtherCards, setShowOtherCards] = useState(false);
 
   // 狀態
   const [selectedCategory, setSelectedCategory] = useState<string>('supermarket');
@@ -118,6 +126,19 @@ export default function CalculatorScreen() {
     };
     fetchMerchants();
   }, []);
+
+  // 加載用戶持有的卡片
+  useEffect(() => {
+    const loadMyCards = async () => {
+      try {
+        const cards = await getMyCards();
+        setMyCardIds(cards.map(c => c.id));
+      } catch (error) {
+        console.error('Failed to load my cards:', error);
+      }
+    };
+    loadMyCards();
+  }, [user]);
 
   // 打開「點解係呢張？」Modal
   const handleWhyThisCard = (result: CalculateResult) => {
@@ -778,40 +799,121 @@ export default function CalculatorScreen() {
         </View>
 
         {/* 結果列表 */}
-        {calculatedResults.length > 0 && (
-          <View style={styles.resultsSection}>
-            {/* 商戶標題 */}
-            <Text style={[styles.resultsTitle, { color: colors.text }]}>
-              🏆 {selectedMerchant?.name} 最抵攻略
-            </Text>
+        {calculatedResults.length > 0 && (() => {
+          // 區分用戶持有的卡和其他卡
+          const bestResult = calculatedResults[0];
+          const otherResults = calculatedResults.slice(1);
+          const isBestOwned = myCardIds.includes(bestResult.cardId);
+          
+          // 找出用戶持有的其他卡
+          const myOwnedCards = otherResults.filter(r => myCardIds.includes(r.cardId));
+          // 找出用戶最佳持有卡（如果最佳不是自己的）
+          const myBestCard = !isBestOwned ? myOwnedCards[0] : null;
+          const myOtherOwnedCards = !isBestOwned ? myOwnedCards.slice(1) : myOwnedCards;
+          
+          // 未持有的卡
+          const unownedCards = otherResults.filter(r => !myCardIds.includes(r.cardId));
 
-            {/* 第一名卡片 - 特殊顯示 */}
-            {renderTopCard(calculatedResults[0])}
+          return (
+            <View style={styles.resultsSection}>
+              {/* 商戶標題 */}
+              <Text style={[styles.resultsTitle, { color: colors.text }]}>
+                🏆 {selectedMerchant?.name} 最抵攻略
+              </Text>
 
-            {/* 分享按鈕 */}
-            <TouchableOpacity 
-              style={[styles.shareButton, { backgroundColor: colors.success }]}
-              onPress={handleShare}
-            >
-              <Ionicons name="share-social" size={18} color="#FFFFFF" />
-              <Text style={styles.shareButtonText}>分享給朋友</Text>
-            </TouchableOpacity>
+              {/* 情況1: 全場最抵是用戶持有的卡 */}
+              {isBestOwned ? (
+                <>
+                  <View style={[styles.ownedBadge, { backgroundColor: '#10B981' }]}>
+                    <Ionicons name="checkmark-circle" size={14} color="#FFF" />
+                    <Text style={styles.ownedBadgeText}>你已持有此卡 👏</Text>
+                  </View>
+                  {renderTopCard(bestResult)}
+                </>
+              ) : (
+                <>
+                  {/* 情況2: 顯示用戶持有的最佳卡 */}
+                  {myBestCard && (
+                    <View style={[styles.myBestCardContainer, { backgroundColor: '#ECFDF5', borderColor: '#10B981' }]}>
+                      <View style={styles.myBestCardHeader}>
+                        <Ionicons name="wallet" size={16} color="#10B981" />
+                        <Text style={styles.myBestCardLabel}>💚 推薦使用：你持有的最抵卡</Text>
+                      </View>
+                      {renderOtherCard(myBestCard, myBestCard.rank)}
+                    </View>
+                  )}
 
-            {/* 其他卡片標題 */}
-            {calculatedResults.length > 1 && (
-              <View style={styles.otherCardsHeader}>
-                <Text style={[styles.otherCardsTitle, { color: colors.textMuted }]}>
-                  查看其他未持有的卡 ({calculatedResults.length - 1})
-                </Text>
-              </View>
-            )}
+                  {/* 全場最抵（申請新卡） */}
+                  <View style={styles.topCardLabel}>
+                    <Text style={[styles.topCardLabelText, { color: colors.textMuted }]}>
+                      💡 如果申請新卡，全場最抵
+                    </Text>
+                  </View>
+                  {renderTopCard(bestResult)}
+                </>
+              )}
 
-            {/* 其他卡片列表 */}
-            {calculatedResults.slice(1).map((result, index) => 
-              renderOtherCard(result, index + 1)
-            )}
-          </View>
-        )}
+              {/* 分享按鈕 */}
+              <TouchableOpacity 
+                style={[styles.shareButton, { backgroundColor: colors.success }]}
+                onPress={handleShare}
+              >
+                <Ionicons name="share-social" size={18} color="#FFFFFF" />
+                <Text style={styles.shareButtonText}>分享給朋友</Text>
+              </TouchableOpacity>
+
+              {/* 你持有的其他卡（可折疊） */}
+              {myOtherOwnedCards.length > 0 && (
+                <View style={styles.cardSection}>
+                  <TouchableOpacity 
+                    style={[styles.sectionHeader, { backgroundColor: colors.backgroundCard, borderColor: colors.border }]}
+                    onPress={() => setShowMyOwnedCards(!showMyOwnedCards)}
+                  >
+                    <View style={styles.sectionHeaderLeft}>
+                      <Ionicons name="wallet-outline" size={16} color={colors.primary} />
+                      <Text style={[styles.sectionHeaderText, { color: colors.text }]}>
+                        你持有的其他卡 ({myOtherOwnedCards.length})
+                      </Text>
+                    </View>
+                    <Ionicons 
+                      name={showMyOwnedCards ? 'chevron-up' : 'chevron-down'} 
+                      size={18} 
+                      color={colors.textMuted} 
+                    />
+                  </TouchableOpacity>
+                  {showMyOwnedCards && myOtherOwnedCards.map((result) => 
+                    renderOtherCard(result, result.rank)
+                  )}
+                </View>
+              )}
+
+              {/* 其他未持有的卡（可折疊） */}
+              {unownedCards.length > 0 && (
+                <View style={styles.cardSection}>
+                  <TouchableOpacity 
+                    style={[styles.sectionHeader, { backgroundColor: colors.backgroundCard, borderColor: colors.border }]}
+                    onPress={() => setShowOtherCards(!showOtherCards)}
+                  >
+                    <View style={styles.sectionHeaderLeft}>
+                      <Ionicons name="card-outline" size={16} color={colors.textMuted} />
+                      <Text style={[styles.sectionHeaderText, { color: colors.text }]}>
+                        查看其他未持有的卡 ({unownedCards.length})
+                      </Text>
+                    </View>
+                    <Ionicons 
+                      name={showOtherCards ? 'chevron-up' : 'chevron-down'} 
+                      size={18} 
+                      color={colors.textMuted} 
+                    />
+                  </TouchableOpacity>
+                  {showOtherCards && unownedCards.map((result) => 
+                    renderOtherCard(result, result.rank)
+                  )}
+                </View>
+              )}
+            </View>
+          );
+        })()}
 
       </ScrollView>
 
@@ -1350,6 +1452,66 @@ const styles = StyleSheet.create({
   },
   otherCardsTitle: {
     fontSize: Layout.fontSize.sm,
+  },
+  // 你持有的卡片樣式
+  ownedBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: Layout.radius.full,
+    marginBottom: Layout.spacing.sm,
+    gap: 4,
+  },
+  ownedBadgeText: {
+    color: '#FFFFFF',
+    fontSize: Layout.fontSize.sm,
+    fontWeight: Layout.fontWeight.bold,
+  },
+  myBestCardContainer: {
+    borderRadius: Layout.radius.lg,
+    borderWidth: 2,
+    padding: Layout.spacing.sm,
+    marginBottom: Layout.spacing.md,
+  },
+  myBestCardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: Layout.spacing.sm,
+  },
+  myBestCardLabel: {
+    fontSize: Layout.fontSize.sm,
+    fontWeight: Layout.fontWeight.bold,
+    color: '#059669',
+  },
+  topCardLabel: {
+    marginBottom: Layout.spacing.sm,
+  },
+  topCardLabelText: {
+    fontSize: Layout.fontSize.sm,
+  },
+  cardSection: {
+    marginTop: Layout.spacing.md,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: Layout.spacing.md,
+    borderRadius: Layout.radius.lg,
+    borderWidth: 1,
+    marginBottom: Layout.spacing.sm,
+  },
+  sectionHeaderLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  sectionHeaderText: {
+    fontSize: Layout.fontSize.sm,
+    fontWeight: Layout.fontWeight.medium,
   },
   resultCard: {
     marginBottom: Layout.spacing.sm,
