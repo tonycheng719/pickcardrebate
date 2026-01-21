@@ -207,7 +207,7 @@ export default function RankingsScreen() {
                   {categoryData.isMilesCategory && card.dollarsPerMile ? (
                     <View style={[styles.milesBadge, { backgroundColor: colors.primaryLight }]}>
                       <Text style={[styles.milesRate, { color: colors.primary }]}>
-                        {`$${card.dollarsPerMile}/里`}
+                        {`$${card.dollarsPerMile.toFixed(2)}/里`}
                       </Text>
                       {card.milesProgram && (
                         <Text style={[styles.milesProgram, { color: colors.textMuted }]}>

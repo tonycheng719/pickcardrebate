@@ -126,7 +126,7 @@ function CardRow({ result, rank, showFxFee = false, showMiles = false }: { resul
         {showMiles && result.dollarsPerMile ? (
           <>
             <div className="text-lg font-bold text-purple-600 dark:text-purple-400">
-              ${result.dollarsPerMile}/里
+              ${result.dollarsPerMile.toFixed(2)}/里
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400">
               ≈ {result.percentage.toFixed(2)}% 回贈
