@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { Session, User } from '@supabase/supabase-js';
-import { Platform, Alert } from 'react-native';
+import { Platform, Alert, Linking } from 'react-native';
 import { getSupabase } from '../supabase/client';
 
 interface AuthContextType {
@@ -18,6 +18,52 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+
+  // 處理 deep link 中的 tokens
+  const handleDeepLink = useCallback(async (url: string) => {
+    console.log('[Auth] Handling deep link:', url);
+    
+    if (!url.includes('auth/callback')) {
+      return;
+    }
+    
+    try {
+      // 從 URL hash 提取 tokens
+      const hashPart = url.split('#')[1];
+      if (!hashPart) {
+        console.log('[Auth] No hash in URL');
+        return;
+      }
+      
+      const hashParams = new URLSearchParams(hashPart);
+      const accessToken = hashParams.get('access_token');
+      const refreshToken = hashParams.get('refresh_token');
+      
+      console.log('[Auth] Tokens found:', { hasAccess: !!accessToken, hasRefresh: !!refreshToken });
+      
+      if (accessToken && refreshToken) {
+        const supabase = getSupabase();
+        console.log('[Auth] Setting session with tokens...');
+        
+        const { data, error } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        });
+        
+        if (error) {
+          console.error('[Auth] setSession error:', error);
+          Alert.alert('登入失敗', error.message);
+        } else if (data.session) {
+          console.log('[Auth] Session set successfully:', data.session.user.email);
+          setSession(data.session);
+          setUser(data.session.user);
+          Alert.alert('登入成功', '歡迎使用 PickCardRebate！');
+        }
+      }
+    } catch (error) {
+      console.error('[Auth] Deep link handling error:', error);
+    }
+  }, []);
 
   useEffect(() => {
     // Skip auth initialization on web during SSR
@@ -37,12 +83,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // 監聽 auth 變化
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      console.log('[Auth] Auth state changed:', _event, session?.user?.email);
       setSession(session);
       setUser(session?.user ?? null);
     });
 
+    // 監聽 deep link（僅限 native）
+    if (Platform.OS !== 'web') {
+      // 處理 App 已開啟時收到的 deep link
+      const linkingSubscription = Linking.addEventListener('url', ({ url }) => {
+        console.log('[Auth] Deep link received (foreground):', url);
+        handleDeepLink(url);
+      });
+      
+      // 處理 App 從 deep link 啟動的情況
+      Linking.getInitialURL().then((url) => {
+        if (url) {
+          console.log('[Auth] Initial URL:', url);
+          handleDeepLink(url);
+        }
+      });
+      
+      return () => {
+        subscription.unsubscribe();
+        linkingSubscription.remove();
+      };
+    }
+
     return () => subscription.unsubscribe();
-  }, []);
+  }, [handleDeepLink]);
 
   const signInWithGoogle = async () => {
     const supabase = getSupabase();
