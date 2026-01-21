@@ -149,8 +149,22 @@ export default function AuthSuccessPage() {
         }
       }
       
-      // No code in URL, no existing session - redirect to login
+      // No code in URL - check session one more time before showing error
       if (!user) {
+        // Wait a moment for session to propagate, then check again
+        await new Promise(resolve => setTimeout(resolve, 500));
+        const { data: { session: finalCheck } } = await supabase.auth.getSession();
+        
+        if (finalCheck) {
+          console.log("Session found on final check:", finalCheck.user.email);
+          setStatus("success");
+          toast.success("登入成功！");
+          setTimeout(() => {
+            window.location.href = "/";
+          }, 500);
+          return;
+        }
+        
         setStatus("error");
         setErrorMessage("未偵測到登入狀態");
         setTimeout(() => router.push("/login"), 2000);
