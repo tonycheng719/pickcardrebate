@@ -1,15 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 /**
- * Mobile OAuth Callback Handler
- * 
- * 這個頁面處理從 Supabase OAuth 回調的 tokens，
- * 然後通過 deep link 將 tokens 傳遞給 mobile app。
+ * Mobile OAuth Callback Content
+ * 使用 useSearchParams 的部分需要包在 Suspense 中
  */
-export default function MobileCallbackPage() {
+function MobileCallbackContent() {
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [message, setMessage] = useState('正在處理登入...');
@@ -64,45 +62,71 @@ export default function MobileCallbackPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 max-w-md w-full text-center">
-        {status === 'loading' && (
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent mx-auto mb-4" />
-        )}
-        
-        {status === 'success' && (
-          <div className="text-green-500 text-5xl mb-4">✓</div>
-        )}
-        
-        {status === 'error' && (
-          <div className="text-red-500 text-5xl mb-4">✗</div>
-        )}
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 max-w-md w-full text-center">
+      {status === 'loading' && (
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent mx-auto mb-4" />
+      )}
+      
+      {status === 'success' && (
+        <div className="text-green-500 text-5xl mb-4">✓</div>
+      )}
+      
+      {status === 'error' && (
+        <div className="text-red-500 text-5xl mb-4">✗</div>
+      )}
 
-        <h1 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-          {status === 'loading' ? '處理中' : status === 'success' ? '登入成功' : '登入失敗'}
-        </h1>
-        
-        <p className="text-gray-600 dark:text-gray-300 mb-6">{message}</p>
+      <h1 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+        {status === 'loading' ? '處理中' : status === 'success' ? '登入成功' : '登入失敗'}
+      </h1>
+      
+      <p className="text-gray-600 dark:text-gray-300 mb-6">{message}</p>
 
-        {status === 'success' && (
-          <button
-            onClick={handleManualRedirect}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-6 rounded-lg transition-colors"
-          >
-            返回 PickCardRebate App
-          </button>
-        )}
+      {status === 'success' && (
+        <button
+          onClick={handleManualRedirect}
+          className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+        >
+          返回 PickCardRebate App
+        </button>
+      )}
 
-        {status === 'error' && (
-          <button
-            onClick={() => window.close()}
-            className="bg-gray-500 hover:bg-gray-600 text-white font-medium py-3 px-6 rounded-lg transition-colors"
-          >
-            關閉
-          </button>
-        )}
-      </div>
+      {status === 'error' && (
+        <button
+          onClick={() => window.close()}
+          className="bg-gray-500 hover:bg-gray-600 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+        >
+          關閉
+        </button>
+      )}
     </div>
   );
 }
 
+/**
+ * Loading fallback
+ */
+function LoadingFallback() {
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 max-w-md w-full text-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent mx-auto mb-4" />
+      <h1 className="text-xl font-bold text-gray-900 dark:text-white mb-2">處理中</h1>
+      <p className="text-gray-600 dark:text-gray-300 mb-6">正在處理登入...</p>
+    </div>
+  );
+}
+
+/**
+ * Mobile OAuth Callback Handler
+ * 
+ * 這個頁面處理從 Supabase OAuth 回調的 tokens，
+ * 然後通過 deep link 將 tokens 傳遞給 mobile app。
+ */
+export default function MobileCallbackPage() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
+      <Suspense fallback={<LoadingFallback />}>
+        <MobileCallbackContent />
+      </Suspense>
+    </div>
+  );
+}
