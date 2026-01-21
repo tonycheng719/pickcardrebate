@@ -124,25 +124,49 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         });
         if (error) throw error;
       } else {
-        // Native: 使用 WebBrowser
+        // Native: 使用網頁中間層處理 OAuth redirect
         const WebBrowser = await import('expo-web-browser');
-        const Linking = await import('expo-linking');
-        const Constants = await import('expo-constants');
         
-        // 直接打開網站的登入頁面，使用特殊參數標記來自 App
+        // OAuth redirect 到網頁，網頁再 redirect 到 App
+        const webRedirectUrl = 'https://pickcardrebate.com/auth/app-callback';
         const appSchemeUrl = 'pickcardrebate://auth/callback';
-        const loginUrl = 'https://pickcardrebate.com/login?from=app&callback=' + encodeURIComponent(appSchemeUrl);
         
-        console.log('[Auth] Opening web login:', loginUrl);
+        console.log('[Auth] Starting Google OAuth');
+        console.log('[Auth] Web redirect:', webRedirectUrl);
+        console.log('[Auth] App scheme:', appSchemeUrl);
+        
+        // 獲取 OAuth URL
+        const { data, error } = await supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            redirectTo: webRedirectUrl,
+            skipBrowserRedirect: true,
+          },
+        });
+        
+        if (error) {
+          console.error('[Auth] OAuth error:', error);
+          Alert.alert('登入失敗', error.message);
+          return;
+        }
+        
+        if (!data?.url) {
+          console.error('[Auth] No OAuth URL returned');
+          Alert.alert('登入失敗', '無法獲取登入連結');
+          return;
+        }
+        
+        console.log('[Auth] Opening OAuth URL:', data.url);
         
         await WebBrowser.warmUpAsync();
         
+        // 監聽 App scheme，網頁會 redirect 到這裡
         const result = await WebBrowser.openAuthSessionAsync(
-          loginUrl,
+          data.url,
           appSchemeUrl,
           { 
             showInRecents: true,
-            preferEphemeralSession: false, // 保持 session 以便網頁可以訪問
+            preferEphemeralSession: false,
           }
         );
         
@@ -156,30 +180,52 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           
           // 從 URL 獲取 tokens
           const hashParams = new URLSearchParams(url.split('#')[1] || '');
-          const accessToken = hashParams.get('access_token');
-          const refreshToken = hashParams.get('refresh_token');
+          const queryParams = new URLSearchParams(url.split('?')[1]?.split('#')[0] || '');
+          
+          const accessToken = hashParams.get('access_token') || queryParams.get('access_token');
+          const refreshToken = hashParams.get('refresh_token') || queryParams.get('refresh_token');
+          
+          console.log('[Auth] Tokens found:', { hasAccess: !!accessToken, hasRefresh: !!refreshToken });
           
           if (accessToken && refreshToken) {
             console.log('[Auth] Got tokens, setting session...');
-            await supabase.auth.setSession({
-              access_token: accessToken,
-              refresh_token: refreshToken,
-            });
-            Alert.alert('登入成功', '歡迎使用 PickCardRebate！');
+            try {
+              const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
+                access_token: accessToken,
+                refresh_token: refreshToken,
+              });
+              
+              if (sessionError) {
+                console.error('[Auth] setSession error:', sessionError);
+                Alert.alert('登入失敗', sessionError.message);
+                return;
+              }
+              
+              if (sessionData.session) {
+                console.log('[Auth] Session set successfully:', sessionData.session.user.email);
+                setSession(sessionData.session);
+                setUser(sessionData.session.user);
+                Alert.alert('登入成功', '歡迎使用 PickCardRebate！');
+              } else {
+                console.warn('[Auth] No session in response');
+                Alert.alert('登入失敗', '無法建立登入狀態');
+              }
+            } catch (e) {
+              console.error('[Auth] setSession exception:', e);
+              Alert.alert('登入失敗', String(e));
+            }
             return;
+          } else {
+            console.warn('[Auth] No tokens in callback URL');
+            Alert.alert('登入失敗', '未收到登入憑證，請重試');
           }
-        }
-        
-        if (result.type !== 'cancel') {
-          Alert.alert(
-            '登入提示',
-            '請在彈出的視窗中完成登入，登入成功後會自動返回 App。',
-            [{ text: '了解' }]
-          );
+        } else if (result.type === 'cancel') {
+          console.log('[Auth] User cancelled login');
         }
       }
     } catch (error) {
       console.error('Google sign in error:', error);
+      Alert.alert('登入錯誤', String(error));
       throw error;
     }
   };
