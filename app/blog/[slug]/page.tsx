@@ -291,7 +291,7 @@ function QuickRankingTable({ rankings, category }: { rankings: RankingResult[]; 
                 {isMiles ? (
                   <>
                     <td className="px-3 py-3 text-right whitespace-nowrap">
-                      <span className="font-bold text-purple-600 dark:text-purple-400">${result.dollarsPerMile.toFixed(2)}/里</span>
+                      <span className="font-bold text-purple-600 dark:text-purple-400">${result.dollarsPerMile?.toFixed(2)}/里</span>
                     </td>
                     <td className="px-3 py-3 text-right whitespace-nowrap">
                       <span className="text-gray-600 dark:text-gray-400">{result.milesProgram}</span>
