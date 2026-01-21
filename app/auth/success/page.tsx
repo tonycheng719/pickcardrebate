@@ -130,6 +130,22 @@ function AuthSuccessContent() {
                 console.warn("Ensure profile failed, but continuing...", e);
               }
               
+              // 記錄登入來源為 web
+              try {
+                const isNewUser = data.session.user.created_at === data.session.user.last_sign_in_at;
+                await fetch('/api/user/login-source', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    userId: data.session.user.id,
+                    source: 'web',
+                    isSignup: isNewUser,
+                  }),
+                });
+              } catch (e) {
+                console.warn("Failed to record login source, but continuing...", e);
+              }
+              
               // 如果來自 App，傳回 tokens
               if (isFromApp) {
                 redirectToApp(data.session);

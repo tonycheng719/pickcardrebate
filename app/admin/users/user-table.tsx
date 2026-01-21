@@ -23,6 +23,9 @@ export interface AdminUser {
   joinDate: string;
   lastIp?: string;
   cardCount?: number;
+  signupSource?: 'web' | 'ios' | 'android';
+  lastLoginSource?: 'web' | 'ios' | 'android';
+  lastLoginAt?: string;
 }
 
 interface UserTableProps {
@@ -76,8 +79,9 @@ export function UserTable({ initialUsers }: UserTableProps) {
               <th className="px-6 py-4 font-medium">用戶</th>
               <th className="px-6 py-4 font-medium">角色</th>
               <th className="px-6 py-4 font-medium">持有卡數</th>
+              <th className="px-6 py-4 font-medium">註冊來源</th>
+              <th className="px-6 py-4 font-medium">最後登入</th>
               <th className="px-6 py-4 font-medium">狀態</th>
-              <th className="px-6 py-4 font-medium">最後 IP</th>
               <th className="px-6 py-4 font-medium text-right">操作</th>
             </tr>
           </thead>
@@ -116,15 +120,47 @@ export function UserTable({ initialUsers }: UserTableProps) {
                     )}
                     </td>
                     <td className="px-6 py-4">
+                    {user.signupSource ? (
+                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium ${
+                        user.signupSource === 'ios' ? 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300' :
+                        user.signupSource === 'android' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300' :
+                        'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+                      }`}>
+                        {user.signupSource === 'ios' ? '🍎 iOS' :
+                         user.signupSource === 'android' ? '🤖 Android' : '🌐 Web'}
+                      </span>
+                    ) : (
+                      <span className="text-gray-400 text-xs">-</span>
+                    )}
+                    </td>
+                    <td className="px-6 py-4">
+                    {user.lastLoginSource ? (
+                      <div className="flex flex-col gap-0.5">
+                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium w-fit ${
+                          user.lastLoginSource === 'ios' ? 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300' :
+                          user.lastLoginSource === 'android' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300' :
+                          'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+                        }`}>
+                          {user.lastLoginSource === 'ios' ? '🍎 iOS' :
+                           user.lastLoginSource === 'android' ? '🤖 Android' : '🌐 Web'}
+                        </span>
+                        {user.lastLoginAt && (
+                          <span className="text-xs text-gray-400">
+                            {new Date(user.lastLoginAt).toLocaleDateString('zh-HK')}
+                          </span>
+                        )}
+                      </div>
+                    ) : (
+                      <span className="text-gray-400 text-xs">-</span>
+                    )}
+                    </td>
+                    <td className="px-6 py-4">
                     <span className={`inline-flex items-center gap-1.5 ${
                         user.status === 'active' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
                     }`}>
                         <span className={`w-2 h-2 rounded-full ${user.status === 'active' ? 'bg-green-500' : 'bg-red-500'}`}></span>
                         {user.status === 'active' ? '正常' : '已封鎖'}
                     </span>
-                    </td>
-                    <td className="px-6 py-4 text-gray-500 dark:text-gray-400 font-mono text-xs">
-                    {user.lastIp || "-"}
                     </td>
                     <td className="px-6 py-4 text-right">
                     <DropdownMenu>

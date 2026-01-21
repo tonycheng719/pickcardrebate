@@ -41,7 +41,10 @@ export default async function AdminUsersPage() {
         status: "active",
         joinDate: profile.created_at ? new Date(profile.created_at).toISOString().split("T")[0] : new Date().toISOString().split("T")[0],
         lastIp: profile.last_ip,
-        cardCount: cardCountMap[profile.id] || 0
+        cardCount: cardCountMap[profile.id] || 0,
+        signupSource: profile.signup_source,
+        lastLoginSource: profile.last_login_source,
+        lastLoginAt: profile.last_login_at,
     }));
 
     return <UserTable initialUsers={users} />;

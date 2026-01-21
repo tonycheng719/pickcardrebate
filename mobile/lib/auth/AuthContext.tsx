@@ -82,14 +82,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     });
 
-    // 監聽 auth 變化
+    // 監聯 auth 變化
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       console.log('[Auth] Auth state changed:', _event, session?.user?.email);
       setSession(session);
       setUser(session?.user ?? null);
       
-      // 用戶登入後註冊 Push Token
+      // 用戶登入後的處理
       if (_event === 'SIGNED_IN' && session?.user?.id && Platform.OS !== 'web') {
+        // 記錄登入來源 (ios or android)
+        const loginSource = Platform.OS === 'ios' ? 'ios' : 'android';
+        const isNewUser = session.user.created_at === session.user.last_sign_in_at;
+        
+        try {
+          await fetch('https://pickcardrebate.com/api/user/login-source', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              userId: session.user.id,
+              source: loginSource,
+              isSignup: isNewUser,
+            }),
+          });
+          console.log('[Auth] Login source recorded:', loginSource, isNewUser ? '(new signup)' : '');
+        } catch (e) {
+          console.log('[Auth] Failed to record login source:', e);
+        }
+        
+        // 註冊 Push Token
         try {
           await registerForPushNotifications(session.user.id);
           console.log('[Auth] Push token registered for user');
