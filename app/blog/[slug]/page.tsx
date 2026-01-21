@@ -130,7 +130,7 @@ function CardDetailSection({ result, rank, showFxInfo = false, showMiles = false
             <div className="text-right">
               {showMiles && result.dollarsPerMile ? (
                 <>
-                  <div className="text-xl font-bold text-purple-600 dark:text-purple-400">${result.dollarsPerMile}/里</div>
+                  <div className="text-xl font-bold text-purple-600 dark:text-purple-400">${result.dollarsPerMile.toFixed(2)}/里</div>
                   <div className="text-xs text-gray-500">≈ {result.percentage.toFixed(1)}% 回贈</div>
                 </>
               ) : (
@@ -212,7 +212,7 @@ function QuickRankingTable({ rankings, category }: { rankings: RankingResult[]; 
   // Generate share text
   const shareText = rankings.slice(0, 5).map((r, i) => 
     isMiles && r.dollarsPerMile
-      ? `${i + 1}. ${r.card.name} $${r.dollarsPerMile}/里`
+      ? `${i + 1}. ${r.card.name} $${r.dollarsPerMile.toFixed(2)}/里`
       : `${i + 1}. ${r.card.name} ${r.netPercentage !== undefined ? r.netPercentage.toFixed(1) : r.percentage}%`
   ).join('\n');
   
@@ -291,7 +291,7 @@ function QuickRankingTable({ rankings, category }: { rankings: RankingResult[]; 
                 {isMiles ? (
                   <>
                     <td className="px-3 py-3 text-right whitespace-nowrap">
-                      <span className="font-bold text-purple-600 dark:text-purple-400">${result.dollarsPerMile}/里</span>
+                      <span className="font-bold text-purple-600 dark:text-purple-400">${result.dollarsPerMile.toFixed(2)}/里</span>
                     </td>
                     <td className="px-3 py-3 text-right whitespace-nowrap">
                       <span className="text-gray-600 dark:text-gray-400">{result.milesProgram}</span>
