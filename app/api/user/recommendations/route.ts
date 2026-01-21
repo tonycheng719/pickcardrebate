@@ -93,7 +93,7 @@ export async function GET(request: Request) {
           const matchesMerchant = rebate.merchants?.some((m: string) => 
             merchant.name.includes(m) || m.includes(merchant.name)
           );
-          const matchesCategory = rebate.category === merchant.category || rebate.category === 'all';
+          const matchesCategory = merchant.categoryIds?.some(catId => rebate.category === catId) || rebate.category === 'all';
 
           if (matchesMerchant || matchesCategory) {
             const rate = rebate.rate || 0;
@@ -119,8 +119,8 @@ export async function GET(request: Request) {
           merchant: {
             id: merchant.id,
             name: merchant.name,
-            icon: merchant.icon,
-            category: merchant.category,
+            icon: merchant.logo,
+            category: merchant.categoryIds?.[0] || 'other',
           },
           bestCard: {
             id: bestCard.id,
