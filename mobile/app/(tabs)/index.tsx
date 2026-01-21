@@ -28,7 +28,7 @@ import { api, CalculateResult, MerchantData } from '@/lib/api/client';
 import type { Merchant } from '@/lib/types';
 import { PersonalizedRecommendations } from '@/components/PersonalizedRecommendations';
 import { useAuth } from '@/lib/auth/AuthContext';
-import { getMyCards, MyCard } from '@/lib/storage/myCards';
+import { getMyCards, syncWalletFromCloud, MyCard } from '@/lib/storage/myCards';
 
 // 支付方式選項（與網站一致）
 const PAYMENT_METHODS = [
@@ -131,7 +131,16 @@ export default function CalculatorScreen() {
   useEffect(() => {
     const loadMyCards = async () => {
       try {
-        const cards = await getMyCards();
+        let cards: MyCard[] = [];
+        if (user?.id) {
+          // 用戶已登入：從雲端同步
+          console.log('[Calculator] User logged in, syncing wallet from cloud');
+          cards = await syncWalletFromCloud(user.id);
+        } else {
+          // 未登入：從本地讀取
+          cards = await getMyCards();
+        }
+        console.log('[Calculator] My cards loaded:', cards.length, cards.map(c => c.id));
         setMyCardIds(cards.map(c => c.id));
       } catch (error) {
         console.error('Failed to load my cards:', error);
@@ -800,6 +809,10 @@ export default function CalculatorScreen() {
 
         {/* 結果列表 */}
         {calculatedResults.length > 0 && (() => {
+          // Debug: 顯示卡片匹配情況
+          console.log('[Calculator] My card IDs:', myCardIds);
+          console.log('[Calculator] Result card IDs:', calculatedResults.map(r => r.cardId));
+          
           // 區分用戶持有的卡和其他卡
           const bestResult = calculatedResults[0];
           const otherResults = calculatedResults.slice(1);
@@ -807,6 +820,8 @@ export default function CalculatorScreen() {
           
           // 找出用戶持有的其他卡
           const myOwnedCards = otherResults.filter(r => myCardIds.includes(r.cardId));
+          console.log('[Calculator] My owned cards in results:', myOwnedCards.length);
+          
           // 找出用戶最佳持有卡（如果最佳不是自己的）
           const myBestCard = !isBestOwned ? myOwnedCards[0] : null;
           const myOtherOwnedCards = !isBestOwned ? myOwnedCards.slice(1) : myOwnedCards;
