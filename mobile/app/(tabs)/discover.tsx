@@ -119,6 +119,21 @@ export default function DiscoverScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
+      {/* 迎新優惠入口 */}
+      <TouchableOpacity 
+        style={[styles.welcomeOfferBanner, { backgroundColor: colors.warningLight }]}
+        onPress={() => router.push('/welcome-offers')}
+      >
+        <View style={styles.welcomeOfferContent}>
+          <Text style={styles.welcomeOfferIcon}>🎁</Text>
+          <View style={styles.welcomeOfferText}>
+            <Text style={[styles.welcomeOfferTitle, { color: colors.warning }]}>迎新優惠</Text>
+            <Text style={[styles.welcomeOfferDesc, { color: colors.text }]}>精選信用卡迎新獎賞</Text>
+          </View>
+        </View>
+        <Ionicons name="chevron-forward" size={20} color={colors.warning} />
+      </TouchableOpacity>
+
       {/* Tab 選擇 */}
       <View style={[styles.tabBar, { borderBottomColor: colors.border }]}>
         {TABS.map((tab) => (
@@ -190,10 +205,38 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  welcomeOfferBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginHorizontal: Layout.spacing.md,
+    marginTop: Layout.spacing.sm,
+    padding: Layout.spacing.md,
+    borderRadius: Layout.radius.lg,
+  },
+  welcomeOfferContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Layout.spacing.md,
+  },
+  welcomeOfferIcon: {
+    fontSize: 28,
+  },
+  welcomeOfferText: {
+    gap: 2,
+  },
+  welcomeOfferTitle: {
+    fontSize: Layout.fontSize.base,
+    fontWeight: Layout.fontWeight.bold,
+  },
+  welcomeOfferDesc: {
+    fontSize: Layout.fontSize.xs,
+  },
   tabBar: {
     flexDirection: 'row',
     borderBottomWidth: 1,
     paddingHorizontal: Layout.spacing.md,
+    marginTop: Layout.spacing.sm,
   },
   tab: {
     paddingVertical: Layout.spacing.md,
