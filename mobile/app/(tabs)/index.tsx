@@ -506,6 +506,17 @@ export default function CalculatorScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
+      {/* 頂部搜索欄 */}
+      <TouchableOpacity 
+        style={[styles.searchBar, { backgroundColor: colors.backgroundCard, borderColor: colors.border }]}
+        onPress={() => router.push('/search')}
+      >
+        <Ionicons name="search" size={20} color={colors.textMuted} />
+        <Text style={[styles.searchPlaceholder, { color: colors.textMuted }]}>
+          搜索信用卡、商戶、文章...
+        </Text>
+      </TouchableOpacity>
+
       {/* 可滾動區域 */}
       <ScrollView 
         ref={scrollViewRef}
@@ -906,7 +917,7 @@ export default function CalculatorScreen() {
               </ScrollView>
             )}
           </View>
-        </View>
+    </View>
       </Modal>
 
       {/* 回到頂部浮動按鈕 */}
@@ -932,6 +943,20 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingBottom: Layout.spacing.xl,
+  },
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: Layout.spacing.md,
+    marginTop: Layout.spacing.sm,
+    paddingHorizontal: Layout.spacing.md,
+    paddingVertical: Layout.spacing.sm,
+    borderRadius: Layout.radius.lg,
+    borderWidth: 1,
+    gap: Layout.spacing.sm,
+  },
+  searchPlaceholder: {
+    fontSize: Layout.fontSize.sm,
   },
   headerSection: {
     paddingHorizontal: Layout.spacing.md,

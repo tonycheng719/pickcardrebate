@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, FlatList, StyleSheet, Image, ActivityIndicator, RefreshControl } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Image, ActivityIndicator, RefreshControl, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 import { Colors, BankColors } from '@/constants/Colors';
 import { Layout } from '@/constants/Layout';
 import { useColorScheme } from '@/components/useColorScheme';
@@ -143,13 +144,23 @@ export default function CardsScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
-      {/* 搜尋欄 */}
+      {/* 搜尋欄和比較按鈕 */}
       <View style={styles.searchSection}>
-        <SearchInput
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          placeholder="搜尋信用卡或銀行..."
-        />
+        <View style={styles.searchRow}>
+          <View style={styles.searchInputWrapper}>
+            <SearchInput
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              placeholder="搜尋信用卡或銀行..."
+            />
+          </View>
+          <TouchableOpacity 
+            style={[styles.compareBtn, { backgroundColor: colors.primary }]}
+            onPress={() => router.push('/cards/compare')}
+          >
+            <Ionicons name="swap-horizontal" size={20} color="#FFF" />
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* 卡片列表 */}
@@ -194,6 +205,21 @@ const styles = StyleSheet.create({
   },
   searchSection: {
     padding: Layout.spacing.lg,
+  },
+  searchRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Layout.spacing.sm,
+  },
+  searchInputWrapper: {
+    flex: 1,
+  },
+  compareBtn: {
+    width: 44,
+    height: 44,
+    borderRadius: Layout.radius.md,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   listContent: {
     paddingHorizontal: Layout.spacing.lg,

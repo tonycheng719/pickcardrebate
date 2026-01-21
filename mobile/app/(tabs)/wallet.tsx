@@ -1,18 +1,31 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { Colors } from '@/constants/Colors';
+import { Colors, BankColors } from '@/constants/Colors';
 import { Layout } from '@/constants/Layout';
 import { useColorScheme } from '@/components/useColorScheme';
 import { Button, Card } from '@/components/ui';
 import { useAuth } from '@/lib/auth/AuthContext';
+import { getMyCards, MyCard } from '@/lib/storage/myCards';
 
 export default function WalletScreen() {
   const colorScheme = useColorScheme() ?? 'light';
   const colors = Colors[colorScheme];
   const { user, loading, signInWithGoogle, signInWithApple, signOut } = useAuth();
   const [signingIn, setSigningIn] = useState(false);
+  const [myCards, setMyCards] = useState<MyCard[]>([]);
+
+  // 載入用戶卡包
+  useEffect(() => {
+    loadMyCards();
+  }, []);
+
+  const loadMyCards = async () => {
+    const cards = await getMyCards();
+    setMyCards(cards);
+  };
 
   const handleGoogleSignIn = async () => {
     setSigningIn(true);
@@ -140,28 +153,40 @@ export default function WalletScreen() {
 
         {/* 快捷功能 */}
         <View style={styles.quickActions}>
-          <TouchableOpacity style={[styles.actionItem, { backgroundColor: colors.backgroundCard }]}>
+          <TouchableOpacity 
+            style={[styles.actionItem, { backgroundColor: colors.backgroundCard }]}
+            onPress={() => router.push('/wallet/my-cards')}
+          >
             <View style={[styles.actionIcon, { backgroundColor: colors.primaryLight }]}>
               <Ionicons name="card" size={24} color={colors.primary} />
             </View>
-            <Text style={[styles.actionText, { color: colors.text }]}>我的卡片</Text>
+            <Text style={[styles.actionText, { color: colors.text }]}>我的卡包</Text>
           </TouchableOpacity>
           
-          <TouchableOpacity style={[styles.actionItem, { backgroundColor: colors.backgroundCard }]}>
+          <TouchableOpacity 
+            style={[styles.actionItem, { backgroundColor: colors.backgroundCard }]}
+            onPress={() => router.push('/wallet/history')}
+          >
             <View style={[styles.actionIcon, { backgroundColor: colors.successLight }]}>
               <Ionicons name="receipt" size={24} color={colors.success} />
             </View>
-            <Text style={[styles.actionText, { color: colors.text }]}>消費記錄</Text>
+            <Text style={[styles.actionText, { color: colors.text }]}>計算記錄</Text>
           </TouchableOpacity>
           
-          <TouchableOpacity style={[styles.actionItem, { backgroundColor: colors.backgroundCard }]}>
+          <TouchableOpacity 
+            style={[styles.actionItem, { backgroundColor: colors.backgroundCard }]}
+            onPress={() => router.push('/wallet/favorites')}
+          >
             <View style={[styles.actionIcon, { backgroundColor: colors.warningLight }]}>
               <Ionicons name="bookmark" size={24} color={colors.warning} />
             </View>
             <Text style={[styles.actionText, { color: colors.text }]}>收藏</Text>
           </TouchableOpacity>
           
-          <TouchableOpacity style={[styles.actionItem, { backgroundColor: colors.backgroundCard }]}>
+          <TouchableOpacity 
+            style={[styles.actionItem, { backgroundColor: colors.backgroundCard }]}
+            onPress={() => router.push('/wallet/settings')}
+          >
             <View style={[styles.actionIcon, { backgroundColor: colors.borderLight }]}>
               <Ionicons name="settings" size={24} color={colors.textMuted} />
             </View>
@@ -173,20 +198,56 @@ export default function WalletScreen() {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={[styles.sectionTitle, { color: colors.text }]}>我的信用卡</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push('/wallet/my-cards')}>
               <Text style={[styles.sectionAction, { color: colors.primary }]}>管理</Text>
             </TouchableOpacity>
           </View>
           
-          <Card style={styles.emptyCard}>
-            <Ionicons name="add-circle-outline" size={40} color={colors.textMuted} />
-            <Text style={[styles.emptyText, { color: colors.textMuted }]}>
-              尚未添加信用卡
-            </Text>
-            <Button onPress={() => {}} variant="outline" size="sm" style={{ marginTop: 12 }}>
-              + 添加信用卡
-            </Button>
-          </Card>
+          {myCards.length === 0 ? (
+            <Card style={styles.emptyCard}>
+              <Ionicons name="add-circle-outline" size={40} color={colors.textMuted} />
+              <Text style={[styles.emptyText, { color: colors.textMuted }]}>
+                尚未添加信用卡
+              </Text>
+              <Button onPress={() => router.push('/wallet/my-cards')} variant="outline" size="sm" style={{ marginTop: 12 }}>
+                + 添加信用卡
+              </Button>
+            </Card>
+          ) : (
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.myCardsScroll}>
+              {myCards.slice(0, 5).map(card => {
+                const bankColor = BankColors[card.bank] || BankColors.default;
+                return (
+                  <TouchableOpacity 
+                    key={card.id}
+                    style={[styles.myCardItem, { backgroundColor: colors.backgroundCard, borderColor: colors.border }]}
+                    onPress={() => router.push(`/card/${card.id}`)}
+                  >
+                    {card.imageUrl ? (
+                      <Image source={{ uri: card.imageUrl }} style={styles.myCardImage} resizeMode="cover" />
+                    ) : (
+                      <View style={[styles.myCardColor, { backgroundColor: bankColor.bg }]}>
+                        <Text style={[styles.myCardBankText, { color: bankColor.text }]}>
+                          {card.bank.slice(0, 3)}
+                        </Text>
+                      </View>
+                    )}
+                    <Text style={[styles.myCardName, { color: colors.text }]} numberOfLines={1}>
+                      {card.name}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+              {myCards.length > 5 && (
+                <TouchableOpacity 
+                  style={[styles.moreCardsBtn, { backgroundColor: colors.backgroundCard, borderColor: colors.border }]}
+                  onPress={() => router.push('/wallet/my-cards')}
+                >
+                  <Text style={[styles.moreCardsText, { color: colors.primary }]}>+{myCards.length - 5}</Text>
+                </TouchableOpacity>
+              )}
+            </ScrollView>
+          )}
         </View>
 
         {/* 最近消費 */}
@@ -368,5 +429,51 @@ const styles = StyleSheet.create({
   emptyText: {
     marginTop: Layout.spacing.sm,
     fontSize: Layout.fontSize.sm,
+  },
+  myCardsScroll: {
+    marginTop: Layout.spacing.sm,
+  },
+  myCardItem: {
+    width: 100,
+    padding: Layout.spacing.sm,
+    borderRadius: Layout.radius.lg,
+    borderWidth: 1,
+    marginRight: Layout.spacing.sm,
+    alignItems: 'center',
+  },
+  myCardImage: {
+    width: 70,
+    height: 44,
+    borderRadius: Layout.radius.sm,
+    marginBottom: Layout.spacing.xs,
+  },
+  myCardColor: {
+    width: 70,
+    height: 44,
+    borderRadius: Layout.radius.sm,
+    marginBottom: Layout.spacing.xs,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  myCardBankText: {
+    fontSize: 10,
+    fontWeight: Layout.fontWeight.bold,
+  },
+  myCardName: {
+    fontSize: Layout.fontSize.xs,
+    fontWeight: Layout.fontWeight.medium,
+    textAlign: 'center',
+  },
+  moreCardsBtn: {
+    width: 60,
+    height: 80,
+    borderRadius: Layout.radius.lg,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  moreCardsText: {
+    fontSize: Layout.fontSize.base,
+    fontWeight: Layout.fontWeight.bold,
   },
 });
