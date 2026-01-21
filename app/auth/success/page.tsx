@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { useWallet } from "@/lib/store/wallet-context";
 import { createClient } from "@/lib/supabase/client";
@@ -10,10 +10,31 @@ import type { Session } from "@supabase/supabase-js";
 
 export default function AuthSuccessPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user } = useWallet();
   const [status, setStatus] = useState<"verifying" | "exchanging" | "success" | "error">("verifying");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const hasAttemptedExchange = useRef(false); // Prevent double execution
+
+  // 檢查是否來自 App
+  const isFromApp = searchParams.get("from") === "app" || 
+    typeof window !== 'undefined' && localStorage.getItem('loginFromApp') === 'true';
+  const appCallback = searchParams.get("callback") || 'pickcardrebate://auth/callback';
+
+  // 將 tokens 傳回 App
+  const redirectToApp = (session: Session) => {
+    const deepLinkUrl = `${appCallback}#access_token=${session.access_token}&refresh_token=${session.refresh_token}`;
+    console.log("Redirecting to app:", deepLinkUrl.substring(0, 50) + "...");
+    
+    // 清除標記
+    localStorage.removeItem('loginFromApp');
+    
+    setStatus("success");
+    toast.success("登入成功！正在返回 App...");
+    
+    // 嘗試打開 App
+    window.location.href = deepLinkUrl;
+  };
 
   useEffect(() => {
     // Prevent running twice (React Strict Mode or other reasons)
@@ -48,6 +69,13 @@ export default function AuthSuccessPage() {
       
       if (existingSession) {
         console.log("Session already exists for:", existingSession.user.email);
+        
+        // 如果來自 App，傳回 tokens
+        if (isFromApp) {
+          redirectToApp(existingSession);
+          return;
+        }
+        
         setStatus("success");
         toast.success("歡迎回來！");
         setTimeout(() => {
@@ -88,7 +116,6 @@ export default function AuthSuccessPage() {
             
             if (data.session) {
               console.log("Session established successfully for:", data.session.user.email);
-              setStatus("success");
               
               // Ensure profile exists and update last_login
               try {
@@ -103,6 +130,13 @@ export default function AuthSuccessPage() {
                 console.warn("Ensure profile failed, but continuing...", e);
               }
               
+              // 如果來自 App，傳回 tokens
+              if (isFromApp) {
+                redirectToApp(data.session);
+                return;
+              }
+              
+              setStatus("success");
               toast.success("登入成功！歡迎回來");
               
               // Force full page reload to ensure all contexts pick up the new session

@@ -4,22 +4,37 @@ import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useWallet } from "@/lib/store/wallet-context";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState, Suspense } from "react";
 import { toast } from "sonner";
 import { trackLogin, trackSignUp } from "@/lib/analytics";
 
 import Link from "next/link";
 
-export default function LoginPage() {
+function LoginContent() {
   const { loginWithOAuth, requestSmsOtp, verifySmsOtp, user } = useWallet();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [smsCode, setSmsCode] = useState("");
   const [smsStep, setSmsStep] = useState<"input" | "verify">("input");
   const [isSmsLoading, setIsSmsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(true); // Default to remember
+  
+  // 檢查是否來自 App
+  const isFromApp = searchParams.get("from") === "app";
+  const appCallback = searchParams.get("callback");
+
+  useEffect(() => {
+    // 如果來自 App，保存標記
+    if (isFromApp) {
+      localStorage.setItem('loginFromApp', 'true');
+      if (appCallback) {
+        localStorage.setItem('appCallback', appCallback);
+      }
+    }
+  }, [isFromApp, appCallback]);
 
   useEffect(() => {
     if (user) {
@@ -192,6 +207,18 @@ export default function LoginPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-4 border-blue-500 border-t-transparent" />
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   );
 }
 

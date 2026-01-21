@@ -60,97 +60,53 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const Linking = await import('expo-linking');
         const Constants = await import('expo-constants');
         
-        // 使用網頁中間層處理 OAuth callback
-        // 這樣可以避免 Supabase GOTRUE_URI_ALLOW_LIST 配置問題
-        const redirectUrl = 'https://pickcardrebate.com/auth/mobile-callback';
-        
-        // App scheme 用於接收從網頁傳回的 tokens
+        // 直接打開網站的登入頁面，使用特殊參數標記來自 App
         const appSchemeUrl = 'pickcardrebate://auth/callback';
+        const loginUrl = 'https://pickcardrebate.com/login?from=app&callback=' + encodeURIComponent(appSchemeUrl);
         
-        const expoConstants = Constants.default;
-        const isExpoGo = expoConstants.appOwnership === 'expo';
+        console.log('[Auth] Opening web login:', loginUrl);
         
-        console.log('[Auth] Is Expo Go:', isExpoGo);
+        await WebBrowser.warmUpAsync();
         
-        console.log('[Auth] Is Expo Go:', isExpoGo);
-        console.log('[Auth] Redirect URL:', redirectUrl);
-        
-        const { data, error } = await supabase.auth.signInWithOAuth({
-          provider: 'google',
-          options: {
-            redirectTo: redirectUrl,
-            skipBrowserRedirect: true,
-            queryParams: {
-              // 強制使用 PKCE flow
-              access_type: 'offline',
-              prompt: 'consent',
-            },
-          },
-        });
-
-        if (error) throw error;
-        
-        if (data?.url) {
-          console.log('[Auth] Opening auth URL:', data.url);
-          
-          // 完成 WebBrowser warm up
-          await WebBrowser.warmUpAsync();
-          
-          // 監聽 app scheme URL（網頁會 redirect 到這個 URL）
-          const result = await WebBrowser.openAuthSessionAsync(
-            data.url, 
-            appSchemeUrl,
-            { 
-              showInRecents: true,
-              preferEphemeralSession: true, // 不保存 session，避免登入狀態混亂
-            }
-          );
-          
-          // 清理
-          await WebBrowser.coolDownAsync();
-          
-          console.log('[Auth] Result:', result.type);
-          
-          if (result.type === 'success') {
-            const url = result.url;
-            console.log('[Auth] Callback URL:', url);
-            
-            // 嘗試從 hash 或 query string 獲取 token
-            const hashParams = new URLSearchParams(url.split('#')[1] || '');
-            const queryParams = new URLSearchParams(url.split('?')[1]?.split('#')[0] || '');
-            
-            const accessToken = hashParams.get('access_token') || queryParams.get('access_token');
-            const refreshToken = hashParams.get('refresh_token') || queryParams.get('refresh_token');
-            
-            console.log('[Auth] Got tokens:', !!accessToken, !!refreshToken);
-            
-            if (accessToken && refreshToken) {
-              await supabase.auth.setSession({
-                access_token: accessToken,
-                refresh_token: refreshToken,
-              });
-            } else {
-              // 顯示診斷資訊
-              console.warn('[Auth] No tokens found in callback URL');
-              console.warn('[Auth] Full callback URL:', url);
-              Alert.alert(
-                '登入診斷',
-                `收到的回調 URL:\n${url.substring(0, 150)}...\n\n` +
-                `預期的 redirect URL:\n${redirectUrl}\n\n` +
-                `請確認 Supabase GOTRUE_URI_ALLOW_LIST 包含上述 redirect URL`,
-                [{ text: '了解' }]
-              );
-            }
-          } else if (result.type === 'cancel') {
-            console.log('[Auth] User cancelled login');
-          } else if (result.type === 'dismiss') {
-            console.log('[Auth] Browser was dismissed');
-            // 檢查是否可能已經登入
-            const { data: { session } } = await supabase.auth.getSession();
-            if (session) {
-              console.log('[Auth] Found existing session after dismiss');
-            }
+        const result = await WebBrowser.openAuthSessionAsync(
+          loginUrl,
+          appSchemeUrl,
+          { 
+            showInRecents: true,
+            preferEphemeralSession: false, // 保持 session 以便網頁可以訪問
           }
+        );
+        
+        await WebBrowser.coolDownAsync();
+        
+        console.log('[Auth] Browser result:', result.type);
+        
+        if (result.type === 'success' && result.url) {
+          const url = result.url;
+          console.log('[Auth] Callback URL:', url);
+          
+          // 從 URL 獲取 tokens
+          const hashParams = new URLSearchParams(url.split('#')[1] || '');
+          const accessToken = hashParams.get('access_token');
+          const refreshToken = hashParams.get('refresh_token');
+          
+          if (accessToken && refreshToken) {
+            console.log('[Auth] Got tokens, setting session...');
+            await supabase.auth.setSession({
+              access_token: accessToken,
+              refresh_token: refreshToken,
+            });
+            Alert.alert('登入成功', '歡迎使用 PickCardRebate！');
+            return;
+          }
+        }
+        
+        if (result.type !== 'cancel') {
+          Alert.alert(
+            '登入提示',
+            '請在彈出的視窗中完成登入，登入成功後會自動返回 App。',
+            [{ text: '了解' }]
+          );
         }
       }
     } catch (error) {
