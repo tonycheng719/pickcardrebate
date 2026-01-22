@@ -718,14 +718,14 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 基本回饋 0.4%，排除繳費、保險、Alipay/WeChat Pay、八達通增值、電子錢包充值
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "octopus"] },
     ],
-    tags: ["旅遊7%", "餐飲5%", "實體店限定", "必須登記", "冬日賞"],
-    welcomeOfferText: "迎新簽 $5,000 送 $700 Fun Dollars",
-    sellingPoints: ["🔥2026新條款：只限實體店", "指定國家 7% (簽上限$7,143/月)", "其他外幣/餐飲 5% (簽上限$10,000/月)", "回贈上限 $500/月", "🚨 需月簽滿$6,000先有高回贈"],
-    note: "## ⚠️ 2026年條款變動（1月1日生效）\n\n**重大改變：**\n1. ❌ **網購全部無回贈** - 只限實體店簽賬\n2. 🔄 **7%國家改變** - 日本/韓國/泰國/內地/台灣/澳門（刪除新加坡/澳洲）\n3. ❌ **取消交通類別** - 港鐵/巴士等不再有5%\n4. ✅ **餐飲計返快餐** - 但酒店/百貨/會所內食肆仍不計\n\n### 💳 回贈率及上限\n| 類別 | 回贈率 | 簽賬上限 | 回贈上限 |\n|:---|:---:|:---:|:---:|\n| 指定國家外幣 | **7%** | $7,143 | $500 (共用) |\n| 其他外幣 | **5%** | $10,000 | $500 (共用) |\n| 本地餐飲 | **5%** | $10,000 | $500 (共用) |\n| 其他簽賬 | 0.4% | 無上限 | - |\n\n---\n\n**不變：**\n- 月簽 $6,000 門檻\n- 每月回贈上限 $500（共用）\n- 無需重新登記\n\n👉 [查看官方條款](https://www.hangseng.com/content/dam/wpb/hase/rwd/personal/cards/pdfs/travelplus_fundollars_tnc_tc.pdf)\n\n---\n\n🔥 **冬日簽賬賞**（至2026/2/28）：累積簽賬可享額外高達$2,800回贈！[查看詳情](/discover/hangseng-winter-2025)\n\n📅 **2026年1月7日更新**",
+    tags: ["旅遊7%", "餐飲5%", "實體店限定", "必須登記", "冬日賞", "MoneyHero獨家"],
+    welcomeOfferText: "🔥 MoneyHero獨家：$400 Apple禮品卡 / $400 惠康現金券 (簽$100即享)",
+    sellingPoints: ["🔥 MoneyHero獨家 $400 禮品 (簽$100)", "指定國家 7% (簽上限$7,143/月)", "其他外幣/餐飲 5% (簽上限$10,000/月)", "回贈上限 $500/月", "🚨 需月簽滿$6,000先有高回贈"],
+    note: "## 🔥 MoneyHero 限時獨家優惠\n**優惠期：即日至 2026年1月30日下午6時**\n\n### 🎁 獨家禮品（2選1）\n| 禮品 | 價值 |\n|:---|:---:|\n| Apple Store 禮品卡 | **$400** |\n| 惠康購物現金券 | **$400** |\n\n### 📋 申請條件\n1. ✅ 全新/現有恒生信用卡客戶均可\n2. ✅ 收到獎賞換領表格後 **7日內** 填妥及遞交\n3. ✅ 提交申請後 **30日內** 成功獲批\n4. ✅ 批卡後30日內簽賬滿 **$100** 🎉 超低門檻！\n\n---\n\n## 📌 銀行迎新優惠（至 2026/12/31）\n開卡後60日內簽滿 $5,000：\n\n| 客戶類型 | 獎賞 |\n|:---|:---:|\n| 全新客戶 | **$700** +FUN Dollars |\n| 現有客戶 | $300 +FUN Dollars |\n\n---\n\n## ⚠️ 2026年條款變動（1月1日生效）\n\n**重大改變：**\n1. ❌ **網購全部無回贈** - 只限實體店簽賬\n2. 🔄 **7%國家改變** - 日本/韓國/泰國/內地/台灣/澳門（刪除新加坡/澳洲）\n3. ❌ **取消交通類別** - 港鐵/巴士等不再有5%\n4. ✅ **餐飲計返快餐** - 但酒店/百貨/會所內食肆仍不計\n\n### 💳 回贈率及上限\n| 類別 | 回贈率 | 簽賬上限 | 回贈上限 |\n|:---|:---:|:---:|:---:|\n| 指定國家外幣 | **7%** | $7,143 | $500 (共用) |\n| 其他外幣 | **5%** | $10,000 | $500 (共用) |\n| 本地餐飲 | **5%** | $10,000 | $500 (共用) |\n| 其他簽賬 | 0.4% | 無上限 | - |\n\n---\n\n🔥 **冬日簽賬賞**（至2026/2/28）：累積簽賬可享額外高達$2,800回贈！[查看詳情](/discover/hangseng-winter-2025)\n\n📅 **2026年1月22日更新**",
     officialApplyUrl: "https://www.hangseng.com/zh-hk/personal/cards/products/travel-plus-visa-signature/",
-    applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=688&a=228&sub_id1=pickcardrebate&sub_id2=web",
-    promoEndDate: "2026-02-28",
-    promoName: "恒生冬日簽賬賞",
+    applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=688&a=228&sub_id1=pickcardrebate&sub_id2=web&promo_id=hangseng-travel-plus-moneyhero-20260130",
+    promoEndDate: "2026-01-30",
+    promoName: "MoneyHero限時獨家優惠",
   },
 
   // ========================================================================
