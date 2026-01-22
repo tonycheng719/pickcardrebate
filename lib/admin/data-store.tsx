@@ -362,16 +362,26 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
                 // 合併：資料庫優先 + 本地新增
                 const mergedPromos = [...dbPromos, ...localOnlyPromos];
                 
-                // 排序：isPinned > sortOrder > updatedAt
+                // 排序：isPinned (未過期) > updatedAt
+                const now = new Date();
+                const isEffectivelyPinned = (p: any) => {
+                    if (!p.isPinned) return false;
+                    // 如果設定了 pinnedUntil，檢查是否已過期
+                    if (p.pinnedUntil) {
+                        const pinExpiry = new Date(p.pinnedUntil);
+                        pinExpiry.setHours(23, 59, 59, 999); // 當日結束
+                        return now <= pinExpiry;
+                    }
+                    return true; // 無設定到期時間 = 永久置頂
+                };
+                
                 mergedPromos.sort((a, b) => {
-                    // 1. Pinned first
-                    if (a.isPinned && !b.isPinned) return -1;
-                    if (!a.isPinned && b.isPinned) return 1;
-                    // 2. sortOrder (higher first)
-                    const aSort = a.sortOrder || 0;
-                    const bSort = b.sortOrder || 0;
-                    if (aSort !== bSort) return bSort - aSort;
-                    // 3. updatedAt (newest first)
+                    // 1. Pinned first (檢查是否有效置頂)
+                    const aIsPinned = isEffectivelyPinned(a);
+                    const bIsPinned = isEffectivelyPinned(b);
+                    if (aIsPinned && !bIsPinned) return -1;
+                    if (!aIsPinned && bIsPinned) return 1;
+                    // 2. updatedAt (newest first)
                     const aUpdated = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
                     const bUpdated = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
                     return bUpdated - aUpdated;

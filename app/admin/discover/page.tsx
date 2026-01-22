@@ -49,6 +49,7 @@ interface ArticleSetting {
   content_type: 'guide' | 'promo' | null;
   custom_tags: string[] | null;
   is_pinned: boolean | null;
+  pinned_until: string | null; // 置頂到期日期
 }
 
 export default function AdminDiscoverPage() {
@@ -91,6 +92,7 @@ export default function AdminDiscoverPage() {
   const [newContentType, setNewContentType] = useState<"guide" | "promo" | "">("");
   const [newTags, setNewTags] = useState<string[]>([]);
   const [newIsPinned, setNewIsPinned] = useState(false);
+  const [newPinnedUntil, setNewPinnedUntil] = useState(""); // 置頂到期日期
   const [tagInput, setTagInput] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -98,6 +100,7 @@ export default function AdminDiscoverPage() {
   
   // Pinned settings (from article_settings)
   const [articlePinned, setArticlePinned] = useState<Record<string, boolean>>({});
+  const [articlePinnedUntil, setArticlePinnedUntil] = useState<Record<string, string>>({});
   
   // Sync local data state
   const [isSyncing, setIsSyncing] = useState(false);
@@ -143,6 +146,7 @@ export default function AdminDiscoverPage() {
           const categories: Record<string, string> = {};
           const tags: Record<string, string[]> = {};
           const pinned: Record<string, boolean> = {};
+          const pinnedUntil: Record<string, string> = {};
           (data.settings || []).forEach((s: ArticleSetting) => {
             if (s.cover_image_url) {
               settings[s.article_id] = s.cover_image_url;
@@ -157,10 +161,15 @@ export default function AdminDiscoverPage() {
             if (s.is_pinned !== null && s.is_pinned !== undefined) {
               pinned[s.article_id] = s.is_pinned;
             }
+            // 置頂到期日
+            if (s.pinned_until) {
+              pinnedUntil[s.article_id] = s.pinned_until;
+            }
           });
           setArticleSettings(settings);
           setArticleCategories(categories);
           setArticleTags(tags);
+          setArticlePinnedUntil(pinnedUntil);
           setArticlePinned(pinned);
         }
       } catch (e) {
@@ -275,6 +284,7 @@ export default function AdminDiscoverPage() {
     setNewContentType(articleCategories[guide.id] as "guide" | "promo" || "");
     setNewTags(articleTags[guide.id] || []);
     setNewIsPinned(articlePinned[guide.id] || false);
+    setNewPinnedUntil(articlePinnedUntil[guide.id] || "");
     setTagInput("");
     setEditDialogOpen(true);
   };
@@ -287,6 +297,7 @@ export default function AdminDiscoverPage() {
     setNewTags(articleTags[promo.id] || []);
     // 優惠的置頂：先檢查後台設定，再檢查原始數據
     setNewIsPinned(articlePinned[promo.id] ?? promo.isPinned ?? false);
+    setNewPinnedUntil(articlePinnedUntil[promo.id] || (promo as any).pinnedUntil || "");
     setTagInput("");
     setEditDialogOpen(true);
   };
@@ -420,6 +431,7 @@ export default function AdminDiscoverPage() {
         contentType: newContentType || null,
         customTags: newTags.length > 0 ? newTags : null,
         isPinned: newIsPinned,
+        pinnedUntil: newIsPinned && newPinnedUntil ? newPinnedUntil : null, // 只有置頂時才設定到期日
       };
       
       const res = await fetch('/api/admin/article-settings', {
@@ -725,6 +737,7 @@ export default function AdminDiscoverPage() {
                               setNewContentType(articleCategories[item.id] as "guide" | "promo" || "");
                               setNewTags(articleTags[item.id] || []);
                               setNewIsPinned(articlePinned[item.id] || false);
+                              setNewPinnedUntil(articlePinnedUntil[item.id] || "");
                               setTagInput("");
                               setEditDialogOpen(true);
                             }}
@@ -805,6 +818,7 @@ export default function AdminDiscoverPage() {
                               setNewContentType(articleCategories[item.id] as "guide" | "promo" || "");
                               setNewTags(articleTags[item.id] || []);
                               setNewIsPinned(articlePinned[item.id] || false);
+                              setNewPinnedUntil(articlePinnedUntil[item.id] || "");
                               setTagInput("");
                               setEditDialogOpen(true);
                             }}
@@ -961,6 +975,7 @@ export default function AdminDiscoverPage() {
                               setNewContentType(articleCategories[item.id] as "guide" | "promo" || "");
                               setNewTags(articleTags[item.id] || []);
                               setNewIsPinned(articlePinned[item.id] ?? isPinned ?? false);
+                              setNewPinnedUntil(articlePinnedUntil[item.id] || (item as any).pinnedUntil || "");
                               setTagInput("");
                               setEditDialogOpen(true);
                             }}
@@ -1039,6 +1054,25 @@ export default function AdminDiscoverPage() {
               <p className="text-xs text-gray-500">
                 當前狀態：<span className={newIsPinned ? 'text-amber-600 font-bold' : 'text-gray-600 font-bold'}>{newIsPinned ? '✓ 已置頂' : '✗ 未置頂'}</span>
               </p>
+              
+              {/* 置頂到期日期 - 只有置頂時才顯示 */}
+              {newIsPinned && (
+                <div className="mt-3 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-700">
+                  <Label className="text-sm font-medium text-amber-700 dark:text-amber-300">置頂到期日期</Label>
+                  <Input
+                    type="date"
+                    value={newPinnedUntil}
+                    onChange={(e) => setNewPinnedUntil(e.target.value)}
+                    className="mt-2"
+                    min={new Date().toISOString().split('T')[0]}
+                  />
+                  <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">
+                    {newPinnedUntil 
+                      ? `置頂至 ${new Date(newPinnedUntil).toLocaleDateString('zh-HK')} 結束`
+                      : '留空 = 永久置頂（直到手動取消）'}
+                  </p>
+                </div>
+              )}
             </div>
             
             {/* 分類設定 */}

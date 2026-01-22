@@ -8,17 +8,16 @@ import { Promo } from "../types";
  * 3. 或在 Admin 後台執行「同步本地資料」
  * 
  * 排序規則：
- * - sortOrder 數值越大越前（預設 0）
- * - 相同 sortOrder 按 updatedAt 最新排序
- * - ⚠️ isPinned 已停用，全部文章預設為 false
+ * - isPinned: true 的文章會置頂（可設 pinnedUntil 到期日）
+ * - 相同置頂狀態按 updatedAt 最新排序
  * 
  * 新增文章範例：
  * {
  *   id: "unique-id",
  *   ...
  *   updatedAt: "2026-01-22",  // 必填！用於排序
- *   isPinned: false,          // ⚠️ 固定為 false，用 sortOrder 控制排序
- *   sortOrder: 100,           // 選填，數值越大越前
+ *   isPinned: true,           // 是否置頂
+ *   pinnedUntil: "2026-02-28", // 選填，置頂到期日（空 = 永久）
  * }
  */
 

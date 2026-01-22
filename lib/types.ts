@@ -183,7 +183,8 @@ export interface Promo {
   // Sorting & Display
   updatedAt?: string; // ISO date string for sorting by last update
   sortOrder?: number; // Manual sort order (higher = top), for pinning
-  isPinned?: boolean; // If true, always show at top
+  isPinned?: boolean; // If true, show at top (until pinnedUntil expires)
+  pinnedUntil?: string; // ISO date string - pin expires after this date (optional)
   // SEO Fields
   faqs?: PromoFAQ[]; // FAQ for structured data
   seoTitle?: string; // Custom SEO title

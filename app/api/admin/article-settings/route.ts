@@ -25,13 +25,13 @@ export async function GET() {
   }
 }
 
-// POST: 更新文章設定（封面圖片、分類、標籤、置頂）
+// POST: 更新文章設定（封面圖片、分類、標籤、置頂、置頂到期日）
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { articleId, coverImageUrl, contentType, customTags, isPinned } = body;
+    const { articleId, coverImageUrl, contentType, customTags, isPinned, pinnedUntil } = body;
 
-    console.log('POST /api/admin/article-settings:', { articleId, contentType, customTags, isPinned });
+    console.log('POST /api/admin/article-settings:', { articleId, contentType, customTags, isPinned, pinnedUntil });
 
     if (!articleId) {
       return NextResponse.json({ error: 'Missing articleId' }, { status: 400 });
@@ -78,6 +78,9 @@ export async function POST(request: Request) {
       if (isPinned !== undefined) {
         updateData.is_pinned = isPinned || false;
       }
+      if (pinnedUntil !== undefined) {
+        updateData.pinned_until = pinnedUntil || null;
+      }
 
       const { error } = await adminAuthClient
         .from('article_settings')
@@ -104,6 +107,7 @@ export async function POST(request: Request) {
           content_type: contentType || null,
           custom_tags: customTags && customTags.length > 0 ? customTags : null,
           is_pinned: isPinned || false,
+          pinned_until: pinnedUntil || null,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         });
