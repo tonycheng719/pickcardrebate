@@ -343,6 +343,22 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
         return;
       }
       
+      // 同步更新 article_settings 表的置頂狀態
+      // 這確保列表頁面顯示正確的置頂狀態
+      try {
+        await fetch("/api/admin/article-settings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            articleId: formData.id,
+            isPinned: formData.isPinned,
+          }),
+        });
+      } catch (settingsError) {
+        // 不阻止主要儲存流程，只記錄錯誤
+        console.warn("Failed to sync article_settings:", settingsError);
+      }
+      
       toast.success(isNew ? "✅ 優惠已建立！" : "✅ 優惠已更新！");
       router.push("/admin/discover");
     } catch (error: any) {

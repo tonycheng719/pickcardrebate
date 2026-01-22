@@ -247,9 +247,9 @@ export default function AdminDiscoverPage() {
       ...p,
       _originalType: ((p as any).contentType || 'promo') as 'guide' | 'promo',
     })).sort((a, b) => {
-      // 1. Pinned first
-      const aIsPinned = articlePinned[a.id] ?? a.isPinned;
-      const bIsPinned = articlePinned[b.id] ?? b.isPinned;
+      // 1. Pinned first (優先使用 promos 表的 isPinned，再用 article_settings 的設定)
+      const aIsPinned = a.isPinned ?? articlePinned[a.id] ?? false;
+      const bIsPinned = b.isPinned ?? articlePinned[b.id] ?? false;
       if (aIsPinned && !bIsPinned) return -1;
       if (!aIsPinned && bIsPinned) return 1;
       
@@ -295,8 +295,8 @@ export default function AdminDiscoverPage() {
     setNewCoverUrl(articleSettings[promo.id] || promo.imageUrl || "");
     setNewContentType(articleCategories[promo.id] as "guide" | "promo" || "");
     setNewTags(articleTags[promo.id] || []);
-    // 優惠的置頂：先檢查後台設定，再檢查原始數據
-    setNewIsPinned(articlePinned[promo.id] ?? promo.isPinned ?? false);
+    // 優惠的置頂：優先使用 promos 表的值，再檢查 article_settings
+    setNewIsPinned(promo.isPinned ?? articlePinned[promo.id] ?? false);
     setNewPinnedUntil(articlePinnedUntil[promo.id] || (promo as any).pinnedUntil || "");
     setTagInput("");
     setEditDialogOpen(true);
@@ -881,7 +881,8 @@ export default function AdminDiscoverPage() {
               <tbody className="divide-y dark:divide-gray-700">
                 {filteredPromos.map((item, index) => {
                   const isFromGuide = item._originalType === 'guide';
-                  const isPinned = articlePinned[item.id] ?? ('isPinned' in item && item.isPinned);
+                  // 優先使用 promos 表的 isPinned，再用 article_settings 的設定
+                  const isPinned = item.isPinned ?? articlePinned[item.id] ?? false;
                   
                   return (
                     <tr key={item.id} className={`hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors ${isPinned ? 'bg-amber-50/50 dark:bg-amber-900/10' : ''} ${isFromGuide ? 'bg-emerald-50/30 dark:bg-emerald-900/10' : ''}`}>
@@ -902,7 +903,8 @@ export default function AdminDiscoverPage() {
                               setNewCoverUrl(articleSettings[item.id] || item.imageUrl || '');
                               setNewContentType(articleCategories[item.id] as "guide" | "promo" || "promo");
                               setNewTags(articleTags[item.id] || []);
-                              setNewIsPinned(articlePinned[item.id] ?? isPinned ?? false);
+                              // 優先使用 promos 表的 isPinned
+                              setNewIsPinned(item.isPinned ?? articlePinned[item.id] ?? false);
                               setNewPinnedUntil(articlePinnedUntil[item.id] || (item as any).pinnedUntil || "");
                               setTagInput("");
                               setEditDialogOpen(true);
@@ -986,7 +988,8 @@ export default function AdminDiscoverPage() {
                               setNewCoverUrl(articleSettings[item.id] || item.imageUrl || '');
                               setNewContentType(articleCategories[item.id] as "guide" | "promo" || "");
                               setNewTags(articleTags[item.id] || []);
-                              setNewIsPinned(articlePinned[item.id] ?? isPinned ?? false);
+                              // 優先使用 promos 表的 isPinned
+                              setNewIsPinned(item.isPinned ?? articlePinned[item.id] ?? false);
                               setNewPinnedUntil(articlePinnedUntil[item.id] || (item as any).pinnedUntil || "");
                               setTagInput("");
                               setEditDialogOpen(true);
