@@ -1,12 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-
-function getServiceClient() {
-  return createClient(supabaseUrl, supabaseServiceKey);
-}
+import { adminAuthClient } from '@/lib/supabase/admin-client';
 
 // GET: 獲取所有留言（後台用）- 同時獲取新舊兩個留言系統的數據
 export async function GET(request: NextRequest) {
@@ -16,7 +9,7 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status'); // 'visible', 'hidden', 'all'
     const source = searchParams.get('source'); // 'new', 'legacy', or null for both
 
-    const supabase = getServiceClient();
+    const supabase = adminAuthClient;
     let allComments: any[] = [];
 
     // 1. 獲取新系統的留言 (comments 表)
@@ -210,7 +203,7 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ error: 'Missing comment id' }, { status: 400 });
     }
 
-    const supabase = getServiceClient();
+    const supabase = adminAuthClient;
 
     // 根據來源選擇表
     if (source === 'legacy_article') {
@@ -291,7 +284,7 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'Missing comment id' }, { status: 400 });
     }
 
-    const supabase = getServiceClient();
+    const supabase = adminAuthClient;
 
     if (source === 'legacy_article') {
       // 舊系統文章留言 - 軟刪除
