@@ -31,7 +31,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
         setLocaleState(savedLocale);
       } else {
         // 自動檢測設備語言
-        const deviceLocale = Localization.locale.toLowerCase();
+        const deviceLocale = Localization.locale?.toLowerCase() || 'zh-hk';
         
         if (deviceLocale.startsWith('en')) {
           setLocaleState('en');
