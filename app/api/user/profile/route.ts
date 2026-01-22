@@ -37,6 +37,46 @@ export async function POST(request: Request) {
   }
 }
 
+// PUT: Update user profile (for onboarding) using Service Role
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { userId, gender, district, birthYear, birthMonth } = body;
+
+    if (!userId) {
+      return NextResponse.json({ error: "Missing userId" }, { status: 400 });
+    }
+
+    console.log(`[Profile API] Onboarding update for user ${userId}:`, { gender, district, birthYear, birthMonth });
+
+    const updates: Record<string, any> = {};
+    if (gender) updates.gender = gender;
+    if (district) updates.district = district;
+    if (birthYear) updates.birth_year = birthYear;
+    if (birthMonth) updates.birth_month = birthMonth;
+
+    if (Object.keys(updates).length === 0) {
+      return NextResponse.json({ error: "No updates provided" }, { status: 400 });
+    }
+
+    const { error } = await adminAuthClient
+      .from("profiles")
+      .update(updates)
+      .eq("id", userId);
+
+    if (error) {
+      console.error("[Profile API] Onboarding update error:", error);
+      throw error;
+    }
+
+    console.log(`[Profile API] Onboarding completed for user ${userId}`);
+    return NextResponse.json({ success: true });
+  } catch (e: any) {
+    console.error("[Profile API] PUT Error:", e);
+    return NextResponse.json({ error: e.message }, { status: 500 });
+  }
+}
+
 // GET: Fetch user profile using Service Role (bypasses RLS)
 export async function GET(request: Request) {
   try {

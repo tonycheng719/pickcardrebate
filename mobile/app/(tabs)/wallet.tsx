@@ -9,6 +9,7 @@ import { useColorScheme } from '@/components/useColorScheme';
 import { Button, Card } from '@/components/ui';
 import { useAuth } from '@/lib/auth/AuthContext';
 import { getMyCards, syncWalletFromCloud, MyCard } from '@/lib/storage/myCards';
+import { useFocusEffect } from '@react-navigation/native';
 
 const API_BASE = 'https://pickcardrebate.com';
 
@@ -25,11 +26,20 @@ interface Transaction {
 export default function WalletScreen() {
   const colorScheme = useColorScheme() ?? 'light';
   const colors = Colors[colorScheme];
-  const { user, loading, signInWithGoogle, signInWithApple, signOut } = useAuth();
+  const { user, loading, signInWithGoogle, signInWithApple, signOut, needsOnboarding, refreshProfile } = useAuth();
   const [signingIn, setSigningIn] = useState(false);
   const [myCards, setMyCards] = useState<MyCard[]>([]);
   const [syncing, setSyncing] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+
+  // Check for onboarding needs when screen is focused
+  useFocusEffect(
+    useCallback(() => {
+      if (user && needsOnboarding) {
+        router.replace('/onboarding');
+      }
+    }, [user, needsOnboarding])
+  );
   
   // 交易統計
   const [transactions, setTransactions] = useState<Transaction[]>([]);

@@ -4,13 +4,23 @@ import { Platform, Alert, Linking } from 'react-native';
 import { getSupabase } from '../supabase/client';
 import { registerForPushNotifications } from '../notifications/push';
 
+interface UserProfile {
+  gender?: string;
+  district?: string;
+  birth_year?: number;
+  birth_month?: number;
+}
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  profile: UserProfile | null;
+  needsOnboarding: boolean;
   signInWithGoogle: () => Promise<void>;
   signInWithApple: () => Promise<void>;
   signOut: () => Promise<void>;
+  refreshProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -19,6 +29,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [needsOnboarding, setNeedsOnboarding] = useState(false);
+
+  // Fetch user profile from backend
+  const fetchProfile = useCallback(async (userId: string) => {
+    try {
+      const response = await fetch(`https://pickcardrebate.com/api/user/profile?userId=${userId}`);
+      if (response.ok) {
+        const data = await response.json();
+        const profileData = data.profile;
+        setProfile(profileData);
+        
+        // Check if onboarding is needed
+        const isProfileIncomplete = !profileData?.gender || !profileData?.district || !profileData?.birth_year;
+        setNeedsOnboarding(isProfileIncomplete);
+        console.log('[Auth] Profile loaded, needs onboarding:', isProfileIncomplete);
+        return profileData;
+      }
+    } catch (e) {
+      console.error('[Auth] Failed to fetch profile:', e);
+    }
+    return null;
+  }, []);
+
+  const refreshProfile = useCallback(async () => {
+    if (user?.id) {
+      await fetchProfile(user.id);
+    }
+  }, [user, fetchProfile]);
 
   // 處理 deep link 中的 tokens
   const handleDeepLink = useCallback(async (url: string) => {
@@ -76,9 +115,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const supabase = getSupabase();
 
     // 取得初始 session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
+      
+      // Fetch profile if user is logged in
+      if (session?.user?.id) {
+        await fetchProfile(session.user.id);
+      }
+      
       setLoading(false);
     });
 
@@ -87,6 +132,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.log('[Auth] Auth state changed:', _event, session?.user?.email);
       setSession(session);
       setUser(session?.user ?? null);
+      
+      // Fetch profile on sign in
+      if (session?.user?.id) {
+        await fetchProfile(session.user.id);
+      } else {
+        setProfile(null);
+        setNeedsOnboarding(false);
+      }
       
       // 用戶登入後的處理
       if (_event === 'SIGNED_IN' && session?.user?.id && Platform.OS !== 'web') {
@@ -347,7 +400,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, signInWithGoogle, signInWithApple, signOut }}>
+    <AuthContext.Provider value={{ user, session, loading, profile, needsOnboarding, signInWithGoogle, signInWithApple, signOut, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   );
