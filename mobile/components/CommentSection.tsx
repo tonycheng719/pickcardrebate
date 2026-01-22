@@ -4,13 +4,10 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  FlatList,
   StyleSheet,
   ActivityIndicator,
   Alert,
-  KeyboardAvoidingView,
   Platform,
-  RefreshControl,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '@/constants/Colors';
@@ -52,7 +49,6 @@ export function CommentSection({ contentType, contentId }: CommentSectionProps) 
   const [comments, setComments] = useState<Comment[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [newComment, setNewComment] = useState('');
   const [replyTo, setReplyTo] = useState<Comment | null>(null);
@@ -89,18 +85,12 @@ export function CommentSection({ contentType, contentId }: CommentSectionProps) 
       console.error('Load comments error:', error);
     } finally {
       setLoading(false);
-      setRefreshing(false);
     }
   }, [contentType, contentId, page, user?.id]);
 
   useEffect(() => {
     loadComments(true);
   }, [contentType, contentId]);
-
-  const handleRefresh = () => {
-    setRefreshing(true);
-    loadComments(true);
-  };
 
   const handleSubmit = async () => {
     if (!user) {
@@ -508,31 +498,35 @@ export function CommentSection({ contentType, contentId }: CommentSectionProps) 
   }
 
   return (
-    <KeyboardAvoidingView 
-      style={[styles.container, { backgroundColor: colors.backgroundCard }]}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
+    <View style={[styles.container, { backgroundColor: colors.backgroundCard }]}>
       {renderHeader()}
       {renderInput()}
       
-      <FlatList
-        data={comments}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => renderComment({ item })}
-        ListEmptyComponent={renderEmpty}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-        }
-        onEndReached={() => {
-          if (hasMore && !loading) {
-            setPage(prev => prev + 1);
-            loadComments();
-          }
-        }}
-        onEndReachedThreshold={0.5}
-        contentContainerStyle={styles.listContent}
-      />
-    </KeyboardAvoidingView>
+      {comments.length === 0 ? (
+        renderEmpty()
+      ) : (
+        <View style={styles.listContent}>
+          {comments.map((item) => (
+            <View key={item.id}>
+              {renderComment({ item })}
+            </View>
+          ))}
+          {hasMore && (
+            <TouchableOpacity 
+              style={styles.loadMoreBtn}
+              onPress={() => {
+                setPage(prev => prev + 1);
+                loadComments();
+              }}
+            >
+              <Text style={[styles.loadMoreText, { color: colors.primary }]}>
+                載入更多留言...
+              </Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
+    </View>
   );
 }
 
@@ -701,6 +695,15 @@ const styles = StyleSheet.create({
   emptyText: {
     marginTop: Layout.spacing.sm,
     fontSize: Layout.fontSize.sm,
+  },
+  loadMoreBtn: {
+    alignItems: 'center',
+    paddingVertical: Layout.spacing.md,
+    marginTop: Layout.spacing.sm,
+  },
+  loadMoreText: {
+    fontSize: Layout.fontSize.sm,
+    fontWeight: '500' as const,
   },
 });
 
