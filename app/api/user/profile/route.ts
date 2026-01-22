@@ -41,15 +41,29 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
-    const { userId, gender, district, birthYear, birthMonth } = body;
+    const { userId, username, gender, district, birthYear, birthMonth } = body;
 
     if (!userId) {
       return NextResponse.json({ error: "Missing userId" }, { status: 400 });
     }
 
-    console.log(`[Profile API] Onboarding update for user ${userId}:`, { gender, district, birthYear, birthMonth });
+    console.log(`[Profile API] Onboarding update for user ${userId}:`, { username, gender, district, birthYear, birthMonth });
 
     const updates: Record<string, any> = {};
+    if (username) {
+      // 驗證用戶名唯一性
+      const { data: existing } = await adminAuthClient
+        .from("profiles")
+        .select("id")
+        .ilike("username", username)
+        .neq("id", userId)
+        .single();
+      
+      if (existing) {
+        return NextResponse.json({ error: "此用戶名已被使用" }, { status: 400 });
+      }
+      updates.username = username;
+    }
     if (gender) updates.gender = gender;
     if (district) updates.district = district;
     if (birthYear) updates.birth_year = birthYear;

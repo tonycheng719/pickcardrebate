@@ -1,15 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useWallet } from "@/lib/store/wallet-context";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Navbar } from "@/components/navbar";
 import { toast } from "sonner";
+import { Check, X, Loader2 } from "lucide-react";
+import { useDebouncedCallback } from "use-debounce";
 
 const HK_DISTRICTS = [
   {
@@ -29,6 +32,9 @@ const HK_DISTRICTS = [
 export default function OnboardingPage() {
   const { user, updateProfile } = useWallet();
   const router = useRouter();
+  const [username, setUsername] = useState("");
+  const [usernameStatus, setUsernameStatus] = useState<"idle" | "checking" | "available" | "taken" | "invalid">("idle");
+  const [usernameError, setUsernameError] = useState("");
   const [gender, setGender] = useState<"male" | "female" | "other">("male");
   const [district, setDistrict] = useState("");
   const [birthYear, setBirthYear] = useState("");
@@ -40,6 +46,42 @@ export default function OnboardingPage() {
   useEffect(() => {
     setCurrentYear(new Date().getFullYear());
   }, []);
+
+  // 驗證用戶名
+  const checkUsername = useDebouncedCallback(async (value: string) => {
+    if (!value || value.length < 3) {
+      setUsernameStatus("idle");
+      return;
+    }
+
+    setUsernameStatus("checking");
+    try {
+      const res = await fetch(`/api/user/check-username?username=${encodeURIComponent(value)}`);
+      const data = await res.json();
+      
+      if (data.available) {
+        setUsernameStatus("available");
+        setUsernameError("");
+      } else {
+        setUsernameStatus(data.error?.includes("格式") || data.error?.includes("字符") ? "invalid" : "taken");
+        setUsernameError(data.error || "用戶名不可用");
+      }
+    } catch {
+      setUsernameStatus("idle");
+    }
+  }, 500);
+
+  const handleUsernameChange = (value: string) => {
+    // 只允許英文、數字、底線
+    const sanitized = value.replace(/[^a-zA-Z0-9_]/g, "").slice(0, 20);
+    setUsername(sanitized);
+    setUsernameStatus("idle");
+    setUsernameError("");
+    
+    if (sanitized.length >= 3) {
+      checkUsername(sanitized);
+    }
+  };
 
   const years = Array.from({ length: 100 }, (_, i) => currentYear - i); // Last 100 years
   const months = Array.from({ length: 12 }, (_, i) => i + 1);
@@ -57,11 +99,12 @@ export default function OnboardingPage() {
   }, [user, router, isLoading]);
 
   const handleSubmit = async () => {
-    if (!district || !birthYear || !birthMonth) return;
+    if (!username || !district || !birthYear || !birthMonth || usernameStatus !== "available") return;
 
     setIsLoading(true);
     try {
       await updateProfile({
+        username,
         gender,
         district,
         birthYear: parseInt(birthYear),
@@ -80,7 +123,7 @@ export default function OnboardingPage() {
     }
   };
 
-  const isFormValid = gender && district && birthYear && birthMonth;
+  const isFormValid = username && usernameStatus === "available" && gender && district && birthYear && birthMonth;
 
   if (!user) {
       return null; // Or loading spinner
@@ -105,6 +148,35 @@ export default function OnboardingPage() {
           </CardHeader>
           <CardContent className="space-y-8">
             
+            {/* Username */}
+            <div className="space-y-4">
+              <Label className="text-base">用戶名 <span className="text-red-500">*</span></Label>
+              <div className="relative">
+                <Input
+                  placeholder="輸入用戶名（3-20個英文字母、數字或底線）"
+                  value={username}
+                  onChange={(e) => handleUsernameChange(e.target.value)}
+                  className={`h-12 pr-10 ${
+                    usernameStatus === "available" ? "border-green-500 focus-visible:ring-green-500" :
+                    usernameStatus === "taken" || usernameStatus === "invalid" ? "border-red-500 focus-visible:ring-red-500" : ""
+                  }`}
+                />
+                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                  {usernameStatus === "checking" && <Loader2 className="h-5 w-5 text-gray-400 animate-spin" />}
+                  {usernameStatus === "available" && <Check className="h-5 w-5 text-green-500" />}
+                  {(usernameStatus === "taken" || usernameStatus === "invalid") && <X className="h-5 w-5 text-red-500" />}
+                </div>
+              </div>
+              {usernameError && (
+                <p className="text-sm text-red-500">{usernameError}</p>
+              )}
+              {usernameStatus === "available" && (
+                <p className="text-sm text-green-600">✓ 此用戶名可以使用</p>
+              )}
+              <p className="text-xs text-gray-500">用戶名將用於留言等公開場合，無法更改。</p>
+            </div>
+
+            {/* Gender */}
             <div className="space-y-4">
               <Label className="text-base">您的性別 <span className="text-red-500">*</span></Label>
               <RadioGroup 

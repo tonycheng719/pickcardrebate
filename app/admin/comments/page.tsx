@@ -13,26 +13,33 @@ import { PROMOS } from "@/lib/data/promos";
 
 interface Comment {
   id: string;
-  card_id?: string;
-  promo_id?: string;
+  content_type: string; // 'card' or 'article'
+  content_id: string;
   user_id: string;
   user_name: string;
   user_avatar?: string;
   content: string;
-  rating?: number;
-  is_deleted: boolean;
-  deleted_by?: string;
+  is_hidden: boolean;
+  is_pinned: boolean;
+  likes_count: number;
   created_at: string;
+  reportCount?: number;
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+    avatar_url?: string;
+  };
 }
 
-type CommentType = "card" | "promo";
+type CommentType = "card" | "article";
 
 export default function AdminCommentsPage() {
   const [cardComments, setCardComments] = useState<Comment[]>([]);
-  const [promoComments, setPromoComments] = useState<Comment[]>([]);
+  const [articleComments, setArticleComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
   const [keyword, setKeyword] = useState("");
-  const [activeTab, setActiveTab] = useState<"all" | "deleted">("all");
+  const [activeTab, setActiveTab] = useState<"visible" | "hidden">("visible");
   const [commentType, setCommentType] = useState<CommentType>("card");
   const [selectedItemId, setSelectedItemId] = useState<string>("");
 
@@ -40,15 +47,15 @@ export default function AdminCommentsPage() {
     setLoading(true);
     try {
       // Fetch all comments via API
-      const res = await fetch("/api/admin/comments?type=all");
+      const res = await fetch("/api/admin/comments");
       
       if (res.ok) {
         const data = await res.json();
         const comments = data.comments || [];
         
-        // Separate card and promo comments
-        setCardComments(comments.filter((c: any) => c.type === 'card'));
-        setPromoComments(comments.filter((c: any) => c.type === 'article' || c.type === 'promo'));
+        // Separate card and article comments by content_type
+        setCardComments(comments.filter((c: Comment) => c.content_type === 'card'));
+        setArticleComments(comments.filter((c: Comment) => c.content_type === 'article'));
       }
     } catch (error) {
       console.error("Error fetching comments:", error);
@@ -62,28 +69,50 @@ export default function AdminCommentsPage() {
     fetchComments();
   }, []);
 
-  const handleDelete = async (id: string, type: CommentType) => {
+  const handleDelete = async (id: string) => {
     if (!confirm("確定要刪除此評論嗎？")) return;
 
     try {
-      const response = await fetch(`/api/admin/comments?id=${id}&type=${type}`, {
+      const response = await fetch(`/api/admin/comments?id=${id}`, {
         method: "DELETE",
       });
 
       if (!response.ok) throw new Error("Delete failed");
 
-      if (type === "card") {
-        setCardComments(prev => prev.map(c => 
-          c.id === id ? { ...c, is_deleted: true, deleted_by: 'admin' } : c
-        ));
+      // Remove from local state
+      if (commentType === "card") {
+        setCardComments(prev => prev.filter(c => c.id !== id));
       } else {
-        setPromoComments(prev => prev.map(c => 
-          c.id === id ? { ...c, is_deleted: true, deleted_by: 'admin' } : c
-        ));
+        setArticleComments(prev => prev.filter(c => c.id !== id));
       }
       toast.success("評論已刪除");
     } catch (error) {
       toast.error("刪除失敗");
+    }
+  };
+
+  const handleToggleHidden = async (id: string, currentHidden: boolean) => {
+    try {
+      const response = await fetch(`/api/admin/comments`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, is_hidden: !currentHidden }),
+      });
+
+      if (!response.ok) throw new Error("Update failed");
+
+      // Update local state
+      const updateFn = (prev: Comment[]) => 
+        prev.map(c => c.id === id ? { ...c, is_hidden: !currentHidden } : c);
+      
+      if (commentType === "card") {
+        setCardComments(updateFn);
+      } else {
+        setArticleComments(updateFn);
+      }
+      toast.success(currentHidden ? "評論已顯示" : "評論已隱藏");
+    } catch (error) {
+      toast.error("操作失敗");
     }
   };
 
@@ -92,37 +121,37 @@ export default function AdminCommentsPage() {
     return card?.name || cardId;
   };
 
-  const getPromoTitle = (promoId: string) => {
-    const promo = PROMOS.find(p => p.id === promoId);
-    return promo?.title || promoId;
+  const getArticleTitle = (slug: string) => {
+    // For articles, we'll just show the slug for now
+    return slug.replace(/-/g, ' ').slice(0, 30) + '...';
   };
 
   // Current comments based on type
-  const currentComments = commentType === "card" ? cardComments : promoComments;
+  const currentComments = commentType === "card" ? cardComments : articleComments;
 
   // Get unique IDs for filter
   const uniqueIds = Array.from(new Set(
-    currentComments.map(c => commentType === "card" ? c.card_id : c.promo_id).filter(Boolean)
+    currentComments.map(c => c.content_id).filter(Boolean)
   )) as string[];
 
   const filteredComments = currentComments.filter(c => {
     // Tab filter
-    if (activeTab === "deleted" && !c.is_deleted) return false;
-    if (activeTab === "all" && c.is_deleted) return false;
+    if (activeTab === "hidden" && !c.is_hidden) return false;
+    if (activeTab === "visible" && c.is_hidden) return false;
 
     // Item filter
-    const itemId = commentType === "card" ? c.card_id : c.promo_id;
-    if (selectedItemId && itemId !== selectedItemId) return false;
+    if (selectedItemId && c.content_id !== selectedItemId) return false;
 
     // Keyword filter
     if (keyword) {
       const lowerKeyword = keyword.toLowerCase();
       const itemName = commentType === "card" 
-        ? getCardName(c.card_id || '') 
-        : getPromoTitle(c.promo_id || '');
+        ? getCardName(c.content_id) 
+        : getArticleTitle(c.content_id);
+      const userName = c.user?.name || c.user_name || '';
       return (
         c.content.toLowerCase().includes(lowerKeyword) ||
-        c.user_name.toLowerCase().includes(lowerKeyword) ||
+        userName.toLowerCase().includes(lowerKeyword) ||
         itemName.toLowerCase().includes(lowerKeyword)
       );
     }
@@ -131,16 +160,11 @@ export default function AdminCommentsPage() {
   });
 
   // Stats
-  const totalCardComments = cardComments.filter(c => !c.is_deleted).length;
-  const totalPromoComments = promoComments.filter(c => !c.is_deleted).length;
-  const totalComments = commentType === "card" ? totalCardComments : totalPromoComments;
-  const deletedComments = currentComments.filter(c => c.is_deleted).length;
-  const avgRating = (() => {
-    const ratings = currentComments.filter(c => !c.is_deleted && c.rating).map(c => c.rating!);
-    return ratings.length > 0 
-      ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1) 
-      : "N/A";
-  })();
+  const totalCardComments = cardComments.filter(c => !c.is_hidden).length;
+  const totalArticleComments = articleComments.filter(c => !c.is_hidden).length;
+  const totalComments = commentType === "card" ? totalCardComments : totalArticleComments;
+  const hiddenComments = currentComments.filter(c => c.is_hidden).length;
+  const totalLikes = currentComments.reduce((sum, c) => sum + (c.likes_count || 0), 0);
 
   return (
     <div className="space-y-6">
@@ -172,14 +196,14 @@ export default function AdminCommentsPage() {
           </span>
         </Button>
         <Button
-          variant={commentType === "promo" ? "default" : "ghost"}
-          onClick={() => { setCommentType("promo"); setSelectedItemId(""); }}
+          variant={commentType === "article" ? "default" : "ghost"}
+          onClick={() => { setCommentType("article"); setSelectedItemId(""); }}
           className="gap-2"
         >
           <Gift className="h-4 w-4" />
-          優惠評論
+          文章評論
           <span className="ml-1 px-2 py-0.5 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 text-xs rounded-full">
-            {totalPromoComments}
+            {totalArticleComments}
           </span>
         </Button>
       </div>
@@ -207,8 +231,8 @@ export default function AdminCommentsPage() {
               <Star className="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{avgRating}</p>
-              <p className="text-sm text-gray-500">平均評分</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalLikes}</p>
+              <p className="text-sm text-gray-500">總讚數</p>
             </div>
           </CardContent>
         </Card>
@@ -218,8 +242,8 @@ export default function AdminCommentsPage() {
               <Trash2 className="h-6 w-6 text-red-600 dark:text-red-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{deletedComments}</p>
-              <p className="text-sm text-gray-500">已刪除</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{hiddenComments}</p>
+              <p className="text-sm text-gray-500">已隱藏</p>
             </div>
           </CardContent>
         </Card>
@@ -242,18 +266,18 @@ export default function AdminCommentsPage() {
           value={selectedItemId}
           onChange={(e) => setSelectedItemId(e.target.value)}
         >
-          <option value="">{commentType === "card" ? "所有信用卡" : "所有優惠"}</option>
+          <option value="">{commentType === "card" ? "所有信用卡" : "所有文章"}</option>
           {uniqueIds.map(id => (
             <option key={id} value={id}>
-              {commentType === "card" ? getCardName(id) : getPromoTitle(id)}
+              {commentType === "card" ? getCardName(id) : getArticleTitle(id)}
             </option>
           ))}
         </select>
 
         <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)}>
           <TabsList>
-            <TabsTrigger value="all">有效評論</TabsTrigger>
-            <TabsTrigger value="deleted">已刪除</TabsTrigger>
+            <TabsTrigger value="visible">顯示中</TabsTrigger>
+            <TabsTrigger value="hidden">已隱藏</TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
@@ -267,30 +291,31 @@ export default function AdminCommentsPage() {
         ) : filteredComments.length === 0 ? (
           <div className="text-center py-12 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-dashed">
             <MessageSquare className="h-12 w-12 mx-auto text-gray-300 mb-4" />
-            <p className="text-gray-500">暫無{commentType === "card" ? "信用卡" : "優惠"}評論</p>
+            <p className="text-gray-500">暫無{commentType === "card" ? "信用卡" : "文章"}評論</p>
           </div>
         ) : (
           filteredComments.map((comment) => {
-            const itemId = commentType === "card" ? comment.card_id : comment.promo_id;
             const itemName = commentType === "card" 
-              ? getCardName(comment.card_id || '') 
-              : getPromoTitle(comment.promo_id || '');
+              ? getCardName(comment.content_id) 
+              : getArticleTitle(comment.content_id);
             const itemLink = commentType === "card"
-              ? `/cards/${comment.card_id}`
-              : `/promos/${comment.promo_id}`;
+              ? `/cards/${comment.content_id}`
+              : `/discover/${comment.content_id}`;
+            const userName = comment.user?.name || comment.user_name || '匿名';
+            const userAvatar = comment.user?.avatar_url || comment.user_avatar;
             
             return (
               <Card 
                 key={comment.id} 
-                className={`dark:bg-gray-800 dark:border-gray-700 ${comment.is_deleted ? 'opacity-60' : ''}`}
+                className={`dark:bg-gray-800 dark:border-gray-700 ${comment.is_hidden ? 'opacity-60' : ''}`}
               >
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-start gap-3 flex-1">
                       {/* Avatar */}
                       <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden shrink-0">
-                        {comment.user_avatar ? (
-                          <img src={comment.user_avatar} alt="" className="w-full h-full object-cover" />
+                        {userAvatar ? (
+                          <img src={userAvatar} alt="" className="w-full h-full object-cover" />
                         ) : (
                           <User className="h-5 w-5 text-gray-400" />
                         )}
@@ -300,7 +325,7 @@ export default function AdminCommentsPage() {
                         {/* Header */}
                         <div className="flex items-center gap-2 flex-wrap mb-1">
                           <span className="font-medium text-gray-900 dark:text-white">
-                            {comment.user_name}
+                            {userName}
                           </span>
                           <span className="text-xs text-gray-400">•</span>
                           <Link 
@@ -310,6 +335,7 @@ export default function AdminCommentsPage() {
                                 ? "text-blue-600 dark:text-blue-400" 
                                 : "text-purple-600 dark:text-purple-400"
                             }`}
+                            target="_blank"
                           >
                             {commentType === "card" ? (
                               <CreditCard className="h-3 w-3" />
@@ -323,53 +349,58 @@ export default function AdminCommentsPage() {
                             <Calendar className="h-3 w-3" />
                             {new Date(comment.created_at).toLocaleString('zh-HK')}
                           </span>
+                          {comment.likes_count > 0 && (
+                            <>
+                              <span className="text-xs text-gray-400">•</span>
+                              <span className="text-xs text-gray-500">❤️ {comment.likes_count}</span>
+                            </>
+                          )}
+                          {(comment.reportCount || 0) > 0 && (
+                            <>
+                              <span className="text-xs text-gray-400">•</span>
+                              <span className="text-xs text-red-500">⚠️ {comment.reportCount} 舉報</span>
+                            </>
+                          )}
                         </div>
-
-                        {/* Rating */}
-                        {comment.rating && (
-                          <div className="flex items-center gap-1 mb-2">
-                            {[1, 2, 3, 4, 5].map(star => (
-                              <Star 
-                                key={star} 
-                                className={`h-4 w-4 ${star <= comment.rating! ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} 
-                              />
-                            ))}
-                          </div>
-                        )}
 
                         {/* Content */}
                         <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
                           {comment.content}
                         </p>
 
-                        {/* Deleted Badge */}
-                        {comment.is_deleted && (
-                          <div className="mt-2 flex items-center gap-1 text-xs text-red-500">
+                        {/* Hidden Badge */}
+                        {comment.is_hidden && (
+                          <div className="mt-2 flex items-center gap-1 text-xs text-orange-500">
                             <AlertTriangle className="h-3 w-3" />
-                            已由{comment.deleted_by === 'admin' ? '管理員' : '用戶'}刪除
+                            已隱藏
                           </div>
                         )}
                       </div>
                     </div>
 
                     {/* Actions */}
-                    {!comment.is_deleted && (
-                      <div className="flex items-center gap-2">
-                        <Link href={`/admin/users/${comment.user_id}`}>
-                          <Button variant="ghost" size="sm">
-                            查看用戶
-                          </Button>
-                        </Link>
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
-                          onClick={() => handleDelete(comment.id, commentType)}
-                        >
-                          <Trash2 className="h-4 w-4" />
+                    <div className="flex items-center gap-2">
+                      <Link href={`/admin/users/${comment.user_id}`}>
+                        <Button variant="ghost" size="sm">
+                          查看用戶
                         </Button>
-                      </div>
-                    )}
+                      </Link>
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        onClick={() => handleToggleHidden(comment.id, comment.is_hidden)}
+                      >
+                        {comment.is_hidden ? '顯示' : '隱藏'}
+                      </Button>
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
+                        onClick={() => handleDelete(comment.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>

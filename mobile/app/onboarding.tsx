@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   SafeAreaView,
   Alert,
   ActivityIndicator,
+  TextInput,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -38,12 +39,24 @@ const GENDERS = [
   { id: 'other', label: '其他' },
 ];
 
+// Simple debounce utility
+function debounce<T extends (...args: any[]) => any>(func: T, wait: number): T {
+  let timeout: ReturnType<typeof setTimeout> | null = null;
+  return ((...args: Parameters<T>) => {
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  }) as T;
+}
+
 export default function OnboardingScreen() {
   const router = useRouter();
   const { user, refreshProfile } = useAuth();
   const colorScheme = useColorScheme() ?? 'light';
   const colors = Colors[colorScheme];
   
+  const [username, setUsername] = useState('');
+  const [usernameStatus, setUsernameStatus] = useState<'idle' | 'checking' | 'available' | 'taken' | 'invalid'>('idle');
+  const [usernameError, setUsernameError] = useState('');
   const [gender, setGender] = useState<string>('');
   const [district, setDistrict] = useState<string>('');
   const [birthYear, setBirthYear] = useState<string>('');
@@ -57,7 +70,46 @@ export default function OnboardingScreen() {
   const years = Array.from({ length: 80 }, (_, i) => currentYear - 18 - i);
   const months = Array.from({ length: 12 }, (_, i) => i + 1);
 
-  const isFormValid = gender && district && birthYear && birthMonth;
+  // 驗證用戶名
+  const checkUsernameDebounced = useCallback(
+    debounce(async (value: string) => {
+      if (!value || value.length < 3) {
+        setUsernameStatus('idle');
+        return;
+      }
+
+      setUsernameStatus('checking');
+      try {
+        const res = await fetch(`https://pickcardrebate.com/api/user/check-username?username=${encodeURIComponent(value)}`);
+        const data = await res.json();
+        
+        if (data.available) {
+          setUsernameStatus('available');
+          setUsernameError('');
+        } else {
+          setUsernameStatus(data.error?.includes('格式') || data.error?.includes('字符') ? 'invalid' : 'taken');
+          setUsernameError(data.error || '用戶名不可用');
+        }
+      } catch {
+        setUsernameStatus('idle');
+      }
+    }, 500),
+    []
+  );
+
+  const handleUsernameChange = (value: string) => {
+    // 只允許英文、數字、底線
+    const sanitized = value.replace(/[^a-zA-Z0-9_]/g, '').slice(0, 20);
+    setUsername(sanitized);
+    setUsernameStatus('idle');
+    setUsernameError('');
+    
+    if (sanitized.length >= 3) {
+      checkUsernameDebounced(sanitized);
+    }
+  };
+
+  const isFormValid = username && usernameStatus === 'available' && gender && district && birthYear && birthMonth;
 
   const handleSubmit = async () => {
     if (!isFormValid || !user) return;
@@ -69,6 +121,7 @@ export default function OnboardingScreen() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           userId: user.id,
+          username,
           gender,
           district,
           birthYear: parseInt(birthYear),
@@ -127,6 +180,45 @@ export default function OnboardingScreen() {
           <Text style={[styles.subtitle, { color: colors.textMuted }]}>
             為了提供更精準的信用卡優惠資訊，請填寫以下基本資料
           </Text>
+        </View>
+
+        {/* Username */}
+        <View style={styles.section}>
+          <Text style={[styles.label, { color: colors.text }]}>用戶名 *</Text>
+          <View style={styles.usernameContainer}>
+            <TextInput
+              style={[
+                styles.usernameInput,
+                { 
+                  backgroundColor: colors.backgroundCard, 
+                  borderColor: usernameStatus === 'available' ? '#22c55e' :
+                    usernameStatus === 'taken' || usernameStatus === 'invalid' ? '#ef4444' : colors.border,
+                  color: colors.text,
+                }
+              ]}
+              placeholder="輸入用戶名（英文、數字或底線）"
+              placeholderTextColor={colors.textMuted}
+              value={username}
+              onChangeText={handleUsernameChange}
+              autoCapitalize="none"
+              autoCorrect={false}
+              maxLength={20}
+            />
+            <View style={styles.usernameStatus}>
+              {usernameStatus === 'checking' && <ActivityIndicator size="small" color={colors.textMuted} />}
+              {usernameStatus === 'available' && <Ionicons name="checkmark-circle" size={24} color="#22c55e" />}
+              {(usernameStatus === 'taken' || usernameStatus === 'invalid') && <Ionicons name="close-circle" size={24} color="#ef4444" />}
+            </View>
+          </View>
+          {usernameError ? (
+            <Text style={styles.errorText}>{usernameError}</Text>
+          ) : usernameStatus === 'available' ? (
+            <Text style={styles.successText}>✓ 此用戶名可以使用</Text>
+          ) : (
+            <Text style={[styles.hintText, { color: colors.textMuted }]}>
+              用戶名將用於留言等公開場合，無法更改
+            </Text>
+          )}
         </View>
 
         {/* Gender Selection */}
@@ -452,6 +544,37 @@ const styles = StyleSheet.create({
   },
   optionText: {
     fontSize: 16,
+  },
+  usernameContainer: {
+    position: 'relative',
+  },
+  usernameInput: {
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    paddingRight: 48,
+    borderRadius: 8,
+    borderWidth: 1,
+    fontSize: 16,
+  },
+  usernameStatus: {
+    position: 'absolute',
+    right: 12,
+    top: '50%',
+    transform: [{ translateY: -12 }],
+  },
+  errorText: {
+    color: '#ef4444',
+    fontSize: 12,
+    marginTop: 4,
+  },
+  successText: {
+    color: '#22c55e',
+    fontSize: 12,
+    marginTop: 4,
+  },
+  hintText: {
+    fontSize: 12,
+    marginTop: 4,
   },
 });
 
