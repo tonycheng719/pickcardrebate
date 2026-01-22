@@ -152,6 +152,39 @@ const MONEYHERO_PARTNER_OFFERS = [
       notes: "⚠️ 領取MoneyHero獨家優惠不能同時獲取花旗銀行迎新優惠。換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
     }
   },
+  // ========================================
+  // Citi Prestige 信用卡 (2025/12/31 12:00 - 2026/01/30 18:00)
+  // 條件：批卡後30日內簽賬滿HK$10,000
+  // 更新日期：2026-01-22
+  // ========================================
+  {
+    cardId: "citi-prestige",
+    partnerOffer: {
+      enabled: true,
+      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/citi-prestige-card",
+      bonusValue: 4288,
+      bonusDescription: "獎品6選1：PHILIPS飲水機(HK$4,288)/LG空氣清新機(HK$3,690)/Marshall藍牙喇叭(HK$3,499)/HK$2,000 Apple禮品卡/HK$2,000惠康現金券/4K投影機(HK$2,499)",
+      bonusItems: [
+        "PHILIPS 飛利浦 ADD6920BK RO 純淨飲水機（價值HK$4,288）",
+        "LG AS35GGW20 PuriCare™ AeroHit 空氣清新機 寵物版（價值HK$3,690）",
+        "Marshall Stanmore III 家用藍牙喇叭（價值HK$3,499）",
+        "HK$2,000 Apple Store 禮品卡",
+        "HK$2,000 惠康購物現金券",
+        "Usatisfy mini 無線音箱4K投影機（價值HK$2,499）"
+      ],
+      validFrom: "2025-12-31",
+      validTo: "2026-01-30",
+      requirements: [
+        "全新Citi信用卡客戶（過去12個月內未曾持有Citi信用卡主卡）",
+        "批卡後30日內累積簽賬滿HK$10,000",
+        "2026年2月28日或之前成功獲批並啟動信用卡",
+        "收到表格後7日內填妥「獎賞換領表格」"
+      ],
+      minSpend: 10000,
+      minSpendDays: 30,
+      notes: "⚠️ 領取MoneyHero獨家優惠不能同時獲取花旗銀行迎新優惠。換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。Citi Prestige 年費 HK$3,800。",
+    }
+  },
 
   // ========================================
   // DBS 星展銀行 (2025/12/25 18:00 - 2026/01/30 18:00)
