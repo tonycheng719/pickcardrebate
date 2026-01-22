@@ -5,7 +5,8 @@ import { CreditCard, Merchant, Promo, Category } from "../types";
 import { HK_CARDS } from "../data/cards";
 import { POPULAR_MERCHANTS } from "../data/merchants";
 import { CATEGORIES } from "../data/categories";
-// 注意：PROMOS 已移至資料庫，不再從本地文件載入
+// PROMOS 現在會自動合併：資料庫 + 本地文件（本地新增的會自動顯示）
+import { PROMOS } from "../data/promos";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 
@@ -225,8 +226,8 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
   // Start with cached data or local data IMMEDIATELY to avoid white screen
   const [cards, setCards] = useState<CreditCard[]>(HK_CARDS); 
   const [merchants, setMerchants] = useState<Merchant[]>(getCachedMerchants);
-  // Promos 現在只從資料庫載入，不再使用本地文件
-  const [promos, setPromos] = useState<Promo[]>([]);
+  // Promos 自動合併：資料庫 + 本地文件（本地新增的會即時顯示）
+  const [promos, setPromos] = useState<Promo[]>(PROMOS.map(p => ({ ...p, contentType: 'promo' as const })));
   const [isLoading, setIsLoading] = useState(true); // Still track loading for admin/background sync
   
   const supabase = createClient();
@@ -334,20 +335,59 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
             }
         }
 
-        // 3. Promos - 只從資料庫載入（不再使用本地文件）
+        // 3. Promos - 自動合併：資料庫 + 本地文件
+        // 這樣新增到 promos.ts 的文章會自動顯示，無需手動同步
         try {
             const promosRes = await fetch('/api/admin/promos', { signal: controller.signal });
             if (promosRes.ok) {
                 const { promos: promosData } = await promosRes.json();
                 
-                if (promosData && promosData.length > 0) {
-                    // 直接使用資料庫數據
-                    setPromos(promosData.map(mapPromoFromDB));
+                // 建立資料庫 promos 的 ID Set
+                const dbPromoIds = new Set((promosData || []).map((p: any) => p.id));
+                const dbPromos = (promosData || []).map(mapPromoFromDB);
+                
+                // 找出本地有但資料庫沒有的 promos（新增的文章）
+                const localOnlyPromos = PROMOS
+                    .filter(p => !dbPromoIds.has(p.id))
+                    .map(p => ({
+                        ...p,
+                        // 確保有 contentType 欄位
+                        contentType: 'promo' as const,
+                    }));
+                
+                if (localOnlyPromos.length > 0) {
+                    console.log(`[DataStore] 發現 ${localOnlyPromos.length} 篇本地新文章，自動合併顯示`);
                 }
+                
+                // 合併：資料庫優先 + 本地新增
+                const mergedPromos = [...dbPromos, ...localOnlyPromos];
+                
+                // 排序：isPinned > sortOrder > updatedAt
+                mergedPromos.sort((a, b) => {
+                    // 1. Pinned first
+                    if (a.isPinned && !b.isPinned) return -1;
+                    if (!a.isPinned && b.isPinned) return 1;
+                    // 2. sortOrder (higher first)
+                    const aSort = a.sortOrder || 0;
+                    const bSort = b.sortOrder || 0;
+                    if (aSort !== bSort) return bSort - aSort;
+                    // 3. updatedAt (newest first)
+                    const aUpdated = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+                    const bUpdated = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+                    return bUpdated - aUpdated;
+                });
+                
+                setPromos(mergedPromos);
+            } else {
+                // 如果資料庫請求失敗，直接使用本地 PROMOS
+                console.log('[DataStore] 資料庫請求失敗，使用本地 PROMOS');
+                setPromos(PROMOS.map(p => ({ ...p, contentType: 'promo' as const })));
             }
         } catch (e: any) {
             if (e.name !== 'AbortError') {
                 console.warn("Promos fetch failed:", e.message);
+                // Fallback to local PROMOS
+                setPromos(PROMOS.map(p => ({ ...p, contentType: 'promo' as const })));
             }
         }
         
