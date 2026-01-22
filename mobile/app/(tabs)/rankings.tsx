@@ -1,12 +1,15 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator, Image, RefreshControl } from 'react-native';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator, Image, RefreshControl, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import PagerView from 'react-native-pager-view';
 import { Colors, BankColors } from '@/constants/Colors';
 import { Layout } from '@/constants/Layout';
 import { useColorScheme } from '@/components/useColorScheme';
 import { Card, RewardBadge } from '@/components/ui';
 import { api, RankingItem, RankingsResponse } from '@/lib/api/client';
 import { router } from 'expo-router';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // 排行榜類別 - 與 Web 版一致
 const RANKING_CATEGORIES = [
@@ -21,26 +24,25 @@ const RANKING_CATEGORIES = [
   { id: 'all_round', name: '全能補底', icon: '💳' },
 ];
 
-export default function RankingsScreen() {
-  const colorScheme = useColorScheme() ?? 'light';
-  const colors = Colors[colorScheme];
-  const [selectedCategory, setSelectedCategory] = useState('dining');
+// 單個類別的排行榜內容
+interface RankingPageProps {
+  category: typeof RANKING_CATEGORIES[0];
+  colors: typeof Colors.light;
+  onCardPress: (cardId: string) => void;
+}
+
+function RankingPage({ category, colors, onCardPress }: RankingPageProps) {
   const [rankings, setRankings] = useState<RankingItem[]>([]);
   const [categoryData, setCategoryData] = useState<Partial<RankingsResponse>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
 
-  // 載入排行榜數據
-  useEffect(() => {
-    loadRankings(selectedCategory);
-  }, [selectedCategory]);
-
-  const loadRankings = async (category: string, isRefresh = false) => {
+  const loadRankings = async (isRefresh = false) => {
     if (!isRefresh) setLoading(true);
     setError(null);
     
-    const response = await api.getRankings(category, 10);
+    const response = await api.getRankings(category.id, 10);
     
     if (response.data) {
       setRankings(response.data.rankings);
@@ -53,47 +55,204 @@ export default function RankingsScreen() {
     if (isRefresh) setRefreshing(false);
   };
 
-  // 下拉更新
+  useEffect(() => {
+    loadRankings();
+  }, [category.id]);
+
   const handleRefresh = useCallback(() => {
     setRefreshing(true);
-    loadRankings(selectedCategory, true);
-  }, [selectedCategory]);
+    loadRankings(true);
+  }, []);
+
+  return (
+    <ScrollView 
+      style={styles.rankingList} 
+      showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
+          tintColor={colors.primary}
+          colors={[colors.primary, '#10B981', '#F59E0B']}
+          progressBackgroundColor={colors.backgroundCard}
+          title={refreshing ? "更新中..." : "下拉更新排行榜"}
+          titleColor={colors.textMuted}
+        />
+      }
+    >
+      <View style={styles.header}>
+        <Text style={[styles.headerTitle, { color: colors.text }]}>
+          {category.icon} {category.name}類別 Top 10
+        </Text>
+        <Text style={[styles.swipeHint, { color: colors.textMuted }]}>
+          ← 左右滑動切換類別 →
+        </Text>
+      </View>
+
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={colors.primary} />
+        </View>
+      ) : error ? (
+        <View style={styles.errorContainer}>
+          <Text style={[styles.errorText, { color: colors.error }]}>{error}</Text>
+          <TouchableOpacity onPress={() => loadRankings()}>
+            <Text style={[styles.retryText, { color: colors.primary }]}>點擊重試</Text>
+          </TouchableOpacity>
+        </View>
+      ) : rankings.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <Text style={[styles.emptyText, { color: colors.textMuted }]}>
+            此類別暫無數據
+          </Text>
+        </View>
+      ) : (
+        rankings.map((card, index) => {
+          const bankColor = BankColors[card.bank] || BankColors.default;
+          
+          return (
+            <Card 
+              key={card.id} 
+              style={styles.rankingCard} 
+              onPress={() => onCardPress(card.id)}
+            >
+              <View style={styles.rankingRow}>
+                {/* 排名 */}
+                <View style={[
+                  styles.rankBadge,
+                  {
+                    backgroundColor: index === 0 ? '#FFD700' : 
+                                     index === 1 ? '#C0C0C0' : 
+                                     index === 2 ? '#CD7F32' : colors.borderLight,
+                  },
+                ]}>
+                  <Text style={[
+                    styles.rankNumber,
+                    { color: index < 3 ? '#FFFFFF' : colors.textMuted },
+                  ]}>
+                    {index + 1}
+                  </Text>
+                </View>
+
+                {/* 卡片圖片或顏色 */}
+                {card.imageUrl ? (
+                  <Image 
+                    source={{ uri: card.imageUrl }}
+                    style={styles.cardImage}
+                    resizeMode="cover"
+                  />
+                ) : (
+                  <View style={[styles.cardColorSmall, { backgroundColor: bankColor.bg }]}>
+                    <Text style={[styles.cardBankShort, { color: bankColor.text }]}>
+                      {card.bank.slice(0, 3)}
+                    </Text>
+                  </View>
+                )}
+
+                {/* 卡片信息 */}
+                <View style={styles.cardInfo}>
+                  <Text style={[styles.cardName, { color: colors.text }]} numberOfLines={1}>
+                    {card.name}
+                  </Text>
+                  <Text style={[styles.bankName, { color: colors.textMuted }]}>
+                    {card.bank}
+                  </Text>
+                  {card.ruleDescription && (
+                    <Text style={[styles.ruleDesc, { color: colors.textMuted }]} numberOfLines={1}>
+                      {card.ruleDescription.split('[')[0].trim()}
+                    </Text>
+                  )}
+                </View>
+
+                {/* 回贈率或里數兌換率 */}
+                {categoryData.isMilesCategory && card.dollarsPerMile ? (
+                  <View style={[styles.milesBadge, { backgroundColor: colors.primaryLight }]}>
+                    <Text style={[styles.milesRate, { color: colors.primary }]}>
+                      {`$${card.dollarsPerMile.toFixed(2)}/里`}
+                    </Text>
+                    {card.milesProgram && (
+                      <Text style={[styles.milesProgram, { color: colors.textMuted }]}>
+                        {card.milesProgram}
+                      </Text>
+                    )}
+                  </View>
+                ) : (
+                  <RewardBadge rate={card.rate} size="lg" />
+                )}
+              </View>
+            </Card>
+          );
+        })
+      )}
+
+      <View style={{ height: 100 }} />
+    </ScrollView>
+  );
+}
+
+export default function RankingsScreen() {
+  const colorScheme = useColorScheme() ?? 'light';
+  const colors = Colors[colorScheme];
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const pagerRef = useRef<PagerView>(null);
+  const categoryScrollRef = useRef<ScrollView>(null);
 
   const handleCardPress = (cardId: string) => {
     router.push(`/card/${cardId}`);
+  };
+
+  // 當頁面改變時更新選中的類別
+  const handlePageSelected = (e: { nativeEvent: { position: number } }) => {
+    const newIndex = e.nativeEvent.position;
+    setSelectedIndex(newIndex);
+    
+    // 自動滾動類別選擇器讓當前類別可見
+    if (categoryScrollRef.current) {
+      // 估算每個 chip 的寬度（約 90px）
+      const chipWidth = 90;
+      const scrollX = Math.max(0, newIndex * chipWidth - SCREEN_WIDTH / 2 + chipWidth / 2);
+      categoryScrollRef.current.scrollTo({ x: scrollX, animated: true });
+    }
+  };
+
+  // 點擊類別時跳轉到對應頁面
+  const handleCategoryPress = (index: number) => {
+    setSelectedIndex(index);
+    pagerRef.current?.setPage(index);
   };
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
       {/* 類別選擇 */}
       <ScrollView
+        ref={categoryScrollRef}
         horizontal
         showsHorizontalScrollIndicator={false}
         style={styles.categoryScroll}
         contentContainerStyle={styles.categoryContent}
       >
-        {RANKING_CATEGORIES.map((category) => (
+        {RANKING_CATEGORIES.map((category, index) => (
           <TouchableOpacity
             key={category.id}
             style={[
               styles.categoryChip,
               {
-                backgroundColor: selectedCategory === category.id
+                backgroundColor: selectedIndex === index
                   ? colors.primary
                   : colors.backgroundCard,
-                borderColor: selectedCategory === category.id
+                borderColor: selectedIndex === index
                   ? colors.primary
                   : colors.border,
               },
             ]}
-            onPress={() => setSelectedCategory(category.id)}
+            onPress={() => handleCategoryPress(index)}
           >
             <Text style={styles.categoryIcon}>{category.icon}</Text>
             <Text
               style={[
                 styles.categoryName,
                 {
-                  color: selectedCategory === category.id
+                  color: selectedIndex === index
                     ? '#FFFFFF'
                     : colors.text,
                 },
@@ -105,127 +264,39 @@ export default function RankingsScreen() {
         ))}
       </ScrollView>
 
-      {/* 排行榜 */}
-      <ScrollView 
-        style={styles.rankingList} 
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={handleRefresh}
-            tintColor={colors.primary}
-            colors={[colors.primary, '#10B981', '#F59E0B']}
-            progressBackgroundColor={colors.backgroundCard}
-            title={refreshing ? "更新中..." : "下拉更新排行榜"}
-            titleColor={colors.textMuted}
+      {/* 頁面指示器 */}
+      <View style={styles.pageIndicator}>
+        {RANKING_CATEGORIES.map((_, index) => (
+          <View
+            key={index}
+            style={[
+              styles.dot,
+              {
+                backgroundColor: selectedIndex === index ? colors.primary : colors.borderLight,
+                width: selectedIndex === index ? 16 : 6,
+              },
+            ]}
           />
-        }
+        ))}
+      </View>
+
+      {/* 可滑動的排行榜頁面 */}
+      <PagerView
+        ref={pagerRef}
+        style={styles.pagerView}
+        initialPage={0}
+        onPageSelected={handlePageSelected}
       >
-        <View style={styles.header}>
-          <Text style={[styles.headerTitle, { color: colors.text }]}>
-            {RANKING_CATEGORIES.find(c => c.id === selectedCategory)?.icon}{' '}
-            {RANKING_CATEGORIES.find(c => c.id === selectedCategory)?.name}類別 Top 10
-          </Text>
-        </View>
-
-        {loading ? (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={colors.primary} />
+        {RANKING_CATEGORIES.map((category) => (
+          <View key={category.id} style={styles.page}>
+            <RankingPage
+              category={category}
+              colors={colors}
+              onCardPress={handleCardPress}
+            />
           </View>
-        ) : error ? (
-          <View style={styles.errorContainer}>
-            <Text style={[styles.errorText, { color: colors.error }]}>{error}</Text>
-            <TouchableOpacity onPress={() => loadRankings(selectedCategory)}>
-              <Text style={[styles.retryText, { color: colors.primary }]}>點擊重試</Text>
-            </TouchableOpacity>
-          </View>
-        ) : rankings.length === 0 ? (
-          <View style={styles.emptyContainer}>
-            <Text style={[styles.emptyText, { color: colors.textMuted }]}>
-              此類別暫無數據
-            </Text>
-          </View>
-        ) : (
-          rankings.map((card, index) => {
-            const bankColor = BankColors[card.bank] || BankColors.default;
-            
-            return (
-              <Card 
-                key={card.id} 
-                style={styles.rankingCard} 
-                onPress={() => handleCardPress(card.id)}
-              >
-                <View style={styles.rankingRow}>
-                  {/* 排名 */}
-                  <View style={[
-                    styles.rankBadge,
-                    {
-                      backgroundColor: index === 0 ? '#FFD700' : 
-                                       index === 1 ? '#C0C0C0' : 
-                                       index === 2 ? '#CD7F32' : colors.borderLight,
-                    },
-                  ]}>
-                    <Text style={[
-                      styles.rankNumber,
-                      { color: index < 3 ? '#FFFFFF' : colors.textMuted },
-                    ]}>
-                      {index + 1}
-                    </Text>
-                  </View>
-
-                  {/* 卡片圖片或顏色 */}
-                  {card.imageUrl ? (
-                    <Image 
-                      source={{ uri: card.imageUrl }}
-                      style={styles.cardImage}
-                      resizeMode="cover"
-                    />
-                  ) : (
-                    <View style={[styles.cardColorSmall, { backgroundColor: bankColor.bg }]}>
-                      <Text style={[styles.cardBankShort, { color: bankColor.text }]}>
-                        {card.bank.slice(0, 3)}
-                      </Text>
-                    </View>
-                  )}
-
-                  {/* 卡片信息 */}
-                  <View style={styles.cardInfo}>
-                    <Text style={[styles.cardName, { color: colors.text }]} numberOfLines={1}>
-                      {card.name}
-                    </Text>
-                    <Text style={[styles.bankName, { color: colors.textMuted }]}>
-                      {card.bank}
-                    </Text>
-                    {card.ruleDescription && (
-                      <Text style={[styles.ruleDesc, { color: colors.textMuted }]} numberOfLines={1}>
-                        {card.ruleDescription.split('[')[0].trim()}
-                      </Text>
-                    )}
-                  </View>
-
-                  {/* 回贈率或里數兌換率 */}
-                  {categoryData.isMilesCategory && card.dollarsPerMile ? (
-                    <View style={[styles.milesBadge, { backgroundColor: colors.primaryLight }]}>
-                      <Text style={[styles.milesRate, { color: colors.primary }]}>
-                        {`$${card.dollarsPerMile.toFixed(2)}/里`}
-                      </Text>
-                      {card.milesProgram && (
-                        <Text style={[styles.milesProgram, { color: colors.textMuted }]}>
-                          {card.milesProgram}
-                        </Text>
-                      )}
-                    </View>
-                  ) : (
-                    <RewardBadge rate={card.rate} size="lg" />
-                  )}
-                </View>
-              </Card>
-            );
-          })
-        )}
-
-        <View style={{ height: 100 }} />
-      </ScrollView>
+        ))}
+      </PagerView>
     </SafeAreaView>
   );
 }
@@ -258,6 +329,23 @@ const styles = StyleSheet.create({
     fontSize: Layout.fontSize.sm,
     fontWeight: Layout.fontWeight.medium,
   },
+  pageIndicator: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: Layout.spacing.xs,
+    gap: 4,
+  },
+  dot: {
+    height: 6,
+    borderRadius: 3,
+  },
+  pagerView: {
+    flex: 1,
+  },
+  page: {
+    flex: 1,
+  },
   rankingList: {
     flex: 1,
     paddingHorizontal: Layout.spacing.md,
@@ -268,6 +356,10 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: Layout.fontSize.xl,
     fontWeight: Layout.fontWeight.bold,
+  },
+  swipeHint: {
+    fontSize: Layout.fontSize.xs,
+    marginTop: Layout.spacing.xs,
   },
   rankingCard: {
     marginBottom: Layout.spacing.md,
