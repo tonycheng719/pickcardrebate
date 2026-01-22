@@ -622,8 +622,8 @@ export const HK_CARDS: CreditCard[] = [
       // T&C: 基本回饋 0.4%，排除繳費、保險、Alipay/WeChat Pay/PayMe (電子錢包充值)
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["網購5%", "外幣6%", "永久免年費", "八達通增值", "必須登記", "冬日賞"],
-    welcomeOfferText: "迎新簽 $5,000 送 $700 +FUN Dollars (全新客戶) / $300 (現有客戶) / 學生簽$2,000送$300 (首60日)",
+    tags: ["網購5%", "外幣6%", "永久免年費", "八達通增值", "必須登記", "MoneyHero獨家"],
+    welcomeOfferText: "🔥 MoneyHero獨家：Delsey 30吋行李箱 (價值$4,980) / Foreo LUNA 3 ($2,090) / $800禮品卡 (全新客戶)",
     sellingPoints: ["永久免年費", "海外 6% (簽上限$8,333/月)", "網上 5% (簽上限$10,000/月)", "回贈上限 $500/月 (共用)", "🚨 需月簽滿$5,000先有高回贈", "🔥冬日簽賬賞額外高達$2,800"],
     featuredMerchants: [
       { name: "Amazon", rate: "5%", category: "網購" },
@@ -632,11 +632,11 @@ export const HK_CARDS: CreditCard[] = [
       { name: "Spotify", rate: "5%", category: "串流" },
     ],
     exclusions: ["快餐店", "酒店/百貨公司/俱樂部內食肆", "Alipay/WeChat Pay/PayMe", "網上繳費", "交稅", "保險公司簽賬"],
-    note: "## 📌 恒生 MMPOWER World Mastercard\n**推廣期：至 2026/3/31**\n\n### 💳 回贈率及上限\n| 類別 | 回贈率 | 簽賬上限 | 回贈上限 |\n|:---|:---:|:---:|:---:|\n| 海外外幣 | **6%** | $8,333 | $500 (共用) |\n| 網上簽賬 | **5%** | $10,000 | $500 (共用) |\n| 自選類別 | 1% | $50,000 | $500 (共用) |\n| 八達通自動增值 | 0.4% | 無上限 | - |\n| 其他簽賬 | 0.4% | 無上限 | - |\n\n⚠️ 海外/網上/自選 三個類別**共用 $500 回贈上限**\n\n---\n\n## ⚙️ 簽賬門檻及登記\n- **月簽門檻**：$5,000\n- **登記網址**：hangseng.com/mpower\n- 已登記客戶無需重新登記\n\n---\n\n## ❌ 不計回贈\n- 快餐店、酒店/百貨公司/俱樂部內食肆\n- Alipay/WeChat Pay/PayMe\n- 網上繳費（水電費、保險等）\n- 交稅、保險公司簽賬\n\n---\n\n## 🎁 迎新優惠\n| 客戶類型 | 簽賬要求 | 獎賞 |\n|:---|:---:|:---:|\n| 全新客戶 | $5,000 | **$700** |\n| 現有客戶 | $5,000 | $300 |\n| 學生 | $2,000 | $300 |\n\n⚠️ 13個月內取消會扣回迎新獎賞！\n\n---\n\n## 🔥 冬日簽賬賞（至2026/2/28）\n累積簽賬可享額外高達 $2,800 回贈！\n👉 [查看詳情](/discover/hangseng-winter-2025)\n\n📅 **2026年1月7日更新**",
+    note: "## 🔥 MoneyHero 限時獨家優惠\n**優惠期：即日至 2026年1月30日下午6時**\n\n### 🎁 全新客戶獨家禮品（6選1）\n批卡後30日內簽滿 **$400** 即可獲得：\n\n| 禮品 | 價值 |\n|:---|:---:|\n| Delsey 30\" GRENELLE SE 行李箱 | **$4,980** |\n| Foreo LUNA 3 潔面及按摩儀 | **$2,090** |\n| Marshall Emberton II 藍牙喇叭 | **$1,499** |\n| HK$800 Apple Store 禮品卡 | $800 |\n| HK$800 惠康購物現金券 | $800 |\n| HK$800 現金回贈 (轉數快) | $800 |\n\n### 🎁 現有客戶獨家禮品（6選1）\n批卡後30日內簽滿 **$400** 即可獲得：\n\n| 禮品 | 價值 |\n|:---|:---:|\n| Foreo LUNA 3 潔面及按摩儀 | **$2,090** |\n| Marshall Willen II 小型無線便攜喇叭 | **$999** |\n| Polaroid Go Generation 2 即影即有相機 | **$999** |\n| HK$600 Apple Store 禮品卡 | $600 |\n| HK$600 惠康購物現金券 | $600 |\n| HK$600 現金回贈 (轉數快) | $600 |\n\n---\n\n## 📌 銀行迎新優惠（至 2026/12/31）\n開卡後60日內簽滿指定金額：\n\n| 客戶類型 | 簽賬要求 | 獎賞 |\n|:---|:---:|:---:|\n| 全新客戶 | $5,000 | **$700** +FUN |\n| 現有客戶 | $5,000 | $300 +FUN |\n| 學生 | $2,000 | $300 +FUN |\n\n---\n\n## 💳 回贈率及上限\n| 類別 | 回贈率 | 回贈上限 |\n|:---|:---:|:---:|\n| 海外外幣 | **6%** | $500 (共用) |\n| 網上簽賬 | **5%** | $500 (共用) |\n| 自選類別 | 1% | $500 (共用) |\n\n⚠️ 需月簽 $5,000 + 登記：hangseng.com/mpower\n\n📅 **2026年1月22日更新**",
     officialApplyUrl: "https://www.hangseng.com/zh-hk/personal/cards/products/mmpower-world-mastercard/",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=212&a=228&sub_id1=pickcardrebate&sub_id2=web",
-    promoEndDate: "2026-03-31",
-    promoName: "+FUN Dollars獎賞計劃 (延長至3月)",
+    promoEndDate: "2026-01-30",
+    promoName: "MoneyHero限時獨家優惠",
   },
   {
     id: "hangseng-enjoy",
