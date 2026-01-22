@@ -1,5 +1,16 @@
 # 信用卡資料更新指南
 
+## ⚠️ 最重要規則
+
+### 🚨 `welcomeOfferText` 只能包含銀行官方迎新！
+
+**絕對不能**在 `welcomeOfferText` 中提及 MoneyHero！
+
+✅ **正確**: `"迎新簽$5,000即送10,000里"`
+❌ **錯誤**: `"迎新送10,000里 + MoneyHero獨家禮品高達$5,980"`
+
+---
+
 ## ⚠️ 重要：兩個系統的分別
 
 當你提供信用卡優惠資料時，需要分開處理**兩種不同的數據**：
@@ -10,7 +21,7 @@
 
 **包含內容**:
 - 卡片基本資料（回贈規則、年費等）
-- **銀行官方迎新優惠**（`welcomeOfferText`）
+- **銀行官方迎新優惠**（`welcomeOfferText`）⚠️ **只寫銀行迎新，不提 MoneyHero**
 - 卡片備註（`note`）
 - 標籤、賣點等
 
@@ -21,7 +32,8 @@
 {
   id: "hsbc-vs",
   name: "滙豐 Visa Signature",
-  welcomeOfferText: "全新客戶：$800獎賞錢（簽$8,000）",  // 銀行迎新
+  welcomeOfferText: "全新客戶簽$8,000獲$800獎賞錢",  // ✅ 只寫銀行迎新
+  // welcomeOfferText: "...$800獎賞錢 + MoneyHero獨家...",  // ❌ 絕對不能這樣寫
   note: "銀行迎新：發卡後60日內簽$8,000可獲$800獎賞錢"
 }
 ```
@@ -114,6 +126,16 @@
 
 ## ⚠️ 常見錯誤
 
+### 🚨 關於 welcomeOfferText
+
+❌ **錯誤**: `"迎新送10,000里 + MoneyHero獨家禮品高達$5,980"`
+✅ **正確**: `"迎新送10,000里"`
+
+❌ **錯誤**: 在 `welcomeOfferText` 提及任何 MoneyHero 內容
+✅ **正確**: `welcomeOfferText` 只寫銀行官方迎新，MoneyHero 內容會自動由 `PartnerOfferCard` 組件顯示
+
+### 🚨 關於資料分配
+
 ❌ **錯誤**: 將 MoneyHero 優惠寫入 `cards.ts`
 ✅ **正確**: MoneyHero 優惠應寫入 `seed/route.ts`
 
@@ -122,6 +144,13 @@
 
 ❌ **錯誤**: 更新 seed 檔案後沒有通知用戶導入
 ✅ **正確**: 提醒用戶去 `/admin/partner-offers` 按「導入 MoneyHero 資料」
+
+### 🚨 網站顯示結構
+
+| 區域 | 數據來源 | 內容 |
+|------|---------|------|
+| **銀行迎新優惠** | `cards.ts` → `welcomeOfferText` | 只寫銀行官方迎新 |
+| **合作夥伴迎新** | 資料庫 → `partner_offer` | MoneyHero 獨家優惠（自動顯示）|
 
 ---
 
