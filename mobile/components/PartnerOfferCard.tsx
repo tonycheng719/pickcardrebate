@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Linking, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import * as WebBrowser from 'expo-web-browser';
 import { Colors } from '@/constants/Colors';
 import { Layout } from '@/constants/Layout';
 import { useColorScheme } from '@/components/useColorScheme';
@@ -90,8 +91,22 @@ export function PartnerOfferCard({
       }).catch(() => {});
     } catch {}
 
-    // 打開申請連結
-    Linking.openURL(offer.applyUrl);
+    // 打開申請連結（優先使用 WebBrowser，fallback 到 Linking）
+    try {
+      await WebBrowser.openBrowserAsync(offer.applyUrl);
+    } catch (error) {
+      // Fallback: 嘗試用系統瀏覽器打開
+      const canOpen = await Linking.canOpenURL(offer.applyUrl);
+      if (canOpen) {
+        await Linking.openURL(offer.applyUrl);
+      } else {
+        Alert.alert(
+          '無法開啟連結',
+          '請稍後再試，或複製以下連結到瀏覽器：\n\n' + offer.applyUrl,
+          [{ text: '確定' }]
+        );
+      }
+    }
   };
 
   return (

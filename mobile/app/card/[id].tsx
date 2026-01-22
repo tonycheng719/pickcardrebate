@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, Image, TouchableOpacity, ActivityIndicator, Linking, Share } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Image, TouchableOpacity, ActivityIndicator, Linking, Share, Alert } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Stack, useLocalSearchParams, router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -95,11 +96,20 @@ export default function CardDetailScreen() {
     setLoading(false);
   };
 
-  const handleApply = () => {
-    if (card?.applyUrl) {
-      Linking.openURL(card.applyUrl);
-    } else if (card?.officialApplyUrl) {
-      Linking.openURL(card.officialApplyUrl);
+  const handleApply = async () => {
+    const url = card?.applyUrl || card?.officialApplyUrl;
+    if (!url) return;
+    
+    try {
+      await WebBrowser.openBrowserAsync(url);
+    } catch (error) {
+      // Fallback: 嘗試用系統瀏覽器打開
+      const canOpen = await Linking.canOpenURL(url);
+      if (canOpen) {
+        await Linking.openURL(url);
+      } else {
+        Alert.alert('無法開啟連結', '請稍後再試');
+      }
     }
   };
 
