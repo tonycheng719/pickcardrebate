@@ -163,7 +163,16 @@ export default function CompareCardsScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['bottom']}>
-      <Stack.Screen options={{ title: '信用卡比較', headerBackTitle: '返回' }} />
+      <Stack.Screen 
+        options={{ 
+          title: '信用卡比較',
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => router.back()} style={{ paddingRight: 16 }}>
+              <Text style={{ color: colors.primary, fontSize: 17 }}>取消</Text>
+            </TouchableOpacity>
+          ),
+        }} 
+      />
       
       <ScrollView 
         style={styles.scrollView}
