@@ -1255,7 +1255,7 @@ export default function CardDetailPage() {
             >
               <CommentSection 
                 contentType="card"
-                contentId={id}
+                contentId={cardId}
                 contentName={card.name}
               />
             </motion.div>
