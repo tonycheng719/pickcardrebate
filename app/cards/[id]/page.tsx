@@ -27,6 +27,7 @@ import { trackViewCard, trackClickApply, trackAddToWallet } from "@/lib/analytic
 import { PageViewTracker } from "@/components/page-view-tracker";
 import { ShareSection } from "@/components/share-section";
 import { ShareButton } from "@/components/share-button";
+import { CommentSection } from "@/components/comments/CommentSection";
 import { PARTNER_MODE_ENABLED } from "@/lib/config";
 import { getCardCapInfo, formatCapInfo } from "@/lib/utils/card-cap-info";
 import { getSceneRatings } from "@/lib/utils/scene-ratings";
@@ -1227,6 +1228,19 @@ export default function CardDetailPage() {
                   </div>
                 </CardContent>
               </Card>
+            </motion.div>
+
+            {/* Comments Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.55 }}
+            >
+              <CommentSection 
+                contentType="card"
+                contentId={id}
+                contentName={card.name}
+              />
             </motion.div>
 
             {/* Share Section */}

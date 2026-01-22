@@ -8,6 +8,7 @@ import { Layout } from '@/constants/Layout';
 import { useColorScheme } from '@/components/useColorScheme';
 import { Button, Card, Badge } from '@/components/ui';
 import { API_BASE_URL } from '@/lib/api/client';
+import { CommentSection } from '@/components/CommentSection';
 
 interface ArticleDetail {
   id: string;
@@ -214,6 +215,9 @@ export default function ArticleDetailScreen() {
           <Text style={[styles.updatedAt, { color: colors.textMuted }]}>
             更新於 {new Date(article.updatedAt).toLocaleDateString('zh-HK')}
           </Text>
+
+          {/* 留言討論 */}
+          <CommentSection contentType="article" contentId={id || ''} />
 
           <View style={{ height: 100 }} />
         </View>

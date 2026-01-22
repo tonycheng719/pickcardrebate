@@ -8,6 +8,7 @@ import { Layout } from '@/constants/Layout';
 import { useColorScheme } from '@/components/useColorScheme';
 import { Button, Card, Badge, RewardBadge } from '@/components/ui';
 import { API_BASE_URL } from '@/lib/api/client';
+import { CommentSection } from '@/components/CommentSection';
 
 interface CardDetail {
   id: string;
@@ -260,6 +261,9 @@ export default function CardDetailScreen() {
               ))}
             </Card>
           )}
+
+          {/* 留言討論 */}
+          <CommentSection contentType="card" contentId={id || ''} />
 
           {/* 底部間距 */}
           <View style={{ height: 100 }} />
