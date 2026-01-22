@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { adminAuthClient } from '@/lib/supabase/admin-client';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 // GET: 獲取所有留言（後台用）- 同時獲取新舊兩個留言系統的數據
 export async function GET(request: NextRequest) {
   try {
