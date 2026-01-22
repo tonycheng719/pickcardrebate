@@ -519,15 +519,30 @@ export default function CardDetailPage() {
                   card={card} 
                   bankWelcomeValue={
                     // 嘗試從 welcomeOfferReward 或 welcomeOfferText 解析數值
-                    card.welcomeOfferReward 
-                      ? parseInt(card.welcomeOfferReward.replace(/[^0-9]/g, '')) || 0
-                      : card.welcomeOfferText
-                        ? (() => {
-                            // 從文字中提取金額，如 "送 $1,200 現金回贈" -> 1200
-                            const match = card.welcomeOfferText.match(/送\s*\$?([\d,]+)/);
-                            return match ? parseInt(match[1].replace(/,/g, '')) || 0 : 0;
-                          })()
-                        : 0
+                    // 注意：里數類別卡片不應該轉換為港幣
+                    (() => {
+                      const text = card.welcomeOfferText || '';
+                      // 檢查是否為里數類別（包含「里」字）
+                      const isMilesOffer = text.includes('里') || text.includes('Miles') || text.includes('miles');
+                      if (isMilesOffer) {
+                        // 里數卡片：不嘗試轉換為港幣，返回 0
+                        return 0;
+                      }
+                      // 現金回贈卡片：提取港幣金額
+                      if (card.welcomeOfferReward) {
+                        return parseInt(card.welcomeOfferReward.replace(/[^0-9]/g, '')) || 0;
+                      }
+                      // 從文字中提取金額，如 "送 $1,200 現金回贈" -> 1200
+                      const match = text.match(/送\s*\$?([\d,]+)/);
+                      return match ? parseInt(match[1].replace(/,/g, '')) || 0 : 0;
+                    })()
+                  }
+                  isMilesCard={
+                    // 判斷是否為里數卡片
+                    (card.welcomeOfferText || '').includes('里') || 
+                    (card.welcomeOfferText || '').includes('Miles') ||
+                    card.rewardConfig?.currency === 'AM' ||
+                    card.rewardConfig?.currency === 'avios'
                   }
                 />
               </motion.div>

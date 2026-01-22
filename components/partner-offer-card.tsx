@@ -23,9 +23,10 @@ interface ExistingCustomerOffer {
 interface PartnerOfferCardProps {
   card: CreditCard;
   bankWelcomeValue?: number; // 銀行迎新價值（港幣）
+  isMilesCard?: boolean; // 是否為里數卡片（里數不應與港幣相加）
 }
 
-export function PartnerOfferCard({ card, bankWelcomeValue = 0 }: PartnerOfferCardProps) {
+export function PartnerOfferCard({ card, bankWelcomeValue = 0, isMilesCard = false }: PartnerOfferCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [customerType, setCustomerType] = useState<"new" | "existing">("new");
   const [mounted, setMounted] = useState(false);
@@ -137,15 +138,31 @@ export function PartnerOfferCard({ card, bankWelcomeValue = 0 }: PartnerOfferCar
                   {customerType === "new" ? "全新客戶" : "現有客戶"}
                 </span>
               )}
-              銀行迎新 + 本網額外獎賞 最高可獲
+              {isMilesCard ? (
+                // 里數卡片：只顯示本網額外獎賞
+                <>本網額外獎賞</>
+              ) : bankWelcomeValue > 0 ? (
+                // 現金回贈卡片且有銀行迎新：顯示合計
+                <>銀行迎新 + 本網額外獎賞 最高可獲</>
+              ) : (
+                // 只有本網額外獎賞
+                <>本網額外獎賞</>
+              )}
             </div>
             <div className="text-3xl font-bold text-amber-600 dark:text-amber-400">
               <DollarSign className="inline h-7 w-7" />
-              {totalValue.toLocaleString()}
+              {isMilesCard ? currentBonusValue.toLocaleString() : totalValue.toLocaleString()}
             </div>
-            <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-              銀行迎新 ${bankWelcomeValue.toLocaleString()} + 額外獎賞 ${currentBonusValue.toLocaleString()}
-            </div>
+            {!isMilesCard && bankWelcomeValue > 0 && (
+              <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                銀行迎新 ${bankWelcomeValue.toLocaleString()} + 額外獎賞 ${currentBonusValue.toLocaleString()}
+              </div>
+            )}
+            {isMilesCard && (
+              <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                💡 銀行迎新為里數，請參考上方卡片資訊
+              </div>
+            )}
           </div>
         </div>
         
