@@ -1578,10 +1578,10 @@ export const HK_CARDS: CreditCard[] = [
       { description: "八達通自動增值 0.4%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme"] },
     ],
-    tags: ["玩樂4%", "旅遊", "海外", "線上娛樂", "八達通增值", "Visa Signature", "學生可申請", "月簽$1500"],
-    welcomeOfferText: "迎新簽$8,800送Marshall喇叭/LG顯示器 或 簽$8,500送$500回贈 (首90天，至2026/2/28)",
+    tags: ["玩樂4%", "旅遊", "海外", "線上娛樂", "八達通增值", "Visa Signature", "學生可申請", "月簽$1500", "MoneyHero獨家"],
+    welcomeOfferText: "🔥 MoneyHero獨家：$200惠康現金券 + $100回贈 (簽$100即享)",
     officialApplyUrl: "https://www.primecredit.com/tc/credit-card/wewa/",
-    applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=180&a=228&sub_id1=pickcardrebate&sub_id2=web",
+    applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=180&a=228&sub_id1=pickcardrebate&sub_id2=web&promo_id=wewa-visa-moneyhero-20260130",
     sellingPoints: ["玩樂 4% (簽上限$5,000/月)", "回贈上限 $200/月", "🚨 需月簽滿$1,500先有4%回贈", "🎓 學生可申請", "Visa Signature 禮遇"],
     featuredMerchants: [
       { name: "Netflix", rate: "4%", category: "娛樂" },
@@ -1590,9 +1590,9 @@ export const HK_CARDS: CreditCard[] = [
       { name: "PlayStation", rate: "4%", category: "娛樂" },
     ],
     exclusions: ["電子錢包充值/轉賬", "分期付款", "賭場", "繳費", "Android 手機支付（僅 iOS 支援）"],
-    note: "## 🎁 迎新優惠（至2026/2/28）\n全新安信信用卡客戶（過往6個月未持有），批卡90日內簽滿合資格簽賬，四揀一：\n\n| 簽賬要求 | 迎新禮品 |\n|:---|:---|\n| $8,800 | Marshall Emberton II 便攜式藍芽喇叭 + $35 回贈 |\n| $8,800 | LG 27吋全高清IPS智能顯示器 + $35 回贈 |\n| $8,500 | $500 現金回贈 + $34 回贈 |\n| $2,000（大專生）| $200 現金回贈 + $8 回贈 |\n\n✅ 合資格簽賬包括八達通自動增值！\n\n---\n\n## 💡 玩樂類別 4 選 1（推廣期 2025/7/1-2026/6/30）\n\n| 類別 | 回贈率 | 備註 |\n|:---|:---|:---|\n| 手機支付 | 4% | Apple Pay（僅 iOS） |\n| 旅遊 | 4% | 航空公司/酒店/旅行社 |\n| 海外 | 4% | 外幣簽賬（淨約 2.05%） |\n| 線上娛樂 | 4% | Netflix/Spotify/Steam 等 |\n\n⚠️ **門檻**：每月簽滿 $1,500 才享 4%\n⚠️ **上限**：每月回贈上限 $200（即首 $5,556 簽賬）\n⚠️ **選擇**：透過 OmyCard App 自選，未選擇自動選「手機支付」\n\n---\n\n## ⚠️ 注意事項\n- **手機支付僅支援 iOS 使用 Apple Pay**！Android 用戶無法使用此類別\n- 線上娛樂包括：App Store / Disney+ / Google Play / JOOX / KKBOX / MyTV SUPER / Netflix / Nintendo / Patreon / PlayStation / Spotify / Steam / Xbox / YouTube\n- 八達通自動增值計 0.4%（無上限）\n- 網上繳費：不適用\n- Visa 外幣手續費約 1.95%\n\n❌ **不計回贈**：電子錢包充值/轉賬、分期、賭場、繳費\n\n📅 **2026年1月7日更新**",
-    promoEndDate: "2026-06-30",
-    promoName: "WeWa 玩樂類別 4 選 1",
+    note: "## 🔥 MoneyHero 限時獨家優惠\n**優惠期：2025年12月31日中午12時至2026年1月30日下午6時**\n\n### 🎁 獨家優惠（共 $300）\n| 禮品 | 來源 |\n|:---|:---:|\n| HK$200 惠康購物現金券 | MoneyHero |\n| HK$100 現金回贈 | 安信信貸 |\n\n### 📋 申請條件\n1. ✅ 全新安信信用卡客戶（過去12個月內未持有主卡）\n2. ✅ 收到獎賞換領表格後 **7日內** 填妥及遞交\n3. ✅ 2026年2月28日或之前成功獲批\n4. ✅ 批卡成功後30日內簽賬滿 **$100** 🎉 超低門檻！\n\n---\n\n## 📌 銀行迎新優惠（至2026/2/28）\n全新安信信用卡客戶，批卡90日內簽滿合資格簽賬：\n\n| 簽賬要求 | 迎新禮品 |\n|:---|:---|\n| $8,800 | LG 27吋全高清 IPS 智能顯示器 |\n| $8,800 | Marshall Emberton II 便攜式藍芽喇叭 |\n| $8,500 | $500 現金回贈 |\n| $2,000（大專生）| $200 現金回贈 |\n| 無簽賬要求 | 高達 $90,000 免息免手續費現金分期套現計劃 |\n\n---\n\n## 💡 玩樂類別 4 選 1（推廣期 2025/7/1-2026/6/30）\n\n| 類別 | 回贈率 | 備註 |\n|:---|:---|:---|\n| 手機支付 | 4% | Apple Pay（僅 iOS） |\n| 旅遊 | 4% | 航空公司/酒店/旅行社 |\n| 海外 | 4% | 外幣簽賬（淨約 2.05%） |\n| 線上娛樂 | 4% | Netflix/Spotify/Steam 等 |\n\n⚠️ **門檻**：每月簽滿 $1,500 才享 4%\n⚠️ **上限**：每月回贈上限 $200（即首 $5,556 簽賬）\n\n---\n\n## ⚠️ 注意事項\n- **手機支付僅支援 iOS 使用 Apple Pay**！Android 用戶無法使用此類別\n- 八達通自動增值計 0.4%（無上限）\n- Visa 外幣手續費約 1.95%\n\n📅 **2026年1月22日更新**",
+    promoEndDate: "2026-01-30",
+    promoName: "MoneyHero限時獨家優惠",
   },
 
   // ========================================================================
