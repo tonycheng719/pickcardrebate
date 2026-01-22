@@ -17,6 +17,7 @@ import { Colors } from '@/constants/Colors';
 import { Layout } from '@/constants/Layout';
 import { useColorScheme } from './useColorScheme';
 import { useAuth } from '@/lib/auth/AuthContext';
+import { router } from 'expo-router';
 
 const API_BASE = 'https://pickcardrebate.com';
 
@@ -476,7 +477,10 @@ export function CommentSection({ contentType, contentId }: CommentSectionProps) 
           </View>
         </>
       ) : (
-        <TouchableOpacity style={[styles.loginPrompt, { backgroundColor: colors.backgroundCard }]}>
+        <TouchableOpacity 
+          style={[styles.loginPrompt, { backgroundColor: colors.backgroundCard }]}
+          onPress={() => router.push('/(tabs)/wallet')}
+        >
           <Text style={[styles.loginText, { color: colors.textMuted }]}>
             登入後即可參與討論
           </Text>
