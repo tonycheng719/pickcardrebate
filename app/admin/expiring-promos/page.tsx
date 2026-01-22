@@ -4,18 +4,129 @@ import { useEffect, useState } from "react";
 import { HK_CARDS } from "@/lib/data/cards";
 import { CreditCard } from "@/lib/types";
 import Link from "next/link";
-import { AlertTriangle, Clock, CheckCircle, Calendar, ExternalLink } from "lucide-react";
+import { AlertTriangle, Clock, CheckCircle, Calendar, ExternalLink, Bell, Send, RefreshCw } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 interface PromoCard extends CreditCard {
   daysUntilExpiry: number;
   status: "expired" | "expiring_soon" | "active";
 }
 
+interface NotificationLog {
+  source_id: string;
+  reminder_type: string;
+  sent_at: string;
+}
+
 export default function ExpiringPromosPage() {
   const [promoCards, setPromoCards] = useState<PromoCard[]>([]);
   const [filter, setFilter] = useState<"all" | "expired" | "expiring_soon" | "active">("all");
   const [cardImages, setCardImages] = useState<Record<string, string>>({});
+  const [selectedCards, setSelectedCards] = useState<Set<string>>(new Set());
+  const [notificationLogs, setNotificationLogs] = useState<NotificationLog[]>([]);
+  const [sending, setSending] = useState(false);
+  const [autoSending, setAutoSending] = useState(false);
+
+  // 載入已發送的通知記錄
+  useEffect(() => {
+    async function fetchNotificationLogs() {
+      try {
+        const res = await fetch('/api/admin/offer-notification-log');
+        if (res.ok) {
+          const data = await res.json();
+          setNotificationLogs(data);
+        }
+      } catch (e) {
+        console.error('Failed to fetch notification logs:', e);
+      }
+    }
+    fetchNotificationLogs();
+  }, []);
+
+  // 檢查是否已發送過提醒
+  const hasNotified = (cardId: string, reminderType: string) => {
+    return notificationLogs.some(
+      log => log.source_id === cardId && log.reminder_type === reminderType
+    );
+  };
+
+  // 發送選定卡片的提醒
+  const handleSendReminders = async () => {
+    if (selectedCards.size === 0) {
+      toast.error('請先選擇要發送提醒的卡片');
+      return;
+    }
+
+    setSending(true);
+    try {
+      const res = await fetch('/api/admin/send-expiry-reminder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cardIds: Array.from(selectedCards) }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        toast.success(`已發送 ${data.sent} 個提醒給 ${data.recipients} 位用戶`);
+        setSelectedCards(new Set());
+        // 重新載入通知記錄
+        const logsRes = await fetch('/api/admin/offer-notification-log');
+        if (logsRes.ok) {
+          setNotificationLogs(await logsRes.json());
+        }
+      } else {
+        toast.error(data.error || '發送失敗');
+      }
+    } catch (e) {
+      toast.error('發送失敗');
+    }
+    setSending(false);
+  };
+
+  // 自動發送所有即將到期的提醒
+  const handleAutoSend = async () => {
+    setAutoSending(true);
+    try {
+      const res = await fetch('/api/cron/auto-expiry-reminders');
+      const data = await res.json();
+      if (res.ok) {
+        toast.success(`自動發送完成：${data.processed} 個優惠，${data.sent} 條通知`);
+        // 重新載入通知記錄
+        const logsRes = await fetch('/api/admin/offer-notification-log');
+        if (logsRes.ok) {
+          setNotificationLogs(await logsRes.json());
+        }
+      } else {
+        toast.error(data.error || '自動發送失敗');
+      }
+    } catch (e) {
+      toast.error('自動發送失敗');
+    }
+    setAutoSending(false);
+  };
+
+  // 切換選擇卡片
+  const toggleCardSelection = (cardId: string) => {
+    const newSelected = new Set(selectedCards);
+    if (newSelected.has(cardId)) {
+      newSelected.delete(cardId);
+    } else {
+      newSelected.add(cardId);
+    }
+    setSelectedCards(newSelected);
+  };
+
+  // 全選/取消全選
+  const toggleSelectAll = () => {
+    const eligibleCards = filteredCards.filter(c => c.status === 'expiring_soon' && c.daysUntilExpiry <= 7);
+    if (selectedCards.size === eligibleCards.length) {
+      setSelectedCards(new Set());
+    } else {
+      setSelectedCards(new Set(eligibleCards.map(c => c.id)));
+    }
+  };
 
   // 從 database 獲取卡片圖片
   useEffect(() => {
@@ -127,13 +238,39 @@ export default function ExpiringPromosPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-          📅 推廣到期提示
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          追蹤信用卡推廣優惠嘅到期日，方便更新 T&C
-        </p>
+      <div className="flex justify-between items-start mb-8">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            📅 推廣到期提示
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            追蹤信用卡推廣優惠嘅到期日，自動發送到期提醒給用戶
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Button 
+            variant="outline" 
+            onClick={handleAutoSend} 
+            disabled={autoSending}
+          >
+            {autoSending ? (
+              <RefreshCw className="h-4 w-4 animate-spin mr-2" />
+            ) : (
+              <Bell className="h-4 w-4 mr-2" />
+            )}
+            自動發送提醒
+          </Button>
+          {selectedCards.size > 0 && (
+            <Button onClick={handleSendReminders} disabled={sending}>
+              {sending ? (
+                <RefreshCw className="h-4 w-4 animate-spin mr-2" />
+              ) : (
+                <Send className="h-4 w-4 mr-2" />
+              )}
+              發送 {selectedCards.size} 個提醒
+            </Button>
+          )}
+        </div>
       </div>
 
       {/* Summary Cards */}
@@ -202,6 +339,15 @@ export default function ExpiringPromosPage() {
             <thead className="bg-gray-50 dark:bg-gray-900">
               <tr>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
+                  <input
+                    type="checkbox"
+                    onChange={toggleSelectAll}
+                    checked={selectedCards.size > 0 && selectedCards.size === filteredCards.filter(c => c.status === 'expiring_soon' && c.daysUntilExpiry <= 7).length}
+                    className="rounded border-gray-300"
+                    title="選擇所有 7 天內到期"
+                  />
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
                   狀態
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
@@ -214,12 +360,20 @@ export default function ExpiringPromosPage() {
                   到期日
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
+                  通知狀態
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
                   操作
                 </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-              {filteredCards.map((card) => (
+              {filteredCards.map((card) => {
+                const canNotify = card.status === 'expiring_soon' && card.daysUntilExpiry <= 7 && card.daysUntilExpiry >= 0;
+                const reminderType = card.daysUntilExpiry <= 1 ? '1d' : card.daysUntilExpiry <= 3 ? '3d' : '7d';
+                const alreadySent = hasNotified(card.id, reminderType);
+                
+                return (
                 <tr
                   key={card.id}
                   className={`hover:bg-gray-50 dark:hover:bg-gray-700/50 ${
@@ -230,6 +384,17 @@ export default function ExpiringPromosPage() {
                       : ""
                   }`}
                 >
+                  <td className="px-4 py-4">
+                    {canNotify && (
+                      <input
+                        type="checkbox"
+                        checked={selectedCards.has(card.id)}
+                        onChange={() => toggleCardSelection(card.id)}
+                        className="rounded border-gray-300"
+                        disabled={alreadySent}
+                      />
+                    )}
+                  </td>
                   <td className="px-4 py-4">
                     {getStatusBadge(card.status, card.daysUntilExpiry)}
                   </td>
@@ -272,6 +437,28 @@ export default function ExpiringPromosPage() {
                     </div>
                   </td>
                   <td className="px-4 py-4">
+                    <div className="flex items-center gap-1 flex-wrap">
+                      {hasNotified(card.id, '7d') && (
+                        <span className="px-1.5 py-0.5 text-xs bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 rounded">
+                          7天 ✓
+                        </span>
+                      )}
+                      {hasNotified(card.id, '3d') && (
+                        <span className="px-1.5 py-0.5 text-xs bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 rounded">
+                          3天 ✓
+                        </span>
+                      )}
+                      {hasNotified(card.id, '1d') && (
+                        <span className="px-1.5 py-0.5 text-xs bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 rounded">
+                          1天 ✓
+                        </span>
+                      )}
+                      {!hasNotified(card.id, '7d') && !hasNotified(card.id, '3d') && !hasNotified(card.id, '1d') && (
+                        <span className="text-xs text-gray-400">未發送</span>
+                      )}
+                    </div>
+                  </td>
+                  <td className="px-4 py-4">
                     <div className="flex items-center gap-2">
                       <Link
                         href={`/cards/${card.id}`}
@@ -294,7 +481,8 @@ export default function ExpiringPromosPage() {
                     </div>
                   </td>
                 </tr>
-              ))}
+              );
+              })}
             </tbody>
           </table>
         </div>
@@ -312,10 +500,11 @@ export default function ExpiringPromosPage() {
           💡 使用提示
         </h3>
         <ul className="text-sm text-blue-700 dark:text-blue-400 space-y-1">
+          <li>• <strong>自動發送提醒</strong>：系統會自動在優惠到期前 7 天、3 天、1 天發送推送通知給持有該卡的用戶</li>
+          <li>• <strong>手動發送</strong>：勾選卡片後點擊「發送提醒」可手動觸發</li>
+          <li>• <strong>通知狀態</strong>：顯示已發送的提醒類型（7天/3天/1天），避免重複發送</li>
+          <li>• 建議設定 Vercel Cron Job 每日執行 <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded">/api/cron/auto-expiry-reminders</code></li>
           <li>• 已過期嘅推廣需要搵返最新 T&C 更新</li>
-          <li>• 30 天內到期嘅推廣建議提前準備</li>
-          <li>• 點擊官方網站連結可以直接查閱最新條款</li>
-          <li>• 更新後記得修改 <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded">promoEndDate</code> 同 <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded">promoName</code></li>
         </ul>
       </div>
 
