@@ -442,6 +442,17 @@ export default function AdminDiscoverPage() {
 
       const data = await res.json();
       
+      // 檢查 HTTP 錯誤
+      if (!res.ok) {
+        console.error('API error:', data);
+        if (data.sqlRequired) {
+          toast.error('請先在 Supabase SQL Editor 執行所需的 SQL：\n' + (data.error || ''));
+        } else {
+          toast.error('儲存失敗：' + (data.error || '未知錯誤'));
+        }
+        return;
+      }
+      
       if (data.sqlRequired) {
         toast.error('請先在 Supabase SQL Editor 執行 sql/article_settings.sql');
         return;
@@ -891,7 +902,8 @@ export default function AdminDiscoverPage() {
                               setNewCoverUrl(articleSettings[item.id] || item.imageUrl || '');
                               setNewContentType(articleCategories[item.id] as "guide" | "promo" || "promo");
                               setNewTags(articleTags[item.id] || []);
-                              setNewIsPinned(isPinned || false);
+                              setNewIsPinned(articlePinned[item.id] ?? isPinned ?? false);
+                              setNewPinnedUntil(articlePinnedUntil[item.id] || (item as any).pinnedUntil || "");
                               setTagInput("");
                               setEditDialogOpen(true);
                             }}
