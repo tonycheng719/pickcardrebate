@@ -38,7 +38,25 @@ export const metadata: Metadata = {
     "DBS信用卡",
     "信用卡計算機",
     "回贈計算",
+    // 简体中文关键词
+    "信用卡回赠",
+    "信用卡比较",
+    "香港信用卡计算器",
+    // English keywords
+    "Hong Kong credit card",
+    "credit card rebate calculator",
+    "cashback comparison",
+    "credit card rewards HK",
   ],
+  alternates: {
+    canonical: "https://pickcardrebate.com",
+    languages: {
+      'zh-Hant-HK': 'https://pickcardrebate.com',
+      'zh-Hans-CN': 'https://pickcardrebate.com/zh-cn',
+      'en': 'https://pickcardrebate.com/en',
+      'x-default': 'https://pickcardrebate.com',
+    },
+  },
   authors: [{ name: "PickCardRebate Team" }],
   creator: "PickCardRebate",
   publisher: "PickCardRebate",

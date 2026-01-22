@@ -37,97 +37,89 @@ const GUIDE_SLUGS = [
   'switch-guide',
 ];
 
+// 語言配置
+const LOCALES = ['', '/zh-cn', '/en'] as const;
+const BASE_URL = 'https://pickcardrebate.com';
+
+// 為每個 URL 生成多語言版本
+function generateMultilingualUrls(path: string, lastModified: string, priority: number, changeFrequency: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never'): MetadataRoute.Sitemap {
+  return LOCALES.map(locale => ({
+    url: `${BASE_URL}${locale}${path}`,
+    lastModified,
+    changeFrequency,
+    priority: locale === '' ? priority : priority * 0.9, // 非預設語言優先級稍低
+    alternates: {
+      languages: {
+        'zh-Hant-HK': `${BASE_URL}${path}`,
+        'zh-Hans-CN': `${BASE_URL}/zh-cn${path}`,
+        'en': `${BASE_URL}/en${path}`,
+      },
+    },
+  }));
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://pickcardrebate.com';
   const currentDate = new Date().toISOString();
 
-  // Static pages
-  const staticPages: MetadataRoute.Sitemap = [
+  // Static pages with multilingual support
+  const staticPaths = [
+    { path: '', priority: 1, changeFrequency: 'daily' as const },
+    { path: '/discover', priority: 0.9, changeFrequency: 'daily' as const },
+    { path: '/cards', priority: 0.8, changeFrequency: 'weekly' as const },
+    { path: '/cards/compare', priority: 0.8, changeFrequency: 'weekly' as const },
+    { path: '/rankings', priority: 0.8, changeFrequency: 'weekly' as const },
+    { path: '/calculator', priority: 0.9, changeFrequency: 'weekly' as const },
+  ];
+
+  const staticPages = staticPaths.flatMap(({ path, priority, changeFrequency }) => 
+    generateMultilingualUrls(path, currentDate, priority, changeFrequency)
+  );
+
+  // Non-multilingual pages (auth, legal, etc.)
+  const utilityPages: MetadataRoute.Sitemap = [
     {
-      url: baseUrl,
-      lastModified: currentDate,
-      changeFrequency: 'daily',
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/discover`,
-      lastModified: currentDate,
-      changeFrequency: 'daily',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/cards`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/cards/compare`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/rankings`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/calculator`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/wallet`,
+      url: `${BASE_URL}/wallet`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
       priority: 0.5,
     },
     {
-      url: `${baseUrl}/login`,
+      url: `${BASE_URL}/login`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
       priority: 0.4,
     },
     {
-      url: `${baseUrl}/about`,
+      url: `${BASE_URL}/about`,
       lastModified: '2025-12-05',
       changeFrequency: 'monthly',
       priority: 0.4,
     },
     {
-      url: `${baseUrl}/terms`,
+      url: `${BASE_URL}/terms`,
       lastModified: '2025-12-05',
       changeFrequency: 'yearly',
       priority: 0.3,
     },
     {
-      url: `${baseUrl}/privacy`,
+      url: `${BASE_URL}/privacy`,
       lastModified: '2025-12-05',
       changeFrequency: 'yearly',
       priority: 0.3,
     },
   ];
 
-  // Guide/Article pages
-  const guidePages: MetadataRoute.Sitemap = GUIDE_SLUGS.map((slug) => ({
-    url: `${baseUrl}/discover/${slug}`,
-    lastModified: currentDate, // Will be updated when we have DB-stored lastUpdated
-    changeFrequency: 'weekly' as const,
-    priority: 0.7,
-  }));
+  // Guide/Article pages with multilingual support
+  const guidePages = GUIDE_SLUGS.flatMap((slug) => 
+    generateMultilingualUrls(`/discover/${slug}`, currentDate, 0.7, 'weekly')
+  );
 
-  // Credit card detail pages
-  const cardPages: MetadataRoute.Sitemap = HK_CARDS
+  // Credit card detail pages with multilingual support
+  const cardPages = HK_CARDS
     .filter((card) => !card.hidden)
-    .map((card) => ({
-      url: `${baseUrl}/cards/${card.id}`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    }));
+    .flatMap((card) => 
+      generateMultilingualUrls(`/cards/${card.id}`, currentDate, 0.6, 'monthly')
+    );
 
-  return [...staticPages, ...guidePages, ...cardPages];
+  return [...staticPages, ...utilityPages, ...guidePages, ...cardPages];
 }
