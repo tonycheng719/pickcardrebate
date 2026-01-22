@@ -73,6 +73,16 @@ export async function GET(request: NextRequest) {
 
         const { data: legacyArticleComments, error } = await legacyQuery;
 
+        console.log('[Admin Comments] article_comments query result:', { 
+          count: legacyArticleComments?.length || 0, 
+          error: error?.message,
+          status 
+        });
+
+        if (error) {
+          console.error('[Admin Comments] article_comments error:', error);
+        }
+
         if (!error && legacyArticleComments) {
           // 轉換為統一格式
           const convertedComments = legacyArticleComments.map(c => ({
@@ -93,7 +103,7 @@ export async function GET(request: NextRequest) {
           allComments = [...allComments, ...convertedComments];
         }
       } catch (e) {
-        console.warn('Failed to fetch from article_comments table:', e);
+        console.error('[Admin Comments] Failed to fetch from article_comments table:', e);
       }
     }
 
