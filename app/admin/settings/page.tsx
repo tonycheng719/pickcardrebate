@@ -4,13 +4,14 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAdminDataStore } from "@/lib/admin/data-store";
-import { Database, MessageCircle, Save, Key, Eye, EyeOff, Sparkles, Trophy, HelpCircle } from "lucide-react";
+import { Database, MessageCircle, Save, Key, Eye, EyeOff, Sparkles, Trophy, HelpCircle, Sun, Moon, Monitor } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DEFAULT_SYSTEM_SETTINGS, SystemSetting } from "@/lib/admin/mock-data";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import { Switch } from "@/components/ui/switch";
+import { useTheme } from "next-themes";
 
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState<SystemSetting[]>(DEFAULT_SYSTEM_SETTINGS);
@@ -34,6 +35,14 @@ export default function AdminSettingsPage() {
     achievements_enabled: false,
   });
   const [isSavingFeatures, setIsSavingFeatures] = useState(false);
+  
+  // Theme
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     async function fetchSettings() {
@@ -194,6 +203,59 @@ export default function AdminSettingsPage() {
         </div>
         <Button onClick={handleSave}>{saved ? "已儲存" : "儲存設定"}</Button>
       </div>
+
+      {/* 外觀設定 */}
+      <Card className="dark:bg-gray-800 dark:border-gray-700">
+        <CardHeader>
+          <CardTitle className="text-lg dark:text-white flex items-center gap-2">
+            <Sun className="h-5 w-5" /> 外觀設定
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="grid gap-2">
+              <Label>網站主題</Label>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
+                選擇網站的顯示模式。此設定會儲存在您的瀏覽器中。
+              </p>
+              {mounted && (
+                <div className="flex gap-2">
+                  <Button
+                    variant={theme === 'light' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setTheme('light')}
+                    className="flex items-center gap-2"
+                  >
+                    <Sun className="h-4 w-4" />
+                    淺色
+                  </Button>
+                  <Button
+                    variant={theme === 'dark' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setTheme('dark')}
+                    className="flex items-center gap-2"
+                  >
+                    <Moon className="h-4 w-4" />
+                    深色
+                  </Button>
+                  <Button
+                    variant={theme === 'system' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setTheme('system')}
+                    className="flex items-center gap-2"
+                  >
+                    <Monitor className="h-4 w-4" />
+                    跟隨系統
+                  </Button>
+                </div>
+              )}
+              <p className="text-xs text-gray-500 mt-2">
+                目前顯示: {mounted ? (resolvedTheme === 'dark' ? '深色模式' : '淺色模式') : '載入中...'}
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <Card className="dark:bg-gray-800 dark:border-gray-700">
         <CardHeader>

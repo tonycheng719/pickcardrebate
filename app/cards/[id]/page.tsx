@@ -28,6 +28,7 @@ import { PageViewTracker } from "@/components/page-view-tracker";
 import { ShareSection } from "@/components/share-section";
 import { ShareButton } from "@/components/share-button";
 import { CommentSection } from "@/components/comments/CommentSection";
+import { CardRating } from "@/components/cards/CardRating";
 import { PARTNER_MODE_ENABLED } from "@/lib/config";
 import { getCardCapInfo, formatCapInfo } from "@/lib/utils/card-cap-info";
 import { getSceneRatings } from "@/lib/utils/scene-ratings";
@@ -1226,6 +1227,22 @@ export default function CardDetailPage() {
                       </div>
                     </Link>
                   </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Card Rating Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.53 }}
+            >
+              <Card>
+                <CardContent className="p-5">
+                  <h2 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                    ⭐ 用戶評分
+                  </h2>
+                  <CardRating cardId={card.id} cardName={card.name} />
                 </CardContent>
               </Card>
             </motion.div>
