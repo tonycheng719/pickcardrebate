@@ -13,12 +13,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import { WHATSAPP_GROUP_URL } from "@/lib/constants";
 import { PromoCalendar } from "./promo-calendar";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useLocale } from "@/lib/i18n/useLocale";
+import { getTranslation } from "@/lib/i18n/translations";
 
 export function Navbar() {
   const { user, logout, rewardPreference, toggleRewardPreference } = useWallet();
   const { getSetting } = useSettings();
   const router = useRouter();
   const { theme, setTheme, resolvedTheme } = useTheme();
+  const { locale, localePath } = useLocale();
+  const t = getTranslation(locale);
   
   // Use setting from DB, fallback to constant
   const whatsappUrl = getSetting("whatsapp_group_url") || WHATSAPP_GROUP_URL;
@@ -53,7 +57,7 @@ export function Navbar() {
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center active:scale-95 transition-transform">
+        <Link href={localePath("/")} className="flex items-center active:scale-95 transition-transform">
           <Image
             src="/logo.png"
             alt="PickCardRebate"
@@ -67,14 +71,14 @@ export function Navbar() {
         <nav className="flex items-center gap-1 md:gap-3 flex-shrink-0">
           {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-6 mr-4">
-            <Link href="/discover" className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-              探索
+            <Link href={localePath("/discover")} className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              {t.nav.discover}
             </Link>
-            <Link href="/cards" className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-              所有信用卡
+            <Link href={localePath("/cards")} className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              {t.nav.cards}
             </Link>
-            <Link href="/rankings" className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-              🏆 排行榜
+            <Link href={localePath("/rankings")} className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              🏆 {t.nav.rankings}
             </Link>
           </div>
 
@@ -151,10 +155,10 @@ export function Navbar() {
 
           {user ? (
             <div className="flex items-center gap-1 md:gap-2 ml-1">
-               <Link href="/wallet" className="hidden md:block">
+               <Link href={localePath("/wallet")} className="hidden md:block">
                 <Button variant="ghost" className="gap-2 font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full">
                   <Wallet className="h-4 w-4" />
-                  <span>我的錢包</span>
+                  <span>{t.nav.wallet}</span>
                 </Button>
               </Link>
               
@@ -221,12 +225,12 @@ export function Navbar() {
                                     <span>加入討論群</span>
                                 </a>
 
-                              <Link href="/settings">
+                              <Link href={localePath("/settings")}>
                                   <button 
                                       onClick={() => setIsMenuOpen(false)}
                                       className="w-full text-left px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl flex items-center gap-3 transition-colors"
                                   >
-                                      <Settings className="h-4 w-4 text-gray-400" /> 帳戶設定
+                                      <Settings className="h-4 w-4 text-gray-400" /> {t.nav.settings}
                                   </button>
                               </Link>
                               <button 
@@ -236,15 +240,15 @@ export function Navbar() {
                                       try {
                                           await logout();
                                           // Force hard reload to clear all states and cache
-                                          window.location.href = "/";
+                                          window.location.href = localePath("/");
                                       } catch (error) {
                                           console.error("Logout failed", error);
-                                          window.location.href = "/";
+                                          window.location.href = localePath("/");
                                       }
                                   }}
                                   className="w-full text-left px-3 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl flex items-center gap-3 transition-colors"
                               >
-                                  <LogOut className="h-4 w-4" /> 登出帳號
+                                  <LogOut className="h-4 w-4" /> {t.nav.logout}
                               </button>
                             </div>
                         </motion.div>
@@ -268,9 +272,9 @@ export function Navbar() {
                       <div className="w-5 h-5" />
                   )}
                 </Button>
-                <Link href="/login" className="flex-shrink-0">
+                <Link href={localePath("/login")} className="flex-shrink-0">
                     <Button variant="primary" size="sm" className="rounded-full px-4 md:px-5 shadow-blue-200 dark:shadow-none bg-blue-600 hover:bg-blue-700 text-white border-none whitespace-nowrap">
-                      登入
+                      {t.nav.login}
                     </Button>
                 </Link>
             </div>

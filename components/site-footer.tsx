@@ -5,6 +5,8 @@ import { MessageCircle, Instagram } from "lucide-react";
 import { WHATSAPP_GROUP_URL } from "@/lib/constants";
 import { useSettings } from "@/lib/store/settings-context";
 import { useState, useEffect } from "react";
+import { useLocale } from "@/lib/i18n/useLocale";
+import { getTranslation } from "@/lib/i18n/translations";
 
 // Threads icon (Meta's Threads app)
 function ThreadsIcon({ className }: { className?: string }) {
@@ -17,6 +19,8 @@ function ThreadsIcon({ className }: { className?: string }) {
 
 export function SiteFooter() {
   const { getSetting } = useSettings();
+  const { locale, localePath } = useLocale();
+  const t = getTranslation(locale);
   // Use setting from DB, fallback to constant
   const whatsappUrl = getSetting("whatsapp_group_url") || WHATSAPP_GROUP_URL;
   
@@ -77,17 +81,17 @@ export function SiteFooter() {
               <div className="bg-green-100 dark:bg-green-900/30 p-2 rounded-full group-hover:scale-110 transition-transform">
                 <MessageCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
               </div>
-              <span className="font-medium">加入 WhatsApp 討論群</span>
+              <span className="font-medium">{t.footer.joinWhatsApp}</span>
             </a>
             
-            <Link href="/about" className="text-sm text-gray-500 hover:text-gray-900 dark:hover:text-gray-300">
-              關於我們
+            <Link href={localePath("/about")} className="text-sm text-gray-500 hover:text-gray-900 dark:hover:text-gray-300">
+              {t.footer.about}
             </Link>
-            <Link href="/terms" className="text-sm text-gray-500 hover:text-gray-900 dark:hover:text-gray-300">
-              服務條款
+            <Link href={localePath("/terms")} className="text-sm text-gray-500 hover:text-gray-900 dark:hover:text-gray-300">
+              {t.footer.terms}
             </Link>
-            <Link href="/privacy" className="text-sm text-gray-500 hover:text-gray-900 dark:hover:text-gray-300">
-              私隱政策
+            <Link href={localePath("/privacy")} className="text-sm text-gray-500 hover:text-gray-900 dark:hover:text-gray-300">
+              {t.footer.privacy}
             </Link>
           </div>
         </div>

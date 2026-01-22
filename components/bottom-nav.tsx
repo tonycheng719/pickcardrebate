@@ -6,17 +6,24 @@ import { Search, Wallet, Compass, Repeat, CreditCard, Sparkles, Trophy } from "l
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useLocale } from "@/lib/i18n/useLocale";
+import { getTranslation } from "@/lib/i18n/translations";
 
 export function BottomNav() {
   const pathname = usePathname();
+  const { locale, localePath } = useLocale();
+  const t = getTranslation(locale);
   const [pressedTab, setPressedTab] = useState<string | null>(null);
 
+  // Remove locale prefix for path matching
+  const cleanPath = pathname.replace(/^\/(en|zh-cn)/, '') || '/';
+
   const tabs = [
-    { name: "計算", href: "/", icon: Repeat, active: pathname === "/" || pathname.startsWith("/calculator") },
-    { name: "排行榜", href: "/rankings", icon: Trophy, active: pathname.startsWith("/rankings") || pathname.startsWith("/blog") },
-    { name: "信用卡", href: "/cards", icon: CreditCard, active: pathname.startsWith("/cards") },
-    { name: "探索", href: "/discover", icon: Sparkles, active: pathname.startsWith("/discover") },
-    { name: "錢包", href: "/wallet", icon: Wallet, active: pathname.startsWith("/wallet") },
+    { name: t.nav.calculator, href: localePath("/"), icon: Repeat, active: cleanPath === "/" || cleanPath.startsWith("/calculator") },
+    { name: t.nav.rankings, href: localePath("/rankings"), icon: Trophy, active: cleanPath.startsWith("/rankings") || cleanPath.startsWith("/blog") },
+    { name: t.nav.cards, href: localePath("/cards"), icon: CreditCard, active: cleanPath.startsWith("/cards") },
+    { name: t.nav.discover, href: localePath("/discover"), icon: Sparkles, active: cleanPath.startsWith("/discover") },
+    { name: t.nav.wallet, href: localePath("/wallet"), icon: Wallet, active: cleanPath.startsWith("/wallet") },
   ];
 
   return (

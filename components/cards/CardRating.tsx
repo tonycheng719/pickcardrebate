@@ -7,6 +7,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { useWallet } from "@/lib/store/wallet-context";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useLocale } from "@/lib/i18n/useLocale";
+import { getTranslation } from "@/lib/i18n/translations";
 
 interface CardRatingProps {
   cardId: string;
@@ -263,15 +266,25 @@ export function CardRating({ cardId, cardName, compact = false }: CardRatingProp
           )}
         </div>
       ) : (
-        <div className="border-t dark:border-gray-700 pt-4">
-          <p className="text-sm text-gray-500">
-            <a href="/auth/login" className="text-blue-600 hover:underline">
-              登入
-            </a>
-            {" "}後即可評分
-          </p>
-        </div>
+        <LoginPrompt />
       )}
+    </div>
+  );
+}
+
+// 登入提示組件
+function LoginPrompt() {
+  const { locale, localePath } = useLocale();
+  const t = getTranslation(locale);
+  
+  return (
+    <div className="border-t dark:border-gray-700 pt-4">
+      <p className="text-sm text-gray-500">
+        <Link href={localePath("/login")} className="text-blue-600 hover:underline">
+          {t.auth.login}
+        </Link>
+        {" "}後即可評分
+      </p>
     </div>
   );
 }

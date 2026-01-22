@@ -28,6 +28,7 @@ import { logSearch } from "@/app/actions/log-search";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { trackSearch, trackCalculateRebate, trackSelectCategory } from "@/lib/analytics";
 import { Label } from "@/components/ui/label";
+import { useLocale } from "@/lib/i18n/useLocale";
 import { useMerchantCommunityData } from "@/hooks/use-merchant-community-data";
 import Link from "next/link";
 
@@ -108,6 +109,7 @@ export function CreditCardCalculator({
 }: CreditCardCalculatorProps) {
   const { myCardIds, user, rewardPreference } = useWallet(); // Get user and preference from wallet context
   const { cards, merchants } = useDataset();
+  const { localePath } = useLocale();
   const categoryList = CATEGORIES;
   
   const merchantList = useMemo(() => {
@@ -827,7 +829,7 @@ export function CreditCardCalculator({
                     <br/>
                     <span className="text-blue-500">閘機按「Amex $1」鍵再拍卡即可（至 2025/12/31）</span>
                   </p>
-                  <Link href="/cards?bank=American%20Express" className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline mt-2 font-medium">
+                  <Link href={localePath("/cards?bank=American%20Express")} className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline mt-2 font-medium">
                     查看 Amex 卡 <ChevronUp className="w-3 h-3 rotate-90" />
                   </Link>
                 </div>
@@ -847,7 +849,7 @@ export function CreditCardCalculator({
                     <br/>
                     <span className="text-purple-500">亞庇、河內等航點享 50% 折扣（預訂至 12/15）</span>
                   </p>
-                  <Link href="/discover/hkexpress-hsbc-flash-2025" className="inline-flex items-center gap-1 text-xs text-purple-600 hover:underline mt-2 font-medium">
+                  <Link href={localePath("/discover/hkexpress-hsbc-flash-2025")} className="inline-flex items-center gap-1 text-xs text-purple-600 hover:underline mt-2 font-medium">
                     查看優惠詳情 <ChevronUp className="w-3 h-3 rotate-90" />
                   </Link>
                 </div>
@@ -871,7 +873,7 @@ export function CreditCardCalculator({
                     <div>🔥 <span className="font-bold">恒生</span>：高達 $700</div>
                     <div>🔥 <span className="font-bold">中銀</span>：高達 $3,888</div>
                   </div>
-                  <Link href="/discover/tax-payment-guide" className="inline-flex items-center gap-1 text-xs text-teal-600 hover:underline mt-2 font-medium">
+                  <Link href={localePath("/discover/tax-payment-guide")} className="inline-flex items-center gap-1 text-xs text-teal-600 hover:underline mt-2 font-medium">
                     查看交稅攻略 <ChevronUp className="w-3 h-3 rotate-90" />
                   </Link>
                 </div>
