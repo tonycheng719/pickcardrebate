@@ -44,16 +44,20 @@ ALTER TABLE public.promos ADD COLUMN IF NOT EXISTS faqs_zh_cn JSONB DEFAULT '[]'
 -- =============================================
 -- 3. Merchants table multi-language columns
 -- =============================================
-ALTER TABLE public.merchants ADD COLUMN IF NOT EXISTS name_en TEXT;
-ALTER TABLE public.merchants ADD COLUMN IF NOT EXISTS name_zh_cn TEXT;
-ALTER TABLE public.merchants ADD COLUMN IF NOT EXISTS aliases_en TEXT[];
-ALTER TABLE public.merchants ADD COLUMN IF NOT EXISTS aliases_zh_cn TEXT[];
+-- NOTE: Merchants table may not exist in all deployments
+-- Uncomment the following lines if you have a merchants table:
+-- ALTER TABLE public.merchants ADD COLUMN IF NOT EXISTS name_en TEXT;
+-- ALTER TABLE public.merchants ADD COLUMN IF NOT EXISTS name_zh_cn TEXT;
+-- ALTER TABLE public.merchants ADD COLUMN IF NOT EXISTS aliases_en TEXT[];
+-- ALTER TABLE public.merchants ADD COLUMN IF NOT EXISTS aliases_zh_cn TEXT[];
 
 -- =============================================
 -- 4. Categories table multi-language columns
 -- =============================================
-ALTER TABLE public.categories ADD COLUMN IF NOT EXISTS name_en TEXT;
-ALTER TABLE public.categories ADD COLUMN IF NOT EXISTS name_zh_cn TEXT;
+-- NOTE: Categories table may not exist in all deployments
+-- Uncomment the following lines if you have a categories table:
+-- ALTER TABLE public.categories ADD COLUMN IF NOT EXISTS name_en TEXT;
+-- ALTER TABLE public.categories ADD COLUMN IF NOT EXISTS name_zh_cn TEXT;
 
 -- =============================================
 -- 5. Add language_completed tracking
@@ -73,8 +77,9 @@ CREATE INDEX IF NOT EXISTS idx_promos_languages_completed ON public.promos USING
 -- =============================================
 GRANT ALL ON public.cards TO anon, authenticated, service_role;
 GRANT ALL ON public.promos TO anon, authenticated, service_role;
-GRANT ALL ON public.merchants TO anon, authenticated, service_role;
-GRANT ALL ON public.categories TO anon, authenticated, service_role;
+-- Uncomment if merchants/categories tables exist:
+-- GRANT ALL ON public.merchants TO anon, authenticated, service_role;
+-- GRANT ALL ON public.categories TO anon, authenticated, service_role;
 
 -- Show columns for verification
 SELECT column_name, data_type 

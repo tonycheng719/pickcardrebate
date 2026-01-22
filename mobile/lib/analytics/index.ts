@@ -60,12 +60,30 @@ export interface EventParams {
 let analytics: any = null;
 let isInitialized = false;
 
+// 檢查是否在 Expo Go 環境中
+function isExpoGo(): boolean {
+  try {
+    // @ts-ignore
+    const Constants = require('expo-constants').default;
+    return Constants.appOwnership === 'expo';
+  } catch {
+    return false;
+  }
+}
+
 // 初始化 Analytics
 export async function initializeAnalytics(): Promise<void> {
   if (isInitialized) return;
   
+  // Expo Go 不支援 Firebase Native Modules
+  if (isExpoGo()) {
+    console.log('[Analytics] Running in Expo Go, using fallback analytics');
+    isInitialized = true;
+    return;
+  }
+  
   try {
-    // 導入 Firebase Analytics
+    // 動態導入 Firebase Analytics（只在非 Expo Go 環境）
     const firebaseAnalytics = require('@react-native-firebase/analytics').default;
     analytics = firebaseAnalytics();
     isInitialized = true;
@@ -75,7 +93,7 @@ export async function initializeAnalytics(): Promise<void> {
     console.log('[Analytics] Firebase Analytics initialized successfully');
   } catch (error) {
     // Firebase 未正確配置時使用 fallback
-    console.log('[Analytics] Firebase not available, using fallback:', error);
+    console.log('[Analytics] Firebase not available, using fallback');
     isInitialized = true;
   }
 }

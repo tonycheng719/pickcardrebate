@@ -9059,6 +9059,62 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://hkg.mastercardservices.com/hsbc/landing-page?language=zn_HK",
     lastUpdated: "2026-01-20",
   },
+
+  // ========================================================================
+  // 美國運通卡 x 支付寶（內地錢包）優惠 2026
+  // 來源：https://www.americanexpress.com/content/dam/amex/zh-hk/benefits/TC/Alipay2026_TnCs_CH.pdf
+  // ========================================================================
+  {
+    cardId: "amex-alipay-mainland-2026",
+    cardName: "美國運通卡 x 支付寶（內地錢包）優惠 2026",
+    bank: "美國運通",
+    applicableCards: [
+      { cardId: "amex-explorer", cardName: "美國運通 Explorer 信用卡" },
+      { cardId: "amex-platinum", cardName: "美國運通白金卡" },
+      { cardId: "amex-blue-cash", cardName: "美國運通 Blue Cash 信用卡" },
+    ],
+    documentName: "美國運通卡支付寶（內地錢包）優惠條款及細則",
+    promoStartDate: "2026-01-20",
+    promoEndDate: "2026-06-30",
+    rewardCap: {
+      type: "total",
+      amount: 90,  // 每張卡最多 HK$90 (6次 x HK$15)
+      period: "promo",
+      note: "每張卡每月限1次，共6次，合共 HK$90"
+    },
+    minSpend: {
+      amount: 300,
+      period: "monthly",
+      type: "total",
+      note: "每曆月累積人民幣簽賬滿 HK$300"
+    },
+    rewardRates: [
+      { 
+        category: "支付寶（內地錢包）人民幣簽賬", 
+        totalRate: 5,  // HK$15 / HK$300 = 5%
+        baseRate: 0,
+        extraRate: 5,
+        note: "每月累積滿 HK$300 回贈 HK$15（5%）"
+      },
+    ],
+    exclusions: [
+      "❌ 透過 AlipayHK 或 Alipay+ 付款不適用",
+      "❌ 以港元簽賬之交易不適用",
+      "❌ 外幣費用不計入所需簽賬總額",
+      "❌ 未過賬/取消/退款的交易不適用",
+    ],
+    warnings: [
+      "⚠️ 須透過 Amex HK App 登記",
+      "⚠️ 名額：首 50,000 張成功登記之合資格卡",
+      "⚠️ AE 外幣簽賬手續費約 2%",
+      "⚠️ 支付寶單筆交易超過 ¥200 會收取 3% 手續費",
+      "💡 分拆小額交易（每筆≤¥200）可避免支付寶 3% 手續費",
+      "📌 附屬卡會員須獨立登記，簽賬不可合併計算",
+      "📌 簽賬回贈於交易完成後 15 個工作天內或推廣期結束後 90 天內存入賬戶",
+    ],
+    officialSource: "https://www.americanexpress.com/content/dam/amex/zh-hk/benefits/TC/Alipay2026_TnCs_CH.pdf",
+    lastUpdated: "2026-01-22",
+  },
 ];
 
 // ========================================================================

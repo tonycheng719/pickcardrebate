@@ -1893,7 +1893,7 @@ export const HK_CARDS: CreditCard[] = [
     tags: ["里數", "旅遊保險", "天星小輪$1"],
     sellingPoints: ["積分無限期", "指定簽賬 HK$3.6/里", "免費旅遊保險及貴賓室 (年費豁免)", "⛴️天星小輪$1優惠"],
     officialApplyUrl: "https://www.americanexpress.com/hk/credit-cards/explorer-credit-card/",
-    note: "⛴️ **天星小輪 $1 優惠**（至2025/12/31）：在閘機按「Amex $1」鍵再拍卡即可！適用中環/尖沙咀及灣仔/尖沙咀航線。\n\n⚠️ 部分商戶不接受美國運通。",
+    note: "💳 **支付寶（內地錢包）優惠**（至2026/6/30）：每月累積滿HK$300回贈HK$15，最多6次共HK$90！[查看詳情](/discover/ae-alipay-mainland-2026)\n\n⛴️ **天星小輪 $1 優惠**（至2025/12/31）：在閘機按「Amex $1」鍵再拍卡即可！\n\n⚠️ 部分商戶不接受美國運通。",
     hidden: true, // 暫時隱藏
   },
   {
@@ -1917,7 +1917,7 @@ export const HK_CARDS: CreditCard[] = [
     officialApplyUrl: "https://www.americanexpress.com/hk/zh/credit-cards/platinum-card/",
     applyUrl: "https://www.americanexpress.com/hk/zh/credit-cards/platinum-card/",
     sellingPoints: ["無限次免費進入全球機場貴賓室", "免費旅遊保險", "24小時禮賓服務", "⛴️天星小輪$1優惠"],
-    note: "💎 頂級信用卡，年費HK$7,800。主要優勢為機場貴賓室通行證、酒店升級、旅遊保險等。積分回贈率較低，適合經常旅遊及重視尊享服務的用戶。\n\n⛴️ **天星小輪 $1 優惠**（至2025/12/31）：在閘機按「Amex $1」鍵再拍卡即可！適用中環/尖沙咀及灣仔/尖沙咀航線。\n\n⚠️ 部分商戶不接受美國運通。",
+    note: "💳 **支付寶（內地錢包）優惠**（至2026/6/30）：每月累積滿HK$300回贈HK$15，最多6次共HK$90！[查看詳情](/discover/ae-alipay-mainland-2026)\n\n💎 頂級信用卡，年費HK$7,800。主要優勢為機場貴賓室通行證、酒店升級、旅遊保險等。\n\n⛴️ **天星小輪 $1 優惠**（至2025/12/31）：在閘機按「Amex $1」鍵再拍卡即可！\n\n⚠️ 部分商戶不接受美國運通。",
   },
   {
     id: "amex-blue-cash",
@@ -1938,7 +1938,7 @@ export const HK_CARDS: CreditCard[] = [
     officialApplyUrl: "https://www.americanexpress.com/hk/zh/credit-cards/blue-cash-credit-card/",
     applyUrl: "https://www.americanexpress.com/hk/zh/credit-cards/blue-cash-credit-card/",
     sellingPoints: ["永久免年費", "超市/HKTVmall 2%", "本地零售 1.2%", "⛴️天星小輪$1優惠"],
-    note: "💰 **永久免年費**的 Amex 現金回贈卡！超市及 HKTVmall 簽賬可享 2% 回贈，其他本地零售 1.2%。\n\n⛴️ **天星小輪 $1 優惠**（至2025/12/31）：在閘機按「Amex $1」鍵再拍卡即可！適用中環/尖沙咀及灣仔/尖沙咀航線。\n\n⚠️ 部分商戶不接受美國運通。",
+    note: "💳 **支付寶（內地錢包）優惠**（至2026/6/30）：每月累積滿HK$300回贈HK$15，最多6次共HK$90！[查看詳情](/discover/ae-alipay-mainland-2026)\n\n💰 **永久免年費**的 Amex 現金回贈卡！超市及 HKTVmall 簽賬可享 2% 回贈，其他本地零售 1.2%。\n\n⛴️ **天星小輪 $1 優惠**（至2025/12/31）：在閘機按「Amex $1」鍵再拍卡即可！\n\n⚠️ 部分商戶不接受美國運通。",
   },
   {
     id: "mox-credit",
