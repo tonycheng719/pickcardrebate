@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { Locale, locales } from '@/lib/i18n/config';
+import { Locale, urlPaths, getLocaleFromUrlParam } from '@/lib/i18n/config';
 import { HK_CARDS } from '@/lib/data/cards';
 import CardDetailClient from './card-detail-client';
 
@@ -9,16 +9,17 @@ interface PageProps {
 
 export function generateStaticParams() {
   const params: { locale: string; id: string }[] = [];
-  for (const locale of locales) {
+  for (const urlPath of urlPaths) {
     for (const card of HK_CARDS) {
-      params.push({ locale, id: card.id });
+      params.push({ locale: urlPath, id: card.id });
     }
   }
   return params;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { id, locale } = await params;
+  const { id, locale: localeParam } = await params;
+  const locale = getLocaleFromUrlParam(localeParam);
   const card = HK_CARDS.find(c => c.id === id);
   
   if (!card) {
@@ -40,20 +41,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
   
   return {
-    title: titles[locale as Locale] || titles['zh-HK'],
-    description: descriptions[locale as Locale] || descriptions['zh-HK'],
+    title: titles[locale] || titles['zh-HK'],
+    description: descriptions[locale] || descriptions['zh-HK'],
     openGraph: {
-      title: titles[locale as Locale] || titles['zh-HK'],
-      description: descriptions[locale as Locale] || descriptions['zh-HK'],
+      title: titles[locale] || titles['zh-HK'],
+      description: descriptions[locale] || descriptions['zh-HK'],
       images: card.imageUrl ? [card.imageUrl] : undefined,
     },
   };
 }
 
 export default async function CardDetailPage({ params }: PageProps) {
-  const { locale, id } = await params;
+  const { locale: localeParam, id } = await params;
+  const locale = getLocaleFromUrlParam(localeParam);
   
-  return <CardDetailClient locale={locale as Locale} cardId={id} />;
+  return <CardDetailClient locale={locale} cardId={id} />;
 }
 
 

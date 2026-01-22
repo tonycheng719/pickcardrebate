@@ -1,4 +1,4 @@
-import { Locale } from '@/lib/i18n/config';
+import { getLocaleFromUrlParam } from '@/lib/i18n/config';
 import HomePage from './home-client';
 
 interface PageProps {
@@ -6,8 +6,9 @@ interface PageProps {
 }
 
 export default async function LocaleHomePage({ params }: PageProps) {
-  const { locale } = await params;
+  const { locale: localeParam } = await params;
+  const locale = getLocaleFromUrlParam(localeParam);
   
-  return <HomePage locale={locale as Locale} />;
+  return <HomePage locale={locale} />;
 }
 

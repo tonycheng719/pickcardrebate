@@ -3,6 +3,10 @@ export type Locale = (typeof locales)[number];
 
 export const defaultLocale: Locale = 'zh-HK';
 
+// URL 路徑對應（用於 generateStaticParams）
+export const urlPaths = ['zh-HK', 'zh-cn', 'en'] as const;
+export type UrlPath = (typeof urlPaths)[number];
+
 // URL 路徑對應
 export const localePathMap: Record<Locale, string> = {
   'zh-HK': '', // 預設語言不需要前綴
@@ -14,8 +18,19 @@ export const localePathMap: Record<Locale, string> = {
 export const pathLocaleMap: Record<string, Locale> = {
   '': 'zh-HK',
   'zh-cn': 'zh-CN',
+  'zh-CN': 'zh-CN', // 兼容大寫
+  'zh-HK': 'zh-HK',
   'en': 'en',
 };
+
+/**
+ * 從 URL 參數轉換為 Locale
+ */
+export function getLocaleFromUrlParam(param: string): Locale {
+  if (param === 'zh-cn' || param === 'zh-CN') return 'zh-CN';
+  if (param === 'en') return 'en';
+  return 'zh-HK';
+}
 
 // hreflang 代碼
 export const hreflangMap: Record<Locale, string> = {

@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { Locale, locales } from '@/lib/i18n/config';
+import { Locale, urlPaths, getLocaleFromUrlParam } from '@/lib/i18n/config';
 import { getTranslation } from '@/lib/i18n/translations';
 import { Navbar } from '@/components/navbar';
 
@@ -8,12 +8,12 @@ interface PageProps {
 }
 
 export function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
+  return urlPaths.map((locale) => ({ locale }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { locale } = await params;
-  const t = getTranslation(locale as Locale);
+  const { locale: localeParam } = await params;
+  const locale = getLocaleFromUrlParam(localeParam);
   
   const titles: Record<Locale, string> = {
     'zh-HK': '私隱政策 | PickCardRebate',
@@ -22,13 +22,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
   
   return {
-    title: titles[locale as Locale] || titles['zh-HK'],
+    title: titles[locale] || titles['zh-HK'],
   };
 }
 
 export default async function PrivacyPage({ params }: PageProps) {
   const { locale: localeParam } = await params;
-  const locale = localeParam as Locale;
+  const locale = getLocaleFromUrlParam(localeParam);
   const t = getTranslation(locale);
 
   const content = locale === 'en' ? {

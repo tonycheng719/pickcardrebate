@@ -1,16 +1,30 @@
 import { ReactNode } from 'react';
 import { notFound } from 'next/navigation';
-import { locales, Locale, hreflangMap, defaultLocale } from '@/lib/i18n/config';
+import { locales, Locale, hreflangMap, defaultLocale, pathLocaleMap } from '@/lib/i18n/config';
 import { Metadata } from 'next';
 
-// 生成靜態參數
+// URL 路徑列表
+const urlPaths = ['zh-HK', 'zh-cn', 'en'] as const;
+type UrlPath = (typeof urlPaths)[number];
+
+// URL 路徑 -> Locale 映射
+const urlPathToLocale: Record<UrlPath, Locale> = {
+  'zh-HK': 'zh-HK',
+  'zh-cn': 'zh-CN',
+  'en': 'en',
+};
+
+// 生成靜態參數 - 使用 URL 路徑
 export function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
+  return urlPaths.map((path) => ({ locale: path }));
 }
 
-// 驗證 locale 參數
-function isValidLocale(locale: string): locale is Locale {
-  return locales.includes(locale as Locale);
+// 驗證並轉換 locale 參數
+function getLocaleFromParam(param: string): Locale | null {
+  if (param === 'zh-HK') return 'zh-HK';
+  if (param === 'zh-cn') return 'zh-CN';
+  if (param === 'en') return 'en';
+  return null;
 }
 
 // 為每個語言生成 metadata
@@ -19,9 +33,10 @@ export async function generateMetadata({
 }: { 
   params: Promise<{ locale: string }> 
 }): Promise<Metadata> {
-  const { locale } = await params;
+  const { locale: localeParam } = await params;
+  const locale = getLocaleFromParam(localeParam);
   
-  if (!isValidLocale(locale)) {
+  if (!locale) {
     return {};
   }
   
@@ -82,10 +97,11 @@ export default async function LocaleLayout({
   children: ReactNode;
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
+  const { locale: localeParam } = await params;
+  const locale = getLocaleFromParam(localeParam);
   
   // 驗證 locale
-  if (!isValidLocale(locale)) {
+  if (!locale) {
     notFound();
   }
   

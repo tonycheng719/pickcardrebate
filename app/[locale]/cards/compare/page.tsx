@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
-import { Locale, locales } from '@/lib/i18n/config';
-import { getTranslation } from '@/lib/i18n/translations';
+import { Locale, urlPaths, getLocaleFromUrlParam } from '@/lib/i18n/config';
 import CompareClient from './compare-client';
 
 interface PageProps {
@@ -8,11 +7,12 @@ interface PageProps {
 }
 
 export function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
+  return urlPaths.map((locale) => ({ locale }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { locale } = await params;
+  const { locale: localeParam } = await params;
+  const locale = getLocaleFromUrlParam(localeParam);
   
   const titles: Record<Locale, string> = {
     'zh-HK': '信用卡比較 | PickCardRebate',
@@ -27,15 +27,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
   
   return {
-    title: titles[locale as Locale] || titles['zh-HK'],
-    description: descriptions[locale as Locale] || descriptions['zh-HK'],
+    title: titles[locale] || titles['zh-HK'],
+    description: descriptions[locale] || descriptions['zh-HK'],
   };
 }
 
 export default async function ComparePage({ params }: PageProps) {
-  const { locale } = await params;
+  const { locale: localeParam } = await params;
+  const locale = getLocaleFromUrlParam(localeParam);
   
-  return <CompareClient locale={locale as Locale} />;
+  return <CompareClient locale={locale} />;
 }
 
 

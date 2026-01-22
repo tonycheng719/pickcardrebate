@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { Locale, locales, localePathMap } from "@/lib/i18n/config";
+import { Locale, urlPaths, localePathMap, getLocaleFromUrlParam } from "@/lib/i18n/config";
 import { getTranslation } from "@/lib/i18n/translations";
 import { Navbar } from "@/components/navbar";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,12 +14,12 @@ interface PageProps {
 }
 
 export function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
+  return urlPaths.map((locale) => ({ locale }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { locale } = await params;
-  const t = getTranslation(locale as Locale);
+  const { locale: localeParam } = await params;
+  const locale = getLocaleFromUrlParam(localeParam);
   
   const titles: Record<Locale, string> = {
     'zh-HK': '關於我們｜PickCardRebate 香港信用卡回贈比較平台',
@@ -34,14 +34,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
   
   return {
-    title: titles[locale as Locale] || titles['zh-HK'],
-    description: descriptions[locale as Locale] || descriptions['zh-HK'],
+    title: titles[locale] || titles['zh-HK'],
+    description: descriptions[locale] || descriptions['zh-HK'],
   };
 }
 
 export default async function AboutPage({ params }: PageProps) {
   const { locale: localeParam } = await params;
-  const locale = localeParam as Locale;
+  const locale = getLocaleFromUrlParam(localeParam);
   const t = getTranslation(locale);
   const prefix = localePathMap[locale] ? `/${localePathMap[locale]}` : '';
 
