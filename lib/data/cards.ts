@@ -37,7 +37,7 @@ export const HK_CARDS: CreditCard[] = [
     ],
     tags: ["餐飲神卡", "最紅自主獎賞", "9X積分", "需登記", "八達通增值", "Travel Guru"],
     imageUrl: "https://pickcardrebate-supabase-kong.zeabur.app/storage/v1/object/public/images/cards/1764329466898-zu95i1newy.png",
-    welcomeOfferText: "迎新簽 $8,000 送 $800 獎賞錢 (網上申請，至2026/2/28)",
+    welcomeOfferText: "迎新簽 $8,000 送 $800 獎賞錢 (16,000里) / 現有客戶 $200 (4,000里) (網上申請)",
     officialApplyUrl: "https://www.hsbc.com.hk/zh-hk/credit-cards/products/visa-signature/",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=255&a=228&sub_id1=pickcardrebate&sub_id2=web",
     sellingPoints: ["最紅自主獎賞 9X (3.6%)", "五大類別 1.6%（0.4% + VS專享1.2%）", "🌍 Travel Guru 海外實體店可達 6.6%~9.6%", "每年首 $100,000 簽賬享額外獎賞"],
