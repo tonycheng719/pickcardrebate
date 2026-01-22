@@ -8,16 +8,16 @@ import { Promo } from "../types";
  * 3. 或在 Admin 後台執行「同步本地資料」
  * 
  * 排序規則：
- * - isPinned: true 的文章會置頂
  * - sortOrder 數值越大越前（預設 0）
  * - 相同 sortOrder 按 updatedAt 最新排序
+ * - ⚠️ isPinned 已停用，全部文章預設為 false
  * 
  * 新增文章範例：
  * {
  *   id: "unique-id",
  *   ...
  *   updatedAt: "2026-01-22",  // 必填！用於排序
- *   isPinned: false,          // 是否置頂
+ *   isPinned: false,          // ⚠️ 固定為 false，用 sortOrder 控制排序
  *   sortOrder: 100,           // 選填，數值越大越前
  * }
  */
@@ -35,7 +35,7 @@ export const PROMOS: Promo[] = [
     tags: ["攻略", "外幣網購", "排行榜", "免手續費", "2026"],
     url: "",
     updatedAt: "2026-01-05",
-    isPinned: true,
+    isPinned: false,
     content: `
 ## 📊 外幣網購信用卡排行榜
 
@@ -266,7 +266,7 @@ export const PROMOS: Promo[] = [
     tags: ["攻略", "港幣網購", "排行榜", "2026"],
     url: "",
     updatedAt: "2026-01-05",
-    isPinned: true,
+    isPinned: false,
     content: `
 ## 📊 港幣網購信用卡排行榜
 
@@ -511,7 +511,7 @@ export const PROMOS: Promo[] = [
     tags: ["攻略", "海外簽賬", "旅行", "排行榜", "2026"],
     url: "",
     updatedAt: "2026-01-05",
-    isPinned: true,
+    isPinned: false,
     content: `
 ## 📊 海外簽賬信用卡排行榜
 
@@ -719,7 +719,7 @@ export const PROMOS: Promo[] = [
     tags: ["美國運通", "白金卡", "積分加賞", "需登記", "里數"],
     url: "https://www.americanexpress.com/zh-hk/benefits/offers/shopping/platinum-membership-rewards-accelerator/",
     updatedAt: "2026-01-03",
-    isPinned: true,
+    isPinned: false,
     content: `
 ## 📅 推廣期
 
@@ -836,7 +836,7 @@ export const PROMOS: Promo[] = [
     tags: ["Citi", "MoneyHero", "迎新優惠", "限時獨家", "新客戶"],
     url: "https://www.moneyhero.com.hk/zh/credit-card/citi",
     updatedAt: "2026-01-03",
-    isPinned: true,
+    isPinned: false,
     content: `
 ## 📅 重要日期
 
@@ -942,7 +942,7 @@ export const PROMOS: Promo[] = [
     tags: ["滙豐", "港鐵", "MTR分", "限時優惠", "免費車程"],
     url: "https://www.mtr.com.hk/mtrmobile/ch/latestpromotion/hsbc/",
     updatedAt: "2026-01-02",
-    isPinned: true,
+    isPinned: false,
     content: `
 ## 📅 推廣期
 
@@ -1159,7 +1159,7 @@ export const PROMOS: Promo[] = [
     tags: ["滙豐", "麥當勞", "印花獎賞", "需登記", "全年優惠"],
     url: "https://www.hsbc.com.hk/zh-hk/credit-cards/rewards/",
     updatedAt: "2026-01-02",
-    isPinned: true,
+    isPinned: false,
     content: `
 ## 📅 推廣期
 
@@ -1267,7 +1267,7 @@ export const PROMOS: Promo[] = [
     tags: ["東亞銀行", "新春優惠", "額外回贈", "需登記", "限首10000名"],
     url: "https://www.hkbea.com/html/tc/bea-credit-card-promotions.html",
     updatedAt: "2026-01-02",
-    isPinned: true,
+    isPinned: false,
     content: `
 ## 📅 推廣期
 
@@ -1361,7 +1361,7 @@ export const PROMOS: Promo[] = [
     tags: ["JCB", "OK便利店", "即減優惠", "全年優惠", "便利店"],
     url: "https://www.hk.jcb/zh/consumers/promotions/circlek_cp_202601.html",
     updatedAt: "2026-01-01",
-    isPinned: true,
+    isPinned: false,
     content: `
 ## 📅 推廣期
 
@@ -1458,7 +1458,7 @@ export const PROMOS: Promo[] = [
     tags: ["中銀", "北上", "內地", "澳門", "海外", "需登記", "限時優惠"],
     url: "https://www.bochk.com/s/a/mf_1h26",
     updatedAt: "2026-01-01",
-    isPinned: true,
+    isPinned: false,
     content: `
 ## 📅 推廣期
 
@@ -1558,7 +1558,7 @@ export const PROMOS: Promo[] = [
     tags: ["中銀", "Visa", "5%回贈", "寵物", "娛樂", "需登記", "限時優惠"],
     url: "https://www.bochk.com/tc/creditcard/promotions/offers/ms_1h26v.html",
     updatedAt: "2026-01-01",
-    isPinned: true,
+    isPinned: false,
     content: `
 ## 📅 推廣期
 
@@ -1676,7 +1676,7 @@ export const PROMOS: Promo[] = [
     tags: ["Trip.com", "DBS", "機票", "酒店", "高鐵", "旅遊", "Mastercard"],
     url: "https://www.dbs.com.hk/personal-zh/promotion/trip-com",
     updatedAt: "2025-12-30",
-    isPinned: true,
+    isPinned: false,
     content: `
 ## 📅 推廣期
 
@@ -1775,7 +1775,7 @@ export const PROMOS: Promo[] = [
     tags: ["Klook", "安信", "旅遊", "EarnMORE", "WeWa", "限時優惠", "即減優惠"],
     url: "https://www.primecredit.com/credit-card/latest-offer/klook-promotion",
     updatedAt: "2025-12-30",
-    isPinned: true,
+    isPinned: false,
     content: `
 ## 📅 推廣期
 
@@ -1909,7 +1909,7 @@ export const PROMOS: Promo[] = [
     tags: ["機票", "HSBC", "香港快運", "限時優惠", "半價"],
     url: "https://www.hkexpress.com/zh-HK/Plan/Special-Offers/Promotions/hsbc_flashsale_20251212",
     updatedAt: "2025-12-12",
-    isPinned: true,
+    isPinned: false,
     content: `
 ## 📅 推廣期
 
@@ -1997,7 +1997,7 @@ export const PROMOS: Promo[] = [
     tags: ["萬寧", "HSBC", "藥妝", "10%回贈", "需登記", "週末加碼"],
     url: "https://www.hsbc.com.hk/",
     updatedAt: "2025-12-09",
-    isPinned: true,
+    isPinned: false,
     content: `
 ## 📅 推廣期
 
@@ -2080,7 +2080,7 @@ export const PROMOS: Promo[] = [
     tags: ["海外簽賬", "安信", "EarnMORE", "WeWa", "中國", "日本", "韓國", "台灣", "澳門", "7%回贈", "9%回贈", "需登記"],
     url: "https://www.primecredit.com/credit-card/latest-offer/overseas-cash-rebate/",
     updatedAt: "2026-01-05",
-    isPinned: true,
+    isPinned: false,
     content: `
 ## 📅 推廣期
 
@@ -2237,7 +2237,7 @@ export const PROMOS: Promo[] = [
     tags: ["餐飲", "WeWa", "安信", "10%回贈", "需登記"],
     url: "https://www.primecredit.com/",
     updatedAt: "2025-12-30",
-    isPinned: true,
+    isPinned: false,
     content: `
 ## 📅 推廣期
 
@@ -2829,7 +2829,7 @@ export const PROMOS: Promo[] = [
     relatedCardIds: ["citi-cashback", "citi-rewards", "citi-rewards-unionpay", "citi-premiermiles", "citi-octopus"],
     tags: ["合作夥伴", "Citi", "迎新", "限時", "禮品"],
     url: "",
-    isPinned: true,
+    isPinned: false,
   },
   // ========== ✈️ 航空優惠 ==========
   {
@@ -2843,7 +2843,7 @@ export const PROMOS: Promo[] = [
     relatedCardIds: ["hsbc-vs", "hsbc-red", "hsbc-everymile", "hsbc-platinum", "hsbc-gold", "hsbc-green"],
     tags: ["航空", "限時", "HK Express", "HSBC", "Flash Sale", "行李代金券"],
     url: "https://www.hkexpress.com/zh-HK/Plan/Special-Offers/Promotions/hsbc_flashsale_20260109",
-    isPinned: true,
+    isPinned: false,
     content: `
 ## ✈️ HK Express x 滙豐信用卡 2026新年優惠
 
@@ -2983,7 +2983,7 @@ export const PROMOS: Promo[] = [
     relatedCardIds: ["dbs-compass-visa"],
     tags: ["超市", "百佳", "DBS", "週末優惠", "易賞錢", "電子優惠券"],
     url: "https://www.dbs.com.hk/personal-zh/promotion/dbs-compass-visa-parknshop",
-    isPinned: true,
+    isPinned: false,
     content: `
 ## 🛒 DBS COMPASS VISA 百佳推廣
 
@@ -3129,7 +3129,7 @@ export const PROMOS: Promo[] = [
     relatedCardIds: ["bocom-credit-card"],
     tags: ["Apple Pay", "交通銀行", "手機支付", "5%回贈", "需登記", "半年優惠"],
     url: "https://www.hk.bankcomm.com/hk/personal/creditCard/promotions/ApplePay2026/index.shtml",
-    isPinned: true,
+    isPinned: false,
     content: `
 ## 📱 交通銀行 Apple Pay 大激賞
 
