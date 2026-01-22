@@ -125,7 +125,19 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
                   </div>
                   <div>
                     <label className="text-sm font-medium text-gray-500 dark:text-gray-400">註冊來源</label>
-                    <div className="mt-1 text-sm dark:text-gray-200">Google / SMS</div>
+                    <div className="mt-1 text-sm dark:text-gray-200">
+                      {user.signup_source === 'ios' ? '🍎 iOS App' :
+                       user.signup_source === 'android' ? '🤖 Android App' :
+                       user.signup_source === 'web' ? '🌐 Web' : '未知'}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-500 dark:text-gray-400">最後登入平台</label>
+                    <div className="mt-1 text-sm dark:text-gray-200">
+                      {user.last_login_source === 'ios' ? '🍎 iOS App' :
+                       user.last_login_source === 'android' ? '🤖 Android App' :
+                       user.last_login_source === 'web' ? '🌐 Web' : '-'}
+                    </div>
                   </div>
                   <div>
                     <label className="text-sm font-medium text-gray-500 dark:text-gray-400">居住地區</label>

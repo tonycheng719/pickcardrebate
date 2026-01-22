@@ -143,10 +143,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       // 用戶登入後的處理
       if (_event === 'SIGNED_IN' && session?.user?.id && Platform.OS !== 'web') {
-        // 記錄登入來源 (ios or android)
         const loginSource = Platform.OS === 'ios' ? 'ios' : 'android';
         const isNewUser = session.user.created_at === session.user.last_sign_in_at;
         
+        // 確保 profile 存在（新用戶註冊時創建）
+        try {
+          const profileParams = new URLSearchParams({
+            userId: session.user.id,
+            email: session.user.email || '',
+            name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || '',
+            avatar: session.user.user_metadata?.avatar_url || ''
+          });
+          await fetch(`https://pickcardrebate.com/api/auth/ensure-profile?${profileParams.toString()}`);
+          console.log('[Auth] Profile ensured for user:', session.user.email);
+        } catch (e) {
+          console.log('[Auth] Failed to ensure profile:', e);
+        }
+        
+        // 記錄登入/註冊來源 (ios or android)
         try {
           await fetch('https://pickcardrebate.com/api/user/login-source', {
             method: 'POST',
