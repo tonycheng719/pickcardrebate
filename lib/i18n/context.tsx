@@ -13,6 +13,8 @@ const I18nContext = createContext<I18nContextType | undefined>(undefined);
 
 const LOCALE_KEY = 'preferred_locale';
 
+const VALID_LOCALES: Locale[] = ['zh-HK', 'zh-CN', 'en'];
+
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>('zh-HK');
   const [mounted, setMounted] = useState(false);
@@ -21,14 +23,17 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     setMounted(true);
     // 從 localStorage 讀取語言設定
     const savedLocale = localStorage.getItem(LOCALE_KEY) as Locale;
-    if (savedLocale && (savedLocale === 'zh-HK' || savedLocale === 'en')) {
+    if (savedLocale && VALID_LOCALES.includes(savedLocale)) {
       setLocaleState(savedLocale);
     } else {
       // 自動檢測瀏覽器語言
-      const browserLang = navigator.language;
+      const browserLang = navigator.language.toLowerCase();
       if (browserLang.startsWith('en')) {
         setLocaleState('en');
+      } else if (browserLang === 'zh-cn' || browserLang === 'zh-hans') {
+        setLocaleState('zh-CN');
       }
+      // 預設為 zh-HK
     }
   }, []);
 

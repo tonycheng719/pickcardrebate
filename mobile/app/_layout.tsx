@@ -10,6 +10,7 @@ import 'react-native-reanimated';
 import { useColorScheme } from '@/components/useColorScheme';
 import { Colors } from '@/constants/Colors';
 import { AuthProvider } from '@/lib/auth/AuthContext';
+import { I18nProvider } from '@/lib/i18n/context';
 import { initializeAnalytics } from '@/lib/analytics';
 
 export {
@@ -78,34 +79,36 @@ function RootLayoutNav() {
 
   return (
     <SafeAreaProvider>
-      <AuthProvider>
-        <ThemeProvider value={colorScheme === 'dark' ? customDarkTheme : customLightTheme}>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen 
-              name="card/[id]" 
-              options={{ 
-                title: '信用卡詳情',
-                headerBackTitle: '返回',
-              }} 
-            />
-            <Stack.Screen 
-              name="article/[id]" 
-              options={{ 
-                title: '文章',
-                headerBackTitle: '返回',
-              }} 
-            />
-            <Stack.Screen 
-              name="modal" 
-              options={{ 
-                presentation: 'modal',
-                title: '詳情',
-              }} 
-            />
-          </Stack>
-        </ThemeProvider>
-      </AuthProvider>
+      <I18nProvider>
+        <AuthProvider>
+          <ThemeProvider value={colorScheme === 'dark' ? customDarkTheme : customLightTheme}>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen 
+                name="card/[id]" 
+                options={{ 
+                  title: '信用卡詳情',
+                  headerBackTitle: '返回',
+                }} 
+              />
+              <Stack.Screen 
+                name="article/[id]" 
+                options={{ 
+                  title: '文章',
+                  headerBackTitle: '返回',
+                }} 
+              />
+              <Stack.Screen 
+                name="modal" 
+                options={{ 
+                  presentation: 'modal',
+                  title: '詳情',
+                }} 
+              />
+            </Stack>
+          </ThemeProvider>
+        </AuthProvider>
+      </I18nProvider>
     </SafeAreaProvider>
   );
 }

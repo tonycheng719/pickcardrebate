@@ -17,15 +17,20 @@ import { Colors } from '@/constants/Colors';
 import { Layout } from '@/constants/Layout';
 import { useColorScheme } from '@/components/useColorScheme';
 import { clearWallet } from '@/lib/storage/myCards';
+import { useTranslation } from '@/lib/i18n/context';
+import { Locale, localeNames, localeFlags } from '@/lib/i18n/translations';
 
 const THEME_KEY = '@theme_preference';
 const NOTIFICATIONS_KEY = '@notifications_enabled';
 
 type ThemePreference = 'system' | 'light' | 'dark';
 
+const LOCALES: Locale[] = ['zh-HK', 'zh-CN', 'en'];
+
 export default function SettingsScreen() {
   const colorScheme = useColorScheme() ?? 'light';
   const colors = Colors[colorScheme];
+  const { locale, setLocale, t } = useTranslation();
   
   const [themePreference, setThemePreference] = useState<ThemePreference>('system');
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
@@ -129,9 +134,34 @@ export default function SettingsScreen() {
           </View>
         </View>
 
+        {/* 語言設定 */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: colors.textMuted }]}>{t.settings.language}</Text>
+          <View style={[styles.card, { backgroundColor: colors.backgroundCard, borderColor: colors.border }]}>
+            {LOCALES.map((loc, index) => (
+              <TouchableOpacity
+                key={loc}
+                style={[
+                  styles.row,
+                  index < LOCALES.length - 1 && { borderBottomWidth: 1, borderBottomColor: colors.borderLight }
+                ]}
+                onPress={() => setLocale(loc)}
+              >
+                <View style={styles.rowLeft}>
+                  <Text style={{ fontSize: 20 }}>{localeFlags[loc]}</Text>
+                  <Text style={[styles.rowText, { color: colors.text }]}>{localeNames[loc]}</Text>
+                </View>
+                {locale === loc && (
+                  <Ionicons name="checkmark" size={22} color={colors.primary} />
+                )}
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+
         {/* 通知設定 */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: colors.textMuted }]}>通知</Text>
+          <Text style={[styles.sectionTitle, { color: colors.textMuted }]}>{t.settings.notifications}</Text>
           <View style={[styles.card, { backgroundColor: colors.backgroundCard, borderColor: colors.border }]}>
             <View style={styles.row}>
               <View style={styles.rowLeft}>

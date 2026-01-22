@@ -1,0 +1,212 @@
+export type Locale = 'zh-HK' | 'zh-CN' | 'en';
+
+export const localeNames: Record<Locale, string> = {
+  'zh-HK': '繁體中文',
+  'zh-CN': '简体中文',
+  'en': 'English',
+};
+
+export const localeFlags: Record<Locale, string> = {
+  'zh-HK': '🇭🇰',
+  'zh-CN': '🇨🇳',
+  'en': '🇬🇧',
+};
+
+export const translations = {
+  'zh-HK': {
+    common: {
+      loading: '載入中...',
+      error: '發生錯誤',
+      save: '儲存',
+      cancel: '取消',
+      confirm: '確認',
+      delete: '刪除',
+      edit: '編輯',
+      share: '分享',
+      back: '返回',
+      done: '完成',
+      search: '搜尋',
+      noData: '暫無數據',
+    },
+    tabs: {
+      home: '首頁',
+      cards: '信用卡',
+      discover: '探索',
+      wallet: '錢包',
+    },
+    calculator: {
+      title: '回贈計算機',
+      amount: '消費金額',
+      merchant: '選擇商戶',
+      result: '計算結果',
+      bestCard: '推薦信用卡',
+      cashRebate: '現金回贈',
+      milesRebate: '飛行里數',
+    },
+    wallet: {
+      title: '我的錢包',
+      myCards: '我的卡包',
+      addCard: '加入卡片',
+      transactions: '消費記錄',
+      monthlySpending: '本月支出',
+      monthlyRebate: '本月回贈',
+      transactionCount: '記賬記錄',
+      selectCard: '選擇信用卡',
+      selectCardHint: '只顯示您卡包中的卡片',
+    },
+    cards: {
+      allCards: '所有信用卡',
+      addToWallet: '加入卡包',
+      removeFromWallet: '從卡包移除',
+      apply: '申請',
+      details: '詳情',
+    },
+    auth: {
+      login: '登入',
+      logout: '登出',
+      loginWithGoogle: '使用 Google 登入',
+      loginWithApple: '使用 Apple 登入',
+    },
+    settings: {
+      title: '設定',
+      theme: '主題',
+      language: '語言',
+      notifications: '通知',
+      about: '關於',
+      version: '版本',
+    },
+  },
+  
+  'zh-CN': {
+    common: {
+      loading: '加载中...',
+      error: '发生错误',
+      save: '保存',
+      cancel: '取消',
+      confirm: '确认',
+      delete: '删除',
+      edit: '编辑',
+      share: '分享',
+      back: '返回',
+      done: '完成',
+      search: '搜索',
+      noData: '暂无数据',
+    },
+    tabs: {
+      home: '首页',
+      cards: '信用卡',
+      discover: '探索',
+      wallet: '钱包',
+    },
+    calculator: {
+      title: '回赠计算器',
+      amount: '消费金额',
+      merchant: '选择商户',
+      result: '计算结果',
+      bestCard: '推荐信用卡',
+      cashRebate: '现金回赠',
+      milesRebate: '飞行里程',
+    },
+    wallet: {
+      title: '我的钱包',
+      myCards: '我的卡包',
+      addCard: '加入卡片',
+      transactions: '消费记录',
+      monthlySpending: '本月支出',
+      monthlyRebate: '本月回赠',
+      transactionCount: '记账记录',
+      selectCard: '选择信用卡',
+      selectCardHint: '只显示您卡包中的卡片',
+    },
+    cards: {
+      allCards: '所有信用卡',
+      addToWallet: '加入卡包',
+      removeFromWallet: '从卡包移除',
+      apply: '申请',
+      details: '详情',
+    },
+    auth: {
+      login: '登录',
+      logout: '登出',
+      loginWithGoogle: '使用 Google 登录',
+      loginWithApple: '使用 Apple 登录',
+    },
+    settings: {
+      title: '设置',
+      theme: '主题',
+      language: '语言',
+      notifications: '通知',
+      about: '关于',
+      version: '版本',
+    },
+  },
+  
+  'en': {
+    common: {
+      loading: 'Loading...',
+      error: 'An error occurred',
+      save: 'Save',
+      cancel: 'Cancel',
+      confirm: 'Confirm',
+      delete: 'Delete',
+      edit: 'Edit',
+      share: 'Share',
+      back: 'Back',
+      done: 'Done',
+      search: 'Search',
+      noData: 'No data',
+    },
+    tabs: {
+      home: 'Home',
+      cards: 'Cards',
+      discover: 'Discover',
+      wallet: 'Wallet',
+    },
+    calculator: {
+      title: 'Rebate Calculator',
+      amount: 'Amount',
+      merchant: 'Select Merchant',
+      result: 'Result',
+      bestCard: 'Recommended Card',
+      cashRebate: 'Cash Rebate',
+      milesRebate: 'Miles',
+    },
+    wallet: {
+      title: 'My Wallet',
+      myCards: 'My Cards',
+      addCard: 'Add Card',
+      transactions: 'Transactions',
+      monthlySpending: 'Monthly Spending',
+      monthlyRebate: 'Monthly Rebate',
+      transactionCount: 'Records',
+      selectCard: 'Select Card',
+      selectCardHint: 'Only cards in your wallet are shown',
+    },
+    cards: {
+      allCards: 'All Credit Cards',
+      addToWallet: 'Add to Wallet',
+      removeFromWallet: 'Remove from Wallet',
+      apply: 'Apply',
+      details: 'Details',
+    },
+    auth: {
+      login: 'Login',
+      logout: 'Logout',
+      loginWithGoogle: 'Login with Google',
+      loginWithApple: 'Login with Apple',
+    },
+    settings: {
+      title: 'Settings',
+      theme: 'Theme',
+      language: 'Language',
+      notifications: 'Notifications',
+      about: 'About',
+      version: 'Version',
+    },
+  },
+};
+
+export function getTranslation(locale: Locale = 'zh-HK') {
+  return translations[locale] || translations['zh-HK'];
+}
+

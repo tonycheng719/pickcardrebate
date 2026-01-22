@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { WHATSAPP_GROUP_URL } from "@/lib/constants";
 import { PromoCalendar } from "./promo-calendar";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 export function Navbar() {
   const { user, logout, rewardPreference, toggleRewardPreference } = useWallet();
@@ -142,6 +143,11 @@ export function Navbar() {
                 <div className="w-5 h-5" />
             )}
           </Button>
+
+          {/* Desktop only: Language Switcher */}
+          <div className="hidden md:block">
+            <LanguageSwitcher />
+          </div>
 
           {user ? (
             <div className="flex items-center gap-1 md:gap-2 ml-1">

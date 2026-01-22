@@ -1,4 +1,16 @@
-export type Locale = 'zh-HK' | 'en';
+export type Locale = 'zh-HK' | 'zh-CN' | 'en';
+
+export const localeNames: Record<Locale, string> = {
+  'zh-HK': '繁體中文',
+  'zh-CN': '简体中文',
+  'en': 'English',
+};
+
+export const localeFlags: Record<Locale, string> = {
+  'zh-HK': '🇭🇰',
+  'zh-CN': '🇨🇳',
+  'en': '🇬🇧',
+};
 
 export const translations = {
   'zh-HK': {
@@ -85,6 +97,8 @@ export const translations = {
       monthlySpending: '本月支出',
       monthlyRebate: '本月回贈',
       addTransaction: '新增記錄',
+      selectCard: '選擇信用卡',
+      selectCardHint: '只顯示您卡包中的信用卡',
     },
     
     // 認證
@@ -112,6 +126,123 @@ export const translations = {
       notifications: '通知',
       clearCache: '清除快取',
       about: '關於',
+      version: '版本',
+    },
+  },
+  
+  'zh-CN': {
+    // 通用
+    common: {
+      loading: '加载中...',
+      error: '发生错误',
+      save: '保存',
+      cancel: '取消',
+      confirm: '确认',
+      delete: '删除',
+      edit: '编辑',
+      share: '分享',
+      back: '返回',
+      next: '下一步',
+      submit: '提交',
+      search: '搜索',
+      close: '关闭',
+      more: '更多',
+      all: '全部',
+      none: '无',
+      yes: '是',
+      no: '否',
+    },
+    
+    // 导航
+    nav: {
+      home: '首页',
+      calculator: '回赠计算器',
+      cards: '信用卡库',
+      discover: '探索',
+      wallet: '我的钱包',
+      login: '登录',
+      logout: '登出',
+      settings: '设置',
+    },
+    
+    // 计算器
+    calculator: {
+      title: '信用卡回赠计算器',
+      subtitle: '选择商户与消费方式，即时计算最高回赠信用卡。',
+      amount: '消费金额',
+      amountPlaceholder: '输入金额',
+      merchant: '商户',
+      merchantPlaceholder: '选择或搜索商户',
+      paymentMethod: '付款方式',
+      calculate: '计算',
+      result: '计算结果',
+      bestCard: '最佳信用卡',
+      rebateRate: '回赠率',
+      rebateAmount: '回赠金额',
+      noCards: '没有符合条件的信用卡',
+      cashRebate: '现金回赠',
+      milesRebate: '飞行里程',
+    },
+    
+    // 卡片
+    cards: {
+      title: '信用卡库',
+      subtitle: '浏览所有信用卡及其回赠优惠',
+      allCards: '所有信用卡',
+      myCards: '我的卡包',
+      addToWallet: '加入卡包',
+      removeFromWallet: '从卡包移除',
+      compare: '比较',
+      details: '详情',
+      rating: '评分',
+      reviews: '评论',
+      noReviews: '暂无评论',
+      writeReview: '撰写评论',
+      annualFee: '年费',
+      minIncome: '最低年薪',
+      welcomeOffer: '迎新优惠',
+      apply: '立即申请',
+    },
+    
+    // 钱包
+    wallet: {
+      title: '我的钱包',
+      myCards: '我的卡包',
+      transactions: '消费记录',
+      history: '计算历史',
+      reports: '消费报告',
+      monthlySpending: '本月支出',
+      monthlyRebate: '本月回赠',
+      addTransaction: '新增记录',
+      selectCard: '选择信用卡',
+      selectCardHint: '只显示您卡包中的信用卡',
+    },
+    
+    // 认证
+    auth: {
+      login: '登录',
+      register: '注册',
+      logout: '登出',
+      email: '电子邮件',
+      password: '密码',
+      forgotPassword: '忘记密码',
+      loginWithGoogle: '使用 Google 登录',
+      loginWithApple: '使用 Apple 登录',
+      noAccount: '还没有账号？',
+      hasAccount: '已经有账号？',
+    },
+    
+    // 设置
+    settings: {
+      title: '设置',
+      theme: '主题',
+      themeLight: '浅色',
+      themeDark: '深色',
+      themeSystem: '跟随系统',
+      language: '语言',
+      notifications: '通知',
+      clearCache: '清除缓存',
+      about: '关于',
       version: '版本',
     },
   },
@@ -200,6 +331,8 @@ export const translations = {
       monthlySpending: 'Monthly Spending',
       monthlyRebate: 'Monthly Rebate',
       addTransaction: 'Add Transaction',
+      selectCard: 'Select Credit Card',
+      selectCardHint: 'Only cards in your wallet are shown',
     },
     
     // Auth
@@ -235,4 +368,3 @@ export const translations = {
 export function getTranslation(locale: Locale = 'zh-HK') {
   return translations[locale] || translations['zh-HK'];
 }
-

@@ -9,6 +9,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Locale, localeNames, localeFlags } from "@/lib/i18n/translations";
+
+const LOCALES: Locale[] = ['zh-HK', 'zh-CN', 'en'];
 
 export function LanguageSwitcher() {
   const { locale, setLocale } = useTranslation();
@@ -19,23 +22,20 @@ export function LanguageSwitcher() {
         <Button variant="ghost" size="sm" className="gap-2">
           <Globe className="h-4 w-4" />
           <span className="hidden sm:inline">
-            {locale === 'zh-HK' ? '繁體中文' : 'English'}
+            {localeNames[locale]}
           </span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem 
-          onClick={() => setLocale('zh-HK')}
-          className={locale === 'zh-HK' ? 'bg-accent' : ''}
-        >
-          🇭🇰 繁體中文
-        </DropdownMenuItem>
-        <DropdownMenuItem 
-          onClick={() => setLocale('en')}
-          className={locale === 'en' ? 'bg-accent' : ''}
-        >
-          🇬🇧 English
-        </DropdownMenuItem>
+        {LOCALES.map((loc) => (
+          <DropdownMenuItem 
+            key={loc}
+            onClick={() => setLocale(loc)}
+            className={locale === loc ? 'bg-accent' : ''}
+          >
+            {localeFlags[loc]} {localeNames[loc]}
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );
