@@ -118,6 +118,9 @@ function mapMerchantToDB(merchant: Merchant): any {
 }
 
 function mapPromoFromDB(dbPromo: any): Promo {
+    // 找到對應的本地 promo 以獲取 sortOrder（資料庫可能沒有這個欄位）
+    const localPromo = PROMOS.find(p => p.id === dbPromo.id);
+    
     return {
         ...dbPromo,
         imageUrl: dbPromo.image_url,
@@ -132,6 +135,8 @@ function mapPromoFromDB(dbPromo: any): Promo {
         seoDescription: dbPromo.seo_description,
         faqs: dbPromo.faqs || [],
         updatedAt: dbPromo.updated_at,
+        // sortOrder: 優先使用資料庫的值，否則使用本地的值
+        sortOrder: dbPromo.sort_order ?? localPromo?.sortOrder ?? 0,
     };
 }
 
@@ -227,7 +232,24 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
   const [cards, setCards] = useState<CreditCard[]>(HK_CARDS); 
   const [merchants, setMerchants] = useState<Merchant[]>(getCachedMerchants);
   // Promos 自動合併：資料庫 + 本地文件（本地新增的會即時顯示）
-  const [promos, setPromos] = useState<Promo[]>(PROMOS.map(p => ({ ...p, contentType: 'promo' as const })));
+  // 初始狀態也需要排序，避免資料庫載入時閃爍
+  const [promos, setPromos] = useState<Promo[]>(() => {
+    const initialPromos = PROMOS.map(p => ({ ...p, contentType: 'promo' as const }));
+    // 使用與資料庫載入後相同的排序邏輯
+    return initialPromos.sort((a, b) => {
+      // 1. Pinned first
+      if (a.isPinned && !b.isPinned) return -1;
+      if (!a.isPinned && b.isPinned) return 1;
+      // 2. sortOrder (higher first)
+      const aSortOrder = (a as any).sortOrder || 0;
+      const bSortOrder = (b as any).sortOrder || 0;
+      if (aSortOrder !== bSortOrder) return bSortOrder - aSortOrder;
+      // 3. updatedAt (newest first)
+      const aUpdated = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+      const bUpdated = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+      return bUpdated - aUpdated;
+    });
+  });
   const [isLoading, setIsLoading] = useState(true); // Still track loading for admin/background sync
   
   const supabase = createClient();
@@ -381,7 +403,11 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
                     const bIsPinned = isEffectivelyPinned(b);
                     if (aIsPinned && !bIsPinned) return -1;
                     if (!aIsPinned && bIsPinned) return 1;
-                    // 2. updatedAt (newest first)
+                    // 2. sortOrder (higher first) - 用於控制新文章優先顯示
+                    const aSortOrder = (a as any).sortOrder || 0;
+                    const bSortOrder = (b as any).sortOrder || 0;
+                    if (aSortOrder !== bSortOrder) return bSortOrder - aSortOrder;
+                    // 3. updatedAt (newest first)
                     const aUpdated = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
                     const bUpdated = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
                     return bUpdated - aUpdated;
