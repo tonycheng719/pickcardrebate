@@ -137,6 +137,46 @@ export async function GET(request: NextRequest) {
       }
     }
 
+    // 4. 獲取舊系統的優惠活動留言 (promo_comments 表) - 如果存在
+    if (source !== 'new' && (!contentType || contentType === 'promo')) {
+      try {
+        let promoQuery = supabase
+          .from('promo_comments')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(100);
+
+        if (status === 'visible') {
+          promoQuery = promoQuery.eq('is_deleted', false);
+        } else if (status === 'hidden') {
+          promoQuery = promoQuery.eq('is_deleted', true);
+        }
+
+        const { data: legacyPromoComments, error } = await promoQuery;
+
+        if (!error && legacyPromoComments) {
+          const convertedPromoComments = legacyPromoComments.map(c => ({
+            id: c.id,
+            content_type: 'promo',
+            content_id: c.promo_id,
+            user_id: c.user_id,
+            user_name: c.user_name,
+            user_avatar: c.user_avatar,
+            content: c.content,
+            is_hidden: c.is_deleted || false,
+            is_pinned: false,
+            likes_count: 0,
+            created_at: c.created_at,
+            source: 'legacy_promo',
+            rating: c.rating,
+          }));
+          allComments = [...allComments, ...convertedPromoComments];
+        }
+      } catch (e) {
+        // promo_comments 表可能不存在，忽略錯誤
+      }
+    }
+
     // 按時間排序
     allComments.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
@@ -182,6 +222,21 @@ export async function PATCH(request: NextRequest) {
       // 舊系統信用卡留言
       const { data, error } = await supabase
         .from('card_comments')
+        .update({ 
+          is_deleted: is_hidden,
+          deleted_by: is_hidden ? 'admin' : null,
+          deleted_at: is_hidden ? new Date().toISOString() : null
+        })
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return NextResponse.json(data);
+    } else if (source === 'legacy_promo') {
+      // 舊系統優惠活動留言
+      const { data, error } = await supabase
+        .from('promo_comments')
         .update({ 
           is_deleted: is_hidden,
           deleted_by: is_hidden ? 'admin' : null,
@@ -244,6 +299,18 @@ export async function DELETE(request: NextRequest) {
       // 舊系統信用卡留言 - 軟刪除
       const { error } = await supabase
         .from('card_comments')
+        .update({ 
+          is_deleted: true, 
+          deleted_by: 'admin',
+          deleted_at: new Date().toISOString()
+        })
+        .eq('id', id);
+
+      if (error) throw error;
+    } else if (source === 'legacy_promo') {
+      // 舊系統優惠活動留言 - 軟刪除
+      const { error } = await supabase
+        .from('promo_comments')
         .update({ 
           is_deleted: true, 
           deleted_by: 'admin',

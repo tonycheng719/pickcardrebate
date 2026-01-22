@@ -25,7 +25,7 @@ interface Comment {
   created_at: string;
   reportCount?: number;
   rating?: number;
-  source?: 'new' | 'legacy_article' | 'legacy_card'; // 區分來源
+  source?: 'new' | 'legacy_article' | 'legacy_card' | 'legacy_promo'; // 區分來源
   user?: {
     id: string;
     name: string;
@@ -34,11 +34,12 @@ interface Comment {
   };
 }
 
-type CommentType = "card" | "article";
+type CommentType = "card" | "article" | "promo";
 
 export default function AdminCommentsPage() {
   const [cardComments, setCardComments] = useState<Comment[]>([]);
   const [articleComments, setArticleComments] = useState<Comment[]>([]);
+  const [promoComments, setPromoComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
   const [keyword, setKeyword] = useState("");
   const [activeTab, setActiveTab] = useState<"visible" | "hidden">("visible");
@@ -55,9 +56,10 @@ export default function AdminCommentsPage() {
         const data = await res.json();
         const comments = data.comments || [];
         
-        // Separate card and article comments by content_type
+        // Separate comments by content_type
         setCardComments(comments.filter((c: Comment) => c.content_type === 'card'));
         setArticleComments(comments.filter((c: Comment) => c.content_type === 'article'));
+        setPromoComments(comments.filter((c: Comment) => c.content_type === 'promo'));
       }
     } catch (error) {
       console.error("Error fetching comments:", error);
@@ -87,8 +89,10 @@ export default function AdminCommentsPage() {
       // Remove from local state
       if (commentType === "card") {
         setCardComments(prev => prev.filter(c => c.id !== id));
-      } else {
+      } else if (commentType === "article") {
         setArticleComments(prev => prev.filter(c => c.id !== id));
+      } else {
+        setPromoComments(prev => prev.filter(c => c.id !== id));
       }
       toast.success("評論已刪除");
     } catch (error) {
@@ -112,8 +116,10 @@ export default function AdminCommentsPage() {
       
       if (commentType === "card") {
         setCardComments(updateFn);
-      } else {
+      } else if (commentType === "article") {
         setArticleComments(updateFn);
+      } else {
+        setPromoComments(updateFn);
       }
       toast.success(currentHidden ? "評論已顯示" : "評論已隱藏");
     } catch (error) {
@@ -131,8 +137,17 @@ export default function AdminCommentsPage() {
     return slug.replace(/-/g, ' ').slice(0, 30) + '...';
   };
 
+  const getPromoTitle = (promoId: string) => {
+    const promo = PROMOS.find(p => p.id === promoId);
+    return promo?.title || promoId.slice(0, 30) + '...';
+  };
+
   // Current comments based on type
-  const currentComments = commentType === "card" ? cardComments : articleComments;
+  const currentComments = commentType === "card" 
+    ? cardComments 
+    : commentType === "article" 
+    ? articleComments 
+    : promoComments;
 
   // Get unique IDs for filter
   const uniqueIds = Array.from(new Set(
@@ -167,7 +182,12 @@ export default function AdminCommentsPage() {
   // Stats
   const totalCardComments = cardComments.filter(c => !c.is_hidden).length;
   const totalArticleComments = articleComments.filter(c => !c.is_hidden).length;
-  const totalComments = commentType === "card" ? totalCardComments : totalArticleComments;
+  const totalPromoComments = promoComments.filter(c => !c.is_hidden).length;
+  const totalComments = commentType === "card" 
+    ? totalCardComments 
+    : commentType === "article" 
+    ? totalArticleComments 
+    : totalPromoComments;
   const hiddenComments = currentComments.filter(c => c.is_hidden).length;
   const totalLikes = currentComments.reduce((sum, c) => sum + (c.likes_count || 0), 0);
 
@@ -209,6 +229,17 @@ export default function AdminCommentsPage() {
           文章評論
           <span className="ml-1 px-2 py-0.5 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 text-xs rounded-full">
             {totalArticleComments}
+          </span>
+        </Button>
+        <Button
+          variant={commentType === "promo" ? "default" : "ghost"}
+          onClick={() => { setCommentType("promo"); setSelectedItemId(""); }}
+          className="gap-2"
+        >
+          <Gift className="h-4 w-4" />
+          優惠活動評論
+          <span className="ml-1 px-2 py-0.5 bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300 text-xs rounded-full">
+            {totalPromoComments}
           </span>
         </Button>
       </div>
@@ -271,10 +302,16 @@ export default function AdminCommentsPage() {
           value={selectedItemId}
           onChange={(e) => setSelectedItemId(e.target.value)}
         >
-          <option value="">{commentType === "card" ? "所有信用卡" : "所有文章"}</option>
+          <option value="">
+            {commentType === "card" ? "所有信用卡" : commentType === "article" ? "所有文章" : "所有優惠活動"}
+          </option>
           {uniqueIds.map(id => (
             <option key={id} value={id}>
-              {commentType === "card" ? getCardName(id) : getArticleTitle(id)}
+              {commentType === "card" 
+                ? getCardName(id) 
+                : commentType === "article" 
+                ? getArticleTitle(id) 
+                : getPromoTitle(id)}
             </option>
           ))}
         </select>
@@ -296,16 +333,22 @@ export default function AdminCommentsPage() {
         ) : filteredComments.length === 0 ? (
           <div className="text-center py-12 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-dashed">
             <MessageSquare className="h-12 w-12 mx-auto text-gray-300 mb-4" />
-            <p className="text-gray-500">暫無{commentType === "card" ? "信用卡" : "文章"}評論</p>
+            <p className="text-gray-500">
+              暫無{commentType === "card" ? "信用卡" : commentType === "article" ? "文章" : "優惠活動"}評論
+            </p>
           </div>
         ) : (
           filteredComments.map((comment) => {
             const itemName = commentType === "card" 
               ? getCardName(comment.content_id) 
-              : getArticleTitle(comment.content_id);
+              : commentType === "article"
+              ? getArticleTitle(comment.content_id)
+              : getPromoTitle(comment.content_id);
             const itemLink = commentType === "card"
               ? `/cards/${comment.content_id}`
-              : `/discover/${comment.content_id}`;
+              : commentType === "article"
+              ? `/discover/${comment.content_id}`
+              : `/promos/${comment.content_id}`;
             const userName = comment.user?.name || comment.user_name || '匿名';
             const userAvatar = comment.user?.avatar_url || comment.user_avatar;
             
@@ -338,7 +381,9 @@ export default function AdminCommentsPage() {
                             className={`text-sm hover:underline flex items-center gap-1 ${
                               commentType === "card" 
                                 ? "text-blue-600 dark:text-blue-400" 
-                                : "text-purple-600 dark:text-purple-400"
+                                : commentType === "article"
+                                ? "text-purple-600 dark:text-purple-400"
+                                : "text-orange-600 dark:text-orange-400"
                             }`}
                             target="_blank"
                           >
@@ -407,10 +452,13 @@ export default function AdminCommentsPage() {
                             ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300'
                             : comment.source === 'legacy_card'
                             ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+                            : comment.source === 'legacy_promo'
+                            ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300'
                             : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'
                         }`}>
                           {comment.source === 'legacy_article' ? '舊文章' : 
-                           comment.source === 'legacy_card' ? '舊信用卡' : '新系統'}
+                           comment.source === 'legacy_card' ? '舊信用卡' : 
+                           comment.source === 'legacy_promo' ? '舊優惠' : '新系統'}
                         </span>
                       )}
                       <Link href={`/admin/users/${comment.user_id}`}>
