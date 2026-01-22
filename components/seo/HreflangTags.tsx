@@ -1,7 +1,3 @@
-"use client";
-
-import { usePathname } from 'next/navigation';
-
 const BASE_URL = 'https://pickcardrebate.com';
 
 interface HreflangConfig {
@@ -15,15 +11,17 @@ const LOCALES: HreflangConfig[] = [
   { hreflang: 'en', prefix: '/en' },
 ];
 
+interface HreflangTagsProps {
+  pathname?: string;
+}
+
 /**
  * 生成 hreflang 標籤用於多語言 SEO
  * 這些標籤告訴搜索引擎網頁的不同語言版本
  */
-export function HreflangTags() {
-  const pathname = usePathname();
-  
+export function HreflangTags({ pathname = '/' }: HreflangTagsProps) {
   // 獲取不帶語言前綴的基礎路徑
-  let basePath = pathname || '/';
+  let basePath = pathname;
   if (basePath.startsWith('/zh-cn')) {
     basePath = basePath.slice(6) || '/';
   } else if (basePath.startsWith('/en')) {
@@ -49,4 +47,3 @@ export function HreflangTags() {
     </>
   );
 }
-
