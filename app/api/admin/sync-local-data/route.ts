@@ -34,6 +34,7 @@ export async function POST() {
         seo_description: promo.seoDescription || null,
         faqs: promo.faqs || null,
         updated_at: promo.updatedAt || new Date().toISOString(),
+        sort_order: promo.sortOrder || 0, // 新增：排序欄位
       };
 
       const { error } = await adminAuthClient

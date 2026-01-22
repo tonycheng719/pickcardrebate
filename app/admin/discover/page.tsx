@@ -99,6 +99,10 @@ export default function AdminDiscoverPage() {
   // Pinned settings (from article_settings)
   const [articlePinned, setArticlePinned] = useState<Record<string, boolean>>({});
   
+  // Sync local data state
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncStatus, setSyncStatus] = useState<{ localTotal: number; dbTotal: number } | null>(null);
+  
   // Create new article dialog
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [newArticle, setNewArticle] = useState({
@@ -543,6 +547,46 @@ export default function AdminDiscoverPage() {
           </p>
         </div>
         <div className="flex gap-2">
+          <Button 
+            variant="outline" 
+            className="gap-2"
+            onClick={async () => {
+              setIsSyncing(true);
+              try {
+                // 先檢查同步狀態
+                const statusRes = await fetch('/api/admin/sync-local-data');
+                const status = await statusRes.json();
+                setSyncStatus({ localTotal: status.localTotal, dbTotal: status.dbTotal });
+                
+                if (status.needsSync) {
+                  // 執行同步
+                  const syncRes = await fetch('/api/admin/sync-local-data', { method: 'POST' });
+                  const result = await syncRes.json();
+                  if (result.success) {
+                    toast.success(`同步完成！已同步 ${result.results.promos.success} 篇優惠 + ${result.results.guides.success} 篇攻略`);
+                    // 重新載入頁面以獲取最新資料
+                    window.location.reload();
+                  } else {
+                    toast.error(`同步失敗：${result.error}`);
+                  }
+                } else {
+                  toast.info('資料庫已是最新，無需同步');
+                }
+              } catch (e) {
+                toast.error('同步時發生錯誤');
+              } finally {
+                setIsSyncing(false);
+              }
+            }}
+            disabled={isSyncing}
+          >
+            {isSyncing ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <RotateCcw className="h-4 w-4" />
+            )}
+            同步本地資料
+          </Button>
           <Link href="/discover" target="_blank">
             <Button variant="outline" className="gap-2">
               <ExternalLink className="h-4 w-4" />

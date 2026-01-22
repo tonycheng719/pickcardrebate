@@ -1,5 +1,27 @@
 import { Promo } from "../types";
 
+/**
+ * ⚠️ 重要提醒：新增文章後必須執行以下步驟！
+ * 
+ * 1. 新增文章到此檔案後，必須同步到資料庫
+ * 2. 執行方法：POST /api/admin/sync-local-data
+ * 3. 或在 Admin 後台執行「同步本地資料」
+ * 
+ * 排序規則：
+ * - isPinned: true 的文章會置頂
+ * - sortOrder 數值越大越前（預設 0）
+ * - 相同 sortOrder 按 updatedAt 最新排序
+ * 
+ * 新增文章範例：
+ * {
+ *   id: "unique-id",
+ *   ...
+ *   updatedAt: "2026-01-22",  // 必填！用於排序
+ *   isPinned: false,          // 是否置頂
+ *   sortOrder: 100,           // 選填，數值越大越前
+ * }
+ */
+
 export const PROMOS: Promo[] = [
   // ========== 📊 攻略文章（置頂） ==========
   {
@@ -3238,6 +3260,7 @@ export const PROMOS: Promo[] = [
 
   // ========================================
   // PayMe 銀聯卡 Apple Pay 優惠（2026/1/22 - 2026/4/22）
+  // ⚠️ 新增文章後記得執行 POST /api/admin/sync-local-data
   // ========================================
   {
     id: "payme-unionpay-applepay-2026",
@@ -3247,10 +3270,11 @@ export const PROMOS: Promo[] = [
     imageUrl: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop",
     expiryDate: "2026-04-22",
     updatedAt: "2026-01-22",
+    sortOrder: 100, // 新文章設高 sortOrder 確保排在前面
     relatedCardIds: [],
     tags: ["PayMe", "Apple Pay", "銀聯", "NFC", "3%回贈", "10%回贈", "外幣簽賬", "中港澳"],
     url: "https://payme.hsbc.com.hk",
-    isPinned: true,
+    isPinned: false, // 唔需要置頂，用 sortOrder 控制排序
     content: `
 ## 📱 PayMe 銀聯卡 Apple Pay 優惠
 
