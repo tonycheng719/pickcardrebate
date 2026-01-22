@@ -23,6 +23,7 @@ import { ShareButton } from "@/components/share-button";
 import { CommentSection } from "@/components/comments/CommentSection";
 import { CardRating } from "@/components/cards/CardRating";
 import { PARTNER_MODE_ENABLED } from "@/lib/config";
+import { getLocalizedCard } from "@/lib/i18n/content";
 
 interface CardDetailClientProps {
   locale: Locale;
@@ -37,9 +38,16 @@ export default function CardDetailClient({ locale, cardId }: CardDetailClientPro
   const { addCard, hasCard, user } = useWallet();
   const [cardImageError, setCardImageError] = useState(false);
   
-  const card = useMemo(() => {
+  // Get base card data and apply localization
+  const baseCard = useMemo(() => {
     return cards.find(c => c.id === cardId) || HK_CARDS.find(c => c.id === cardId);
   }, [cards, cardId]);
+  
+  // Apply localization to card data
+  const card = useMemo(() => {
+    if (!baseCard) return null;
+    return getLocalizedCard(baseCard, locale);
+  }, [baseCard, locale]);
   
   useEffect(() => {
     setCardImageError(false);

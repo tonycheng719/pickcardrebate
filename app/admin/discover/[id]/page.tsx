@@ -7,12 +7,14 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Save, Loader2, Image as ImageIcon, ExternalLink, Eye, Upload } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { ArrowLeft, Save, Loader2, Image as ImageIcon, ExternalLink, Eye, Upload, Check, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { PROMOS } from "@/lib/data/promos";
 import { HK_CARDS } from "@/lib/data/cards";
 import { use } from "react";
+import { LanguageTabs, type AdminLocale } from "@/components/admin/LanguageTabs";
 
 interface PromoFormData {
   id: string;
@@ -27,6 +29,18 @@ interface PromoFormData {
   url: string;
   updatedAt: string;
   isPinned: boolean;
+  // Multi-lang fields
+  title_en?: string;
+  title_zh_cn?: string;
+  merchant_en?: string;
+  merchant_zh_cn?: string;
+  description_en?: string;
+  description_zh_cn?: string;
+  content_en?: string;
+  content_zh_cn?: string;
+  tags_en?: string[];
+  tags_zh_cn?: string[];
+  languagesCompleted?: string[];
 }
 
 export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id: string }> }) {
@@ -36,6 +50,9 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
   
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [currentLocale, setCurrentLocale] = useState<AdminLocale>('zh-HK');
+  const [isTranslating, setIsTranslating] = useState(false);
+  
   const [formData, setFormData] = useState<PromoFormData>({
     id: "",
     title: "",
@@ -49,6 +66,7 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
     url: "",
     updatedAt: new Date().toISOString().split('T')[0],
     isPinned: false,
+    languagesCompleted: ['zh-HK'],
   });
   
   const [tagsInput, setTagsInput] = useState("");
@@ -60,17 +78,79 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
   const coverInputRef = useRef<HTMLInputElement>(null);
   const contentInputRef = useRef<HTMLInputElement>(null);
 
+  // Get/set field based on current locale
+  const getLocalizedValue = (field: keyof PromoFormData) => {
+    if (currentLocale === 'zh-HK') {
+      return formData[field];
+    }
+    const suffix = currentLocale === 'zh-CN' ? '_zh_cn' : '_en';
+    const key = `${String(field)}${suffix}` as keyof PromoFormData;
+    return formData[key] || '';
+  };
+
+  const setLocalizedValue = (field: string, value: string | string[]) => {
+    if (currentLocale === 'zh-HK') {
+      setFormData({ ...formData, [field]: value });
+    } else {
+      const suffix = currentLocale === 'zh-CN' ? '_zh_cn' : '_en';
+      setFormData({ ...formData, [`${field}${suffix}`]: value });
+    }
+  };
+
+  // Auto translate
+  const handleAutoTranslate = async (targetLocale: 'zh-CN' | 'en') => {
+    setIsTranslating(true);
+    try {
+      const fieldsToTranslate = ['title', 'merchant', 'description', 'content'];
+      const suffix = targetLocale === 'zh-CN' ? '_zh_cn' : '_en';
+      const updates: Partial<PromoFormData> = {};
+
+      for (const field of fieldsToTranslate) {
+        const sourceValue = formData[field as keyof PromoFormData];
+        if (sourceValue && typeof sourceValue === 'string') {
+          const res = await fetch('/api/admin/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              text: sourceValue,
+              targetLocale,
+              context: 'credit card promotion or financial article',
+            }),
+          });
+
+          if (!res.ok) throw new Error('Translation failed');
+          const { translated } = await res.json();
+          (updates as any)[`${field}${suffix}`] = translated;
+        }
+      }
+
+      // Update languages_completed
+      const completed = formData.languagesCompleted || ['zh-HK'];
+      if (!completed.includes(targetLocale)) {
+        updates.languagesCompleted = [...completed, targetLocale];
+      }
+
+      setFormData({ ...formData, ...updates });
+      toast.success(`已翻譯為${targetLocale === 'zh-CN' ? '简体中文' : 'English'}`);
+    } catch (error: any) {
+      console.error('Translation error:', error);
+      toast.error('翻譯失敗：' + error.message);
+    } finally {
+      setIsTranslating(false);
+    }
+  };
+
   // Upload image to Supabase Storage
   const uploadImage = async (file: File, folder: string = "promos"): Promise<string | null> => {
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("bucket", "images");
-    formData.append("folder", folder);
+    const uploadFormData = new FormData();
+    uploadFormData.append("file", file);
+    uploadFormData.append("bucket", "images");
+    uploadFormData.append("folder", folder);
 
     try {
       const res = await fetch("/api/admin/upload", {
         method: "POST",
-        body: formData,
+        body: uploadFormData,
       });
 
       if (!res.ok) {
@@ -98,11 +178,10 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
       toast.success("封面圖片已上傳！");
     }
     setUploadingCover(false);
-    // Reset input
     if (coverInputRef.current) coverInputRef.current.value = "";
   };
 
-  // Handle content image upload (insert into Markdown)
+  // Handle content image upload
   const handleContentImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -110,29 +189,24 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
     setUploadingContent(true);
     const url = await uploadImage(file, "promos/content");
     if (url) {
-      // Insert Markdown image at cursor position
       const textarea = contentTextareaRef.current;
+      const currentContent = getLocalizedValue('content') as string || '';
+      const imageMarkdown = `\n![${file.name.split('.')[0]}](${url})\n`;
+      
       if (textarea) {
         const start = textarea.selectionStart;
-        const end = textarea.selectionEnd;
-        const text = formData.content;
-        const imageMarkdown = `\n![${file.name.split('.')[0]}](${url})\n`;
-        const newContent = text.substring(0, start) + imageMarkdown + text.substring(end);
-        setFormData({ ...formData, content: newContent });
-        
-        // Set cursor after inserted image
+        const newContent = currentContent.substring(0, start) + imageMarkdown + currentContent.substring(start);
+        setLocalizedValue('content', newContent);
         setTimeout(() => {
           textarea.focus();
           textarea.selectionStart = textarea.selectionEnd = start + imageMarkdown.length;
         }, 0);
       } else {
-        // Append to end if no textarea ref
-        setFormData({ ...formData, content: formData.content + `\n![${file.name.split('.')[0]}](${url})\n` });
+        setLocalizedValue('content', currentContent + imageMarkdown);
       }
       toast.success("圖片已插入！");
     }
     setUploadingContent(false);
-    // Reset input
     if (contentInputRef.current) contentInputRef.current.value = "";
   };
 
@@ -143,7 +217,6 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
         return;
       }
       
-      // First try to load from database
       try {
         const res = await fetch("/api/admin/promos");
         const { promos } = await res.json();
@@ -163,6 +236,18 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
             url: dbPromo.url || "",
             updatedAt: dbPromo.updated_at || dbPromo.updatedAt || "",
             isPinned: dbPromo.is_pinned || dbPromo.isPinned || false,
+            // Multi-lang fields
+            title_en: dbPromo.title_en,
+            title_zh_cn: dbPromo.title_zh_cn,
+            merchant_en: dbPromo.merchant_en,
+            merchant_zh_cn: dbPromo.merchant_zh_cn,
+            description_en: dbPromo.description_en,
+            description_zh_cn: dbPromo.description_zh_cn,
+            content_en: dbPromo.content_en,
+            content_zh_cn: dbPromo.content_zh_cn,
+            tags_en: dbPromo.tags_en,
+            tags_zh_cn: dbPromo.tags_zh_cn,
+            languagesCompleted: dbPromo.languages_completed || ['zh-HK'],
           });
           setTagsInput((dbPromo.tags || []).join(", "));
           setCardIdsInput((dbPromo.related_card_ids || dbPromo.relatedCardIds || []).join(", "));
@@ -189,6 +274,7 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
           url: staticPromo.url || "",
           updatedAt: staticPromo.updatedAt || "",
           isPinned: staticPromo.isPinned || false,
+          languagesCompleted: ['zh-HK'],
         });
         setTagsInput((staticPromo.tags || []).join(", "));
         setCardIdsInput((staticPromo.relatedCardIds || []).join(", "));
@@ -211,7 +297,6 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
     setSaving(true);
     
     try {
-      // Parse tags and card IDs from comma-separated strings
       const tags = tagsInput.split(",").map(t => t.trim()).filter(Boolean);
       const relatedCardIds = cardIdsInput.split(",").map(t => t.trim()).filter(Boolean);
       
@@ -228,6 +313,18 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
         url: formData.url,
         updated_at: new Date().toISOString(),
         is_pinned: formData.isPinned,
+        // Multi-lang fields
+        title_en: formData.title_en,
+        title_zh_cn: formData.title_zh_cn,
+        merchant_en: formData.merchant_en,
+        merchant_zh_cn: formData.merchant_zh_cn,
+        description_en: formData.description_en,
+        description_zh_cn: formData.description_zh_cn,
+        content_en: formData.content_en,
+        content_zh_cn: formData.content_zh_cn,
+        tags_en: formData.tags_en,
+        tags_zh_cn: formData.tags_zh_cn,
+        languages_completed: formData.languagesCompleted,
       };
       
       const res = await fetch("/api/admin/promos", {
@@ -239,12 +336,11 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
       const result = await res.json();
       
       if (!res.ok) {
-        // Show detailed error message
         const errorMsg = result.error || "儲存失敗";
         console.error("Save error:", errorMsg);
         toast.error(`❌ 儲存失敗: ${errorMsg}`, { duration: 8000 });
         setSaving(false);
-        return; // Don't redirect on error
+        return;
       }
       
       toast.success(isNew ? "✅ 優惠已建立！" : "✅ 優惠已更新！");
@@ -264,6 +360,13 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
       </div>
     );
   }
+
+  // Get current locale values
+  const currentTitle = getLocalizedValue('title') as string;
+  const currentMerchant = getLocalizedValue('merchant') as string;
+  const currentDescription = getLocalizedValue('description') as string;
+  const currentContent = getLocalizedValue('content') as string;
+  const completedLanguages = formData.languagesCompleted || ['zh-HK'];
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
@@ -297,6 +400,30 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
         {isNew ? "新增優惠" : "編輯優惠"}
       </h1>
 
+      {/* Language Tabs */}
+      <LanguageTabs
+        value={currentLocale}
+        onChange={setCurrentLocale}
+        completedLanguages={completedLanguages}
+        onAutoTranslate={handleAutoTranslate}
+        isTranslating={isTranslating}
+      />
+
+      {/* Language Info Banner */}
+      {currentLocale !== 'zh-HK' && (
+        <div className="flex items-start gap-3 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+          <AlertCircle className="h-5 w-5 text-amber-600 dark:text-amber-400 mt-0.5" />
+          <div className="text-sm text-amber-800 dark:text-amber-200">
+            <p className="font-medium">
+              正在編輯 {currentLocale === 'zh-CN' ? '简体中文' : 'English'} 版本
+            </p>
+            <p className="mt-1 text-amber-700 dark:text-amber-300">
+              如未提供翻譯，前台會自動顯示繁體中文版本。
+            </p>
+          </div>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Basic Info */}
         <Card className="dark:bg-gray-800 dark:border-gray-700">
@@ -312,7 +439,7 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
                   value={formData.id}
                   onChange={(e) => setFormData({ ...formData, id: e.target.value })}
                   placeholder="例如: hsbc-red-mcdonalds-2026"
-                  disabled={!isNew}
+                  disabled={!isNew || currentLocale !== 'zh-HK'}
                   className="dark:bg-gray-900 dark:border-gray-600"
                 />
                 <p className="text-xs text-gray-500">用於 URL，建議用英文和連字號</p>
@@ -322,8 +449,8 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
                 <Label htmlFor="merchant">商戶/銀行 *</Label>
                 <Input
                   id="merchant"
-                  value={formData.merchant}
-                  onChange={(e) => setFormData({ ...formData, merchant: e.target.value })}
+                  value={currentMerchant || ''}
+                  onChange={(e) => setLocalizedValue('merchant', e.target.value)}
                   placeholder="例如: 麥當勞"
                   className="dark:bg-gray-900 dark:border-gray-600"
                 />
@@ -334,8 +461,8 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
               <Label htmlFor="title">標題 *</Label>
               <Input
                 id="title"
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                value={currentTitle || ''}
+                onChange={(e) => setLocalizedValue('title', e.target.value)}
                 placeholder="例如: 🍔 滙豐 Red 卡 x 麥當勞印花獎賞 2026"
                 className="dark:bg-gray-900 dark:border-gray-600"
               />
@@ -345,8 +472,8 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
               <Label htmlFor="description">簡短描述</Label>
               <Textarea
                 id="description"
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                value={currentDescription || ''}
+                onChange={(e) => setLocalizedValue('description', e.target.value)}
                 placeholder="顯示在列表卡片上的簡短描述..."
                 rows={2}
                 className="dark:bg-gray-900 dark:border-gray-600"
@@ -373,15 +500,15 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
           <CardContent className="space-y-4">
             {previewMode ? (
               <div className="prose dark:prose-invert max-w-none p-4 bg-gray-50 dark:bg-gray-900 rounded-lg min-h-[300px]">
-                <div dangerouslySetInnerHTML={{ __html: formData.content.replace(/\n/g, '<br/>') }} />
+                <div dangerouslySetInnerHTML={{ __html: (currentContent || '').replace(/\n/g, '<br/>') }} />
               </div>
             ) : (
               <>
                 <Textarea
                   ref={contentTextareaRef}
-                  value={formData.content}
-                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                  placeholder={`## 📅 推廣期
+                  value={currentContent || ''}
+                  onChange={(e) => setLocalizedValue('content', e.target.value)}
+                  placeholder={currentLocale === 'zh-HK' ? `## 📅 推廣期
 
 **2026年1月2日 至 2026年12月31日**
 
@@ -398,175 +525,199 @@ export default function AdminDiscoverEditPage({ params }: { params: Promise<{ id
 ## 💡 識玩攻略
 
 1. 用麥當勞 App 落單
-2. 每日食一餐
-
----
-
-## ❓ 常見問題
-
-**Q: 附屬卡可唔可以參加？**
-A: 唔可以，只限主卡。`}
+2. 每日食一餐` : `Enter ${currentLocale === 'zh-CN' ? '简体中文' : 'English'} content here...`}
                   rows={20}
                   className="font-mono text-sm dark:bg-gray-900 dark:border-gray-600"
                 />
                 
-                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-                  <h4 className="font-medium text-blue-800 dark:text-blue-300 flex items-center gap-2">
-                    <ImageIcon className="h-4 w-4" /> 插入圖片
-                  </h4>
-                  <p className="text-sm text-blue-700 dark:text-blue-400 mt-2">
-                    點擊上傳按鈕，圖片會自動插入到游標位置。
-                  </p>
-                  <div className="mt-3 flex items-center gap-2">
-                    <input
-                      type="file"
-                      ref={contentInputRef}
-                      onChange={handleContentImageUpload}
-                      accept="image/*"
-                      className="hidden"
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => contentInputRef.current?.click()}
-                      disabled={uploadingContent}
-                      className="gap-2"
-                    >
-                      {uploadingContent ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        <Upload className="h-4 w-4" />
-                      )}
-                      上傳圖片並插入
-                    </Button>
-                    <span className="text-xs text-blue-600 dark:text-blue-400">
-                      或手動輸入：<code className="bg-blue-100 dark:bg-blue-900/40 px-1 rounded">![描述](URL)</code>
-                    </span>
+                {currentLocale === 'zh-HK' && (
+                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                    <h4 className="font-medium text-blue-800 dark:text-blue-300 flex items-center gap-2">
+                      <ImageIcon className="h-4 w-4" /> 插入圖片
+                    </h4>
+                    <p className="text-sm text-blue-700 dark:text-blue-400 mt-2">
+                      點擊上傳按鈕，圖片會自動插入到游標位置。
+                    </p>
+                    <div className="mt-3 flex items-center gap-2">
+                      <input
+                        type="file"
+                        ref={contentInputRef}
+                        onChange={handleContentImageUpload}
+                        accept="image/*"
+                        className="hidden"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => contentInputRef.current?.click()}
+                        disabled={uploadingContent}
+                        className="gap-2"
+                      >
+                        {uploadingContent ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Upload className="h-4 w-4" />
+                        )}
+                        上傳圖片並插入
+                      </Button>
+                      <span className="text-xs text-blue-600 dark:text-blue-400">
+                        或手動輸入：<code className="bg-blue-100 dark:bg-blue-900/40 px-1 rounded">![描述](URL)</code>
+                      </span>
+                    </div>
                   </div>
-                </div>
+                )}
               </>
             )}
           </CardContent>
         </Card>
 
-        {/* Media & Links */}
-        <Card className="dark:bg-gray-800 dark:border-gray-700">
-          <CardHeader>
-            <CardTitle>媒體及連結</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="imageUrl">封面圖片</Label>
-              <div className="flex gap-2">
-                <Input
-                  id="imageUrl"
-                  value={formData.imageUrl}
-                  onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                  placeholder="貼上 URL 或點擊右邊上傳..."
-                  className="dark:bg-gray-900 dark:border-gray-600 flex-1"
-                />
-                <input
-                  type="file"
-                  ref={coverInputRef}
-                  onChange={handleCoverUpload}
-                  accept="image/*"
-                  className="hidden"
-                />
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => coverInputRef.current?.click()}
-                  disabled={uploadingCover}
-                  className="gap-2"
-                >
-                  {uploadingCover ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <Upload className="h-4 w-4" />
-                  )}
-                  上傳
-                </Button>
+        {/* Media & Links (only show for zh-HK) */}
+        {currentLocale === 'zh-HK' && (
+          <Card className="dark:bg-gray-800 dark:border-gray-700">
+            <CardHeader>
+              <CardTitle>媒體及連結</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="imageUrl">封面圖片</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="imageUrl"
+                    value={formData.imageUrl}
+                    onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                    placeholder="貼上 URL 或點擊右邊上傳..."
+                    className="dark:bg-gray-900 dark:border-gray-600 flex-1"
+                  />
+                  <input
+                    type="file"
+                    ref={coverInputRef}
+                    onChange={handleCoverUpload}
+                    accept="image/*"
+                    className="hidden"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => coverInputRef.current?.click()}
+                    disabled={uploadingCover}
+                    className="gap-2"
+                  >
+                    {uploadingCover ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Upload className="h-4 w-4" />
+                    )}
+                    上傳
+                  </Button>
+                </div>
+                {formData.imageUrl && (
+                  <div className="mt-2">
+                    <img
+                      src={formData.imageUrl}
+                      alt="Preview"
+                      className="h-32 object-cover rounded-lg"
+                      onError={(e) => (e.currentTarget.style.display = 'none')}
+                    />
+                  </div>
+                )}
               </div>
-              {formData.imageUrl && (
-                <div className="mt-2">
-                  <img
-                    src={formData.imageUrl}
-                    alt="Preview"
-                    className="h-32 object-cover rounded-lg"
-                    onError={(e) => (e.currentTarget.style.display = 'none')}
+              
+              <div className="space-y-2">
+                <Label htmlFor="url">官方連結</Label>
+                <Input
+                  id="url"
+                  value={formData.url}
+                  onChange={(e) => setFormData({ ...formData, url: e.target.value })}
+                  placeholder="https://www.hsbc.com.hk/..."
+                  className="dark:bg-gray-900 dark:border-gray-600"
+                />
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Metadata (only show for zh-HK) */}
+        {currentLocale === 'zh-HK' && (
+          <Card className="dark:bg-gray-800 dark:border-gray-700">
+            <CardHeader>
+              <CardTitle>分類及設定</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="expiryDate">到期日</Label>
+                  <Input
+                    id="expiryDate"
+                    type="date"
+                    value={formData.expiryDate}
+                    onChange={(e) => setFormData({ ...formData, expiryDate: e.target.value })}
+                    className="dark:bg-gray-900 dark:border-gray-600"
                   />
                 </div>
-              )}
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="url">官方連結</Label>
-              <Input
-                id="url"
-                value={formData.url}
-                onChange={(e) => setFormData({ ...formData, url: e.target.value })}
-                placeholder="https://www.hsbc.com.hk/..."
-                className="dark:bg-gray-900 dark:border-gray-600"
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Metadata */}
-        <Card className="dark:bg-gray-800 dark:border-gray-700">
-          <CardHeader>
-            <CardTitle>分類及設定</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+                
+                <div className="space-y-2 flex items-end gap-4">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={formData.isPinned}
+                      onChange={(e) => setFormData({ ...formData, isPinned: e.target.checked })}
+                      className="w-4 h-4 rounded"
+                    />
+                    <span>置頂顯示</span>
+                  </label>
+                </div>
+              </div>
+              
               <div className="space-y-2">
-                <Label htmlFor="expiryDate">到期日</Label>
+                <Label htmlFor="tags">標籤（逗號分隔）</Label>
                 <Input
-                  id="expiryDate"
-                  type="date"
-                  value={formData.expiryDate}
-                  onChange={(e) => setFormData({ ...formData, expiryDate: e.target.value })}
+                  id="tags"
+                  value={tagsInput}
+                  onChange={(e) => setTagsInput(e.target.value)}
+                  placeholder="滙豐, 麥當勞, 印花獎賞, 需登記"
                   className="dark:bg-gray-900 dark:border-gray-600"
                 />
               </div>
               
-              <div className="space-y-2 flex items-end gap-4">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={formData.isPinned}
-                    onChange={(e) => setFormData({ ...formData, isPinned: e.target.checked })}
-                    className="w-4 h-4 rounded"
-                  />
-                  <span>置頂顯示</span>
-                </label>
+              <div className="space-y-2">
+                <Label htmlFor="cardIds">相關信用卡 ID（逗號分隔）</Label>
+                <Input
+                  id="cardIds"
+                  value={cardIdsInput}
+                  onChange={(e) => setCardIdsInput(e.target.value)}
+                  placeholder="hsbc-red, hsbc-everymile"
+                  className="dark:bg-gray-900 dark:border-gray-600"
+                />
+                <p className="text-xs text-gray-500">
+                  可用卡 ID：{HK_CARDS.slice(0, 10).map(c => c.id).join(", ")}...
+                </p>
               </div>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="tags">標籤（逗號分隔）</Label>
-              <Input
-                id="tags"
-                value={tagsInput}
-                onChange={(e) => setTagsInput(e.target.value)}
-                placeholder="滙豐, 麥當勞, 印花獎賞, 需登記"
-                className="dark:bg-gray-900 dark:border-gray-600"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="cardIds">相關信用卡 ID（逗號分隔）</Label>
-              <Input
-                id="cardIds"
-                value={cardIdsInput}
-                onChange={(e) => setCardIdsInput(e.target.value)}
-                placeholder="hsbc-red, hsbc-everymile"
-                className="dark:bg-gray-900 dark:border-gray-600"
-              />
-              <p className="text-xs text-gray-500">
-                可用卡 ID：{HK_CARDS.slice(0, 10).map(c => c.id).join(", ")}...
-              </p>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Translation Status */}
+        <Card className="dark:bg-gray-800 dark:border-gray-700">
+          <CardHeader>
+            <CardTitle>翻譯狀態</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex gap-4">
+              {(['zh-HK', 'zh-CN', 'en'] as const).map((locale) => (
+                <div key={locale} className="flex items-center gap-2">
+                  <span className="text-sm">
+                    {locale === 'zh-HK' ? '🇭🇰 繁體' : locale === 'zh-CN' ? '🇨🇳 简体' : '🇬🇧 English'}
+                  </span>
+                  {completedLanguages.includes(locale) ? (
+                    <Badge variant="default" className="gap-1">
+                      <Check className="h-3 w-3" /> 已完成
+                    </Badge>
+                  ) : (
+                    <Badge variant="secondary">未完成</Badge>
+                  )}
+                </div>
+              ))}
             </div>
           </CardContent>
         </Card>
@@ -592,4 +743,3 @@ A: 唔可以，只限主卡。`}
     </div>
   );
 }
-
