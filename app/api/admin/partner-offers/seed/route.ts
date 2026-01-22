@@ -320,8 +320,9 @@ const MONEYHERO_PARTNER_OFFERS = [
   },
 
   // ========================================
-  // 大新銀行 (即日起至2025年12月31日23:59)
+  // 大新銀行 (即日起至2026年01月30日下午6時)
   // 指定信用卡：ONE+、MyAuto車主、ANA World、聯合航空World、英國航空白金卡
+  // 更新日期：2026-01-22
   // ========================================
   {
     cardId: "dahsing-one",
@@ -334,16 +335,16 @@ const MONEYHERO_PARTNER_OFFERS = [
         "HK$400 Apple Store禮品卡",
         "HK$400 惠康超市現金券"
       ],
-      validFrom: "2025-12-01",
-      validTo: "2025-12-31",
+      validFrom: "2026-01-01",
+      validTo: "2026-01-30",
       requirements: [
         "全新大新銀行信用卡客戶",
-        "2026年1月31日或之前成功獲批信用卡",
+        "2026年2月28日或之前成功獲批信用卡",
         "收到表格後7日內填妥「獎賞換領表格」"
       ],
       minSpend: 0,
       minSpendDays: 0,
-      notes: "申請參考編號格式為以6個0開首＋6位數字（如：000000123456）。換領流程由推廣期結束後起計需時至少16星期。",
+      notes: "申請參考編號格式為以6個0開首＋6位數字（如：000000123456）。換領流程由推廣期結束後起計需時至少16星期。指定信用卡包括 大新ONE+信用卡、大新MyAuto車主信用卡、大新ANA World萬事達卡、大新聯合航空World萬事達卡、大新英國航空白金卡。",
     }
   },
   {
@@ -357,16 +358,16 @@ const MONEYHERO_PARTNER_OFFERS = [
         "HK$400 Apple Store禮品卡",
         "HK$400 惠康超市現金券"
       ],
-      validFrom: "2025-12-01",
-      validTo: "2025-12-31",
+      validFrom: "2026-01-01",
+      validTo: "2026-01-30",
       requirements: [
         "全新大新銀行信用卡客戶",
-        "2026年1月31日或之前成功獲批信用卡",
+        "2026年2月28日或之前成功獲批信用卡",
         "收到表格後7日內填妥「獎賞換領表格」"
       ],
       minSpend: 0,
       minSpendDays: 0,
-      notes: "申請參考編號格式為以6個0開首＋6位數字（如：000000123456）。換領流程由推廣期結束後起計需時至少16星期。",
+      notes: "申請參考編號格式為以6個0開首＋6位數字（如：000000123456）。換領流程由推廣期結束後起計需時至少16星期。指定信用卡包括 大新ONE+信用卡、大新MyAuto車主信用卡、大新ANA World萬事達卡、大新聯合航空World萬事達卡、大新英國航空白金卡。",
     }
   },
   {
@@ -380,11 +381,11 @@ const MONEYHERO_PARTNER_OFFERS = [
         "HK$400 Apple Store禮品卡",
         "HK$400 惠康超市現金券"
       ],
-      validFrom: "2025-12-01",
-      validTo: "2025-12-31",
+      validFrom: "2026-01-01",
+      validTo: "2026-01-30",
       requirements: [
         "全新大新銀行信用卡客戶",
-        "2026年1月31日或之前成功獲批信用卡",
+        "2026年2月28日或之前成功獲批信用卡",
         "收到表格後7日內填妥「獎賞換領表格」"
       ],
       minSpend: 0,
@@ -396,23 +397,23 @@ const MONEYHERO_PARTNER_OFFERS = [
     cardId: "dahsing-myauto",
     partnerOffer: {
       enabled: true,
-      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/dah-sing-myauto-credit-card",
+      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=604&a=228&sub_id1=pickcardrebate&sub_id2=web",
       bonusValue: 400,
       bonusDescription: "獎品2選1：HK$400 Apple Store禮品卡 / HK$400 惠康超市現金券",
       bonusItems: [
         "HK$400 Apple Store禮品卡",
         "HK$400 惠康超市現金券"
       ],
-      validFrom: "2025-12-01",
-      validTo: "2025-12-31",
+      validFrom: "2026-01-01",
+      validTo: "2026-01-30",
       requirements: [
         "全新大新銀行信用卡客戶",
-        "2026年1月31日或之前成功獲批信用卡",
+        "2026年2月28日或之前成功獲批信用卡",
         "收到表格後7日內填妥「獎賞換領表格」"
       ],
       minSpend: 0,
       minSpendDays: 0,
-      notes: "申請參考編號格式為以6個0開首＋6位數字（如：000000123456）。換領流程由推廣期結束後起計需時至少16星期。",
+      notes: "申請參考編號格式為以6個0開首＋6位數字（如：000000123456）。換領流程由推廣期結束後起計需時至少16星期。指定信用卡包括 大新ONE+信用卡、大新MyAuto車主信用卡、大新ANA World萬事達卡、大新聯合航空World萬事達卡、大新英國航空白金卡。",
     }
   },
 
@@ -487,9 +488,10 @@ const MONEYHERO_PARTNER_OFFERS = [
   },
 
   // ========================================
-  // 中信銀行(國際) (2025/12/01 - 2025/12/15 18:00)
+  // 中信銀行(國際) (2026/01/15 18:00 - 2026/01/26 18:00)
   // 適用：Motion信用卡、大灣區雙幣信用卡、香港航空Mastercard
   // 條件：批卡後30日內簽賬滿HK$100
+  // 更新日期：2026-01-22
   // ========================================
   {
     cardId: "cncbi-motion",
@@ -497,23 +499,22 @@ const MONEYHERO_PARTNER_OFFERS = [
       enabled: true,
       applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=178&a=228&sub_id1=pickcardrebate&sub_id2=web",
       bonusValue: 5980,
-      bonusDescription: "獎品8選1：HK$1,600 HKTVmall（升級優惠）/ HK$1,300 Apple禮品卡 / HK$1,300 惠康現金券 / HK$1,300 現金回贈 / 15,000 Max Miles / Dyson Zone™耳機(HK$5,980) / Philips吸塵機(HK$2,498) / LOJEL行李箱(HK$2,100)",
+      bonusDescription: "獎品7選1：Dyson Zone™耳機(HK$5,980) / LG空氣清新機(HK$3,690) / Philips吸塵機(HK$2,498) / 14,000 Max Miles / HK$1,300 Apple禮品卡 / HK$1,300 惠康現金券 / HK$1,100 現金回贈",
       bonusItems: [
-        "HK$1,600 HKTVmall電子購物禮券（升級優惠）",
+        "Dyson Zone™ 降噪耳機（價值HK$5,980）",
+        "LG AS35GGW20 PuriCare™ 空氣清新機 寵物版（價值HK$3,690）",
+        "Philips輕量強效無線吸塵機 XC2011/61（價值HK$2,498）",
+        "14,000 Max Miles 飛行里數",
         "HK$1,300 Apple Store禮品卡",
         "HK$1,300 惠康購物現金券",
-        "HK$1,300 現金回贈（經轉數快存入戶口）",
-        "15,000 Max Miles 飛行里數",
-        "Dyson Zone™ 降噪耳機（價值HK$5,980）",
-        "Philips輕量強效無線吸塵機 XC2011/61（價值HK$2,498）",
-        "LOJEL Alto 29吋超輕量拉鍊行李箱（價值HK$2,100; 顏色隨機）"
+        "HK$1,100 現金回贈（經轉數快存入戶口）"
       ],
-      validFrom: "2025-12-01",
-      validTo: "2025-12-15",
+      validFrom: "2026-01-15",
+      validTo: "2026-01-26",
       requirements: [
         "全新信銀國際信用卡客戶（過去12個月內未曾持有信銀國際信用卡主卡）",
         "批卡後30日內簽賬滿HK$100",
-        "2026年1月31日或之前成功獲批信用卡",
+        "2026年2月28日或之前成功獲批信用卡",
         "收到表格後7日內填妥「獎賞換領表格」"
       ],
       minSpend: 100,
@@ -527,23 +528,22 @@ const MONEYHERO_PARTNER_OFFERS = [
       enabled: true,
       applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=179&a=228&sub_id1=pickcardrebate&sub_id2=web",
       bonusValue: 5980,
-      bonusDescription: "獎品8選1：HK$1,600 HKTVmall（升級優惠）/ HK$1,300 Apple禮品卡 / HK$1,300 惠康現金券 / HK$1,300 現金回贈 / 15,000 Max Miles / Dyson Zone™耳機(HK$5,980) / Philips吸塵機(HK$2,498) / LOJEL行李箱(HK$2,100)",
+      bonusDescription: "獎品7選1：Dyson Zone™耳機(HK$5,980) / LG空氣清新機(HK$3,690) / Philips吸塵機(HK$2,498) / 14,000 Max Miles / HK$1,300 Apple禮品卡 / HK$1,300 惠康現金券 / HK$1,100 現金回贈",
       bonusItems: [
-        "HK$1,600 HKTVmall電子購物禮券（升級優惠）",
+        "Dyson Zone™ 降噪耳機（價值HK$5,980）",
+        "LG AS35GGW20 PuriCare™ 空氣清新機 寵物版（價值HK$3,690）",
+        "Philips輕量強效無線吸塵機 XC2011/61（價值HK$2,498）",
+        "14,000 Max Miles 飛行里數",
         "HK$1,300 Apple Store禮品卡",
         "HK$1,300 惠康購物現金券",
-        "HK$1,300 現金回贈（經轉數快存入戶口）",
-        "15,000 Max Miles 飛行里數",
-        "Dyson Zone™ 降噪耳機（價值HK$5,980）",
-        "Philips輕量強效無線吸塵機 XC2011/61（價值HK$2,498）",
-        "LOJEL Alto 29吋超輕量拉鍊行李箱（價值HK$2,100; 顏色隨機）"
+        "HK$1,100 現金回贈（經轉數快存入戶口）"
       ],
-      validFrom: "2025-12-01",
-      validTo: "2025-12-15",
+      validFrom: "2026-01-15",
+      validTo: "2026-01-26",
       requirements: [
         "全新信銀國際信用卡客戶（過去12個月內未曾持有信銀國際信用卡主卡）",
         "批卡後30日內簽賬滿HK$100",
-        "2026年1月31日或之前成功獲批信用卡",
+        "2026年2月28日或之前成功獲批信用卡",
         "收到表格後7日內填妥「獎賞換領表格」"
       ],
       minSpend: 100,
@@ -557,23 +557,22 @@ const MONEYHERO_PARTNER_OFFERS = [
       enabled: true,
       applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=178&a=228&sub_id1=pickcardrebate&sub_id2=web",
       bonusValue: 5980,
-      bonusDescription: "獎品8選1：HK$1,600 HKTVmall（升級優惠）/ HK$1,300 Apple禮品卡 / HK$1,300 惠康現金券 / HK$1,300 現金回贈 / 15,000 Max Miles / Dyson Zone™耳機(HK$5,980) / Philips吸塵機(HK$2,498) / LOJEL行李箱(HK$2,100)",
+      bonusDescription: "獎品7選1：Dyson Zone™耳機(HK$5,980) / LG空氣清新機(HK$3,690) / Philips吸塵機(HK$2,498) / 14,000 Max Miles / HK$1,300 Apple禮品卡 / HK$1,300 惠康現金券 / HK$1,100 現金回贈",
       bonusItems: [
-        "HK$1,600 HKTVmall電子購物禮券（升級優惠）",
+        "Dyson Zone™ 降噪耳機（價值HK$5,980）",
+        "LG AS35GGW20 PuriCare™ 空氣清新機 寵物版（價值HK$3,690）",
+        "Philips輕量強效無線吸塵機 XC2011/61（價值HK$2,498）",
+        "14,000 Max Miles 飛行里數",
         "HK$1,300 Apple Store禮品卡",
         "HK$1,300 惠康購物現金券",
-        "HK$1,300 現金回贈（經轉數快存入戶口）",
-        "15,000 Max Miles 飛行里數",
-        "Dyson Zone™ 降噪耳機（價值HK$5,980）",
-        "Philips輕量強效無線吸塵機 XC2011/61（價值HK$2,498）",
-        "LOJEL Alto 29吋超輕量拉鍊行李箱（價值HK$2,100; 顏色隨機）"
+        "HK$1,100 現金回贈（經轉數快存入戶口）"
       ],
-      validFrom: "2025-12-01",
-      validTo: "2025-12-15",
+      validFrom: "2026-01-15",
+      validTo: "2026-01-26",
       requirements: [
         "全新信銀國際信用卡客戶（過去12個月內未曾持有信銀國際信用卡主卡）",
         "批卡後30日內簽賬滿HK$100",
-        "2026年1月31日或之前成功獲批信用卡",
+        "2026年2月28日或之前成功獲批信用卡",
         "收到表格後7日內填妥「獎賞換領表格」"
       ],
       minSpend: 100,
@@ -612,23 +611,24 @@ const MONEYHERO_PARTNER_OFFERS = [
   // 恒生 MMPOWER World Mastercard (即日起至 2026/01/30 18:00)
   // 條件：批卡後30日內簽賬滿HK$400
   // ⚠️ 全新客戶與現有客戶優惠不同
+  // 更新日期：2026-01-22
   // ========================================
   {
     cardId: "hangseng-mmpower",
     partnerOffer: {
       enabled: true,
-      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/hang-seng-mmpower-world-mastercard",
+      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=212&a=228&sub_id1=pickcardrebate&sub_id2=web",
       bonusValue: 4980,
-      bonusDescription: "全新客戶6選1：HK$800 Apple禮品卡/HK$800 惠康現金券/HK$800 現金回贈(FPS)/Delsey 30\"行李箱(HK$4,980)/Foreo LUNA 3(HK$2,090)/Marshall Emberton II(HK$1,499)",
+      bonusDescription: "全新客戶6選1：Delsey行李箱(HK$4,980) / Foreo LUNA 3(HK$2,090) / Marshall Emberton II(HK$1,499) / HK$800 Apple禮品卡 / HK$800 惠康現金券 / HK$800 現金回贈(FPS)",
       bonusItems: [
-        "HK$800 Apple Store禮品卡",
-        "HK$800 惠康購物現金券",
-        "HK$800 現金回贈（經轉數快存入戶口）",
         "Delsey 30\" GRENELLE SE Expandable Front Opening Suitcase（價值HK$4,980; 顏色隨機）",
         "Foreo LUNA 3 潔面及按摩儀（價值HK$2,090）",
-        "Marshall Emberton II 藍牙喇叭（價值HK$1,499）"
+        "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）",
+        "HK$800 Apple Store禮品卡",
+        "HK$800 惠康購物現金券",
+        "HK$800 現金回贈（經轉數快存入戶口）"
       ],
-      validFrom: "2025-12-31",
+      validFrom: "2026-01-01",
       validTo: "2026-01-30",
       requirements: [
         "全新恒生信用卡客戶（過去12個月內未曾持有任何恒生信用卡/聯營卡/消費卡主卡）",
@@ -642,18 +642,19 @@ const MONEYHERO_PARTNER_OFFERS = [
       // 現有客戶優惠
       existingCustomerOffer: {
         bonusValue: 2090,
-        bonusDescription: "現有客戶6選1：HK$600 Apple禮品卡/HK$600 惠康現金券/HK$600 現金回贈(FPS)/Foreo LUNA 3(HK$2,090)/Marshall Willen II(HK$999)/Polaroid Go Gen 2(HK$999)",
+        bonusDescription: "現有客戶6選1：Foreo LUNA 3(HK$2,090) / Marshall Willen II(HK$999) / Polaroid Go Gen 2(HK$999) / HK$600 Apple禮品卡 / HK$600 惠康現金券 / HK$600 現金回贈(FPS)",
         bonusItems: [
-          "HK$600 Apple Store禮品卡",
-          "HK$600 惠康購物現金券",
-          "HK$600 現金回贈（經轉數快存入戶口）",
           "Foreo LUNA 3 潔面及按摩儀（價值HK$2,090）",
           "Marshall Willen II 小型無線便攜喇叭（價值HK$999）",
-          "Polaroid Go Generation 2 即影即有相機（價值HK$999）"
+          "Polaroid Go Generation 2 即影即有相機（價值HK$999）",
+          "HK$600 Apple Store禮品卡",
+          "HK$600 惠康購物現金券",
+          "HK$600 現金回贈（經轉數快存入戶口）"
         ],
         requirements: [
           "現有恒生信用卡客戶（過去12個月內曾持有任何恒生信用卡/聯營卡主卡）",
-          "如現在或過去12個月內曾持有MMPOWER卡，不可獲享此優惠"
+          "如現在或過去12個月內曾持有MMPOWER卡，不可獲享此優惠",
+          "批卡後30日內累積簽賬滿HK$400"
         ]
       }
     }
@@ -792,75 +793,80 @@ const MONEYHERO_PARTNER_OFFERS = [
   },
 
   // ========================================
-  // 亞洲聯合財務 sim 信用卡 (2025/12/02 18:00 - 2025/12/31 12:00)
-  // 條件：選擇「6個月免息免手續費現金套現分期計劃」作爲迎新優惠
+  // 亞洲聯合財務 sim 信用卡 (2026/01/19 18:00 - 2026/01/31 23:59)
+  // 獨家優惠1：選擇「6個月免息免手續費現金套現分期計劃」作爲迎新優惠（無需簽賬）
+  // 獨家優惠2：批卡後30日內簽賬滿HK$100
+  // 更新日期：2026-01-22
   // ========================================
   {
     cardId: "sim-credit-card",
     partnerOffer: {
       enabled: true,
       applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=503&a=228&sub_id1=pickcardrebate&sub_id2=web",
-      bonusValue: 5980,
-      bonusDescription: "獎品8選1：14,000 Max Miles / HK$1,000 Apple禮品卡 / HK$1,000 惠康現金券 / HK$1,000 現金回贈 / Dyson Zone™耳機(HK$5,980) / LOJEL行李箱(HK$2,100) / NESCAFÉ咖啡機(HK$1,780) / Marshall喇叭(HK$1,499)",
+      bonusValue: 2100,
+      bonusDescription: "獎品7選1：10,000 Max Miles / HK$1,000 Apple禮品卡 / HK$1,000 惠康現金券 / HK$800 現金回贈 / LOJEL行李箱(HK$2,100) / NESCAFÉ咖啡機(HK$1,780) / Marshall喇叭(HK$1,499)",
       bonusItems: [
-        "14,000 Max Miles 飛行里數",
+        "10,000 Max Miles 飛行里數",
         "HK$1,000 Apple Store禮品卡",
         "HK$1,000 惠康購物現金券",
-        "HK$1,000 現金回贈（經轉數快存入戶口）",
-        "Dyson Zone™ 降噪耳機（價值HK$5,980）",
+        "HK$800 現金回贈（經轉數快存入戶口）",
         "LOJEL Alto 29吋超輕量拉鍊行李箱（價值HK$2,100; 顏色隨機）",
         "NESCAFÉ® Dolce Gusto® Genio S Plus 咖啡機 + 6盒咖啡膠囊（價值HK$1,780）",
         "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）"
       ],
-      validFrom: "2025-12-02",
-      validTo: "2025-12-31",
+      validFrom: "2026-01-19",
+      validTo: "2026-01-31",
       requirements: [
         "全新sim信用卡客戶",
-        "選擇「6個月免息免手續費現金套現分期計劃」作爲迎新優惠",
-        "2026年1月31日或之前成功獲批並啟動信用卡及套現分期計劃"
+        "選擇「6個月免息免手續費現金套現分期計劃」作爲迎新優惠（無需簽賬）",
+        "或批卡後30日內簽賬滿HK$100",
+        "2026年2月28日或之前成功獲批並啟動信用卡"
       ],
       minSpend: 0,
       minSpendDays: 0,
-      notes: "選擇Max Miles時，登記電郵需與HEYMAX賬戶相同。申請前請關掉AdBlocker及「私人模式」。記下完成申請後頁面提供的申請參考編號。",
+      notes: "⚠️ 獨家優惠1和2只能選擇其一！選擇Max Miles時，登記電郵需與HEYMAX賬戶相同。申請前請關掉AdBlocker及「私人模式」。記下完成申請後頁面提供的申請參考編號（例如ABC123456789）。",
     }
   },
 
   // ========================================
-  // sim World Mastercard (2025/12/03 12:00 - 2025/12/31 12:00)
-  // 獨家優惠2: 無須簽賬即可獲獎賞
+  // sim World Mastercard (2026/01/19 18:00 - 2026/01/31 23:59)
+  // 獨家優惠1：選擇「6個月免息免手續費現金套現分期計劃」作爲迎新優惠（無需簽賬）
+  // 獨家優惠2：批卡後30日內簽賬滿HK$100
+  // 更新日期：2026-01-22
   // ========================================
   {
     cardId: "sim-world-mastercard",
     partnerOffer: {
       enabled: true,
       applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/sim-world-mastercard",
-      bonusValue: 5980,
-      bonusDescription: "獎品8選1：14,000 Max Miles / HK$1,000 Apple禮品卡 / HK$1,000 惠康現金券 / HK$1,000 現金回贈 / Dyson Zone™耳機(HK$5,980) / LOJEL行李箱(HK$2,100) / NESCAFÉ咖啡機(HK$1,780) / Marshall喇叭(HK$1,499)",
+      bonusValue: 2100,
+      bonusDescription: "獎品7選1：10,000 Max Miles / HK$1,000 Apple禮品卡 / HK$1,000 惠康現金券 / HK$800 現金回贈 / LOJEL行李箱(HK$2,100) / NESCAFÉ咖啡機(HK$1,780) / Marshall喇叭(HK$1,499)",
       bonusItems: [
-        "14,000 Max Miles 飛行里數",
+        "10,000 Max Miles 飛行里數",
         "HK$1,000 Apple Store禮品卡",
         "HK$1,000 惠康購物現金券",
-        "HK$1,000 現金回贈（經轉數快存入戶口）",
-        "Dyson Zone™ 降噪耳機（價值HK$5,980）",
+        "HK$800 現金回贈（經轉數快存入戶口）",
         "LOJEL Alto 29吋超輕量拉鍊行李箱（價值HK$2,100; 顏色隨機）",
         "NESCAFÉ® Dolce Gusto® Genio S Plus 咖啡機 + 6盒咖啡膠囊（價值HK$1,780）",
         "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）"
       ],
-      validFrom: "2025-12-03",
-      validTo: "2025-12-31",
+      validFrom: "2026-01-19",
+      validTo: "2026-01-31",
       requirements: [
         "全新sim信用卡客戶",
-        "無須簽賬",
-        "2026年1月31日或之前成功獲批並啟動信用卡"
+        "選擇「6個月免息免手續費現金套現分期計劃」作爲迎新優惠（無需簽賬）",
+        "或批卡後30日內簽賬滿HK$100",
+        "2026年2月28日或之前成功獲批並啟動信用卡"
       ],
       minSpend: 0,
       minSpendDays: 0,
-      notes: "選擇Max Miles時，登記電郵需與HEYMAX賬戶相同。申請前請關掉AdBlocker及「私人模式」。記下完成申請後頁面提供的申請參考編號。",
+      notes: "⚠️ 獨家優惠1和2只能選擇其一！選擇Max Miles時，登記電郵需與HEYMAX賬戶相同。申請前請關掉AdBlocker及「私人模式」。記下完成申請後頁面提供的申請參考編號（例如ABC123456789）。",
     }
   },
 
   // ========================================
-  // 渣打國泰 Mastercard (2025/12/31 12:00 - 2026/01/30 18:00)
+  // 渣打國泰 Mastercard (2026/01/19 18:00 - 2026/01/30 18:00)
+  // 更新日期：2026-01-22
   // ========================================
   {
     cardId: "sc-cathay",
@@ -868,16 +874,16 @@ const MONEYHERO_PARTNER_OFFERS = [
       enabled: true,
       applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=177&a=228&sub_id1=pickcardrebate&sub_id2=web",
       bonusValue: 5980,
-      bonusDescription: "獎品6選1：HK$900 HKTVmall / HK$900 Apple禮品卡 / HK$900 惠康現金券 / Dyson Zone™耳機(HK$5,980) / Delsey行李箱(HK$4,980) / Marshall喇叭(HK$1,499)",
+      bonusDescription: "獎品6選1：HK$900 Apple禮品卡 / HK$900 惠康現金券 / HK$900 HKTVmall / Dyson Zone™耳機(HK$5,980) / Delsey行李箱(HK$4,980) / Marshall喇叭(HK$1,499)",
       bonusItems: [
-        "HK$900 HKTVmall電子購物禮券",
         "HK$900 Apple Store禮品卡",
         "HK$900 惠康購物現金券",
+        "HK$900 HKTVmall電子購物禮券",
         "Dyson Zone™ 降噪耳機（價值HK$5,980）",
         "Delsey 30\" GRENELLE SE Expandable Front Opening Suitcase（價值HK$4,980; 顏色隨機）",
         "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）"
       ],
-      validFrom: "2025-12-31",
+      validFrom: "2026-01-19",
       validTo: "2026-01-30",
       requirements: [
         "全新渣打信用卡客戶（過去6個月內未曾持有或取消任何渣打/MANHATTAN信用卡主卡）",
@@ -895,6 +901,7 @@ const MONEYHERO_PARTNER_OFFERS = [
   // 恒生 enJoy 卡 (即日起 - 2026/01/30 18:00)
   // 全新客戶：批卡後30日內簽滿 $500
   // 現有客戶：批卡後30日內簽滿 $500
+  // 更新日期：2026-01-22
   // ========================================
   {
     cardId: "hangseng-enjoy",
@@ -902,15 +909,15 @@ const MONEYHERO_PARTNER_OFFERS = [
       enabled: true,
       applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=213&a=228&sub_id1=pickcardrebate&sub_id2=web",
       bonusValue: 4980,
-      bonusDescription: "全新客戶5選1：HK$800 Apple禮品卡 / HK$800 惠康現金券 / Delsey行李箱(HK$4,980) / Foreo LUNA 3(HK$2,090) / Marshall喇叭(HK$1,499)",
+      bonusDescription: "全新客戶5選1：Delsey行李箱(HK$4,980) / Foreo LUNA 3(HK$2,090) / Marshall喇叭(HK$1,499) / HK$800 Apple禮品卡 / HK$800 惠康現金券",
       bonusItems: [
-        "HK$800 Apple Store禮品卡",
-        "HK$800 惠康購物現金券",
         "Delsey 30\" GRENELLE SE Expandable Front Opening Suitcase（價值HK$4,980; 顏色隨機）",
         "Foreo LUNA 3 潔面及按摩儀（價值HK$2,090）",
-        "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）"
+        "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）",
+        "HK$800 Apple Store禮品卡",
+        "HK$800 惠康購物現金券"
       ],
-      validFrom: "2025-01-01",
+      validFrom: "2026-01-01",
       validTo: "2026-01-30",
       requirements: [
         "全新恒生信用卡客戶（現在及緊接申請日期前12個月內未曾持有任何恒生信用卡/聯營卡/消費卡主卡）",
@@ -920,16 +927,16 @@ const MONEYHERO_PARTNER_OFFERS = [
       ],
       minSpend: 500,
       minSpendDays: 30,
-      notes: "換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。⚠️ 如經電話申請，需先下載恒生 Mobile App。",
+      notes: "換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。⚠️ 如經電話申請，需先下載恒生 Mobile App。若客戶於開戶後13個月內取消有關信用卡戶口並已獲贈迎新獎賞，則須繳付同等價值之金額作為手續費。",
       existingCustomerOffer: {
         bonusValue: 999,
-        bonusDescription: "現有客戶5選1：HK$500 Apple禮品卡 / HK$500 惠康現金券 / Marshall Willen II(HK$999) / Braun空氣炸鍋(HK$988) / Foreo fofo洗面機(HK$890)",
+        bonusDescription: "現有客戶5選1：Marshall Willen II(HK$999) / Braun空氣炸鍋(HK$988) / Foreo fofo洗面機(HK$890) / HK$500 Apple禮品卡 / HK$500 惠康現金券",
         bonusItems: [
-          "HK$500 Apple Store禮品卡",
-          "HK$500 惠康購物現金券",
           "Marshall Willen II 小型無線便攜喇叭（價值HK$999）",
           "Braun MultiFry 3 空氣炸鍋 HF3000（價值HK$988）",
-          "Foreo LUNA fofo 洗面機（價值HK$890）"
+          "Foreo LUNA fofo 洗面機（價值HK$890）",
+          "HK$500 Apple Store禮品卡",
+          "HK$500 惠康購物現金券"
         ],
         requirements: [
           "現有恒生信用卡客戶（現在及/或緊接申請日期前12個月內曾持有任何恒生信用卡/聯營卡主卡，不包括消費卡及專享卡）",
@@ -942,8 +949,9 @@ const MONEYHERO_PARTNER_OFFERS = [
 
   // ========================================
   // 中銀信用卡 (2026/01/02 12:00 - 2026/01/30 18:00)
-  // 適用卡種：Cheers Visa Infinite、Cheers Visa Signature、Chill、Go Diamond、Go Platinum
+  // 適用卡種：Cheers Visa Infinite、Cheers Visa Signature、Chill World、Chill Platinum、Go Diamond、Go Platinum
   // ⚠️ 先到先得，送完即止
+  // 更新日期：2026-01-22
   // ========================================
   {
     cardId: "boc-cheers",
@@ -1020,7 +1028,33 @@ const MONEYHERO_PARTNER_OFFERS = [
       ],
       minSpend: 0,
       minSpendDays: 0,
-      notes: "⚠️ 先到先得，送完即止！適用於 Chill World Mastercard 及 Chill Platinum Mastercard。換領流程由批核後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
+      notes: "⚠️ 先到先得，送完即止！適用於 Chill World Mastercard。換領流程由批核後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
+    }
+  },
+  {
+    cardId: "boc-chill-platinum",
+    partnerOffer: {
+      enabled: true,
+      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/boc-chill-card",
+      bonusValue: 2100,
+      bonusDescription: "獎品5選1：HK$800 Apple禮品卡 / HK$800 惠康現金券 / LOJEL行李箱(HK$2,100) / Marshall喇叭(HK$1,499) / BRUNO飲水機(HK$998)",
+      bonusItems: [
+        "HK$800 Apple Store禮品卡",
+        "HK$800 惠康購物現金券",
+        "LOJEL Alto 29吋超輕量拉鍊行李箱（價值HK$2,100; 顏色隨機）",
+        "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）",
+        "BRUNO BAK801 即熱式飲水機（價值HK$998; 顏色隨機）"
+      ],
+      validFrom: "2026-01-02",
+      validTo: "2026-01-30",
+      requirements: [
+        "全新中銀信用卡客戶（現時並未持有或過去12個月內未曾持有/取消任何中銀信用卡主卡）",
+        "2026年2月28日或之前成功獲批信用卡",
+        "收到表格後7日內填妥「獎賞換領表格」"
+      ],
+      minSpend: 0,
+      minSpendDays: 0,
+      notes: "⚠️ 先到先得，送完即止！適用於 Chill Platinum Mastercard。換領流程由批核後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。",
     }
   },
   {
