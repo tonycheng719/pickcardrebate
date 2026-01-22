@@ -5,10 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useWallet } from "@/lib/store/wallet-context";
-import { User, Bell, Wallet, Save } from "lucide-react";
-import { useState, useEffect } from "react";
+import { User, Bell, Wallet, Save, Check, X, Loader2, AtSign } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useDebouncedCallback } from "use-debounce";
 
 export default function SettingsPage() {
   const { user, updateProfile } = useWallet();
@@ -16,6 +17,11 @@ export default function SettingsPage() {
 
   // Local state for form
   const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [usernameInput, setUsernameInput] = useState("");
+  const [usernameStatus, setUsernameStatus] = useState<"idle" | "checking" | "available" | "taken" | "invalid">("idle");
+  const [usernameError, setUsernameError] = useState("");
+  const [isSavingUsername, setIsSavingUsername] = useState(false);
   const [preference, setPreference] = useState<"cash" | "miles">("cash");
   const [notifPromos, setNotifPromos] = useState(true);
   const [notifBills, setNotifBills] = useState(true);
@@ -23,6 +29,7 @@ export default function SettingsPage() {
   useEffect(() => {
     if (user) {
         setName(user.name);
+        setUsername(user.username || "");
         setPreference(user.rewardPreference);
         setNotifPromos(user.notifications.promos);
         setNotifBills(user.notifications.bills);
@@ -30,6 +37,59 @@ export default function SettingsPage() {
         // Redirect if not logged in - but only on client side logic, can be strict
     }
   }, [user, router]);
+
+  // 驗證用戶名
+  const checkUsername = useDebouncedCallback(async (value: string) => {
+    if (!value || value.length < 3) {
+      setUsernameStatus("idle");
+      return;
+    }
+
+    setUsernameStatus("checking");
+    try {
+      const res = await fetch(`/api/user/check-username?username=${encodeURIComponent(value)}`);
+      const data = await res.json();
+      
+      if (data.available) {
+        setUsernameStatus("available");
+        setUsernameError("");
+      } else {
+        setUsernameStatus(data.error?.includes("格式") || data.error?.includes("字符") ? "invalid" : "taken");
+        setUsernameError(data.error || "用戶名不可用");
+      }
+    } catch {
+      setUsernameStatus("idle");
+    }
+  }, 500);
+
+  const handleUsernameInputChange = (value: string) => {
+    const sanitized = value.replace(/[^a-zA-Z0-9_]/g, "").slice(0, 20);
+    setUsernameInput(sanitized);
+    setUsernameStatus("idle");
+    setUsernameError("");
+    
+    if (sanitized.length >= 3) {
+      checkUsername(sanitized);
+    }
+  };
+
+  const handleSaveUsername = async () => {
+    if (!user || usernameStatus !== "available" || !usernameInput) return;
+    
+    setIsSavingUsername(true);
+    try {
+      await updateProfile({ username: usernameInput });
+      setUsername(usernameInput);
+      setUsernameInput("");
+      setUsernameStatus("idle");
+      alert("用戶名設定成功！");
+      router.refresh();
+    } catch (error) {
+      alert("儲存失敗，請稍後再試");
+    } finally {
+      setIsSavingUsername(false);
+    }
+  };
 
   const handleSave = async () => {
       if (user) {
@@ -91,6 +151,56 @@ export default function SettingsPage() {
                         <Input value={user.email} disabled className="bg-gray-50 text-gray-500" />
                         <p className="text-xs text-gray-500 mt-1">Email 無法更改</p>
                     </div>
+                    
+                    {/* Username */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                          <AtSign className="h-4 w-4" />
+                          用戶名
+                        </label>
+                        {username ? (
+                          <div>
+                            <Input value={`@${username}`} disabled className="bg-gray-50 text-gray-500" />
+                            <p className="text-xs text-gray-500 mt-1">用戶名已設定，無法更改</p>
+                          </div>
+                        ) : (
+                          <div className="space-y-2">
+                            <div className="relative">
+                              <Input
+                                placeholder="輸入用戶名（3-20個英文字母、數字或底線）"
+                                value={usernameInput}
+                                onChange={(e) => handleUsernameInputChange(e.target.value)}
+                                className={`pr-10 ${
+                                  usernameStatus === "available" ? "border-green-500 focus-visible:ring-green-500" :
+                                  usernameStatus === "taken" || usernameStatus === "invalid" ? "border-red-500 focus-visible:ring-red-500" : ""
+                                }`}
+                              />
+                              <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                                {usernameStatus === "checking" && <Loader2 className="h-5 w-5 text-gray-400 animate-spin" />}
+                                {usernameStatus === "available" && <Check className="h-5 w-5 text-green-500" />}
+                                {(usernameStatus === "taken" || usernameStatus === "invalid") && <X className="h-5 w-5 text-red-500" />}
+                              </div>
+                            </div>
+                            {usernameError && (
+                              <p className="text-sm text-red-500">{usernameError}</p>
+                            )}
+                            {usernameStatus === "available" && (
+                              <div className="flex items-center gap-2">
+                                <p className="text-sm text-green-600">✓ 此用戶名可以使用</p>
+                                <Button 
+                                  size="sm" 
+                                  onClick={handleSaveUsername}
+                                  disabled={isSavingUsername}
+                                >
+                                  {isSavingUsername ? <Loader2 className="h-4 w-4 animate-spin" /> : "確認設定"}
+                                </Button>
+                              </div>
+                            )}
+                            <p className="text-xs text-gray-500">用戶名將用於留言等公開場合，設定後無法更改。</p>
+                          </div>
+                        )}
+                    </div>
+                    
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">性別</label>

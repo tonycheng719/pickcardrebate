@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   View, 
   Text, 
@@ -8,6 +8,8 @@ import {
   Switch,
   Alert,
   Linking,
+  TextInput,
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Stack } from 'expo-router';
@@ -19,6 +21,7 @@ import { useColorScheme } from '@/components/useColorScheme';
 import { clearWallet } from '@/lib/storage/myCards';
 import { useTranslation } from '@/lib/i18n/context';
 import { Locale, localeNames, localeFlags } from '@/lib/i18n/translations';
+import { useAuth } from '@/lib/auth/AuthContext';
 
 const THEME_KEY = '@theme_preference';
 const NOTIFICATIONS_KEY = '@notifications_enabled';
@@ -27,17 +30,101 @@ type ThemePreference = 'system' | 'light' | 'dark';
 
 const LOCALES: Locale[] = ['zh-HK', 'zh-CN', 'en'];
 
+// Simple debounce utility
+function debounce<T extends (...args: any[]) => any>(func: T, wait: number): T {
+  let timeout: ReturnType<typeof setTimeout> | null = null;
+  return ((...args: Parameters<T>) => {
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  }) as T;
+}
+
 export default function SettingsScreen() {
   const colorScheme = useColorScheme() ?? 'light';
   const colors = Colors[colorScheme];
   const { locale, setLocale, t } = useTranslation();
+  const { user, profile, refreshProfile } = useAuth();
   
   const [themePreference, setThemePreference] = useState<ThemePreference>('system');
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  
+  // Username state
+  const [usernameInput, setUsernameInput] = useState('');
+  const [usernameStatus, setUsernameStatus] = useState<'idle' | 'checking' | 'available' | 'taken' | 'invalid'>('idle');
+  const [usernameError, setUsernameError] = useState('');
+  const [isSavingUsername, setIsSavingUsername] = useState(false);
 
   useEffect(() => {
     loadSettings();
   }, []);
+
+  // 驗證用戶名
+  const checkUsernameDebounced = useCallback(
+    debounce(async (value: string) => {
+      if (!value || value.length < 3) {
+        setUsernameStatus('idle');
+        return;
+      }
+
+      setUsernameStatus('checking');
+      try {
+        const res = await fetch(`https://pickcardrebate.com/api/user/check-username?username=${encodeURIComponent(value)}`);
+        const data = await res.json();
+        
+        if (data.available) {
+          setUsernameStatus('available');
+          setUsernameError('');
+        } else {
+          setUsernameStatus(data.error?.includes('格式') || data.error?.includes('字符') ? 'invalid' : 'taken');
+          setUsernameError(data.error || '用戶名不可用');
+        }
+      } catch {
+        setUsernameStatus('idle');
+      }
+    }, 500),
+    []
+  );
+
+  const handleUsernameInputChange = (value: string) => {
+    const sanitized = value.replace(/[^a-zA-Z0-9_]/g, '').slice(0, 20);
+    setUsernameInput(sanitized);
+    setUsernameStatus('idle');
+    setUsernameError('');
+    
+    if (sanitized.length >= 3) {
+      checkUsernameDebounced(sanitized);
+    }
+  };
+
+  const handleSaveUsername = async () => {
+    if (!user || usernameStatus !== 'available' || !usernameInput) return;
+    
+    setIsSavingUsername(true);
+    try {
+      const res = await fetch('https://pickcardrebate.com/api/user/profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: user.id,
+          username: usernameInput,
+        }),
+      });
+      
+      if (res.ok) {
+        await refreshProfile();
+        setUsernameInput('');
+        setUsernameStatus('idle');
+        Alert.alert('成功', '用戶名設定成功！');
+      } else {
+        const data = await res.json();
+        Alert.alert('錯誤', data.error || '儲存失敗');
+      }
+    } catch (error) {
+      Alert.alert('錯誤', '儲存失敗，請稍後再試');
+    } finally {
+      setIsSavingUsername(false);
+    }
+  };
 
   const loadSettings = async () => {
     try {
@@ -158,6 +245,78 @@ export default function SettingsScreen() {
             ))}
           </View>
         </View>
+
+        {/* 用戶名設定 */}
+        {user && (
+          <View style={styles.section}>
+            <Text style={[styles.sectionTitle, { color: colors.textMuted }]}>用戶名</Text>
+            <View style={[styles.card, { backgroundColor: colors.backgroundCard, borderColor: colors.border }]}>
+              {profile?.username ? (
+                <View style={styles.row}>
+                  <View style={styles.rowLeft}>
+                    <Ionicons name="at" size={22} color={colors.text} />
+                    <View style={styles.rowTextContainer}>
+                      <Text style={[styles.rowText, { color: colors.text }]}>@{profile.username}</Text>
+                      <Text style={[styles.rowSubtext, { color: colors.textMuted }]}>
+                        用戶名已設定，無法更改
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              ) : (
+                <View style={styles.usernameSection}>
+                  <View style={styles.usernameInputContainer}>
+                    <TextInput
+                      style={[
+                        styles.usernameInput,
+                        { 
+                          backgroundColor: colors.background, 
+                          borderColor: usernameStatus === 'available' ? '#22c55e' :
+                            usernameStatus === 'taken' || usernameStatus === 'invalid' ? '#ef4444' : colors.border,
+                          color: colors.text,
+                        }
+                      ]}
+                      placeholder="輸入用戶名（英文、數字或底線）"
+                      placeholderTextColor={colors.textMuted}
+                      value={usernameInput}
+                      onChangeText={handleUsernameInputChange}
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      maxLength={20}
+                    />
+                    <View style={styles.usernameStatusIcon}>
+                      {usernameStatus === 'checking' && <ActivityIndicator size="small" color={colors.textMuted} />}
+                      {usernameStatus === 'available' && <Ionicons name="checkmark-circle" size={24} color="#22c55e" />}
+                      {(usernameStatus === 'taken' || usernameStatus === 'invalid') && <Ionicons name="close-circle" size={24} color="#ef4444" />}
+                    </View>
+                  </View>
+                  {usernameError ? (
+                    <Text style={styles.usernameError}>{usernameError}</Text>
+                  ) : usernameStatus === 'available' ? (
+                    <View style={styles.usernameSuccessRow}>
+                      <Text style={styles.usernameSuccess}>✓ 此用戶名可以使用</Text>
+                      <TouchableOpacity
+                        style={[styles.saveUsernameBtn, { backgroundColor: colors.primary }]}
+                        onPress={handleSaveUsername}
+                        disabled={isSavingUsername}
+                      >
+                        {isSavingUsername ? (
+                          <ActivityIndicator size="small" color="#fff" />
+                        ) : (
+                          <Text style={styles.saveUsernameBtnText}>確認設定</Text>
+                        )}
+                      </TouchableOpacity>
+                    </View>
+                  ) : (
+                    <Text style={[styles.usernameHint, { color: colors.textMuted }]}>
+                      用戶名將用於留言等公開場合，設定後無法更改
+                    </Text>
+                  )}
+                </View>
+              )}
+            </View>
+          </View>
+        )}
 
         {/* 通知設定 */}
         <View style={styles.section}>
@@ -311,6 +470,55 @@ const styles = StyleSheet.create({
   },
   versionText: {
     fontSize: Layout.fontSize.sm,
+  },
+  usernameSection: {
+    padding: Layout.spacing.md,
+  },
+  usernameInputContainer: {
+    position: 'relative',
+  },
+  usernameInput: {
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    paddingRight: 48,
+    borderRadius: 8,
+    borderWidth: 1,
+    fontSize: 16,
+  },
+  usernameStatusIcon: {
+    position: 'absolute',
+    right: 12,
+    top: '50%',
+    transform: [{ translateY: -12 }],
+  },
+  usernameError: {
+    color: '#ef4444',
+    fontSize: 12,
+    marginTop: 8,
+  },
+  usernameSuccess: {
+    color: '#22c55e',
+    fontSize: 12,
+  },
+  usernameSuccessRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 8,
+  },
+  saveUsernameBtn: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+  saveUsernameBtnText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  usernameHint: {
+    fontSize: 12,
+    marginTop: 8,
   },
 });
 

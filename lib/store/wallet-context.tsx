@@ -24,6 +24,7 @@ export interface CardSettings {
 export interface UserProfile {
   id?: string; // Added ID
   name: string;
+  username?: string; // 用戶名（留言顯示用）
   email?: string;
   avatar?: string;
   gender?: "male" | "female" | "other";
@@ -257,6 +258,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       return {
         id: sessionUser.id,
         name: fullName,
+        username: profileData?.username, // 用戶名
         email: sessionUser.email ?? undefined,
         avatar: profileData?.avatar_url || sessionUser.user_metadata?.avatar_url,
         gender: profileData?.gender,
@@ -300,7 +302,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
           );
           const queryPromise = supabase
             .from("profiles")
-            .select("name, avatar_url, gender, district, birth_year, birth_month, last_ip, reward_preference, notifications, followed_promo_ids, is_banned, is_banned_comment")
+            .select("name, username, avatar_url, gender, district, birth_year, birth_month, last_ip, reward_preference, notifications, followed_promo_ids, is_banned, is_banned_comment")
             .eq("id", sessionUser.id)
             .maybeSingle();
           
