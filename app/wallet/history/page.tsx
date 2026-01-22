@@ -40,19 +40,26 @@ interface HistoryStats {
 }
 
 export default function CalculationHistoryPage() {
-  const { user, loading: authLoading } = useWallet();
+  const { user } = useWallet();
   const [history, setHistory] = useState<CalculationRecord[]>([]);
   const [stats, setStats] = useState<HistoryStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    
     if (user) {
       fetchHistory();
-    } else if (!authLoading) {
+    } else {
       setIsLoading(false);
     }
-  }, [user, authLoading]);
+  }, [user, mounted]);
 
   const fetchHistory = async () => {
     try {

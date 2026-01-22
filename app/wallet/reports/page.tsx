@@ -48,11 +48,12 @@ interface CardStats {
 }
 
 export default function SpendingReportsPage() {
-  const { user, loading: authLoading } = useWallet();
+  const { user } = useWallet();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [viewMode, setViewMode] = useState<'monthly' | 'yearly'>('monthly');
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [mounted, setMounted] = useState(false);
 
   // 計算統計
   const [categoryStats, setCategoryStats] = useState<CategoryStats[]>([]);
@@ -61,12 +62,18 @@ export default function SpendingReportsPage() {
   const [totalRebate, setTotalRebate] = useState(0);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    
     if (user) {
       fetchTransactions();
-    } else if (!authLoading) {
+    } else {
       setIsLoading(false);
     }
-  }, [user, authLoading, currentDate, viewMode]);
+  }, [user, mounted, currentDate, viewMode]);
 
   const fetchTransactions = async () => {
     setIsLoading(true);
