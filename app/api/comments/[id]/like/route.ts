@@ -1,12 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-
-function getServiceClient() {
-  return createClient(supabaseUrl, supabaseServiceKey);
-}
+import { adminAuthClient } from '@/lib/supabase/admin-client';
 
 // POST: 按讚/取消按讚
 export async function POST(
@@ -22,7 +15,7 @@ export async function POST(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const supabase = getServiceClient();
+    const supabase = adminAuthClient;
 
     // 檢查是否已按讚
     const { data: existingLike } = await supabase

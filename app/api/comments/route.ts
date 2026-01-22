@@ -1,12 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-
-function getServiceClient() {
-  return createClient(supabaseUrl, supabaseServiceKey);
-}
+import { adminAuthClient } from '@/lib/supabase/admin-client';
 
 // 敏感詞列表（可擴展）
 const SENSITIVE_WORDS = ['廣告', '騙子', '詐騙'];
@@ -34,7 +27,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Missing contentType or contentId' }, { status: 400 });
     }
 
-    const supabase = getServiceClient();
+    const supabase = adminAuthClient;
     const offset = (page - 1) * limit;
 
     // 獲取留言
@@ -126,7 +119,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: '留言不能超過 500 字' }, { status: 400 });
     }
 
-    const supabase = getServiceClient();
+    const supabase = adminAuthClient;
 
     // 過濾敏感詞
     const filteredContent = filterContent(content.trim());

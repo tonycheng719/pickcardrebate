@@ -1,12 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-
-function getServiceClient() {
-  return createClient(supabaseUrl, supabaseServiceKey);
-}
+import { adminAuthClient } from '@/lib/supabase/admin-client';
 
 // DELETE: 刪除留言
 export async function DELETE(
@@ -22,7 +15,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const supabase = getServiceClient();
+    const supabase = adminAuthClient;
 
     // 檢查留言是否屬於該用戶
     const { data: comment } = await supabase
@@ -63,7 +56,7 @@ export async function PATCH(
     const body = await request.json();
     const { is_hidden, is_pinned } = body;
 
-    const supabase = getServiceClient();
+    const supabase = adminAuthClient;
 
     const updateData: any = {};
     if (typeof is_hidden === 'boolean') updateData.is_hidden = is_hidden;
