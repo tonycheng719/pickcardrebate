@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Providers } from "@/components/providers";
 import { BottomNav } from "@/components/bottom-nav";
 import { SiteFooter } from "@/components/site-footer";
+import { HreflangTags } from "@/components/seo/HreflangTags";
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -98,9 +99,6 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  alternates: {
-    canonical: "https://pickcardrebate.com",
-  },
   verification: {
     // Add your verification codes here when available
     // google: "your-google-verification-code",
@@ -145,6 +143,9 @@ export default function RootLayout({
   return (
     <html lang="zh-HK" suppressHydrationWarning>
       <head>
+        {/* Hreflang tags for multi-language SEO */}
+        <HreflangTags />
+        
         {/* Google Tag Manager */}
         <script
           dangerouslySetInnerHTML={{
