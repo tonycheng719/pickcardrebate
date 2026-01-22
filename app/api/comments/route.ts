@@ -12,6 +12,23 @@ function filterContent(content: string): string {
   return filtered;
 }
 
+// 獲取用戶資料的輔助函數
+async function getUserProfiles(supabase: any, userIds: string[]) {
+  if (!userIds.length) return new Map();
+  
+  const uniqueIds = [...new Set(userIds)];
+  const { data: profiles } = await supabase
+    .from('profiles')
+    .select('id, name, avatar_url')
+    .in('id', uniqueIds);
+  
+  const profileMap = new Map();
+  if (profiles) {
+    profiles.forEach((p: any) => profileMap.set(p.id, p));
+  }
+  return profileMap;
+}
+
 // GET: 獲取留言列表
 export async function GET(request: NextRequest) {
   try {
@@ -30,17 +47,10 @@ export async function GET(request: NextRequest) {
     const supabase = adminAuthClient;
     const offset = (page - 1) * limit;
 
-    // 獲取留言
+    // 獲取留言（不使用 foreign key join）
     let query = supabase
       .from('comments')
-      .select(`
-        *,
-        user:profiles!comments_user_id_fkey(id, name, avatar_url),
-        replies:comments!parent_id(
-          *,
-          user:profiles!comments_user_id_fkey(id, name, avatar_url)
-        )
-      `)
+      .select('*')
       .eq('content_type', contentType)
       .eq('content_id', contentId)
       .eq('is_hidden', false)
@@ -58,7 +68,36 @@ export async function GET(request: NextRequest) {
 
     const { data: comments, error } = await query;
 
-    if (error) throw error;
+    if (error) {
+      console.error('Get comments error:', error);
+      // 如果表不存在，返回空數組
+      if (error.code === '42P01') {
+        return NextResponse.json({ comments: [], total: 0, page, limit, hasMore: false });
+      }
+      throw error;
+    }
+
+    // 獲取回覆
+    let replies: any[] = [];
+    if (comments?.length) {
+      const commentIds = comments.map(c => c.id);
+      const { data: repliesData } = await supabase
+        .from('comments')
+        .select('*')
+        .in('parent_id', commentIds)
+        .eq('is_hidden', false)
+        .order('created_at', { ascending: true });
+      
+      replies = repliesData || [];
+    }
+
+    // 獲取所有相關用戶的 profiles
+    const allUserIds = [
+      ...(comments?.map(c => c.user_id) || []),
+      ...replies.map(r => r.user_id)
+    ].filter(Boolean);
+    
+    const profileMap = await getUserProfiles(supabase, allUserIds);
 
     // 獲取總數
     const { count } = await supabase
@@ -72,28 +111,40 @@ export async function GET(request: NextRequest) {
     // 如果有用戶ID，檢查哪些留言已按讚
     let userLikes: string[] = [];
     if (userId && comments?.length) {
-      const commentIds = comments.map(c => c.id);
+      const allCommentIds = [
+        ...(comments?.map(c => c.id) || []),
+        ...replies.map(r => r.id)
+      ];
       const { data: likes } = await supabase
         .from('comment_likes')
         .select('comment_id')
         .eq('user_id', userId)
-        .in('comment_id', commentIds);
+        .in('comment_id', allCommentIds);
       
       userLikes = likes?.map(l => l.comment_id) || [];
     }
 
-    // 添加 isLiked 標記
-    const commentsWithLikes = comments?.map(comment => ({
-      ...comment,
-      isLiked: userLikes.includes(comment.id),
-      replies: comment.replies?.map((reply: any) => ({
-        ...reply,
-        isLiked: userLikes.includes(reply.id),
-      })) || [],
-    }));
+    // 組裝留言（添加用戶資料和回覆）
+    const commentsWithData = comments?.map(comment => {
+      const user = profileMap.get(comment.user_id);
+      const commentReplies = replies
+        .filter(r => r.parent_id === comment.id)
+        .map(reply => ({
+          ...reply,
+          user: profileMap.get(reply.user_id) || { id: reply.user_id, name: '匿名用戶', avatar_url: null },
+          isLiked: userLikes.includes(reply.id),
+        }));
+
+      return {
+        ...comment,
+        user: user || { id: comment.user_id, name: '匿名用戶', avatar_url: null },
+        isLiked: userLikes.includes(comment.id),
+        replies: commentReplies,
+      };
+    });
 
     return NextResponse.json({
-      comments: commentsWithLikes || [],
+      comments: commentsWithData || [],
       total: count || 0,
       page,
       limit,
@@ -142,7 +193,8 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const { data, error } = await supabase
+    // 先插入留言
+    const { data: newComment, error: insertError } = await supabase
       .from('comments')
       .insert([{
         user_id: userId,
@@ -151,18 +203,24 @@ export async function POST(request: NextRequest) {
         parent_id: parentId || null,
         content: filteredContent,
       }])
-      .select(`
-        *,
-        user:profiles!comments_user_id_fkey(id, name, avatar_url)
-      `)
+      .select('*')
       .single();
 
-    if (error) throw error;
+    if (insertError) throw insertError;
 
-    return NextResponse.json(data);
+    // 獲取用戶資料
+    const { data: userProfile } = await supabase
+      .from('profiles')
+      .select('id, name, avatar_url')
+      .eq('id', userId)
+      .single();
+
+    return NextResponse.json({
+      ...newComment,
+      user: userProfile || { id: userId, name: '匿名用戶', avatar_url: null },
+    });
   } catch (error: any) {
     console.error('Create comment error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
-

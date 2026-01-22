@@ -23,12 +23,10 @@ export async function GET(request: NextRequest) {
     // 1. 獲取新系統的留言 (comments 表)
     if (source !== 'legacy') {
       try {
+        // 先獲取留言（不使用 foreign key join，避免 relationship 錯誤）
         let query = supabase
           .from('comments')
-          .select(`
-            *,
-            user:profiles!comments_user_id_fkey(id, name, email, avatar_url)
-          `)
+          .select('*')
           .order('created_at', { ascending: false })
           .limit(100);
 
@@ -45,9 +43,25 @@ export async function GET(request: NextRequest) {
         const { data: newComments, error } = await query;
 
         if (!error && newComments) {
-          // 標記來源
+          // 獲取用戶資料
+          const userIds = [...new Set(newComments.map(c => c.user_id).filter(Boolean))];
+          let profileMap = new Map();
+          
+          if (userIds.length > 0) {
+            const { data: profiles } = await supabase
+              .from('profiles')
+              .select('id, name, email, avatar_url')
+              .in('id', userIds);
+            
+            if (profiles) {
+              profiles.forEach((p: any) => profileMap.set(p.id, p));
+            }
+          }
+
+          // 標記來源並添加用戶資料
           allComments = newComments.map(c => ({
             ...c,
+            user: profileMap.get(c.user_id) || { id: c.user_id, name: '匿名用戶' },
             source: 'new',
             is_hidden: c.is_hidden || false,
           }));
