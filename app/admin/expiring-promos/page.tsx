@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { HK_CARDS } from "@/lib/data/cards";
 import { CreditCard } from "@/lib/types";
 import Link from "next/link";
-import { AlertTriangle, Clock, CheckCircle, Calendar, ExternalLink, Bell, Send, RefreshCw } from "lucide-react";
+import { AlertTriangle, Clock, CheckCircle, Calendar, ExternalLink, Bell, Send, RefreshCw, Trash2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -28,6 +28,7 @@ export default function ExpiringPromosPage() {
   const [notificationLogs, setNotificationLogs] = useState<NotificationLog[]>([]);
   const [sending, setSending] = useState(false);
   const [autoSending, setAutoSending] = useState(false);
+  const [cleaning, setCleaning] = useState(false);
 
   // 載入已發送的通知記錄
   useEffect(() => {
@@ -105,6 +106,29 @@ export default function ExpiringPromosPage() {
       toast.error('自動發送失敗');
     }
     setAutoSending(false);
+  };
+
+  // 清理過期超過 7 天的推廣
+  const handleCleanup = async () => {
+    if (!confirm('確定要清理所有過期超過 7 天的推廣嗎？此操作會：\n\n1. 清除信用卡的過期推廣日期\n2. 軟刪除過期的 Discover 文章\n\n建議先備份數據。')) {
+      return;
+    }
+    
+    setCleaning(true);
+    try {
+      const res = await fetch('/api/cron/cleanup-expired-promos', { method: 'POST' });
+      const data = await res.json();
+      if (res.ok) {
+        toast.success(`清理完成：${data.cards?.cleaned || 0} 張卡片、${data.promos?.deleted || 0} 篇文章`);
+        // 重新載入頁面以更新數據
+        window.location.reload();
+      } else {
+        toast.error(data.error || '清理失敗');
+      }
+    } catch (e) {
+      toast.error('清理失敗');
+    }
+    setCleaning(false);
   };
 
   // 切換選擇卡片
@@ -248,6 +272,19 @@ export default function ExpiringPromosPage() {
           </p>
         </div>
         <div className="flex gap-2">
+          <Button 
+            variant="outline" 
+            onClick={handleCleanup} 
+            disabled={cleaning}
+            className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+          >
+            {cleaning ? (
+              <RefreshCw className="h-4 w-4 animate-spin mr-2" />
+            ) : (
+              <Trash2 className="h-4 w-4 mr-2" />
+            )}
+            清理過期 7 天
+          </Button>
           <Button 
             variant="outline" 
             onClick={handleAutoSend} 
@@ -503,8 +540,8 @@ export default function ExpiringPromosPage() {
           <li>• <strong>自動發送提醒</strong>：系統會自動在優惠到期前 7 天、3 天、1 天發送推送通知給持有該卡的用戶</li>
           <li>• <strong>手動發送</strong>：勾選卡片後點擊「發送提醒」可手動觸發</li>
           <li>• <strong>通知狀態</strong>：顯示已發送的提醒類型（7天/3天/1天），避免重複發送</li>
-          <li>• 建議設定 Vercel Cron Job 每日執行 <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded">/api/cron/auto-expiry-reminders</code></li>
-          <li>• 已過期嘅推廣需要搵返最新 T&C 更新</li>
+          <li>• <strong className="text-red-600 dark:text-red-400">清理過期 7 天</strong>：刪除過期超過 7 天的推廣（信用卡推廣日期會清空、Discover 文章會軟刪除）</li>
+          <li>• 建議設定 Vercel Cron Job 每日執行 <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded">/api/cron/auto-expiry-reminders</code> 和 <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded">/api/cron/cleanup-expired-promos</code></li>
         </ul>
       </div>
 
