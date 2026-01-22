@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { cardId, cardName, userId } = body;
+    const { cardId, cardName, userId, customerType, source } = body;
 
     if (!cardId) {
       return NextResponse.json({ error: 'Missing cardId' }, { status: 400 });
@@ -60,6 +60,8 @@ export async function POST(request: Request) {
           card_id: cardId,
           card_name: cardName,
           user_id: userId || null,
+          customer_type: customerType || 'new',
+          source: source || 'web', // 'web' or 'app'
           clicked_at: new Date().toISOString(),
           user_agent: request.headers.get('user-agent') || null,
         });

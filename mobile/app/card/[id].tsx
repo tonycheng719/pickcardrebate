@@ -9,6 +9,27 @@ import { useColorScheme } from '@/components/useColorScheme';
 import { Button, Card, Badge, RewardBadge } from '@/components/ui';
 import { API_BASE_URL } from '@/lib/api/client';
 import { CommentSection } from '@/components/CommentSection';
+import { PartnerOfferCard } from '@/components/PartnerOfferCard';
+
+interface PartnerOffer {
+  enabled: boolean;
+  applyUrl: string;
+  bonusValue: number;
+  bonusDescription: string;
+  bonusItems?: string[];
+  validFrom: string;
+  validTo: string;
+  requirements?: string[];
+  minSpend?: number;
+  minSpendDays?: number;
+  notes?: string;
+  existingCustomerOffer?: {
+    bonusValue: number;
+    bonusDescription: string;
+    bonusItems?: string[];
+    requirements?: string[];
+  };
+}
 
 interface CardDetail {
   id: string;
@@ -38,6 +59,7 @@ interface CardDetail {
   note?: string;
   officialApplyUrl?: string;
   applyUrl?: string;
+  partnerOffer?: PartnerOffer | null;
 }
 
 export default function CardDetailScreen() {
@@ -178,6 +200,17 @@ export default function CardDetailScreen() {
                 {card.welcomeOfferText}
               </Text>
             </Card>
+          )}
+
+          {/* 經本網連結申請額外獎賞 */}
+          {card.partnerOffer && (
+            <PartnerOfferCard
+              cardId={card.id}
+              cardName={card.name}
+              cardBank={card.bank}
+              offer={card.partnerOffer}
+              existingCustomerOffer={card.partnerOffer.existingCustomerOffer}
+            />
           )}
 
           {/* 回贈規則 */}
