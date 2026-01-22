@@ -27,7 +27,7 @@ function mapCardFromDB(dbCard: any): CreditCard {
         bank: localCard?.bank || dbCard.bank,
         imageUrl,
         foreignCurrencyFee: localCard?.foreignCurrencyFee ?? dbCard.foreign_currency_fee, // Prefer local (most up-to-date)
-        welcomeOfferText: dbCard.welcome_offer_text || localCard?.welcomeOfferText,
+        welcomeOfferText: localCard?.welcomeOfferText || dbCard.welcome_offer_text, // Prefer local (most up-to-date bank welcome offer)
         welcomeOfferReward: dbCard.welcome_offer_reward,
         welcomeOfferDeadline: dbCard.welcome_offer_deadline,
         applyUrl: dbCard.apply_url || localCard?.applyUrl,
