@@ -430,7 +430,7 @@ export function CommentSection({ contentType, contentId, contentName }: CommentS
         {user ? (
           <div className="flex gap-3">
             <Avatar className="h-10 w-10">
-              <AvatarImage src={user.user_metadata?.avatar_url} />
+              <AvatarImage src={user.avatar} />
               <AvatarFallback>{user.email?.charAt(0).toUpperCase()}</AvatarFallback>
             </Avatar>
             <div className="flex-1">

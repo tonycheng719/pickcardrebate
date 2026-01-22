@@ -9,7 +9,7 @@ export interface SEOProps {
   description: string;
   keywords?: string[];
   ogImage?: string;
-  ogType?: 'website' | 'article' | 'product';
+  ogType?: 'website' | 'article';
   canonical?: string;
   noIndex?: boolean;
 }
@@ -93,7 +93,7 @@ export function generateCardMetadata(card: {
     description,
     keywords: [card.name, card.bank, `${card.bank}信用卡`, `${card.name}回贈`],
     ogImage: card.imageUrl || DEFAULT_OG_IMAGE,
-    ogType: 'product',
+    ogType: 'website',
     canonical: `${SITE_URL}/cards/${card.id}`,
   });
 }
