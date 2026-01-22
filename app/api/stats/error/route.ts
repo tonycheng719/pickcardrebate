@@ -1,16 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createServiceRoleClient } from "@/lib/supabase/server";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { message, stack, context, url, userAgent, timestamp } = body;
 
-    // 記錄到資料庫（如果需要）
-    const supabase = await createServiceRoleClient();
-    
-    // 可以創建一個 error_logs 表來儲存錯誤
-    // 這裡先記錄到 console
+    // 記錄到 console（可以之後擴展到資料庫或 Sentry）
     console.error('[Frontend Error]', {
       message,
       url,
@@ -28,4 +23,3 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to log error' }, { status: 500 });
   }
 }
-
