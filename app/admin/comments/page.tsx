@@ -24,6 +24,8 @@ interface Comment {
   likes_count: number;
   created_at: string;
   reportCount?: number;
+  rating?: number;
+  source?: 'new' | 'legacy_article' | 'legacy_card'; // 區分來源
   user?: {
     id: string;
     name: string;
@@ -69,11 +71,14 @@ export default function AdminCommentsPage() {
     fetchComments();
   }, []);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: string, source?: string) => {
     if (!confirm("確定要刪除此評論嗎？")) return;
 
     try {
-      const response = await fetch(`/api/admin/comments?id=${id}`, {
+      const params = new URLSearchParams({ id });
+      if (source) params.append('source', source);
+      
+      const response = await fetch(`/api/admin/comments?${params.toString()}`, {
         method: "DELETE",
       });
 
@@ -91,12 +96,12 @@ export default function AdminCommentsPage() {
     }
   };
 
-  const handleToggleHidden = async (id: string, currentHidden: boolean) => {
+  const handleToggleHidden = async (id: string, currentHidden: boolean, source?: string) => {
     try {
       const response = await fetch(`/api/admin/comments`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, is_hidden: !currentHidden }),
+        body: JSON.stringify({ id, is_hidden: !currentHidden, source }),
       });
 
       if (!response.ok) throw new Error("Update failed");
@@ -363,6 +368,22 @@ export default function AdminCommentsPage() {
                           )}
                         </div>
 
+                        {/* Rating */}
+                        {comment.rating && comment.rating > 0 && (
+                          <div className="flex items-center gap-1 mb-1">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <Star
+                                key={star}
+                                className={`h-3 w-3 ${
+                                  star <= comment.rating!
+                                    ? 'text-yellow-400 fill-yellow-400'
+                                    : 'text-gray-300 dark:text-gray-600'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                        )}
+
                         {/* Content */}
                         <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
                           {comment.content}
@@ -380,6 +401,18 @@ export default function AdminCommentsPage() {
 
                     {/* Actions */}
                     <div className="flex items-center gap-2">
+                      {comment.source && (
+                        <span className={`text-xs px-2 py-0.5 rounded ${
+                          comment.source === 'legacy_article' 
+                            ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300'
+                            : comment.source === 'legacy_card'
+                            ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+                            : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'
+                        }`}>
+                          {comment.source === 'legacy_article' ? '舊文章' : 
+                           comment.source === 'legacy_card' ? '舊信用卡' : '新系統'}
+                        </span>
+                      )}
                       <Link href={`/admin/users/${comment.user_id}`}>
                         <Button variant="ghost" size="sm">
                           查看用戶
@@ -388,7 +421,7 @@ export default function AdminCommentsPage() {
                       <Button 
                         variant="ghost" 
                         size="sm"
-                        onClick={() => handleToggleHidden(comment.id, comment.is_hidden)}
+                        onClick={() => handleToggleHidden(comment.id, comment.is_hidden, comment.source)}
                       >
                         {comment.is_hidden ? '顯示' : '隱藏'}
                       </Button>
@@ -396,7 +429,7 @@ export default function AdminCommentsPage() {
                         variant="ghost" 
                         size="icon" 
                         className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
-                        onClick={() => handleDelete(comment.id)}
+                        onClick={() => handleDelete(comment.id, comment.source)}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
