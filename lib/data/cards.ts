@@ -857,12 +857,14 @@ export const HK_CARDS: CreditCard[] = [
       { description: "海外簽賬 $4/里", matchType: "base", percentage: 2.5, isForeignCurrency: true }, // 3pts/$ * 0.0833 = 0.25 miles/$ -> $4/mile
       { description: "本地簽賬 $6/里", matchType: "base", percentage: 1.67, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["octopus"] }, // 2pts/$ * 0.0833 = 0.166 miles/$ -> $6/mile
     ],
-    tags: ["高端", "年費卡", "旅遊", "機場貴賓室"],
-    welcomeOfferText: "迎新繳年費 $3,800 送 360,000積分 (30,000里)",
+    tags: ["高端", "年費卡", "旅遊", "機場貴賓室", "MoneyHero獨家"],
+    welcomeOfferText: "🔥 MoneyHero獨家：38,000 Max Miles / Dyson洗地吸塵機 ($4,680) / Insta360 X5 ($4,099) / $3,500禮品卡",
     officialApplyUrl: "https://www.citibank.com.hk/zh-hk/credit-cards/citi-prestige-card.html",
-    applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=171&a=228&sub_id1=pickcardrebate&sub_id2=web",
+    applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=171&a=228&sub_id1=pickcardrebate&sub_id2=web&promo_id=citi-prestige-moneyhero-20260130",
     sellingPoints: ["任何酒店第 4 晚免費", "無限次使用機場貴賓室", "年資獎賞", "免費旅遊保險"],
-    note: "⚠️ 年費 $3,800。不適用於：FPS、八達通增值、繳稅、保費、公共事務費用。\n\n💡 **高端禮遇**：任何酒店連續入住 4 晚，第 4 晚免費！無限次 Priority Pass 機場貴賓室。",
+    note: "## 🔥 MoneyHero 限時獨家優惠\n**優惠期：2026年1月21日上午10時至1月30日下午6時**\n\n### 🎁 獨家禮品（7選1）\n| 禮品 | 價值 |\n|:---|:---:|\n| Dyson Digital Slim Submarine 輕量乾濕洗地吸塵機 | **$4,680** |\n| Insta360 X5 8K 全景運動相機 (標準套裝) | **$4,099** |\n| Dyson AM15 HF1 風扇暖風機 | **$3,990** |\n| PHILIPS 飛利浦 ADD6912 RO 冷熱純淨飲水機 | **$3,788** |\n| 38,000 Max Miles 飛行里數 | ~$3,800 |\n| HK$3,500 Apple Gift Card | $3,500 |\n| HK$3,500 惠康購物現金券 | $3,500 |\n\n### 📋 申請條件\n1. ✅ Citi 新客戶（過去12個月內未持有Citi信用卡主卡）\n2. ✅ 收到換領表格後 **7日內** 填妥及遞交\n3. ✅ 2026年2月28日或之前成功批核並啟動\n4. ✅ 批卡後30日內簽賬滿 **$8,000** + 支付年費 **$3,800**\n\n⚠️ **注意**：領取 MoneyHero 獨家優惠**不能同時獲取**花旗銀行迎新優惠！\n\n---\n\n## 💳 高端禮遇\n- 🏨 **任何酒店連續入住 4 晚，第 4 晚免費！**\n- ✈️ **無限次** Priority Pass 機場貴賓室\n- 📈 **年資獎賞**：每年自動獲贈里數\n- 🛡️ **免費旅遊保險**\n\n📅 **2026年1月22日更新**",
+    promoEndDate: "2026-01-30",
+    promoName: "MoneyHero限時獨家優惠",
   },
 
   // ========================================================================
