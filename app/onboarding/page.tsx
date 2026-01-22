@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useWallet } from "@/lib/store/wallet-context";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,26 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Navbar } from "@/components/navbar";
 import { toast } from "sonner";
 import { Check, X, Loader2 } from "lucide-react";
-import { useDebouncedCallback } from "use-debounce";
+
+// Custom debounce hook
+function useDebouncedCallback<T extends (...args: any[]) => any>(
+  callback: T,
+  delay: number
+): T {
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  
+  return useCallback(
+    ((...args: Parameters<T>) => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        callback(...args);
+      }, delay);
+    }) as T,
+    [callback, delay]
+  );
+}
 
 const HK_DISTRICTS = [
   {
