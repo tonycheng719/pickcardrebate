@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { adminAuthClient } from '@/lib/supabase/admin-client';
 
+// Force rebuild - v2
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+export const fetchCache = 'force-no-store';
 
 // GET: 獲取所有留言（後台用）- 同時獲取新舊兩個留言系統的數據
 export async function GET(request: NextRequest) {
+  console.log('[Admin Comments API] Starting request - using adminAuthClient v2');
+  
   try {
     const { searchParams } = new URL(request.url);
     const contentType = searchParams.get('contentType'); // 'card', 'article', or null for all
@@ -13,6 +17,7 @@ export async function GET(request: NextRequest) {
     const source = searchParams.get('source'); // 'new', 'legacy', or null for both
 
     const supabase = adminAuthClient;
+    console.log('[Admin Comments API] Supabase client initialized');
     let allComments: any[] = [];
 
     // 1. 獲取新系統的留言 (comments 表)
