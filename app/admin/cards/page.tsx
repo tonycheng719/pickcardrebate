@@ -454,6 +454,13 @@ export default function AdminCardsPage() {
                       <Star className={`h-4 w-4 ${card.featured ? 'fill-current' : ''}`} />
                     </button>
                     <Link
+                      href={`/admin/cards/${card.id}/edit`}
+                      className="p-2 hover:bg-green-50 dark:hover:bg-green-900/20 text-green-600 rounded transition-colors"
+                      title="編輯多語言內容"
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Link>
+                    <Link
                       href={`/admin/cards/edit?id=${card.id}`}
                       className="p-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 rounded transition-colors"
                       title="編輯圖片"

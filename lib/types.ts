@@ -40,6 +40,19 @@ export interface RewardRule {
   condition?: RewardRuleCondition; // Legacy/Advanced conditions
 }
 
+// Multi-language text field helper type
+export interface MultiLangText {
+  'zh-HK'?: string;
+  'zh-CN'?: string;
+  'en'?: string;
+}
+
+export interface MultiLangTextArray {
+  'zh-HK'?: string[];
+  'zh-CN'?: string[];
+  'en'?: string[];
+}
+
 export interface CreditCard {
   id: string;
   name: string;
@@ -64,6 +77,25 @@ export interface CreditCard {
   welcomeOfferDeadline?: string;
   sellingPoints?: string[];
   note?: string; // New: Special notes for complex rules (e.g. tiered rewards)
+  
+  // Multi-language fields (database only, not in static data)
+  name_en?: string;
+  name_zh_cn?: string;
+  bank_en?: string;
+  bank_zh_cn?: string;
+  welcomeOfferText_en?: string;
+  welcomeOfferText_zh_cn?: string;
+  sellingPoints_en?: string[];
+  sellingPoints_zh_cn?: string[];
+  feeWaiverCondition_en?: string;
+  feeWaiverCondition_zh_cn?: string;
+  rewardTimeline_en?: string;
+  rewardTimeline_zh_cn?: string;
+  note_en?: string;
+  note_zh_cn?: string;
+  tags_en?: string[];
+  tags_zh_cn?: string[];
+  languagesCompleted?: string[]; // Track completed translations
   // New: Miles Configuration
   rewardConfig?: {
     method: 'conversion' | 'direct' | 'direct_rate';
@@ -112,6 +144,12 @@ export interface Merchant {
   isForeignCurrency?: boolean; // If true, this merchant uses foreign currency (e.g. Taobao = RMB)
   currency?: string; // Currency code (e.g. "CNY", "JPY", "USD")
   excludedCardNetworks?: string[]; // Card networks not accepted (e.g. ["unionpay"] for Apple Store)
+  
+  // Multi-language fields
+  name_en?: string;
+  name_zh_cn?: string;
+  aliases_en?: string[];
+  aliases_zh_cn?: string[];
 }
 
 export interface Category {
@@ -120,6 +158,10 @@ export interface Category {
   icon: string;
   bgColor: string;
   accentColor: string;
+  
+  // Multi-language fields
+  name_en?: string;
+  name_zh_cn?: string;
 }
 
 export interface PromoFAQ {
@@ -146,6 +188,25 @@ export interface Promo {
   faqs?: PromoFAQ[]; // FAQ for structured data
   seoTitle?: string; // Custom SEO title
   seoDescription?: string; // Custom meta description
+  
+  // Multi-language fields
+  title_en?: string;
+  title_zh_cn?: string;
+  description_en?: string;
+  description_zh_cn?: string;
+  content_en?: string;
+  content_zh_cn?: string;
+  merchant_en?: string;
+  merchant_zh_cn?: string;
+  tags_en?: string[];
+  tags_zh_cn?: string[];
+  seoTitle_en?: string;
+  seoTitle_zh_cn?: string;
+  seoDescription_en?: string;
+  seoDescription_zh_cn?: string;
+  faqs_en?: PromoFAQ[];
+  faqs_zh_cn?: PromoFAQ[];
+  languagesCompleted?: string[]; // Track completed translations
 }
 
 export interface Transaction {
