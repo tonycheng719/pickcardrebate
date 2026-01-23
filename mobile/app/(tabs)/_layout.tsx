@@ -3,6 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Image, View, Text, StyleSheet } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
+import { useTranslation } from '@/lib/i18n/context';
 
 // 自定義 Header Title 組件
 function LogoTitle() {
@@ -24,6 +25,7 @@ function LogoTitle() {
 export default function TabLayout() {
   const colorScheme = useColorScheme() ?? 'light';
   const colors = Colors[colorScheme];
+  const { t } = useTranslation();
 
   return (
     <Tabs
@@ -52,7 +54,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: '計算',
+          title: t.tabs.calculate,
           headerTitle: () => <LogoTitle />,
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
@@ -66,7 +68,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="rankings"
         options={{
-          title: '排行榜',
+          title: t.tabs.rankings,
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? 'trophy' : 'trophy-outline'}
@@ -79,7 +81,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="cards"
         options={{
-          title: '信用卡',
+          title: t.tabs.cards,
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? 'card' : 'card-outline'}
@@ -92,7 +94,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="discover"
         options={{
-          title: '探索',
+          title: t.tabs.discover,
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? 'sparkles' : 'sparkles-outline'}
@@ -105,7 +107,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="wallet"
         options={{
-          title: '錢包',
+          title: t.tabs.wallet,
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? 'wallet' : 'wallet-outline'}

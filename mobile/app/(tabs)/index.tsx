@@ -30,6 +30,7 @@ import { PersonalizedRecommendations } from '@/components/PersonalizedRecommenda
 import { useAuth } from '@/lib/auth/AuthContext';
 import { getMyCards, syncWalletFromCloud, MyCard } from '@/lib/storage/myCards';
 import { trackCalculateRebate } from '@/lib/analytics';
+import { useTranslation } from '@/lib/i18n/context';
 
 // 支付方式選項（與網站一致）
 const PAYMENT_METHODS = [
@@ -49,6 +50,7 @@ export default function CalculatorScreen() {
   const scrollViewRef = useRef<ScrollView>(null);
   const amountInputRef = useRef<View>(null);
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   // 用戶持有的卡片
   const [myCardIds, setMyCardIds] = useState<string[]>([]);
@@ -586,7 +588,7 @@ export default function CalculatorScreen() {
       >
         <Ionicons name="search" size={20} color={colors.textMuted} />
         <Text style={[styles.searchPlaceholder, { color: colors.textMuted }]}>
-          搜索信用卡、商戶、文章...
+          {t.calculator.searchPlaceholder}
         </Text>
       </TouchableOpacity>
 
@@ -613,8 +615,8 @@ export default function CalculatorScreen() {
       >
         {/* 標題區 */}
         <View style={styles.headerSection}>
-          <Text style={[styles.greeting, { color: colors.textMuted }]}>你好, 精明消費者 👋</Text>
-          <Text style={[styles.title, { color: colors.text }]}>信用卡回贈計算機</Text>
+          <Text style={[styles.greeting, { color: colors.textMuted }]}>{t.calculator.greeting}</Text>
+          <Text style={[styles.title, { color: colors.text }]}>{t.calculator.title}</Text>
           <Text style={[styles.subtitle, { color: colors.textMuted }]}>
             選擇商戶與消費方式，即刻知道哪張卡最抵。
           </Text>
@@ -769,7 +771,7 @@ export default function CalculatorScreen() {
 
         {/* 金額輸入區域 */}
         <View style={styles.inputSection}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>消費金額</Text>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>{t.calculator.amount}</Text>
           <View style={[styles.amountInputContainer, { backgroundColor: colors.backgroundCard, borderColor: colors.border }]}>
             <Text style={[styles.currencySymbol, { color: colors.textMuted }]}>$</Text>
             <TextInput
@@ -894,7 +896,7 @@ export default function CalculatorScreen() {
                     <View style={[styles.myBestCardContainer, { backgroundColor: '#ECFDF5', borderColor: '#10B981' }]}>
                       <View style={styles.myBestCardHeader}>
                         <Ionicons name="wallet" size={16} color="#10B981" />
-                        <Text style={styles.myBestCardLabel}>💚 推薦使用：你持有的最抵卡</Text>
+                        <Text style={styles.myBestCardLabel}>💚 {t.calculator.bestCard}：{t.calculator.yourBestCard}</Text>
                       </View>
                       {renderOtherCard(myBestCard, myBestCard.rank, true)}
                     </View>
@@ -929,7 +931,7 @@ export default function CalculatorScreen() {
                     <View style={styles.sectionHeaderLeft}>
                       <Ionicons name="wallet-outline" size={16} color={colors.primary} />
                       <Text style={[styles.sectionHeaderText, { color: colors.text }]}>
-                        你持有的其他卡 ({myOtherOwnedCards.length})
+                        {t.calculator.otherOwnedCards} ({myOtherOwnedCards.length})
                       </Text>
                     </View>
                     <Ionicons 
@@ -954,7 +956,7 @@ export default function CalculatorScreen() {
                     <View style={styles.sectionHeaderLeft}>
                       <Ionicons name="card-outline" size={16} color={colors.textMuted} />
                       <Text style={[styles.sectionHeaderText, { color: colors.text }]}>
-                        查看其他未持有的卡 ({unownedCards.length})
+                        {t.calculator.otherCards} ({unownedCards.length})
                       </Text>
                     </View>
                     <Ionicons 

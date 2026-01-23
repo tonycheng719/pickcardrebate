@@ -1,221 +1,242 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import { toast } from 'sonner';
-import { Bell, Send, Users, Clock, RefreshCw } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Bell, Send, History, Users, RefreshCw } from "lucide-react";
 
-interface NotificationRecord {
+interface NotificationHistory {
   id: string;
   title: string;
-  message: string;
-  target_type: string;
+  body: string;
   sent_count: number;
+  target_type: string;
+  trigger_type: string | null;
   created_at: string;
 }
 
 export default function NotificationsPage() {
   const [title, setTitle] = useState('');
-  const [message, setMessage] = useState('');
-  const [targetType, setTargetType] = useState<'all' | 'specific'>('all');
+  const [body, setBody] = useState('');
   const [sending, setSending] = useState(false);
-  const [history, setHistory] = useState<NotificationRecord[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [result, setResult] = useState<{ success: boolean; sent?: number; error?: string } | null>(null);
+  const [history, setHistory] = useState<NotificationHistory[]>([]);
+  const [loadingHistory, setLoadingHistory] = useState(true);
+  const [tokenCount, setTokenCount] = useState<number>(0);
 
   useEffect(() => {
-    loadHistory();
+    fetchHistory();
+    fetchTokenCount();
   }, []);
 
-  const loadHistory = async () => {
+  const fetchHistory = async () => {
+    setLoadingHistory(true);
     try {
-      const res = await fetch('/api/admin/notifications');
+      const res = await fetch('/api/admin/notification-history');
       if (res.ok) {
         const data = await res.json();
-        setHistory(data);
+        setHistory(data.history || []);
       }
     } catch (e) {
-      console.error('Load history failed:', e);
+      console.error('Failed to fetch history:', e);
     }
-    setLoading(false);
+    setLoadingHistory(false);
+  };
+
+  const fetchTokenCount = async () => {
+    try {
+      const res = await fetch('/api/admin/push-token-count');
+      if (res.ok) {
+        const data = await res.json();
+        setTokenCount(data.count || 0);
+      }
+    } catch (e) {
+      console.error('Failed to fetch token count:', e);
+    }
   };
 
   const handleSend = async () => {
-    if (!title.trim() || !message.trim()) {
-      toast.error('請填寫標題和內容');
+    if (!title.trim() || !body.trim()) {
+      setResult({ success: false, error: '請填寫標題和內容' });
       return;
     }
 
     setSending(true);
+    setResult(null);
+
     try {
-      const res = await fetch('/api/admin/notifications', {
+      const res = await fetch('/api/admin/send-notification', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title: title.trim(),
-          message: message.trim(),
-          targetType,
+          body: body.trim(),
+          targetAll: true,
         }),
       });
 
       const data = await res.json();
-
+      
       if (res.ok) {
-        toast.success(`成功發送 ${data.sentCount} 條通知`);
+        setResult({ success: true, sent: data.sent });
         setTitle('');
-        setMessage('');
-        loadHistory();
+        setBody('');
+        fetchHistory();
       } else {
-        toast.error(data.error || '發送失敗');
+        setResult({ success: false, error: data.error || '發送失敗' });
       }
-    } catch (e) {
-      toast.error('發送失敗');
+    } catch (e: any) {
+      setResult({ success: false, error: e.message });
     }
+
     setSending(false);
   };
 
-  // 快捷模板
-  const templates = [
-    { title: '新優惠上架', message: '🎉 新的信用卡優惠已上架，快來查看！' },
-    { title: '限時優惠提醒', message: '⏰ 限時優惠即將結束，把握最後機會！' },
-    { title: '排行榜更新', message: '📊 信用卡排行榜已更新，看看哪張卡最抵！' },
-    { title: '新文章發布', message: '📖 新的信用卡攻略文章已發布，立即閱讀！' },
-  ];
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return date.toLocaleString('zh-HK', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
+
+  const getTriggerTypeBadge = (type: string | null) => {
+    switch (type) {
+      case 'cron_new_article':
+        return <span className="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded">新文章</span>;
+      case 'cron_offer_expiry':
+        return <span className="px-2 py-1 text-xs bg-orange-100 text-orange-700 rounded">優惠到期</span>;
+      case 'manual':
+      default:
+        return <span className="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded">手動</span>;
+    }
+  };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold flex items-center gap-2">
-          <Bell className="h-6 w-6" />
-          推送通知管理
-        </h1>
-        <p className="text-gray-500">向 App 用戶發送推送通知</p>
+    <div className="container mx-auto p-6 max-w-4xl">
+      <div className="flex items-center gap-3 mb-6">
+        <Bell className="h-8 w-8 text-primary" />
+        <h1 className="text-2xl font-bold">推送通知管理</h1>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        {/* 發送通知 */}
+      {/* 統計 */}
+      <div className="grid grid-cols-2 gap-4 mb-6">
         <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Send className="h-5 w-5" />
-              發送通知
-            </CardTitle>
-            <CardDescription>填寫內容並發送推送通知</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <Label>目標用戶</Label>
-              <div className="flex gap-2 mt-1">
-                <Button
-                  variant={targetType === 'all' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setTargetType('all')}
-                >
-                  <Users className="h-4 w-4 mr-1" />
-                  所有用戶
-                </Button>
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-3">
+              <Users className="h-8 w-8 text-blue-500" />
+              <div>
+                <div className="text-2xl font-bold">{tokenCount}</div>
+                <div className="text-sm text-muted-foreground">已註冊設備</div>
               </div>
             </div>
-
-            <div>
-              <Label htmlFor="title">標題</Label>
-              <Input
-                id="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="通知標題"
-                maxLength={50}
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="message">內容</Label>
-              <Textarea
-                id="message"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="通知內容..."
-                rows={3}
-                maxLength={200}
-              />
-              <p className="text-xs text-gray-500 mt-1">{message.length}/200</p>
-            </div>
-
-            <Button 
-              onClick={handleSend} 
-              disabled={sending || !title.trim() || !message.trim()}
-              className="w-full"
-            >
-              {sending ? (
-                <>
-                  <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                  發送中...
-                </>
-              ) : (
-                <>
-                  <Send className="h-4 w-4 mr-2" />
-                  發送通知
-                </>
-              )}
-            </Button>
           </CardContent>
         </Card>
-
-        {/* 快捷模板 */}
         <Card>
-          <CardHeader>
-            <CardTitle>快捷模板</CardTitle>
-            <CardDescription>點擊使用預設模板</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              {templates.map((t, i) => (
-                <button
-                  key={i}
-                  onClick={() => {
-                    setTitle(t.title);
-                    setMessage(t.message);
-                  }}
-                  className="w-full text-left p-3 rounded-lg border hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-                >
-                  <p className="font-medium">{t.title}</p>
-                  <p className="text-sm text-gray-500 truncate">{t.message}</p>
-                </button>
-              ))}
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-3">
+              <Send className="h-8 w-8 text-green-500" />
+              <div>
+                <div className="text-2xl font-bold">{history.length}</div>
+                <div className="text-sm text-muted-foreground">已發送通知</div>
+              </div>
             </div>
           </CardContent>
         </Card>
       </div>
+
+      {/* 發送通知 */}
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Send className="h-5 w-5" />
+            發送推送通知
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-1">標題</label>
+            <Input
+              placeholder="輸入通知標題..."
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              maxLength={50}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">內容</label>
+            <Textarea
+              placeholder="輸入通知內容..."
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              maxLength={200}
+              rows={3}
+            />
+          </div>
+          
+          {result && (
+            <div className={`p-3 rounded ${result.success ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+              {result.success 
+                ? `✅ 成功發送 ${result.sent} 條通知` 
+                : `❌ ${result.error}`
+              }
+            </div>
+          )}
+
+          <Button 
+            onClick={handleSend} 
+            disabled={sending || !title.trim() || !body.trim()}
+            className="w-full"
+          >
+            {sending ? (
+              <>
+                <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                發送中...
+              </>
+            ) : (
+              <>
+                <Send className="h-4 w-4 mr-2" />
+                發送給所有用戶 ({tokenCount} 設備)
+              </>
+            )}
+          </Button>
+        </CardContent>
+      </Card>
 
       {/* 發送歷史 */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Clock className="h-5 w-5" />
+            <History className="h-5 w-5" />
             發送歷史
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {loading ? (
-            <div className="text-center py-8 text-gray-500">載入中...</div>
+          {loadingHistory ? (
+            <div className="text-center py-8 text-muted-foreground">載入中...</div>
           ) : history.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">尚無發送記錄</div>
+            <div className="text-center py-8 text-muted-foreground">暫無發送記錄</div>
           ) : (
             <div className="space-y-3">
-              {history.map((n) => (
-                <div key={n.id} className="p-3 rounded-lg border">
-                  <div className="flex items-center justify-between mb-1">
-                    <h4 className="font-medium">{n.title}</h4>
-                    <Badge variant="secondary">{n.sent_count} 人</Badge>
+              {history.map((item) => (
+                <div 
+                  key={item.id} 
+                  className="p-4 border rounded-lg hover:bg-muted/50 transition-colors"
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="font-medium">{item.title}</div>
+                    {getTriggerTypeBadge(item.trigger_type)}
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{n.message}</p>
-                  <p className="text-xs text-gray-400 mt-1">
-                    {new Date(n.created_at).toLocaleString('zh-HK')}
-                  </p>
+                  <div className="text-sm text-muted-foreground mb-2">{item.body}</div>
+                  <div className="flex items-center justify-between text-xs text-muted-foreground">
+                    <span>發送: {item.sent_count} 設備</span>
+                    <span>{formatDate(item.created_at)}</span>
+                  </div>
                 </div>
               ))}
             </div>
@@ -225,5 +246,3 @@ export default function NotificationsPage() {
     </div>
   );
 }
-
-
