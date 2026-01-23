@@ -9201,7 +9201,7 @@ export const cardTerms: CardTerms[] = [
     minSpend: {
       amount: 380,
       period: "promo",
-      type: "single",
+      type: "total",
       note: "單一簽賬滿 $380"
     },
     rewardRates: [
