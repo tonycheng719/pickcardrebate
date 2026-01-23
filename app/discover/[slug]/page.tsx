@@ -68,8 +68,8 @@ import { ArticleTracker } from "@/app/discover/components/article-tracker";
 import { ArticleReviews } from "@/app/discover/components/article-reviews";
 import { PageViewTracker } from "@/components/page-view-tracker";
 
-// Revalidate every hour
-export const revalidate = 3600;
+// Revalidate every 5 minutes
+export const revalidate = 300;
 export const dynamicParams = true;
 
 interface PageProps {
