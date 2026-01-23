@@ -25,17 +25,37 @@ export async function POST(request: Request) {
     }
 
     // 記錄到 app_events 表
+    // 注意：user_id 需要是有效的 UUID 且存在於 auth.users
+    // 如果 userId 無效或不存在，改為 null
+    let validUserId: string | null = null;
+    if (userId && typeof userId === 'string' && userId.length === 36) {
+      // 簡單的 UUID 格式檢查
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      if (uuidRegex.test(userId)) {
+        validUserId = userId;
+      }
+    }
+
     const { error } = await supabase.from('app_events').insert({
       event_name: event,
       event_params: params,
-      user_id: userId || null,
+      user_id: validUserId,
       platform: platform || 'unknown',
       created_at: timestamp || new Date().toISOString(),
     });
 
     if (error) {
-      console.error('App event logging error:', error);
-      // 不返回錯誤，避免影響 App 體驗
+      console.error('App event logging error:', JSON.stringify(error));
+      // 如果是 foreign key 錯誤，嘗試不帶 user_id 重新插入
+      if (error.code === '23503') {
+        await supabase.from('app_events').insert({
+          event_name: event,
+          event_params: params,
+          user_id: null,
+          platform: platform || 'unknown',
+          created_at: timestamp || new Date().toISOString(),
+        });
+      }
     }
 
     return NextResponse.json({ success: true });
