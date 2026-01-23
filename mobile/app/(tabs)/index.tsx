@@ -232,6 +232,7 @@ export default function CalculatorScreen() {
         paymentMethod: paymentMethod,
         limit: 10,
         rewardPreference: rewardPreference,
+        myCardIds: myCardIds, // 傳入用戶持有的卡片，確保都被包含在結果中
       });
 
       if (response.data) {

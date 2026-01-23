@@ -25,6 +25,7 @@ export async function POST(request: NextRequest) {
       paymentMethod,
       isForeignCurrency = false,
       limit = 10,
+      myCardIds = [], // 用戶持有的卡片 IDs，優先顯示
     } = body;
 
     if (!query) {
@@ -54,21 +55,46 @@ export async function POST(request: NextRequest) {
       console.warn("Could not fetch card images");
     }
 
-    // 轉換為 mobile-friendly 格式（限制數量）
-    const mobileResults = results.slice(0, limit).map((result, index) => {
+    // 智能排序：確保用戶持有的卡片都被包含
+    // 1. 先取 top N 結果
+    // 2. 再補上用戶持有但不在 top N 的卡片
+    const myCardIdSet = new Set(myCardIds as string[]);
+    const topResults = results.slice(0, limit);
+    const topResultIds = new Set(topResults.map(r => r.card.id));
+    
+    // 找出用戶持有但不在 top N 的卡片
+    const myMissingCards = results.filter(r => 
+      myCardIdSet.has(r.card.id) && !topResultIds.has(r.card.id)
+    );
+    
+    // 合併結果：top N + 用戶持有的其他卡
+    const combinedResults = [...topResults, ...myMissingCards];
+
+    // 轉換為 mobile-friendly 格式
+    const mobileResults = combinedResults.map((result, index) => {
       const dbCard = dbCardMap.get(result.card.id);
+      // 保留原始排名（基於回贈率）
+      const originalRank = results.findIndex(r => r.card.id === result.card.id) + 1;
       
       return {
-        rank: index + 1,
+        rank: originalRank, // 使用原始排名（基於回贈率）
         cardId: result.card.id,
         cardName: result.card.name,
         bank: result.card.bank,
         imageUrl: dbCard?.image_url || result.card.imageUrl || null,
+        isOwned: myCardIdSet.has(result.card.id), // 標記是否為用戶持有
         
         // 回贈資訊
         percentage: result.percentage,
         rewardAmount: result.rewardAmount,
         ruleDescription: result.matchedRule?.description || '基本回贈',
+        
+        // 回贈組成
+        rewardBreakdown: {
+          baseRate: result.matchedRule?.basePercentage || 0.4,
+          bonusRate: result.percentage - (result.matchedRule?.basePercentage || 0.4),
+          bonusDescription: result.matchedRule?.description,
+        },
         
         // 額外資訊
         isCapped: result.isCapped || false,
@@ -97,6 +123,9 @@ export async function POST(request: NextRequest) {
         
         // 超額資訊
         overCapInfo: result.overCapInfo,
+        
+        // 申請連結
+        applyUrl: result.card.applyUrl || null,
       };
     });
 

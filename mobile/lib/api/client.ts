@@ -137,6 +137,8 @@ export interface CalculateResult {
   cardName: string;
   bank: string;
   imageUrl: string | null;
+  isOwned?: boolean; // 是否為用戶持有的卡片
+  applyUrl?: string | null; // 申請連結
   percentage: number;
   rewardAmount: number;
   ruleDescription: string;
@@ -246,6 +248,7 @@ export const api = {
     isForeignCurrency?: boolean;
     limit?: number;
     rewardPreference?: 'cash' | 'miles';
+    myCardIds?: string[]; // 用戶持有的卡片 IDs
   }) => {
     return request<CalculateResponse>('/mobile/calculate', {
       method: 'POST',
