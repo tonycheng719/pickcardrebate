@@ -220,6 +220,17 @@ export default function CardDetailScreen() {
               cardBank={card.bank}
               offer={card.partnerOffer}
               existingCustomerOffer={card.partnerOffer.existingCustomerOffer}
+              bankWelcomeValue={
+                // 從 welcomeOfferText 解析銀行迎新金額
+                (() => {
+                  const text = card.welcomeOfferText || '';
+                  // 里數卡片不轉換
+                  if (text.includes('里') || text.includes('Miles')) return 0;
+                  // 提取金額，如 "送 $1,200 現金回贈" -> 1200
+                  const match = text.match(/送\s*\$?([\d,]+)/);
+                  return match ? parseInt(match[1].replace(/,/g, '')) || 0 : 0;
+                })()
+              }
             />
           )}
 

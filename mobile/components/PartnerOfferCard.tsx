@@ -36,6 +36,7 @@ interface PartnerOfferCardProps {
   cardBank: string;
   offer: PartnerOffer;
   existingCustomerOffer?: ExistingCustomerOffer;
+  bankWelcomeValue?: number; // 銀行迎新價值（港幣）
 }
 
 export function PartnerOfferCard({ 
@@ -43,7 +44,8 @@ export function PartnerOfferCard({
   cardName, 
   cardBank, 
   offer,
-  existingCustomerOffer 
+  existingCustomerOffer,
+  bankWelcomeValue = 0 
 }: PartnerOfferCardProps) {
   const colorScheme = useColorScheme() ?? 'light';
   const colors = Colors[colorScheme];
@@ -59,6 +61,9 @@ export function PartnerOfferCard({
   const currentRequirements = customerType === 'existing' && existingCustomerOffer
     ? existingCustomerOffer.requirements
     : offer.requirements;
+  
+  // 計算總價值（銀行迎新 + 本網額外獎賞）
+  const totalValue = bankWelcomeValue + currentBonusValue;
 
   // 格式化日期
   const formatDate = (dateStr: string) => {
@@ -166,15 +171,34 @@ export function PartnerOfferCard({
 
       {/* Content */}
       <View style={styles.content}>
-        {/* Bonus Value */}
-        <View style={[styles.valueCard, { backgroundColor: colors.backgroundCard }]}>
-          <Text style={[styles.valueLabel, { color: colors.textMuted }]}>
-            本網額外獎賞
-          </Text>
-          <Text style={styles.valueAmount}>
-            ${currentBonusValue.toLocaleString()}
-          </Text>
-        </View>
+        {/* Combined Total Value (like web) */}
+        {bankWelcomeValue > 0 && (
+          <View style={[styles.totalValueCard, { backgroundColor: colors.backgroundCard }]}>
+            <Text style={[styles.totalValueLabel, { color: colors.text }]}>
+              銀行迎新 + 本網額外獎賞 最高可獲
+            </Text>
+            <Text style={styles.totalValueAmount}>
+              ${totalValue.toLocaleString()}
+            </Text>
+            <View style={styles.totalValueBreakdown}>
+              <Text style={[styles.breakdownText, { color: colors.textMuted }]}>
+                銀行迎新 ${bankWelcomeValue.toLocaleString()} + 額外獎賞 ${currentBonusValue.toLocaleString()}
+              </Text>
+            </View>
+          </View>
+        )}
+
+        {/* Bonus Value (only show if no bank welcome) */}
+        {bankWelcomeValue === 0 && (
+          <View style={[styles.valueCard, { backgroundColor: colors.backgroundCard }]}>
+            <Text style={[styles.valueLabel, { color: colors.textMuted }]}>
+              本網額外獎賞
+            </Text>
+            <Text style={styles.valueAmount}>
+              ${currentBonusValue.toLocaleString()}
+            </Text>
+          </View>
+        )}
 
         {/* Bonus Items */}
         {currentBonusItems && currentBonusItems.length > 0 && (
@@ -350,6 +374,32 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 16,
+  },
+  totalValueCard: {
+    alignItems: 'center',
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#FBBF24',
+  },
+  totalValueLabel: {
+    fontSize: 12,
+    marginBottom: 4,
+  },
+  totalValueAmount: {
+    fontSize: 32,
+    fontWeight: '700',
+    color: '#F59E0B',
+  },
+  totalValueBreakdown: {
+    marginTop: 8,
+    paddingTop: 8,
+    borderTopWidth: 1,
+    borderTopColor: '#FDE68A',
+  },
+  breakdownText: {
+    fontSize: 11,
   },
   valueCard: {
     alignItems: 'center',
