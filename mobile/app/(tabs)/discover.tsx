@@ -118,7 +118,7 @@ export default function DiscoverScreen() {
   );
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={[]}>
       {/* 迎新優惠入口 */}
       <TouchableOpacity 
         style={[styles.welcomeOfferBanner, { backgroundColor: colors.warningLight }]}

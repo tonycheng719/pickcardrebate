@@ -222,7 +222,7 @@ export default function RankingsScreen() {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={[]}>
       {/* 類別選擇 */}
       <ScrollView
         ref={categoryScrollRef}

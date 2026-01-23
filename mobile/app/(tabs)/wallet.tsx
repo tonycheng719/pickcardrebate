@@ -158,7 +158,7 @@ export default function WalletScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={[]}>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.primary} />
         </View>
@@ -169,7 +169,7 @@ export default function WalletScreen() {
   // 未登入狀態
   if (!user) {
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={[]}>
         <View style={styles.loginPrompt}>
           <View style={[styles.iconContainer, { backgroundColor: colors.primaryLight }]}>
             <Ionicons name="wallet" size={48} color={colors.primary} />
@@ -216,7 +216,7 @@ export default function WalletScreen() {
   const avatarLetter = displayName.charAt(0).toUpperCase();
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={[]}>
       <ScrollView 
         showsVerticalScrollIndicator={false}
         refreshControl={

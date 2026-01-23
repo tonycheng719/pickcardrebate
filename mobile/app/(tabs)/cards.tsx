@@ -112,7 +112,7 @@ export default function CardsScreen() {
   // 載入中畫面
   if (loading) {
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={[]}>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.primary} />
           <Text style={[styles.loadingText, { color: colors.textMuted }]}>
@@ -126,7 +126,7 @@ export default function CardsScreen() {
   // 錯誤畫面
   if (error) {
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={[]}>
         <View style={styles.errorContainer}>
           <Text style={[styles.errorText, { color: colors.error }]}>
             {error}
@@ -143,7 +143,7 @@ export default function CardsScreen() {
   }
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={[]}>
       {/* 搜尋欄和比較按鈕 */}
       <View style={styles.searchSection}>
         <View style={styles.searchRow}>

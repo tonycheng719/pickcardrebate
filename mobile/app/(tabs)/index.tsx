@@ -578,7 +578,7 @@ export default function CalculatorScreen() {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={[]}>
       {/* 頂部搜索欄 */}
       <TouchableOpacity 
         style={[styles.searchBar, { backgroundColor: colors.backgroundCard, borderColor: colors.border }]}
