@@ -37,14 +37,20 @@ export async function POST() {
         sort_order: promo.sortOrder || 0, // 新增：排序欄位
       };
 
-      const { error } = await adminAuthClient
+      const { data, error } = await adminAuthClient
         .from('promos')
-        .upsert(record, { onConflict: 'id' });
+        .upsert(record, { onConflict: 'id' })
+        .select('id, content');
 
       if (error) {
         results.promos.failed++;
         results.promos.errors.push(`${promo.id}: ${error.message}`);
       } else {
+        // Debug: 檢查是否成功寫入 content
+        const savedContent = data?.[0]?.content;
+        if (promo.content && !savedContent) {
+          results.promos.errors.push(`${promo.id}: content not saved (input: ${promo.content.length} chars)`);
+        }
         results.promos.success++;
       }
     }
