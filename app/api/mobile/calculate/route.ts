@@ -91,8 +91,8 @@ export async function POST(request: NextRequest) {
         
         // 回贈組成
         rewardBreakdown: {
-          baseRate: result.matchedRule?.basePercentage || 0.4,
-          bonusRate: result.percentage - (result.matchedRule?.basePercentage || 0.4),
+          baseRate: 0.4, // 基本回贈率
+          bonusRate: result.percentage - 0.4,
           bonusDescription: result.matchedRule?.description,
         },
         
