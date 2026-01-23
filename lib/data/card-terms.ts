@@ -9175,6 +9175,61 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://payme.hsbc.com.hk/files/PayMe_CUP_ApplePay_Rebate_Jan-Apr_2026_TC.pdf",
     lastUpdated: "2026-01-22",
   },
+  // ========================================================================
+  // AE 卡 APITA / UNY / 千色優惠（2026/01/23 - 2026/02/23）
+  // ========================================================================
+  {
+    cardId: "amex-apita-uny-citistore-2026",
+    cardName: "AE 卡 APITA / UNY / 千色優惠",
+    bank: "American Express",
+    applicableCards: [
+      { cardId: "amex-explorer", cardName: "美國運通 Explorer 信用卡" },
+      { cardId: "amex-gold", cardName: "美國運通金卡" },
+      { cardId: "amex-green", cardName: "美國運通綠卡" },
+      { cardId: "amex-platinum", cardName: "美國運通白金卡" },
+      { cardId: "amex-blue-cash", cardName: "美國運通 Blue Cash 信用卡" },
+    ],
+    documentName: "AE 卡 APITA / UNY / 千色 Citistore 優惠條款及細則",
+    promoStartDate: "2026-01-23",
+    promoEndDate: "2026-02-23",
+    rewardCap: {
+      type: "total",
+      amount: 38,
+      period: "promo",
+      note: "每張卡限1次，最高 $38 回贈"
+    },
+    minSpend: {
+      amount: 380,
+      period: "promo",
+      type: "single",
+      note: "單一簽賬滿 $380"
+    },
+    rewardRates: [
+      {
+        category: "APITA / UNY / 千色門市消費",
+        totalRate: 10,
+        baseRate: 0,
+        extraRate: 10,
+        note: "單一消費滿 $380 回贈 $38（**10% 回贈**）🔥"
+      },
+    ],
+    exclusions: [
+      "❌ 千色荃灣門市：Pokka Cafe、A-1 Bakery、Pacific Coffee、華御結、茶木、Zoff 眼鏡",
+      "❌ 千色荃灣/馬鞍山門市：賞茶",
+      "❌ APITA 太古城 / UNY 樂富：QB House",
+      "❌ 網店交易不適用",
+      "❌ 透過第三方支付服務不適用",
+    ],
+    warnings: [
+      "⚠️ 必須先在 Amex HK App 登記",
+      "⚠️ 必須親身到門市消費",
+      "⚠️ 附屬卡需獨立登記",
+      "💡 名額：首 25,000 張成功登記卡",
+      "💡 每張卡只可享用 1 次",
+    ],
+    officialSource: "https://go.amex/apita-uny-citistore-tnc-cn",
+    lastUpdated: "2026-01-23",
+  },
 ];
 
 // ========================================================================
