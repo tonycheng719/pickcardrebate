@@ -3422,7 +3422,7 @@ export const PROMOS: Promo[] = [
     tags: ["AE卡", "美國運通", "APITA", "UNY", "千色", "10%回贈", "超市"],
     url: "https://go.amex/apita-uny-citistore-tnc-cn",
     isPinned: false,
-    content: \`
+    content: `
 ## 🛒 AE 卡 APITA / UNY / 千色優惠
 
 **美國運通卡優惠！單一消費滿 $380 回贈 $38，即係 10% 回贈！**
@@ -3519,7 +3519,7 @@ export const PROMOS: Promo[] = [
 ---
 
 📅 **2026年1月23日更新**
-\`,
+`,
     faqs: [
       { question: "呢個優惠要登記嗎？", answer: "要！必須先喺 Amex HK App 登記，先可以享用優惠。" },
       { question: "每張卡可以用幾多次？", answer: "每張已登記卡只可享用 1 次，最高獲 $38 回贈。" },
