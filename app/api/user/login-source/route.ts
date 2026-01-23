@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+function getServiceClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SERVICE_ROLE_KEY;
+  if (!url || !key) return null;
+  return createClient(url, key, {
+    auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
+  });
+}
 
 // POST: 記錄登入來源
 export async function POST(request: NextRequest) {
@@ -19,7 +25,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid source' }, { status: 400 });
     }
 
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const supabase = getServiceClient();
+    if (!supabase) {
+      console.warn('[login-source] Supabase not configured, skipping');
+      return NextResponse.json({ success: true }); // 靜默成功
+    }
 
     // 更新登入來源
     const updateData: any = {
