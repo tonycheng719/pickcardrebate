@@ -703,7 +703,7 @@ const MONEYHERO_PARTNER_OFFERS = [
     cardId: "sim-credit-card",
     partnerOffer: {
       enabled: true,
-      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=503&a=228&sub_id1=pickcardrebate&sub_id2=web",
+      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=873&a=228&sub_id1=web",
       bonusValue: 2100,
       bonusDescription: "獎品7選1：10,000 Max Miles / HK$1,000 Apple禮品卡 / HK$1,000 惠康現金券 / HK$800 現金回贈 / LOJEL行李箱(HK$2,100) / NESCAFÉ咖啡機(HK$1,780) / Marshall喇叭(HK$1,499)",
       bonusItems: [
@@ -739,7 +739,7 @@ const MONEYHERO_PARTNER_OFFERS = [
     cardId: "sim-world-mastercard",
     partnerOffer: {
       enabled: true,
-      applyUrl: "https://www.moneyhero.com.hk/zh/credit-card/sim-world-mastercard",
+      applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=874&a=228&sub_id1=web",
       bonusValue: 2100,
       bonusDescription: "獎品7選1：10,000 Max Miles / HK$1,000 Apple禮品卡 / HK$1,000 惠康現金券 / HK$800 現金回贈 / LOJEL行李箱(HK$2,100) / NESCAFÉ咖啡機(HK$1,780) / Marshall喇叭(HK$1,499)",
       bonusItems: [
