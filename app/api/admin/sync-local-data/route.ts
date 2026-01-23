@@ -37,19 +37,25 @@ export async function POST() {
         sort_order: promo.sortOrder || 0, // 新增：排序欄位
       };
 
-      const { data, error } = await adminAuthClient
+      // 先嘗試 upsert 基本資料
+      const { error: upsertError } = await adminAuthClient
         .from('promos')
-        .upsert(record, { onConflict: 'id' })
-        .select('id, content');
+        .upsert(record, { onConflict: 'id' });
 
-      if (error) {
+      if (upsertError) {
         results.promos.failed++;
-        results.promos.errors.push(`${promo.id}: ${error.message}`);
+        results.promos.errors.push(`${promo.id}: ${upsertError.message}`);
       } else {
-        // Debug: 檢查是否成功寫入 content
-        const savedContent = data?.[0]?.content;
-        if (promo.content && !savedContent) {
-          results.promos.errors.push(`${promo.id}: content not saved (input: ${promo.content.length} chars)`);
+        // 如果有 content，用 update 確保寫入
+        if (promo.content) {
+          const { error: updateError } = await adminAuthClient
+            .from('promos')
+            .update({ content: promo.content })
+            .eq('id', promo.id);
+          
+          if (updateError) {
+            results.promos.errors.push(`${promo.id}: content update failed - ${updateError.message}`);
+          }
         }
         results.promos.success++;
       }
