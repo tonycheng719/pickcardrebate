@@ -104,8 +104,26 @@ export async function POST() {
 }
 
 // GET: 檢查同步狀態
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const url = new URL(request.url);
+    const promoId = url.searchParams.get('id');
+    
+    // Debug: 檢查特定 promo 內容
+    if (promoId) {
+      const promo = PROMOS.find(p => p.id === promoId);
+      if (promo) {
+        return NextResponse.json({
+          id: promo.id,
+          title: promo.title,
+          hasContent: !!promo.content,
+          contentLength: promo.content?.length || 0,
+          contentPreview: promo.content?.substring(0, 200) || null,
+        });
+      }
+      return NextResponse.json({ error: 'Promo not found in local data' }, { status: 404 });
+    }
+    
     const { count: dbCount } = await adminAuthClient
       .from('promos')
       .select('*', { count: 'exact', head: true });
