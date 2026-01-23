@@ -939,7 +939,7 @@ export default function CalculatorScreen() {
                     />
                   </TouchableOpacity>
                   {showMyOwnedCards && myOtherOwnedCards.map((result) => 
-                    renderOtherCard(result, result.rank)
+                    renderOtherCard(result, result.rank, true)
                   )}
                 </View>
               )}
@@ -964,7 +964,7 @@ export default function CalculatorScreen() {
                     />
                   </TouchableOpacity>
                   {showOtherCards && unownedCards.map((result) => 
-                    renderOtherCard(result, result.rank)
+                    renderOtherCard(result, result.rank, true)
                   )}
                 </View>
               )}
