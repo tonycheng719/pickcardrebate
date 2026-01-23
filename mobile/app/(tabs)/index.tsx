@@ -456,7 +456,8 @@ export default function CalculatorScreen() {
   };
 
   // 渲染其他卡片
-  const renderOtherCard = (result: CalculateResult, index: number) => {
+  // hideRank: 用於「推薦使用」區塊，隱藏排名徽章
+  const renderOtherCard = (result: CalculateResult, index: number, hideRank?: boolean) => {
     const bankColor = BankColors[result.bank] || BankColors.default;
     const cardKey = index.toString();
     const isExpanded = expandedCards.has(cardKey);
@@ -469,21 +470,23 @@ export default function CalculatorScreen() {
         onPress={() => router.push(`/card/${result.cardId}`)}
       >
         <View style={styles.resultRow}>
-          {/* 排名 */}
-          <View style={[
-            styles.rankBadge,
-            {
-              backgroundColor: result.rank === 2 ? '#C0C0C0' : 
-                               result.rank === 3 ? '#CD7F32' : colors.borderLight,
-            },
-          ]}>
-            <Text style={[
-              styles.rankNumber,
-              { color: result.rank <= 3 ? '#FFFFFF' : colors.textMuted }
+          {/* 排名 - 可選隱藏 */}
+          {!hideRank && (
+            <View style={[
+              styles.rankBadge,
+              {
+                backgroundColor: result.rank === 2 ? '#C0C0C0' : 
+                                 result.rank === 3 ? '#CD7F32' : colors.borderLight,
+              },
             ]}>
-              {result.rank}
-            </Text>
-          </View>
+              <Text style={[
+                styles.rankNumber,
+                { color: result.rank <= 3 ? '#FFFFFF' : colors.textMuted }
+              ]}>
+                {result.rank}
+              </Text>
+            </View>
+          )}
 
           {/* 卡片圖片或顏色 */}
           {result.imageUrl ? (
@@ -892,7 +895,7 @@ export default function CalculatorScreen() {
                         <Ionicons name="wallet" size={16} color="#10B981" />
                         <Text style={styles.myBestCardLabel}>💚 推薦使用：你持有的最抵卡</Text>
                       </View>
-                      {renderOtherCard(myBestCard, myBestCard.rank)}
+                      {renderOtherCard(myBestCard, myBestCard.rank, true)}
                     </View>
                   )}
 
