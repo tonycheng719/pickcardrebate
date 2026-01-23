@@ -17,7 +17,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 
-const MAX_COMPARE = 3;
+const MAX_COMPARE = 4;
 
 export default function CompareCardsPage() {
   const { cards: datasetCards } = useDataset();
@@ -185,11 +185,11 @@ export default function CompareCardsPage() {
             <span>返回信用卡列表</span>
           </Link>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">信用卡比較</h1>
-          <p className="text-gray-600 dark:text-gray-400">選擇最多 {MAX_COMPARE} 張信用卡進行比較</p>
+          <p className="text-gray-600 dark:text-gray-400">選擇 2-{MAX_COMPARE} 張信用卡進行比較</p>
         </div>
         
         {/* Selected Cards Row */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {selectedCards.map((card, index) => (
             <motion.div
               key={card.id}

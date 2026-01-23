@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { 
   View, 
   Text, 
@@ -8,6 +8,7 @@ import {
   Image,
   ActivityIndicator,
   RefreshControl,
+  AppState,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Stack, router } from 'expo-router';
@@ -16,6 +17,7 @@ import { Colors, BankColors } from '@/constants/Colors';
 import { Layout } from '@/constants/Layout';
 import { useColorScheme } from '@/components/useColorScheme';
 import { api, CardItem } from '@/lib/api/client';
+import { trackCompareCards } from '@/lib/analytics';
 
 // 比較項目
 const COMPARE_CATEGORIES = [
@@ -37,6 +39,46 @@ export default function CompareCardsScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [showCardPicker, setShowCardPicker] = useState(false);
   const [pickingSlot, setPickingSlot] = useState<number>(0);
+  
+  // 追蹤用 refs
+  const lastLoggedRef = useRef<string>('');
+  const selectedCardsRef = useRef<CardItem[]>([]);
+
+  // Keep ref in sync with state
+  useEffect(() => {
+    selectedCardsRef.current = selectedCards;
+  }, [selectedCards]);
+
+  // 當用戶離開頁面時記錄比較事件
+  useEffect(() => {
+    const logComparison = () => {
+      const cards = selectedCardsRef.current;
+      if (cards.length >= 2) {
+        const sortedIds = cards.map(c => c.id).sort().join(',');
+        // 只在新組合時記錄（避免重複）
+        if (sortedIds !== lastLoggedRef.current) {
+          lastLoggedRef.current = sortedIds;
+          trackCompareCards({
+            cardIds: cards.map(c => c.id),
+            cardNames: cards.map(c => c.name),
+          });
+        }
+      }
+    };
+
+    // 監聽 App 狀態變化（背景/前台）
+    const subscription = AppState.addEventListener('change', (nextAppState) => {
+      if (nextAppState === 'background' || nextAppState === 'inactive') {
+        logComparison();
+      }
+    });
+
+    return () => {
+      // Component unmount 時也記錄
+      logComparison();
+      subscription.remove();
+    };
+  }, []);
 
   useEffect(() => {
     loadCards();

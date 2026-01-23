@@ -29,6 +29,7 @@ import type { Merchant } from '@/lib/types';
 import { PersonalizedRecommendations } from '@/components/PersonalizedRecommendations';
 import { useAuth } from '@/lib/auth/AuthContext';
 import { getMyCards, syncWalletFromCloud, MyCard } from '@/lib/storage/myCards';
+import { trackCalculateRebate } from '@/lib/analytics';
 
 // 支付方式選項（與網站一致）
 const PAYMENT_METHODS = [
@@ -235,6 +236,15 @@ export default function CalculatorScreen() {
 
       if (response.data) {
         setCalculatedResults(response.data.results);
+        
+        // 追蹤計算機使用
+        trackCalculateRebate({
+          amount: amountNum,
+          paymentMethod: paymentMethod,
+          merchant: selectedMerchant.name,
+          category: selectedCategory,
+        });
+        
         // 計算完成後自動滾動到結果區域
         setTimeout(() => {
           scrollViewRef.current?.scrollTo({ y: 700, animated: true });

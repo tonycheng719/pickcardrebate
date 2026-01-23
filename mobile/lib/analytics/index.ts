@@ -339,3 +339,16 @@ export function trackViewRecommendations(): Promise<void> {
   return logEvent('view_recommendations', {});
 }
 
+// 比較信用卡
+export function trackCompareCards(params: {
+  cardIds: string[];
+  cardNames: string[];
+}): Promise<void> {
+  return logEvent('compare_cards', {
+    card_ids: params.cardIds.join(','),
+    card_names: params.cardNames.join(','),
+    card_count: params.cardIds.length,
+    content_type: 'credit_card_comparison',
+  });
+}
+
