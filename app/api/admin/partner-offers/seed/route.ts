@@ -195,28 +195,34 @@ const MONEYHERO_PARTNER_OFFERS = [
     partnerOffer: {
       enabled: true,
       applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=188&a=228&sub_id1=pickcardrebate&sub_id2=web",
-      bonusValue: 4980,
-      bonusDescription: "獎品7選1：Delsey行李箱(HK$4,980)/Foreo LUNA 3(HK$2,090)/NESCAFÉ咖啡機(HK$1,780)/Marshall藍牙喇叭(HK$1,499)/HK$800 HKTVmall/Apple/Trip.com禮券",
+      bonusValue: 5980,
+      bonusDescription: "獎品7選1：Dyson Zone™降噪耳機(HK$5,980)/Delsey行李箱(HK$4,980)/Dyson風筒(HK$3,980+$590)/HK$1,300 Apple/HKTVmall禮券/14,000 Max Miles",
       bonusItems: [
+        "Dyson Zone™降噪耳機（價值HK$5,980）",
         "Delsey 30\" GRENELLE SE Expandable Front Opening Suitcase（價值HK$4,980; 顏色隨機）",
-        "Foreo LUNA 3 潔面及按摩儀（價值HK$2,090）",
-        "NESCAFÉ Dolce Gusto Genio S Plus 膠囊咖啡機連6盒膠囊（價值HK$1,780; 顏色隨機）",
-        "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）",
-        "HK$800 HKTVmall電子購物禮券",
-        "HK$800 Apple Store禮品卡",
-        "HK$800 Trip.com電子禮券"
+        "Dyson Supersonic Nural™風筒HD16（價值HK$3,980; 顏色隨機）- 需以DBS信用卡以換購價HK$590換領",
+        "Philips飛利浦RO純淨即熱飲水機ADD6901（價值HK$1,998; 顏色隨機）",
+        "HK$1,300 Apple Store禮品卡",
+        "HK$1,300 HKTVmall電子購物禮券",
+        "14,000 Max Miles飛行里數"
       ],
-      validFrom: "2025-12-25",
-      validTo: "2026-01-30",
+      validFrom: "2026-01-23",
+      validTo: "2026-01-31",
       requirements: [
         "全新星展信用卡客戶",
         "2026年2月28日或之前成功獲批信用卡",
         "收到表格後7日內填妥「獎賞換領表格」",
-        "申請時請記下申請參考編號"
+        "申請時請記下申請參考編號",
+        "選擇Max Miles需確保登記電郵與Hey Max賬戶電郵相同"
       ],
       minSpend: 0,
       minSpendDays: 0,
       notes: "換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。建議一次過交齊所需文件，以加快批核程序。",
+      existingCustomerOffer: {
+        enabled: false,
+        bonusValue: 0,
+        bonusDescription: "",
+      }
     }
   },
   // DBS Eminent Visa Signature / Platinum - 系統中合併為 dbs-eminent
@@ -225,28 +231,34 @@ const MONEYHERO_PARTNER_OFFERS = [
     partnerOffer: {
       enabled: true,
       applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=187&a=228&sub_id1=pickcardrebate&sub_id2=web",
-      bonusValue: 4980,
-      bonusDescription: "獎品7選1：Delsey行李箱(HK$4,980)/Foreo LUNA 3(HK$2,090)/NESCAFÉ咖啡機(HK$1,780)/Marshall藍牙喇叭(HK$1,499)/HK$800 HKTVmall/Apple/Trip.com禮券",
+      bonusValue: 5980,
+      bonusDescription: "獎品7選1：Dyson Zone™降噪耳機(HK$5,980)/Delsey行李箱(HK$4,980)/Dyson風筒(HK$3,980+$590)/HK$1,300 Apple/HKTVmall禮券/14,000 Max Miles",
       bonusItems: [
+        "Dyson Zone™降噪耳機（價值HK$5,980）",
         "Delsey 30\" GRENELLE SE Expandable Front Opening Suitcase（價值HK$4,980; 顏色隨機）",
-        "Foreo LUNA 3 潔面及按摩儀（價值HK$2,090）",
-        "NESCAFÉ Dolce Gusto Genio S Plus 膠囊咖啡機連6盒膠囊（價值HK$1,780; 顏色隨機）",
-        "Marshall Emberton II 藍牙喇叭（價值HK$1,499; 顏色隨機）",
-        "HK$800 HKTVmall電子購物禮券",
-        "HK$800 Apple Store禮品卡",
-        "HK$800 Trip.com電子禮券"
+        "Dyson Supersonic Nural™風筒HD16（價值HK$3,980; 顏色隨機）- 需以DBS信用卡以換購價HK$590換領",
+        "Philips飛利浦RO純淨即熱飲水機ADD6901（價值HK$1,998; 顏色隨機）",
+        "HK$1,300 Apple Store禮品卡",
+        "HK$1,300 HKTVmall電子購物禮券",
+        "14,000 Max Miles飛行里數"
       ],
-      validFrom: "2025-12-25",
-      validTo: "2026-01-30",
+      validFrom: "2026-01-23",
+      validTo: "2026-01-31",
       requirements: [
         "全新星展信用卡客戶",
         "2026年2月28日或之前成功獲批信用卡",
         "收到表格後7日內填妥「獎賞換領表格」",
-        "申請時請記下申請參考編號"
+        "申請時請記下申請參考編號",
+        "選擇Max Miles需確保登記電郵與Hey Max賬戶電郵相同"
       ],
       minSpend: 0,
       minSpendDays: 0,
       notes: "換領流程由推廣期結束後起計需時至少16星期。申請前請關掉AdBlocker及「私人模式」。建議一次過交齊所需文件，以加快批核程序。",
+      existingCustomerOffer: {
+        enabled: false,
+        bonusValue: 0,
+        bonusDescription: "",
+      }
     }
   },
   {

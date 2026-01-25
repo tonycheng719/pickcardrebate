@@ -900,7 +900,8 @@ export const HK_CARDS: CreditCard[] = [
       { description: "其他零售 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
     ],
     tags: ["餐飲5%", "海外5%", "健身5%", "運動服飾5%", "需登記", "衛訊4%"],
-    welcomeOfferText: "迎新高達 $1,000 回贈",
+    welcomeOfferText: "迎新高達 HK$600 現金回贈",
+    welcomeOfferReward: "HK$600",
     sellingPoints: ["海外簽賬 5% (單筆≥$300)", "餐飲/運動服飾/健身/醫療 5% (單筆≥$300)", "其他零售 1%", "需透過 DBS Card+ App 登記"],
     featuredMerchants: [
       { name: "衛訊", rate: "4%", category: "電子產品" },
