@@ -202,11 +202,9 @@ export const POPULAR_MERCHANTS: Merchant[] = [
 
   // ========== 麗新餐飲 Lai Sun Dining ==========
   { id: "lai_sun_dining", name: "麗新餐飲 Lai Sun Dining", categoryIds: ["dining"], aliases: ["麗新", "lai sun"], logo: "🍽️", accentColor: "#b45309", isGeneral: true },
-  { id: "donpachi", name: "DON.PACHI 丼八", categoryIds: ["dining"], aliases: ["donpachi", "丼八", "don pachi"], logo: "🍱", accentColor: "#dc2626" },
   { id: "hutong", name: "胡同 Hutong", categoryIds: ["dining"], aliases: ["胡同", "hutong"], logo: "🥟", accentColor: "#b45309" },
   { id: "megan_kitchen", name: "名人坊 Megan's Kitchen", categoryIds: ["dining"], aliases: ["名人坊", "megan's kitchen", "megan kitchen"], logo: "🥢", accentColor: "#f59e0b" },
   { id: "aqua", name: "AQUA", categoryIds: ["dining"], aliases: ["aqua"], logo: "🍸", accentColor: "#0ea5e9" },
-  { id: "wagyu_kaiseki_den", name: "和牛懷石 殿 Wagyu Kaiseki Den", categoryIds: ["dining"], aliases: ["和牛懷石", "wagyu kaiseki", "殿"], logo: "🥩", accentColor: "#78350f" },
   { id: "nikushou", name: "肉匠 Nikushou", categoryIds: ["dining"], aliases: ["肉匠", "nikushou"], logo: "🥩", accentColor: "#dc2626" },
 
   // ========== 新增商戶 2026-01 ==========
@@ -232,5 +230,6 @@ export const POPULAR_MERCHANTS: Merchant[] = [
   
   // 主題樂園
   { id: "hong-kong-disneyland", name: "香港迪士尼樂園", categoryIds: ["entertainment", "travel"], aliases: ["迪士尼", "disneyland", "disney", "香港迪士尼"], logo: "https://logo.clearbit.com/hongkongdisneyland.com", accentColor: "#1a3668" },
+  { id: "ocean-park", name: "海洋公園 Ocean Park", categoryIds: ["entertainment", "travel"], aliases: ["海洋公園", "ocean park", "水上樂園"], logo: "https://logo.clearbit.com/oceanpark.com.hk", accentColor: "#0077be" },
   { id: "universal-studios", name: "Universal Studios", categoryIds: ["entertainment", "travel"], aliases: ["universal", "環球影城", "universal studios"], logo: "https://logo.clearbit.com/universalstudios.com", accentColor: "#000000", isForeignCurrency: true },
 ];
