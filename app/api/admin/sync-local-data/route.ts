@@ -92,6 +92,13 @@ export async function POST() {
         results.guides.failed++;
         results.guides.errors.push(`${guide.id}: ${error.message}`);
       } else {
+        // 強制更新 sort_order（確保現有記錄也被更新）
+        if (guide.sortOrder && guide.sortOrder > 0) {
+          await adminAuthClient
+            .from('promos')
+            .update({ sort_order: guide.sortOrder })
+            .eq('id', guide.id);
+        }
         results.guides.success++;
       }
     }
