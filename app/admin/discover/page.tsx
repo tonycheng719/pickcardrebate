@@ -231,28 +231,23 @@ export default function AdminDiscoverPage() {
       isPinned: item.isPinned || false,
       _originalType: ((item as any).contentType || 'promo') as 'guide' | 'promo',
     })).sort((a, b) => {
-      // 1. Pinned first
+      // 1. Pinned first (置頂優先)
       const aIsPinned = a.isPinned ?? articlePinned[a.id] ?? false;
       const bIsPinned = b.isPinned ?? articlePinned[b.id] ?? false;
       if (aIsPinned && !bIsPinned) return -1;
       if (!aIsPinned && bIsPinned) return 1;
       
-      // 2. Sort by sortOrder (higher first)
+      // 2. Sort by sortOrder (higher first) - 用於控制新文章優先顯示
       const aSortOrder = a.sortOrder || 0;
       const bSortOrder = b.sortOrder || 0;
       if (aSortOrder !== bSortOrder) return bSortOrder - aSortOrder;
       
-      // 3. Sort by viewCount (higher first) as secondary sort
-      const viewA = viewStats[a.id] || 0;
-      const viewB = viewStats[b.id] || 0;
-      if (viewA !== viewB) return viewB - viewA;
-      
-      // 4. Sort by updatedAt (newest first)
+      // 3. Sort by updatedAt (newest first) - 最新發表的文章優先
       const aUpdated = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
       const bUpdated = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
       return bUpdated - aUpdated;
     });
-  }, [keyword, promos, articleCategories, articlePinned, viewStats]);
+  }, [keyword, promos, articleCategories, articlePinned]);
 
   // 優惠 Tab：所有 contentType !== 'guide' 的文章（考慮後台覆蓋）
   const filteredPromos = useMemo(() => {
