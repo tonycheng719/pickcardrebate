@@ -35,6 +35,9 @@ interface Guide {
   merchant: string;
   isNew: boolean;
   viewCount?: number;
+  sortOrder?: number;
+  updatedAt?: string;
+  isPinned?: boolean;
 }
 
 interface ViewStat {
@@ -69,6 +72,9 @@ export default function AdminDiscoverPage() {
         tags: p.tags,
         merchant: p.merchant,
         isNew: (p as any).isNew || false,
+        sortOrder: (p as any).sortOrder || 0, // 確保包含 sortOrder
+        updatedAt: p.updatedAt,
+        isPinned: p.isPinned || false,
       }));
   }, [promos]);
   
