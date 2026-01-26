@@ -900,8 +900,8 @@ export const HK_CARDS: CreditCard[] = [
       { description: "其他零售 1%", matchType: "base", percentage: 1.0, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["payme", "alipay", "wechat_pay", "octopus"] },
     ],
     tags: ["餐飲5%", "海外5%", "健身5%", "運動服飾5%", "需登記", "衛訊4%"],
-    welcomeOfferText: "迎新高達 HK$600 現金回贈",
-    welcomeOfferReward: "HK$600",
+    welcomeOfferText: "迎新高達 HK$650 現金回贈 [簽$5,000賺$500回贈 + 分期額外$100 + DBS Card+ $50]",
+    welcomeOfferReward: "HK$650",
     sellingPoints: ["海外簽賬 5% (單筆≥$300)", "餐飲/運動服飾/健身/醫療 5% (單筆≥$300)", "其他零售 1%", "需透過 DBS Card+ App 登記"],
     featuredMerchants: [
       { name: "衛訊", rate: "4%", category: "電子產品" },
@@ -936,6 +936,8 @@ export const HK_CARDS: CreditCard[] = [
       { description: "本地簽賬 $6/里", matchType: "base", percentage: 1.6, excludeCategories: ["tax", "utilities", "government", "insurance"] }, // ~1.6% value
     ],
     tags: ["儲里數", "里數神卡", "衛訊4%"],
+    welcomeOfferText: "迎新高達 18,000 里數 [簽$5,000/$50,000 獲8,000/18,000里 + DBS Card+ $50]",
+    welcomeOfferReward: "18,000里",
     sellingPoints: ["積分無限期", "兌換里數免手續費", "外幣 HK$4/里"],
     featuredMerchants: [
       { name: "衛訊", rate: "4%", category: "電子產品" },
