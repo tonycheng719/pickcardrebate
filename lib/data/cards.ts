@@ -1511,10 +1511,10 @@ export const HK_CARDS: CreditCard[] = [
       // ✅ AlipayHK 繳費及交稅有 2%（WeChat Pay HK 實測 1%）
       // 優惠期至 2026/6/30
       // 官方 T&C: https://www.primecredit.com/wp-content/uploads/2025/12/C20251153_EarnMORE2026Q1_MKTWEB_300.pdf
-      { description: "Apple Pay 手動增值八達通 2%", matchType: "paymentMethod", matchValue: ["apple_pay"], percentage: 2.0, cap: 800, capType: "reward", capPeriod: "halfyearly", validDateRange: { start: "2026-01-01", end: "2026-06-30" } },
-      { description: "AlipayHK 繳費/交稅 2%", matchType: "paymentMethod", matchValue: ["alipay"], percentage: 2.0, cap: 800, capType: "reward", capPeriod: "halfyearly", validDateRange: { start: "2026-01-01", end: "2026-06-30" } },
-      { description: "流動支付 2% (全方位)", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 2.0, cap: 800, capType: "reward", capPeriod: "halfyearly", excludeCategories: ["ewallet"], excludePaymentMethods: ["octopus", "wechat_pay", "payme"], validDateRange: { start: "2026-01-01", end: "2026-06-30" } },
-      { description: "全方位 2% [半年首$80,000]", matchType: "base", percentage: 2.0, cap: 800, capType: "reward", capPeriod: "halfyearly", excludePaymentMethods: ["octopus", "wechat_pay", "payme"], validDateRange: { start: "2026-01-01", end: "2026-06-30" } },
+      { description: "Apple Pay 手動增值八達通 2%", matchType: "paymentMethod", matchValue: ["apple_pay"], percentage: 2.0, cap: 800, capType: "reward", capPeriod: "semiannual", validDateRange: { start: "2026-01-01", end: "2026-06-30" } },
+      { description: "AlipayHK 繳費/交稅 2%", matchType: "paymentMethod", matchValue: ["alipay"], percentage: 2.0, cap: 800, capType: "reward", capPeriod: "semiannual", validDateRange: { start: "2026-01-01", end: "2026-06-30" } },
+      { description: "流動支付 2% (全方位)", matchType: "paymentMethod", matchValue: ["mobile", "apple_pay", "google_pay", "samsung_pay"], percentage: 2.0, cap: 800, capType: "reward", capPeriod: "semiannual", excludeCategories: ["ewallet"], excludePaymentMethods: ["octopus", "wechat_pay", "payme"], validDateRange: { start: "2026-01-01", end: "2026-06-30" } },
+      { description: "全方位 2% [半年首$80,000]", matchType: "base", percentage: 2.0, cap: 800, capType: "reward", capPeriod: "semiannual", excludePaymentMethods: ["octopus", "wechat_pay", "payme"], validDateRange: { start: "2026-01-01", end: "2026-06-30" } },
       { description: "全方位 1% [超出上限]", matchType: "base", percentage: 1.0, excludePaymentMethods: ["octopus"] },
       // T&C: 八達通自動增值只有 0.4%（不計入 2% 全方位）
       { description: "八達通自動增值 0.4%", matchType: "paymentMethod", matchValue: ["octopus"], percentage: 0.4 },
