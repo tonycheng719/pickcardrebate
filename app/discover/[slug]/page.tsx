@@ -62,6 +62,7 @@ import { UnionpayForeignFeeGuide, unionpayForeignFeeFaqData } from "./unionpay-f
 import BeaRewardExtension2026Guide, { beaRewardExtensionFaqData } from "./bea-reward-extension-2026";
 import BocVisaCrazyRewards2026Guide, { bocVisaCrazyRewardsFaqData } from "./boc-visa-crazy-rewards-2026";
 import { CitiPartnerOffersGuide, citiPartnerOffersFaqData } from "./citi-partner-offers-guide";
+import { PayMeCreditCardGuide, paymeCreditCardFaqData } from "./payme-credit-card-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 import { CardMarkdownRenderer } from "@/app/discover/components/card-markdown-renderer";
 import { ArticleTracker } from "@/app/discover/components/article-tracker";
@@ -114,6 +115,28 @@ const GUIDES: Record<string, {
     ],
     publishDate: "2025-01-01",
     readTime: "8 分鐘",
+  },
+  "payme-credit-card-guide": {
+    id: "payme-credit-card-guide",
+    title: "2026 PayMe 信用卡增值攻略｜邊張卡最高回贈？",
+    seoTitle: "PayMe 信用卡增值攻略 2026｜渣打Smart/HSBC Red/Citi 回贈比較｜香港",
+    heroTitle: "💳 PayMe 信用卡增值攻略",
+    heroSubtitle: "渣打 5% / HSBC Red 4% / Citi 2%",
+    description: "PayMe 增值信用卡回贈比較！用信用卡增值 PayMe 賺回贈，HSBC Red 4%、渣打 Smart 5%、Citi Cash Back 2%⋯邊張最抵？附 PayMe 消費攻略！",
+    content: "payme-credit-card-guide",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["PayMe", "電子錢包", "增值回贈", "HSBC Red", "渣打Smart"],
+    keywords: [
+      "PayMe 信用卡",
+      "PayMe 增值 回贈",
+      "PayMe 信用卡增值",
+      "PayMe 邊張卡最抵",
+      "PayMe 渣打 Smart",
+      "PayMe HSBC Red",
+      "電子錢包 信用卡",
+    ],
+    publishDate: "2026-01-26",
+    readTime: "6 分鐘",
   },
   "debit-card-guide": {
     id: "debit-card-guide",
@@ -1782,6 +1805,8 @@ function getGuideFaqData(guideId: string) {
   switch (guideId) {
     case "overseas-fee":
       return overseasFeeFaqData;
+    case "payme-credit-card-guide":
+      return paymeCreditCardFaqData;
     case "debit-card-guide":
       return debitCardFaqData;
     case "miles-vs-cashback":
@@ -1874,6 +1899,8 @@ function renderGuideContent(guideId: string) {
   switch (guideId) {
     case "overseas-fee":
       return <OverseasFeeGuide />;
+    case "payme-credit-card-guide":
+      return <PayMeCreditCardGuide />;
     case "debit-card-guide":
       return <DebitCardGuide />;
     case "miles-vs-cashback":

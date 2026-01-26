@@ -12,7 +12,58 @@ export interface Guide {
 }
 
 export const GUIDES: Guide[] = [
-  // 🔥 最新文章放最前
+  // 🔥 SEO 熱門文章 - 2026
+  {
+    id: "payme-credit-card-guide",
+    type: "guide",
+    title: "2026 PayMe 信用卡增值攻略｜邊張卡最高回贈？",
+    description: "PayMe 增值信用卡回贈比較！用信用卡增值 PayMe 賺回贈，HSBC Red 4%、渣打 Smart 5%、Citi Cash Back 2%⋯邊張最抵？附 PayMe 消費攻略！",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["PayMe", "電子錢包", "增值回贈", "HSBC Red", "渣打Smart"],
+    merchant: "攻略",
+    isNew: true,
+  },
+  {
+    id: "apple-pay-credit-card-guide",
+    type: "guide",
+    title: "2026 Apple Pay 信用卡攻略｜NFC 感應支付最高回贈",
+    description: "Apple Pay 用邊張信用卡最抵？感應支付信用卡回贈比較！HSBC Red 8%、渣打 Simply Cash 1.5%、Citi Rewards 3X⋯2026 最新 Apple Pay 信用卡推薦！",
+    imageUrl: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop",
+    tags: ["Apple Pay", "感應支付", "NFC", "流動支付"],
+    merchant: "攻略",
+    isNew: true,
+  },
+  {
+    id: "octopus-aavs-credit-card-guide",
+    type: "guide",
+    title: "2026 八達通自動增值信用卡攻略｜AAVS 最高回贈比較",
+    description: "八達通自動增值 AAVS 信用卡邊張最抵？Citi Octopus 15%、渣打 Smart 5%、HSBC Red 4%⋯八達通增值回贈完全比較！附申請 AAVS 步驟！",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["八達通", "AAVS", "自動增值", "交通"],
+    merchant: "攻略",
+    isNew: true,
+  },
+  {
+    id: "costco-credit-card-guide",
+    type: "guide",
+    title: "2026 Costco 信用卡攻略｜Costco 消費最高回贈比較",
+    description: "Costco 用邊張信用卡最抵？Costco 只收 Visa/Mastercard！HSBC Red 2%、渣打 Smart 5%、恒生 enJoy 2%⋯Costco 消費信用卡完全攻略！",
+    imageUrl: "https://images.unsplash.com/photo-1534723452862-4c874018d66d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["Costco", "超市", "批發", "Visa", "Mastercard"],
+    merchant: "攻略",
+    isNew: true,
+  },
+  {
+    id: "wechat-pay-credit-card-guide",
+    type: "guide",
+    title: "2026 WeChat Pay HK 信用卡攻略｜微信支付增值/消費回贈",
+    description: "WeChat Pay HK 增值用邊張信用卡最抵？WeChat Pay 消費有冇回贈？滙豐、渣打、Citi 微信支付回贈完全比較！附北上消費貼士！",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["WeChat Pay", "微信支付", "電子錢包", "北上消費"],
+    merchant: "攻略",
+    isNew: true,
+  },
+  // 🔥 最新文章
   {
     id: "boc-visa-crazy-rewards-2026",
     type: "guide",
