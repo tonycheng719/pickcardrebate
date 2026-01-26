@@ -528,13 +528,29 @@ export default function CardDetailPage() {
                         // 里數卡片：不嘗試轉換為港幣，返回 0
                         return 0;
                       }
-                      // 現金回贈卡片：提取港幣金額
+                      // 現金回贈卡片：優先從 welcomeOfferReward 提取
                       if (card.welcomeOfferReward) {
-                        return parseInt(card.welcomeOfferReward.replace(/[^0-9]/g, '')) || 0;
+                        const value = parseInt(card.welcomeOfferReward.replace(/[^0-9]/g, '')) || 0;
+                        if (value > 0) return value;
                       }
-                      // 從文字中提取金額，如 "送 $1,200 現金回贈" -> 1200
-                      const match = text.match(/送\s*\$?([\d,]+)/);
-                      return match ? parseInt(match[1].replace(/,/g, '')) || 0 : 0;
+                      // 從文字中提取金額，支援多種格式：
+                      // "送 $1,200"、"HK$650"、"迎新高達 $600"、"高達$1,000"
+                      const patterns = [
+                        /HK\$?([\d,]+)/i,           // HK$650, HK$1,200
+                        /送\s*\$?([\d,]+)/,          // 送 $1,200
+                        /高達\s*\$?([\d,]+)/,        // 高達 $600
+                        /最高\s*\$?([\d,]+)/,        // 最高 $800
+                        /回贈\s*\$?([\d,]+)/,        // 回贈 $500
+                        /\$\s*([\d,]+)/,             // $600 (通用)
+                      ];
+                      for (const pattern of patterns) {
+                        const match = text.match(pattern);
+                        if (match) {
+                          const value = parseInt(match[1].replace(/,/g, '')) || 0;
+                          if (value > 0) return value;
+                        }
+                      }
+                      return 0;
                     })()
                   }
                   isMilesCard={
