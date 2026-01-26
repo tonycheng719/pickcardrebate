@@ -132,7 +132,7 @@ export function DiscoverClient() {
     });
   }, [allContent, contentType, tagFilter]);
 
-  // 排序邏輯：1. 置頂優先 2. 最近更新時間 3. sortOrder 4. 原始順序（發表時間）
+  // 排序邏輯：1. 置頂優先 2. sortOrder（數字越大越前）3. 最近更新時間 4. 原始順序
   const sortedContent = useMemo(() => {
     // 先記錄原始索引（代表發表順序，越前面越新）
     const withIndex = filteredContent.map((item, index) => ({ item, originalIndex: index }));
@@ -144,17 +144,17 @@ export function DiscoverClient() {
       if (aIsPinned && !bIsPinned) return -1;
       if (!aIsPinned && bIsPinned) return 1;
       
-      // 2. 按 updatedAt 排序（最新更新在前，有 updatedAt 的優先）
+      // 2. 按 sortOrder 排序（數字越大越前）- 優先！
+      const aSortOrder = 'sortOrder' in a.item ? ((a.item as { sortOrder?: number }).sortOrder || 0) : 0;
+      const bSortOrder = 'sortOrder' in b.item ? ((b.item as { sortOrder?: number }).sortOrder || 0) : 0;
+      if (aSortOrder !== bSortOrder) return bSortOrder - aSortOrder;
+      
+      // 3. 按 updatedAt 排序（最新更新在前）
       const aUpdatedVal = 'updatedAt' in a.item ? (a.item as { updatedAt?: string }).updatedAt : undefined;
       const bUpdatedVal = 'updatedAt' in b.item ? (b.item as { updatedAt?: string }).updatedAt : undefined;
       const aUpdated = aUpdatedVal ? new Date(aUpdatedVal).getTime() : 0;
       const bUpdated = bUpdatedVal ? new Date(bUpdatedVal).getTime() : 0;
       if (aUpdated !== bUpdated) return bUpdated - aUpdated;
-      
-      // 3. 按 sortOrder 排序（數字越大越前）
-      const aSortOrder = 'sortOrder' in a.item ? ((a.item as { sortOrder?: number }).sortOrder || 0) : 0;
-      const bSortOrder = 'sortOrder' in b.item ? ((b.item as { sortOrder?: number }).sortOrder || 0) : 0;
-      if (aSortOrder !== bSortOrder) return bSortOrder - aSortOrder;
       
       // 4. 保持原始順序（越前面越新）
       return a.originalIndex - b.originalIndex;
