@@ -63,6 +63,10 @@ import BeaRewardExtension2026Guide, { beaRewardExtensionFaqData } from "./bea-re
 import BocVisaCrazyRewards2026Guide, { bocVisaCrazyRewardsFaqData } from "./boc-visa-crazy-rewards-2026";
 import { CitiPartnerOffersGuide, citiPartnerOffersFaqData } from "./citi-partner-offers-guide";
 import { PayMeCreditCardGuide, paymeCreditCardFaqData } from "./payme-credit-card-guide";
+import { ApplePayCreditCardGuide, applePayCreditCardFaqData } from "./apple-pay-credit-card-guide";
+import { OctopusAavsCreditCardGuide, octopusAavsCreditCardFaqData } from "./octopus-aavs-credit-card-guide";
+import { CostcoCreditCardGuide, costcoCreditCardFaqData } from "./costco-credit-card-guide";
+import { WeChatPayCreditCardGuide, wechatPayCreditCardFaqData } from "./wechat-pay-credit-card-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 import { CardMarkdownRenderer } from "@/app/discover/components/card-markdown-renderer";
 import { ArticleTracker } from "@/app/discover/components/article-tracker";
@@ -135,6 +139,62 @@ const GUIDES: Record<string, {
       "PayMe HSBC Red",
       "電子錢包 信用卡",
     ],
+    publishDate: "2026-01-26",
+    readTime: "6 分鐘",
+  },
+  "apple-pay-credit-card-guide": {
+    id: "apple-pay-credit-card-guide",
+    title: "2026 Apple Pay 信用卡攻略｜NFC 感應支付最高回贈",
+    seoTitle: "Apple Pay 信用卡攻略 2026｜HSBC Red/渣打/建行 感應支付回贈比較｜香港",
+    heroTitle: "📱 Apple Pay 信用卡攻略",
+    heroSubtitle: "HSBC Red 4% / 渣打 1.5% / 建行 eye 9%+",
+    description: "Apple Pay 用邊張信用卡最抵？感應支付信用卡回贈比較！HSBC Red 8%、渣打 Simply Cash 1.5%、建行 eye 9%+⋯完整攻略！",
+    content: "apple-pay-credit-card-guide",
+    imageUrl: "https://images.unsplash.com/photo-1556740714-a8395b3bf30f?q=80&w=2070&auto=format&fit=crop",
+    tags: ["Apple Pay", "感應支付", "NFC", "HSBC Red", "流動支付"],
+    keywords: ["Apple Pay 信用卡", "Apple Pay 回贈", "NFC 信用卡", "感應支付 信用卡", "流動支付 回贈"],
+    publishDate: "2026-01-26",
+    readTime: "5 分鐘",
+  },
+  "octopus-aavs-credit-card-guide": {
+    id: "octopus-aavs-credit-card-guide",
+    title: "2026 八達通自動增值信用卡攻略｜AAVS 邊張卡最高回贈？",
+    seoTitle: "八達通自動增值 AAVS 信用卡攻略 2026｜Citi Octopus/渣打Smart 回贈比較｜香港",
+    heroTitle: "🚇 八達通自動增值攻略",
+    heroSubtitle: "Citi Octopus 15% / 渣打 5%",
+    description: "八達通自動增值 (AAVS) 信用卡回贈比較！Citi Octopus 15%、渣打 Smart 5%、HSBC Red⋯邊張最抵？附申請教學！",
+    content: "octopus-aavs-credit-card-guide",
+    imageUrl: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=2069&auto=format&fit=crop",
+    tags: ["八達通", "AAVS", "自動增值", "Citi Octopus", "交通回贈"],
+    keywords: ["八達通 AAVS", "八達通 自動增值", "八達通 信用卡", "Citi Octopus", "交通 信用卡 回贈"],
+    publishDate: "2026-01-26",
+    readTime: "5 分鐘",
+  },
+  "costco-credit-card-guide": {
+    id: "costco-credit-card-guide",
+    title: "2026 Costco 信用卡攻略｜好市多只收 Visa/Mastercard！",
+    seoTitle: "Costco 信用卡攻略 2026｜好市多香港收咩卡？Visa/Mastercard 回贈比較｜香港",
+    heroTitle: "🛒 Costco 信用卡攻略",
+    heroSubtitle: "只收 Visa/MC・最高 5% 回贈",
+    description: "Costco 好市多香港只收 Visa 及 Mastercard！邊張信用卡 Costco 消費最抵？渣打 Smart 5%、恒生 enJoy 2%⋯完整攻略！",
+    content: "costco-credit-card-guide",
+    imageUrl: "https://images.unsplash.com/photo-1534723452862-4c874018d66d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["Costco", "好市多", "Visa", "Mastercard", "超市"],
+    keywords: ["Costco 信用卡", "好市多 信用卡", "Costco 收咩卡", "Costco Visa", "Costco 回贈"],
+    publishDate: "2026-01-26",
+    readTime: "5 分鐘",
+  },
+  "wechat-pay-credit-card-guide": {
+    id: "wechat-pay-credit-card-guide",
+    title: "2026 WeChat Pay HK 信用卡攻略｜微信支付增值回贈比較",
+    seoTitle: "WeChat Pay 信用卡攻略 2026｜微信支付 增值回贈・北上消費攻略｜香港",
+    heroTitle: "💚 WeChat Pay HK 信用卡攻略",
+    heroSubtitle: "微信支付・北上消費必備",
+    description: "WeChat Pay HK 信用卡增值有冇回贈？微信支付跨境消費攻略！北上用邊張卡最抵？HSBC Pulse 銀聯 4.4%⋯",
+    content: "wechat-pay-credit-card-guide",
+    imageUrl: "https://images.unsplash.com/photo-1611262588024-d12430b98920?q=80&w=2074&auto=format&fit=crop",
+    tags: ["WeChat Pay", "微信支付", "電子錢包", "北上消費", "跨境支付"],
+    keywords: ["WeChat Pay 信用卡", "微信支付 回贈", "WeChat Pay 增值", "北上 信用卡", "跨境支付 信用卡"],
     publishDate: "2026-01-26",
     readTime: "6 分鐘",
   },
@@ -1807,6 +1867,14 @@ function getGuideFaqData(guideId: string) {
       return overseasFeeFaqData;
     case "payme-credit-card-guide":
       return paymeCreditCardFaqData;
+    case "apple-pay-credit-card-guide":
+      return applePayCreditCardFaqData;
+    case "octopus-aavs-credit-card-guide":
+      return octopusAavsCreditCardFaqData;
+    case "costco-credit-card-guide":
+      return costcoCreditCardFaqData;
+    case "wechat-pay-credit-card-guide":
+      return wechatPayCreditCardFaqData;
     case "debit-card-guide":
       return debitCardFaqData;
     case "miles-vs-cashback":
@@ -1901,6 +1969,14 @@ function renderGuideContent(guideId: string) {
       return <OverseasFeeGuide />;
     case "payme-credit-card-guide":
       return <PayMeCreditCardGuide />;
+    case "apple-pay-credit-card-guide":
+      return <ApplePayCreditCardGuide />;
+    case "octopus-aavs-credit-card-guide":
+      return <OctopusAavsCreditCardGuide />;
+    case "costco-credit-card-guide":
+      return <CostcoCreditCardGuide />;
+    case "wechat-pay-credit-card-guide":
+      return <WeChatPayCreditCardGuide />;
     case "debit-card-guide":
       return <DebitCardGuide />;
     case "miles-vs-cashback":

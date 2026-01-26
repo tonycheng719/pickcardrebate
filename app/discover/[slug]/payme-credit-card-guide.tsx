@@ -4,12 +4,16 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { 
-  Wallet, CreditCard, CheckCircle2, XCircle, 
-  AlertTriangle, ArrowRight, Sparkles, TrendingUp,
+  Wallet, AlertTriangle, ArrowRight, Sparkles, TrendingUp,
   Smartphone, ShoppingCart, Gift
 } from "lucide-react";
 import Link from "next/link";
 import { PromoFAQ } from "@/lib/types";
+import { 
+  CardRecommendationBlock, 
+  QuickComparisonTable,
+  type CardRecommendation 
+} from "@/components/card-recommendation-block";
 
 // FAQ 數據 for Schema
 export const paymeCreditCardFaqData: PromoFAQ[] = [
@@ -35,61 +39,39 @@ export const paymeCreditCardFaqData: PromoFAQ[] = [
   },
 ];
 
-interface CardRecommendation {
-  id: string;
-  name: string;
-  bank: string;
-  rate: string;
-  cap?: string;
-  conditions?: string[];
-  pros: string[];
-  cons: string[];
-  bestFor: string;
-}
-
+// 使用真實的卡片 ID（對應 cards.ts）
 const topCards: CardRecommendation[] = [
   {
-    id: "sc-smart",
-    name: "渣打 Smart Card",
-    bank: "渣打銀行",
+    id: "sc-smart", // ✅ 對應 cards.ts
     rate: "5%",
     cap: "每月首 $2,000 增值",
-    conditions: ["需透過 SC Mobile App 綁卡"],
     pros: ["回贈率最高", "出糧戶口可享更多優惠"],
     cons: ["上限較低", "需指定 App 增值"],
     bestFor: "小額增值用戶",
   },
   {
-    id: "hsbc-red",
-    name: "HSBC Red Card",
-    bank: "滙豐銀行",
+    id: "hsbc-red", // ✅ 對應 cards.ts
     rate: "4%",
     cap: "每月首 $10,000 網上簽賬",
-    conditions: ["計入網上簽賬類別"],
     pros: ["上限較高", "超市同享 4%"],
     cons: ["需綁定 HSBC Reward+"],
     bestFor: "中高消費用戶",
   },
   {
-    id: "citi-cashback",
-    name: "Citi Cash Back Card",
-    bank: "Citibank",
+    id: "citi-cashback", // ✅ 對應 cards.ts
     rate: "2%",
     cap: "無上限",
-    conditions: ["PayMe 增值計入網上簽賬"],
     pros: ["無上限", "申請門檻低"],
     cons: ["回贈率較低"],
     bestFor: "追求穩定回贈用戶",
   },
   {
-    id: "boc-dual-currency",
-    name: "中銀雙幣卡",
-    bank: "中國銀行",
-    rate: "0.4%",
-    conditions: ["基本回贈"],
-    pros: ["無上限", "穩定"],
-    cons: ["回贈率低"],
-    bestFor: "大額增值用戶",
+    id: "boc-chill", // ✅ 對應 cards.ts - 中銀 Chill Card
+    rate: "5%",
+    cap: "月簽 $3,260 (網上)",
+    pros: ["網上簽賬 5%", "Chill 商戶 10%"],
+    cons: ["額外回贈月上限 $150"],
+    bestFor: "網購多/Chill商戶用戶",
   },
 ];
 
@@ -136,104 +118,22 @@ export function PayMeCreditCardGuide() {
         </div>
       </div>
 
-      {/* Quick Summary */}
+      {/* Quick Summary - 使用新組件顯示卡片封面 */}
       <Card>
         <CardContent className="p-6">
           <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-amber-500" />
             TL;DR 快速推薦
           </h2>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-2">排名</th>
-                  <th className="text-left py-2">信用卡</th>
-                  <th className="text-left py-2">回贈</th>
-                  <th className="text-left py-2">上限</th>
-                  <th className="text-left py-2">適合</th>
-                </tr>
-              </thead>
-              <tbody>
-                {topCards.slice(0, 3).map((card, i) => (
-                  <tr key={card.id} className="border-b">
-                    <td className="py-3">
-                      <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-white text-xs font-bold ${
-                        i === 0 ? 'bg-amber-500' : i === 1 ? 'bg-gray-400' : 'bg-amber-700'
-                      }`}>
-                        {i + 1}
-                      </span>
-                    </td>
-                    <td className="py-3 font-medium">{card.name}</td>
-                    <td className="py-3 text-emerald-600 font-bold">{card.rate}</td>
-                    <td className="py-3 text-gray-500">{card.cap || '無上限'}</td>
-                    <td className="py-3 text-gray-500">{card.bestFor}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <QuickComparisonTable cards={topCards} />
         </CardContent>
       </Card>
 
-      {/* Detailed Comparison */}
-      <div className="space-y-4">
-        <h2 className="text-xl font-bold flex items-center gap-2">
-          <CreditCard className="h-5 w-5 text-blue-500" />
-          PayMe 增值信用卡詳細比較
-        </h2>
-        
-        {topCards.map((card, index) => (
-          <Card key={card.id} className={index === 0 ? "border-2 border-amber-400" : ""}>
-            <CardContent className="p-5">
-              <div className="flex items-start justify-between mb-3">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    {index === 0 && <Badge className="bg-amber-500">🏆 推薦</Badge>}
-                    <h3 className="font-bold text-lg">{card.name}</h3>
-                  </div>
-                  <p className="text-sm text-gray-500">{card.bank}</p>
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-emerald-600">{card.rate}</div>
-                  <div className="text-xs text-gray-500">{card.cap}</div>
-                </div>
-              </div>
-              
-              <div className="grid md:grid-cols-2 gap-4 mt-4">
-                <div>
-                  <h4 className="font-semibold text-sm text-green-600 mb-2 flex items-center gap-1">
-                    <CheckCircle2 className="h-4 w-4" /> 優點
-                  </h4>
-                  <ul className="space-y-1 text-sm">
-                    {card.pros.map((pro, i) => (
-                      <li key={i} className="text-gray-600">• {pro}</li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-sm text-red-600 mb-2 flex items-center gap-1">
-                    <XCircle className="h-4 w-4" /> 缺點
-                  </h4>
-                  <ul className="space-y-1 text-sm">
-                    {card.cons.map((con, i) => (
-                      <li key={i} className="text-gray-600">• {con}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-              
-              <div className="mt-4 flex justify-end">
-                <Link href={`/cards/${card.id}`}>
-                  <Button variant="outline" size="sm">
-                    查看詳情 <ArrowRight className="h-4 w-4 ml-1" />
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      {/* Detailed Comparison - 使用新組件顯示卡片封面和連結 */}
+      <CardRecommendationBlock 
+        cards={topCards} 
+        title="PayMe 增值信用卡詳細比較" 
+      />
 
       {/* Tips Section */}
       <Card className="bg-amber-50 dark:bg-amber-900/20 border-amber-200">
