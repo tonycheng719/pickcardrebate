@@ -80,6 +80,7 @@ export async function POST() {
         seo_title: null,
         seo_description: null,
         faqs: null,
+        sort_order: guide.sortOrder || 0, // 排序權重
         updated_at: new Date().toISOString(),
       };
 

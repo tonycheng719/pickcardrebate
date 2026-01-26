@@ -9,10 +9,11 @@ export interface Guide {
   merchant: string;
   isNew: boolean;
   viewCount?: number;
+  sortOrder?: number; // 排序權重，數字越大越前
 }
 
 export const GUIDES: Guide[] = [
-  // 🔥 SEO 熱門文章 - 2026
+  // 🔥 SEO 熱門文章 - 2026 (sortOrder 1000+ 確保最前)
   {
     id: "payme-credit-card-guide",
     type: "guide",
@@ -22,6 +23,7 @@ export const GUIDES: Guide[] = [
     tags: ["PayMe", "電子錢包", "增值回贈", "HSBC Red", "渣打Smart"],
     merchant: "攻略",
     isNew: true,
+    sortOrder: 1005,
   },
   {
     id: "apple-pay-credit-card-guide",
@@ -32,6 +34,7 @@ export const GUIDES: Guide[] = [
     tags: ["Apple Pay", "感應支付", "NFC", "流動支付"],
     merchant: "攻略",
     isNew: true,
+    sortOrder: 1004,
   },
   {
     id: "octopus-aavs-credit-card-guide",
@@ -42,6 +45,7 @@ export const GUIDES: Guide[] = [
     tags: ["八達通", "AAVS", "自動增值", "交通"],
     merchant: "攻略",
     isNew: true,
+    sortOrder: 1003,
   },
   {
     id: "costco-credit-card-guide",
@@ -52,6 +56,7 @@ export const GUIDES: Guide[] = [
     tags: ["Costco", "超市", "批發", "Visa", "Mastercard"],
     merchant: "攻略",
     isNew: true,
+    sortOrder: 1002,
   },
   {
     id: "wechat-pay-credit-card-guide",
@@ -62,6 +67,7 @@ export const GUIDES: Guide[] = [
     tags: ["WeChat Pay", "微信支付", "電子錢包", "北上消費"],
     merchant: "攻略",
     isNew: true,
+    sortOrder: 1001,
   },
   // 🔥 最新文章
   {
