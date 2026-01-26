@@ -196,22 +196,24 @@ export interface CalculateResponse {
 export interface MerchantData {
   id: string;
   name: string;
-  categoryIds: string[];
+  category: string;
+  aliases?: string[];
   logo?: string;
   accentColor?: string;
-  isGeneral?: boolean;
-  aliases?: string[];
 }
 
-export interface CategoryData {
+export interface MerchantCategoryData {
   id: string;
   name: string;
+  name_en?: string;
   icon: string;
-  merchantIds: string[];
+  merchants: MerchantData[];
 }
 
 export interface MerchantsResponse {
-  merchants: MerchantData[];
+  success: boolean;
+  categories: MerchantCategoryData[];
+  total: number;
 }
 
 // ==================== API 方法 ====================
@@ -256,8 +258,22 @@ export const api = {
     });
   },
   
-  // 獲取商戶列表（包含 logo）
-  getMerchants: () => request<MerchantsResponse>('/mobile/merchants'),
+  // 獲取商戶列表（從統一資料庫）
+  getMerchants: (params?: { category?: string; search?: string }) => {
+    const searchParams = new URLSearchParams({ format: 'grouped' });
+    if (params?.category) searchParams.set('category', params.category);
+    if (params?.search) searchParams.set('q', params.search);
+    return request<MerchantsResponse>(`/merchants?${searchParams.toString()}`);
+  },
+  
+  // 搜尋商戶
+  searchMerchants: (query: string) => {
+    const searchParams = new URLSearchParams({ 
+      format: 'grouped',
+      q: query 
+    });
+    return request<MerchantsResponse>(`/merchants?${searchParams.toString()}`);
+  },
 };
 
 export { API_BASE_URL };
