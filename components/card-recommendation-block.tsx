@@ -7,6 +7,8 @@ import { CheckCircle2, XCircle, ArrowRight, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { HK_CARDS } from "@/lib/data/cards";
+import { useDataset } from "@/lib/admin/data-store";
+import { CreditCard } from "@/lib/types";
 
 export interface CardRecommendation {
   id: string; // 必須對應 cards.ts 中的卡片 ID
@@ -24,8 +26,13 @@ interface CardRecommendationBlockProps {
   showRanking?: boolean;
 }
 
-// 根據 ID 獲取卡片資料
-function getCardData(cardId: string) {
+// 根據 ID 獲取卡片資料（優先從資料庫，fallback 到靜態檔案）
+function useCardData(cardId: string): CreditCard | undefined {
+  const { cards: dbCards } = useDataset();
+  // 優先從資料庫獲取（包含後台上傳的 imageUrl）
+  const dbCard = dbCards.find(c => c.id === cardId);
+  if (dbCard) return dbCard;
+  // Fallback 到靜態資料
   return HK_CARDS.find(c => c.id === cardId);
 }
 
@@ -39,7 +46,7 @@ function CardRecommendationItem({
   index: number;
   showRanking?: boolean;
 }) {
-  const cardData = getCardData(card.id);
+  const cardData = useCardData(card.id);
   
   if (!cardData) {
     console.warn(`Card not found: ${card.id}`);
@@ -149,6 +156,46 @@ function CardRecommendationItem({
   );
 }
 
+// 快速比較表格 - 單行組件
+function QuickComparisonRow({ card, index }: { card: CardRecommendation; index: number }) {
+  const cardData = useCardData(card.id);
+  if (!cardData) return null;
+  
+  return (
+    <tr className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50">
+      <td className="py-3 px-1">
+        <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-white text-xs font-bold ${
+          index === 0 ? 'bg-amber-500' : index === 1 ? 'bg-gray-400' : index === 2 ? 'bg-amber-700' : 'bg-gray-500'
+        }`}>
+          {index + 1}
+        </span>
+      </td>
+      <td className="py-3 px-1">
+        <Link href={`/cards/${card.id}`} className="flex items-center gap-2 hover:text-blue-600 transition-colors group">
+          {/* 小卡片圖 */}
+          <div className={`relative w-10 h-6 rounded overflow-hidden shadow-sm ${cardData.style?.bgColor || 'bg-gray-200'}`}>
+            {cardData.imageUrl ? (
+              <Image
+                src={cardData.imageUrl}
+                alt={cardData.name}
+                fill
+                className="object-cover"
+                sizes="40px"
+              />
+            ) : (
+              <div className={`w-full h-full ${cardData.style?.textColor || 'text-white'}`} />
+            )}
+          </div>
+          <span className="font-medium group-hover:underline">{cardData.name}</span>
+        </Link>
+      </td>
+      <td className="py-3 px-1 text-emerald-600 font-bold">{card.rate}</td>
+      <td className="py-3 px-1 text-gray-500 hidden sm:table-cell">{card.cap || '無上限'}</td>
+      <td className="py-3 px-1 text-gray-500 hidden md:table-cell">{card.bestFor}</td>
+    </tr>
+  );
+}
+
 // 快速比較表格
 export function QuickComparisonTable({ cards }: { cards: CardRecommendation[] }) {
   return (
@@ -164,44 +211,9 @@ export function QuickComparisonTable({ cards }: { cards: CardRecommendation[] })
           </tr>
         </thead>
         <tbody>
-          {cards.slice(0, 5).map((card, i) => {
-            const cardData = getCardData(card.id);
-            if (!cardData) return null;
-            
-            return (
-              <tr key={card.id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                <td className="py-3 px-1">
-                  <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-white text-xs font-bold ${
-                    i === 0 ? 'bg-amber-500' : i === 1 ? 'bg-gray-400' : i === 2 ? 'bg-amber-700' : 'bg-gray-500'
-                  }`}>
-                    {i + 1}
-                  </span>
-                </td>
-                <td className="py-3 px-1">
-                  <Link href={`/cards/${card.id}`} className="flex items-center gap-2 hover:text-blue-600 transition-colors group">
-                    {/* 小卡片圖 */}
-                    <div className={`relative w-10 h-6 rounded overflow-hidden shadow-sm ${cardData.style?.bgColor || 'bg-gray-200'}`}>
-                      {cardData.imageUrl ? (
-                        <Image
-                          src={cardData.imageUrl}
-                          alt={cardData.name}
-                          fill
-                          className="object-cover"
-                          sizes="40px"
-                        />
-                      ) : (
-                        <div className={`w-full h-full ${cardData.style?.textColor || 'text-white'}`} />
-                      )}
-                    </div>
-                    <span className="font-medium group-hover:underline">{cardData.name}</span>
-                  </Link>
-                </td>
-                <td className="py-3 px-1 text-emerald-600 font-bold">{card.rate}</td>
-                <td className="py-3 px-1 text-gray-500 hidden sm:table-cell">{card.cap || '無上限'}</td>
-                <td className="py-3 px-1 text-gray-500 hidden md:table-cell">{card.bestFor}</td>
-              </tr>
-            );
-          })}
+          {cards.slice(0, 5).map((card, i) => (
+            <QuickComparisonRow key={card.id} card={card} index={i} />
+          ))}
         </tbody>
       </table>
     </div>

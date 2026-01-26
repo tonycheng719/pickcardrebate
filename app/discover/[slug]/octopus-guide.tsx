@@ -1,14 +1,18 @@
 // 八達通自動增值&手動增值攻略
 // 用於 /discover/octopus-guide 頁面
+"use client";
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import Image from "next/image";
 import { 
   ChevronRight, ChevronDown, CreditCard, Train, Smartphone,
   Calculator, Trophy, DollarSign, CheckCircle, AlertTriangle,
   Star, Info, Zap, Percent, Gift, RefreshCw, Wallet, XCircle
 } from "lucide-react";
 import { CardPreviewSection } from "@/app/discover/components/card-preview-section";
+import { HK_CARDS } from "@/lib/data/cards";
+import { useDataset } from "@/lib/admin/data-store";
 
 // FAQ 數據（2025年更新版）
 // 參考：https://www.mrmiles.hk/octopus-credit-card/
@@ -263,6 +267,38 @@ const chokExamples = [
   },
 ];
 
+// 卡片圖片組件（帶連結）
+function CardImageCell({ id, name }: { id: string; name: string }) {
+  const { cards: dbCards } = useDataset();
+  const card = dbCards.find(c => c.id === id) || HK_CARDS.find(c => c.id === id);
+  
+  return (
+    <Link href={`/cards/${id}`} className="flex items-center gap-2 group">
+      {/* 卡片圖片 */}
+      <div className={`relative w-10 h-6 rounded overflow-hidden shadow-sm flex-shrink-0 ${card?.style?.bgColor || 'bg-gray-200'}`}>
+        {card?.imageUrl ? (
+          <Image
+            src={card.imageUrl}
+            alt={name}
+            fill
+            className="object-cover"
+            sizes="40px"
+            unoptimized
+          />
+        ) : (
+          <div className={`w-full h-full flex items-center justify-center ${card?.style?.textColor || 'text-white'}`}>
+            <span className="text-[8px] font-bold">{card?.bank?.slice(0, 2) || ''}</span>
+          </div>
+        )}
+      </div>
+      {/* 卡片名稱 */}
+      <span className="font-medium text-blue-600 hover:underline dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">
+        {name}
+      </span>
+    </Link>
+  );
+}
+
 export function OctopusGuide() {
   const currentYear = new Date().getFullYear();
   
@@ -392,9 +428,7 @@ export function OctopusGuide() {
                 {autoTopUpCards.map((card, index) => (
                   <tr key={index} className={card.rate !== "0%" ? "bg-green-50/50 dark:bg-green-900/10" : ""}>
                     <td className="px-4 py-3">
-                      <Link href={`/cards/${card.id}`} className="font-medium text-blue-600 hover:underline dark:text-blue-400">
-                        {card.card}
-                      </Link>
+                      <CardImageCell id={card.id} name={card.card} />
                     </td>
                     <td className="px-4 py-3 text-center">
                       <span className={`font-bold ${card.rate === "0%" ? "text-gray-400" : "text-green-600 dark:text-green-400"}`}>
@@ -451,9 +485,7 @@ export function OctopusGuide() {
                 {appTopUpCards.map((card, index) => (
                   <tr key={index}>
                     <td className="px-4 py-3">
-                      <Link href={`/cards/${card.id}`} className="font-medium text-blue-600 hover:underline dark:text-blue-400">
-                        {card.card}
-                      </Link>
+                      <CardImageCell id={card.id} name={card.card} />
                     </td>
                     <td className="px-4 py-3 text-center">
                       <span className="font-bold text-green-600 dark:text-green-400">
