@@ -208,4 +208,29 @@ export const POPULAR_MERCHANTS: Merchant[] = [
   { id: "aqua", name: "AQUA", categoryIds: ["dining"], aliases: ["aqua"], logo: "🍸", accentColor: "#0ea5e9" },
   { id: "wagyu_kaiseki_den", name: "和牛懷石 殿 Wagyu Kaiseki Den", categoryIds: ["dining"], aliases: ["和牛懷石", "wagyu kaiseki", "殿"], logo: "🥩", accentColor: "#78350f" },
   { id: "nikushou", name: "肉匠 Nikushou", categoryIds: ["dining"], aliases: ["肉匠", "nikushou"], logo: "🥩", accentColor: "#dc2626" },
+
+  // ========== 新增商戶 2026-01 ==========
+  // 餐飲
+  { id: "lady-m", name: "Lady M", categoryIds: ["dining"], aliases: ["lady m", "ladym", "千層蛋糕"], logo: "🍰", accentColor: "#c9a86c" },
+  { id: "pacific-coffee", name: "Pacific Coffee", categoryIds: ["dining"], aliases: ["pacific coffee", "太平洋咖啡"], logo: "https://logo.clearbit.com/pacificcoffee.com", accentColor: "#6b3a19" },
+  { id: "fairwood", name: "大快活 Fairwood", categoryIds: ["dining"], aliases: ["大快活", "fairwood"], logo: "https://logo.clearbit.com/fairwood.com.hk", accentColor: "#e11d48" },
+  { id: "cafe-de-coral", name: "大家樂 Café de Coral", categoryIds: ["dining"], aliases: ["大家樂", "cafe de coral"], logo: "https://logo.clearbit.com/cafedecoral.com", accentColor: "#f97316" },
+  
+  // 網購 (日本)
+  { id: "rakuten", name: "Rakuten 樂天", categoryIds: ["online"], aliases: ["rakuten", "樂天", "樂天市場"], logo: "https://logo.clearbit.com/rakuten.co.jp", accentColor: "#bf0000", isOnlineOnly: true, isForeignCurrency: true, currency: "JPY" },
+  { id: "amazon-japan", name: "Amazon Japan", categoryIds: ["online"], aliases: ["amazon.co.jp", "amazon japan", "日本亞馬遜", "amazon jp"], logo: "https://logo.clearbit.com/amazon.co.jp", accentColor: "#ff9900", isOnlineOnly: true, isForeignCurrency: true, currency: "JPY" },
+  
+  // 遊戲/數碼
+  { id: "playstation", name: "PlayStation Store", categoryIds: ["entertainment", "online"], aliases: ["playstation", "ps", "psn", "ps store", "ps5", "ps4"], logo: "https://logo.clearbit.com/playstation.com", accentColor: "#003791", isOnlineOnly: true },
+  { id: "google-play", name: "Google Play", categoryIds: ["entertainment", "online"], aliases: ["google play", "google play store", "play store"], logo: "https://logo.clearbit.com/play.google.com", accentColor: "#3cba54", isOnlineOnly: true },
+  
+  // 健身
+  { id: "pure-fitness", name: "PURE Fitness", categoryIds: ["gym"], aliases: ["pure fitness", "pure", "pure yoga"], logo: "https://logo.clearbit.com/pure-fitness.com", accentColor: "#000000" },
+  
+  // 運動服飾
+  { id: "puma", name: "PUMA", categoryIds: ["sports_apparel"], aliases: ["puma"], logo: "https://logo.clearbit.com/puma.com", accentColor: "#000000" },
+  
+  // 主題樂園
+  { id: "hong-kong-disneyland", name: "香港迪士尼樂園", categoryIds: ["entertainment", "travel"], aliases: ["迪士尼", "disneyland", "disney", "香港迪士尼"], logo: "https://logo.clearbit.com/hongkongdisneyland.com", accentColor: "#1a3668" },
+  { id: "universal-studios", name: "Universal Studios", categoryIds: ["entertainment", "travel"], aliases: ["universal", "環球影城", "universal studios"], logo: "https://logo.clearbit.com/universalstudios.com", accentColor: "#000000", isForeignCurrency: true },
 ];
