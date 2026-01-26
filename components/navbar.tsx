@@ -80,6 +80,9 @@ export function Navbar() {
             <Link href={localePath("/rankings")} className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               🏆 {t.nav.rankings}
             </Link>
+            <Link href={localePath("/strategy")} className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+              🎯 多卡策略
+            </Link>
           </div>
 
           {/* Reward Preference Toggle - visible on all sizes */}
