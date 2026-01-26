@@ -226,13 +226,33 @@ export default function AdminDiscoverPage() {
       tags: item.tags,
       merchant: item.merchant,
       isNew: (item as any).isNew || false,
+      sortOrder: (item as any).sortOrder || 0,
+      updatedAt: item.updatedAt,
+      isPinned: item.isPinned || false,
       _originalType: ((item as any).contentType || 'promo') as 'guide' | 'promo',
     })).sort((a, b) => {
+      // 1. Pinned first
+      const aIsPinned = a.isPinned ?? articlePinned[a.id] ?? false;
+      const bIsPinned = b.isPinned ?? articlePinned[b.id] ?? false;
+      if (aIsPinned && !bIsPinned) return -1;
+      if (!aIsPinned && bIsPinned) return 1;
+      
+      // 2. Sort by sortOrder (higher first)
+      const aSortOrder = a.sortOrder || 0;
+      const bSortOrder = b.sortOrder || 0;
+      if (aSortOrder !== bSortOrder) return bSortOrder - aSortOrder;
+      
+      // 3. Sort by viewCount (higher first) as secondary sort
       const viewA = viewStats[a.id] || 0;
       const viewB = viewStats[b.id] || 0;
-      return viewB - viewA;
+      if (viewA !== viewB) return viewB - viewA;
+      
+      // 4. Sort by updatedAt (newest first)
+      const aUpdated = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+      const bUpdated = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+      return bUpdated - aUpdated;
     });
-  }, [keyword, promos, articleCategories, viewStats]);
+  }, [keyword, promos, articleCategories, articlePinned, viewStats]);
 
   // 優惠 Tab：所有 contentType !== 'guide' 的文章（考慮後台覆蓋）
   const filteredPromos = useMemo(() => {
