@@ -112,59 +112,62 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // Safe JSON parse helper to avoid SyntaxError crashes
+  const safeJsonParse = <T,>(key: string, fallback: T): T => {
+    try {
+      const stored = localStorage.getItem(key);
+      if (!stored) return fallback;
+      // Validate it looks like JSON before parsing
+      if (!stored.startsWith('{') && !stored.startsWith('[') && !stored.startsWith('"')) {
+        console.warn(`[Storage] Invalid JSON format for ${key}, clearing...`);
+        localStorage.removeItem(key);
+        return fallback;
+      }
+      return JSON.parse(stored) as T;
+    } catch (e) {
+      console.error(`[Storage] Failed to parse ${key}:`, e);
+      // Clear corrupted data to prevent repeated errors
+      try { localStorage.removeItem(key); } catch {}
+      return fallback;
+    }
+  };
+
   // Load initial data from local storage
   useEffect(() => {
-    const savedCards = localStorage.getItem("pickcardrebate_wallet_cards");
-    const savedSettings = localStorage.getItem("pickcardrebate_wallet_settings");
-    const savedUser = localStorage.getItem("pickcardrebate_user");
-    const savedTransactions = localStorage.getItem("pickcardrebate_transactions");
+    const savedCards = safeJsonParse<string[]>("pickcardrebate_wallet_cards", []);
+    const savedSettings = safeJsonParse<Record<string, CardSettings>>("pickcardrebate_wallet_settings", {});
+    const savedUser = safeJsonParse<any>("pickcardrebate_user", null);
+    const savedTransactions = safeJsonParse<Transaction[]>("pickcardrebate_transactions", []);
     const savedPreference = localStorage.getItem("pickcardrebate_reward_preference");
     
-    if (savedCards) {
-      try {
-        setMyCardIds(JSON.parse(savedCards));
-      } catch (e) {
-        console.error("Failed to parse wallet data", e);
-      }
+    if (savedCards.length > 0) {
+      setMyCardIds(savedCards);
     }
 
-    if (savedSettings) {
-      try {
-        setCardSettings(JSON.parse(savedSettings));
-      } catch (e) {
-        console.error("Failed to parse settings data", e);
-      }
+    if (Object.keys(savedSettings).length > 0) {
+      setCardSettings(savedSettings);
     }
 
     if (savedUser) {
-        try {
-            const parsedUser = JSON.parse(savedUser);
-            const migratedUser: UserProfile = {
-                ...parsedUser,
-                rewardPreference: parsedUser.rewardPreference || "cash",
-                notifications: parsedUser.notifications || {
-                    promos: true,
-                    bills: true,
-                    community: true
-                },
-                followedPromoIds: parsedUser.followedPromoIds || []
-            };
-            setUser(migratedUser);
-        } catch (e) {
-            console.error("Failed to parse user data", e);
-        }
+      const migratedUser: UserProfile = {
+        ...savedUser,
+        rewardPreference: savedUser.rewardPreference || "cash",
+        notifications: savedUser.notifications || {
+          promos: true,
+          bills: true,
+          community: true
+        },
+        followedPromoIds: savedUser.followedPromoIds || []
+      };
+      setUser(migratedUser);
     }
 
-    if (savedTransactions) {
-        try {
-            setTransactions(JSON.parse(savedTransactions));
-        } catch (e) {
-            console.error("Failed to parse transactions", e);
-        }
+    if (savedTransactions.length > 0) {
+      setTransactions(savedTransactions);
     }
 
-    if (savedPreference) {
-        setLocalRewardPreference(savedPreference as "cash" | "miles");
+    if (savedPreference && (savedPreference === "cash" || savedPreference === "miles")) {
+      setLocalRewardPreference(savedPreference);
     }
     
     setIsLoaded(true);
@@ -422,14 +425,20 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
             const stored = localStorage.getItem(key);
             if (stored) {
               try {
+                // Validate JSON before parsing to avoid SyntaxError
+                if (!stored.startsWith('{') && !stored.startsWith('[')) {
+                  console.warn("[Auth] Invalid JSON format in localStorage:", key);
+                  localStorage.removeItem(key); // Clean up corrupted data
+                  continue;
+                }
                 const parsed = JSON.parse(stored);
-                if (parsed.access_token && parsed.refresh_token) {
+                if (parsed?.access_token && parsed?.refresh_token) {
                   console.log("[Auth] Found session in localStorage:", key);
                   const { data: restoredData, error } = await supabase.auth.setSession({
                     access_token: parsed.access_token,
                     refresh_token: parsed.refresh_token
                   });
-                  if (!error && restoredData.session) {
+                  if (!error && restoredData?.session) {
                     console.log("[Auth] Session restored from localStorage for:", restoredData.session.user.email);
                     data = restoredData;
                     break;
@@ -437,6 +446,10 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
                 }
               } catch (e) {
                 console.warn("[Auth] Failed to parse localStorage key:", key, e);
+                // Clean up corrupted localStorage entry
+                try {
+                  localStorage.removeItem(key);
+                } catch {}
               }
             }
           }

@@ -190,8 +190,14 @@ function getCachedMerchants(): Merchant[] {
   try {
     const cached = localStorage.getItem('cached_merchants');
     if (cached) {
+      // Validate JSON format before parsing to avoid SyntaxError
+      if (!cached.startsWith('[')) {
+        console.warn("[DataStore] Invalid cached merchants format, clearing...");
+        localStorage.removeItem('cached_merchants');
+        return POPULAR_MERCHANTS;
+      }
       const parsed = JSON.parse(cached);
-      if (parsed && parsed.length > 0) {
+      if (Array.isArray(parsed) && parsed.length > 0) {
         // Merge cached with local, cached logo takes priority if valid URL
         const cachedMap = new Map<string, Merchant>(parsed.map((m: Merchant) => [m.id, m]));
         return POPULAR_MERCHANTS.map(localMerchant => {
@@ -212,7 +218,9 @@ function getCachedMerchants(): Merchant[] {
       }
     }
   } catch (e) {
-    console.warn("Failed to load cached merchants");
+    console.warn("[DataStore] Failed to load cached merchants:", e);
+    // Clear corrupted cache
+    try { localStorage.removeItem('cached_merchants'); } catch {}
   }
   return POPULAR_MERCHANTS;
 }

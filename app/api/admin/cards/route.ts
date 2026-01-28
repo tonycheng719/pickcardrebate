@@ -37,7 +37,13 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Server Misconfiguration: Missing Service Role Key" }, { status: 500 });
     }
 
-    const card = await request.json();
+    let card;
+    try {
+      card = await request.json();
+    } catch (parseError) {
+      console.error("JSON parse error in cards POST:", parseError);
+      return NextResponse.json({ error: "Invalid JSON in request body" }, { status: 400 });
+    }
     
     if (!card.id) {
       return NextResponse.json({ error: "Missing card ID" }, { status: 400 });

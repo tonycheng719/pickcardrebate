@@ -87,8 +87,14 @@ export async function POST(request: Request) {
   }
 
   try {
-    const body = await request.json();
-    const { userId, action, cardId, settings, cardIds } = body;
+    let body;
+    try {
+      body = await request.json();
+    } catch (parseError) {
+      console.error("JSON parse error in wallet sync POST:", parseError);
+      return NextResponse.json({ error: "Invalid JSON in request body" }, { status: 400 });
+    }
+    const { userId, action, cardId, settings, cardIds } = body || {};
 
     if (!userId) {
       return NextResponse.json({ error: "Missing userId" }, { status: 400 });
