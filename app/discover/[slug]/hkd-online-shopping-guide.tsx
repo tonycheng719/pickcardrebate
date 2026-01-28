@@ -1,509 +1,23 @@
 "use client";
 
-import { CardRecommendationBlock } from "@/components/card-recommendation-block";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { 
+  ShoppingCart, AlertTriangle, CheckCircle2, XCircle, 
+  TrendingUp, Smartphone, CreditCard, ArrowRight, Zap,
+  Star, Target, Calculator
+} from "lucide-react";
+import Link from "next/link";
+import { PromoFAQ } from "@/lib/types";
+import { 
+  CardRecommendationBlock, 
+  QuickComparisonTable,
+  type CardRecommendation 
+} from "@/components/card-recommendation-block";
 
-export function HkdOnlineShoppingGuide() {
-  return (
-    <div className="prose prose-lg dark:prose-invert max-w-none">
-      <h2>📊 港幣網購信用卡完全攻略</h2>
-      
-      <p>
-        港幣網購（如 HKTVmall、百佳網店、友和 YOHO、淘寶集運等）<strong>唔使俾外幣手續費</strong>，
-        所以回贈率直接就係淨回贈！相比外幣網購要扣 1.95% 手續費，港幣網購係真正「食盡」回贈。
-      </p>
-
-      <div className="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg my-6">
-        <p className="text-blue-800 dark:text-blue-200 font-medium mb-0">
-          💡 <strong>港幣網購 = 回贈率即係淨回贈</strong>（無手續費損耗）
-        </p>
-      </div>
-
-      <hr />
-
-      <h2>🏆 2026 港幣網購回贈排行榜</h2>
-
-      <h3>🥇 第一級：8% 回贈</h3>
-
-      <div className="overflow-x-auto">
-        <table>
-          <thead>
-            <tr>
-              <th>排名</th>
-              <th>信用卡</th>
-              <th>回贈率</th>
-              <th>每月上限</th>
-              <th>入場門檻</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>🥇 1</td>
-              <td><strong>富邦 iN VISA 白金卡</strong></td>
-              <td className="text-green-600 dark:text-green-400 font-bold">8%</td>
-              <td>$3,290</td>
-              <td>月簽 $1,000</td>
-            </tr>
-            <tr>
-              <td>🥈 2</td>
-              <td><strong>sim Credit Card</strong></td>
-              <td className="text-green-600 dark:text-green-400 font-bold">8%</td>
-              <td>$2,500</td>
-              <td>單筆 $500 + 月簽非網購 $1,000</td>
-            </tr>
-            <tr>
-              <td>🥈 2</td>
-              <td><strong>sim World Mastercard</strong></td>
-              <td className="text-green-600 dark:text-green-400 font-bold">8%</td>
-              <td>$2,500</td>
-              <td>單筆 $500 + 月簽非網購 $1,000</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3>🥈 第二級：6% 回贈</h3>
-
-      <div className="overflow-x-auto">
-        <table>
-          <thead>
-            <tr>
-              <th>排名</th>
-              <th>信用卡</th>
-              <th>回贈率</th>
-              <th>每月上限</th>
-              <th>入場門檻</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>🥉 4</td>
-              <td><strong>AEON WAKUWAKU</strong></td>
-              <td className="text-blue-600 dark:text-blue-400 font-bold">6%</td>
-              <td>$3,333</td>
-              <td>✅ 無門檻</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td><strong>信銀國際 Motion</strong></td>
-              <td className="text-blue-600 dark:text-blue-400 font-bold">6%</td>
-              <td>$3,333</td>
-              <td>月簽 $3,800</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3>🥉 第三級：4-5% 回贈</h3>
-
-      <div className="overflow-x-auto">
-        <table>
-          <thead>
-            <tr>
-              <th>排名</th>
-              <th>信用卡</th>
-              <th>回贈率</th>
-              <th>每月上限</th>
-              <th>入場門檻</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>6</td>
-              <td><strong>恒生 MMPOWER</strong></td>
-              <td>5%</td>
-              <td>$10,000</td>
-              <td>月簽 $5,000</td>
-            </tr>
-            <tr>
-              <td>7</td>
-              <td><strong>中銀 Chill Card</strong></td>
-              <td>5%</td>
-              <td>$3,260</td>
-              <td>✅ 無門檻</td>
-            </tr>
-            <tr>
-              <td>8</td>
-              <td><strong>滙豐 Red 信用卡</strong></td>
-              <td>4%</td>
-              <td>$10,000</td>
-              <td>✅ 無門檻</td>
-            </tr>
-            <tr>
-              <td>9</td>
-              <td><strong>DBS Live Fresh</strong></td>
-              <td>4%</td>
-              <td>$4,167</td>
-              <td>✅ 無門檻</td>
-            </tr>
-            <tr>
-              <td>10</td>
-              <td><strong>東亞 BEA GOAL</strong></td>
-              <td>4%</td>
-              <td>$5,000</td>
-              <td>月簽 $2,000</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <hr />
-
-      <h2>📱 各卡詳細分析</h2>
-
-      <h3>🥇 富邦 iN VISA 白金卡 - 網購回贈率最高！</h3>
-
-      <CardRecommendationBlock
-        cards={[
-          { cardId: "fubon-incard", reason: "🏆 網購回贈率最高 8%" }
-        ]}
-      />
-
-      <div className="overflow-x-auto my-4">
-        <table>
-          <tbody>
-            <tr><td><strong>網上簽賬回贈</strong></td><td className="text-green-600 font-bold">8%</td></tr>
-            <tr><td>月簽下限</td><td>$1,000 (2026年新增！)</td></tr>
-            <tr><td>月回贈上限</td><td>$263 (簽 $3,290)</td></tr>
-            <tr><td>年費</td><td>永久免年費</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <p><strong>優點：</strong></p>
-      <ul>
-        <li>✅ 網購回贈率最高 <strong>8%</strong></li>
-        <li>✅ 永久免年費</li>
-        <li>✅ 流動支付/八達通增值也計積分</li>
-      </ul>
-
-      <p><strong>缺點：</strong></p>
-      <ul>
-        <li>❌ 2026年新增月簽下限 $1,000（未夠只有 0.4%）</li>
-        <li>❌ 上限只有 $3,290/月</li>
-      </ul>
-
-      <hr />
-
-      <h3>🥈 sim Credit Card - 交通+網購雙高回贈</h3>
-
-      <CardRecommendationBlock
-        cards={[
-          { cardId: "sim-credit-card", reason: "交通+網購雙 8% 回贈" }
-        ]}
-      />
-
-      <div className="overflow-x-auto my-4">
-        <table>
-          <tbody>
-            <tr><td><strong>網上簽賬回贈</strong></td><td className="text-green-600 font-bold">8%</td></tr>
-            <tr><td>單筆最低</td><td>$500</td></tr>
-            <tr><td>需額外簽非網購</td><td>$1,000/月</td></tr>
-            <tr><td>月回贈上限</td><td>$200</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <p><strong>優點：</strong></p>
-      <ul>
-        <li>✅ 回贈率高達 <strong>8%</strong></li>
-        <li>✅ 交通（巴士/港鐵/電車）也有 <strong>8%</strong></li>
-        <li>✅ 兩大類別可疊加使用</li>
-      </ul>
-
-      <p><strong>缺點：</strong></p>
-      <ul>
-        <li>❌ 單筆需滿 $500</li>
-        <li>❌ 需每月簽非網購 $1,000 才享 8%</li>
-      </ul>
-
-      <hr />
-
-      <h3>🥉 AEON WAKUWAKU - 無門檻之王</h3>
-
-      <CardRecommendationBlock
-        cards={[
-          { cardId: "aeon-wakuwaku", reason: "🎯 無門檻 6% 回贈" }
-        ]}
-      />
-
-      <div className="overflow-x-auto my-4">
-        <table>
-          <tbody>
-            <tr><td><strong>網上簽賬回贈</strong></td><td className="text-blue-600 font-bold">6%</td></tr>
-            <tr><td>月簽上限</td><td>$3,333</td></tr>
-            <tr><td>入場門檻</td><td className="text-green-600">✅ 無</td></tr>
-            <tr><td>年費</td><td>永久免年費</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <p><strong>優點：</strong></p>
-      <ul>
-        <li>✅ <strong>無入場門檻</strong>，簽幾多都有 6%</li>
-        <li>✅ 日本簽賬額外 3% 回贈</li>
-        <li>✅ 永久免年費</li>
-        <li>✅ 每月 20 日 AEON 95折</li>
-      </ul>
-
-      <p><strong>缺點：</strong></p>
-      <ul>
-        <li>❌ 回贈率比富邦/sim 低</li>
-        <li>❌ 網上/日本/餐飲共用 $200 回贈上限</li>
-      </ul>
-
-      <hr />
-
-      <h3>🔥 滙豐 Red 卡 - 上限最高推薦！</h3>
-
-      <CardRecommendationBlock
-        cards={[
-          { cardId: "hsbc-red", reason: "📈 上限最高 $10,000/月" }
-        ]}
-      />
-
-      <div className="overflow-x-auto my-4">
-        <table>
-          <tbody>
-            <tr><td><strong>網上簽賬回贈</strong></td><td>4%</td></tr>
-            <tr><td>月簽上限</td><td className="text-green-600 font-bold">$10,000</td></tr>
-            <tr><td>入場門檻</td><td className="text-green-600">✅ 無</td></tr>
-            <tr><td>年費</td><td>永久免年費</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <p><strong>優點：</strong></p>
-      <ul>
-        <li>✅ <strong>無入場門檻</strong></li>
-        <li>✅ 上限高達 <strong>$10,000/月</strong>（每月 $400 回贈）</li>
-        <li>✅ 永久免年費</li>
-        <li>✅ 指定商戶另有 8%（壽司郎/譚仔/GU 等）</li>
-        <li>✅ 麥當勞 App 簽賬高達 16.5%</li>
-      </ul>
-
-      <p><strong>缺點：</strong></p>
-      <ul>
-        <li>❌ 回贈率只有 4%</li>
-        <li>❌ 網上繳費/電子錢包/保費不計</li>
-      </ul>
-
-      <hr />
-
-      <h3>💎 信銀國際 Motion - 食肆+網購雙高</h3>
-
-      <CardRecommendationBlock
-        cards={[
-          { cardId: "cncbi-motion", reason: "食肆+網購 6% 回贈" }
-        ]}
-      />
-
-      <div className="overflow-x-auto my-4">
-        <table>
-          <tbody>
-            <tr><td><strong>網上簽賬回贈</strong></td><td className="text-blue-600 font-bold">6%</td></tr>
-            <tr><td>月簽門檻</td><td>$3,800</td></tr>
-            <tr><td>月回贈上限</td><td>$200</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <p><strong>優點：</strong></p>
-      <ul>
-        <li>✅ 食肆 + 網購都有 <strong>6%</strong></li>
-        <li>✅ 適合經常外出用膳的用家</li>
-      </ul>
-
-      <p><strong>缺點：</strong></p>
-      <ul>
-        <li>❌ 需月簽滿 $3,800 才有 6%</li>
-        <li>❌ 未夠門檻只有 0.55%</li>
-      </ul>
-
-      <hr />
-
-      <h2>💡 識玩攻略</h2>
-
-      <h3>1️⃣ 按月簽金額選卡</h3>
-
-      <div className="overflow-x-auto">
-        <table>
-          <thead>
-            <tr>
-              <th>月簽金額</th>
-              <th>推薦信用卡</th>
-              <th>原因</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>&lt; $1,000</td>
-              <td><strong>AEON WAKUWAKU</strong></td>
-              <td>無入場門檻，直接 6%</td>
-            </tr>
-            <tr>
-              <td>$1,000-$3,000</td>
-              <td><strong>富邦 iN VISA</strong></td>
-              <td>8% 最高回贈</td>
-            </tr>
-            <tr>
-              <td>$3,000-$5,000</td>
-              <td><strong>滙豐 Red</strong></td>
-              <td>上限高，無門檻 4%</td>
-            </tr>
-            <tr>
-              <td>&gt; $5,000</td>
-              <td><strong>恒生 MMPOWER</strong></td>
-              <td>5% + 上限 $500</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3>2️⃣ 多卡配合策略（月網購 $10,000）</h3>
-
-      <div className="overflow-x-auto">
-        <table>
-          <thead>
-            <tr>
-              <th>順序</th>
-              <th>信用卡</th>
-              <th>簽賬金額</th>
-              <th>回贈</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1️⃣</td>
-              <td>富邦 iN VISA</td>
-              <td>$3,290</td>
-              <td>$263 (8%)</td>
-            </tr>
-            <tr>
-              <td>2️⃣</td>
-              <td>AEON WAKUWAKU</td>
-              <td>$3,333</td>
-              <td>$200 (6%)</td>
-            </tr>
-            <tr>
-              <td>3️⃣</td>
-              <td>滙豐 Red</td>
-              <td>$3,377</td>
-              <td>$135 (4%)</td>
-            </tr>
-            <tr className="font-bold bg-green-50 dark:bg-green-900/30">
-              <td>合計</td>
-              <td>-</td>
-              <td>$10,000</td>
-              <td className="text-green-600">$598 (5.98%)</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3>3️⃣ 指定商戶額外優惠</h3>
-
-      <div className="overflow-x-auto">
-        <table>
-          <thead>
-            <tr>
-              <th>商戶</th>
-              <th>推薦信用卡</th>
-              <th>回贈</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>HKTVmall</td>
-              <td>AEON WAKUWAKU / 富邦 iN</td>
-              <td>6-8%</td>
-            </tr>
-            <tr>
-              <td>百佳網店</td>
-              <td>渣打 Smart（特約商戶）</td>
-              <td>5%</td>
-            </tr>
-            <tr>
-              <td>Netflix / Spotify</td>
-              <td>渣打 Smart（特約商戶）</td>
-              <td>5%</td>
-            </tr>
-            <tr>
-              <td>麥當勞 App</td>
-              <td>滙豐 Red</td>
-              <td className="text-green-600 font-bold">16.5%</td>
-            </tr>
-            <tr>
-              <td>Amazon JP（港幣結算）</td>
-              <td>AEON WAKUWAKU</td>
-              <td>6%</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <hr />
-
-      <h2>🆚 港幣網購 vs 外幣網購</h2>
-
-      <div className="overflow-x-auto">
-        <table>
-          <thead>
-            <tr>
-              <th>項目</th>
-              <th>港幣網購</th>
-              <th>外幣網購</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>外幣手續費</td>
-              <td className="text-green-600">❌ 無</td>
-              <td className="text-red-600">⚠️ 1.95%</td>
-            </tr>
-            <tr>
-              <td>淨回贈計算</td>
-              <td>回贈率即淨回贈</td>
-              <td>回贈率 - 1.95%</td>
-            </tr>
-            <tr>
-              <td>例：8% 卡</td>
-              <td className="text-green-600 font-bold">淨 8%</td>
-              <td className="text-orange-600">淨 6.05%</td>
-            </tr>
-            <tr>
-              <td>推薦卡</td>
-              <td>富邦/AEON/滙豐 Red</td>
-              <td>渣打 Smart（免手續費）</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <hr />
-
-      <h2>🎯 總結推薦</h2>
-
-      <CardRecommendationBlock
-        cards={[
-          { cardId: "fubon-incard", reason: "🏆 網購 8% 最高回贈" },
-          { cardId: "aeon-wakuwaku", reason: "🎯 無門檻首選 6%" },
-          { cardId: "hsbc-red", reason: "📈 上限最高 $10,000/月" },
-          { cardId: "sim-credit-card", reason: "🚃 交通+網購雙 8%" },
-          { cardId: "cncbi-motion", reason: "🍽️ 食肆+網購 6%" },
-        ]}
-      />
-
-      <div className="bg-amber-50 dark:bg-amber-900/30 p-4 rounded-lg my-6">
-        <p className="text-amber-800 dark:text-amber-200 font-medium mb-0">
-          💡 <strong>溫馨提示</strong>：網購回贈通常不計電子錢包充值（PayMe/AlipayHK/WeChat Pay）、
-          繳費、保險等。詳細條款請參閱各信用卡官網。
-        </p>
-      </div>
-    </div>
-  );
-}
-
-export const hkdOnlineShoppingFaqData = [
+// FAQ 數據 for Schema
+export const hkdOnlineShoppingFaqData: PromoFAQ[] = [
   {
     question: "港幣網購邊張卡最抵？",
     answer: "富邦 iN VISA 白金卡 8% 回贈率最高，但需月簽滿 $1,000。如果簽唔夠門檻，AEON WAKUWAKU 無門檻 6% 係最佳選擇。"
@@ -530,3 +44,455 @@ export const hkdOnlineShoppingFaqData = [
   }
 ];
 
+// 使用真實的卡片 ID（對應 cards.ts）
+const topCards: CardRecommendation[] = [
+  {
+    id: "fubon-incard",
+    rate: "8%",
+    cap: "每月簽賬上限 $3,290",
+    pros: ["網購回贈率最高", "永久免年費", "流動支付也計積分"],
+    cons: ["2026年新增月簽下限 $1,000", "上限較低"],
+    bestFor: "網購高回贈追求者",
+  },
+  {
+    id: "sim-credit-card",
+    rate: "8%",
+    cap: "每月回贈上限 $200",
+    pros: ["交通+網購雙 8%", "覆蓋範圍廣"],
+    cons: ["單筆需滿 $500", "需每月簽非網購 $1,000"],
+    bestFor: "交通+網購用戶",
+  },
+  {
+    id: "aeon-wakuwaku",
+    rate: "6%",
+    cap: "每月簽賬上限 $3,333",
+    pros: ["無入場門檻", "日本簽賬 3%", "永久免年費"],
+    cons: ["回贈率較低", "多類別共用上限"],
+    bestFor: "無門檻首選",
+  },
+  {
+    id: "hsbc-red",
+    rate: "4%",
+    cap: "每月簽賬上限 $10,000",
+    pros: ["上限最高", "指定商戶 8%", "麥當勞 16.5%"],
+    cons: ["回贈率只有 4%", "部分交易不計"],
+    bestFor: "高消費用戶",
+  },
+  {
+    id: "cncbi-motion",
+    rate: "6%",
+    cap: "每月回贈上限 $200",
+    pros: ["食肆+網購雙 6%", "適合外食族"],
+    cons: ["需月簽 $3,800", "門檻較高"],
+    bestFor: "外食+網購用戶",
+  },
+];
+
+export function HkdOnlineShoppingGuide() {
+  return (
+    <div className="space-y-8">
+      {/* 重點提示 */}
+      <Card className="border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 dark:border-blue-800">
+        <CardContent className="p-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 bg-blue-100 dark:bg-blue-900/50 rounded-xl">
+              <Zap className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <h3 className="font-bold text-lg text-blue-900 dark:text-blue-100 mb-2">
+                💡 港幣網購 = 回贈率即係淨回贈
+              </h3>
+              <p className="text-blue-700 dark:text-blue-300">
+                港幣網購（HKTVmall、百佳網店、友和 YOHO 等）<strong>唔使俾外幣手續費</strong>，
+                相比外幣網購要扣 1.95%，港幣網購係真正「食盡」回贈！
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* 排行榜 */}
+      <section>
+        <h2 className="text-2xl font-bold flex items-center gap-2 mb-6">
+          <span className="text-3xl">🏆</span> 2026 港幣網購回贈排行榜
+        </h2>
+
+        {/* 第一級 8% */}
+        <Card className="mb-4 border-amber-200 dark:border-amber-800">
+          <CardHeader className="pb-3 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30">
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Badge className="bg-amber-500">🥇 第一級</Badge>
+              <span className="text-amber-700 dark:text-amber-300">8% 回贈</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-gray-50 dark:bg-gray-800/50">
+                  <tr>
+                    <th className="text-left py-3 px-4 font-medium">排名</th>
+                    <th className="text-left py-3 px-4 font-medium">信用卡</th>
+                    <th className="text-left py-3 px-4 font-medium">回贈率</th>
+                    <th className="text-left py-3 px-4 font-medium">每月上限</th>
+                    <th className="text-left py-3 px-4 font-medium">入場門檻</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y dark:divide-gray-800">
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4"><Badge variant="outline">🥇 1</Badge></td>
+                    <td className="py-3 px-4 font-medium">
+                      <Link href="/cards/fubon-incard" className="hover:text-blue-600">富邦 iN VISA 白金卡</Link>
+                    </td>
+                    <td className="py-3 px-4 text-green-600 font-bold">8%</td>
+                    <td className="py-3 px-4">$3,290</td>
+                    <td className="py-3 px-4">月簽 $1,000</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4"><Badge variant="outline">🥈 2</Badge></td>
+                    <td className="py-3 px-4 font-medium">
+                      <Link href="/cards/sim-credit-card" className="hover:text-blue-600">sim Credit Card</Link>
+                    </td>
+                    <td className="py-3 px-4 text-green-600 font-bold">8%</td>
+                    <td className="py-3 px-4">$2,500</td>
+                    <td className="py-3 px-4">單筆 $500 + 月簽非網購 $1,000</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* 第二級 6% */}
+        <Card className="mb-4 border-gray-200 dark:border-gray-700">
+          <CardHeader className="pb-3 bg-gradient-to-r from-gray-50 to-slate-50 dark:from-gray-900/30 dark:to-slate-900/30">
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Badge variant="secondary">🥈 第二級</Badge>
+              <span className="text-gray-700 dark:text-gray-300">6% 回贈</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-gray-50 dark:bg-gray-800/50">
+                  <tr>
+                    <th className="text-left py-3 px-4 font-medium">排名</th>
+                    <th className="text-left py-3 px-4 font-medium">信用卡</th>
+                    <th className="text-left py-3 px-4 font-medium">回贈率</th>
+                    <th className="text-left py-3 px-4 font-medium">每月上限</th>
+                    <th className="text-left py-3 px-4 font-medium">入場門檻</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y dark:divide-gray-800">
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4"><Badge variant="outline">🥉 3</Badge></td>
+                    <td className="py-3 px-4 font-medium">
+                      <Link href="/cards/aeon-wakuwaku" className="hover:text-blue-600">AEON WAKUWAKU</Link>
+                    </td>
+                    <td className="py-3 px-4 text-blue-600 font-bold">6%</td>
+                    <td className="py-3 px-4">$3,333</td>
+                    <td className="py-3 px-4"><Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">✅ 無門檻</Badge></td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4"><Badge variant="outline">4</Badge></td>
+                    <td className="py-3 px-4 font-medium">
+                      <Link href="/cards/cncbi-motion" className="hover:text-blue-600">信銀國際 Motion</Link>
+                    </td>
+                    <td className="py-3 px-4 text-blue-600 font-bold">6%</td>
+                    <td className="py-3 px-4">$3,333</td>
+                    <td className="py-3 px-4">月簽 $3,800</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* 第三級 4-5% */}
+        <Card className="border-gray-200 dark:border-gray-700">
+          <CardHeader className="pb-3 bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/30 dark:to-amber-950/30">
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Badge className="bg-orange-500">🥉 第三級</Badge>
+              <span className="text-orange-700 dark:text-orange-300">4-5% 回贈</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-gray-50 dark:bg-gray-800/50">
+                  <tr>
+                    <th className="text-left py-3 px-4 font-medium">排名</th>
+                    <th className="text-left py-3 px-4 font-medium">信用卡</th>
+                    <th className="text-left py-3 px-4 font-medium">回贈率</th>
+                    <th className="text-left py-3 px-4 font-medium">每月上限</th>
+                    <th className="text-left py-3 px-4 font-medium">入場門檻</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y dark:divide-gray-800">
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4"><Badge variant="outline">5</Badge></td>
+                    <td className="py-3 px-4 font-medium">
+                      <Link href="/cards/hangseng-mmpower" className="hover:text-blue-600">恒生 MMPOWER</Link>
+                    </td>
+                    <td className="py-3 px-4 font-bold">5%</td>
+                    <td className="py-3 px-4">$10,000</td>
+                    <td className="py-3 px-4">月簽 $5,000</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4"><Badge variant="outline">6</Badge></td>
+                    <td className="py-3 px-4 font-medium">
+                      <Link href="/cards/boc-chill" className="hover:text-blue-600">中銀 Chill Card</Link>
+                    </td>
+                    <td className="py-3 px-4 font-bold">5%</td>
+                    <td className="py-3 px-4">$3,260</td>
+                    <td className="py-3 px-4"><Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">✅ 無門檻</Badge></td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4"><Badge variant="outline">7</Badge></td>
+                    <td className="py-3 px-4 font-medium">
+                      <Link href="/cards/hsbc-red" className="hover:text-blue-600">滙豐 Red 信用卡</Link>
+                    </td>
+                    <td className="py-3 px-4 font-bold">4%</td>
+                    <td className="py-3 px-4 text-green-600 font-semibold">$10,000</td>
+                    <td className="py-3 px-4"><Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">✅ 無門檻</Badge></td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4"><Badge variant="outline">8</Badge></td>
+                    <td className="py-3 px-4 font-medium">
+                      <Link href="/cards/dbs-live-fresh" className="hover:text-blue-600">DBS Live Fresh</Link>
+                    </td>
+                    <td className="py-3 px-4 font-bold">4%</td>
+                    <td className="py-3 px-4">$4,167</td>
+                    <td className="py-3 px-4"><Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">✅ 無門檻</Badge></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* 詳細卡片比較 */}
+      <section>
+        <h2 className="text-2xl font-bold flex items-center gap-2 mb-6">
+          <span className="text-3xl">💳</span> 信用卡詳細比較
+        </h2>
+        <CardRecommendationBlock cards={topCards} title="" showRanking={true} />
+      </section>
+
+      {/* 攻略建議 */}
+      <section>
+        <h2 className="text-2xl font-bold flex items-center gap-2 mb-6">
+          <span className="text-3xl">💡</span> 識玩攻略
+        </h2>
+
+        {/* 按月簽金額選卡 */}
+        <Card className="mb-4">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Target className="h-5 w-5 text-blue-500" />
+              按月簽金額選卡
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-gray-50 dark:bg-gray-800/50">
+                  <tr>
+                    <th className="text-left py-3 px-4 font-medium">月簽金額</th>
+                    <th className="text-left py-3 px-4 font-medium">推薦信用卡</th>
+                    <th className="text-left py-3 px-4 font-medium">原因</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y dark:divide-gray-800">
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4">&lt; $1,000</td>
+                    <td className="py-3 px-4 font-medium text-blue-600">AEON WAKUWAKU</td>
+                    <td className="py-3 px-4">無入場門檻，直接 6%</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4">$1,000 - $3,000</td>
+                    <td className="py-3 px-4 font-medium text-blue-600">富邦 iN VISA</td>
+                    <td className="py-3 px-4">8% 最高回贈</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4">$3,000 - $5,000</td>
+                    <td className="py-3 px-4 font-medium text-blue-600">滙豐 Red</td>
+                    <td className="py-3 px-4">上限高，無門檻 4%</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4">&gt; $5,000</td>
+                    <td className="py-3 px-4 font-medium text-blue-600">恒生 MMPOWER</td>
+                    <td className="py-3 px-4">5% + 上限 $500</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* 多卡配合策略 */}
+        <Card className="mb-4 border-green-200 dark:border-green-800">
+          <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30">
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Calculator className="h-5 w-5 text-green-500" />
+              多卡配合策略（月網購 $10,000）
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-gray-50 dark:bg-gray-800/50">
+                  <tr>
+                    <th className="text-left py-3 px-4 font-medium">順序</th>
+                    <th className="text-left py-3 px-4 font-medium">信用卡</th>
+                    <th className="text-left py-3 px-4 font-medium">簽賬金額</th>
+                    <th className="text-left py-3 px-4 font-medium">回贈</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y dark:divide-gray-800">
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4">1️⃣</td>
+                    <td className="py-3 px-4 font-medium">富邦 iN VISA</td>
+                    <td className="py-3 px-4">$3,290</td>
+                    <td className="py-3 px-4 text-green-600">$263 (8%)</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4">2️⃣</td>
+                    <td className="py-3 px-4 font-medium">AEON WAKUWAKU</td>
+                    <td className="py-3 px-4">$3,333</td>
+                    <td className="py-3 px-4 text-green-600">$200 (6%)</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4">3️⃣</td>
+                    <td className="py-3 px-4 font-medium">滙豐 Red</td>
+                    <td className="py-3 px-4">$3,377</td>
+                    <td className="py-3 px-4 text-green-600">$135 (4%)</td>
+                  </tr>
+                  <tr className="bg-green-50 dark:bg-green-900/20 font-bold">
+                    <td className="py-3 px-4">合計</td>
+                    <td className="py-3 px-4">-</td>
+                    <td className="py-3 px-4">$10,000</td>
+                    <td className="py-3 px-4 text-green-600 text-lg">$598 (5.98%)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* 指定商戶優惠 */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Star className="h-5 w-5 text-amber-500" />
+              指定商戶額外優惠
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-gray-50 dark:bg-gray-800/50">
+                  <tr>
+                    <th className="text-left py-3 px-4 font-medium">商戶</th>
+                    <th className="text-left py-3 px-4 font-medium">推薦信用卡</th>
+                    <th className="text-left py-3 px-4 font-medium">回贈</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y dark:divide-gray-800">
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4 font-medium">🛒 HKTVmall</td>
+                    <td className="py-3 px-4">AEON WAKUWAKU / 富邦 iN</td>
+                    <td className="py-3 px-4 text-green-600 font-bold">6-8%</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4 font-medium">🏪 百佳網店</td>
+                    <td className="py-3 px-4">渣打 Smart（特約商戶）</td>
+                    <td className="py-3 px-4 text-green-600 font-bold">5%</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4 font-medium">🎬 Netflix / Spotify</td>
+                    <td className="py-3 px-4">渣打 Smart（特約商戶）</td>
+                    <td className="py-3 px-4 text-green-600 font-bold">5%</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50 bg-amber-50 dark:bg-amber-900/20">
+                    <td className="py-3 px-4 font-medium">🍔 麥當勞 App</td>
+                    <td className="py-3 px-4">滙豐 Red</td>
+                    <td className="py-3 px-4 text-amber-600 font-bold text-lg">16.5% 🔥</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4 font-medium">🇯🇵 Amazon JP（港幣）</td>
+                    <td className="py-3 px-4">AEON WAKUWAKU</td>
+                    <td className="py-3 px-4 text-green-600 font-bold">6%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* 港幣 vs 外幣比較 */}
+      <section>
+        <h2 className="text-2xl font-bold flex items-center gap-2 mb-6">
+          <span className="text-3xl">🆚</span> 港幣網購 vs 外幣網購
+        </h2>
+        
+        <Card>
+          <CardContent className="p-0">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-gray-50 dark:bg-gray-800/50">
+                  <tr>
+                    <th className="text-left py-3 px-4 font-medium">項目</th>
+                    <th className="text-left py-3 px-4 font-medium">港幣網購</th>
+                    <th className="text-left py-3 px-4 font-medium">外幣網購</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y dark:divide-gray-800">
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4 font-medium">外幣手續費</td>
+                    <td className="py-3 px-4 text-green-600 font-bold">❌ 無</td>
+                    <td className="py-3 px-4 text-red-600">⚠️ 1.95%</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4 font-medium">淨回贈計算</td>
+                    <td className="py-3 px-4">回贈率即淨回贈</td>
+                    <td className="py-3 px-4">回贈率 - 1.95%</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4 font-medium">例：8% 卡</td>
+                    <td className="py-3 px-4 text-green-600 font-bold text-lg">淨 8%</td>
+                    <td className="py-3 px-4 text-orange-600">淨 6.05%</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="py-3 px-4 font-medium">推薦卡</td>
+                    <td className="py-3 px-4">富邦 / AEON / 滙豐 Red</td>
+                    <td className="py-3 px-4">渣打 Smart（免手續費）</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* 溫馨提示 */}
+      <Card className="border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 dark:border-amber-800">
+        <CardContent className="p-6">
+          <div className="flex items-start gap-4">
+            <div className="p-2 bg-amber-100 dark:bg-amber-900/50 rounded-lg">
+              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+            </div>
+            <div>
+              <h3 className="font-bold text-amber-900 dark:text-amber-100 mb-2">💡 溫馨提示</h3>
+              <p className="text-amber-700 dark:text-amber-300 text-sm">
+                網購回贈通常<strong>不計</strong>電子錢包充值（PayMe/AlipayHK/WeChat Pay）、繳費、保險等。
+                詳細條款請參閱各信用卡官網。
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
