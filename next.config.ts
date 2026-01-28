@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Enable source maps in production for better error debugging
+  // This helps identify the actual code location instead of minified names like 'aa', 'l', 'i'
+  productionBrowserSourceMaps: true,
+  
   // Restore env vars to ensure they are available both at build time and runtime
   // This fixes the "Missing Supabase Config" error on the client side
   env: {
