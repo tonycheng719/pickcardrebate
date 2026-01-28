@@ -67,6 +67,7 @@ import { ApplePayCreditCardGuide, applePayCreditCardFaqData } from "./apple-pay-
 import { OctopusAavsCreditCardGuide, octopusAavsCreditCardFaqData } from "./octopus-aavs-credit-card-guide";
 import { CostcoCreditCardGuide, costcoCreditCardFaqData } from "./costco-credit-card-guide";
 import { WeChatPayCreditCardGuide, wechatPayCreditCardFaqData } from "./wechat-pay-credit-card-guide";
+import { HkdOnlineShoppingGuide, hkdOnlineShoppingFaqData } from "./hkd-online-shopping-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 import { CardMarkdownRenderer } from "@/app/discover/components/card-markdown-renderer";
 import { ArticleTracker } from "@/app/discover/components/article-tracker";
@@ -197,6 +198,20 @@ const GUIDES: Record<string, {
     keywords: ["WeChat Pay 信用卡", "微信支付 回贈", "WeChat Pay 增值", "北上 信用卡", "跨境支付 信用卡"],
     publishDate: "2026-01-26",
     readTime: "6 分鐘",
+  },
+  "hkd-online-shopping-2026": {
+    id: "hkd-online-shopping-2026",
+    title: "🛒 港幣網購信用卡排行榜 2026｜最高8%回贈",
+    seoTitle: "港幣網購信用卡排行榜 2026｜HKTVmall・百佳網店・友和回贈比較｜香港",
+    heroTitle: "🛒 港幣網購信用卡排行榜",
+    heroSubtitle: "2026 最高 8% 回贈攻略",
+    description: "港幣網購邊張卡最抵？本文比較香港各大信用卡港幣網購回贈率，由 8% 到 4%，HKTVmall、百佳網店、友和 YOHO 等都適用！",
+    content: "hkd-online-shopping-2026",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+    tags: ["港幣網購", "排行榜", "HKTVmall", "2026"],
+    keywords: ["港幣網購 信用卡", "HKTVmall 信用卡", "網購 回贈", "百佳網店 信用卡", "友和 信用卡", "網購最抵信用卡"],
+    publishDate: "2026-01-28",
+    readTime: "8 分鐘",
   },
   "debit-card-guide": {
     id: "debit-card-guide",
@@ -1875,6 +1890,8 @@ function getGuideFaqData(guideId: string) {
       return costcoCreditCardFaqData;
     case "wechat-pay-credit-card-guide":
       return wechatPayCreditCardFaqData;
+    case "hkd-online-shopping-2026":
+      return hkdOnlineShoppingFaqData;
     case "debit-card-guide":
       return debitCardFaqData;
     case "miles-vs-cashback":
@@ -1977,6 +1994,8 @@ function renderGuideContent(guideId: string) {
       return <CostcoCreditCardGuide />;
     case "wechat-pay-credit-card-guide":
       return <WeChatPayCreditCardGuide />;
+    case "hkd-online-shopping-2026":
+      return <HkdOnlineShoppingGuide />;
     case "debit-card-guide":
       return <DebitCardGuide />;
     case "miles-vs-cashback":
