@@ -218,6 +218,27 @@ function extractDollarsPerMile(description: string): number | null {
   return null;
 }
 
+// Card family mapping - cards that are essentially the same product with different networks
+// Only show the best one from each family in rankings
+const CARD_FAMILIES: Record<string, string> = {
+  // AEON 系列 - JCB/Visa/Mastercard 本質相同
+  "aeon-jcb": "aeon-standard",
+  "aeon-visa": "aeon-standard",
+  "aeon-mastercard": "aeon-standard",
+  // sim 系列
+  "sim-credit-card": "sim-card",
+  "sim-world-mastercard": "sim-card",
+  // WeWa 系列
+  "wewa-unionpay": "wewa-card",
+  "wewa-visa-signature": "wewa-card",
+  // 可以繼續添加其他同系列卡...
+};
+
+// Get card family ID (for deduplication)
+function getCardFamily(cardId: string): string {
+  return CARD_FAMILIES[cardId] || cardId; // If not in family, use card's own ID
+}
+
 function matchesCategory(rule: RewardRule, category: CategoryConfig): boolean {
   // For overseas/foreign currency
   if (category.isForeignCurrency) {
@@ -322,7 +343,19 @@ export function getRankingsByCategory(
       return 0;
     });
     
-    return results.slice(0, limit);
+    // Deduplicate by card family for miles category too
+    const seenFamilies = new Set<string>();
+    const deduplicatedResults: RankingResult[] = [];
+    
+    for (const result of results) {
+      const family = getCardFamily(result.card.id);
+      if (!seenFamilies.has(family)) {
+        seenFamilies.add(family);
+        deduplicatedResults.push(result);
+      }
+    }
+    
+    return deduplicatedResults.slice(0, limit);
   }
   
   // Standard category handling
@@ -403,7 +436,19 @@ export function getRankingsByCategory(
     return 0;
   });
   
-  return results.slice(0, limit);
+  // Deduplicate by card family - only keep the best card from each family
+  const seenFamilies = new Set<string>();
+  const deduplicatedResults: RankingResult[] = [];
+  
+  for (const result of results) {
+    const family = getCardFamily(result.card.id);
+    if (!seenFamilies.has(family)) {
+      seenFamilies.add(family);
+      deduplicatedResults.push(result);
+    }
+  }
+  
+  return deduplicatedResults.slice(0, limit);
 }
 
 export function getAllRankings(
