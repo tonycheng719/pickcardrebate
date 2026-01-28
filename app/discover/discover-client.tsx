@@ -106,8 +106,8 @@ export function DiscoverClient() {
       const dbContentType = (p as any).contentType || 'promo';
       const overrideType = customCategories[p.id];
       const effectiveType = overrideType || dbContentType;
-      // 合併自訂標籤
-      const effectiveTags = customTags[p.id] || p.tags;
+      // 合併自訂標籤（確保為陣列）
+      const effectiveTags = customTags[p.id] || p.tags || [];
       // 判斷是否為 guide 類型（用於顯示）
       const isGuide = effectiveType === 'guide';
       return { 
@@ -125,9 +125,11 @@ export function DiscoverClient() {
   const filteredContent = useMemo(() => {
     return allContent.filter(item => {
       const typeMatch = contentType === "all" || item.contentType === contentType;
+      // 確保 tags 是陣列，防止 null/undefined 錯誤
+      const tags = item.tags || [];
       const tagMatch = tagFilter === "all" || 
-        item.tags.includes(tagFilter) || 
-        ('merchant' in item && item.merchant.toLowerCase() === tagFilter.toLowerCase());
+        tags.includes(tagFilter) || 
+        ('merchant' in item && item.merchant?.toLowerCase() === tagFilter.toLowerCase());
       return typeMatch && tagMatch;
     });
   }, [allContent, contentType, tagFilter]);
@@ -408,7 +410,7 @@ export function DiscoverClient() {
                         {item.description}
                       </p>
                       <div className="flex flex-wrap gap-2">
-                        {item.tags.map(tag => (
+                        {(item.tags || []).map(tag => (
                           <span 
                             key={tag} 
                             className={`inline-flex items-center text-xs px-2 py-1 rounded-md ${
