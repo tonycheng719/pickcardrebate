@@ -20,10 +20,22 @@ export interface CardRecommendation {
   bestFor: string;
 }
 
+// 簡化版卡片推薦（只需 ID 和原因）
+export interface SimpleCardRecommendation {
+  cardId: string;
+  reason?: string;
+}
+
 interface CardRecommendationBlockProps {
-  cards: CardRecommendation[];
+  cards: CardRecommendation[] | SimpleCardRecommendation[];
   title?: string;
   showRanking?: boolean;
+  simple?: boolean; // 使用簡化模式
+}
+
+// 檢查是否為簡化格式
+function isSimpleFormat(card: CardRecommendation | SimpleCardRecommendation): card is SimpleCardRecommendation {
+  return 'cardId' in card;
 }
 
 // 根據 ID 獲取卡片資料（優先從資料庫，fallback 到靜態檔案）
@@ -220,29 +232,124 @@ export function QuickComparisonTable({ cards }: { cards: CardRecommendation[] })
   );
 }
 
+// 簡化版卡片項目組件
+function SimpleCardItem({ 
+  card, 
+  index,
+  showRanking = true 
+}: { 
+  card: SimpleCardRecommendation; 
+  index: number;
+  showRanking?: boolean;
+}) {
+  const cardData = useCardData(card.cardId);
+  
+  if (!cardData) {
+    console.warn(`Card not found: ${card.cardId}`);
+    return null;
+  }
+  
+  return (
+    <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+      {/* 排名 */}
+      {showRanking && (
+        <span className={`shrink-0 inline-flex items-center justify-center w-6 h-6 rounded-full text-white text-xs font-bold ${
+          index === 0 ? 'bg-amber-500' : index === 1 ? 'bg-gray-400' : index === 2 ? 'bg-amber-700' : 'bg-gray-500'
+        }`}>
+          {index + 1}
+        </span>
+      )}
+      
+      {/* 卡片圖片 */}
+      <Link href={`/cards/${card.cardId}`} className="shrink-0 group">
+        <div className={`relative w-14 h-9 rounded overflow-hidden shadow-sm transition-transform group-hover:scale-105 ${cardData.style?.bgColor || 'bg-gray-200'}`}>
+          {cardData.imageUrl ? (
+            <Image
+              src={cardData.imageUrl}
+              alt={cardData.name}
+              fill
+              className="object-cover"
+              sizes="56px"
+            />
+          ) : (
+            <div className={`w-full h-full flex items-center justify-center ${cardData.style?.textColor || 'text-white'}`}>
+              <span className="text-[8px] font-bold">{cardData.bank}</span>
+            </div>
+          )}
+        </div>
+      </Link>
+      
+      {/* 卡片資訊 */}
+      <div className="flex-1 min-w-0">
+        <Link href={`/cards/${card.cardId}`} className="hover:text-blue-600 transition-colors">
+          <h4 className="font-medium text-sm truncate">{cardData.name}</h4>
+        </Link>
+        {card.reason && (
+          <p className="text-xs text-gray-500 truncate">{card.reason}</p>
+        )}
+      </div>
+      
+      {/* 申請按鈕 */}
+      {cardData.applyUrl && (
+        <a 
+          href={cardData.applyUrl} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="shrink-0"
+        >
+          <Button size="sm" variant="outline" className="text-xs h-7 px-2 gap-1">
+            申請 <ExternalLink className="h-3 w-3" />
+          </Button>
+        </a>
+      )}
+    </div>
+  );
+}
+
 // 主組件：信用卡推薦區塊
 export function CardRecommendationBlock({ 
   cards, 
-  title = "信用卡詳細比較",
-  showRanking = true 
+  title,
+  showRanking = true,
+  simple
 }: CardRecommendationBlockProps) {
+  // 自動檢測格式
+  const isSimple = simple ?? (cards.length > 0 && isSimpleFormat(cards[0]));
+  
   return (
-    <div className="space-y-4">
+    <div className="space-y-2 my-4">
       {title && (
-        <h2 className="text-xl font-bold flex items-center gap-2">
-          <span className="text-2xl">💳</span>
+        <h3 className="text-lg font-bold flex items-center gap-2">
+          <span>💳</span>
           {title}
-        </h2>
+        </h3>
       )}
       
-      {cards.map((card, index) => (
-        <CardRecommendationItem 
-          key={card.id} 
-          card={card} 
-          index={index}
-          showRanking={showRanking}
-        />
-      ))}
+      {isSimple ? (
+        // 簡化模式：緊湊的卡片列表
+        <div className="space-y-2">
+          {(cards as SimpleCardRecommendation[]).map((card, index) => (
+            <SimpleCardItem 
+              key={card.cardId} 
+              card={card} 
+              index={index}
+              showRanking={showRanking}
+            />
+          ))}
+        </div>
+      ) : (
+        // 完整模式：詳細的卡片比較
+        <div className="space-y-4">
+          {(cards as CardRecommendation[]).map((card, index) => (
+            <CardRecommendationItem 
+              key={card.id} 
+              card={card} 
+              index={index}
+              showRanking={showRanking}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
