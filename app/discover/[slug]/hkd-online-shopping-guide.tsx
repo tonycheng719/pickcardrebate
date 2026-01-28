@@ -9,12 +9,47 @@ import {
   Star, Target, Calculator
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { PromoFAQ } from "@/lib/types";
 import { 
   CardRecommendationBlock, 
   QuickComparisonTable,
   type CardRecommendation 
 } from "@/components/card-recommendation-block";
+import { useDataset } from "@/lib/admin/data-store";
+import { HK_CARDS } from "@/lib/data/cards";
+
+// 卡片圖片組件（帶連結）
+function CardImageCell({ id, name }: { id: string; name: string }) {
+  const { cards: dbCards } = useDataset();
+  const card = dbCards.find(c => c.id === id) || HK_CARDS.find(c => c.id === id);
+  
+  return (
+    <Link href={`/cards/${id}`} className="flex items-center gap-2 group">
+      {/* 卡片圖片 */}
+      <div className={`relative w-12 h-8 rounded overflow-hidden shadow-sm flex-shrink-0 ${card?.style?.bgColor || 'bg-gray-200'}`}>
+        {card?.imageUrl ? (
+          <Image
+            src={card.imageUrl}
+            alt={name}
+            fill
+            className="object-cover"
+            sizes="48px"
+            unoptimized
+          />
+        ) : (
+          <div className={`w-full h-full flex items-center justify-center ${card?.style?.textColor || 'text-white'}`}>
+            <span className="text-[8px] font-bold">{card?.bank?.slice(0, 2) || ''}</span>
+          </div>
+        )}
+      </div>
+      {/* 卡片名稱 */}
+      <span className="font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+        {name}
+      </span>
+    </Link>
+  );
+}
 
 // FAQ 數據 for Schema
 export const hkdOnlineShoppingFaqData: PromoFAQ[] = [
@@ -140,8 +175,8 @@ export function HkdOnlineShoppingGuide() {
                 <tbody className="divide-y dark:divide-gray-800">
                   <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                     <td className="py-3 px-4"><Badge variant="outline">🥇 1</Badge></td>
-                    <td className="py-3 px-4 font-medium">
-                      <Link href="/cards/fubon-incard" className="hover:text-blue-600">富邦 iN VISA 白金卡</Link>
+                    <td className="py-3 px-4">
+                      <CardImageCell id="fubon-incard" name="富邦 iN VISA 白金卡" />
                     </td>
                     <td className="py-3 px-4 text-green-600 font-bold">8%</td>
                     <td className="py-3 px-4">$3,290</td>
@@ -149,8 +184,8 @@ export function HkdOnlineShoppingGuide() {
                   </tr>
                   <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                     <td className="py-3 px-4"><Badge variant="outline">🥈 2</Badge></td>
-                    <td className="py-3 px-4 font-medium">
-                      <Link href="/cards/sim-credit-card" className="hover:text-blue-600">sim Credit Card</Link>
+                    <td className="py-3 px-4">
+                      <CardImageCell id="sim-credit-card" name="sim Credit Card" />
                     </td>
                     <td className="py-3 px-4 text-green-600 font-bold">8%</td>
                     <td className="py-3 px-4">$2,500</td>
@@ -185,8 +220,8 @@ export function HkdOnlineShoppingGuide() {
                 <tbody className="divide-y dark:divide-gray-800">
                   <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                     <td className="py-3 px-4"><Badge variant="outline">🥉 3</Badge></td>
-                    <td className="py-3 px-4 font-medium">
-                      <Link href="/cards/aeon-wakuwaku" className="hover:text-blue-600">AEON WAKUWAKU</Link>
+                    <td className="py-3 px-4">
+                      <CardImageCell id="aeon-wakuwaku" name="AEON WAKUWAKU" />
                     </td>
                     <td className="py-3 px-4 text-blue-600 font-bold">6%</td>
                     <td className="py-3 px-4">$3,333</td>
@@ -194,8 +229,8 @@ export function HkdOnlineShoppingGuide() {
                   </tr>
                   <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                     <td className="py-3 px-4"><Badge variant="outline">4</Badge></td>
-                    <td className="py-3 px-4 font-medium">
-                      <Link href="/cards/cncbi-motion" className="hover:text-blue-600">信銀國際 Motion</Link>
+                    <td className="py-3 px-4">
+                      <CardImageCell id="cncbi-motion" name="信銀國際 Motion" />
                     </td>
                     <td className="py-3 px-4 text-blue-600 font-bold">6%</td>
                     <td className="py-3 px-4">$3,333</td>
@@ -230,8 +265,8 @@ export function HkdOnlineShoppingGuide() {
                 <tbody className="divide-y dark:divide-gray-800">
                   <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                     <td className="py-3 px-4"><Badge variant="outline">5</Badge></td>
-                    <td className="py-3 px-4 font-medium">
-                      <Link href="/cards/hangseng-mmpower" className="hover:text-blue-600">恒生 MMPOWER</Link>
+                    <td className="py-3 px-4">
+                      <CardImageCell id="hangseng-mmpower" name="恒生 MMPOWER" />
                     </td>
                     <td className="py-3 px-4 font-bold">5%</td>
                     <td className="py-3 px-4">$10,000</td>
@@ -239,8 +274,8 @@ export function HkdOnlineShoppingGuide() {
                   </tr>
                   <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                     <td className="py-3 px-4"><Badge variant="outline">6</Badge></td>
-                    <td className="py-3 px-4 font-medium">
-                      <Link href="/cards/boc-chill" className="hover:text-blue-600">中銀 Chill Card</Link>
+                    <td className="py-3 px-4">
+                      <CardImageCell id="boc-chill" name="中銀 Chill Card" />
                     </td>
                     <td className="py-3 px-4 font-bold">5%</td>
                     <td className="py-3 px-4">$3,260</td>
@@ -248,8 +283,8 @@ export function HkdOnlineShoppingGuide() {
                   </tr>
                   <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                     <td className="py-3 px-4"><Badge variant="outline">7</Badge></td>
-                    <td className="py-3 px-4 font-medium">
-                      <Link href="/cards/hsbc-red" className="hover:text-blue-600">滙豐 Red 信用卡</Link>
+                    <td className="py-3 px-4">
+                      <CardImageCell id="hsbc-red" name="滙豐 Red 信用卡" />
                     </td>
                     <td className="py-3 px-4 font-bold">4%</td>
                     <td className="py-3 px-4 text-green-600 font-semibold">$10,000</td>
@@ -257,8 +292,8 @@ export function HkdOnlineShoppingGuide() {
                   </tr>
                   <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                     <td className="py-3 px-4"><Badge variant="outline">8</Badge></td>
-                    <td className="py-3 px-4 font-medium">
-                      <Link href="/cards/dbs-live-fresh" className="hover:text-blue-600">DBS Live Fresh</Link>
+                    <td className="py-3 px-4">
+                      <CardImageCell id="dbs-live-fresh" name="DBS Live Fresh" />
                     </td>
                     <td className="py-3 px-4 font-bold">4%</td>
                     <td className="py-3 px-4">$4,167</td>
