@@ -2150,6 +2150,7 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
     
     // Get FAQ data for this specific guide
     const faqData = getGuideFaqData(slug) || [];
+    console.log(`[DEBUG] Guide FAQ - slug: ${slug}, faqData length: ${faqData.length}`);
 
     // Fetch article rating data for SEO
     let avgRating = 0;
@@ -2268,11 +2269,11 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
             {renderGuideContent(slug)}
             
             {/* FAQ Section for Guides */}
-            {faqData.length > 0 ? (
-              <section id="faq" className="mt-10 border-t dark:border-gray-700 pt-8">
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                  <span className="text-2xl">❓</span> 常見問題
-                </h2>
+            <section id="faq" className="mt-10 border-t dark:border-gray-700 pt-8">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                <span className="text-2xl">❓</span> 常見問題
+              </h2>
+              {faqData.length > 0 ? (
                 <div className="space-y-3">
                   {faqData.map((faq: PromoFAQ, index: number) => (
                     <details 
@@ -2289,8 +2290,10 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
                     </details>
                   ))}
                 </div>
-              </section>
-            ) : null}
+              ) : (
+                <p className="text-gray-500 dark:text-gray-400">暫無常見問題。</p>
+              )}
+            </section>
             
             {/* Article Reviews Section */}
             <ArticleReviews articleId={slug} articleTitle={guide.title} />
