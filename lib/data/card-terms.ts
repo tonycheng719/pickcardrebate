@@ -9254,8 +9254,10 @@ export const cardTerms: CardTerms[] = [
     rewardRates: [
       { 
         category: "日本 Donki / Don Quijote 實體店", 
-        rate: "累積簽 ¥20,000 回 HK$80",
-        conditions: ["需於 Amex HK App 登記", "只限日圓簽賬", "網店不適用"],
+        totalRate: 0.4, 
+        baseRate: 0.4, 
+        extraRate: 0,
+        note: "累積簽 ¥20,000 回 HK$80（約 0.4% 回贈）",
       },
     ],
     exclusions: [
@@ -9298,8 +9300,10 @@ export const cardTerms: CardTerms[] = [
     rewardRates: [
       { 
         category: "日本 LOFT 實體店", 
-        rate: "累積簽 ¥10,000 回 HK$50",
-        conditions: ["需於 Amex HK App 登記", "只限日圓簽賬", "網店不適用"],
+        totalRate: 0.5, 
+        baseRate: 0.5, 
+        extraRate: 0,
+        note: "累積簽 ¥10,000 回 HK$50（約 0.5% 回贈）",
       },
     ],
     exclusions: [
@@ -9344,8 +9348,10 @@ export const cardTerms: CardTerms[] = [
     rewardRates: [
       { 
         category: "Osaka Metro 拍卡入閘", 
-        rate: "累積簽 ¥1,000 回 HK$5",
-        conditions: ["需於 Amex HK App 登記", "只限日圓簽賬", "僅限 Osaka Metro 營運列車"],
+        totalRate: 0.5, 
+        baseRate: 0.5, 
+        extraRate: 0,
+        note: "累積簽 ¥1,000 回 HK$5（約 0.5% 回贈）",
       },
     ],
     exclusions: [

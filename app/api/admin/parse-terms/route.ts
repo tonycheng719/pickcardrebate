@@ -116,13 +116,15 @@ function parseTermsContent(content: string, metadata: {
   for (const pattern of ratePatterns) {
     const matches = content.matchAll(pattern);
     for (const match of matches) {
-      const rate = match[1];
-      if (!seenRates.has(rate)) {
-        seenRates.add(rate);
+      const rate = parseFloat(match[1]);
+      if (!isNaN(rate) && !seenRates.has(match[1])) {
+        seenRates.add(match[1]);
         result.rewardRates.push({
           category: "一般簽賬",
-          rate: `${rate}%`,
-          conditions: [],
+          totalRate: rate,
+          baseRate: 0.4,
+          extraRate: rate - 0.4,
+          note: "",
         });
       }
     }
@@ -182,8 +184,9 @@ function generateTermsCode(terms: any): string {
     ? `    rewardRates: [
 ${terms.rewardRates.map((r: any) => `      { 
         category: "${r.category}", 
-        rate: "${r.rate}",
-        conditions: [${r.conditions.map((c: string) => `"${c}"`).join(', ')}],
+        totalRate: ${r.totalRate}, 
+        baseRate: ${r.baseRate}, 
+        extraRate: ${r.extraRate},${r.note ? `\n        note: "${r.note}",` : ''}
       },`).join('\n')}
     ],`
     : '';
