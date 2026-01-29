@@ -2268,8 +2268,8 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
             {renderGuideContent(slug)}
             
             {/* FAQ Section for Guides */}
-            {faqData && faqData.length > 0 && (
-              <section className="mt-10 border-t dark:border-gray-700 pt-8">
+            {faqData.length > 0 ? (
+              <section id="faq" className="mt-10 border-t dark:border-gray-700 pt-8">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
                   <span className="text-2xl">❓</span> 常見問題
                 </h2>
@@ -2290,7 +2290,7 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
                   ))}
                 </div>
               </section>
-            )}
+            ) : null}
             
             {/* Article Reviews Section */}
             <ArticleReviews articleId={slug} articleTitle={guide.title} />
