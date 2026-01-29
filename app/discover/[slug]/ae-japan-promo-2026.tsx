@@ -2,7 +2,8 @@
 
 import React from "react";
 import Link from "next/link";
-import { Calendar, CreditCard, MapPin, Train, ShoppingBag, Store, AlertTriangle, ExternalLink, CheckCircle, Gift, Clock } from "lucide-react";
+import { Calendar, CreditCard, MapPin, Train, ShoppingBag, Store, AlertTriangle, ExternalLink, Gift, Clock } from "lucide-react";
+import { ApplicableCardList } from "@/components/applicable-card-list";
 
 export const aeJapanPromoFaqData = [
   {
@@ -201,54 +202,16 @@ export default function AEJapanPromo2026Guide() {
       </div>
 
       {/* Applicable Cards */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-        <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
-          <CreditCard className="h-5 w-5 text-blue-600" />
-          適用信用卡
-        </h2>
-        
-        <div className="space-y-3">
-          <p className="text-gray-600 dark:text-gray-400">
-            優惠適用於美國運通國際股份有限公司在香港簽發的美國運通卡（基本卡及附屬卡）：
-          </p>
-          
-          <div className="grid gap-3 md:grid-cols-2">
-            <Link 
-              href="/cards/amex-platinum" 
-              className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-            >
-              <div className="w-10 h-6 bg-gradient-to-br from-gray-300 via-gray-100 to-gray-300 rounded shadow-sm flex items-center justify-center">
-                <span className="text-xs font-bold text-gray-700">AE</span>
-              </div>
-              <span className="font-medium text-gray-700 dark:text-gray-300">美國運通白金卡</span>
-            </Link>
-            
-            <Link 
-              href="/cards/amex-blue-cash" 
-              className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-            >
-              <div className="w-10 h-6 bg-gradient-to-br from-blue-600 to-blue-800 rounded shadow-sm flex items-center justify-center">
-                <span className="text-xs font-bold text-white">AE</span>
-              </div>
-              <span className="font-medium text-gray-700 dark:text-gray-300">Amex Blue Cash 信用卡</span>
-            </Link>
-            
-            <Link 
-              href="/cards/amex-explorer" 
-              className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-            >
-              <div className="w-10 h-6 bg-slate-800 rounded shadow-sm flex items-center justify-center">
-                <span className="text-xs font-bold text-white">AE</span>
-              </div>
-              <span className="font-medium text-gray-700 dark:text-gray-300">Amex Explorer</span>
-            </Link>
-          </div>
-          
-          <p className="text-sm text-amber-600 dark:text-amber-400 mt-2">
-            ⚠️ 美國運通公司卡及由特許發卡公司簽發的美國運通卡<strong>不適用</strong>此優惠。
-          </p>
-        </div>
-      </div>
+      <ApplicableCardList
+        cards={[
+          { cardId: "amex-platinum", cardName: "美國運通白金卡" },
+          { cardId: "amex-blue-cash", cardName: "Amex Blue Cash 信用卡" },
+          { cardId: "amex-explorer", cardName: "Amex Explorer" },
+        ]}
+        title="適用信用卡"
+        description="優惠適用於美國運通國際股份有限公司在香港簽發的美國運通卡（基本卡及附屬卡）："
+        warning="美國運通公司卡及由特許發卡公司簽發的美國運通卡不適用此優惠。"
+      />
 
       {/* Important Notes */}
       <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6">
