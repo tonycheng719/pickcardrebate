@@ -77,8 +77,8 @@ import { ArticleReviews } from "@/app/discover/components/article-reviews";
 import { PageViewTracker } from "@/components/page-view-tracker";
 
 // Revalidate every 5 minutes (updated 2026-01-29)
-// Force revalidation on each request temporarily to debug caching
-export const revalidate = 0;
+// Revalidate every 5 minutes
+export const revalidate = 300;
 export const dynamicParams = true;
 
 interface PageProps {
@@ -1880,7 +1880,7 @@ function FAQSection({ faqs }: { faqs: PromoFAQ[] }) {
   return (
     <section id="faq" className="mt-10 border-t dark:border-gray-700 pt-8">
       <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-        <span className="text-2xl">❓</span> 常見問題（{faqs.length} 條）
+        <span className="text-2xl">❓</span> 常見問題
       </h2>
       <div className="space-y-3">
         {faqs.map((faq, index) => (
