@@ -3,10 +3,10 @@
 import { useState, useMemo } from "react";
 import { cardTerms, isTermsExpired, isTermsExpiringSoon } from "@/lib/data/card-terms";
 import { HK_CARDS } from "@/lib/data/cards";
-import { ExternalLink, FileText, AlertTriangle, CheckCircle, Clock, Plus, X, Copy, Sparkles, Loader2 } from "lucide-react";
+import { ExternalLink, FileText, AlertTriangle, CheckCircle, Clock, Plus, X, Copy, Sparkles, Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
-type FilterStatus = "all" | "active" | "expiring" | "expired";
+type FilterStatus = "all" | "active" | "expiring" | "expired" | "deletable";
 
 export default function CardTermsAdminPage() {
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("all");
@@ -50,13 +50,26 @@ export default function CardTermsAdminPage() {
     return "active";
   };
 
-  // 計算剩餘天數
+  // 計算剩餘天數（正數 = 還有幾天，負數 = 已過期幾天）
   const getDaysRemaining = (endDate?: string) => {
     if (!endDate) return null;
     const end = new Date(endDate);
     const now = new Date();
     const diff = Math.ceil((end.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
     return diff;
+  };
+
+  // 檢查是否可刪除（過期超過7天）
+  const isDeletable = (terms: typeof cardTerms[0]) => {
+    const days = getDaysRemaining(terms.promoEndDate);
+    return days !== null && days < -7;
+  };
+
+  // 獲取過期天數（用於顯示）
+  const getDaysExpired = (endDate?: string) => {
+    const days = getDaysRemaining(endDate);
+    if (days === null || days >= 0) return 0;
+    return Math.abs(days);
   };
 
   // 從 URL 提取檔案名
@@ -78,7 +91,9 @@ export default function CardTermsAdminPage() {
   const filteredTerms = useMemo(() => {
     let result = [...cardTerms];
 
-    if (filterStatus !== "all") {
+    if (filterStatus === "deletable") {
+      result = result.filter(t => isDeletable(t));
+    } else if (filterStatus !== "all") {
       result = result.filter(t => getStatus(t) === filterStatus);
     }
 
@@ -110,8 +125,17 @@ export default function CardTermsAdminPage() {
     const expiring = cardTerms.filter(t => getStatus(t) === "expiring").length;
     const active = cardTerms.filter(t => getStatus(t) === "active").length;
     const multiCard = cardTerms.filter(t => t.applicableCards && t.applicableCards.length > 0).length;
-    return { expired, expiring, active, total: cardTerms.length, multiCard };
+    const deletable = cardTerms.filter(t => isDeletable(t)).length;
+    return { expired, expiring, active, total: cardTerms.length, multiCard, deletable };
   }, []);
+
+  // 可刪除的條款列表
+  const deletableTerms = useMemo(() => {
+    return cardTerms.filter(t => isDeletable(t));
+  }, []);
+
+  // 顯示刪除指引 Modal
+  const [showDeleteGuide, setShowDeleteGuide] = useState(false);
 
   // 解析條款
   const handleParseTerms = async () => {
@@ -186,13 +210,24 @@ export default function CardTermsAdminPage() {
           <FileText className="h-6 w-6" />
           條款管理
         </h1>
-        <button
-          onClick={() => { setShowAddForm(true); resetForm(); }}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          <Plus className="h-4 w-4" />
-          新增條款
-        </button>
+        <div className="flex items-center gap-2">
+          {stats.deletable > 0 && (
+            <button
+              onClick={() => setShowDeleteGuide(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+            >
+              <Trash2 className="h-4 w-4" />
+              清理舊條款 ({stats.deletable})
+            </button>
+          )}
+          <button
+            onClick={() => { setShowAddForm(true); resetForm(); }}
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            <Plus className="h-4 w-4" />
+            新增條款
+          </button>
+        </div>
       </div>
 
       {/* 新增條款表單 Modal */}
@@ -400,8 +435,104 @@ export default function CardTermsAdminPage() {
         </div>
       )}
 
+      {/* 刪除舊條款指引 Modal */}
+      {showDeleteGuide && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 flex items-center justify-between">
+              <h2 className="text-xl font-bold flex items-center gap-2">
+                <Trash2 className="h-5 w-5 text-red-500" />
+                清理過期條款（{deletableTerms.length} 條）
+              </h2>
+              <button
+                onClick={() => setShowDeleteGuide(false)}
+                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* 說明 */}
+              <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
+                <h3 className="font-medium text-amber-800 dark:text-amber-300 mb-2">⚠️ 注意事項</h3>
+                <ul className="text-sm text-amber-700 dark:text-amber-400 space-y-1">
+                  <li>• 以下條款已過期超過 <strong>7 天</strong>，可以安全刪除</li>
+                  <li>• 刪除前請確認不再需要這些條款資料</li>
+                  <li>• 刪除後無法復原，請謹慎操作</li>
+                </ul>
+              </div>
+
+              {/* 可刪除條款列表 */}
+              <div>
+                <h3 className="font-medium mb-3">可刪除的條款：</h3>
+                <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                  <table className="w-full text-sm">
+                    <thead className="bg-gray-50 dark:bg-gray-900">
+                      <tr>
+                        <th className="px-3 py-2 text-left">Card ID</th>
+                        <th className="px-3 py-2 text-left">卡片/條款名稱</th>
+                        <th className="px-3 py-2 text-left">過期日期</th>
+                        <th className="px-3 py-2 text-left">已過期</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                      {deletableTerms.map((terms) => (
+                        <tr key={terms.cardId} className="bg-red-50 dark:bg-red-900/10">
+                          <td className="px-3 py-2 font-mono text-xs">{terms.cardId}</td>
+                          <td className="px-3 py-2">
+                            <div>{terms.cardName}</div>
+                            <div className="text-xs text-gray-500">{terms.bank}</div>
+                          </td>
+                          <td className="px-3 py-2 text-gray-500">{terms.promoEndDate}</td>
+                          <td className="px-3 py-2 text-red-600">{getDaysExpired(terms.promoEndDate)} 天</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* 刪除指引 */}
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                <h3 className="font-medium text-blue-800 dark:text-blue-300 mb-2">📝 刪除步驟</h3>
+                <ol className="text-sm text-blue-700 dark:text-blue-400 space-y-2 list-decimal list-inside">
+                  <li>打開 <code className="bg-blue-100 dark:bg-blue-900 px-1 rounded">lib/data/card-terms.ts</code></li>
+                  <li>搜尋以下 cardId 並刪除整個條款物件：</li>
+                </ol>
+                <div className="mt-3 bg-gray-900 text-gray-100 rounded-lg p-3 font-mono text-xs overflow-x-auto">
+                  {deletableTerms.map(t => `"${t.cardId}"`).join("\n")}
+                </div>
+                <button
+                  onClick={() => {
+                    const cardIds = deletableTerms.map(t => t.cardId).join("\n");
+                    navigator.clipboard.writeText(cardIds);
+                    toast.success("已複製 Card ID 列表！");
+                  }}
+                  className="mt-3 flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
+                >
+                  <Copy className="h-4 w-4" />
+                  複製 Card ID 列表
+                </button>
+              </div>
+
+              {/* VS Code 搜尋提示 */}
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <h3 className="font-medium mb-2">💡 VS Code 快速刪除技巧</h3>
+                <ol className="text-sm text-gray-600 dark:text-gray-400 space-y-1 list-decimal list-inside">
+                  <li>按 <kbd className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-600 rounded text-xs">Cmd+Shift+F</kbd> 開啟全域搜尋</li>
+                  <li>搜尋 cardId（例如：<code className="bg-gray-200 dark:bg-gray-600 px-1 rounded">{deletableTerms[0]?.cardId || "xxx-xxx"}</code>）</li>
+                  <li>找到後刪除整個 <code className="bg-gray-200 dark:bg-gray-600 px-1 rounded">{`{ cardId: "...", ... }`}</code> 物件</li>
+                  <li>注意刪除物件後的逗號處理</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* 統計卡片 */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6">
         <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
           <div className="text-2xl font-bold">{stats.total}</div>
           <div className="text-sm text-gray-500">總條款</div>
@@ -418,6 +549,13 @@ export default function CardTermsAdminPage() {
           <div className="text-2xl font-bold text-red-600">{stats.expired}</div>
           <div className="text-sm text-red-600">已到期</div>
         </div>
+        <div 
+          className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 border border-gray-300 dark:border-gray-600 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          onClick={() => stats.deletable > 0 && setShowDeleteGuide(true)}
+        >
+          <div className="text-2xl font-bold text-gray-600 dark:text-gray-400">{stats.deletable}</div>
+          <div className="text-sm text-gray-500">可刪除（&gt;7天）</div>
+        </div>
         <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 border border-purple-200 dark:border-purple-800">
           <div className="text-2xl font-bold text-purple-600">{stats.multiCard}</div>
           <div className="text-sm text-purple-600">多卡條款</div>
@@ -426,8 +564,8 @@ export default function CardTermsAdminPage() {
 
       {/* 過濾器 */}
       <div className="flex flex-wrap gap-4 mb-6">
-        <div className="flex gap-2">
-          {(["all", "active", "expiring", "expired"] as FilterStatus[]).map((status) => (
+        <div className="flex flex-wrap gap-2">
+          {(["all", "active", "expiring", "expired", "deletable"] as FilterStatus[]).map((status) => (
             <button
               key={status}
               onClick={() => setFilterStatus(status)}
@@ -441,6 +579,7 @@ export default function CardTermsAdminPage() {
               {status === "active" && "🟢 有效"}
               {status === "expiring" && `🟡 快到期 (${stats.expiring})`}
               {status === "expired" && `🔴 已到期 (${stats.expired})`}
+              {status === "deletable" && `🗑️ 可刪除 (${stats.deletable})`}
             </button>
           ))}
         </div>
@@ -530,24 +669,32 @@ export default function CardTermsAdminPage() {
                       )}
                     </td>
                     <td className="px-4 py-3">
-                      {status === "active" && (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                          <CheckCircle className="h-3 w-3" />
-                          有效
-                        </span>
-                      )}
-                      {status === "expiring" && (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
-                          <Clock className="h-3 w-3" />
-                          {daysRemaining}天
-                        </span>
-                      )}
-                      {status === "expired" && (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">
-                          <AlertTriangle className="h-3 w-3" />
-                          已到期
-                        </span>
-                      )}
+                      <div className="flex flex-col gap-1">
+                        {status === "active" && (
+                          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                            <CheckCircle className="h-3 w-3" />
+                            有效
+                          </span>
+                        )}
+                        {status === "expiring" && (
+                          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
+                            <Clock className="h-3 w-3" />
+                            {daysRemaining}天
+                          </span>
+                        )}
+                        {status === "expired" && (
+                          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">
+                            <AlertTriangle className="h-3 w-3" />
+                            已到期 {daysRemaining && Math.abs(daysRemaining)}天
+                          </span>
+                        )}
+                        {isDeletable(terms) && (
+                          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300">
+                            <Trash2 className="h-3 w-3" />
+                            可刪除
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="px-4 py-3 text-sm text-gray-500">
                       {terms.lastUpdated}
