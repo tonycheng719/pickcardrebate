@@ -2240,6 +2240,31 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
           <article className="bg-white dark:bg-gray-900 rounded-3xl shadow-sm border dark:border-gray-800 p-6 md:p-10">
             {renderGuideContent(slug)}
             
+            {/* FAQ Section for Guides */}
+            {faqData && faqData.length > 0 && (
+              <section className="mt-10 border-t dark:border-gray-700 pt-8">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                  <span className="text-2xl">❓</span> 常見問題
+                </h2>
+                <div className="space-y-3">
+                  {faqData.map((faq: PromoFAQ, index: number) => (
+                    <details 
+                      key={index} 
+                      className="group bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden"
+                    >
+                      <summary className="flex items-center justify-between p-4 cursor-pointer list-none font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <span>{faq.question}</span>
+                        <ChevronDown className="h-5 w-5 text-gray-500 group-open:rotate-180 transition-transform" />
+                      </summary>
+                      <div className="px-4 pb-4 text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>{faq.answer}</ReactMarkdown>
+                      </div>
+                    </details>
+                  ))}
+                </div>
+              </section>
+            )}
+            
             {/* Article Reviews Section */}
             <ArticleReviews articleId={slug} articleTitle={guide.title} />
             
