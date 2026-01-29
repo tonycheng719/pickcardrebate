@@ -22,6 +22,22 @@ import { Promo } from "../types";
  */
 
 export const PROMOS: Promo[] = [
+  // ========== 🎌 日本優惠（新增） ==========
+  {
+    id: "ae-japan-promo-2026",
+    title: "🎌 AE 日本簽賬優惠｜Donki $80 回贈、LOFT $50 回贈、Osaka Metro $5 回贈！需登記！",
+    merchant: "American Express",
+    description: "AE 信用卡日本新春優惠！日本 Donki 簽 ¥20,000 回 HK$80（最多2次）、LOFT 簽 ¥10,000 回 HK$50（最多2次）、Osaka Metro 簽 ¥1,000 回 HK$5（最多2次）。需在 Amex HK App 登記！",
+    imageUrl: "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?q=80&w=2070&auto=format&fit=crop",
+    expiryDate: "2026-04-12",
+    relatedCardIds: ["amex-platinum", "amex-blue-cash", "amex-explorer"],
+    tags: ["日本", "Donki", "LOFT", "Osaka Metro", "需登記", "AE"],
+    url: "",
+    updatedAt: "2026-01-29",
+    sortOrder: 1010, // 高優先顯示
+    isPinned: true,
+    pinnedUntil: "2026-02-15", // 置頂到2月中
+  },
   // ========== 📊 攻略文章（置頂） ==========
   {
     id: "foreign-currency-online-shopping-2026",

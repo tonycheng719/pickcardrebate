@@ -1917,7 +1917,7 @@ export const HK_CARDS: CreditCard[] = [
     tags: ["里數", "旅遊保險", "天星小輪$1"],
     sellingPoints: ["積分無限期", "指定簽賬 HK$3.6/里", "免費旅遊保險及貴賓室 (年費豁免)", "⛴️天星小輪$1優惠"],
     officialApplyUrl: "https://www.americanexpress.com/hk/credit-cards/explorer-credit-card/",
-    note: "💳 **支付寶（內地錢包）優惠**（至2026/6/30）：每月累積滿HK$300回贈HK$15，最多6次共HK$90！[查看詳情](/discover/ae-alipay-mainland-2026)\n\n⛴️ **天星小輪 $1 優惠**（至2025/12/31）：在閘機按「Amex $1」鍵再拍卡即可！\n\n⚠️ 部分商戶不接受美國運通。",
+    note: "🎌 **日本簽賬優惠**（至2026/4/12）：Donki ¥20,000 回 HK$80、LOFT ¥10,000 回 HK$50、Osaka Metro ¥1,000 回 HK$5！需 Amex App 登記！[查看詳情](/discover/ae-japan-promo-2026)\n\n💳 **支付寶（內地錢包）優惠**（至2026/6/30）：每月累積滿HK$300回贈HK$15，最多6次共HK$90！[查看詳情](/discover/ae-alipay-mainland-2026)\n\n⛴️ **天星小輪 $1 優惠**（至2025/12/31）：在閘機按「Amex $1」鍵再拍卡即可！\n\n⚠️ 部分商戶不接受美國運通。",
     hidden: true, // 暫時隱藏
   },
   {
@@ -1941,7 +1941,7 @@ export const HK_CARDS: CreditCard[] = [
     officialApplyUrl: "https://www.americanexpress.com/hk/zh/credit-cards/platinum-card/",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=500&a=228&sub_id1=pickcardrebate&sub_id2=web&promo_id=amex-platinum-moneyhero-20260130",
     sellingPoints: ["無限次免費進入全球機場貴賓室", "免費旅遊保險", "24小時禮賓服務", "⛴️天星小輪$1優惠"],
-    note: "## 🔥 MoneyHero 限時獨家優惠\n**優惠期：2026年1月14日下午6時至1月30日下午6時**\n\n### 🎁 獨家禮品（6選1）\n| 禮品 | 價值 |\n|:---|:---:|\n| LG 43吋 QNED 4K QNED80 智能電視 | **$5,480** |\n| Bambu Lab P2S 3D Printer 單機 (國際版) | **$4,999** |\n| Dyson PencilVac Fluffycones 無線吸塵機 | **$4,990** |\n| HK$4,500 Apple Store 禮品卡 | $4,500 |\n| HK$4,500 HKTVmall電子購物禮券 | $4,500 |\n| HK$4,500 現金回贈 (轉數快) | $4,500 |\n\n### 📋 申請條件\n1. ✅ 全新美國運通白金卡客戶\n2. ✅ 收到換領表格後 **7日內** 填妥及遞交\n3. ✅ 2026年2月28日或之前成功獲批\n4. ✅ 發卡後 **2個月內** 簽賬滿 **$15,000** + 已清繳年費\n\n⚠️ **注意**：領取 MoneyHero 獨家優惠**不能同時獲取**銀行迎新優惠！\n\n---\n\n## 💎 高端禮遇\n- ✈️ **無限次** Priority Pass 全球機場貴賓室\n- 🛡️ **免費旅遊保險**\n- 🎩 **24小時禮賓服務**\n- ⛴️ **天星小輪 $1 優惠**\n\n💳 **支付寶（內地錢包）優惠**（至2026/6/30）：[查看詳情](/discover/ae-alipay-mainland-2026)\n\n📅 **2026年1月22日更新**",
+    note: "## 🔥 MoneyHero 限時獨家優惠\n**優惠期：2026年1月14日下午6時至1月30日下午6時**\n\n### 🎁 獨家禮品（6選1）\n| 禮品 | 價值 |\n|:---|:---:|\n| LG 43吋 QNED 4K QNED80 智能電視 | **$5,480** |\n| Bambu Lab P2S 3D Printer 單機 (國際版) | **$4,999** |\n| Dyson PencilVac Fluffycones 無線吸塵機 | **$4,990** |\n| HK$4,500 Apple Store 禮品卡 | $4,500 |\n| HK$4,500 HKTVmall電子購物禮券 | $4,500 |\n| HK$4,500 現金回贈 (轉數快) | $4,500 |\n\n### 📋 申請條件\n1. ✅ 全新美國運通白金卡客戶\n2. ✅ 收到換領表格後 **7日內** 填妥及遞交\n3. ✅ 2026年2月28日或之前成功獲批\n4. ✅ 發卡後 **2個月內** 簽賬滿 **$15,000** + 已清繳年費\n\n⚠️ **注意**：領取 MoneyHero 獨家優惠**不能同時獲取**銀行迎新優惠！\n\n---\n\n## 🎌 日本簽賬優惠（至2026/4/12）\n| 商戶 | 簽賬要求 | 回贈 | 最多 |\n|:---|:---:|:---:|:---:|\n| Donki | ¥20,000 | HK$80 | 2次 |\n| LOFT | ¥10,000 | HK$50 | 2次 |\n| Osaka Metro | ¥1,000 | HK$5 | 2次 |\n\n⚠️ 需在 Amex HK App 登記！[查看詳情](/discover/ae-japan-promo-2026)\n\n---\n\n## 💎 高端禮遇\n- ✈️ **無限次** Priority Pass 全球機場貴賓室\n- 🛡️ **免費旅遊保險**\n- 🎩 **24小時禮賓服務**\n- ⛴️ **天星小輪 $1 優惠**\n\n💳 **支付寶（內地錢包）優惠**（至2026/6/30）：[查看詳情](/discover/ae-alipay-mainland-2026)\n\n📅 **2026年1月29日更新**",
     promoEndDate: "2026-01-30",
     promoName: "MoneyHero限時獨家優惠",
   },
@@ -1964,7 +1964,7 @@ export const HK_CARDS: CreditCard[] = [
     officialApplyUrl: "https://www.americanexpress.com/hk/zh/credit-cards/blue-cash-credit-card/",
     applyUrl: "https://www.americanexpress.com/hk/zh/credit-cards/blue-cash-credit-card/",
     sellingPoints: ["永久免年費", "超市/HKTVmall 2%", "本地零售 1.2%", "⛴️天星小輪$1優惠"],
-    note: "💳 **支付寶（內地錢包）優惠**（至2026/6/30）：每月累積滿HK$300回贈HK$15，最多6次共HK$90！[查看詳情](/discover/ae-alipay-mainland-2026)\n\n💰 **永久免年費**的 Amex 現金回贈卡！超市及 HKTVmall 簽賬可享 2% 回贈，其他本地零售 1.2%。\n\n⛴️ **天星小輪 $1 優惠**（至2025/12/31）：在閘機按「Amex $1」鍵再拍卡即可！\n\n⚠️ 部分商戶不接受美國運通。",
+    note: "🎌 **日本簽賬優惠**（至2026/4/12）：Donki ¥20,000 回 HK$80、LOFT ¥10,000 回 HK$50、Osaka Metro ¥1,000 回 HK$5！需 Amex App 登記！[查看詳情](/discover/ae-japan-promo-2026)\n\n💳 **支付寶（內地錢包）優惠**（至2026/6/30）：每月累積滿HK$300回贈HK$15，最多6次共HK$90！[查看詳情](/discover/ae-alipay-mainland-2026)\n\n💰 **永久免年費**的 Amex 現金回贈卡！超市及 HKTVmall 簽賬可享 2% 回贈，其他本地零售 1.2%。\n\n⛴️ **天星小輪 $1 優惠**（至2025/12/31）：在閘機按「Amex $1」鍵再拍卡即可！\n\n⚠️ 部分商戶不接受美國運通。\n\n📅 **2026年1月29日更新**",
   },
   {
     id: "mox-credit",

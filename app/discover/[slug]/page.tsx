@@ -68,6 +68,7 @@ import { OctopusAavsCreditCardGuide, octopusAavsCreditCardFaqData } from "./octo
 import { CostcoCreditCardGuide, costcoCreditCardFaqData } from "./costco-credit-card-guide";
 import { WeChatPayCreditCardGuide, wechatPayCreditCardFaqData } from "./wechat-pay-credit-card-guide";
 import { HkdOnlineShoppingGuide, hkdOnlineShoppingFaqData } from "./hkd-online-shopping-guide";
+import AEJapanPromo2026Guide, { aeJapanPromoFaqData } from "./ae-japan-promo-2026";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 import { CardMarkdownRenderer } from "@/app/discover/components/card-markdown-renderer";
 import { ArticleTracker } from "@/app/discover/components/article-tracker";
@@ -99,6 +100,29 @@ const GUIDES: Record<string, {
   lastUpdated?: string; // 最後更新日期 (optional, defaults to current date)
   readTime: string;
 }> = {
+  "ae-japan-promo-2026": {
+    id: "ae-japan-promo-2026",
+    title: "AE 日本簽賬優惠｜Donki $80 回贈・LOFT $50 回贈・Osaka Metro $5 回贈",
+    seoTitle: "AE 日本簽賬優惠 2026｜美國運通 Donki/LOFT/Osaka Metro 回贈攻略｜香港",
+    heroTitle: "🎌 AE 日本簽賬優惠",
+    heroSubtitle: "Donki・LOFT・Osaka Metro 回贈！",
+    description: "AE 信用卡日本新春優惠！日本 Donki 簽 ¥20,000 回 HK$80、LOFT 簽 ¥10,000 回 HK$50、Osaka Metro 簽 ¥1,000 回 HK$5，需在 Amex HK App 登記！",
+    content: "ae-japan-promo-2026",
+    imageUrl: "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?q=80&w=2070&auto=format&fit=crop",
+    tags: ["日本", "Donki", "LOFT", "Osaka Metro", "AE", "American Express"],
+    keywords: [
+      "AE 日本",
+      "美國運通 日本",
+      "Donki 信用卡",
+      "Don Quijote 回贈",
+      "LOFT 信用卡",
+      "Osaka Metro 信用卡",
+      "日本旅行 信用卡",
+    ],
+    publishDate: "2026-01-29",
+    lastUpdated: "2026-01-29",
+    readTime: "4 分鐘",
+  },
   "overseas-fee": {
     id: "overseas-fee",
     title: "海外簽賬手續費完全攻略｜DCC、CBF 陷阱拆解",
@@ -1892,6 +1916,8 @@ function getGuideFaqData(guideId: string) {
       return wechatPayCreditCardFaqData;
     case "hkd-online-shopping-2026":
       return hkdOnlineShoppingFaqData;
+    case "ae-japan-promo-2026":
+      return aeJapanPromoFaqData;
     case "debit-card-guide":
       return debitCardFaqData;
     case "miles-vs-cashback":
@@ -1996,6 +2022,8 @@ function renderGuideContent(guideId: string) {
       return <WeChatPayCreditCardGuide />;
     case "hkd-online-shopping-2026":
       return <HkdOnlineShoppingGuide />;
+    case "ae-japan-promo-2026":
+      return <AEJapanPromo2026Guide />;
     case "debit-card-guide":
       return <DebitCardGuide />;
     case "miles-vs-cashback":
