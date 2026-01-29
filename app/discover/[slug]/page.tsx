@@ -76,7 +76,7 @@ import { ArticleTracker } from "@/app/discover/components/article-tracker";
 import { ArticleReviews } from "@/app/discover/components/article-reviews";
 import { PageViewTracker } from "@/components/page-view-tracker";
 
-// Revalidate every 5 minutes
+// Revalidate every 5 minutes (updated 2026-01-29)
 export const revalidate = 300;
 export const dynamicParams = true;
 
