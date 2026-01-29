@@ -9246,6 +9246,7 @@ export const cardTerms: CardTerms[] = [
     promoStartDate: "2026-01-27",
     promoEndDate: "2026-04-12",
     rewardCap: {
+      type: "total",
       amount: 160,
       period: "promo",
       note: "每張卡最多 2 次回贈，每次 HK$80",
@@ -9289,6 +9290,7 @@ export const cardTerms: CardTerms[] = [
     promoStartDate: "2026-01-27",
     promoEndDate: "2026-04-12",
     rewardCap: {
+      type: "total",
       amount: 100,
       period: "promo",
       note: "每張卡最多 2 次回贈，每次 HK$50",
@@ -9334,6 +9336,7 @@ export const cardTerms: CardTerms[] = [
     promoStartDate: "2026-01-27",
     promoEndDate: "2026-04-12",
     rewardCap: {
+      type: "total",
       amount: 10,
       period: "promo",
       note: "每張卡最多 2 次回贈，每次 HK$5",
