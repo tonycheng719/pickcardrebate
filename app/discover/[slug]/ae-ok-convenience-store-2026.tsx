@@ -48,7 +48,7 @@ export default function AeOkConvenienceStore2026Guide() {
               <Store className="h-6 w-6" />
             </div>
             <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">
-              2026年1月29日更新
+              📅 2026年1月29日更新
             </span>
           </div>
           <h1 className="text-2xl md:text-3xl font-bold mb-3">
