@@ -38,6 +38,22 @@ export const PROMOS: Promo[] = [
     isPinned: true,
     pinnedUntil: "2026-02-15", // 置頂到2月中
   },
+  // ========== 🏪 OK便利店優惠（新增） ==========
+  {
+    id: "ae-ok-convenience-store-2026",
+    title: "🏪 AE OK便利店優惠｜簽 $50 回 $10！20% 超高回贈！需登記！",
+    merchant: "American Express",
+    description: "美國運通 OK便利店優惠！單一簽賬滿 HK$50 即回 HK$10，20% 超高回贈！每張卡限用1次，需在 Amex HK App 登記，首 50,000 張卡先到先得！",
+    imageUrl: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?q=80&w=2074&auto=format&fit=crop",
+    expiryDate: "2026-02-25",
+    relatedCardIds: ["amex-platinum", "amex-blue-cash", "amex-explorer"],
+    tags: ["OK便利店", "Circle K", "需登記", "AE", "便利店"],
+    url: "",
+    updatedAt: "2026-01-29",
+    sortOrder: 1011, // 高優先顯示
+    isPinned: true,
+    pinnedUntil: "2026-02-10", // 置頂到2月初
+  },
   // ========== 📊 攻略文章（置頂） ==========
   {
     id: "foreign-currency-online-shopping-2026",

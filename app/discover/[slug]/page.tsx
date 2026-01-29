@@ -69,6 +69,7 @@ import { CostcoCreditCardGuide, costcoCreditCardFaqData } from "./costco-credit-
 import { WeChatPayCreditCardGuide, wechatPayCreditCardFaqData } from "./wechat-pay-credit-card-guide";
 import { HkdOnlineShoppingGuide, hkdOnlineShoppingFaqData } from "./hkd-online-shopping-guide";
 import AEJapanPromo2026Guide, { aeJapanPromoFaqData } from "./ae-japan-promo-2026";
+import AeOkConvenienceStore2026Guide, { aeOkConvenienceStoreFaqData } from "./ae-ok-convenience-store-2026";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 import { CardMarkdownRenderer } from "@/app/discover/components/card-markdown-renderer";
 import { ArticleTracker } from "@/app/discover/components/article-tracker";
@@ -122,6 +123,28 @@ const GUIDES: Record<string, {
     publishDate: "2026-01-29",
     lastUpdated: "2026-01-29",
     readTime: "4 分鐘",
+  },
+  "ae-ok-convenience-store-2026": {
+    id: "ae-ok-convenience-store-2026",
+    title: "AE OK便利店優惠｜簽 $50 回 $10！20% 超高回贈",
+    seoTitle: "AE OK便利店優惠 2026｜美國運通 Circle K 簽 $50 回 $10｜香港",
+    heroTitle: "🏪 AE OK便利店優惠",
+    heroSubtitle: "簽 $50 回 $10！20% 回贈！",
+    description: "美國運通 OK便利店優惠！單一簽賬滿 HK$50 即回 HK$10，20% 超高回贈！需在 Amex HK App 登記，首 50,000 張卡先到先得！",
+    content: "ae-ok-convenience-store-2026",
+    imageUrl: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?q=80&w=2074&auto=format&fit=crop",
+    tags: ["OK便利店", "Circle K", "AE", "American Express", "便利店"],
+    keywords: [
+      "AE OK便利店",
+      "美國運通 OK便利店",
+      "Circle K 信用卡",
+      "OK便利店 信用卡回贈",
+      "Amex 便利店優惠",
+      "AE 便利店",
+    ],
+    publishDate: "2026-01-29",
+    lastUpdated: "2026-01-29",
+    readTime: "3 分鐘",
   },
   "overseas-fee": {
     id: "overseas-fee",
@@ -1918,6 +1941,8 @@ function getGuideFaqData(guideId: string) {
       return hkdOnlineShoppingFaqData;
     case "ae-japan-promo-2026":
       return aeJapanPromoFaqData;
+    case "ae-ok-convenience-store-2026":
+      return aeOkConvenienceStoreFaqData;
     case "debit-card-guide":
       return debitCardFaqData;
     case "miles-vs-cashback":
@@ -2024,6 +2049,8 @@ function renderGuideContent(guideId: string) {
       return <HkdOnlineShoppingGuide />;
     case "ae-japan-promo-2026":
       return <AEJapanPromo2026Guide />;
+    case "ae-ok-convenience-store-2026":
+      return <AeOkConvenienceStore2026Guide />;
     case "debit-card-guide":
       return <DebitCardGuide />;
     case "miles-vs-cashback":
