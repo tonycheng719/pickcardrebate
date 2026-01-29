@@ -1878,9 +1878,9 @@ function FAQSection({ faqs }: { faqs: PromoFAQ[] }) {
   if (!faqs || faqs.length === 0) return null;
   
   return (
-    <section className="mt-10 border-t dark:border-gray-700 pt-8">
+    <section id="faq" className="mt-10 border-t dark:border-gray-700 pt-8">
       <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-        <span className="text-2xl">❓</span> 常見問題
+        <span className="text-2xl">❓</span> 常見問題（{faqs.length} 條）
       </h2>
       <div className="space-y-3">
         {faqs.map((faq, index) => (
@@ -1892,9 +1892,9 @@ function FAQSection({ faqs }: { faqs: PromoFAQ[] }) {
               <span>{faq.question}</span>
               <ChevronDown className="h-5 w-5 text-gray-500 group-open:rotate-180 transition-transform" />
             </summary>
-                <div className="px-4 pb-4 text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{faq.answer}</ReactMarkdown>
-                </div>
+            <div className="px-4 pb-4 text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{faq.answer}</ReactMarkdown>
+            </div>
           </details>
         ))}
       </div>
