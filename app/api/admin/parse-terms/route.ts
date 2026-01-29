@@ -20,7 +20,7 @@ function parseTermsContent(content: string, metadata: {
     rewardCap: null,
     rewardRates: [] as any[],
     exclusions: [] as string[],
-    keyTerms: [] as string[],
+    warnings: [] as string[],
     officialSource: metadata.sourceUrl || "",
     lastUpdated: new Date().toISOString().split('T')[0],
   };
@@ -101,7 +101,7 @@ function parseTermsContent(content: string, metadata: {
   for (const match of numberedMatches) {
     const term = match[2].trim();
     if (term.length > 10 && term.length < 300 && termCount < 10) {
-      result.keyTerms.push(term);
+      result.warnings.push(term);
       termCount++;
     }
   }
@@ -197,9 +197,9 @@ ${terms.exclusions.map((e: string) => `      "${e.replace(/"/g, '\\"')}",`).join
     ],`
     : '';
 
-  const keyTermsCode = terms.keyTerms.length > 0
-    ? `    keyTerms: [
-${terms.keyTerms.map((t: string) => `      "${t.replace(/"/g, '\\"')}",`).join('\n')}
+  const warningsCode = terms.warnings.length > 0
+    ? `    warnings: [
+${terms.warnings.map((t: string) => `      "${t.replace(/"/g, '\\"')}",`).join('\n')}
     ],`
     : '';
 
@@ -217,7 +217,7 @@ ${terms.promoEndDate ? `    promoEndDate: "${terms.promoEndDate}",` : ''}
 ${rewardCapCode}
 ${rewardRatesCode}
 ${exclusionsCode}
-${keyTermsCode}
+${warningsCode}
     officialSource: "${terms.officialSource}",
     lastUpdated: "${terms.lastUpdated}",
   },`;
