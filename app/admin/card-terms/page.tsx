@@ -2,7 +2,8 @@
 
 import { useState, useMemo } from "react";
 import { cardTerms, isTermsExpired, isTermsExpiringSoon } from "@/lib/data/card-terms";
-import { HK_CARDS } from "@/lib/data/cards";
+import { HK_CARDS, CreditCard } from "@/lib/data/cards";
+import { RewardRule } from "@/lib/types";
 import { ExternalLink, FileText, AlertTriangle, CheckCircle, Clock, Plus, X, Copy, Sparkles, Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -137,6 +138,40 @@ export default function CardTermsAdminPage() {
   // 顯示刪除指引 Modal
   const [showDeleteGuide, setShowDeleteGuide] = useState(false);
 
+  // 過期的 Card Rules（有 validDateRange 且過期超過 7 天）
+  interface ExpiredRule {
+    card: { id: string; name: string; bank: string };
+    rule: RewardRule;
+    daysExpired: number;
+    ruleIndex: number;
+  }
+
+  const expiredRules = useMemo(() => {
+    const result: ExpiredRule[] = [];
+    const today = new Date();
+    const sevenDaysAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+    for (const card of HK_CARDS) {
+      card.rules.forEach((rule, index) => {
+        if (rule.validDateRange?.end) {
+          const endDate = new Date(rule.validDateRange.end);
+          if (endDate < sevenDaysAgo) {
+            const daysExpired = Math.ceil((today.getTime() - endDate.getTime()) / (1000 * 60 * 60 * 24));
+            result.push({
+              card: { id: card.id, name: card.name, bank: card.bank },
+              rule,
+              daysExpired,
+              ruleIndex: index,
+            });
+          }
+        }
+      });
+    }
+
+    // 按過期天數排序（最久的在前）
+    return result.sort((a, b) => b.daysExpired - a.daysExpired);
+  }, []);
+
   // 解析條款
   const handleParseTerms = async () => {
     if (!formData.termsContent.trim()) {
@@ -211,13 +246,13 @@ export default function CardTermsAdminPage() {
           條款管理
         </h1>
         <div className="flex items-center gap-2">
-          {stats.deletable > 0 && (
+          {(stats.deletable > 0 || expiredRules.length > 0) && (
             <button
               onClick={() => setShowDeleteGuide(true)}
               className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
             >
               <Trash2 className="h-4 w-4" />
-              清理舊條款 ({stats.deletable})
+              清理過期資料 ({stats.deletable + expiredRules.length})
             </button>
           )}
           <button
@@ -526,13 +561,95 @@ export default function CardTermsAdminPage() {
                   <li>注意刪除物件後的逗號處理</li>
                 </ol>
               </div>
+
+              {/* 過期的 Card Rules */}
+              {expiredRules.length > 0 && (
+                <div className="border-t border-gray-200 dark:border-gray-700 pt-6 mt-6">
+                  <h3 className="font-bold text-lg mb-3 flex items-center gap-2 text-orange-600">
+                    <AlertTriangle className="h-5 w-5" />
+                    過期的 Card Rules（{expiredRules.length} 條）
+                  </h3>
+                  
+                  <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-4 mb-4">
+                    <p className="text-sm text-orange-700 dark:text-orange-400">
+                      以下是 <code className="bg-orange-100 dark:bg-orange-900 px-1 rounded">lib/data/cards.ts</code> 中過期超過 7 天的推廣規則。
+                      這些規則有 <code className="bg-orange-100 dark:bg-orange-900 px-1 rounded">validDateRange</code> 設定，已經不再生效。
+                    </p>
+                  </div>
+
+                  <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden mb-4">
+                    <table className="w-full text-sm">
+                      <thead className="bg-gray-50 dark:bg-gray-900">
+                        <tr>
+                          <th className="px-3 py-2 text-left">卡片</th>
+                          <th className="px-3 py-2 text-left">規則描述</th>
+                          <th className="px-3 py-2 text-left">有效期</th>
+                          <th className="px-3 py-2 text-left">已過期</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                        {expiredRules.map((item, idx) => (
+                          <tr key={`${item.card.id}-${idx}`} className="bg-orange-50 dark:bg-orange-900/10">
+                            <td className="px-3 py-2">
+                              <div className="font-medium">{item.card.name}</div>
+                              <div className="text-xs text-gray-500">{item.card.bank}</div>
+                            </td>
+                            <td className="px-3 py-2">
+                              <div className="font-mono text-xs">{item.rule.description}</div>
+                              <div className="text-xs text-gray-500 mt-1">
+                                {item.rule.percentage}% · {item.rule.matchType}
+                                {item.rule.cap && ` · Cap: $${item.rule.cap.toLocaleString()}`}
+                              </div>
+                            </td>
+                            <td className="px-3 py-2 text-gray-500 text-xs">
+                              {item.rule.validDateRange?.start} ~ {item.rule.validDateRange?.end}
+                            </td>
+                            <td className="px-3 py-2 text-orange-600 font-medium">{item.daysExpired} 天</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* 刪除 Card Rules 指引 */}
+                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                    <h4 className="font-medium text-blue-800 dark:text-blue-300 mb-2">📝 刪除 Card Rules 步驟</h4>
+                    <ol className="text-sm text-blue-700 dark:text-blue-400 space-y-2 list-decimal list-inside">
+                      <li>打開 <code className="bg-blue-100 dark:bg-blue-900 px-1 rounded">lib/data/cards.ts</code></li>
+                      <li>搜尋以下規則描述並刪除整行：</li>
+                    </ol>
+                    <div className="mt-3 bg-gray-900 text-gray-100 rounded-lg p-3 font-mono text-xs overflow-x-auto max-h-40 overflow-y-auto">
+                      {expiredRules.map((item, idx) => (
+                        <div key={idx} className="mb-1">
+                          <span className="text-gray-500">// {item.card.name}</span>
+                          {"\n"}
+                          {item.rule.description}
+                        </div>
+                      ))}
+                    </div>
+                    <button
+                      onClick={() => {
+                        const descriptions = expiredRules.map(item => 
+                          `// ${item.card.name} (${item.card.id})\n${item.rule.description}`
+                        ).join("\n\n");
+                        navigator.clipboard.writeText(descriptions);
+                        toast.success("已複製規則描述列表！");
+                      }}
+                      className="mt-3 flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
+                    >
+                      <Copy className="h-4 w-4" />
+                      複製規則描述列表
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
       )}
 
       {/* 統計卡片 */}
-      <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-6">
         <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
           <div className="text-2xl font-bold">{stats.total}</div>
           <div className="text-sm text-gray-500">總條款</div>
@@ -554,7 +671,14 @@ export default function CardTermsAdminPage() {
           onClick={() => stats.deletable > 0 && setShowDeleteGuide(true)}
         >
           <div className="text-2xl font-bold text-gray-600 dark:text-gray-400">{stats.deletable}</div>
-          <div className="text-sm text-gray-500">可刪除（&gt;7天）</div>
+          <div className="text-sm text-gray-500">可刪條款（&gt;7天）</div>
+        </div>
+        <div 
+          className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-4 border border-orange-300 dark:border-orange-800 cursor-pointer hover:bg-orange-100 dark:hover:bg-orange-900/30 transition-colors"
+          onClick={() => expiredRules.length > 0 && setShowDeleteGuide(true)}
+        >
+          <div className="text-2xl font-bold text-orange-600">{expiredRules.length}</div>
+          <div className="text-sm text-orange-600">過期規則（cards.ts）</div>
         </div>
         <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 border border-purple-200 dark:border-purple-800">
           <div className="text-2xl font-bold text-purple-600">{stats.multiCard}</div>
