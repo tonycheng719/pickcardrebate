@@ -22,7 +22,12 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json({ cards: data });
+    // Add caching headers: cache for 60s, serve stale for up to 5 min while revalidating
+    return NextResponse.json({ cards: data }, {
+      headers: {
+        'Cache-Control': 's-maxage=60, stale-while-revalidate=300',
+      }
+    });
   } catch (error) {
     console.error("Internal error fetching cards:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

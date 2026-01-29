@@ -15,7 +15,12 @@ export async function GET() {
       return NextResponse.json({ promos: [], error: error.message });
     }
 
-    return NextResponse.json({ promos: data || [] });
+    // Add caching headers: cache for 60s, serve stale for up to 5 min while revalidating
+    return NextResponse.json({ promos: data || [] }, {
+      headers: {
+        'Cache-Control': 's-maxage=60, stale-while-revalidate=300',
+      }
+    });
   } catch (error) {
     console.error("Internal error fetching promos:", error);
     return NextResponse.json({ promos: [] });

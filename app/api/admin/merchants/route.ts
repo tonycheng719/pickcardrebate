@@ -15,7 +15,12 @@ export async function GET() {
       return NextResponse.json({ merchants: [], error: error.message });
     }
 
-    return NextResponse.json({ merchants: data || [] });
+    // Add caching headers: cache for 60s, serve stale for up to 5 min while revalidating
+    return NextResponse.json({ merchants: data || [] }, {
+      headers: {
+        'Cache-Control': 's-maxage=60, stale-while-revalidate=300',
+      }
+    });
   } catch (error) {
     console.error("Internal error fetching merchants:", error);
     return NextResponse.json({ merchants: [] });

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useContext, createContext } from "react";
+import { useState, useEffect, useCallback, useContext, createContext, useRef } from "react";
 import { CreditCard, Merchant, Promo, Category } from "../types";
 import { HK_CARDS } from "../data/cards";
 import { POPULAR_MERCHANTS } from "../data/merchants";
@@ -9,6 +9,42 @@ import { CATEGORIES } from "../data/categories";
 import { PROMOS } from "../data/promos";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
+
+// --- Request Deduplication & Rate Limiting ---
+const pendingRequests = new Map<string, Promise<any>>();
+const lastFetchTime = new Map<string, number>();
+const MIN_FETCH_INTERVAL = 10000; // 10 seconds minimum between fetches (increased from 5s)
+
+async function fetchWithDedup(url: string, signal?: AbortSignal): Promise<any> {
+  const now = Date.now();
+  const lastFetch = lastFetchTime.get(url);
+  
+  // If we fetched recently, return null to skip
+  if (lastFetch && now - lastFetch < MIN_FETCH_INTERVAL) {
+    const pending = pendingRequests.get(url);
+    if (pending) return pending;
+    return null; // Skip fetch, use cached data
+  }
+  
+  // Return existing request if pending
+  const existingRequest = pendingRequests.get(url);
+  if (existingRequest) {
+    return existingRequest;
+  }
+  
+  const requestPromise = fetch(url, { signal })
+    .then(async (res) => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    })
+    .finally(() => {
+      pendingRequests.delete(url);
+      lastFetchTime.set(url, Date.now());
+    });
+  
+  pendingRequests.set(url, requestPromise);
+  return requestPromise;
+}
 
 // --- Data Mapping Helpers (Snake Case DB <-> Camel Case App) ---
 
@@ -280,35 +316,53 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const refreshData = useCallback(async () => {
-    // Removed setIsLoading(true) here to prevent UI flickering if we already have data
-    try {
-        // Use AbortController for fetch requests with 8s timeout
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 8000);
+  // Track if refresh is in progress to prevent concurrent refreshes
+  const refreshInProgress = useRef(false);
+  const lastRefreshTime = useRef(0);
+  const REFRESH_COOLDOWN = 30000; // 30 seconds cooldown between full refreshes
 
+  const refreshData = useCallback(async (force = false) => {
+    // Prevent concurrent refreshes
+    if (refreshInProgress.current) {
+      console.log('[DataStore] Refresh already in progress, skipping');
+      return;
+    }
+    
+    // Enforce cooldown unless forced
+    const now = Date.now();
+    if (!force && now - lastRefreshTime.current < REFRESH_COOLDOWN) {
+      console.log('[DataStore] Refresh cooldown active, skipping');
+      return;
+    }
+    
+    refreshInProgress.current = true;
+    lastRefreshTime.current = now;
+    
+    try {
+        // Use AbortController for fetch requests with 10s timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+        // 1. Cards - USE API ROUTE with deduplication
         try {
-            // 1. Cards - USE API ROUTE with abort signal
-            const cardsRes = await fetch('/api/admin/cards', { signal: controller.signal });
-            if (cardsRes.ok) {
-                const { cards: cardsData } = await cardsRes.json();
-                if (cardsData && cardsData.length > 0) {
-                    // Create a map of DB cards by ID for quick lookup
-                    const dbCardMap = new Map<string, any>(cardsData.map((c: any) => [c.id, c]));
-                    
-                    // Merge: Start with LOCAL cards, override with DB data where available
-                    const mergedCards = HK_CARDS.map(localCard => {
-                        const dbCard = dbCardMap.get(localCard.id);
-                        if (dbCard) {
-                            // DB card exists - merge with local, prioritizing DB image
-                            return mapCardFromDB(dbCard);
-                        }
-                        // No DB record - use local card as-is
-                        return localCard;
-                    });
-                    
-                    setCards(mergedCards);
-                }
+            const cardsResult = await fetchWithDedup('/api/admin/cards', controller.signal);
+            if (cardsResult?.cards && cardsResult.cards.length > 0) {
+                const cardsData = cardsResult.cards;
+                // Create a map of DB cards by ID for quick lookup
+                const dbCardMap = new Map<string, any>(cardsData.map((c: any) => [c.id, c]));
+                
+                // Merge: Start with LOCAL cards, override with DB data where available
+                const mergedCards = HK_CARDS.map(localCard => {
+                    const dbCard = dbCardMap.get(localCard.id);
+                    if (dbCard) {
+                        // DB card exists - merge with local, prioritizing DB image
+                        return mapCardFromDB(dbCard);
+                    }
+                    // No DB record - use local card as-is
+                    return localCard;
+                });
+                
+                setCards(mergedCards);
             }
         } catch (e: any) {
             if (e.name !== 'AbortError') {
@@ -316,48 +370,41 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
             }
         }
 
-        // 2. Merchants - USE API ROUTE to bypass RLS
-        // IMPORTANT: Prioritize LOCAL static data for logos (most up-to-date)
-        // DB data is only used for merchants not in local data
+        // 2. Merchants - USE API ROUTE with deduplication
         try {
-            const merchantsRes = await fetch('/api/admin/merchants', { signal: controller.signal });
-            if (merchantsRes.ok) {
-                const { merchants: merchantsData } = await merchantsRes.json();
+            const merchantsResult = await fetchWithDedup('/api/admin/merchants', controller.signal);
+            if (merchantsResult?.merchants && merchantsResult.merchants.length > 0) {
+                const merchantsData = merchantsResult.merchants;
+                const dbMerchants: Merchant[] = merchantsData.map(mapMerchantFromDB);
+                // Create a map of DB merchants by ID for quick lookup
+                const dbMerchantMap = new Map<string, Merchant>(dbMerchants.map((m) => [m.id, m]));
                 
-                if (merchantsData && merchantsData.length > 0) {
-                    const dbMerchants: Merchant[] = merchantsData.map(mapMerchantFromDB);
-                    // Create a map of DB merchants by ID for quick lookup
-                    const dbMerchantMap = new Map<string, Merchant>(dbMerchants.map((m) => [m.id, m]));
-                    
-                    // Merge: DB logo takes priority if available (user uploaded)
-                    const mergedMerchants: Merchant[] = POPULAR_MERCHANTS.map(localMerchant => {
-                        const dbMerchant = dbMerchantMap.get(localMerchant.id);
-                        if (dbMerchant) {
-                            // DB logo takes priority if it exists and is a valid URL
-                            // This ensures user-uploaded logos are always used
-                            const useDbLogo = dbMerchant.logo && 
-                                typeof dbMerchant.logo === 'string' && 
-                                (dbMerchant.logo.startsWith('http') || dbMerchant.logo.startsWith('/'));
-                            return {
-                                ...localMerchant, // Start with local data
-                                ...dbMerchant,    // Override with DB data
-                                logo: useDbLogo ? dbMerchant.logo : localMerchant.logo, // DB logo takes priority
-                            };
-                        }
-                        return localMerchant;
-                    });
-                    
-                    // Also add any DB-only merchants not in local data
-                    dbMerchants.forEach((dbM) => {
-                        if (!POPULAR_MERCHANTS.some(lm => lm.id === dbM.id)) {
-                            mergedMerchants.push(dbM);
-                        }
-                    });
-                    
-                    setMerchants(mergedMerchants);
-                    // Cache merchants for faster initial load next time
-                    cacheMerchants(mergedMerchants);
-                }
+                // Merge: DB logo takes priority if available (user uploaded)
+                const mergedMerchants: Merchant[] = POPULAR_MERCHANTS.map(localMerchant => {
+                    const dbMerchant = dbMerchantMap.get(localMerchant.id);
+                    if (dbMerchant) {
+                        // DB logo takes priority if it exists and is a valid URL
+                        const useDbLogo = dbMerchant.logo && 
+                            typeof dbMerchant.logo === 'string' && 
+                            (dbMerchant.logo.startsWith('http') || dbMerchant.logo.startsWith('/'));
+                        return {
+                            ...localMerchant,
+                            ...dbMerchant,
+                            logo: useDbLogo ? dbMerchant.logo : localMerchant.logo,
+                        };
+                    }
+                    return localMerchant;
+                });
+                
+                // Also add any DB-only merchants not in local data
+                dbMerchants.forEach((dbM) => {
+                    if (!POPULAR_MERCHANTS.some(lm => lm.id === dbM.id)) {
+                        mergedMerchants.push(dbM);
+                    }
+                });
+                
+                setMerchants(mergedMerchants);
+                cacheMerchants(mergedMerchants);
             }
         } catch (e: any) {
             if (e.name !== 'AbortError') {
@@ -366,11 +413,10 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
         }
 
         // 3. Promos - 自動合併：資料庫 + 本地文件
-        // 這樣新增到 promos.ts 的文章會自動顯示，無需手動同步
         try {
-            const promosRes = await fetch('/api/admin/promos', { signal: controller.signal });
-            if (promosRes.ok) {
-                const { promos: promosData } = await promosRes.json();
+            const promosResult = await fetchWithDedup('/api/admin/promos', controller.signal);
+            if (promosResult?.promos) {
+                const promosData = promosResult.promos;
                 
                 // 建立資料庫 promos 的 ID Set
                 const dbPromoIds = new Set((promosData || []).map((p: any) => p.id));
@@ -381,7 +427,6 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
                     .filter(p => !dbPromoIds.has(p.id))
                     .map(p => ({
                         ...p,
-                        // 確保有 contentType 欄位
                         contentType: 'promo' as const,
                     }));
                 
@@ -392,55 +437,54 @@ export function DataStoreProvider({ children }: { children: React.ReactNode }) {
                 // 合併：資料庫優先 + 本地新增
                 const mergedPromos = [...dbPromos, ...localOnlyPromos];
                 
-                // 排序：isPinned (未過期) > updatedAt
+                // 排序邏輯
                 const now = new Date();
                 const isEffectivelyPinned = (p: any) => {
                     if (!p.isPinned) return false;
-                    // 如果設定了 pinnedUntil，檢查是否已過期
                     if (p.pinnedUntil) {
                         const pinExpiry = new Date(p.pinnedUntil);
-                        pinExpiry.setHours(23, 59, 59, 999); // 當日結束
+                        pinExpiry.setHours(23, 59, 59, 999);
                         return now <= pinExpiry;
                     }
-                    return true; // 無設定到期時間 = 永久置頂
+                    return true;
                 };
                 
                 mergedPromos.sort((a, b) => {
-                    // 1. Pinned first (檢查是否有效置頂)
                     const aIsPinned = isEffectivelyPinned(a);
                     const bIsPinned = isEffectivelyPinned(b);
                     if (aIsPinned && !bIsPinned) return -1;
                     if (!aIsPinned && bIsPinned) return 1;
-                    // 2. sortOrder (higher first) - 用於控制新文章優先顯示
                     const aSortOrder = (a as any).sortOrder || 0;
                     const bSortOrder = (b as any).sortOrder || 0;
                     if (aSortOrder !== bSortOrder) return bSortOrder - aSortOrder;
-                    // 3. updatedAt (newest first)
                     const aUpdated = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
                     const bUpdated = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
                     return bUpdated - aUpdated;
                 });
                 
                 setPromos(mergedPromos);
+            } else if (promosResult === null) {
+                // Fetch was skipped due to rate limiting, keep current data
+                console.log('[DataStore] Promos fetch skipped (rate limited)');
             } else {
-                // 如果資料庫請求失敗，直接使用本地 PROMOS
+                // Failed, use local PROMOS
                 console.log('[DataStore] 資料庫請求失敗，使用本地 PROMOS');
                 setPromos(PROMOS.map(p => ({ ...p, contentType: 'promo' as const })));
             }
         } catch (e: any) {
             if (e.name !== 'AbortError') {
                 console.warn("Promos fetch failed:", e.message);
-                // Fallback to local PROMOS
                 setPromos(PROMOS.map(p => ({ ...p, contentType: 'promo' as const })));
             }
         }
         
-        clearTimeout(timeoutId); // Clean up timeout
-        setIsLoading(false); // Data sync complete
+        clearTimeout(timeoutId);
+        setIsLoading(false);
     } catch (error: any) {
         console.warn("Data sync error:", error.message);
-        // Don't show error toast to user, just silently use local data
         setIsLoading(false);
+    } finally {
+        refreshInProgress.current = false;
     }
   }, []);
 

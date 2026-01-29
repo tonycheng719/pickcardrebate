@@ -462,13 +462,43 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     };
 
     syncSession();
+    
+    // Track auth state change events to detect refresh token failures
+    let recentErrorCount = 0;
+    const ERROR_RESET_INTERVAL = 60000; // Reset error count after 1 minute
+    let errorResetTimer: NodeJS.Timeout | null = null;
+    
     const { data: listener } = supabase.auth.onAuthStateChange(async (_event: AuthChangeEvent, session: Session | null) => {
       console.log("[Auth] Auth state changed:", _event, session?.user?.email);
-      await hydrateSupabaseUser(session?.user ?? null);
+      
+      // Reset error count after interval
+      if (errorResetTimer) clearTimeout(errorResetTimer);
+      errorResetTimer = setTimeout(() => { recentErrorCount = 0; }, ERROR_RESET_INTERVAL);
+      
+      // Detect token refresh errors
+      if (_event === 'TOKEN_REFRESHED' && !session) {
+        recentErrorCount++;
+        console.warn(`[Auth] Token refresh may have failed (${recentErrorCount})`);
+        
+        // If too many errors, clear auth state to stop the loop
+        if (recentErrorCount >= 3) {
+          console.error("[Auth] Too many token refresh failures, clearing session");
+          setUser(null);
+          setIsWalletSynced(false);
+          // Don't call signOut here - it might trigger more errors
+          return;
+        }
+      }
+      
+      // Only hydrate if we have a valid session or explicit SIGNED_OUT
+      if (session?.user || _event === 'SIGNED_OUT') {
+        await hydrateSupabaseUser(session?.user ?? null);
+      }
     });
 
     return () => {
       listener?.subscription.unsubscribe();
+      if (errorResetTimer) clearTimeout(errorResetTimer);
     };
   }, [supabase, hydrateSupabaseUser]);
 
