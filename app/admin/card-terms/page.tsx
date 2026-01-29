@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { cardTerms, isTermsExpired, isTermsExpiringSoon, formatPeriod } from "@/lib/data/card-terms";
-import { ExternalLink, FileText, AlertTriangle, CheckCircle, Clock } from "lucide-react";
+import { cardTerms, isTermsExpired, isTermsExpiringSoon } from "@/lib/data/card-terms";
+import { HK_CARDS } from "@/lib/data/cards";
+import { ExternalLink, FileText, AlertTriangle, CheckCircle, Clock, Plus, X, Copy, Sparkles, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 type FilterStatus = "all" | "active" | "expiring" | "expired";
 
@@ -10,11 +12,35 @@ export default function CardTermsAdminPage() {
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("all");
   const [filterBank, setFilterBank] = useState<string>("all");
   const [sortBy, setSortBy] = useState<"expiry" | "bank" | "updated">("expiry");
+  
+  // New terms form state
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [formData, setFormData] = useState({
+    bankName: "",
+    promoName: "",
+    cardIds: [] as string[],
+    sourceUrl: "",
+    termsContent: "",
+  });
+  const [isParsing, setIsParsing] = useState(false);
+  const [parsedResult, setParsedResult] = useState<{
+    parsed: any;
+    code: string;
+  } | null>(null);
 
   // 獲取所有銀行
   const banks = useMemo(() => {
     const bankSet = new Set(cardTerms.map(t => t.bank));
     return Array.from(bankSet).sort();
+  }, []);
+
+  // 獲取所有卡片（用於選擇適用卡片）
+  const allCards = useMemo(() => {
+    return HK_CARDS.map(c => ({
+      id: c.id,
+      name: c.name,
+      bank: c.bank,
+    })).sort((a, b) => a.bank.localeCompare(b.bank));
   }, []);
 
   // 計算狀態
@@ -42,7 +68,6 @@ export default function CardTermsAdminPage() {
       const url = new URL(terms.officialSource);
       const path = url.pathname;
       const filename = path.split('/').pop() || path;
-      // 移除 .pdf 等副檔名
       return filename.replace(/\.(pdf|html|htm)$/i, '').replace(/-/g, ' ');
     } catch {
       return terms.officialSource;
@@ -53,22 +78,19 @@ export default function CardTermsAdminPage() {
   const filteredTerms = useMemo(() => {
     let result = [...cardTerms];
 
-    // 過濾狀態
     if (filterStatus !== "all") {
       result = result.filter(t => getStatus(t) === filterStatus);
     }
 
-    // 過濾銀行
     if (filterBank !== "all") {
       result = result.filter(t => t.bank === filterBank);
     }
 
-    // 排序
     result.sort((a, b) => {
       if (sortBy === "expiry") {
         const daysA = getDaysRemaining(a.promoEndDate) ?? Infinity;
         const daysB = getDaysRemaining(b.promoEndDate) ?? Infinity;
-        return daysA - daysB; // 快到期的排前面
+        return daysA - daysB;
       }
       if (sortBy === "bank") {
         return a.bank.localeCompare(b.bank);
@@ -91,12 +113,292 @@ export default function CardTermsAdminPage() {
     return { expired, expiring, active, total: cardTerms.length, multiCard };
   }, []);
 
+  // 解析條款
+  const handleParseTerms = async () => {
+    if (!formData.termsContent.trim()) {
+      toast.error("請輸入條款內容");
+      return;
+    }
+
+    setIsParsing(true);
+    try {
+      const res = await fetch("/api/admin/parse-terms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          content: formData.termsContent,
+          bankName: formData.bankName,
+          promoName: formData.promoName,
+          cardIds: formData.cardIds,
+          sourceUrl: formData.sourceUrl,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error("解析失敗");
+      }
+
+      const data = await res.json();
+      setParsedResult(data);
+      toast.success("條款解析完成！");
+    } catch (error) {
+      console.error("Parse error:", error);
+      toast.error("解析條款時發生錯誤");
+    } finally {
+      setIsParsing(false);
+    }
+  };
+
+  // 複製代碼
+  const handleCopyCode = () => {
+    if (parsedResult?.code) {
+      navigator.clipboard.writeText(parsedResult.code);
+      toast.success("已複製代碼到剪貼簿！");
+    }
+  };
+
+  // 重置表單
+  const resetForm = () => {
+    setFormData({
+      bankName: "",
+      promoName: "",
+      cardIds: [],
+      sourceUrl: "",
+      termsContent: "",
+    });
+    setParsedResult(null);
+  };
+
+  // 切換卡片選擇
+  const toggleCardSelection = (cardId: string) => {
+    setFormData(prev => ({
+      ...prev,
+      cardIds: prev.cardIds.includes(cardId)
+        ? prev.cardIds.filter(id => id !== cardId)
+        : [...prev.cardIds, cardId],
+    }));
+  };
+
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6 flex items-center gap-2">
-        <FileText className="h-6 w-6" />
-        條款管理
-      </h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold flex items-center gap-2">
+          <FileText className="h-6 w-6" />
+          條款管理
+        </h1>
+        <button
+          onClick={() => { setShowAddForm(true); resetForm(); }}
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          <Plus className="h-4 w-4" />
+          新增條款
+        </button>
+      </div>
+
+      {/* 新增條款表單 Modal */}
+      {showAddForm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 flex items-center justify-between">
+              <h2 className="text-xl font-bold flex items-center gap-2">
+                <Sparkles className="h-5 w-5 text-yellow-500" />
+                新增條款（AI 輔助解析）
+              </h2>
+              <button
+                onClick={() => setShowAddForm(false)}
+                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* 基本資訊 */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">銀行/發卡機構 *</label>
+                  <select
+                    value={formData.bankName}
+                    onChange={(e) => setFormData(prev => ({ ...prev, bankName: e.target.value }))}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700"
+                  >
+                    <option value="">選擇銀行...</option>
+                    <option value="美國運通">美國運通</option>
+                    <option value="滙豐">滙豐</option>
+                    <option value="渣打">渣打</option>
+                    <option value="恒生">恒生</option>
+                    <option value="中銀">中銀</option>
+                    <option value="東亞">東亞</option>
+                    <option value="花旗">花旗</option>
+                    <option value="信銀國際">信銀國際</option>
+                    <option value="建行">建行</option>
+                    <option value="大新">大新</option>
+                    <option value="富邦">富邦</option>
+                    <option value="星展">星展</option>
+                    <option value="AEON">AEON</option>
+                    <option value="安信">安信</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">優惠名稱 *</label>
+                  <input
+                    type="text"
+                    value={formData.promoName}
+                    onChange={(e) => setFormData(prev => ({ ...prev, promoName: e.target.value }))}
+                    placeholder="例如：日本 Donki 優惠 2026"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">條款 PDF/URL</label>
+                <input
+                  type="url"
+                  value={formData.sourceUrl}
+                  onChange={(e) => setFormData(prev => ({ ...prev, sourceUrl: e.target.value }))}
+                  placeholder="https://..."
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700"
+                />
+              </div>
+
+              {/* 適用卡片選擇 */}
+              <div>
+                <label className="block text-sm font-medium mb-2">適用信用卡（可多選）</label>
+                <div className="border border-gray-300 dark:border-gray-600 rounded-lg p-3 max-h-40 overflow-y-auto">
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    {allCards.filter(c => !formData.bankName || c.bank.includes(formData.bankName)).map(card => (
+                      <label
+                        key={card.id}
+                        className={`flex items-center gap-2 p-2 rounded cursor-pointer text-sm ${
+                          formData.cardIds.includes(card.id)
+                            ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
+                            : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={formData.cardIds.includes(card.id)}
+                          onChange={() => toggleCardSelection(card.id)}
+                          className="rounded"
+                        />
+                        <span className="truncate">{card.name}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+                {formData.cardIds.length > 0 && (
+                  <div className="mt-2 text-sm text-gray-500">
+                    已選擇 {formData.cardIds.length} 張卡片
+                  </div>
+                )}
+              </div>
+
+              {/* 條款內容輸入 */}
+              <div>
+                <label className="block text-sm font-medium mb-1">條款內容（從 PDF 複製貼上）*</label>
+                <textarea
+                  value={formData.termsContent}
+                  onChange={(e) => setFormData(prev => ({ ...prev, termsContent: e.target.value }))}
+                  placeholder="從條款 PDF 複製內容貼上這裡，AI 會自動解析：&#10;&#10;- 優惠期&#10;- 回贈上限&#10;- 不適用項目&#10;- 重要條款"
+                  rows={10}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 font-mono text-sm"
+                />
+              </div>
+
+              {/* 解析按鈕 */}
+              <div className="flex justify-center">
+                <button
+                  onClick={handleParseTerms}
+                  disabled={isParsing || !formData.termsContent.trim()}
+                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                >
+                  {isParsing ? (
+                    <>
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                      解析中...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="h-5 w-5" />
+                      AI 解析條款
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* 解析結果 */}
+              {parsedResult && (
+                <div className="space-y-4">
+                  <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+                    <h3 className="font-bold text-lg mb-3 flex items-center gap-2">
+                      <CheckCircle className="h-5 w-5 text-green-500" />
+                      解析結果
+                    </h3>
+                    
+                    {/* 解析的資料預覽 */}
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
+                        <div className="text-sm text-gray-500 mb-1">Card ID</div>
+                        <div className="font-mono text-sm">{parsedResult.parsed.cardId || "未能解析"}</div>
+                      </div>
+                      <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
+                        <div className="text-sm text-gray-500 mb-1">推廣期</div>
+                        <div className="font-mono text-sm">
+                          {parsedResult.parsed.promoStartDate || "?"} ~ {parsedResult.parsed.promoEndDate || "?"}
+                        </div>
+                      </div>
+                      {parsedResult.parsed.rewardCap && (
+                        <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
+                          <div className="text-sm text-gray-500 mb-1">回贈上限</div>
+                          <div className="font-mono text-sm">
+                            ${parsedResult.parsed.rewardCap.amount} / {parsedResult.parsed.rewardCap.period}
+                          </div>
+                        </div>
+                      )}
+                      {parsedResult.parsed.exclusions.length > 0 && (
+                        <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
+                          <div className="text-sm text-gray-500 mb-1">排除項目</div>
+                          <div className="text-sm">{parsedResult.parsed.exclusions.length} 項</div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* 生成的代碼 */}
+                    <div className="relative">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-medium">生成的 TypeScript 代碼</span>
+                        <button
+                          onClick={handleCopyCode}
+                          className="flex items-center gap-1 px-3 py-1 text-sm bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
+                        >
+                          <Copy className="h-4 w-4" />
+                          複製代碼
+                        </button>
+                      </div>
+                      <pre className="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm font-mono max-h-80 overflow-y-auto">
+                        {parsedResult.code}
+                      </pre>
+                    </div>
+
+                    {/* 使用說明 */}
+                    <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mt-4">
+                      <h4 className="font-medium text-amber-800 dark:text-amber-300 mb-2">📝 下一步</h4>
+                      <ol className="text-sm text-amber-700 dark:text-amber-400 space-y-1 list-decimal list-inside">
+                        <li>點擊「複製代碼」按鈕</li>
+                        <li>打開 <code className="bg-amber-100 dark:bg-amber-900 px-1 rounded">lib/data/card-terms.ts</code></li>
+                        <li>在 <code className="bg-amber-100 dark:bg-amber-900 px-1 rounded">];</code> 前面貼上代碼</li>
+                        <li>檢查並修改解析可能不準確的地方</li>
+                        <li>確保 <code className="bg-amber-100 dark:bg-amber-900 px-1 rounded">applicableCards</code> 的 cardName 正確</li>
+                      </ol>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 統計卡片 */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
@@ -293,14 +595,13 @@ export default function CardTermsAdminPage() {
       <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
         <h3 className="font-medium text-blue-800 dark:text-blue-400 mb-2">💡 使用提示</h3>
         <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
+          <li>• 點擊「<strong>新增條款</strong>」按鈕開始加入新條款</li>
+          <li>• 從官方條款 PDF 複製內容，AI 會自動解析關鍵資訊</li>
           <li>• 🟡 快到期（30天內）：需要開始尋找新條款</li>
           <li>• 🔴 已到期：需要更新或移除</li>
           <li>• <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400">紫色標籤</span> 表示此條款適用於多張卡片</li>
-          <li>• 點擊「文件」可直接打開官方條款 PDF</li>
-          <li>• 條款數據位於 <code className="bg-blue-100 dark:bg-blue-900 px-1 rounded">lib/data/card-terms.ts</code></li>
         </ul>
       </div>
     </div>
   );
 }
-
