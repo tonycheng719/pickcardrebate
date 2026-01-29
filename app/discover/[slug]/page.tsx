@@ -68,8 +68,8 @@ import { OctopusAavsCreditCardGuide, octopusAavsCreditCardFaqData } from "./octo
 import { CostcoCreditCardGuide, costcoCreditCardFaqData } from "./costco-credit-card-guide";
 import { WeChatPayCreditCardGuide, wechatPayCreditCardFaqData } from "./wechat-pay-credit-card-guide";
 import { HkdOnlineShoppingGuide, hkdOnlineShoppingFaqData } from "./hkd-online-shopping-guide";
-import AEJapanPromo2026Guide, { aeJapanPromoFaqData } from "./ae-japan-promo-2026";
-import AeOkConvenienceStore2026Guide, { aeOkConvenienceStoreFaqData } from "./ae-ok-convenience-store-2026";
+import AEJapanPromo2026Guide from "./ae-japan-promo-2026";
+import AeOkConvenienceStore2026Guide from "./ae-ok-convenience-store-2026";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 import { CardMarkdownRenderer } from "@/app/discover/components/card-markdown-renderer";
 import { ArticleTracker } from "@/app/discover/components/article-tracker";
@@ -1922,6 +1922,27 @@ const dahsingWinterPromoFaqData = [
   { question: "冬日狂賞值得參加嗎？", answer: "如果你有大新信用卡並經常外出食飯，5% 食肆回贈配合 ONE+ 本身 1% 可達 6%，算是不錯。但名額有限、回贈上限較低，建議同時比較其他銀行優惠。" }
 ];
 
+// AE Japan Promo FAQ Data (defined here to avoid client component import issues)
+const aeJapanPromoFaqDataLocal: PromoFAQ[] = [
+  { question: "AE 日本簽賬優惠需要登記嗎？", answer: "需要！你必須在 Amex HK App 內登記每個優惠才能享受回贈。每個優惠只適用於首 50,000 張成功登記的 AE 信用卡。" },
+  { question: "AE 日本 Donki 優惠可以享受幾多次？", answer: "每張已登記的 AE 卡最多可享 2 次回贈。每次簽滿 ¥20,000 可獲 HK$80，總共最多 HK$160 回贈。" },
+  { question: "AE 日本 LOFT 優惠有咩限制？", answer: "每次簽滿 ¥10,000 可獲 HK$50，最多 2 次，總共 HK$100。但百貨公司內的 LOFT、COSME LOFT（Gransta Tokyo 店除外）及 MoMA Design Store 不適用。" },
+  { question: "Osaka Metro 優惠點樣用？", answer: "只要用已登記的 AE 卡在 Osaka Metro 閘機拍卡入閘即可。每次簽滿 ¥1,000 可獲 HK$5，最多 2 次，總共 HK$10。注意不適用於巴士及非 Osaka Metro 營運的列車。" },
+  { question: "回贈幾時入賬？", answer: "簽賬回贈會在合資格交易完成後 15 個工作天內，或推廣期結束後 90 天內存入你的 AE 卡賬戶。" },
+  { question: "附屬卡可以享用優惠嗎？", answer: "附屬卡需要獨立登記才可享用優惠，其簽賬不可與主卡合併計算。" }
+];
+
+// AE OK Convenience Store FAQ Data (defined here to avoid client component import issues)
+const aeOkConvenienceStoreFaqDataLocal: PromoFAQ[] = [
+  { question: "AE OK便利店優惠需要登記嗎？", answer: "需要！你必須在 Amex HK App 內登記才能享受回贈。優惠只適用於首 50,000 張成功登記的 AE 信用卡，先到先得！" },
+  { question: "OK便利店優惠可以享受幾多次？", answer: "每張已登記的 AE 卡只可享用 1 次。單一簽賬滿 HK$50 即可獲 HK$10 回贈，即 20% 回贈率！" },
+  { question: "買煙可以享用優惠嗎？", answer: "不可以。此優惠不適用於購買煙草及塑膠袋收費。" },
+  { question: "用 Apple Pay / Google Pay 可以嗎？", answer: "可以，只要是用已登記的 AE 信用卡付款即可。但透過第三方付款平台的交易不適用。" },
+  { question: "附屬卡可以用嗎？", answer: "可以，但附屬卡需要獨立登記，簽賬不可與主卡合併計算。" },
+  { question: "回贈幾時入賬？", answer: "簽賬回贈會在合資格交易完成後 15 個工作天內，或推廣期結束後 90 天內存入你的 AE 卡賬戶。" },
+  { question: "網上落單外賣可以嗎？", answer: "不可以。此優惠只適用於親身到香港 OK便利店門市簽賬，網店及第三方外賣服務不適用。" }
+];
+
 // Get FAQ data for specific guide
 function getGuideFaqData(guideId: string) {
   switch (guideId) {
@@ -1940,9 +1961,9 @@ function getGuideFaqData(guideId: string) {
     case "hkd-online-shopping-2026":
       return hkdOnlineShoppingFaqData;
     case "ae-japan-promo-2026":
-      return aeJapanPromoFaqData;
+      return aeJapanPromoFaqDataLocal;
     case "ae-ok-convenience-store-2026":
-      return aeOkConvenienceStoreFaqData;
+      return aeOkConvenienceStoreFaqDataLocal;
     case "debit-card-guide":
       return debitCardFaqData;
     case "miles-vs-cashback":
@@ -2150,7 +2171,6 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
     
     // Get FAQ data for this specific guide
     const faqData = getGuideFaqData(slug) || [];
-    console.log(`[DEBUG] Guide FAQ - slug: ${slug}, faqData length: ${faqData.length}`);
 
     // Fetch article rating data for SEO
     let avgRating = 0;
@@ -2269,11 +2289,11 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
             {renderGuideContent(slug)}
             
             {/* FAQ Section for Guides */}
-            <section id="faq" className="mt-10 border-t dark:border-gray-700 pt-8">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                <span className="text-2xl">❓</span> 常見問題
-              </h2>
-              {faqData.length > 0 ? (
+            {faqData.length > 0 && (
+              <section id="faq" className="mt-10 border-t dark:border-gray-700 pt-8">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                  <span className="text-2xl">❓</span> 常見問題
+                </h2>
                 <div className="space-y-3">
                   {faqData.map((faq: PromoFAQ, index: number) => (
                     <details 
@@ -2290,10 +2310,8 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
                     </details>
                   ))}
                 </div>
-              ) : (
-                <p className="text-gray-500 dark:text-gray-400">暫無常見問題。</p>
-              )}
-            </section>
+              </section>
+            )}
             
             {/* Article Reviews Section */}
             <ArticleReviews articleId={slug} articleTitle={guide.title} />
