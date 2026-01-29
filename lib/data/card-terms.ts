@@ -9230,6 +9230,140 @@ export const cardTerms: CardTerms[] = [
     officialSource: "https://go.amex/apita-uny-citistore-tnc-cn",
     lastUpdated: "2026-01-23",
   },
+  // ========================================================================
+  // 美國運通 - 日本 Donki 優惠 2026
+  // ========================================================================
+  {
+    cardId: "amex-japan-donki-2026",
+    cardName: "美國運通卡 x 日本 Donki 優惠 2026",
+    bank: "美國運通",
+    applicableCards: [
+      { cardId: "amex-explorer", cardName: "美國運通 Explorer 信用卡" },
+      { cardId: "amex-platinum", cardName: "美國運通白金卡" },
+      { cardId: "amex-blue-cash", cardName: "美國運通 Blue Cash 信用卡" },
+    ],
+    documentName: "日本 Donki 優惠條款及細則",
+    promoStartDate: "2026-01-27",
+    promoEndDate: "2026-04-12",
+    rewardCap: {
+      amount: 160,
+      period: "promo",
+      note: "每張卡最多 2 次回贈，每次 HK$80",
+    },
+    rewardRates: [
+      { 
+        category: "日本 Donki / Don Quijote 實體店", 
+        rate: "累積簽 ¥20,000 回 HK$80",
+        conditions: ["需於 Amex HK App 登記", "只限日圓簽賬", "網店不適用"],
+      },
+    ],
+    exclusions: [
+      "指定 Donki 及 Don Quijote 門市不適用",
+      "網店交易不適用",
+      "透過第三方機構的交易不適用",
+      "美國運通公司卡及特許發卡公司簽發的卡不適用",
+    ],
+    keyTerms: [
+      "每張已登記卡最多可享 2 次回贈，總共 HK$160",
+      "只適用於首 50,000 張成功登記的合資格美國運通卡",
+      "附屬卡須獨立登記，簽賬不可合併計算",
+      "簽賬回贈將於合資格交易完成後 15 個工作天內或推廣期結束後 90 天內存入賬戶",
+      "外幣手續費不計入簽賬總額",
+    ],
+    officialSource: "https://www.americanexpress.com/content/dam/amex/zh-hk/benefits/TC/Donki_TnCs_CH.pdf",
+    lastUpdated: "2026-01-29",
+  },
+  // ========================================================================
+  // 美國運通 - 日本 LOFT 優惠 2026
+  // ========================================================================
+  {
+    cardId: "amex-japan-loft-2026",
+    cardName: "美國運通卡 x 日本 LOFT 優惠 2026",
+    bank: "美國運通",
+    applicableCards: [
+      { cardId: "amex-explorer", cardName: "美國運通 Explorer 信用卡" },
+      { cardId: "amex-platinum", cardName: "美國運通白金卡" },
+      { cardId: "amex-blue-cash", cardName: "美國運通 Blue Cash 信用卡" },
+    ],
+    documentName: "日本 LOFT 優惠條款及細則",
+    promoStartDate: "2026-01-27",
+    promoEndDate: "2026-04-12",
+    rewardCap: {
+      amount: 100,
+      period: "promo",
+      note: "每張卡最多 2 次回贈，每次 HK$50",
+    },
+    rewardRates: [
+      { 
+        category: "日本 LOFT 實體店", 
+        rate: "累積簽 ¥10,000 回 HK$50",
+        conditions: ["需於 Amex HK App 登記", "只限日圓簽賬", "網店不適用"],
+      },
+    ],
+    exclusions: [
+      "百貨公司內的 LOFT 不適用",
+      "COSME LOFT 不適用（Gransta Tokyo 店除外）",
+      "MoMA Design Store 不適用",
+      "網店交易不適用",
+      "透過第三方機構的交易不適用",
+      "美國運通公司卡及特許發卡公司簽發的卡不適用",
+    ],
+    keyTerms: [
+      "每張已登記卡最多可享 2 次回贈，總共 HK$100",
+      "只適用於首 50,000 張成功登記的合資格美國運通卡",
+      "附屬卡須獨立登記，簽賬不可合併計算",
+      "簽賬回贈將於合資格交易完成後 15 個工作天內或推廣期結束後 90 天內存入賬戶",
+      "外幣手續費不計入簽賬總額",
+    ],
+    officialSource: "https://www.americanexpress.com/content/dam/amex/zh-hk/benefits/TC/LOFT_TnCs_CH.pdf",
+    lastUpdated: "2026-01-29",
+  },
+  // ========================================================================
+  // 美國運通 - Osaka Metro 優惠 2026
+  // ========================================================================
+  {
+    cardId: "amex-japan-osaka-metro-2026",
+    cardName: "美國運通卡 x Osaka Metro 優惠 2026",
+    bank: "美國運通",
+    applicableCards: [
+      { cardId: "amex-explorer", cardName: "美國運通 Explorer 信用卡" },
+      { cardId: "amex-platinum", cardName: "美國運通白金卡" },
+      { cardId: "amex-blue-cash", cardName: "美國運通 Blue Cash 信用卡" },
+    ],
+    documentName: "Osaka Metro 優惠條款及細則",
+    promoStartDate: "2026-01-27",
+    promoEndDate: "2026-04-12",
+    rewardCap: {
+      amount: 10,
+      period: "promo",
+      note: "每張卡最多 2 次回贈，每次 HK$5",
+    },
+    rewardRates: [
+      { 
+        category: "Osaka Metro 拍卡入閘", 
+        rate: "累積簽 ¥1,000 回 HK$5",
+        conditions: ["需於 Amex HK App 登記", "只限日圓簽賬", "僅限 Osaka Metro 營運列車"],
+      },
+    ],
+    exclusions: [
+      "巴士不適用",
+      "非 Osaka Metro 營運的列車不適用（包括往返關西機場的列車）",
+      "售票櫃檯或自動售票機購票不適用",
+      "購買通勤通行證不適用",
+      "IC 卡或 PiTaPa 卡充值不適用",
+      "透過第三方機構的交易不適用",
+      "美國運通公司卡及特許發卡公司簽發的卡不適用",
+    ],
+    keyTerms: [
+      "每張已登記卡最多可享 2 次回贈，總共 HK$10",
+      "只適用於首 50,000 張成功登記的合資格美國運通卡",
+      "附屬卡須獨立登記，簽賬不可合併計算",
+      "簽賬回贈將於合資格交易完成後 15 個工作天內或推廣期結束後 90 天內存入賬戶",
+      "外幣手續費不計入簽賬總額",
+    ],
+    officialSource: "https://www.americanexpress.com/content/dam/amex/zh-hk/benefits/TC/OsakaMetro_TnCs_CH.pdf",
+    lastUpdated: "2026-01-29",
+  },
 ];
 
 // ========================================================================
