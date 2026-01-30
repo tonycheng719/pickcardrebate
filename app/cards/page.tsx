@@ -481,10 +481,10 @@ function AllCardsContent() {
     });
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col transition-colors overflow-x-hidden">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col transition-colors">
           <Navbar />
           
-          <main className="w-full max-w-7xl mx-auto px-4 py-8 flex-1 overflow-hidden">
+          <main className="container mx-auto px-4 py-8 flex-1">
             {isFiltered && (
               <div className="mb-6 p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-200 dark:border-emerald-800">
                 <div className="flex items-center justify-between flex-wrap gap-3">
@@ -596,9 +596,9 @@ function AllCardsContent() {
 // Loading fallback for Suspense
 function CardsLoading() {
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col transition-colors overflow-x-hidden">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col transition-colors">
             <Navbar />
-            <main className="w-full max-w-7xl mx-auto px-4 py-8 flex-1 overflow-hidden">
+            <main className="container mx-auto px-4 py-8 flex-1">
                 <div className="mb-8">
                     <Skeleton className="h-9 w-48 mb-2" />
                     <Skeleton className="h-5 w-full max-w-96" />
