@@ -1495,7 +1495,7 @@ export function CreditCardCalculator({
         {/* Only show input section if a merchant is selected */}
         <div 
             ref={inputSectionRef} 
-            className={`bg-gray-50 dark:bg-gray-800 rounded-2xl p-4 space-y-3 scroll-mt-20 transition-all duration-500 ${selectedMerchant ? "opacity-100 translate-y-0" : "opacity-50 translate-y-4 pointer-events-none"}`}
+            className={`bg-gray-50 dark:bg-gray-800 rounded-2xl p-4 space-y-3 scroll-mt-20 transition-all duration-500 md:mb-0 mb-24 ${selectedMerchant ? "opacity-100 translate-y-0" : "opacity-50 translate-y-4 pointer-events-none"}`}
         >
           <div>
             <div className="flex justify-between items-baseline mb-1">
@@ -1618,6 +1618,27 @@ export function CreditCardCalculator({
           </div>
         </div>
       </div>
+
+      {/* Mobile Floating Action Bar - Shows when merchant is selected */}
+      {selectedMerchant && !isDesktop && (
+        <div className="fixed bottom-16 left-0 right-0 p-3 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg border-t border-gray-200 dark:border-gray-700 z-40 shadow-lg animate-in slide-in-from-bottom-4">
+          <div className="flex items-center gap-3 max-w-lg mx-auto">
+            <div className="flex-1 min-w-0">
+              <p className="text-xs text-gray-500 truncate">在 {selectedMerchant.name} 消費</p>
+              <p className="text-sm font-bold text-gray-900 dark:text-white">
+                {amount ? `$${parseFloat(amount).toLocaleString()}` : '輸入金額計算'}
+              </p>
+            </div>
+            <Button 
+              className="rounded-xl h-11 px-5 text-sm font-medium shadow-lg active:scale-95 transition-transform" 
+              onClick={handleCalculate} 
+              disabled={!amount || (AMBIGUOUS_PAYMENT_METHODS.includes(paymentMethod) && !selectedMerchant?.isOnlineOnly && isOnlineScenario === null)}
+            >
+              {!amount ? '輸入金額' : '計算回贈'}
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Main Result Dialog/Drawer */}
       {isDesktop ? (
