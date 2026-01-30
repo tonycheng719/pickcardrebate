@@ -173,7 +173,7 @@ export async function GET(request: Request) {
         minIncome: dbCard.min_income || undefined,
         rules,
         rewardConfig: dbCard.reward_config ? {
-          method: (['conversion', 'direct', 'direct_rate'].includes(dbCard.reward_config.method) 
+          method: (dbCard.reward_config.method && ['conversion', 'direct', 'direct_rate'].includes(dbCard.reward_config.method) 
             ? dbCard.reward_config.method 
             : 'direct') as 'conversion' | 'direct' | 'direct_rate',
           ratio: dbCard.reward_config.ratio,

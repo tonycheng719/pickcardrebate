@@ -189,7 +189,7 @@ export function useDBCards(options: UseDBCardsOptions = {}): UseDBCardsResult {
           minIncome: dbCard.min_income || undefined,
           rules,
           rewardConfig: dbCard.reward_config ? {
-          method: (['conversion', 'direct', 'direct_rate'].includes(dbCard.reward_config.method) 
+          method: (dbCard.reward_config.method && ['conversion', 'direct', 'direct_rate'].includes(dbCard.reward_config.method) 
             ? dbCard.reward_config.method 
             : 'direct') as 'conversion' | 'direct' | 'direct_rate',
           ratio: dbCard.reward_config.ratio,
@@ -387,7 +387,7 @@ export async function getDBCards(): Promise<CreditCard[]> {
         minIncome: dbCard.min_income || undefined,
         rules,
         rewardConfig: dbCard.reward_config ? {
-          method: (['conversion', 'direct', 'direct_rate'].includes(dbCard.reward_config.method) 
+          method: (dbCard.reward_config.method && ['conversion', 'direct', 'direct_rate'].includes(dbCard.reward_config.method) 
             ? dbCard.reward_config.method 
             : 'direct') as 'conversion' | 'direct' | 'direct_rate',
           ratio: dbCard.reward_config.ratio,
