@@ -614,7 +614,9 @@ export function CreditCardCalculator({
                     <img src={result.card.imageUrl} alt={result.card.name} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
                 </div>
             ) : (
-                <div className={`w-12 h-8 rounded border ${result.card.style?.bgColor || 'bg-gray-500'} shrink-0`}></div>
+                <div className={`w-12 h-8 rounded border ${result.card.style?.bgColor || 'bg-gray-500'} shrink-0 flex items-center justify-center`}>
+                    <span className={`text-[7px] font-bold ${result.card.style?.textColor || 'text-white'} text-center leading-tight`}>{result.card.bank}</span>
+                </div>
             )}
 
             <div className="min-w-0 flex-1">
@@ -770,7 +772,9 @@ export function CreditCardCalculator({
                     <img src={result.card.imageUrl} alt={result.card.name} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
                 </div>
             ) : (
-                <div className={`w-12 h-8 rounded border ${result.card.style?.bgColor || 'bg-gray-500'} shrink-0`}></div>
+                <div className={`w-12 h-8 rounded border ${result.card.style?.bgColor || 'bg-gray-500'} shrink-0 flex items-center justify-center`}>
+                    <span className={`text-[7px] font-bold ${result.card.style?.textColor || 'text-white'} text-center leading-tight`}>{result.card.bank}</span>
+                </div>
             )}
 
             <div className="min-w-0 flex-1">
@@ -1000,7 +1004,9 @@ export function CreditCardCalculator({
                     <img src={best.card.imageUrl} alt={best.card.name} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
                   </div>
                 ) : (
-                  <div className={`w-12 h-8 rounded border border-emerald-200 ${best.card.style?.bgColor || 'bg-gray-500'} shrink-0`}></div>
+                  <div className={`w-12 h-8 rounded border border-emerald-200 ${best.card.style?.bgColor || 'bg-gray-500'} shrink-0 flex items-center justify-center`}>
+                    <span className={`text-[7px] font-bold ${best.card.style?.textColor || 'text-white'} text-center leading-tight`}>{best.card.bank}</span>
+                  </div>
                 )}
 
                 <div className="flex-1 min-w-0">
@@ -1145,7 +1151,9 @@ export function CreditCardCalculator({
                         <img src={myBestCard.card.imageUrl} alt={myBestCard.card.name} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
                       </div>
                     ) : (
-                      <div className={`w-16 h-10 rounded-lg border ${myBestCard.card.style?.bgColor || 'bg-gray-500'} shrink-0`}></div>
+                      <div className={`w-16 h-10 rounded-lg border ${myBestCard.card.style?.bgColor || 'bg-gray-500'} shrink-0 flex items-center justify-center`}>
+                        <span className={`text-[8px] font-bold ${myBestCard.card.style?.textColor || 'text-white'} text-center leading-tight px-0.5`}>{myBestCard.card.bank}</span>
+                      </div>
                     )}
 
                     <div className="flex-1 min-w-0">
@@ -1231,7 +1239,11 @@ export function CreditCardCalculator({
                       <img src={best.card.imageUrl} alt={best.card.name} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
                     </div>
                   ) : (
-                    <div className={`w-14 h-9 rounded border ${best.card.style?.bgColor || 'bg-gray-500'} shrink-0`}></div>
+                    <div className={`w-14 h-9 rounded border ${best.card.style?.bgColor || 'bg-gray-500'} shrink-0 flex items-center justify-center`}>
+                      <span className={`text-[8px] font-bold ${best.card.style?.textColor || 'text-white'} text-center leading-tight px-0.5`}>
+                        {best.card.bank}
+                      </span>
+                    </div>
                   )}
 
                   <div className="flex-1 min-w-0">
@@ -1747,7 +1759,9 @@ export function CreditCardCalculator({
                 {whyCardResult.card.imageUrl ? (
                   <img src={whyCardResult.card.imageUrl} alt={whyCardResult.card.name} className="w-16 h-10 object-contain rounded border" referrerPolicy="no-referrer" />
                 ) : (
-                  <div className={`w-16 h-10 rounded ${whyCardResult.card.style?.bgColor || 'bg-gray-500'}`}></div>
+                  <div className={`w-16 h-10 rounded ${whyCardResult.card.style?.bgColor || 'bg-gray-500'} flex items-center justify-center`}>
+                    <span className={`text-[8px] font-bold ${whyCardResult.card.style?.textColor || 'text-white'} text-center leading-tight px-0.5`}>{whyCardResult.card.bank}</span>
+                  </div>
                 )}
                 <div>
                   <p className="font-bold text-gray-900">{whyCardResult.card.name}</p>
@@ -1804,7 +1818,9 @@ export function CreditCardCalculator({
                   {best.card.imageUrl ? (
                     <img src={best.card.imageUrl} alt={best.card.name} className="w-20 h-12 object-contain rounded border mx-auto mb-2" referrerPolicy="no-referrer" />
                   ) : (
-                    <div className={`w-20 h-12 rounded ${best.card.style?.bgColor || 'bg-gray-500'} mx-auto mb-2`}></div>
+                    <div className={`w-20 h-12 rounded ${best.card.style?.bgColor || 'bg-gray-500'} mx-auto mb-2 flex items-center justify-center`}>
+                      <span className={`text-[9px] font-bold ${best.card.style?.textColor || 'text-white'} text-center leading-tight px-1`}>{best.card.bank}</span>
+                    </div>
                   )}
                   <p className="text-sm font-bold text-gray-900 flex items-center justify-center gap-1">
                     🏆 {best.card.name}
@@ -1816,7 +1832,9 @@ export function CreditCardCalculator({
                   {compareCardResult.card.imageUrl ? (
                     <img src={compareCardResult.card.imageUrl} alt={compareCardResult.card.name} className="w-20 h-12 object-contain rounded border mx-auto mb-2" referrerPolicy="no-referrer" />
                   ) : (
-                    <div className={`w-20 h-12 rounded ${compareCardResult.card.style?.bgColor || 'bg-gray-500'} mx-auto mb-2`}></div>
+                    <div className={`w-20 h-12 rounded ${compareCardResult.card.style?.bgColor || 'bg-gray-500'} mx-auto mb-2 flex items-center justify-center`}>
+                      <span className={`text-[9px] font-bold ${compareCardResult.card.style?.textColor || 'text-white'} text-center leading-tight px-1`}>{compareCardResult.card.bank}</span>
+                    </div>
                   )}
                   <p className="text-sm font-bold text-gray-900">{compareCardResult.card.name}</p>
                 </div>
