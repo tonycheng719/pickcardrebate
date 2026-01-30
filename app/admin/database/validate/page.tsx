@@ -70,7 +70,7 @@ export default function ValidatePage() {
       const dbNotes = notesRes.data || [];
 
       // Index DB data
-      const dbCardMap = new Map(dbCards.map((c: any) => [c.id, c]));
+      const dbCardMap = new Map<string, any>(dbCards.map((c: any) => [c.id, c]));
       const dbRulesByCard = new Map<string, any[]>();
       const dbNotesByCard = new Map<string, any[]>();
       
