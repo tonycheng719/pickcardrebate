@@ -30,22 +30,10 @@ export default function PromosManagementPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("all");
-  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    checkAuth();
+    fetchPromos();
   }, []);
-
-  const checkAuth = async () => {
-    const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    setUser(user);
-    if (user) {
-      fetchPromos();
-    } else {
-      setLoading(false);
-    }
-  };
 
   const fetchPromos = async () => {
     setLoading(true);
@@ -179,18 +167,6 @@ export default function PromosManagementPage() {
     const pinnedCount = promos.filter(p => p.is_pinned).length;
     return { activeCount, expiringCount, expiredCount, pinnedCount };
   }, [promos]);
-
-  if (!user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <div className="text-center">
-          <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">需要登入</h2>
-          <Link href="/login"><Button>登入</Button></Link>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">

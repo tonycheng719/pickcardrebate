@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { 
   Database, 
   RefreshCw, 
@@ -44,22 +43,10 @@ export default function DatabaseAdminPage() {
   const [status, setStatus] = useState<MigrationStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const [migrating, setMigrating] = useState(false);
-  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    checkAuth();
+    fetchStatus();
   }, []);
-
-  const checkAuth = async () => {
-    const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    setUser(user);
-    if (user) {
-      fetchStatus();
-    } else {
-      setLoading(false);
-    }
-  };
 
   const fetchStatus = async () => {
     setLoading(true);
@@ -136,21 +123,6 @@ export default function DatabaseAdminPage() {
       setMigrating(false);
     }
   };
-
-  if (!user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <div className="text-center">
-          <Database className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">需要登入</h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">請先登入以訪問數據庫管理</p>
-          <Link href="/login">
-            <Button>登入</Button>
-          </Link>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">

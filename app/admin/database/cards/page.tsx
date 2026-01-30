@@ -32,22 +32,10 @@ export default function CardsManagementPage() {
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
   const [cardRules, setCardRules] = useState<Record<string, DbCardRule[]>>({});
   const [cardNotes, setCardNotes] = useState<Record<string, DbCardNote[]>>({});
-  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    checkAuth();
+    fetchCards();
   }, []);
-
-  const checkAuth = async () => {
-    const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    setUser(user);
-    if (user) {
-      fetchCards();
-    } else {
-      setLoading(false);
-    }
-  };
 
   const fetchCards = async () => {
     setLoading(true);
@@ -162,18 +150,6 @@ export default function CardsManagementPage() {
       return matchesSearch && matchesBank;
     });
   }, [cards, searchTerm, selectedBank]);
-
-  if (!user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <div className="text-center">
-          <CreditCard className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">需要登入</h2>
-          <Link href="/login"><Button>登入</Button></Link>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
