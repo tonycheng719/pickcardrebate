@@ -15,13 +15,41 @@ import {
   Calendar,
   AlertTriangle,
   CheckCircle2,
-  Filter
+  Filter,
+  X,
+  Save
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import Link from "next/link";
-import { DbCardRule, DbCard } from "@/lib/types/db-cards";
+import { DbCardRule, DbCard, DbCardRuleInsert } from "@/lib/types/db-cards";
+import { CATEGORIES } from "@/lib/data/categories";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+
+// Default empty rule for the form
+const emptyRule: Partial<DbCardRuleInsert> = {
+  card_id: "",
+  description: "",
+  match_type: "base",
+  categories: [],
+  merchants: [],
+  payment_methods: [],
+  percentage: 0,
+  cap: null,
+  cap_type: "reward",
+  cap_period: "monthly",
+  min_spend: null,
+  exclude_categories: [],
+  valid_from: null,
+  valid_until: null,
+  priority: 0,
+  requires_registration: false,
+  registration_url: null,
+  notes: null,
+  is_active: true,
+};
 
 export default function RulesManagementPage() {
   const [rules, setRules] = useState<DbCardRule[]>([]);
@@ -32,6 +60,12 @@ export default function RulesManagementPage() {
   const [selectedMatchType, setSelectedMatchType] = useState<string>("all");
   const [showExpired, setShowExpired] = useState(false);
   const [expandedRule, setExpandedRule] = useState<string | null>(null);
+  
+  // Rule editor state
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [editingRule, setEditingRule] = useState<Partial<DbCardRuleInsert> & { id?: string }>(emptyRule);
+  const [isEditing, setIsEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -106,6 +140,103 @@ export default function RulesManagementPage() {
     } catch (error) {
       console.error("Toggle error:", error);
       toast.error("更新失敗");
+    }
+  };
+
+  // Open editor for new rule
+  const openNewRuleEditor = (cardId?: string) => {
+    setEditingRule({ ...emptyRule, card_id: cardId || "" });
+    setIsEditing(false);
+    setIsEditorOpen(true);
+  };
+
+  // Open editor for existing rule
+  const openEditRuleEditor = (rule: DbCardRule) => {
+    setEditingRule({
+      id: rule.id,
+      card_id: rule.card_id,
+      description: rule.description,
+      match_type: rule.match_type,
+      categories: rule.categories || [],
+      merchants: rule.merchants || [],
+      payment_methods: rule.payment_methods || [],
+      percentage: rule.percentage,
+      cap: rule.cap,
+      cap_type: rule.cap_type || "reward",
+      cap_period: rule.cap_period || "monthly",
+      min_spend: rule.min_spend,
+      exclude_categories: rule.exclude_categories || [],
+      valid_from: rule.valid_from,
+      valid_until: rule.valid_until,
+      priority: rule.priority || 0,
+      requires_registration: rule.requires_registration || false,
+      registration_url: rule.registration_url,
+      notes: rule.notes,
+      is_active: rule.is_active,
+    });
+    setIsEditing(true);
+    setIsEditorOpen(true);
+  };
+
+  // Save rule (create or update)
+  const saveRule = async () => {
+    if (!editingRule.card_id || !editingRule.description || !editingRule.percentage) {
+      toast.error("請填寫必填欄位（卡片、描述、回贈率）");
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const supabase = createClient();
+
+      const ruleData = {
+        card_id: editingRule.card_id,
+        description: editingRule.description,
+        match_type: editingRule.match_type || "base",
+        categories: editingRule.categories || [],
+        merchants: editingRule.merchants || [],
+        payment_methods: editingRule.payment_methods || [],
+        percentage: editingRule.percentage,
+        cap: editingRule.cap || null,
+        cap_type: editingRule.cap_type || "reward",
+        cap_period: editingRule.cap_period || "monthly",
+        min_spend: editingRule.min_spend || null,
+        exclude_categories: editingRule.exclude_categories || [],
+        valid_from: editingRule.valid_from || null,
+        valid_until: editingRule.valid_until || null,
+        priority: editingRule.priority || 0,
+        requires_registration: editingRule.requires_registration || false,
+        registration_url: editingRule.registration_url || null,
+        notes: editingRule.notes || null,
+        is_active: editingRule.is_active ?? true,
+      };
+
+      if (isEditing && editingRule.id) {
+        // Update
+        const { error } = await supabase
+          .from("db_card_rules")
+          .update(ruleData)
+          .eq("id", editingRule.id);
+
+        if (error) throw error;
+        toast.success("規則已更新");
+      } else {
+        // Create
+        const { error } = await supabase
+          .from("db_card_rules")
+          .insert([ruleData]);
+
+        if (error) throw error;
+        toast.success("規則已新增");
+      }
+
+      setIsEditorOpen(false);
+      fetchData();
+    } catch (error) {
+      console.error("Save error:", error);
+      toast.error("儲存失敗");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -206,6 +337,10 @@ export default function RulesManagementPage() {
             <Button variant="outline" onClick={fetchData} disabled={loading}>
               <RefreshCw className={`h-4 w-4 mr-2 ${loading ? "animate-spin" : ""}`} />
               刷新
+            </Button>
+            <Button onClick={() => openNewRuleEditor()}>
+              <Plus className="h-4 w-4 mr-2" />
+              新增規則
             </Button>
           </div>
         </div>
@@ -365,6 +500,14 @@ export default function RulesManagementPage() {
                             <Button
                               size="sm"
                               variant="ghost"
+                              onClick={() => openEditRuleEditor(rule)}
+                              className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                            >
+                              <Edit2 className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="ghost"
                               onClick={() => toggleRuleActive(rule)}
                             >
                               {rule.is_active ? (
@@ -392,6 +535,282 @@ export default function RulesManagementPage() {
           )}
         </div>
       </div>
+
+      {/* Rule Editor Dialog */}
+      <Dialog open={isEditorOpen} onOpenChange={setIsEditorOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Settings className="h-5 w-5 text-green-600" />
+              {isEditing ? "編輯規則" : "新增規則"}
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-4 py-4">
+            {/* Card Selection */}
+            <div className="space-y-2">
+              <Label>信用卡 *</Label>
+              <select
+                value={editingRule.card_id || ""}
+                onChange={(e) => setEditingRule(prev => ({ ...prev, card_id: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700"
+                disabled={isEditing}
+              >
+                <option value="">選擇信用卡</option>
+                {cards.map(card => (
+                  <option key={card.id} value={card.id}>{card.name} ({card.bank})</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Description */}
+            <div className="space-y-2">
+              <Label>規則描述 *</Label>
+              <Input
+                placeholder="例如：🔥 網購 4% 回贈"
+                value={editingRule.description || ""}
+                onChange={(e) => setEditingRule(prev => ({ ...prev, description: e.target.value }))}
+              />
+            </div>
+
+            {/* Match Type & Percentage */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>匹配類型</Label>
+                <select
+                  value={editingRule.match_type || "base"}
+                  onChange={(e) => setEditingRule(prev => ({ ...prev, match_type: e.target.value as any }))}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700"
+                >
+                  <option value="base">基礎回贈（所有消費）</option>
+                  <option value="category">類別回贈</option>
+                  <option value="merchant">商戶回贈</option>
+                  <option value="payment">支付方式</option>
+                </select>
+              </div>
+              <div className="space-y-2">
+                <Label>回贈率 (%) *</Label>
+                <Input
+                  type="number"
+                  step="0.1"
+                  placeholder="4"
+                  value={editingRule.percentage || ""}
+                  onChange={(e) => setEditingRule(prev => ({ ...prev, percentage: parseFloat(e.target.value) || 0 }))}
+                />
+              </div>
+            </div>
+
+            {/* Categories (if match_type is category) */}
+            {editingRule.match_type === "category" && (
+              <div className="space-y-2">
+                <Label>適用類別</Label>
+                <div className="flex flex-wrap gap-2 p-3 border border-gray-200 dark:border-gray-700 rounded-lg max-h-40 overflow-y-auto">
+                  {CATEGORIES.map(cat => (
+                    <label key={cat.id} className="flex items-center gap-1.5 text-sm cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={editingRule.categories?.includes(cat.id) || false}
+                        onChange={(e) => {
+                          const cats = editingRule.categories || [];
+                          if (e.target.checked) {
+                            setEditingRule(prev => ({ ...prev, categories: [...cats, cat.id] }));
+                          } else {
+                            setEditingRule(prev => ({ ...prev, categories: cats.filter(c => c !== cat.id) }));
+                          }
+                        }}
+                        className="rounded"
+                      />
+                      {cat.name}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Merchants (if match_type is merchant) */}
+            {editingRule.match_type === "merchant" && (
+              <div className="space-y-2">
+                <Label>適用商戶（以逗號分隔）</Label>
+                <Input
+                  placeholder="McDonald's, KFC, Starbucks"
+                  value={editingRule.merchants?.join(", ") || ""}
+                  onChange={(e) => setEditingRule(prev => ({ 
+                    ...prev, 
+                    merchants: e.target.value.split(",").map(s => s.trim()).filter(Boolean) 
+                  }))}
+                />
+              </div>
+            )}
+
+            {/* Payment Methods (if match_type is payment) */}
+            {editingRule.match_type === "payment" && (
+              <div className="space-y-2">
+                <Label>適用支付方式</Label>
+                <div className="flex flex-wrap gap-2">
+                  {["apple_pay", "google_pay", "samsung_pay", "alipay", "wechat_pay", "payme", "octopus"].map(method => (
+                    <label key={method} className="flex items-center gap-1.5 text-sm cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={editingRule.payment_methods?.includes(method) || false}
+                        onChange={(e) => {
+                          const methods = editingRule.payment_methods || [];
+                          if (e.target.checked) {
+                            setEditingRule(prev => ({ ...prev, payment_methods: [...methods, method] }));
+                          } else {
+                            setEditingRule(prev => ({ ...prev, payment_methods: methods.filter(m => m !== method) }));
+                          }
+                        }}
+                        className="rounded"
+                      />
+                      {method.replace("_", " ").toUpperCase()}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Cap Settings */}
+            <div className="grid grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <Label>回贈上限</Label>
+                <Input
+                  type="number"
+                  placeholder="600"
+                  value={editingRule.cap || ""}
+                  onChange={(e) => setEditingRule(prev => ({ ...prev, cap: e.target.value ? parseInt(e.target.value) : null }))}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>上限類型</Label>
+                <select
+                  value={editingRule.cap_type || "reward"}
+                  onChange={(e) => setEditingRule(prev => ({ ...prev, cap_type: e.target.value as any }))}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700"
+                >
+                  <option value="reward">回贈金額</option>
+                  <option value="spending">簽賬金額</option>
+                </select>
+              </div>
+              <div className="space-y-2">
+                <Label>上限週期</Label>
+                <select
+                  value={editingRule.cap_period || "monthly"}
+                  onChange={(e) => setEditingRule(prev => ({ ...prev, cap_period: e.target.value as any }))}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700"
+                >
+                  <option value="monthly">每月</option>
+                  <option value="quarterly">每季</option>
+                  <option value="annual">每年</option>
+                  <option value="transaction">每次交易</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Min Spend */}
+            <div className="space-y-2">
+              <Label>最低消費金額</Label>
+              <Input
+                type="number"
+                placeholder="300"
+                value={editingRule.min_spend || ""}
+                onChange={(e) => setEditingRule(prev => ({ ...prev, min_spend: e.target.value ? parseInt(e.target.value) : null }))}
+              />
+            </div>
+
+            {/* Valid Date Range */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>生效日期</Label>
+                <Input
+                  type="date"
+                  value={editingRule.valid_from || ""}
+                  onChange={(e) => setEditingRule(prev => ({ ...prev, valid_from: e.target.value || null }))}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>到期日期</Label>
+                <Input
+                  type="date"
+                  value={editingRule.valid_until || ""}
+                  onChange={(e) => setEditingRule(prev => ({ ...prev, valid_until: e.target.value || null }))}
+                />
+              </div>
+            </div>
+
+            {/* Registration Required */}
+            <div className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                id="requires_registration"
+                checked={editingRule.requires_registration || false}
+                onChange={(e) => setEditingRule(prev => ({ ...prev, requires_registration: e.target.checked }))}
+                className="rounded"
+              />
+              <Label htmlFor="requires_registration" className="cursor-pointer">需要登記才能享用</Label>
+            </div>
+
+            {editingRule.requires_registration && (
+              <div className="space-y-2">
+                <Label>登記連結</Label>
+                <Input
+                  placeholder="https://..."
+                  value={editingRule.registration_url || ""}
+                  onChange={(e) => setEditingRule(prev => ({ ...prev, registration_url: e.target.value || null }))}
+                />
+              </div>
+            )}
+
+            {/* Notes */}
+            <div className="space-y-2">
+              <Label>備註</Label>
+              <textarea
+                placeholder="額外說明..."
+                value={editingRule.notes || ""}
+                onChange={(e) => setEditingRule(prev => ({ ...prev, notes: e.target.value || null }))}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 min-h-[80px]"
+              />
+            </div>
+
+            {/* Priority & Active */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>優先級（數值越大越優先）</Label>
+                <Input
+                  type="number"
+                  placeholder="0"
+                  value={editingRule.priority || ""}
+                  onChange={(e) => setEditingRule(prev => ({ ...prev, priority: parseInt(e.target.value) || 0 }))}
+                />
+              </div>
+              <div className="flex items-center gap-3 pt-6">
+                <input
+                  type="checkbox"
+                  id="is_active"
+                  checked={editingRule.is_active ?? true}
+                  onChange={(e) => setEditingRule(prev => ({ ...prev, is_active: e.target.checked }))}
+                  className="rounded"
+                />
+                <Label htmlFor="is_active" className="cursor-pointer">立即啟用</Label>
+              </div>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="flex justify-end gap-3 pt-4 border-t">
+            <Button variant="outline" onClick={() => setIsEditorOpen(false)}>
+              取消
+            </Button>
+            <Button onClick={saveRule} disabled={saving}>
+              {saving ? (
+                <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+              ) : (
+                <Save className="h-4 w-4 mr-2" />
+              )}
+              {isEditing ? "更新規則" : "新增規則"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
