@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { cardTerms, isTermsExpired, isTermsExpiringSoon } from "@/lib/data/card-terms";
-import { HK_CARDS, CreditCard } from "@/lib/data/cards";
+import { HK_CARDS } from "@/lib/data/cards";
 import { RewardRule } from "@/lib/types";
 import { ExternalLink, FileText, AlertTriangle, CheckCircle, Clock, Plus, X, Copy, Sparkles, Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
