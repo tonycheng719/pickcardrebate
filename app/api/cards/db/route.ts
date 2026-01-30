@@ -146,10 +146,9 @@ export async function GET(request: Request) {
           if (r.min_spend) rule.minSpend = r.min_spend;
           if (r.exclude_categories?.length > 0) rule.excludeCategories = r.exclude_categories;
           if (r.valid_from || r.valid_until) {
-            rule.validDateRange = {
-              start: r.valid_from || undefined,
-              end: r.valid_until || undefined,
-            };
+            rule.validDateRange = {} as { start?: string; end?: string };
+            if (r.valid_from) rule.validDateRange.start = r.valid_from;
+            if (r.valid_until) rule.validDateRange.end = r.valid_until;
           }
 
           return rule;
