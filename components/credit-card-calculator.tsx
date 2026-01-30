@@ -198,6 +198,17 @@ export function CreditCardCalculator({
       HK_CARDS.filter(c => !c.hidden && !cardMap.has(c.id)).forEach(card => {
         cardMap.set(card.id, card);
       });
+      
+      // Merge images from datasetCards (user-uploaded images in 'cards' table)
+      datasetCards.forEach(card => {
+        const existing = cardMap.get(card.id);
+        if (existing && card.imageUrl) {
+          cardMap.set(card.id, { 
+            ...existing, 
+            imageUrl: card.imageUrl,
+          });
+        }
+      });
     } else {
       // Fallback mode: Use HK_CARDS (local) as primary
       HK_CARDS.filter(c => !c.hidden).forEach(card => cardMap.set(card.id, card));
