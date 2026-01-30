@@ -28,6 +28,13 @@ interface ValidationResult {
   status: "ok" | "warning" | "error";
 }
 
+interface PromoValidationResult {
+  promoId: string;
+  promoTitle: string;
+  issues: ValidationIssue[];
+  status: "ok" | "warning" | "error";
+}
+
 interface ValidationIssue {
   type: "missing" | "mismatch" | "extra";
   field: string;
@@ -39,7 +46,14 @@ interface ValidationIssue {
 export default function ValidatePage() {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<ValidationResult[]>([]);
+  const [promoResults, setPromoResults] = useState<PromoValidationResult[]>([]);
   const [summary, setSummary] = useState<{
+    total: number;
+    ok: number;
+    warning: number;
+    error: number;
+  } | null>(null);
+  const [promoSummary, setPromoSummary] = useState<{
     total: number;
     ok: number;
     warning: number;
@@ -47,20 +61,25 @@ export default function ValidatePage() {
   } | null>(null);
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
   const [filter, setFilter] = useState<"all" | "issues">("all");
+  const [activeTab, setActiveTab] = useState<"cards" | "promos">("cards");
+  const [syncing, setSyncing] = useState(false);
 
   const runValidation = async () => {
     setLoading(true);
     setResults([]);
+    setPromoResults([]);
     setSummary(null);
+    setPromoSummary(null);
 
     try {
       const supabase = createClient();
       
       // Fetch all DB data
-      const [cardsRes, rulesRes, notesRes] = await Promise.all([
+      const [cardsRes, rulesRes, notesRes, promosRes] = await Promise.all([
         supabase.from("db_cards").select("*"),
         supabase.from("db_card_rules").select("*"),
         supabase.from("db_card_notes").select("*"),
+        supabase.from("db_promos").select("*"),
       ]);
 
       if (cardsRes.error) throw cardsRes.error;
@@ -68,6 +87,7 @@ export default function ValidatePage() {
       const dbCards = cardsRes.data || [];
       const dbRules = rulesRes.data || [];
       const dbNotes = notesRes.data || [];
+      const dbPromos = promosRes.data || [];
 
       // Index DB data
       const dbCardMap = new Map<string, any>(dbCards.map((c: any) => [c.id, c]));
@@ -180,7 +200,7 @@ export default function ValidatePage() {
         }
       });
 
-      // Calculate summary
+      // Calculate card summary
       const ok = validationResults.filter(r => r.status === "ok").length;
       const warning = validationResults.filter(r => r.status === "warning").length;
       const error = validationResults.filter(r => r.status === "error").length;
@@ -193,13 +213,105 @@ export default function ValidatePage() {
         error,
       });
 
-      toast.success(`驗證完成！${ok} 正常, ${warning} 警告, ${error} 錯誤`);
+      // --- Validate Promos ---
+      const promoValidationResults: PromoValidationResult[] = [];
+      const dbPromoMap = new Map<string, any>(dbPromos.map((p: any) => [p.id, p]));
+
+      for (const localPromo of PROMOS) {
+        const issues: ValidationIssue[] = [];
+        const dbPromo = dbPromoMap.get(localPromo.id);
+
+        if (!dbPromo) {
+          issues.push({
+            type: "missing",
+            field: "promo",
+            localValue: localPromo.title,
+            severity: "medium",
+          });
+        } else {
+          if (localPromo.title !== dbPromo.title) {
+            issues.push({
+              type: "mismatch",
+              field: "title",
+              localValue: localPromo.title,
+              dbValue: dbPromo.title,
+              severity: "low",
+            });
+          }
+        }
+
+        let status: "ok" | "warning" | "error" = "ok";
+        if (issues.some(i => i.severity === "high")) status = "error";
+        else if (issues.length > 0) status = "warning";
+
+        promoValidationResults.push({
+          promoId: localPromo.id,
+          promoTitle: localPromo.title,
+          issues,
+          status,
+        });
+      }
+
+      // Check extra promos in DB
+      const localPromoIds = new Set(PROMOS.map(p => p.id));
+      dbPromos.forEach((dbPromo: any) => {
+        if (!localPromoIds.has(dbPromo.id)) {
+          promoValidationResults.push({
+            promoId: dbPromo.id,
+            promoTitle: dbPromo.title,
+            issues: [{
+              type: "extra",
+              field: "promo",
+              dbValue: dbPromo.title,
+              severity: "low",
+            }],
+            status: "warning",
+          });
+        }
+      });
+
+      const promoOk = promoValidationResults.filter(r => r.status === "ok").length;
+      const promoWarning = promoValidationResults.filter(r => r.status === "warning").length;
+      const promoError = promoValidationResults.filter(r => r.status === "error").length;
+
+      setPromoResults(promoValidationResults);
+      setPromoSummary({
+        total: promoValidationResults.length,
+        ok: promoOk,
+        warning: promoWarning,
+        error: promoError,
+      });
+
+      toast.success(`驗證完成！卡片: ${ok}✓ ${warning}⚠ ${error}✗ | 推廣: ${promoOk}✓ ${promoWarning}⚠ ${promoError}✗`);
 
     } catch (error) {
       console.error("Validation error:", error);
       toast.error("驗證失敗");
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Quick sync function
+  const handleQuickSync = async () => {
+    if (!confirm("確定要重新同步所有數據嗎？這會覆蓋資料庫中的現有數據。")) return;
+    
+    setSyncing(true);
+    try {
+      const res = await fetch("/api/admin/migrate-to-db", {
+        method: "POST",
+        credentials: "include",
+      });
+      
+      if (!res.ok) throw new Error("同步失敗");
+      
+      toast.success("數據同步成功！重新驗證中...");
+      await runValidation();
+    } catch (error) {
+      console.error("Sync error:", error);
+      toast.error("同步失敗");
+    } finally {
+      setSyncing(false);
     }
   };
 
@@ -220,17 +332,54 @@ export default function ValidatePage() {
             <Database className="h-8 w-8 text-blue-600" />
             <div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">數據一致性驗證</h1>
-              <p className="text-sm text-gray-500">比較本地 cards.ts 與資料庫數據</p>
+              <p className="text-sm text-gray-500">比較本地 cards.ts / promos.ts 與資料庫數據</p>
             </div>
           </div>
-          <Button onClick={runValidation} disabled={loading}>
-            <RefreshCw className={`h-4 w-4 mr-2 ${loading ? "animate-spin" : ""}`} />
-            {loading ? "驗證中..." : "開始驗證"}
-          </Button>
+          <div className="flex gap-2">
+            <Button onClick={runValidation} disabled={loading || syncing}>
+              <RefreshCw className={`h-4 w-4 mr-2 ${loading ? "animate-spin" : ""}`} />
+              {loading ? "驗證中..." : "開始驗證"}
+            </Button>
+            <Button 
+              variant="outline" 
+              onClick={handleQuickSync} 
+              disabled={loading || syncing}
+              className="text-orange-600 border-orange-200 hover:bg-orange-50"
+            >
+              <Settings className={`h-4 w-4 mr-2 ${syncing ? "animate-spin" : ""}`} />
+              {syncing ? "同步中..." : "快速同步"}
+            </Button>
+          </div>
         </div>
 
-        {/* Summary */}
-        {summary && (
+        {/* Tabs */}
+        <div className="flex gap-2 mb-4 border-b border-gray-200 dark:border-gray-700">
+          <button
+            className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+              activeTab === "cards"
+                ? "border-blue-500 text-blue-600"
+                : "border-transparent text-gray-500 hover:text-gray-700"
+            }`}
+            onClick={() => setActiveTab("cards")}
+          >
+            <CreditCard className="h-4 w-4 inline mr-1" />
+            卡片 ({summary?.total || 0})
+          </button>
+          <button
+            className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+              activeTab === "promos"
+                ? "border-blue-500 text-blue-600"
+                : "border-transparent text-gray-500 hover:text-gray-700"
+            }`}
+            onClick={() => setActiveTab("promos")}
+          >
+            <FileText className="h-4 w-4 inline mr-1" />
+            推廣文章 ({promoSummary?.total || 0})
+          </button>
+        </div>
+
+        {/* Summary - Cards */}
+        {activeTab === "cards" && summary && (
           <div className="grid grid-cols-4 gap-4 mb-6">
             <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700">
               <p className="text-sm text-gray-500">總卡片</p>
@@ -251,111 +400,226 @@ export default function ValidatePage() {
           </div>
         )}
 
-        {/* Filter */}
-        {results.length > 0 && (
-          <div className="flex gap-2 mb-4">
-            <Button
-              variant={filter === "all" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setFilter("all")}
-            >
-              全部 ({results.length})
-            </Button>
-            <Button
-              variant={filter === "issues" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setFilter("issues")}
-            >
-              有問題 ({results.filter(r => r.status !== "ok").length})
-            </Button>
-          </div>
-        )}
-
-        {/* Results */}
-        <div className="space-y-2">
-          {loading && (
-            <div className="text-center py-12">
-              <RefreshCw className="h-8 w-8 text-gray-400 animate-spin mx-auto mb-4" />
-              <p className="text-gray-500">驗證中...</p>
-            </div>
-          )}
-          
-          {!loading && results.length === 0 && (
-            <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-xl">
-              <Database className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500">點擊「開始驗證」以比較數據</p>
-            </div>
-          )}
-
-          {filteredResults.map(result => (
-            <div 
-              key={result.cardId}
-              className={`bg-white dark:bg-gray-800 rounded-lg shadow-sm border overflow-hidden ${
-                result.status === "ok" ? "border-green-200 dark:border-green-800" :
-                result.status === "warning" ? "border-yellow-200 dark:border-yellow-800" :
-                "border-red-200 dark:border-red-800"
-              }`}
-            >
-              <div
-                className="p-3 flex items-center justify-between cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-750"
-                onClick={() => setExpandedCard(expandedCard === result.cardId ? null : result.cardId)}
-              >
-                <div className="flex items-center gap-3">
-                  {result.status === "ok" ? (
-                    <CheckCircle2 className="h-5 w-5 text-green-500" />
-                  ) : result.status === "warning" ? (
-                    <AlertTriangle className="h-5 w-5 text-yellow-500" />
-                  ) : (
-                    <XCircle className="h-5 w-5 text-red-500" />
-                  )}
-                  <div>
-                    <span className="font-medium text-gray-900 dark:text-white">{result.cardName}</span>
-                    <span className="text-sm text-gray-500 ml-2">{result.cardId}</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  {result.issues.length > 0 && (
-                    <span className="text-sm text-gray-500">{result.issues.length} 問題</span>
-                  )}
-                  {expandedCard === result.cardId ? (
-                    <ChevronDown className="h-4 w-4 text-gray-400" />
-                  ) : (
-                    <ChevronRight className="h-4 w-4 text-gray-400" />
-                  )}
-                </div>
+        {/* Cards Tab Content */}
+        {activeTab === "cards" && (
+          <>
+            {/* Filter */}
+            {results.length > 0 && (
+              <div className="flex gap-2 mb-4">
+                <Button
+                  variant={filter === "all" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setFilter("all")}
+                >
+                  全部 ({results.length})
+                </Button>
+                <Button
+                  variant={filter === "issues" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setFilter("issues")}
+                >
+                  有問題 ({results.filter(r => r.status !== "ok").length})
+                </Button>
               </div>
+            )}
 
-              {expandedCard === result.cardId && result.issues.length > 0 && (
-                <div className="border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-850">
-                  <ul className="space-y-2 text-sm">
-                    {result.issues.map((issue, idx) => (
-                      <li key={idx} className="flex items-start gap-2">
-                        <span className={`px-2 py-0.5 rounded text-xs ${
-                          issue.severity === "high" ? "bg-red-100 text-red-700" :
-                          issue.severity === "medium" ? "bg-yellow-100 text-yellow-700" :
-                          "bg-gray-100 text-gray-700"
-                        }`}>
-                          {issue.type === "missing" && "缺失"}
-                          {issue.type === "mismatch" && "不一致"}
-                          {issue.type === "extra" && "多餘"}
-                        </span>
-                        <span className="text-gray-700 dark:text-gray-300">
-                          <strong>{issue.field}:</strong>{" "}
-                          {issue.localValue && `本地="${issue.localValue}"`}
-                          {issue.localValue && issue.dbValue && " → "}
-                          {issue.dbValue && `DB="${issue.dbValue}"`}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+            {/* Results */}
+            <div className="space-y-2">
+              {loading && (
+                <div className="text-center py-12">
+                  <RefreshCw className="h-8 w-8 text-gray-400 animate-spin mx-auto mb-4" />
+                  <p className="text-gray-500">驗證中...</p>
                 </div>
               )}
+              
+              {!loading && results.length === 0 && (
+                <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-xl">
+                  <Database className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                  <p className="text-gray-500">點擊「開始驗證」以比較數據</p>
+                </div>
+              )}
+
+              {filteredResults.map(result => (
+                <div 
+                  key={result.cardId}
+                  className={`bg-white dark:bg-gray-800 rounded-lg shadow-sm border overflow-hidden ${
+                    result.status === "ok" ? "border-green-200 dark:border-green-800" :
+                    result.status === "warning" ? "border-yellow-200 dark:border-yellow-800" :
+                    "border-red-200 dark:border-red-800"
+                  }`}
+                >
+                  <div
+                    className="p-3 flex items-center justify-between cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-750"
+                    onClick={() => setExpandedCard(expandedCard === result.cardId ? null : result.cardId)}
+                  >
+                    <div className="flex items-center gap-3">
+                      {result.status === "ok" ? (
+                        <CheckCircle2 className="h-5 w-5 text-green-500" />
+                      ) : result.status === "warning" ? (
+                        <AlertTriangle className="h-5 w-5 text-yellow-500" />
+                      ) : (
+                        <XCircle className="h-5 w-5 text-red-500" />
+                      )}
+                      <div>
+                        <span className="font-medium text-gray-900 dark:text-white">{result.cardName}</span>
+                        <span className="text-sm text-gray-500 ml-2">{result.cardId}</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {result.issues.length > 0 && (
+                        <span className="text-sm text-gray-500">{result.issues.length} 問題</span>
+                      )}
+                      {expandedCard === result.cardId ? (
+                        <ChevronDown className="h-4 w-4 text-gray-400" />
+                      ) : (
+                        <ChevronRight className="h-4 w-4 text-gray-400" />
+                      )}
+                    </div>
+                  </div>
+
+                  {expandedCard === result.cardId && result.issues.length > 0 && (
+                    <div className="border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-850">
+                      <ul className="space-y-2 text-sm">
+                        {result.issues.map((issue, idx) => (
+                          <li key={idx} className="flex items-start gap-2">
+                            <span className={`px-2 py-0.5 rounded text-xs ${
+                              issue.severity === "high" ? "bg-red-100 text-red-700" :
+                              issue.severity === "medium" ? "bg-yellow-100 text-yellow-700" :
+                              "bg-gray-100 text-gray-700"
+                            }`}>
+                              {issue.type === "missing" && "缺失"}
+                              {issue.type === "mismatch" && "不一致"}
+                              {issue.type === "extra" && "多餘"}
+                            </span>
+                            <span className="text-gray-700 dark:text-gray-300">
+                              <strong>{issue.field}:</strong>{" "}
+                              {issue.localValue && `本地="${issue.localValue}"`}
+                              {issue.localValue && issue.dbValue && " → "}
+                              {issue.dbValue && `DB="${issue.dbValue}"`}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
+
+        {/* Promos Tab Content */}
+        {activeTab === "promos" && (
+          <>
+            {/* Promo Summary */}
+            {promoSummary && (
+              <div className="grid grid-cols-4 gap-4 mb-6">
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700">
+                  <p className="text-sm text-gray-500">總推廣</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{promoSummary.total}</p>
+                </div>
+                <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-4 shadow-sm border border-green-200 dark:border-green-800">
+                  <p className="text-sm text-green-600">正常</p>
+                  <p className="text-2xl font-bold text-green-600">{promoSummary.ok}</p>
+                </div>
+                <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-xl p-4 shadow-sm border border-yellow-200 dark:border-yellow-800">
+                  <p className="text-sm text-yellow-600">警告</p>
+                  <p className="text-2xl font-bold text-yellow-600">{promoSummary.warning}</p>
+                </div>
+                <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-4 shadow-sm border border-red-200 dark:border-red-800">
+                  <p className="text-sm text-red-600">錯誤</p>
+                  <p className="text-2xl font-bold text-red-600">{promoSummary.error}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Promo Results */}
+            <div className="space-y-2">
+              {loading && (
+                <div className="text-center py-12">
+                  <RefreshCw className="h-8 w-8 text-gray-400 animate-spin mx-auto mb-4" />
+                  <p className="text-gray-500">驗證中...</p>
+                </div>
+              )}
+              
+              {!loading && promoResults.length === 0 && (
+                <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-xl">
+                  <FileText className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                  <p className="text-gray-500">點擊「開始驗證」以比較推廣數據</p>
+                </div>
+              )}
+
+              {promoResults.map(result => (
+                <div 
+                  key={result.promoId}
+                  className={`bg-white dark:bg-gray-800 rounded-lg shadow-sm border overflow-hidden ${
+                    result.status === "ok" ? "border-green-200 dark:border-green-800" :
+                    result.status === "warning" ? "border-yellow-200 dark:border-yellow-800" :
+                    "border-red-200 dark:border-red-800"
+                  }`}
+                >
+                  <div
+                    className="p-3 flex items-center justify-between cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-750"
+                    onClick={() => setExpandedCard(expandedCard === result.promoId ? null : result.promoId)}
+                  >
+                    <div className="flex items-center gap-3">
+                      {result.status === "ok" ? (
+                        <CheckCircle2 className="h-5 w-5 text-green-500" />
+                      ) : result.status === "warning" ? (
+                        <AlertTriangle className="h-5 w-5 text-yellow-500" />
+                      ) : (
+                        <XCircle className="h-5 w-5 text-red-500" />
+                      )}
+                      <div>
+                        <span className="font-medium text-gray-900 dark:text-white">{result.promoTitle}</span>
+                        <span className="text-sm text-gray-500 ml-2">{result.promoId}</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {result.issues.length > 0 && (
+                        <span className="text-sm text-gray-500">{result.issues.length} 問題</span>
+                      )}
+                      {expandedCard === result.promoId ? (
+                        <ChevronDown className="h-4 w-4 text-gray-400" />
+                      ) : (
+                        <ChevronRight className="h-4 w-4 text-gray-400" />
+                      )}
+                    </div>
+                  </div>
+
+                  {expandedCard === result.promoId && result.issues.length > 0 && (
+                    <div className="border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-850">
+                      <ul className="space-y-2 text-sm">
+                        {result.issues.map((issue, idx) => (
+                          <li key={idx} className="flex items-start gap-2">
+                            <span className={`px-2 py-0.5 rounded text-xs ${
+                              issue.severity === "high" ? "bg-red-100 text-red-700" :
+                              issue.severity === "medium" ? "bg-yellow-100 text-yellow-700" :
+                              "bg-gray-100 text-gray-700"
+                            }`}>
+                              {issue.type === "missing" && "缺失"}
+                              {issue.type === "mismatch" && "不一致"}
+                              {issue.type === "extra" && "多餘"}
+                            </span>
+                            <span className="text-gray-700 dark:text-gray-300">
+                              <strong>{issue.field}:</strong>{" "}
+                              {issue.localValue && `本地="${issue.localValue}"`}
+                              {issue.localValue && issue.dbValue && " → "}
+                              {issue.dbValue && `DB="${issue.dbValue}"`}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </>
+        )}
 
         {/* Actions */}
-        {summary && summary.error + summary.warning > 0 && (
+        {activeTab === "cards" && summary && summary.error + summary.warning > 0 && (
           <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
             <h3 className="font-medium text-blue-900 dark:text-blue-100 mb-2">修復建議</h3>
             <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
