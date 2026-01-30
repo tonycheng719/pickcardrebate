@@ -51,10 +51,14 @@ export default function DatabaseAdminPage() {
   const fetchStatus = async () => {
     setLoading(true);
     try {
-      const response = await fetch("/api/admin/migrate-to-db");
+      const response = await fetch("/api/admin/migrate-to-db", {
+        credentials: "include",
+      });
       if (response.ok) {
         const data = await response.json();
         setStatus(data);
+      } else if (response.status === 401) {
+        toast.error("認證失敗，請重新登入");
       }
     } catch (error) {
       console.error("Failed to fetch status:", error);
@@ -78,6 +82,7 @@ export default function DatabaseAdminPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ mode, clearExisting }),
+        credentials: "include",
       });
 
       const data = await response.json();
