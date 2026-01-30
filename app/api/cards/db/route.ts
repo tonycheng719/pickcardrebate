@@ -172,6 +172,7 @@ export async function GET(request: Request) {
         officialApplyUrl: dbCard.apply_url || undefined,
         minIncome: dbCard.min_income || undefined,
         rules,
+        tags: dbCard.tags || [],
         rewardConfig: dbCard.reward_config ? {
           method: (dbCard.reward_config.method && ['conversion', 'direct', 'direct_rate'].includes(dbCard.reward_config.method) 
             ? dbCard.reward_config.method 
