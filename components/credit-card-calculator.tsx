@@ -22,6 +22,7 @@ import { useWallet } from "@/lib/store/wallet-context";
 import { ShareButton } from "@/components/share-button";
 import { DynamicIcon } from "@/components/dynamic-icon";
 import { useDataset } from "@/lib/admin/data-store";
+import { useDBCards } from "@/lib/hooks/use-db-cards";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { ReportErrorDialog } from "@/components/report-error-dialog";
 import { logSearch } from "@/app/actions/log-search";
@@ -168,9 +169,15 @@ export function CreditCardCalculator({
   subtitle = "選擇商戶與消費方式，即時計算最高回贈信用卡。",
 }: CreditCardCalculatorProps) {
   const { myCardIds, user, rewardPreference } = useWallet(); // Get user and preference from wallet context
-  const { cards, merchants } = useDataset();
+  const { cards: datasetCards, merchants } = useDataset();
+  const { cards: dbCards, source: dbSource, loading: dbLoading } = useDBCards({ fallbackToLocal: true });
   const { localePath } = useLocale();
   const categoryList = CATEGORIES;
+  
+  // Determine which card source to use
+  // DB source is used when: DB has data AND not loading
+  // Fallback to local when: DB fails or is empty
+  const useDbSource = dbSource === "database" && dbCards.length > 0 && !dbLoading;
   
   const merchantList = useMemo(() => {
       const datasetMerchants = merchants.length ? merchants : POPULAR_MERCHANTS;
@@ -179,28 +186,36 @@ export function CreditCardCalculator({
       return [...datasetMerchants, ...missingGeneral];
   }, [merchants]);
 
-  // Merge cards: HK_CARDS has the latest rules, dataset cards may have updated images
+  // Card list with DB rules (with fallback to local)
   const cardList = useMemo(() => {
     const cardMap = new Map<string, CreditCardType>();
     
-    // Start with HK_CARDS (has all latest rules), excluding hidden cards
-    HK_CARDS.filter(c => !c.hidden).forEach(card => cardMap.set(card.id, card));
-    
-    // Overlay with dataset cards (for updated images, etc.) but keep rules from HK_CARDS
-    cards.forEach(card => {
-      const existing = cardMap.get(card.id);
-      if (existing) {
-        // Keep rules/note from HK_CARDS, but update imageUrl and other fields
-        cardMap.set(card.id, { 
-          ...existing, 
-          imageUrl: card.imageUrl || existing.imageUrl,
-        });
-      }
-      // Note: Don't add cards that are only in DB but not in HK_CARDS
-    });
+    if (useDbSource) {
+      // Use DB cards (includes rules from database)
+      dbCards.filter(c => !c.hidden).forEach(card => cardMap.set(card.id, card));
+      
+      // Fallback: Add any cards from HK_CARDS that are not in DB
+      HK_CARDS.filter(c => !c.hidden && !cardMap.has(c.id)).forEach(card => {
+        cardMap.set(card.id, card);
+      });
+    } else {
+      // Fallback mode: Use HK_CARDS (local) as primary
+      HK_CARDS.filter(c => !c.hidden).forEach(card => cardMap.set(card.id, card));
+      
+      // Overlay with dataset cards for images
+      datasetCards.forEach(card => {
+        const existing = cardMap.get(card.id);
+        if (existing) {
+          cardMap.set(card.id, { 
+            ...existing, 
+            imageUrl: card.imageUrl || existing.imageUrl,
+          });
+        }
+      });
+    }
     
     return Array.from(cardMap.values());
-  }, [cards]);
+  }, [useDbSource, dbCards, datasetCards]);
   const [selectedCategory, setSelectedCategory] = useState(categoryList[0]?.id || "");
   const [selectedMerchantId, setSelectedMerchantId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState(""); // New Search State
@@ -1376,7 +1391,17 @@ export function CreditCardCalculator({
     <div className="space-y-6">
       {showIntro && (
         <div>
-          <p className="text-xs uppercase tracking-widest text-emerald-600 font-semibold">Beta 1.0</p>
+          <div className="flex items-center gap-2">
+            <p className="text-xs uppercase tracking-widest text-emerald-600 font-semibold">Beta 1.0</p>
+            {/* Data source indicator */}
+            <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+              useDbSource 
+                ? "bg-blue-100 text-blue-700" 
+                : "bg-gray-100 text-gray-600"
+            }`}>
+              {dbLoading ? "載入中..." : useDbSource ? "🗄️ DB" : "📁 Local"}
+            </span>
+          </div>
           <h2 className="text-2xl font-bold text-gray-900 mt-2">{title}</h2>
           <p className="text-sm text-gray-500 mt-1">{subtitle}</p>
         </div>
