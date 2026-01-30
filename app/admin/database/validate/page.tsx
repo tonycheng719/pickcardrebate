@@ -164,7 +164,7 @@ export default function ValidatePage() {
 
       // Check for extra cards in DB that are not in local
       const localCardIds = new Set(HK_CARDS.map(c => c.id));
-      dbCards.forEach(dbCard => {
+      dbCards.forEach((dbCard: any) => {
         if (!localCardIds.has(dbCard.id)) {
           validationResults.push({
             cardId: dbCard.id,
