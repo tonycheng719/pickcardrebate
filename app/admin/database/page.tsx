@@ -306,7 +306,7 @@ export default function DatabaseAdminPage() {
               <p className="text-sm text-gray-500 mt-1">管理回贈計算規則</p>
             </Link>
 
-            <Link href="/admin/database/promos" className="block p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+            <Link href="/admin/discover" className="block p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <FileText className="h-5 w-5 text-purple-600" />
@@ -314,7 +314,7 @@ export default function DatabaseAdminPage() {
                 </div>
                 <ArrowRight className="h-4 w-4 text-gray-400" />
               </div>
-              <p className="text-sm text-gray-500 mt-1">管理優惠文章和 FAQ</p>
+              <p className="text-sm text-gray-500 mt-1">前往「探索內容」管理文章</p>
             </Link>
 
             <Link href="/admin/database/validate" className="block p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">

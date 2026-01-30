@@ -39,7 +39,6 @@ const menuItems = [
   { name: "🗄️ 數據庫管理", href: "/admin/database", icon: Database, subItems: [
     { name: "卡片管理", href: "/admin/database/cards" },
     { name: "規則管理", href: "/admin/database/rules" },
-    { name: "推廣管理", href: "/admin/database/promos" },
     { name: "數據驗證", href: "/admin/database/validate" },
   ]},
   { name: "會員管理", href: "/admin/users", icon: Users },
