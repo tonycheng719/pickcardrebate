@@ -317,15 +317,15 @@ export default function DatabaseAdminPage() {
               <p className="text-sm text-gray-500 mt-1">管理優惠文章和 FAQ</p>
             </Link>
 
-            <Link href="/admin/card-terms" className="block p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+            <Link href="/admin/database/validate" className="block p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <FileText className="h-5 w-5 text-orange-600" />
-                  <span className="font-medium text-gray-900 dark:text-white">條款管理 (舊)</span>
+                  <CheckCircle2 className="h-5 w-5 text-cyan-600" />
+                  <span className="font-medium text-gray-900 dark:text-white">數據驗證</span>
                 </div>
                 <ArrowRight className="h-4 w-4 text-gray-400" />
               </div>
-              <p className="text-sm text-gray-500 mt-1">card-terms.ts 管理</p>
+              <p className="text-sm text-gray-500 mt-1">比較本地與 DB 數據一致性</p>
             </Link>
           </div>
         </div>
