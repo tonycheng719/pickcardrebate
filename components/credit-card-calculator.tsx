@@ -1583,7 +1583,7 @@ export function CreditCardCalculator({
 
       {/* "Why This Card" Dialog - Now supports any card */}
       <Dialog open={showWhyDialog} onOpenChange={setShowWhyDialog}>
-        <DialogContent className="max-w-sm">
+        <DialogContent className="max-w-sm max-h-[85vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-gray-800">
               <HelpCircle className="h-5 w-5 text-emerald-500" /> 點解係呢張？
