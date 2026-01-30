@@ -70,16 +70,16 @@ export default function ValidatePage() {
       const dbNotes = notesRes.data || [];
 
       // Index DB data
-      const dbCardMap = new Map(dbCards.map(c => [c.id, c]));
+      const dbCardMap = new Map(dbCards.map((c: any) => [c.id, c]));
       const dbRulesByCard = new Map<string, any[]>();
       const dbNotesByCard = new Map<string, any[]>();
       
-      dbRules.forEach(r => {
+      dbRules.forEach((r: any) => {
         if (!dbRulesByCard.has(r.card_id)) dbRulesByCard.set(r.card_id, []);
         dbRulesByCard.get(r.card_id)!.push(r);
       });
       
-      dbNotes.forEach(n => {
+      dbNotes.forEach((n: any) => {
         if (!dbNotesByCard.has(n.card_id)) dbNotesByCard.set(n.card_id, []);
         dbNotesByCard.get(n.card_id)!.push(n);
       });
