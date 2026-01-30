@@ -277,6 +277,23 @@ export default function DatabaseAdminPage() {
               </div>
             </div>
           </div>
+          
+          {/* Sync Images Section */}
+          <div className="mt-4 p-4 bg-cyan-50 dark:bg-cyan-900/20 rounded-lg border border-cyan-100 dark:border-cyan-800">
+            <h3 className="font-medium text-cyan-900 dark:text-cyan-100 mb-2">🖼️ 同步卡片封面圖片</h3>
+            <p className="text-sm text-cyan-700 dark:text-cyan-300 mb-4">
+              將你在「信用卡管理」上傳的封面圖片同步到 db_cards 表
+            </p>
+            <Button
+              size="sm"
+              onClick={() => runMigration("sync-images", false)}
+              disabled={migrating}
+              className="bg-cyan-600 hover:bg-cyan-700"
+            >
+              {migrating ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4 mr-1" />}
+              同步圖片
+            </Button>
+          </div>
         </div>
 
         {/* Quick Links */}

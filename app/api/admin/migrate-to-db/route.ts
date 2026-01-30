@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic';
  * POST /api/admin/migrate-to-db
  * 將本地數據遷移到資料庫
  * 
- * Body: { mode: "cards" | "promos" | "all", clearExisting?: boolean }
+ * Body: { mode: "cards" | "promos" | "all" | "sync-images", clearExisting?: boolean }
  */
 export async function POST(request: Request) {
   try {
@@ -25,6 +25,49 @@ export async function POST(request: Request) {
     const body = await request.json();
     const mode = body.mode || "all";
     const clearExisting = body.clearExisting || false;
+    
+    // ========================================================================
+    // Sync Images from 'cards' table to 'db_cards' table
+    // ========================================================================
+    if (mode === "sync-images") {
+      // Get all cards with images from the 'cards' table
+      const { data: sourceCards, error: sourceError } = await supabase
+        .from("cards")
+        .select("id, image_url")
+        .not("image_url", "is", null);
+      
+      if (sourceError) {
+        return NextResponse.json({ error: `Failed to read cards table: ${sourceError.message}` }, { status: 500 });
+      }
+      
+      let synced = 0;
+      const errors: string[] = [];
+      
+      for (const card of sourceCards || []) {
+        if (card.image_url) {
+          const { error: updateError } = await supabase
+            .from("db_cards")
+            .update({ image_url: card.image_url })
+            .eq("id", card.id);
+          
+          if (updateError) {
+            errors.push(`${card.id}: ${updateError.message}`);
+          } else {
+            synced++;
+          }
+        }
+      }
+      
+      return NextResponse.json({
+        success: true,
+        message: "Image sync completed",
+        results: {
+          total: sourceCards?.length || 0,
+          synced,
+          errors,
+        },
+      });
+    }
     
     const results = {
       cards: { inserted: 0, errors: [] as string[] },
