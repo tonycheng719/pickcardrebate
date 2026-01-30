@@ -87,14 +87,14 @@ export function useDBCards(options: UseDBCardsOptions = {}): UseDBCardsResult {
       const rulesByCard: Record<string, DbCardRule[]> = {};
       const notesByCard: Record<string, DbCardNote[]> = {};
       
-      (dbRules || []).forEach(rule => {
+      (dbRules || []).forEach((rule: DbCardRule) => {
         if (!rulesByCard[rule.card_id]) {
           rulesByCard[rule.card_id] = [];
         }
         rulesByCard[rule.card_id].push(rule);
       });
       
-      (dbNotes || []).forEach(note => {
+      (dbNotes || []).forEach((note: DbCardNote) => {
         if (!notesByCard[note.card_id]) {
           notesByCard[note.card_id] = [];
         }
@@ -102,7 +102,7 @@ export function useDBCards(options: UseDBCardsOptions = {}): UseDBCardsResult {
       });
 
       // Transform to CreditCard format
-      const transformedCards: CreditCard[] = dbCards.map(dbCard => {
+      const transformedCards: CreditCard[] = dbCards.map((dbCard: DbCard) => {
         const cardRules = rulesByCard[dbCard.id] || [];
         const cardNotes = notesByCard[dbCard.id] || [];
         
