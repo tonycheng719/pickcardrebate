@@ -1338,41 +1338,67 @@ export function CreditCardCalculator({
             />
         </div>
 
-        <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2 mb-4">
+        {/* Mobile: Horizontal scroll, Desktop: Grid */}
+        <div className="md:hidden overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
+          <div className="flex gap-2 w-max">
+            {categoryList.map((cat) => (
+              <button
+                key={cat.id}
+                className={`p-2.5 rounded-xl text-center transition active:scale-95 flex flex-col items-center gap-1.5 min-w-[72px] ${
+                  selectedCategory === cat.id && !searchQuery
+                    ? `${cat.bgColor} ${cat.accentColor} ring-2 ring-offset-1 ring-emerald-300 shadow-sm`
+                    : "bg-gray-50 text-gray-600 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
+                }`}
+                onClick={() => handleCategorySelect(cat.id)}
+              >
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                  selectedCategory === cat.id && !searchQuery
+                    ? "bg-white/50 dark:bg-black/20"
+                    : "bg-gray-100 dark:bg-gray-700"
+                }`}>
+                  <DynamicIcon name={cat.icon} className="h-5 w-5" />
+                </div>
+                <span className="text-[11px] font-medium leading-tight whitespace-nowrap">{cat.name}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        {/* Desktop: Grid layout */}
+        <div className="hidden md:grid grid-cols-8 lg:grid-cols-10 gap-2 mb-4">
           {categoryList.map((cat) => (
             <button
               key={cat.id}
-              className={`p-2 sm:p-3 rounded-xl text-center transition active:scale-95 flex flex-col items-center gap-1 ${
+              className={`p-3 rounded-xl text-center transition active:scale-95 flex flex-col items-center gap-1 ${
                 selectedCategory === cat.id && !searchQuery
                   ? `${cat.bgColor} ${cat.accentColor} ring-2 ring-offset-1 ring-emerald-300 shadow-sm`
                   : "bg-gray-50 text-gray-600 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
               }`}
               onClick={() => handleCategorySelect(cat.id)}
             >
-              <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center ${
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                 selectedCategory === cat.id && !searchQuery
                   ? "bg-white/50 dark:bg-black/20"
                   : "bg-gray-100 dark:bg-gray-700"
               }`}>
-                <DynamicIcon name={cat.icon} className="h-4 w-4 sm:h-5 sm:w-5" />
+                <DynamicIcon name={cat.icon} className="h-5 w-5" />
               </div>
-              <span className="text-[10px] sm:text-xs font-medium leading-tight">{cat.name}</span>
+              <span className="text-xs font-medium leading-tight">{cat.name}</span>
             </button>
           ))}
         </div>
 
-        <div ref={merchantsRef} className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-2 sm:gap-3 mb-6 scroll-mt-20">
+        <div ref={merchantsRef} className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2.5 sm:gap-3 mb-6 scroll-mt-20 mt-4 md:mt-0">
           {effectiveMerchants.map((merchant) => (
             <Card
               key={merchant.id}
-              className={`p-2 sm:p-3 cursor-pointer border-2 transition-all active:scale-[0.96] ${
+              className={`p-2.5 sm:p-3 cursor-pointer border-2 transition-all active:scale-[0.96] ${
                 selectedMerchant?.id === merchant.id ? "border-emerald-500 shadow-md bg-emerald-50 dark:bg-emerald-900/20" : "border-transparent hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-200 dark:hover:border-gray-700"
               } ${merchant.isGeneral ? "bg-gray-50/50 dark:bg-gray-800/30 border-dashed" : ""}`}
               onClick={() => handleMerchantSelect(merchant.id)}
             >
-              <div className="flex flex-col items-center text-center gap-1.5 sm:gap-2">
+              <div className="flex flex-col items-center text-center gap-2">
                 <div
-                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-xl shrink-0 overflow-hidden"
+                  className="w-14 h-14 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-xl shrink-0 overflow-hidden"
                   style={{
                     backgroundColor: `${merchant.accentColor || "#e5e7eb"}20`,
                     color: merchant.accentColor || "#111827",
@@ -1394,7 +1420,7 @@ export function CreditCardCalculator({
                   )}
                 </div>
                 <div className="w-full min-w-0">
-                  <div className="text-[9px] sm:text-[10px] font-medium text-gray-900 dark:text-gray-100 leading-snug break-words hyphens-auto">{merchant.name}</div>
+                  <div className="text-[10px] sm:text-[10px] font-medium text-gray-900 dark:text-gray-100 leading-snug break-words hyphens-auto">{merchant.name}</div>
                 </div>
               </div>
             </Card>
