@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { adminAuthClient } from "@/lib/supabase/admin-client";
 import { HK_CARDS } from "@/lib/data/cards";
 import { PROMOS } from "@/lib/data/promos";
 import { DbCardInsert, DbCardRuleInsert, DbCardNoteInsert, DbPromoInsert, DbPromoFaqInsert } from "@/lib/types/db-cards";
+
+export const dynamic = 'force-dynamic';
 
 /**
  * POST /api/admin/migrate-to-db
@@ -12,13 +14,13 @@ import { DbCardInsert, DbCardRuleInsert, DbCardNoteInsert, DbPromoInsert, DbProm
  */
 export async function POST(request: Request) {
   try {
-    const supabase = await createClient();
-    
-    // Check authentication
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // Check for Service Role Key
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY && !process.env.SERVICE_ROLE_KEY) {
+      console.error("CRITICAL: Service Role Key missing in API Route");
+      return NextResponse.json({ error: "Server Misconfiguration: Missing Service Role Key" }, { status: 500 });
     }
+    
+    const supabase = adminAuthClient;
     
     const body = await request.json();
     const mode = body.mode || "all";
@@ -289,13 +291,13 @@ function detectNetwork(id: string, name: string): "visa" | "mastercard" | "union
  */
 export async function GET() {
   try {
-    const supabase = await createClient();
-    
-    // Check authentication
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // Check for Service Role Key
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY && !process.env.SERVICE_ROLE_KEY) {
+      console.error("CRITICAL: Service Role Key missing in API Route");
+      return NextResponse.json({ error: "Server Misconfiguration: Missing Service Role Key" }, { status: 500 });
     }
+    
+    const supabase = adminAuthClient;
     
     // Get counts from database
     const [cardsResult, rulesResult, notesResult, promosResult, faqsResult] = await Promise.all([
