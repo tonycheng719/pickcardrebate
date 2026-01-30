@@ -34,16 +34,38 @@ import Link from "next/link";
 
 // Helper to render note with Markdown links
 function renderNoteWithLinks(note: string) {
+  // 清理 Markdown 格式，轉為純文字
+  let cleanedNote = note
+    // 移除 markdown 標題 (## / ###)
+    .replace(/^#{1,6}\s*/gm, '')
+    // 移除 markdown 表格 header 分隔線
+    .replace(/^\|?[-:]+\|[-:|\s]+$/gm, '')
+    // 將表格行轉換為清單格式
+    .replace(/^\|\s*(.+?)\s*\|\s*(.+?)\s*\|?\s*$/gm, '• $1 → $2')
+    .replace(/^\|\s*(.+?)\s*\|\s*(.+?)\s*\|\s*(.+?)\s*\|?\s*$/gm, '• $1 | $2 | $3')
+    // 移除 markdown 粗體 **text**
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    // 移除 markdown 水平線
+    .replace(/^---+$/gm, '')
+    // 移除多餘空行
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+
   const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
   const elements: React.ReactNode[] = [];
   let lastIndex = 0;
   let match;
   let key = 0;
 
-  while ((match = linkRegex.exec(note)) !== null) {
+  while ((match = linkRegex.exec(cleanedNote)) !== null) {
     // Add text before the link
     if (match.index > lastIndex) {
-      elements.push(note.slice(lastIndex, match.index));
+      const textSegment = cleanedNote.slice(lastIndex, match.index);
+      // 將換行轉為 <br>
+      textSegment.split('\n').forEach((line, i, arr) => {
+        elements.push(line);
+        if (i < arr.length - 1) elements.push(<br key={`br-${key++}`} />);
+      });
     }
     
     // Add the link
@@ -62,11 +84,15 @@ function renderNoteWithLinks(note: string) {
   }
   
   // Add remaining text after last link
-  if (lastIndex < note.length) {
-    elements.push(note.slice(lastIndex));
+  if (lastIndex < cleanedNote.length) {
+    const remaining = cleanedNote.slice(lastIndex);
+    remaining.split('\n').forEach((line, i, arr) => {
+      elements.push(line);
+      if (i < arr.length - 1) elements.push(<br key={`br-${key++}`} />);
+    });
   }
   
-  return elements.length > 0 ? elements : note;
+  return elements.length > 0 ? elements : cleanedNote;
 }
 import { LoginPromptDialog } from "@/components/login-prompt-dialog";
 import { toast } from "sonner";
