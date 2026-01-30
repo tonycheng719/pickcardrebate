@@ -172,7 +172,11 @@ export async function GET(request: Request) {
         officialApplyUrl: dbCard.apply_url || undefined,
         minIncome: dbCard.min_income || undefined,
         rules,
-        rewardConfig: dbCard.reward_config || { method: "cashback", ratio: 1, currency: "HKD" },
+        rewardConfig: dbCard.reward_config ? {
+          method: dbCard.reward_config.method || 'direct',
+          ratio: dbCard.reward_config.ratio,
+          currency: dbCard.reward_config.currency,
+        } : { method: 'direct' as const, ratio: 1, currency: 'HKD' },
         style: dbCard.style || {},
       };
 
