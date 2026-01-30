@@ -36,7 +36,12 @@ const menuItems = [
   { name: "總覽儀表板", href: "/admin", icon: LayoutDashboard },
   { name: "系統說明書", href: "/admin/guide", icon: BookOpen }, 
   { name: "更新日誌", href: "/admin/changelog", icon: GitCommit },
-  { name: "🗄️ 數據庫管理", href: "/admin/database", icon: Database },
+  { name: "🗄️ 數據庫管理", href: "/admin/database", icon: Database, subItems: [
+    { name: "卡片管理", href: "/admin/database/cards" },
+    { name: "規則管理", href: "/admin/database/rules" },
+    { name: "推廣管理", href: "/admin/database/promos" },
+    { name: "數據驗證", href: "/admin/database/validate" },
+  ]},
   { name: "會員管理", href: "/admin/users", icon: Users },
   { name: "消費記錄", href: "/admin/transactions", icon: Receipt },
   { name: "推送通知", href: "/admin/notifications", icon: Bell },
@@ -96,19 +101,39 @@ function AdminShell({ children }: { children: React.ReactNode }) {
 
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
           {menuItems.map((item) => (
-            <Link key={item.href} href={item.href}>
-              <div
-                className={cn(
-                  "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors",
-                  pathname === item.href
-                    ? "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400"
-                    : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700"
-                )}
-              >
-                <item.icon className="h-5 w-5" />
-                {item.name}
-              </div>
-            </Link>
+            <div key={item.href}>
+              <Link href={item.href}>
+                <div
+                  className={cn(
+                    "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors",
+                    pathname === item.href || (item.subItems && pathname.startsWith(item.href))
+                      ? "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400"
+                      : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700"
+                  )}
+                >
+                  <item.icon className="h-5 w-5" />
+                  {item.name}
+                </div>
+              </Link>
+              {item.subItems && pathname.startsWith(item.href) && (
+                <div className="ml-8 mt-1 space-y-1">
+                  {item.subItems.map((subItem) => (
+                    <Link key={subItem.href} href={subItem.href}>
+                      <div
+                        className={cn(
+                          "px-3 py-2 rounded-lg text-xs font-medium transition-colors",
+                          pathname === subItem.href
+                            ? "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300"
+                            : "text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        )}
+                      >
+                        {subItem.name}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
         </nav>
 
