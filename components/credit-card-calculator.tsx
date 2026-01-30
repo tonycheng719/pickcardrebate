@@ -226,6 +226,7 @@ export function CreditCardCalculator({
   const [open, setOpen] = useState(false);
   const [showMyOtherCards, setShowMyOtherCards] = useState(false); // Toggle for owned cards
   const [showUnownedCards, setShowUnownedCards] = useState(false); // Toggle for unowned cards
+  const [showAllUnownedCards, setShowAllUnownedCards] = useState(false); // Show all vs first 10
   const [showLoginPrompt, setShowLoginPrompt] = useState(false); // New state for login prompt
   
   // Transaction Recording State
@@ -1355,7 +1356,10 @@ export function CreditCardCalculator({
               <div>
                 <button 
                   className="w-full text-xs text-gray-400 hover:text-gray-600 py-2 flex items-center justify-between border-b border-gray-100"
-                  onClick={() => setShowUnownedCards(prev => !prev)}
+                  onClick={() => {
+                    setShowUnownedCards(prev => !prev);
+                    if (showUnownedCards) setShowAllUnownedCards(false); // Reset when collapsing
+                  }}
                 >
                   <span className="flex items-center gap-1">
                     查看其他未持有的卡 ({unownedCards.length})
@@ -1365,11 +1369,26 @@ export function CreditCardCalculator({
                 
                 {showUnownedCards && (
                   <div className="space-y-2 pt-2 animate-in fade-in slide-in-from-top-2">
-                    {unownedCards.slice(0, 10).map(card => (
+                    {(showAllUnownedCards ? unownedCards : unownedCards.slice(0, 10)).map(card => (
                       <ResultRowWithBreakdown key={card.card.id} result={card} />
                     ))}
-                    {unownedCards.length > 10 && (
-                      <p className="text-[10px] text-gray-400 text-center py-1">還有 {unownedCards.length - 10} 張卡...</p>
+                    {unownedCards.length > 10 && !showAllUnownedCards && (
+                      <button 
+                        onClick={() => setShowAllUnownedCards(true)}
+                        className="w-full text-xs text-blue-500 hover:text-blue-700 py-2 flex items-center justify-center gap-1 hover:bg-blue-50 rounded-lg transition-colors"
+                      >
+                        <ChevronDown className="w-3 h-3" />
+                        展開全部 {unownedCards.length - 10} 張卡
+                      </button>
+                    )}
+                    {showAllUnownedCards && unownedCards.length > 10 && (
+                      <button 
+                        onClick={() => setShowAllUnownedCards(false)}
+                        className="w-full text-xs text-gray-400 hover:text-gray-600 py-2 flex items-center justify-center gap-1 hover:bg-gray-50 rounded-lg transition-colors"
+                      >
+                        <ChevronUp className="w-3 h-3" />
+                        收起
+                      </button>
                     )}
                   </div>
                 )}
