@@ -130,7 +130,19 @@ export async function GET(request: Request) {
           if (matchValue) rule.matchValue = matchValue;
           if (r.cap) rule.cap = r.cap;
           if (r.cap_type) rule.capType = r.cap_type;
-          if (r.cap_period) rule.capPeriod = r.cap_period;
+          if (r.cap_period) {
+            // Map DB cap_period to RewardRule capPeriod
+            const periodMap: Record<string, 'monthly' | 'yearly' | 'semiannual' | 'promo'> = {
+              'monthly': 'monthly',
+              'quarterly': 'monthly', // approximate
+              'annual': 'yearly',
+              'yearly': 'yearly',
+              'transaction': 'promo',
+              'promo': 'promo',
+              'semiannual': 'semiannual',
+            };
+            rule.capPeriod = periodMap[r.cap_period] || 'monthly';
+          }
           if (r.min_spend) rule.minSpend = r.min_spend;
           if (r.exclude_categories?.length > 0) rule.excludeCategories = r.exclude_categories;
           if (r.valid_from || r.valid_until) {
