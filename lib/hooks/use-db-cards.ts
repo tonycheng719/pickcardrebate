@@ -195,7 +195,10 @@ export function useDBCards(options: UseDBCardsOptions = {}): UseDBCardsResult {
           ratio: dbCard.reward_config.ratio,
           currency: dbCard.reward_config.currency,
         } : { method: 'direct' as const, ratio: 1, currency: 'HKD' },
-          style: dbCard.style || {},
+          style: {
+          bgColor: dbCard.style?.bgColor || 'bg-gray-800',
+          textColor: dbCard.style?.textColor || 'text-white',
+        },
         };
 
         if (note) card.note = note;
@@ -393,7 +396,10 @@ export async function getDBCards(): Promise<CreditCard[]> {
           ratio: dbCard.reward_config.ratio,
           currency: dbCard.reward_config.currency,
         } : { method: 'direct' as const, ratio: 1, currency: 'HKD' },
-        style: dbCard.style || {},
+        style: {
+          bgColor: dbCard.style?.bgColor || 'bg-gray-800',
+          textColor: dbCard.style?.textColor || 'text-white',
+        },
       };
 
       if (note) card.note = note;
