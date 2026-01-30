@@ -1847,8 +1847,6 @@ export const HK_CARDS: CreditCard[] = [
     feeWaiverCondition: "永久免年費（限大學及大專全日制學生）",
     rewardConfig: { method: 'conversion', ratio: 250, currency: 'Points' }, // 250 獎分 = $1 回贈 (0.4%)
     rules: [
-      // 高達6%簽賬回贈：首12個月，每月首$2,000簽賬享5.6%額外回贈 + 0.4%基本 = 6%
-      { description: "🔥首12月 6% [首$2,000/月]", matchType: "base", percentage: 6.0, cap: 2000, capType: "spending", validDateRange: { start: "2025-01-01", end: "2025-12-31" }, excludeCategories: ["ewallet", "insurance", "tax", "utilities"] },
       // 基本獎賞：$250 = $1 (0.4%)，無上限
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["ewallet"] },
     ],
