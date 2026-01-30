@@ -27,6 +27,7 @@ import {
   Bell,
   Receipt,
   Clock,
+  Database,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AdminAuthProvider, useAdminAuth } from "@/components/admin/admin-auth-context";
@@ -35,6 +36,7 @@ const menuItems = [
   { name: "總覽儀表板", href: "/admin", icon: LayoutDashboard },
   { name: "系統說明書", href: "/admin/guide", icon: BookOpen }, 
   { name: "更新日誌", href: "/admin/changelog", icon: GitCommit },
+  { name: "🗄️ 數據庫管理", href: "/admin/database", icon: Database },
   { name: "會員管理", href: "/admin/users", icon: Users },
   { name: "消費記錄", href: "/admin/transactions", icon: Receipt },
   { name: "推送通知", href: "/admin/notifications", icon: Bell },
