@@ -237,12 +237,15 @@ function CardItem({ card }: { card: CreditCard }) {
                     </div>
                 </Link>
 
-                <div className="flex flex-wrap gap-2 mb-4">
-                {card.tags.map(tag => (
-                    <span key={tag} className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded text-xs font-medium">
+                <div className="flex flex-wrap gap-2 mb-4 overflow-hidden">
+                {card.tags.slice(0, 5).map(tag => (
+                    <span key={tag} className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded text-xs font-medium truncate max-w-[120px]">
                     {tag}
                     </span>
                 ))}
+                {card.tags.length > 5 && (
+                    <span className="text-xs text-gray-400 px-1">+{card.tags.length - 5}</span>
+                )}
                 </div>
                 
                 <div className="space-y-3 mb-4 flex-1">
@@ -478,10 +481,10 @@ function AllCardsContent() {
     });
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col transition-colors">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col transition-colors overflow-x-hidden">
           <Navbar />
           
-          <main className="container mx-auto px-4 py-8 flex-1">
+          <main className="w-full max-w-7xl mx-auto px-4 py-8 flex-1 overflow-hidden">
             {isFiltered && (
               <div className="mb-6 p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-200 dark:border-emerald-800">
                 <div className="flex items-center justify-between flex-wrap gap-3">
@@ -593,9 +596,9 @@ function AllCardsContent() {
 // Loading fallback for Suspense
 function CardsLoading() {
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col transition-colors">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col transition-colors overflow-x-hidden">
             <Navbar />
-            <main className="container mx-auto px-4 py-8 flex-1">
+            <main className="w-full max-w-7xl mx-auto px-4 py-8 flex-1 overflow-hidden">
                 <div className="mb-8">
                     <Skeleton className="h-9 w-48 mb-2" />
                     <Skeleton className="h-5 w-full max-w-96" />
