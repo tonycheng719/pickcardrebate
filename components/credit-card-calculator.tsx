@@ -94,6 +94,40 @@ function renderNoteWithLinks(note: string) {
   
   return elements.length > 0 ? elements : cleanedNote;
 }
+
+// Collapsible Card Note Component
+function CollapsibleNote({ note, maxLines = 3 }: { note: string; maxLines?: number }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  
+  // Count lines in the note
+  const lines = note.split('\n').filter(l => l.trim());
+  const isLong = lines.length > maxLines;
+  
+  // Get truncated content
+  const truncatedNote = isLong && !isExpanded
+    ? lines.slice(0, maxLines).join('\n') + '...'
+    : note;
+  
+  return (
+    <div className="relative">
+      <div className={`text-[11px] text-amber-800 leading-snug ${!isExpanded && isLong ? 'line-clamp-3' : ''}`}>
+        {renderNoteWithLinks(truncatedNote)}
+      </div>
+      {isLong && (
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="text-[10px] text-amber-600 hover:text-amber-800 font-medium mt-1 flex items-center gap-0.5"
+        >
+          {isExpanded ? (
+            <>收起 <ChevronUp className="w-3 h-3" /></>
+          ) : (
+            <>展開更多 <ChevronDown className="w-3 h-3" /></>
+          )}
+        </button>
+      )}
+    </div>
+  );
+}
 import { LoginPromptDialog } from "@/components/login-prompt-dialog";
 import { toast } from "sonner";
 import { RewardBreakdown } from "@/components/reward-breakdown";
@@ -241,9 +275,35 @@ export function CreditCardCalculator({
     () => {
         let list = merchantList;
 
-        // If search query exists, filter by name/alias globally (ignore category)
+        // If search query exists, filter by name/alias/category globally (ignore category)
         if (searchQuery.trim()) {
             const q = searchQuery.toLowerCase().trim();
+            
+            // First, check if search matches a category name
+            const matchedCategory = categoryList.find(cat => 
+                cat.name.toLowerCase().includes(q) || 
+                cat.id.toLowerCase().includes(q)
+            );
+            
+            // If matched a category, show all merchants in that category
+            if (matchedCategory) {
+                return list
+                    .filter(m => m.categoryIds.includes(matchedCategory.id))
+                    .map(m => {
+                        const staticConfig = POPULAR_MERCHANTS.find(pm => pm.id === m.id);
+                        if (staticConfig?.isOnlineOnly) {
+                            return { ...m, isOnlineOnly: true };
+                        }
+                        return m;
+                    })
+                    .sort((a, b) => {
+                        if (a.isGeneral && !b.isGeneral) return 1;
+                        if (!a.isGeneral && b.isGeneral) return -1;
+                        return 0;
+                    });
+            }
+            
+            // Otherwise, filter by merchant name/alias
             return list.filter(m => 
                 m.name.toLowerCase().includes(q) || 
                 m.aliases.some(a => a.toLowerCase().includes(q))
@@ -254,7 +314,7 @@ export function CreditCardCalculator({
                     return { ...m, isOnlineOnly: true };
                 }
                 return m;
-            }).slice(0, 12); // Limit results for performance
+            }).slice(0, 16); // Limit results for performance
         }
 
         if (!selectedCategory || selectedCategory === 'all') return list;
@@ -275,7 +335,7 @@ export function CreditCardCalculator({
                 return 0;
             });
     },
-    [merchantList, selectedCategory, searchQuery]
+    [merchantList, selectedCategory, searchQuery, categoryList]
   );
   
   const effectiveMerchants = filteredMerchants;
@@ -1037,7 +1097,7 @@ export function CreditCardCalculator({
               {best.card.note && (
                 <div className="mt-2 p-2.5 bg-amber-50 border border-amber-100 rounded-xl flex items-start gap-2">
                   <Info className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                  <div className="text-[11px] text-amber-800 leading-snug">{renderNoteWithLinks(best.card.note)}</div>
+                  <CollapsibleNote note={best.card.note} maxLines={3} />
                 </div>
               )}
 
@@ -1328,7 +1388,7 @@ export function CreditCardCalculator({
         <div className="relative mb-4">
             <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
             <Input 
-                placeholder="搜尋商戶 (例如: 國泰, HKTVMall, 麥當勞...)" 
+                placeholder="搜尋商戶或類別 (例如: 麥當勞, 超市, 網購...)" 
                 className="pl-9 bg-gray-50 dark:bg-gray-800 border-transparent focus:bg-white dark:focus:bg-gray-900 transition-all"
                 value={searchQuery}
                 onChange={(e) => {
@@ -1654,9 +1714,7 @@ export function CreditCardCalculator({
               {whyCardResult.card.note && (
                 <div className="p-2.5 bg-amber-50 border border-amber-100 rounded-xl flex items-start gap-2">
                   <Info className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                  <div className="text-[11px] text-amber-800 leading-snug">
-                    {renderNoteWithLinks(whyCardResult.card.note)}
-                  </div>
+                  <CollapsibleNote note={whyCardResult.card.note} maxLines={4} />
                 </div>
               )}
             </div>
