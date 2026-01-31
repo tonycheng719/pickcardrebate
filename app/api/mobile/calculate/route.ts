@@ -1,8 +1,38 @@
 import { NextRequest, NextResponse } from "next/server";
 import { findBestCards } from "@/lib/logic/calculator";
 import { adminAuthClient } from "@/lib/supabase/admin-client";
+import { getDBCards } from "@/lib/hooks/use-db-cards";
+import { HK_CARDS } from "@/lib/data/cards";
+import { CreditCard } from "@/lib/types";
 
 export const dynamic = 'force-dynamic';
+
+// Cache for DB cards (refresh every 5 minutes)
+let cachedCards: CreditCard[] | null = null;
+let cacheTime: number = 0;
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+async function getCardsWithFallback(): Promise<{ cards: CreditCard[], source: string }> {
+  const now = Date.now();
+  
+  // Use cache if valid
+  if (cachedCards && (now - cacheTime) < CACHE_DURATION) {
+    return { cards: cachedCards, source: "cache" };
+  }
+  
+  try {
+    const dbCards = await getDBCards();
+    if (dbCards && dbCards.length > 0) {
+      cachedCards = dbCards;
+      cacheTime = now;
+      return { cards: dbCards, source: "database" };
+    }
+  } catch (error) {
+    console.warn("Failed to fetch DB cards, using local:", error);
+  }
+  
+  return { cards: HK_CARDS, source: "local" };
+}
 
 // CORS headers for mobile app
 const corsHeaders = {
@@ -35,12 +65,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 計算回贈
+    // 取得卡片數據（優先 DB，fallback 到本地）
+    const { cards: cardList, source: dataSource } = await getCardsWithFallback();
+
+    // 計算回贈（使用 DB 規則）
     const results = findBestCards(query, {
       amount: parseFloat(amount) || 0,
       paymentMethod,
       isForeignCurrency,
-    });
+    }, cardList);
 
     // 取得資料庫中的卡片圖片
     let dbCardMap = new Map<string, { image_url: string | null }>();
@@ -83,6 +116,7 @@ export async function POST(request: NextRequest) {
         bank: result.card.bank,
         imageUrl: dbCard?.image_url || result.card.imageUrl || null,
         isOwned: myCardIdSet.has(result.card.id), // 標記是否為用戶持有
+        note: result.card.note || null, // 卡片備註（優惠提示等）
         
         // 回贈資訊
         percentage: result.percentage,
@@ -136,6 +170,7 @@ export async function POST(request: NextRequest) {
       results: mobileResults,
       count: mobileResults.length,
       totalFound: results.length,
+      dataSource, // 告知 App 數據來源 (database/cache/local)
     }, { headers: corsHeaders });
 
   } catch (error) {
@@ -164,12 +199,15 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // 計算回贈
+    // 取得卡片數據（優先 DB，fallback 到本地）
+    const { cards: cardList, source: dataSource } = await getCardsWithFallback();
+
+    // 計算回贈（使用 DB 規則）
     const results = findBestCards(query, {
       amount,
       paymentMethod,
       isForeignCurrency,
-    });
+    }, cardList);
 
     // 取得資料庫中的卡片圖片
     let dbCardMap = new Map<string, { image_url: string | null }>();
@@ -224,6 +262,7 @@ export async function GET(request: NextRequest) {
       results: mobileResults,
       count: mobileResults.length,
       totalFound: results.length,
+      dataSource, // 告知 App 數據來源
     }, { headers: corsHeaders });
 
   } catch (error) {

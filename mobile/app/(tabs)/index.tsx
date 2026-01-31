@@ -65,6 +65,7 @@ export default function CalculatorScreen() {
   const [calculatedResults, setCalculatedResults] = useState<CalculateResult[]>([]);
   const [isCalculating, setIsCalculating] = useState(false);
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set(['0'])); // 第一張卡默認展開
+  const [expandedNotes, setExpandedNotes] = useState<Set<string>>(new Set()); // 展開的備註
   
   // 現金/里數偏好
   const [rewardPreference, setRewardPreference] = useState<'cash' | 'miles'>('cash');
@@ -273,6 +274,31 @@ export default function CalculatorScreen() {
       }
       return newSet;
     });
+  };
+
+  // 切換備註展開/收起
+  const toggleNoteExpand = (cardId: string) => {
+    setExpandedNotes(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(cardId)) {
+        newSet.delete(cardId);
+      } else {
+        newSet.add(cardId);
+      }
+      return newSet;
+    });
+  };
+
+  // 清理 Markdown 格式
+  const cleanMarkdown = (text: string): string => {
+    return text
+      .replace(/^#{1,6}\s*/gm, '') // 移除標題
+      .replace(/\*\*([^*]+)\*\*/g, '$1') // 移除粗體
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // 移除連結，保留文字
+      .replace(/^\|?[-:]+\|[-:|\s]+$/gm, '') // 移除表格分隔線
+      .replace(/^\|\s*(.+?)\s*\|\s*(.+?)\s*\|?\s*$/gm, '• $1 → $2') // 表格轉清單
+      .replace(/\n{3,}/g, '\n\n') // 移除多餘空行
+      .trim();
   };
 
   // 分享結果
@@ -574,6 +600,24 @@ export default function CalculatorScreen() {
               {dateSuggestionText}
             </Text>
           </View>
+        )}
+
+        {/* 卡片備註（可收合） */}
+        {result.note && (
+          <TouchableOpacity 
+            style={[styles.noteToggle, { backgroundColor: colors.warningLight, borderColor: colors.warning }]}
+            onPress={() => toggleNoteExpand(result.cardId)}
+          >
+            <Ionicons name="information-circle" size={14} color={colors.warning} />
+            <Text style={[styles.noteToggleText, { color: colors.warning }]} numberOfLines={expandedNotes.has(result.cardId) ? undefined : 2}>
+              {cleanMarkdown(result.note)}
+            </Text>
+            <Ionicons 
+              name={expandedNotes.has(result.cardId) ? 'chevron-up' : 'chevron-down'} 
+              size={14} 
+              color={colors.warning} 
+            />
+          </TouchableOpacity>
         )}
       </Card>
     );
@@ -1668,6 +1712,22 @@ const styles = StyleSheet.create({
   extraInfoText: {
     fontSize: Layout.fontSize.xs,
     fontWeight: Layout.fontWeight.medium,
+  },
+  // 卡片備註樣式
+  noteToggle: {
+    marginTop: Layout.spacing.sm,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderRadius: Layout.radius.md,
+    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 6,
+  },
+  noteToggleText: {
+    flex: 1,
+    fontSize: Layout.fontSize.xs,
+    lineHeight: 16,
   },
   // Modal 樣式
   modalOverlay: {

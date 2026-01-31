@@ -139,6 +139,7 @@ export interface CalculateResult {
   imageUrl: string | null;
   isOwned?: boolean; // 是否為用戶持有的卡片
   applyUrl?: string | null; // 申請連結
+  note?: string | null; // 卡片備註（優惠提示等）
   percentage: number;
   rewardAmount: number;
   ruleDescription: string;
@@ -190,6 +191,7 @@ export interface CalculateResponse {
   results: CalculateResult[];
   count: number;
   totalFound: number;
+  dataSource?: string; // 數據來源: database/cache/local
 }
 
 // 商戶類型
