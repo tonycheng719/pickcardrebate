@@ -68,7 +68,7 @@ export default function DatabaseAdminPage() {
     }
   };
 
-  const runMigration = async (mode: "cards" | "promos" | "all", clearExisting: boolean = false) => {
+  const runMigration = async (mode: "cards" | "promos" | "all" | "sync-images", clearExisting: boolean = false) => {
     if (!confirm(clearExisting 
       ? `確定要清除現有數據並重新匯入${mode === "all" ? "所有" : mode === "cards" ? "卡片" : "文章"}數據嗎？`
       : `確定要匯入${mode === "all" ? "所有" : mode === "cards" ? "卡片" : "文章"}數據嗎？`
