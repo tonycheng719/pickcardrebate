@@ -205,11 +205,23 @@ export function getMerchantById(id: string): Merchant | undefined {
   return getAllMerchants().find(m => m.id === id);
 }
 
-// 搜尋商戶（支援名稱和別名）
+// 搜尋商戶（支援名稱、別名和類別名稱）
 export function searchMerchants(query: string): Merchant[] {
   const q = query.toLowerCase().trim();
   if (!q) return [];
   
+  // 先檢查是否匹配類別名稱
+  const matchedCategory = MERCHANT_CATEGORIES.find(cat =>
+    cat.name.toLowerCase().includes(q) ||
+    cat.id.toLowerCase().includes(q)
+  );
+  
+  // 如果匹配到類別，返回該類別的所有商戶
+  if (matchedCategory) {
+    return matchedCategory.merchants;
+  }
+  
+  // 否則按商戶名稱和別名搜尋
   return getAllMerchants().filter(m => 
     m.name.toLowerCase().includes(q) ||
     m.id.includes(q) ||
