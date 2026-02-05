@@ -1,9 +1,12 @@
 import { NextResponse } from 'next/server';
 import { adminAuthClient } from '@/lib/supabase/admin-client';
 
+// 添加快取：每 5 分鐘更新一次
+export const revalidate = 300;
+
 export async function GET() {
     try {
-        // Try RPC first
+        // Try RPC first (最有效率的方式)
         let { data: rpcData, error: rpcError } = await adminAuthClient.rpc("get_analytics_summary");
 
         if (!rpcError && rpcData && rpcData.length > 0) {
@@ -12,30 +15,40 @@ export async function GET() {
 
         console.warn("RPC failed or returned no data, falling back to raw queries", rpcError);
 
-        // Fallback: Raw queries (Slower but reliable if RPC missing)
-        // 1. Total Searches
-        const { count: totalSearches } = await adminAuthClient
-            .from("search_logs")
-            .select("*", { count: "exact", head: true });
-
-        // 2. Avg Amount (Simple avg)
-        const { data: amountData } = await adminAuthClient
-            .from("search_logs")
-            .select("amount");
-        
-        const totalAmount = amountData?.reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0) || 0;
-        const avgAmount = amountData?.length ? totalAmount / amountData.length : 0;
-
-        // 3. Top Merchants (Simple aggregation)
-        // Get all logs from last 30 days to match frontend trending
+        // Fallback: Raw queries (優化版 - 限制查詢範圍)
         const thirtyDaysAgo = new Date();
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-        
-        const { data: allLogs } = await adminAuthClient
-            .from("search_logs")
-            .select("merchant_name, category_id, payment_method")
-            .gte("created_at", thirtyDaysAgo.toISOString())
-            .order("created_at", { ascending: false });
+
+        // 並行執行查詢以提高效率
+        const [
+            { count: totalSearches },
+            { data: recentAmounts },
+            { data: allLogs }
+        ] = await Promise.all([
+            // 1. Total Searches (只計數，不獲取數據)
+            adminAuthClient
+                .from("search_logs")
+                .select("*", { count: "exact", head: true }),
+            
+            // 2. 最近 1000 條記錄計算平均值（而非全部）
+            adminAuthClient
+                .from("search_logs")
+                .select("amount")
+                .order("created_at", { ascending: false })
+                .limit(1000),
+            
+            // 3. 最近 30 天的記錄（限制 5000 條）
+            adminAuthClient
+                .from("search_logs")
+                .select("merchant_name, category_id, payment_method")
+                .gte("created_at", thirtyDaysAgo.toISOString())
+                .order("created_at", { ascending: false })
+                .limit(5000)
+        ]);
+
+        // 計算平均金額（基於樣本）
+        const totalAmount = recentAmounts?.reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0) || 0;
+        const avgAmount = recentAmounts?.length ? totalAmount / recentAmounts.length : 0;
 
         const merchantCounts: Record<string, number> = {};
         const categoryCounts: Record<string, number> = {};

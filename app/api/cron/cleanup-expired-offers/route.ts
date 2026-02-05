@@ -75,34 +75,35 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // 清除過期的 partner_offer（設為 null）
-    const cleanedIds: string[] = [];
-    const errors: string[] = [];
+    // 批量清除過期的 partner_offer（一次更新所有）
+    const expiredIds = expiredCards.map(card => card.id);
+    
+    const { error: updateError, count } = await supabase
+      .from('cards')
+      .update({ 
+        partner_offer: null,
+        updated_at: new Date().toISOString()
+      })
+      .in('id', expiredIds);
 
-    for (const card of expiredCards) {
-      const { error: updateError } = await supabase
-        .from('cards')
-        .update({ 
-          partner_offer: null,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', card.id);
-
-      if (updateError) {
-        errors.push(`${card.id}: ${updateError.message}`);
-        console.error(`[Cleanup Cron] Error cleaning ${card.id}:`, updateError);
-      } else {
-        cleanedIds.push(card.id);
-        console.log(`[Cleanup Cron] Cleaned expired offer for ${card.name} (expired: ${card.validTo})`);
-      }
+    if (updateError) {
+      console.error('[Cleanup Cron] Batch update error:', updateError);
+      return NextResponse.json({ 
+        error: updateError.message,
+        attempted: expiredIds.length
+      }, { status: 500 });
     }
 
+    console.log(`[Cleanup Cron] Batch cleaned ${count || expiredIds.length} expired offers`);
+    expiredCards.forEach(card => {
+      console.log(`  - ${card.name} (expired: ${card.validTo})`);
+    });
+
     const result = {
-      message: `Cleaned ${cleanedIds.length} expired partner offers`,
-      cleaned: cleanedIds.length,
-      cleanedCards: cleanedIds,
-      cutoffDate,
-      errors: errors.length > 0 ? errors : undefined
+      message: `Cleaned ${count || expiredIds.length} expired partner offers`,
+      cleaned: count || expiredIds.length,
+      cleanedCards: expiredIds,
+      cutoffDate
     };
 
     console.log('[Cleanup Cron] Cleanup completed:', result);

@@ -1994,32 +1994,39 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 1, currency: 'Cashback' },
     rules: [
+      // ========== 龍豐門市 6% (2026/2/1-7/31) ==========
+      // T&C: 龍豐實體分店單筆滿$300享6%，月上限$200，整個推廣期上限$1,200，需登記
+      { description: "龍豐門市 6% [單筆$300+,需登記]", matchType: "merchant", matchValue: ["lungfung"], percentage: 6.0, minSpend: 300, cap: 200, capType: "reward", validDateRange: { start: "2026-02-01", end: "2026-07-31" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // ========== 網上簽賬 8% (需月簽非網上$1,000 + 單筆$500) ==========
       // T&C: 於相同曆月內累積合資格非網上零售簽賬滿$1,000，單筆滿$500之網上零售簽賬可享8%
-      { description: "網購 8% [需月簽非網上$1,000+單筆$500]", matchType: "category", matchValue: "online", percentage: 8.0, minSpend: 500, monthlyMinSpend: 1000, isPhysicalStore: true, cap: 200, capType: "reward", validDateRange: { start: "2025-11-01", end: "2026-01-31" }, excludeCategories: ["ewallet", "utilities", "insurance", "government", "tax"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "網購 8% [需月簽非網上$1,000+單筆$500]", matchType: "category", matchValue: "online", percentage: 8.0, minSpend: 500, monthlyMinSpend: 1000, isPhysicalStore: true, cap: 200, capType: "reward", validDateRange: { start: "2026-02-01", end: "2026-04-30" }, excludeCategories: ["ewallet", "utilities", "insurance", "government", "tax"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // ========== 指定本地公共交通 8% (sim Credit Card 限定) ==========
       // T&C: 城巴、九巴、龍運、港鐵（拍卡出入閘）、電車、天星小輪
-      { description: "交通 8% [港鐵/巴士/電車/天星小輪]", matchType: "merchant", matchValue: ["mtr", "kmb", "citybus", "lwb", "tram", "starferry"], percentage: 8.0, monthlyMinSpend: 1000, isPhysicalStore: true, cap: 200, capType: "reward", validDateRange: { start: "2025-11-01", end: "2026-01-31" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "交通 8% [港鐵/巴士/電車/天星小輪]", matchType: "merchant", matchValue: ["mtr", "kmb", "citybus", "lwb", "tram", "starferry"], percentage: 8.0, monthlyMinSpend: 1000, isPhysicalStore: true, cap: 200, capType: "reward", validDateRange: { start: "2026-02-01", end: "2026-04-30" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // ========== 指定商戶 3% ==========
       // T&C: Adidas、@cosme STORE、Fila、PUMA、松本清香港、東京生活館
-      { description: "指定商戶 3% [Adidas/PUMA/松本清等]", matchType: "merchant", matchValue: ["adidas", "cosme_store", "fila", "puma", "matsumoto_kiyoshi", "tokyo_lifestyle"], percentage: 3.0, validDateRange: { start: "2025-11-01", end: "2026-01-31" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "指定商戶 3% [Adidas/PUMA/松本清等]", matchType: "merchant", matchValue: ["adidas", "cosme_store", "fila", "puma", "matsumoto_kiyoshi", "tokyo_lifestyle"], percentage: 3.0, monthlyMinSpend: 1000, validDateRange: { start: "2026-02-01", end: "2026-04-30" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // ========== App 繳費 2% (NEW! 2026/2/1起) ==========
+      // T&C: 透過 sim Credit Card App「繳費/交稅」服務完成的繳費交易（交稅除外）
+      { description: "App繳費 2% [sim App繳費,交稅除外]", matchType: "category", matchValue: "utilities", percentage: 2.0, monthlyMinSpend: 1000, validDateRange: { start: "2026-02-01", end: "2026-04-30" }, excludeCategories: ["tax"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // ========== 基本回贈 0.4% ==========
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
-    tags: ["網購8%", "交通8%", "學生可申請", "需月簽$1,000", "MoneyHero獨家"],
+    tags: ["網購8%", "交通8%", "龍豐6%", "App繳費2%", "學生可申請", "需月簽$1,000"],
     welcomeOfferText: "簽$4,000送$200回贈/禮品卡 或 簽$8,000送Canon打印機($1,080)",
-    sellingPoints: ["🔥 網購 8% (簽上限$2,500/月)", "🚌 交通 8% (港鐵/巴士/電車)", "🚨 需月簽非網上$1,000+單筆$500先有8%", "👨‍🎓 學生可申請", "回贈上限 $200/月"],
+    sellingPoints: ["🔥 網購 8% (簽上限$2,500/月)", "🛒 龍豐門市 6% (單筆$300+)", "🚌 交通 8% (港鐵/巴士/電車)", "📱 App繳費 2% (交稅除外)", "🚨 需月簽非網上$1,000+單筆$500先有8%", "👨‍🎓 學生可申請"],
     featuredMerchants: [
+      { name: "龍豐", rate: "6%", category: "藥妝" },
       { name: "Adidas", rate: "3%", category: "運動" },
       { name: "PUMA", rate: "3%", category: "運動" },
       { name: "松本清", rate: "3%", category: "藥妝" },
     ],
-    exclusions: ["電子錢包", "八達通增值", "繳費", "保險", "政府服務"],
-    note: "## 🔥 經本網指定連結申請額外獎賞\n**優惠期：2026年1月19日下午6時至1月31日下午11時59分**\n\n### 🎁 獨家優惠1️⃣（無需簽賬）\n選擇「6個月免息免手續費現金套現分期計劃」作爲迎新，可獲：\n\n| 禮品 | 價值 |\n|:---|:---:|\n| LOJEL Alto 29吋行李箱 | **$2,100** |\n| NESCAFÉ Dolce Gusto 咖啡機+6盒膠囊 | **$1,780** |\n| Marshall Emberton II 藍牙喇叭 | **$1,499** |\n| 10,000 Max Miles 飛行里數 | ~$1,000 |\n| HK$1,000 Apple Store 禮品卡 | $1,000 |\n| HK$1,000 惠康購物現金券 | $1,000 |\n| HK$800 現金回贈 (轉數快) | $800 |\n\n### 🎁 獨家優惠2️⃣（簽賬$100）\n批卡後30日內簽滿 **$100**，可獲同樣禮品！\n\n---\n\n## 📌 銀行迎新優惠（至 2026/1/31）\n**90日內簽滿 $4,000**：\n- $200 現金回贈 / $200 Apple禮品卡 / $500 Netflix禮品卡\n- 或：簽滿 $8,000 送 Canon SELPHY QX20 打印機 ($1,080)\n\n---\n\n## 🚌 交通 8% / 🌐 網購 8%\n- 需月簽非網上 $1,000 + 單筆 $500\n- 月回贈上限 $200\n\n📅 **2026年1月22日更新**",
+    exclusions: ["電子錢包", "八達通增值", "保險", "政府服務", "交稅"],
+    note: "## 🛒 龍豐門市 6% 回贈 (NEW!)\n**推廣期：2026年2月1日 至 7月31日**\n\n| 項目 | 詳情 |\n|:---|:---|\n| 回贈率 | **6%** |\n| 單筆門檻 | **$300** |\n| 月回贈上限 | **$200**（即月簽$3,334）|\n| 推廣期上限 | **$1,200**（6個月）|\n\n⚠️ **需登記**：[thesim.com/tc/campaign/LUNGFUNG](https://thesim.com/tc/campaign/LUNGFUNG)\n\n---\n\n## 🎉 8%回贈續期至4月！\n**推廣期：2026年2月1日 至 4月30日**\n\n### 📊 回贈一覽表\n| 簽賬類別 | 回贈率 | 門檻 |\n|:---|:---:|:---|\n| 🛒 **龍豐門市 (NEW!)** | **6%** | 單筆 ≥$300, 需登記 |\n| 網上零售簽賬 | **8%** | 單筆 ≥$500 |\n| 指定本地交通 | **8%** | - |\n| 指定商戶 | **3%** | - |\n| 📱 App繳費 | **2%** | 交稅除外 |\n| 其他零售簽賬 | 0.4% | - |\n\n### ⚠️ 重要條件（8%回贈優惠）\n- 需同月累積 **非網上零售簽賬 ≥$1,000** 才享8%優惠回贈\n- 每月回贈上限：**$200**\n- 整個優惠期上限：**$600**（3個月）\n\n### 🚌 指定本地交通 8%\n城巴、城巴機場快線、九巴、龍運巴士、港鐵（拍卡出入閘）、香港電車、天星小輪\n\n### 🏪 指定商戶 3%\nAdidas、@cosme STORE、松本清香港、PUMA、Fila、東京生活館\n\n📅 **2026年2月2日更新**\n\n🔗 [8%回贈條款](https://cdn.thesim.com/88_sim_Credit_Card_Terms_and_Conditions_of_Cash_Back_Promotion_TC_final_922dadcd98.pdf)\n🔗 [龍豐6%條款](https://cdn.thesim.com/LF_T_and_C_TC_Combine_29092cbcde.pdf)",
     officialApplyUrl: "https://www.uafl.com.hk/tc/sim-credit-card/",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=873&a=228&sub_id1=web",
-    promoEndDate: "2026-01-31",
-    promoName: "MoneyHero限時獨家優惠",
+    promoEndDate: "2026-04-30",
+    promoName: "8%回贈續期至4月",
   },
   {
     id: "sim-world-mastercard",
@@ -2032,32 +2039,39 @@ export const HK_CARDS: CreditCard[] = [
     foreignCurrencyFee: 1.95,
     rewardConfig: { method: 'conversion', ratio: 1, currency: 'Cashback' },
     rules: [
+      // ========== 龍豐門市 6% (2026/2/1-7/31) ==========
+      // T&C: 龍豐實體分店單筆滿$300享6%，月上限$200，整個推廣期上限$1,200，需登記
+      { description: "龍豐門市 6% [單筆$300+,需登記]", matchType: "merchant", matchValue: ["lungfung"], percentage: 6.0, minSpend: 300, cap: 200, capType: "reward", validDateRange: { start: "2026-02-01", end: "2026-07-31" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // ========== 網上簽賬 8% (需月簽非網上$1,000 + 單筆$500) ==========
       // T&C: 於相同曆月內累積合資格非網上零售簽賬滿$1,000，單筆滿$500之網上零售簽賬可享8%
-      { description: "網購 8% [需月簽非網上$1,000+單筆$500]", matchType: "category", matchValue: "online", percentage: 8.0, minSpend: 500, monthlyMinSpend: 1000, isPhysicalStore: true, cap: 200, capType: "reward", validDateRange: { start: "2025-11-01", end: "2026-01-31" }, excludeCategories: ["ewallet", "utilities", "insurance", "government", "tax"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "網購 8% [需月簽非網上$1,000+單筆$500]", matchType: "category", matchValue: "online", percentage: 8.0, minSpend: 500, monthlyMinSpend: 1000, isPhysicalStore: true, cap: 200, capType: "reward", validDateRange: { start: "2026-02-01", end: "2026-04-30" }, excludeCategories: ["ewallet", "utilities", "insurance", "government", "tax"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // ========== 海外非網上零售簽賬 8% (sim World 限定) ==========
       // T&C: 外幣簽賬之香港境外零售簽賬（網上海外簽賬視為網購）
-      { description: "海外實體店 8% [需月簽非網上$1,000]", matchType: "base", percentage: 8.0, isForeignCurrency: true, isPhysicalStore: true, monthlyMinSpend: 1000, cap: 200, capType: "reward", validDateRange: { start: "2025-11-01", end: "2026-01-31" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "海外實體店 8% [需月簽非網上$1,000]", matchType: "base", percentage: 8.0, isForeignCurrency: true, isPhysicalStore: true, monthlyMinSpend: 1000, cap: 200, capType: "reward", validDateRange: { start: "2026-02-01", end: "2026-04-30" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // ========== 指定商戶 3% ==========
       // T&C: Adidas、@cosme STORE、Fila、PUMA、松本清香港、東京生活館
-      { description: "指定商戶 3% [Adidas/PUMA/松本清等]", matchType: "merchant", matchValue: ["adidas", "cosme_store", "fila", "puma", "matsumoto_kiyoshi", "tokyo_lifestyle"], percentage: 3.0, validDateRange: { start: "2025-11-01", end: "2026-01-31" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      { description: "指定商戶 3% [Adidas/PUMA/松本清等]", matchType: "merchant", matchValue: ["adidas", "cosme_store", "fila", "puma", "matsumoto_kiyoshi", "tokyo_lifestyle"], percentage: 3.0, monthlyMinSpend: 1000, validDateRange: { start: "2026-02-01", end: "2026-04-30" }, excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
+      // ========== App 繳費 2% (NEW! 2026/2/1起) ==========
+      // T&C: 透過 sim Credit Card App「繳費/交稅」服務完成的繳費交易（交稅除外）
+      { description: "App繳費 2% [sim App繳費,交稅除外]", matchType: "category", matchValue: "utilities", percentage: 2.0, monthlyMinSpend: 1000, validDateRange: { start: "2026-02-01", end: "2026-04-30" }, excludeCategories: ["tax"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
       // ========== 基本回贈 0.4% ==========
       { description: "基本回饋 0.4%", matchType: "base", percentage: 0.4, excludeCategories: ["tax", "utilities", "government", "insurance", "ewallet"], excludePaymentMethods: ["alipay", "wechat_pay", "payme", "octopus"] },
     ],
-    tags: ["網購8%", "海外8%", "需月簽$1,000", "MoneyHero獨家"],
+    tags: ["網購8%", "海外8%", "龍豐6%", "App繳費2%", "需月簽$1,000"],
     welcomeOfferText: "簽$4,000送$200回贈/禮品卡 或 簽$8,000送Canon打印機($1,080)",
-    sellingPoints: ["🔥 網購 8% (簽上限$2,500/月)", "✈️ 海外實體店 8%", "🚨 需月簽非網上$1,000+單筆$500先有8%", "回贈上限 $200/月"],
+    sellingPoints: ["🔥 網購 8% (簽上限$2,500/月)", "🛒 龍豐門市 6% (單筆$300+)", "✈️ 海外實體店 8%", "📱 App繳費 2% (交稅除外)", "🚨 需月簽非網上$1,000+單筆$500先有8%"],
     featuredMerchants: [
+      { name: "龍豐", rate: "6%", category: "藥妝" },
       { name: "Adidas", rate: "3%", category: "運動" },
       { name: "PUMA", rate: "3%", category: "運動" },
       { name: "松本清", rate: "3%", category: "藥妝" },
     ],
-    exclusions: ["電子錢包", "八達通增值", "繳費", "保險", "政府服務"],
-    note: "## 📌 sim World Mastercard 高級版（紫色）\n**推廣期：2025/11/1 至 2026/1/31**\n\n### 🌐 網上簽賬 8%\n| 項目 | 詳情 |\n|:---|:---|\n| 回贈率 | **8%** |\n| 簽賬門檻 | 月簽非網上 $1,000 |\n| 單筆門檻 | **$500** |\n| 月回贈上限 | **$200**（以8%計算即$2,500）|\n\n### ✈️ 海外實體店簽賬 8%\n| 項目 | 詳情 |\n|:---|:---|\n| 回贈率 | **8%** |\n| 簽賬門檻 | 月簽非網上 $1,000 |\n| 適用範圍 | 外幣簽賬之香港境外實體零售 |\n| 外幣手續費 | 1.95% |\n\n💡 **旅行玩法**：去旅行簽海外實體店，順便達成「非網上$1,000」門檻！\n\n⚠️ 網上海外簽賬視為「網購」，不是「海外簽賬」\n\n### 🏪 指定商戶 3%\nAdidas、@cosme STORE、Fila、PUMA、松本清香港、東京生活館\n\n---\n\n## 🎁 迎新優惠（至 2026/1/31）\n**全新客戶**：90日內簽滿 $8,000，可獲以下其中一項：\n- **$700 現金回贈**\n- $700 Apple 禮品卡\n- Canon SELPHY QX20 流動無線相片打印機（價值$1,219）\n\n📱 **App 額外迎新**：申請後3小時內下載 sim Credit App 並完成身份驗證，額外 **$50 現金回贈**\n\n⚠️ 新客：12個月內未持有/取消 sim 信用卡 + 24個月內未使用 sim 貸款\n\n---\n\n## ⚠️ 重要提示\n- 每月回贈上限：**$200**\n- 整個優惠期上限：**$600**（3個月）\n- CBF 手續費：**1.95%**\n- 外幣手續費：**1.95%**\n- 年薪要求：**$150,000**\n- ❌ 不適用：電子錢包、八達通增值、繳費、保險、政府\n\n---\n\n## 💡 vs 基本版 sim Credit Card\n| 項目 | World | 基本版 |\n|:---|:---:|:---:|\n| 網購 8% | ✅ | ✅ |\n| 海外實體店 8% | ✅ | ❌ |\n| 交通 8% | ❌ | ✅ |\n| 年薪要求 | $150,000 | 無（學生可申請）|\n| 年費 | $1,800 | $800 |\n\n📅 **2026年1月7日更新**",
+    exclusions: ["電子錢包", "八達通增值", "保險", "政府服務", "交稅"],
+    note: "## 🛒 龍豐門市 6% 回贈 (NEW!)\n**推廣期：2026年2月1日 至 7月31日**\n\n| 項目 | 詳情 |\n|:---|:---|\n| 回贈率 | **6%** |\n| 單筆門檻 | **$300** |\n| 月回贈上限 | **$200**（即月簽$3,334）|\n| 推廣期上限 | **$1,200**（6個月）|\n\n⚠️ **需登記**：[thesim.com/tc/campaign/LUNGFUNG](https://thesim.com/tc/campaign/LUNGFUNG)\n\n---\n\n## 🎉 8%回贈續期至4月！\n**推廣期：2026年2月1日 至 4月30日**\n\n### 📊 回贈一覽表\n| 簽賬類別 | 回贈率 | 門檻 |\n|:---|:---:|:---|\n| 🛒 **龍豐門市 (NEW!)** | **6%** | 單筆 ≥$300, 需登記 |\n| 網上零售簽賬 | **8%** | 單筆 ≥$500 |\n| 海外實體店簽賬 | **8%** | 外幣簽賬 |\n| 指定商戶 | **3%** | - |\n| 📱 App繳費 | **2%** | 交稅除外 |\n| 其他零售簽賬 | 0.4% | - |\n\n### ⚠️ 重要條件（8%回贈優惠）\n- 需同月累積 **非網上零售簽賬 ≥$1,000** 才享8%優惠回贈\n- 每月回贈上限：**$200**\n- 整個優惠期上限：**$600**（3個月）\n\n### ✈️ 海外實體店 8%\n- 適用於外幣簽賬之香港境外實體零售\n- 外幣手續費 1.95%\n- 網上海外簽賬視為「網購」，不是「海外簽賬」\n\n💡 **旅行玩法**：去旅行簽海外實體店，順便達成「非網上$1,000」門檻！\n\n### 🏪 指定商戶 3%\nAdidas、@cosme STORE、松本清香港、PUMA、Fila、東京生活館\n\n---\n\n## 💡 vs 基本版 sim Credit Card\n| 項目 | World | 基本版 |\n|:---|:---:|:---:|\n| 網購 8% | ✅ | ✅ |\n| 海外實體店 8% | ✅ | ❌ |\n| 交通 8% | ❌ | ✅ |\n| 龍豐 6% | ✅ | ✅ |\n| App繳費 2% | ✅ | ✅ |\n| 年薪要求 | $150,000 | 無（學生可申請）|\n| 年費 | $1,800 | $800 |\n\n📅 **2026年2月2日更新**\n\n🔗 [8%回贈條款](https://cdn.thesim.com/88_sim_Credit_Card_Terms_and_Conditions_of_Cash_Back_Promotion_TC_final_922dadcd98.pdf)\n🔗 [龍豐6%條款](https://cdn.thesim.com/LF_T_and_C_TC_Combine_29092cbcde.pdf)",
     officialApplyUrl: "https://www.uafl.com.hk/tc/sim-world-mastercard/",
     applyUrl: "https://apply.creatory.moneyhero.com.hk/click?o=874&a=228&sub_id1=web",
-    promoEndDate: "2026-01-31",
-    promoName: "MoneyHero限時獨家優惠",
+    promoEndDate: "2026-04-30",
+    promoName: "8%回贈續期至4月",
   },
   // === 新增卡片 ===
   {

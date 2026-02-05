@@ -39,88 +39,51 @@ export async function GET(request: NextRequest) {
       cutoffDate
     };
 
-    // 1. 清理信用卡的過期推廣日期
+    // 1. 清理信用卡的過期推廣日期（批量操作）
     try {
-      // 獲取所有有 promo_end_date 的卡片
-      const { data: cards, error: fetchCardsError } = await supabase
+      // 直接使用 SQL 批量更新，比逐一更新高效得多
+      const { error: cardUpdateError, count: cardCount } = await supabase
         .from('cards')
-        .select('id, name, promo_end_date')
-        .not('promo_end_date', 'is', null);
+        .update({ 
+          promo_end_date: null,
+          promo_name: null,
+          updated_at: new Date().toISOString()
+        })
+        .not('promo_end_date', 'is', null)
+        .lt('promo_end_date', cutoffDate);
 
-      if (fetchCardsError) {
-        console.error('[Cleanup Promos] Error fetching cards:', fetchCardsError);
-        results.cards.errors.push(fetchCardsError.message);
-      } else if (cards && cards.length > 0) {
-        for (const card of cards) {
-          const endDate = new Date(card.promo_end_date);
-          const cutoff = new Date(cutoffDate);
-          
-          if (endDate < cutoff) {
-            const { error: updateError } = await supabase
-              .from('cards')
-              .update({ 
-                promo_end_date: null,
-                promo_name: null,
-                updated_at: new Date().toISOString()
-              })
-              .eq('id', card.id);
-
-            if (updateError) {
-              results.cards.errors.push(`${card.id}: ${updateError.message}`);
-            } else {
-              results.cards.cleaned++;
-              console.log(`[Cleanup Promos] Cleared promo for ${card.name} (expired: ${card.promo_end_date})`);
-            }
-          }
-        }
+      if (cardUpdateError) {
+        console.error('[Cleanup Promos] Error batch updating cards:', cardUpdateError);
+        results.cards.errors.push(cardUpdateError.message);
+      } else {
+        results.cards.cleaned = cardCount || 0;
+        console.log(`[Cleanup Promos] Batch cleared ${cardCount || 0} card promos`);
       }
     } catch (e: any) {
       results.cards.errors.push(e.message);
     }
 
-    // 2. 刪除過期的 Discover 文章
+    // 2. 刪除過期的 Discover 文章（批量操作）
     try {
-      const { data: promos, error: fetchPromosError } = await supabase
+      // 批量軟刪除過期文章（排除 evergreen）
+      const { error: promoUpdateError, count: promoCount } = await supabase
         .from('promos')
-        .select('id, title, expiry_date')
-        .not('expiry_date', 'is', null);
+        .update({ 
+          is_deleted: true,
+          deleted_at: new Date().toISOString()
+        })
+        .not('expiry_date', 'is', null)
+        .neq('expiry_date', '長期有效')
+        .neq('expiry_date', 'evergreen')
+        .lt('expiry_date', cutoffDate)
+        .eq('is_deleted', false); // 只處理未刪除的
 
-      if (fetchPromosError) {
-        console.error('[Cleanup Promos] Error fetching promos:', fetchPromosError);
-        results.promos.errors.push(fetchPromosError.message);
-      } else if (promos && promos.length > 0) {
-        for (const promo of promos) {
-          // 跳過「長期有效」的文章
-          if (promo.expiry_date === '長期有效' || promo.expiry_date === 'evergreen') {
-            continue;
-          }
-          
-          try {
-            const endDate = new Date(promo.expiry_date);
-            const cutoff = new Date(cutoffDate);
-            
-            if (endDate < cutoff) {
-              // 軟刪除：標記為已刪除而非真正刪除
-              const { error: deleteError } = await supabase
-                .from('promos')
-                .update({ 
-                  is_deleted: true,
-                  deleted_at: new Date().toISOString()
-                })
-                .eq('id', promo.id);
-
-              if (deleteError) {
-                results.promos.errors.push(`${promo.id}: ${deleteError.message}`);
-              } else {
-                results.promos.deleted++;
-                console.log(`[Cleanup Promos] Soft deleted promo: ${promo.title} (expired: ${promo.expiry_date})`);
-              }
-            }
-          } catch (dateError) {
-            // 跳過無效日期格式
-            continue;
-          }
-        }
+      if (promoUpdateError) {
+        console.error('[Cleanup Promos] Error batch deleting promos:', promoUpdateError);
+        results.promos.errors.push(promoUpdateError.message);
+      } else {
+        results.promos.deleted = promoCount || 0;
+        console.log(`[Cleanup Promos] Batch soft deleted ${promoCount || 0} promos`);
       }
     } catch (e: any) {
       results.promos.errors.push(e.message);
