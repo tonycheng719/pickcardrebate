@@ -3,7 +3,7 @@ import { adminAuthClient } from '@/lib/supabase/admin-client';
 
 export const dynamic = 'force-dynamic';
 
-// POST: Record a page view（優化版：使用 RPC 增量更新）
+// POST: Record a page view
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -13,45 +13,44 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // 嘗試使用 RPC 進行原子增量操作（最高效）
-    const { error: rpcError } = await adminAuthClient.rpc('increment_page_view', {
-      p_page_type: pageType,
-      p_page_id: pageId,
-      p_page_name: pageName || pageId
-    });
+    // 策略：先嘗試插入新記錄，如果唯一約束衝突則更新
+    const { error: insertError } = await adminAuthClient
+      .from('page_views')
+      .insert({
+        page_type: pageType,
+        page_id: pageId,
+        page_name: pageName || pageId,
+        view_count: 1,
+        created_at: new Date().toISOString(),
+        last_viewed_at: new Date().toISOString()
+      });
 
-    // 如果 RPC 不存在，使用 fallback 策略
-    if (rpcError && rpcError.code === '42883') {
-      // RPC 不存在，使用傳統方式
-      const { error: insertError } = await adminAuthClient
-        .from('page_views')
-        .insert({
-          page_type: pageType,
-          page_id: pageId,
-          page_name: pageName || pageId,
-          view_count: 1,
-          created_at: new Date().toISOString(),
-          last_viewed_at: new Date().toISOString()
-        });
+    if (insertError) {
+      // 唯一約束衝突 = 記錄已存在，需要更新 view_count
+      if (insertError.code === '23505') {
+        // 先獲取當前 view_count，再 +1 更新
+        const { data: existing } = await adminAuthClient
+          .from('page_views')
+          .select('id, view_count')
+          .eq('page_type', pageType)
+          .eq('page_id', pageId)
+          .single();
 
-      if (insertError && insertError.code === '23505') {
-        // 衝突：使用 SQL 直接增量（比先查詢再更新更高效）
-        await adminAuthClient.rpc('raw_sql', {
-          query: `UPDATE page_views SET view_count = view_count + 1, last_viewed_at = NOW() WHERE page_type = $1 AND page_id = $2`,
-          params: [pageType, pageId]
-        }).catch(() => {
-          // 如果 raw_sql 也不存在，使用原始方式
-          adminAuthClient
+        if (existing) {
+          await adminAuthClient
             .from('page_views')
-            .update({ last_viewed_at: new Date().toISOString() })
-            .eq('page_type', pageType)
-            .eq('page_id', pageId);
-        });
+            .update({ 
+              view_count: existing.view_count + 1,
+              last_viewed_at: new Date().toISOString()
+            })
+            .eq('id', existing.id);
+        }
       }
+      // 表不存在或其他錯誤，靜默失敗
     }
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
+  } catch {
     // 靜默失敗 - analytics 不應該影響用戶體驗
     return NextResponse.json({ success: true });
   }
