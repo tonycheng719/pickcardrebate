@@ -2326,10 +2326,38 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
 
   const isExpired = daysLeft <= 0;
 
-  const relatedCards = promo.relatedCardIds?.map(cardId => {
-    const card = HK_CARDS.find(c => c.id === cardId);
-    return card ? { id: card.id, name: card.name, bank: card.bank } : null;
-  }).filter(Boolean) || [];
+  // 從資料庫獲取信用卡資料（包括封面圖）
+  let relatedCards: { id: string; name: string; bank: string; imageUrl?: string; style?: any }[] = [];
+  if (promo.relatedCardIds && promo.relatedCardIds.length > 0) {
+    const { data: dbCards } = await adminAuthClient
+      .from('cards')
+      .select('id, name, bank, image_url')
+      .in('id', promo.relatedCardIds);
+    
+    relatedCards = promo.relatedCardIds.map(cardId => {
+      const dbCard = dbCards?.find(c => c.id === cardId);
+      const localCard = HK_CARDS.find(c => c.id === cardId);
+      
+      if (dbCard) {
+        return {
+          id: dbCard.id,
+          name: dbCard.name || localCard?.name || cardId,
+          bank: dbCard.bank || localCard?.bank || '',
+          imageUrl: dbCard.image_url || localCard?.imageUrl,
+          style: localCard?.style
+        };
+      } else if (localCard) {
+        return {
+          id: localCard.id,
+          name: localCard.name,
+          bank: localCard.bank,
+          imageUrl: localCard.imageUrl,
+          style: localCard.style
+        };
+      }
+      return null;
+    }).filter(Boolean) as typeof relatedCards;
+  }
 
   // 使用 Article 而非 Offer，避免 Google 要求 shippingDetails/hasMerchantReturnPolicy
   const structuredData = {
@@ -2445,11 +2473,26 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
             {relatedCards.length > 0 && (
               <div className="mb-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-900/30">
                 <h3 className="font-bold text-gray-900 dark:text-white mb-3">💳 適用信用卡</h3>
-                <div className="flex flex-wrap gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {relatedCards.map((card: any) => (
                     <Link key={card.id} href={`/cards/${card.id}`}
-                      className="px-3 py-1.5 bg-white dark:bg-gray-800 rounded-lg text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-gray-700 border border-blue-200 dark:border-gray-600">
-                      {card.name}
+                      className="flex items-center gap-3 p-3 bg-white dark:bg-gray-800 rounded-xl hover:bg-blue-50 dark:hover:bg-gray-700 border border-blue-200 dark:border-gray-600 transition-colors">
+                      <div className={`w-14 h-9 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0 ${!card.imageUrl ? (card.style?.bgColor || 'bg-gradient-to-br from-gray-600 to-gray-800') : 'bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700'}`}>
+                        {card.imageUrl ? (
+                          <img 
+                            src={card.imageUrl} 
+                            alt={card.name}
+                            className="w-full h-full object-contain"
+                          />
+                        ) : (
+                          <span className="text-white text-xs font-bold">{card.bank?.slice(0, 2) || '卡'}</span>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-medium text-gray-900 dark:text-white truncate">{card.name}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400">{card.bank}</div>
+                      </div>
+                      <ChevronRight className="h-4 w-4 text-gray-400 flex-shrink-0" />
                     </Link>
                   ))}
                 </div>
