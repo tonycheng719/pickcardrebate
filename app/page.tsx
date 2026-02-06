@@ -3,6 +3,7 @@
 import { Navbar } from "@/components/navbar";
 import { CreditCardCalculator } from "@/components/credit-card-calculator";
 import { TrendingMerchants } from "@/components/trending-merchants";
+import { PopularSearches } from "@/components/popular-searches";
 import { useWallet } from "@/lib/store/wallet-context";
 import { Zap, ShieldCheck, PieChart, BadgeCheck, Plane, RefreshCw, Smartphone, Calendar, Layers } from "lucide-react";
 import { motion } from "framer-motion";
@@ -203,7 +204,10 @@ export default function Home() {
           <TrendingMerchants />
         </section>
 
-        <section>
+        {/* 熱門搜尋區塊 */}
+        <PopularSearches />
+
+        <section className="mt-12">
           <div className="flex justify-between items-center mb-6">
             <h3 className="font-bold text-gray-900 dark:text-white text-lg">為什麼選擇 PickCardRebate？</h3>
           </div>

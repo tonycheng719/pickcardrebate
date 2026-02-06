@@ -7,6 +7,7 @@ import { useSettings } from "@/lib/store/settings-context";
 import { useState, useEffect } from "react";
 import { useLocale } from "@/lib/i18n/useLocale";
 import { getTranslation } from "@/lib/i18n/translations";
+import { BANK_CATEGORIES, NETWORK_CATEGORIES, FEATURE_CATEGORIES } from "@/lib/data/card-categories";
 
 // Threads icon (Meta's Threads app)
 function ThreadsIcon({ className }: { className?: string }) {
@@ -31,9 +32,92 @@ export function SiteFooter() {
     setYear(new Date().getFullYear());
   }, []);
 
+  // 熱門銀行（優先顯示）
+  const popularBanks = BANK_CATEGORIES.slice(0, 8);
+  const popularFeatures = FEATURE_CATEGORIES.slice(0, 6);
+
   return (
     <footer className="bg-gray-50 dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800 py-12 mt-auto">
       <div className="container mx-auto px-4">
+        {/* SEO 分類連結區塊 */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10 pb-10 border-b border-gray-200 dark:border-gray-800">
+          {/* 熱門銀行 */}
+          <div>
+            <h4 className="font-semibold text-gray-900 dark:text-white mb-3">熱門銀行</h4>
+            <ul className="space-y-2">
+              {popularBanks.map((bank) => (
+                <li key={bank.id}>
+                  <Link 
+                    href={`/cards/bank/${bank.id}`}
+                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  >
+                    {bank.name}信用卡
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* 卡組織 */}
+          <div>
+            <h4 className="font-semibold text-gray-900 dark:text-white mb-3">卡組織</h4>
+            <ul className="space-y-2">
+              {NETWORK_CATEGORIES.map((network) => (
+                <li key={network.id}>
+                  <Link 
+                    href={`/cards/network/${network.id}`}
+                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+                  >
+                    {network.name} 信用卡
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* 功能分類 */}
+          <div>
+            <h4 className="font-semibold text-gray-900 dark:text-white mb-3">功能分類</h4>
+            <ul className="space-y-2">
+              {popularFeatures.map((feature) => (
+                <li key={feature.id}>
+                  <Link 
+                    href={`/cards/category/${feature.id}`}
+                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors"
+                  >
+                    {feature.name}信用卡
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* 更多分類 */}
+          <div>
+            <h4 className="font-semibold text-gray-900 dark:text-white mb-3">更多分類</h4>
+            <ul className="space-y-2">
+              {FEATURE_CATEGORIES.slice(6).map((feature) => (
+                <li key={feature.id}>
+                  <Link 
+                    href={`/cards/category/${feature.id}`}
+                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors"
+                  >
+                    {feature.name}信用卡
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link 
+                  href="/cards"
+                  className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline"
+                >
+                  查看全部信用卡 →
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-center md:text-left">
             <p className="text-sm text-gray-500 dark:text-gray-400">
