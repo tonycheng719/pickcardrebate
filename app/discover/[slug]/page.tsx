@@ -70,6 +70,7 @@ import { WeChatPayCreditCardGuide, wechatPayCreditCardFaqData } from "./wechat-p
 import { HkdOnlineShoppingGuide, hkdOnlineShoppingFaqData } from "./hkd-online-shopping-guide";
 import AEJapanPromo2026Guide from "./ae-japan-promo-2026";
 import AeOkConvenienceStore2026Guide from "./ae-ok-convenience-store-2026";
+import DahsingDonki2026Guide from "./dahsing-donki-2026-guide";
 import { CardPreviewSection, RECOMMENDED_CARDS } from "@/app/discover/components/card-preview-section";
 import { CardMarkdownRenderer } from "@/app/discover/components/card-markdown-renderer";
 import { ArticleTracker } from "@/app/discover/components/article-tracker";
@@ -2460,7 +2461,10 @@ export default async function DiscoverDetailPage({ params }: PageProps) {
             {/* Description */}
             <div className="mb-10">
               <p className="lead text-xl text-gray-600 dark:text-gray-300 mb-6 font-medium">{promo.description}</p>
-              {promo.content ? (
+              {/* 特定文章使用專屬 React 組件（含信用卡封面圖） */}
+              {promo.id === "dahsing-donki-2026" ? (
+                <DahsingDonki2026Guide />
+              ) : promo.content ? (
                 <CardMarkdownRenderer content={promo.content} />
               ) : (
                 <div className="bg-gray-50 dark:bg-gray-800/50 p-6 rounded-xl text-center text-gray-500 dark:text-gray-400 italic">
